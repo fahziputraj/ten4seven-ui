@@ -1,0 +1,70 @@
+# ten4seven UI agent index
+
+## Start here
+
+- `AGENTS.md` — short root rules and retrieval order.
+- `docs/ai/AI_QUICKSTART.md` — two-minute system orientation.
+- `docs/ai/APPLY_TO_EXISTING_WEB.md` — business-logic-safe migration workflow.
+- `docs/ai/NEW_PROJECT.md` — greenfield sequence.
+- `docs/ai/COMPONENT_SELECTION.md` — high-frequency component decisions.
+- `docs/ai/THEMING.md` — public provider and typography contract.
+- `skills/ten4seven-ui/SKILL.md` — reusable agent workflow.
+
+## FOUNDATIONS
+
+- `packages/tokens/src/theme.ts` — axes, semantic typography roles, and variable generation.
+- `packages/tokens/src/theme.css` — local Inter variable font and global token CSS.
+- `packages/ui/src/provider.tsx` — provider and runtime theme propagation.
+- `packages/ui/src/components.tsx` — canonical React primitives.
+- `packages/icons/src/index.tsx` — local semantic icon boundary.
+
+## AI CATALOGS
+
+- `packages/ai/catalog/recipes.json` — page archetypes and component composition.
+- `packages/ai/catalog/components.json` — searchable component contracts.
+- `packages/ai/catalog/icons.json` — semantic icon lookup; provider names are implementation detail.
+- `packages/ai/templates/AGENTS.ten4seven.md` — copy into consuming repositories.
+
+## RECIPES
+
+- dashboard
+- entity-list
+- entity-detail
+- entity-form
+- master-detail
+- approval-queue
+- settings
+- report
+- catalog
+- product-detail
+- checkout
+- content-list
+- content-detail
+- ebook-reader
+- auth
+- marketing-home
+
+## COMPONENTS
+
+- forms: `Input`, `Select`, `FormSection`
+- layout/navigation: `AppShell`, `Sidebar`, `NavItem`, `PageHeader`
+- surfaces: `Card`, `Badge`, `Typography`
+- data: `DataTable`, `FilterToolbar`, `Pagination`, `KPICluster`, `EmptyState`
+- overlays: `Modal`, `DetailDrawer`, `Drawer`
+- catalog: `ProductCard`
+- actions: `Button`, `BulkActionBar`, `ActionFooter`
+
+## CLI
+
+- `pnpm t7ui info`
+- `pnpm t7ui find "inventory list"`
+- `pnpm t7ui show DataTable`
+- `pnpm t7ui agents init`
+
+## REFERENCE ROUTES
+
+- Theme Studio: `http://localhost:4173/theme-studio`
+- Warehouse Inventory: `http://localhost:4173/warehouse-inventory`
+- Ebook Store Catalog: `http://localhost:4173/ebook-store`
+
+Open these deterministic URLs directly for refresh-safe AI-agent and Playwright QA.

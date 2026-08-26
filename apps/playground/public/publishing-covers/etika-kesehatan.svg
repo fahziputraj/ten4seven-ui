@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Etika Profesi Kesehatan dan Keselamatan Pasien</title>
+  <desc id="desc">Editorial cover in olive, lilac, and ivory.</desc>
+  <rect width="600" height="900" fill="#eae6d6"/>
+  <rect x="0" y="0" width="600" height="210" fill="#5d6a43"/>
+  <rect x="54" y="264" width="178" height="178" fill="#b6a1c9"/>
+  <circle cx="143" cy="353" r="52" fill="#eae6d6"/>
+  <path d="M143 315v76M105 353h76" stroke="#5d6a43" stroke-width="14"/>
+  <text x="54" y="108" fill="#eae6d6" font-family="Inter, Arial, sans-serif" font-size="22" letter-spacing="4">LEAF &amp; LETTER</text>
+  <text x="54" y="518" fill="#5d6a43" font-family="Inter, Arial, sans-serif" font-size="40" font-weight="700">ETIKA PROFESI</text>
+  <text x="54" y="566" fill="#5d6a43" font-family="Inter, Arial, sans-serif" font-size="40" font-weight="700">KESEHATAN</text>
+  <text x="54" y="614" fill="#5d6a43" font-family="Inter, Arial, sans-serif" font-size="22">dan keselamatan pasien</text>
+  <text x="54" y="714" fill="#5d6a43" font-family="Inter, Arial, sans-serif" font-size="22">Lestari Wulandari</text>
+  <text x="54" y="826" fill="#5d6a43" font-family="Inter, Arial, sans-serif" font-size="18" letter-spacing="3">PUBLISHING / 10</text>
+</svg>

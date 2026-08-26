@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Akuntansi Keuangan Berbasis Kas dan Akrual</title>
+  <desc id="desc">Editorial cover in charcoal, orange, and white.</desc>
+  <rect width="600" height="900" fill="#252b2d"/>
+  <rect x="0" y="0" width="600" height="290" fill="#e0a24c"/>
+  <rect x="54" y="220" width="188" height="188" fill="#252b2d"/>
+  <rect x="88" y="254" width="120" height="120" fill="#f4efe6"/>
+  <path d="M111 344h74M111 322h74M111 300h44" stroke="#252b2d" stroke-width="10"/>
+  <text x="54" y="104" fill="#252b2d" font-family="Inter, Arial, sans-serif" font-size="22" letter-spacing="4">LEAF &amp; LETTER</text>
+  <text x="54" y="510" fill="#f4efe6" font-family="Inter, Arial, sans-serif" font-size="43" font-weight="700">AKUNTANSI</text>
+  <text x="54" y="562" fill="#f4efe6" font-family="Inter, Arial, sans-serif" font-size="43" font-weight="700">KEUANGAN</text>
+  <text x="54" y="612" fill="#e0a24c" font-family="Inter, Arial, sans-serif" font-size="25">berbasis kas dan akrual</text>
+  <text x="54" y="704" fill="#f4efe6" font-family="Inter, Arial, sans-serif" font-size="24">Dwi Prasetyo</text>
+  <text x="54" y="824" fill="#e0a24c" font-family="Inter, Arial, sans-serif" font-size="18" letter-spacing="3">PUBLISHING / 02</text>
+</svg>

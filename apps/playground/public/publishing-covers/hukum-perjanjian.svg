@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Hukum Perjanjian dalam Praktik Bisnis</title>
+  <desc id="desc">Editorial cover in plum, ivory, and lime.</desc>
+  <rect width="600" height="900" fill="#efe9d7"/>
+  <rect x="0" y="0" width="600" height="900" fill="#4a2847"/>
+  <rect x="54" y="188" width="492" height="12" fill="#c5d16f"/>
+  <rect x="54" y="218" width="264" height="12" fill="#c5d16f"/>
+  <path d="M408 90v290M344 188h128M365 380h86" stroke="#efe9d7" stroke-width="5"/>
+  <text x="54" y="110" fill="#efe9d7" font-family="Inter, Arial, sans-serif" font-size="22" letter-spacing="4">LEAF &amp; LETTER</text>
+  <text x="54" y="506" fill="#efe9d7" font-family="Inter, Arial, sans-serif" font-size="48" font-weight="700">HUKUM</text>
+  <text x="54" y="562" fill="#efe9d7" font-family="Inter, Arial, sans-serif" font-size="48" font-weight="700">PERJANJIAN</text>
+  <text x="54" y="612" fill="#c5d16f" font-family="Inter, Arial, sans-serif" font-size="24">dalam praktik bisnis</text>
+  <text x="54" y="710" fill="#efe9d7" font-family="Inter, Arial, sans-serif" font-size="23">Maya S. Wibowo</text>
+  <text x="54" y="826" fill="#c5d16f" font-family="Inter, Arial, sans-serif" font-size="18" letter-spacing="3">PUBLISHING / 06</text>
+</svg>

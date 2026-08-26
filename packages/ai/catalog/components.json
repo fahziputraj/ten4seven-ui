@@ -1,0 +1,415 @@
+{
+  "Ten4SevenProvider": {
+    "status": "available",
+    "category": "foundation",
+    "purpose": "Resolve semantic theme axes at the application root",
+    "useWhen": ["starting or migrating an application"],
+    "avoidWhen": ["creating local color or typography systems"],
+    "recipes": ["all"],
+    "importantProps": [
+      "appearance",
+      "palette",
+      "radius",
+      "density",
+      "typography",
+      "elevation"
+    ],
+    "relatedComponents": ["Typography", "Button", "Card"]
+  },
+  "Typography": {
+    "status": "available",
+    "category": "foundation",
+    "purpose": "Render a semantic type role without raw weight or size values",
+    "useWhen": [
+      "displaying headings, body copy, labels, metrics, or data samples"
+    ],
+    "avoidWhen": ["using typography as a substitute for business semantics"],
+    "recipes": ["all"],
+    "importantProps": ["typeRole", "as"],
+    "relatedComponents": ["Ten4SevenProvider", "Card", "Button"]
+  },
+  "Button": {
+    "status": "available",
+    "category": "action",
+    "purpose": "Trigger an explicit application action",
+    "useWhen": [
+      "submit, confirm, create, cancel, or navigate through an action"
+    ],
+    "avoidWhen": [
+      "passive navigation that should be a link",
+      "decorative text"
+    ],
+    "recipes": ["entity-form", "checkout", "auth", "marketing-home"],
+    "importantProps": [
+      "intent",
+      "size",
+      "leadingIcon",
+      "trailingIcon",
+      "disabled"
+    ],
+    "relatedComponents": ["ActionFooter", "Modal", "Badge"]
+  },
+  "Input": {
+    "status": "available",
+    "category": "form",
+    "purpose": "Collect a labelled text value",
+    "useWhen": ["search, name, identifier, email, amount, or freeform text"],
+    "avoidWhen": ["known finite choices", "long rich content"],
+    "recipes": ["entity-form", "settings", "checkout", "auth", "entity-list"],
+    "importantProps": [
+      "label",
+      "hint",
+      "error",
+      "leadingIcon",
+      "value",
+      "onChange"
+    ],
+    "relatedComponents": ["Select", "FormSection", "FilterToolbar"]
+  },
+  "Checkbox": {
+    "status": "available",
+    "category": "form",
+    "purpose": "Choose zero or more labelled values with a native accessible checkbox",
+    "useWhen": ["multi-select filters", "boolean choices", "selection lists"],
+    "avoidWhen": ["single mutually exclusive choices", "primary actions"],
+    "recipes": ["entity-list", "catalog", "checkout", "settings"],
+    "importantProps": [
+      "checked",
+      "indeterminate",
+      "label",
+      "description",
+      "onChange"
+    ],
+    "relatedComponents": ["Radio", "Input", "FilterToolbar"]
+  },
+  "Radio": {
+    "status": "available",
+    "category": "form",
+    "purpose": "Choose one labelled value from a small mutually exclusive set",
+    "useWhen": ["single-choice filters", "small option groups"],
+    "avoidWhen": ["multi-select choices", "large remote option sets"],
+    "recipes": ["entity-list", "catalog", "checkout", "settings"],
+    "importantProps": [
+      "name",
+      "value",
+      "checked",
+      "label",
+      "description",
+      "onChange"
+    ],
+    "relatedComponents": ["Checkbox", "Select", "FilterToolbar"]
+  },
+  "Select": {
+    "status": "available",
+    "category": "form",
+    "purpose": "Choose one or more known values through a native labelled control",
+    "useWhen": ["finite options such as status, palette, sort, or density"],
+    "avoidWhen": [
+      "freeform search",
+      "large remote option sets without a designed combobox"
+    ],
+    "recipes": ["entity-form", "settings", "checkout", "entity-list"],
+    "importantProps": ["label", "hint", "value", "onChange"],
+    "relatedComponents": ["Input", "FilterToolbar"]
+  },
+  "Card": {
+    "status": "available",
+    "category": "surface",
+    "purpose": "Group related content or a small visual record",
+    "useWhen": ["few visual items", "summary block", "contained proof surface"],
+    "avoidWhen": ["large comparable record sets", "every element on a page"],
+    "recipes": ["dashboard", "entity-detail", "catalog", "marketing-home"],
+    "importantProps": ["tone", "className"],
+    "relatedComponents": ["CardHeader", "CardTitle", "CardContent", "Badge"]
+  },
+  "DataTable": {
+    "status": "available",
+    "category": "data",
+    "purpose": "Display comparable structured records",
+    "useWhen": [
+      "multiple records",
+      "columns matter",
+      "sorting or row actions matter"
+    ],
+    "avoidWhen": [
+      "visual catalog",
+      "content-first layout",
+      "one record summary"
+    ],
+    "recipes": [
+      "dashboard",
+      "entity-list",
+      "master-detail",
+      "approval-queue",
+      "report"
+    ],
+    "importantProps": [
+      "columns",
+      "rows",
+      "rowKey",
+      "selectable",
+      "selectedRowKeys",
+      "onSelectionChange",
+      "sort",
+      "onSort",
+      "loading",
+      "error",
+      "emptyState",
+      "onRowClick"
+    ],
+    "relatedComponents": [
+      "FilterToolbar",
+      "Pagination",
+      "BulkActionBar",
+      "Badge"
+    ]
+  },
+  "Badge": {
+    "status": "available",
+    "category": "feedback",
+    "purpose": "Show a compact semantic status or category",
+    "useWhen": ["ready, pending, warning, error, or category state"],
+    "avoidWhen": ["long prose", "primary action"],
+    "recipes": ["all"],
+    "importantProps": ["tone"],
+    "relatedComponents": ["DataTable", "Card", "Modal"]
+  },
+  "NavItem": {
+    "status": "available",
+    "category": "navigation",
+    "purpose": "Render a semantic navigation item with active state",
+    "useWhen": ["sidebar, workspace, or section navigation"],
+    "avoidWhen": [
+      "primary destructive action",
+      "unlabelled icon-only navigation"
+    ],
+    "recipes": ["dashboard", "settings", "master-detail", "ebook-reader"],
+    "importantProps": ["label", "icon", "active"],
+    "relatedComponents": ["Ten4SevenProvider", "PageHeader"]
+  },
+  "Modal": {
+    "status": "available",
+    "category": "overlay",
+    "purpose": "Present focused content or a contained confirmation without leaving context",
+    "useWhen": ["short form", "interaction proof", "focused confirmation"],
+    "avoidWhen": [
+      "long workflow that needs persistent context",
+      "every detail view"
+    ],
+    "recipes": [
+      "entity-detail",
+      "entity-form",
+      "approval-queue",
+      "auth",
+      "ebook-reader"
+    ],
+    "importantProps": ["open", "title", "description", "onClose"],
+    "relatedComponents": ["Button", "Input", "ActionFooter"]
+  },
+  "T7Icon": {
+    "status": "available",
+    "category": "icon",
+    "purpose": "Render a locally bundled semantic icon",
+    "useWhen": [
+      "an icon communicates a known action, object, or domain concept"
+    ],
+    "avoidWhen": [
+      "raw provider identifiers",
+      "icon-only controls without an accessible label"
+    ],
+    "recipes": ["all"],
+    "importantProps": ["name", "size", "label"],
+    "relatedComponents": ["Button", "NavItem", "Badge"]
+  },
+  "AppShell": {
+    "status": "available",
+    "category": "layout",
+    "purpose": "Provide the shared application frame for an optional sidebar, topbar, and route content",
+    "useWhen": ["application reference screens", "workspace or store shells"],
+    "avoidWhen": [
+      "small embedded sections",
+      "replacing a route or business workflow"
+    ],
+    "recipes": ["dashboard", "entity-list", "catalog", "master-detail"],
+    "importantProps": ["sidebar", "topbar", "children"],
+    "relatedComponents": ["Sidebar", "PageHeader", "Ten4SevenProvider"]
+  },
+  "Sidebar": {
+    "status": "available",
+    "category": "navigation",
+    "purpose": "Render a responsive semantic workspace navigation with active state",
+    "useWhen": ["enterprise application shells", "operational workspaces"],
+    "avoidWhen": ["public catalog headers", "unlabelled icon-only navigation"],
+    "recipes": ["dashboard", "entity-list", "master-detail", "settings"],
+    "importantProps": ["brand", "items", "activeKey", "onSelect", "footer"],
+    "relatedComponents": ["AppShell", "NavItem", "T7Icon"]
+  },
+  "PageHeader": {
+    "status": "available",
+    "category": "layout",
+    "purpose": "Frame a route with title, context, and primary actions",
+    "useWhen": ["most application routes"],
+    "avoidWhen": ["small inline card headings"],
+    "recipes": [
+      "dashboard",
+      "entity-list",
+      "entity-detail",
+      "entity-form",
+      "settings",
+      "report",
+      "catalog"
+    ],
+    "importantProps": [
+      "title",
+      "description",
+      "overline",
+      "breadcrumbs",
+      "meta",
+      "actions"
+    ],
+    "relatedComponents": ["Button", "Badge", "Typography"]
+  },
+  "FilterToolbar": {
+    "status": "available",
+    "category": "data",
+    "purpose": "Keep search, filters, sort, and result actions in one labelled region",
+    "useWhen": ["a list or report has two or more query controls"],
+    "avoidWhen": ["one standalone field"],
+    "recipes": [
+      "entity-list",
+      "approval-queue",
+      "report",
+      "catalog",
+      "content-list"
+    ],
+    "importantProps": ["title", "summary", "children", "actions"],
+    "relatedComponents": ["Input", "Select", "Button", "DataTable"]
+  },
+  "Pagination": {
+    "status": "available",
+    "category": "data",
+    "purpose": "Move through a bounded set of records",
+    "useWhen": ["results exceed the page size"],
+    "avoidWhen": ["short lists", "continuous feed"],
+    "recipes": [
+      "entity-list",
+      "approval-queue",
+      "report",
+      "catalog",
+      "content-list"
+    ],
+    "importantProps": ["page", "pageSize", "total", "onPageChange"],
+    "relatedComponents": ["DataTable", "FilterToolbar"]
+  },
+  "BulkActionBar": {
+    "status": "available",
+    "category": "action",
+    "purpose": "Expose safe operations for selected records",
+    "useWhen": ["row selection is enabled and actions are meaningful"],
+    "avoidWhen": [
+      "no selection model",
+      "irreversible action without confirmation"
+    ],
+    "recipes": ["entity-list", "approval-queue"],
+    "importantProps": ["selectedCount", "actions", "onClear"],
+    "relatedComponents": ["DataTable", "Button", "Modal"]
+  },
+  "Drawer": {
+    "status": "available",
+    "category": "overlay",
+    "purpose": "Edit or inspect contextual content while keeping the parent list visible",
+    "useWhen": ["master-detail", "contextual form"],
+    "avoidWhen": ["short confirmation", "full-page workflow"],
+    "recipes": ["master-detail", "entity-form"],
+    "importantProps": ["open", "title", "onClose", "side"],
+    "relatedComponents": ["DetailDrawer", "Input", "Select", "ActionFooter"]
+  },
+  "DetailDrawer": {
+    "status": "available",
+    "category": "overlay",
+    "purpose": "Inspect a selected record in a responsive contextual drawer",
+    "useWhen": [
+      "row quick view",
+      "master-detail inspection",
+      "catalog preview"
+    ],
+    "avoidWhen": ["full-page workflows", "short confirmations"],
+    "recipes": ["entity-list", "master-detail", "catalog"],
+    "importantProps": ["open", "title", "description", "onClose", "side"],
+    "relatedComponents": ["DataTable", "ProductCard", "Button"]
+  },
+  "KPICluster": {
+    "status": "available",
+    "category": "data",
+    "purpose": "Present a small set of truthful, decision-relevant metrics",
+    "useWhen": ["metrics drive the next action"],
+    "avoidWhen": ["no real data", "decorative dashboard filling"],
+    "recipes": ["dashboard", "entity-list", "approval-queue", "report"],
+    "importantProps": ["items", "label"],
+    "relatedComponents": ["Card", "Typography", "Badge"]
+  },
+  "EmptyState": {
+    "status": "available",
+    "category": "feedback",
+    "purpose": "Explain an empty or no-result state with an optional recovery action",
+    "useWhen": ["empty lists", "filtered no-result states"],
+    "avoidWhen": ["loading or recoverable server errors"],
+    "recipes": ["entity-list", "catalog", "content-list"],
+    "importantProps": ["title", "description", "icon", "action"],
+    "relatedComponents": ["DataTable", "Button", "T7Icon"]
+  },
+  "ProductCard": {
+    "status": "available",
+    "category": "catalog",
+    "purpose": "Present one visual product with media, metadata, price, and bounded actions",
+    "useWhen": ["ebook or product browse grids", "visual catalog results"],
+    "avoidWhen": ["comparable operational rows", "marketing hero content"],
+    "recipes": ["catalog", "product-detail"],
+    "importantProps": [
+      "title",
+      "eyebrow",
+      "media",
+      "meta",
+      "price",
+      "details",
+      "actions"
+    ],
+    "relatedComponents": ["Badge", "Button", "DetailDrawer", "Pagination"]
+  },
+  "RecordSummary": {
+    "status": "recipe-contract",
+    "category": "data",
+    "purpose": "Make the key fields of one record scannable",
+    "useWhen": ["entity-detail", "master-detail"],
+    "avoidWhen": ["large comparable record sets"],
+    "recipes": ["entity-detail", "master-detail", "product-detail"],
+    "importantProps": ["fields", "status", "actions"],
+    "relatedComponents": ["Card", "Badge", "Typography"]
+  },
+  "FormSection": {
+    "status": "recipe-contract",
+    "category": "form",
+    "purpose": "Group related labelled fields with a clear section heading",
+    "useWhen": ["forms have multiple logical groups"],
+    "avoidWhen": ["one or two fields"],
+    "recipes": ["entity-form", "settings", "checkout"],
+    "importantProps": ["title", "description", "children"],
+    "relatedComponents": ["Input", "Select", "ActionFooter"]
+  },
+  "ActionFooter": {
+    "status": "recipe-contract",
+    "category": "action",
+    "purpose": "Group primary, secondary, and cancel actions at the end of a task",
+    "useWhen": ["forms, checkout, detail actions"],
+    "avoidWhen": ["one passive action"],
+    "recipes": [
+      "entity-detail",
+      "entity-form",
+      "checkout",
+      "auth",
+      "marketing-home"
+    ],
+    "importantProps": ["primary", "secondary", "loading"],
+    "relatedComponents": ["Button", "Modal"]
+  }
+}

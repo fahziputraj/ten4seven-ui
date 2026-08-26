@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Praktik Aman Data dan Sistem Informasi</title>
+  <desc id="desc">Editorial cover in ink, mint, and yellow.</desc>
+  <rect width="600" height="900" fill="#d7efe4"/>
+  <path d="M0 0H600V220H0z" fill="#182e3a"/>
+  <path d="M0 740L600 460V900H0z" fill="#e5b34f"/>
+  <rect x="54" y="270" width="492" height="3" fill="#182e3a"/>
+  <text x="54" y="112" fill="#d7efe4" font-family="Inter, Arial, sans-serif" font-size="22" letter-spacing="4">LEAF &amp; LETTER</text>
+  <text x="54" y="372" fill="#182e3a" font-family="Inter, Arial, sans-serif" font-size="48" font-weight="700">PRAKTIK AMAN</text>
+  <text x="54" y="428" fill="#182e3a" font-family="Inter, Arial, sans-serif" font-size="48" font-weight="700">DATA</text>
+  <text x="54" y="478" fill="#182e3a" font-family="Inter, Arial, sans-serif" font-size="25">dan sistem informasi</text>
+  <text x="54" y="602" fill="#182e3a" font-family="Inter, Arial, sans-serif" font-size="23">Fajar Nugroho</text>
+  <text x="54" y="826" fill="#182e3a" font-family="Inter, Arial, sans-serif" font-size="18" letter-spacing="3">PUBLISHING / 05</text>
+</svg>

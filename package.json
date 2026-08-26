@@ -1,0 +1,26 @@
+{
+  "name": "ten4seven-ui",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A deterministic, token-driven UI operating system for frontend agents and developers.",
+  "packageManager": "pnpm@11.22.0",
+  "engines": {
+    "node": ">=22.12.0",
+    "pnpm": ">=11.17.0 <12"
+  },
+  "scripts": {
+    "inventory": "node scripts/collect-inventory.mjs",
+    "icons:generate": "node scripts/generate-solar-subset.mjs",
+    "dev": "pnpm --filter @ten4seven/playground dev",
+    "t7ui": "node packages/ai/bin/t7ui.mjs",
+    "build": "pnpm --filter @ten4seven/playground build",
+    "typecheck": "pnpm --filter @ten4seven/playground typecheck",
+    "test": "pnpm --filter @ten4seven/tokens test && pnpm test:ai",
+    "test:ai": "node scripts/verify-ai-catalog.mjs && node scripts/verify-reference-cold-start.mjs",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "^3.8.3",
+    "typescript": "^5.9.3"
+  }
+}

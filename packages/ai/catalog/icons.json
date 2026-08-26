@@ -1,0 +1,224 @@
+{
+  "dashboard": {
+    "provider": "solar:home-angle-bold-duotone",
+    "useWhen": ["application home", "overview"]
+  },
+  "tokens": {
+    "provider": "solar:layers-bold-duotone",
+    "useWhen": ["design tokens", "layers"]
+  },
+  "components": {
+    "provider": "solar:widget-5-bold-duotone",
+    "useWhen": ["component library", "surfaces"]
+  },
+  "theme": {
+    "provider": "solar:palette-bold-duotone",
+    "useWhen": ["theme", "appearance", "color"]
+  },
+  "settings": {
+    "provider": "solar:settings-bold-duotone",
+    "useWhen": ["settings", "preferences"]
+  },
+  "sun": {
+    "provider": "solar:sun-2-bold-duotone",
+    "useWhen": ["light appearance"]
+  },
+  "moon": {
+    "provider": "solar:moon-stars-bold-duotone",
+    "useWhen": ["dark appearance"]
+  },
+  "check": {
+    "provider": "solar:check-circle-bold",
+    "useWhen": ["complete", "ready", "success"]
+  },
+  "approve": {
+    "provider": "solar:check-circle-bold",
+    "useWhen": ["approve", "accept", "review decision"]
+  },
+  "chevronDown": {
+    "provider": "solar:alt-arrow-down-linear",
+    "useWhen": ["select", "expand"]
+  },
+  "arrowLeft": {
+    "provider": "solar:alt-arrow-left-bold",
+    "useWhen": ["previous page", "back"]
+  },
+  "arrowRight": {
+    "provider": "solar:alt-arrow-right-bold",
+    "useWhen": ["next page", "forward"]
+  },
+  "search": {
+    "provider": "solar:card-search-bold-duotone",
+    "useWhen": ["search", "query"]
+  },
+  "filter": {
+    "provider": "solar:filter-bold-duotone",
+    "useWhen": ["filter", "refine results"]
+  },
+  "sort": {
+    "provider": "solar:sort-vertical-bold-duotone",
+    "useWhen": ["sort", "order results", "table sorting"]
+  },
+  "export": {
+    "provider": "solar:file-download-bold-duotone",
+    "useWhen": ["export", "download report"]
+  },
+  "add": { "provider": "solar:add-circle-bold", "useWhen": ["add", "create"] },
+  "edit": {
+    "provider": "solar:pen-new-square-bold",
+    "useWhen": ["edit", "modify"]
+  },
+  "view": {
+    "provider": "solar:eye-bold-duotone",
+    "useWhen": ["view detail", "preview record"]
+  },
+  "more": {
+    "provider": "solar:menu-dots-bold-duotone",
+    "useWhen": ["more actions", "overflow actions"]
+  },
+  "transfer": {
+    "provider": "solar:transfer-horizontal-bold-duotone",
+    "useWhen": ["transfer inventory", "move between locations"]
+  },
+  "warning": {
+    "provider": "solar:danger-triangle-bold-duotone",
+    "useWhen": ["low stock", "warning state"]
+  },
+  "danger": {
+    "provider": "solar:danger-circle-bold-duotone",
+    "useWhen": ["error", "out of stock", "danger state"]
+  },
+  "success": {
+    "provider": "solar:check-circle-bold-duotone",
+    "useWhen": ["healthy", "connected", "success state"]
+  },
+  "clear": {
+    "provider": "solar:close-bold",
+    "useWhen": ["clear selection", "dismiss"]
+  },
+  "invoice": {
+    "provider": "solar:bill-list-bold-duotone",
+    "useWhen": ["invoice", "billing document"]
+  },
+  "payment": {
+    "provider": "solar:card-transfer-bold-duotone",
+    "useWhen": ["payment", "transaction"]
+  },
+  "warehouse": {
+    "provider": "solar:buildings-bold-duotone",
+    "useWhen": ["warehouse", "facility", "inventory location"]
+  },
+  "inventory": {
+    "provider": "solar:widget-add-bold-duotone",
+    "useWhen": ["inventory", "stock records"]
+  },
+  "stock": {
+    "provider": "solar:widget-add-bold-duotone",
+    "useWhen": ["stock", "inventory quantity"]
+  },
+  "stockIn": {
+    "provider": "solar:inbox-in-bold-duotone",
+    "useWhen": ["stock-in", "receive inventory", "incoming stock"]
+  },
+  "stockOut": {
+    "provider": "solar:inbox-out-bold-duotone",
+    "useWhen": ["stock-out", "issue inventory", "outgoing stock"]
+  },
+  "item": {
+    "provider": "solar:box-minimalistic-bold-duotone",
+    "useWhen": ["item", "SKU"]
+  },
+  "package": {
+    "provider": "solar:box-bold-duotone",
+    "useWhen": ["package", "parcel"]
+  },
+  "farm": {
+    "provider": "solar:home-add-bold-duotone",
+    "useWhen": ["farm", "production site"]
+  },
+  "delivery": {
+    "provider": "solar:delivery-bold-duotone",
+    "useWhen": ["delivery", "fulfillment"]
+  },
+  "shipment": {
+    "provider": "solar:delivery-bold-duotone",
+    "useWhen": ["shipment", "dispatch"]
+  },
+  "book": {
+    "provider": "solar:book-2-bold-duotone",
+    "useWhen": ["book", "ebook", "reading"]
+  },
+  "ebook": {
+    "provider": "solar:book-minimalistic-bold-duotone",
+    "useWhen": ["ebook product", "digital reading"]
+  },
+  "author": {
+    "provider": "solar:user-circle-bold-duotone",
+    "useWhen": ["author", "creator metadata"]
+  },
+  "publisher": {
+    "provider": "solar:library-bold-duotone",
+    "useWhen": ["publisher", "publishing metadata"]
+  },
+  "catalog": {
+    "provider": "solar:library-bold-duotone",
+    "useWhen": ["catalog", "collection"]
+  },
+  "category": {
+    "provider": "solar:tag-bold-duotone",
+    "useWhen": ["category", "collection filter"]
+  },
+  "cart": {
+    "provider": "solar:cart-2-bold-duotone",
+    "useWhen": ["cart", "add to cart"]
+  },
+  "checkout": {
+    "provider": "solar:cart-check-bold-duotone",
+    "useWhen": ["checkout", "purchase"]
+  },
+  "favorite": {
+    "provider": "solar:heart-angle-bold-duotone",
+    "useWhen": ["favorite", "save for later"]
+  },
+  "rating": {
+    "provider": "solar:star-bold-duotone",
+    "useWhen": ["rating", "review score"]
+  },
+  "preview": {
+    "provider": "solar:eye-bold-duotone",
+    "useWhen": ["preview", "quick view"]
+  },
+  "download": {
+    "provider": "solar:download-bold-duotone",
+    "useWhen": ["download ebook", "download file"]
+  },
+  "table": {
+    "provider": "solar:checklist-bold-duotone",
+    "useWhen": ["table", "structured records"]
+  },
+  "type": {
+    "provider": "solar:text-bold-duotone",
+    "useWhen": ["typography", "text"]
+  },
+  "palette": {
+    "provider": "solar:palette-bold-duotone",
+    "useWhen": ["palette", "theme controls"]
+  },
+  "modal": {
+    "provider": "solar:window-frame-bold-duotone",
+    "useWhen": ["dialog", "modal"]
+  },
+  "sidebar": {
+    "provider": "solar:sidebar-minimalistic-bold-duotone",
+    "useWhen": ["sidebar", "navigation shell"]
+  },
+  "density": {
+    "provider": "solar:sort-vertical-bold-duotone",
+    "useWhen": ["density", "spacing"]
+  },
+  "close": {
+    "provider": "solar:close-circle-bold",
+    "useWhen": ["close", "dismiss"]
+  },
+  "plus": { "provider": "solar:add-circle-bold", "useWhen": ["add", "create"] }
+}

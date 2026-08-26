@@ -1,0 +1,8 @@
+source,license evidence,risk,allowed use in ten4seven-ui,required control
+AAPM Design System 0826,supplied local design system; no permissive redistribution license found in inventory,brand/source provenance and copyright boundary,"reference, extraction notes, generic re-authoring; no AAPM brand assets in core",keep provenance; maintain AAPM reference preset outside generic core
+HeroUI Pro,local LICENSE: HeroUI Pro License Agreement; redistribution and competing-library use restricted,high,behavioral and API research only,"no copied source, assets, or public runtime dependency"
+hero-native-ui,local LICENSE: MIT,low for licensed source; scope is React Native,interaction/accessibility research only for web core,do not mix native implementation into web package
+Minimal JavaScript / TypeScript,local LICENSE.md points to commercial package terms and MUI Store license,high,composition and theme ideas only,no copied source or MUI-bound public identity
+shadcnblocks-@Futoruu,local note distinguishes free/pro categories; complete license not present in root inventory,unclear,catalogue/reference-only,do not copy until source-specific terms are verified
+shadcnblocks-figmakit,Figma binary; license terms not inspectable from file,unclear,visual reference only,no extraction into package source
+shadcnblocks-templates,local shadcn-admin LICENSE: purchaser license; no redistribution/resale,high,page composition reference only,no copied template source or assets in public library

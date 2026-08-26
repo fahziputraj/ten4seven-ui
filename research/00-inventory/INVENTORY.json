@@ -1,0 +1,209 @@
+{
+  "generatedAt": "2026-08-26T11:46:27.117Z",
+  "donors": [
+    {
+      "key": "AAPM Design System 0826",
+      "path": "D:\\SA\\ASSET\\AAPM Design System 0826",
+      "priority": "P1 seed",
+      "role": "architectural seed and AAPM reference preset",
+      "exists": true,
+      "fileCount": 394,
+      "extensions": {
+        ".jsx": 80,
+        ".md": 73,
+        ".ts": 68,
+        ".png": 54,
+        ".svg": 52,
+        ".html": 47,
+        ".css": 10,
+        ".js": 4,
+        ".json": 2,
+        ".woff2": 2,
+        ".txt": 1,
+        "[none]": 1
+      }
+    },
+    {
+      "key": "hero-native-ui",
+      "path": "D:\\SA\\ASSET\\hero-native-ui",
+      "priority": "P3 interaction reference",
+      "role": "React Native interaction and accessibility reference",
+      "exists": true,
+      "fileCount": 920,
+      "extensions": {
+        ".js": 387,
+        ".ts": 387,
+        ".css": 83,
+        ".md": 56,
+        ".json": 3,
+        ".zip": 3,
+        "[none]": 1
+      }
+    },
+    {
+      "key": "hero-ui",
+      "path": "D:\\SA\\ASSET\\hero-ui",
+      "priority": "P3 interaction reference",
+      "role": "React web interaction and overlay reference",
+      "exists": true,
+      "fileCount": 129,
+      "extensions": {
+        ".html": 65,
+        ".tsx": 30,
+        ".md": 12,
+        ".ts": 8,
+        ".zip": 5,
+        ".json": 4,
+        ".mjs": 2,
+        "[none]": 2,
+        ".css": 1
+      }
+    },
+    {
+      "key": "Minimal JavaScript v7.7.0",
+      "path": "D:\\SA\\ASSET\\Minimal_JavaScript_v7.7.0",
+      "priority": "P6 selective reference",
+      "role": "JavaScript application composition reference",
+      "exists": true,
+      "fileCount": 4835,
+      "extensions": {
+        ".jsx": 2458,
+        ".js": 953,
+        ".webp": 712,
+        ".svg": 568,
+        ".json": 55,
+        ".css": 22,
+        "[none]": 16,
+        ".mjs": 10,
+        ".png": 8,
+        ".ttf": 8,
+        ".md": 6,
+        ".ico": 4,
+        ".jpg": 4,
+        ".lock": 4,
+        ".mp4": 4,
+        ".html": 2,
+        ".pdf": 1
+      }
+    },
+    {
+      "key": "Minimal TypeScript v7.7.0",
+      "path": "D:\\SA\\ASSET\\Minimal_TypeScript_v7.7.0",
+      "priority": "P5 selective reference",
+      "role": "TypeScript application composition and theme reference",
+      "exists": true,
+      "fileCount": 4933,
+      "extensions": {
+        ".tsx": 2458,
+        ".ts": 1051,
+        ".webp": 712,
+        ".svg": 568,
+        ".json": 57,
+        ".css": 22,
+        "[none]": 16,
+        ".mjs": 8,
+        ".png": 8,
+        ".ttf": 8,
+        ".md": 6,
+        ".ico": 4,
+        ".jpg": 4,
+        ".lock": 4,
+        ".mp4": 4,
+        ".html": 2,
+        ".pdf": 1
+      }
+    },
+    {
+      "key": "shadcnblocks-@Futoruu",
+      "path": "D:\\SA\\ASSET\\shadcnblocks-@Futoruu",
+      "priority": "P4 selective reference",
+      "role": "blocks, primitives, registry and composition reference",
+      "exists": true,
+      "fileCount": 3386,
+      "extensions": {
+        ".tsx": 3360,
+        "[none]": 7,
+        ".ts": 6,
+        ".json": 4,
+        ".md": 3,
+        ".mjs": 2,
+        ".css": 1,
+        ".ico": 1,
+        ".txt": 1,
+        ".yaml": 1
+      }
+    },
+    {
+      "key": "shadcnblocks-figmakit",
+      "path": "D:\\SA\\ASSET\\shadcnblocks-figmakit",
+      "priority": "P4 visual reference",
+      "role": "Figma-only visual reference; no runtime extraction",
+      "exists": true,
+      "fileCount": 1,
+      "extensions": {
+        ".fig": 1
+      }
+    },
+    {
+      "key": "shadcnblocks-templates",
+      "path": "D:\\SA\\ASSET\\shadcnblocks-templates",
+      "priority": "P4 selective reference",
+      "role": "page compositions and AAPM target boundary reference",
+      "exists": true,
+      "fileCount": 6494,
+      "extensions": {
+        ".tsx": 3934,
+        ".php": 1858,
+        ".js": 166,
+        ".md": 99,
+        ".ts": 77,
+        ".svg": 71,
+        ".png": 59,
+        "[none]": 37,
+        ".zip": 31,
+        ".yml": 26,
+        ".css": 22,
+        ".json": 15,
+        ".log": 14,
+        ".jpg": 12,
+        ".mjs": 11,
+        ".html": 10,
+        ".py": 10,
+        ".pdf": 9,
+        ".txt": 8,
+        ".bin": 5,
+        ".ico": 3,
+        ".gif": 2,
+        ".old": 2,
+        ".yaml": 2,
+        ".backup": 1,
+        ".dist": 1,
+        ".jar": 1,
+        ".jp2": 1,
+        ".jpeg": 1,
+        ".jsonl": 1,
+        ".lock": 1,
+        ".new": 1,
+        ".phar": 1,
+        ".pyc": 1,
+        ".webp": 1
+      }
+    }
+  ],
+  "aapm": {
+    "manifest": {
+      "components": 76,
+      "tokens": 476,
+      "cards": 46,
+      "startingPoints": 9
+    },
+    "icons": 271,
+    "providerCounts": {
+      "solar": 232,
+      "ph": 33,
+      "mdi": 3,
+      "game-icons": 2,
+      "healthicons": 1
+    }
+  }
+}

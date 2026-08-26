@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Membaca Laporan Keuangan untuk Pengambilan Keputusan</title>
+  <desc id="desc">Editorial cover in blue, cream, and rust.</desc>
+  <rect width="600" height="900" fill="#f2ead8"/>
+  <rect x="0" y="0" width="600" height="900" fill="#2c4c73"/>
+  <rect x="54" y="220" width="492" height="3" fill="#e77a55"/>
+  <path d="M80 454h440M80 404h340M80 354h260M80 304h180" stroke="#f2ead8" stroke-width="18"/>
+  <circle cx="472" cy="304" r="44" fill="#e77a55"/>
+  <text x="54" y="110" fill="#f2ead8" font-family="Inter, Arial, sans-serif" font-size="22" letter-spacing="4">LEAF &amp; LETTER</text>
+  <text x="54" y="538" fill="#f2ead8" font-family="Inter, Arial, sans-serif" font-size="40" font-weight="700">MEMBACA</text>
+  <text x="54" y="586" fill="#f2ead8" font-family="Inter, Arial, sans-serif" font-size="40" font-weight="700">LAPORAN</text>
+  <text x="54" y="634" fill="#e77a55" font-family="Inter, Arial, sans-serif" font-size="23">keuangan untuk keputusan</text>
+  <text x="54" y="714" fill="#f2ead8" font-family="Inter, Arial, sans-serif" font-size="22">Sari Kurnia</text>
+  <text x="54" y="826" fill="#e77a55" font-family="Inter, Arial, sans-serif" font-size="18" letter-spacing="3">PUBLISHING / 08</text>
+</svg>

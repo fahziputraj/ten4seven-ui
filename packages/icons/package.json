@@ -1,0 +1,17 @@
+{
+  "name": "@ten4seven/icons",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.tsx"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "@iconify-json/solar": "1.2.9",
+    "@types/react": "^19.2.14",
+    "react": "19.2.8"
+  }
+}

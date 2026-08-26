@@ -1,0 +1,19 @@
+# Dependency matrix
+
+This is a source audit, not a dependency recommendation. The ten4seven public contract intentionally avoids leaking these donor runtimes.
+
+| Package              | Version      | Declared license       | Runtime dependencies (sample)                                                                                                                                                                                                                                                                  | Decision                                    |
+| -------------------- | ------------ | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| @heroui-pro/react    | 1.0.0-beta.8 | SEE LICENSE IN LICENSE | @internationalized/date, @internationalized/number, @react-stately/utils                                                                                                                                                                                                                       | do not depend publicly                      |
+| heroui-native-pro    | 1.0.0-beta.8 | MIT                    | none                                                                                                                                                                                                                                                                                           | reference only; re-author selected patterns |
+| @minimal-kit/vite-ts | 7.7.0        | not declared           | @atlaskit/pragmatic-drag-and-drop, @atlaskit/pragmatic-drag-and-drop-auto-scroll, @atlaskit/pragmatic-drag-and-drop-hitbox, @auth0/auth0-react, @emotion/cache, @emotion/react, @emotion/styled, @fontsource-variable/dm-sans, @fontsource-variable/inter, @fontsource-variable/nunito-sans, … | reference only; no MUI identity             |
+| @minimal-kit/vite-js | 7.7.0        | not declared           | @atlaskit/pragmatic-drag-and-drop, @atlaskit/pragmatic-drag-and-drop-auto-scroll, @atlaskit/pragmatic-drag-and-drop-hitbox, @auth0/auth0-react, @emotion/cache, @emotion/react, @emotion/styled, @fontsource-variable/dm-sans, @fontsource-variable/inter, @fontsource-variable/nunito-sans, … | reference only; no MUI identity             |
+| shadcnblocks-app     | 0.0.1        | not declared           | @base-ui/react, @dnd-kit/core, @dnd-kit/sortable, @dnd-kit/utilities, @faker-js/faker, @hookform/resolvers, @radix-ui/react-checkbox, @radix-ui/react-use-controllable-state, @shikijs/transformers, @tailwindcss/typography, …                                                                | reference only; re-author selected patterns |
+| shadcnblocks-admin   | 2.2.0        | not declared           | @dnd-kit/core, @dnd-kit/sortable, @dnd-kit/utilities, @faker-js/faker, @hookform/resolvers, @radix-ui/react-icons, @radix-ui/react-slot, @radix-ui/react-visually-hidden, @tabler/icons-react, @tailwindcss/typography, …                                                                      | reference only; re-author selected patterns |
+
+## TenFourSeven runtime decision
+
+- React + Vite powers the proof application.
+- Native CSS custom properties power the theme engine. Tailwind is not a core dependency because the system needs runtime axes without utility-class combinatorics.
+- The public component API is @ten4seven/ui, and the semantic icon API is @ten4seven/icons.
+- HeroUI, MUI, Radix, Lucide, Iconify CDN, and premium template runtimes are not public consumer requirements.

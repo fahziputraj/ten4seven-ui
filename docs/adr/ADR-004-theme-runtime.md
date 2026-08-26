@@ -1,0 +1,27 @@
+# ADR-004 Theme runtime architecture
+
+## Context
+
+The target consumer API is a provider with appearance, palette, radius, density, and typography configuration. Appearance must support light, dark, and system; custom axes must propagate across the proof components.
+
+## Options
+
+1. Build-time theme classes only.
+2. Context state plus inline component styles.
+3. Context state that writes root data attributes and CSS variables.
+
+## Decision
+
+`Ten4SevenProvider` owns a typed `ThemeConfig`, resolves system appearance, and applies `data-*` attributes plus semantic CSS variables to a root element. Components stay unaware of the selected preset.
+
+## Why
+
+It satisfies the consumer contract and makes the Gate B proof observable: palette, radius, density, typography, and appearance all change together.
+
+## Tradeoffs
+
+Theme changes cause a short global style recalculation. SSR integration will need a hydration-safe initial appearance adapter when a framework package is added.
+
+## Consequences
+
+The playground can change all axes from controls. Custom palettes can be added through a typed override layer without new component CSS.

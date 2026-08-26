@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 332" role="img" aria-labelledby="title author">
+  <title id="title">Building Calm Products</title>
+  <desc id="author">Ari Morales</desc>
+  <rect width="240" height="332" fill="#e9edf0"/>
+  <path d="M24 44h192v12H24zM24 68h146v12H24z" fill="#496475"/>
+  <path d="M44 110h152v70H44z" fill="none" stroke="#496475" stroke-width="3"/>
+  <path d="M68 180v-38h24v38M108 180v-54h24v54M148 180v-24h24v24" fill="#87a5b3"/>
+  <text x="24" y="224" fill="#2f4a59" font-family="Inter,Arial,sans-serif" font-size="23" font-weight="650">BUILDING CALM</text>
+  <text x="24" y="250" fill="#2f4a59" font-family="Inter,Arial,sans-serif" font-size="23" font-weight="650">PRODUCTS</text>
+  <text x="24" y="294" fill="#557486" font-family="Inter,Arial,sans-serif" font-size="11" letter-spacing="1.7">ARI MORALES</text>
+</svg>

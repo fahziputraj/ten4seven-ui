@@ -1,0 +1,88 @@
+source,component,group,maturity,evidence,adoption
+AAPM,ActionFooter,blocks,mature seed,components/blocks/ActionFooter.jsx,extract/generalize
+AAPM,ApprovalPanel,blocks,mature seed,components/blocks/ApprovalPanel.jsx,extract/generalize
+AAPM,BulkActionBar,blocks,mature seed,components/blocks/BulkActionBar.jsx,extract/generalize
+AAPM,FilterToolbar,blocks,mature seed,components/blocks/FilterToolbar.jsx,extract/generalize
+AAPM,FormSection,blocks,mature seed,components/blocks/FormSection.jsx,extract/generalize
+AAPM,KPICluster,blocks,mature seed,components/blocks/KPICluster.jsx,extract/generalize
+AAPM,PageHeader,blocks,mature seed,components/blocks/PageHeader.jsx,extract/generalize
+AAPM,RecordSummary,blocks,mature seed,components/blocks/RecordSummary.jsx,extract/generalize
+AAPM,BarChart,charts,mature seed,components/charts/BarChart.jsx,extract/generalize
+AAPM,BulletChart,charts,mature seed,components/charts/BulletChart.jsx,extract/generalize
+AAPM,DonutChart,charts,mature seed,components/charts/DonutChart.jsx,extract/generalize
+AAPM,Heatmap,charts,mature seed,components/charts/Heatmap.jsx,extract/generalize
+AAPM,LineChart,charts,mature seed,components/charts/LineChart.jsx,extract/generalize
+AAPM,Sparkline,charts,mature seed,components/charts/Sparkline.jsx,extract/generalize
+AAPM,TrendIndicator,charts,mature seed,components/charts/TrendIndicator.jsx,extract/generalize
+AAPM,Accordion,core,mature seed,components/core/Accordion.jsx,extract/generalize
+AAPM,Badge,core,mature seed,components/core/Badge.jsx,extract/generalize
+AAPM,Button,core,mature seed,components/core/Button.jsx,extract/generalize
+AAPM,ButtonGroup,core,mature seed,components/core/ButtonGroup.jsx,extract/generalize
+AAPM,Card,core,mature seed,components/core/Card.jsx,extract/generalize
+AAPM,CardHeader,core,mature seed,components/core/Card.jsx,extract/generalize
+AAPM,CardTitle,core,mature seed,components/core/Card.jsx,extract/generalize
+AAPM,CardDescription,core,mature seed,components/core/Card.jsx,extract/generalize
+AAPM,CardContent,core,mature seed,components/core/Card.jsx,extract/generalize
+AAPM,CardFooter,core,mature seed,components/core/Card.jsx,extract/generalize
+AAPM,Chip,core,mature seed,components/core/Chip.jsx,extract/generalize
+AAPM,IconRegistry,core,mature seed,components/core/Icon.jsx,extract/generalize
+AAPM,IconNames,core,mature seed,components/core/Icon.jsx,extract/generalize
+AAPM,Icon,core,mature seed,components/core/Icon.jsx,extract/generalize
+AAPM,IconButton,core,mature seed,components/core/IconButton.jsx,extract/generalize
+AAPM,IconTile,core,mature seed,components/core/IconTile.jsx,extract/generalize
+AAPM,Progress,core,mature seed,components/core/Progress.jsx,extract/generalize
+AAPM,Spinner,core,mature seed,components/core/Spinner.jsx,extract/generalize
+AAPM,SplitButton,core,mature seed,components/core/SplitButton.jsx,extract/generalize
+AAPM,Stat,core,mature seed,components/core/Stat.jsx,extract/generalize
+AAPM,Surface,core,mature seed,components/core/Surface.jsx,extract/generalize
+AAPM,ActivityFeed,data,mature seed,components/data/ActivityFeed.jsx,extract/generalize
+AAPM,AuditTimeline,data,mature seed,components/data/AuditTimeline.jsx,extract/generalize
+AAPM,Avatar,data,mature seed,components/data/Avatar.jsx,extract/generalize
+AAPM,DataTable,data,mature seed,components/data/DataTable.jsx,extract/generalize
+AAPM,KeyValueList,data,mature seed,components/data/KeyValueList.jsx,extract/generalize
+AAPM,MetricCard,data,mature seed,components/data/MetricCard.jsx,extract/generalize
+AAPM,Skeleton,data,mature seed,components/data/Skeleton.jsx,extract/generalize
+AAPM,StatusChip,data,mature seed,components/data/StatusChip.jsx,extract/generalize
+AAPM,Alert,feedback,mature seed,components/feedback/Alert.jsx,extract/generalize
+AAPM,EmptyState,feedback,mature seed,components/feedback/EmptyState.jsx,extract/generalize
+AAPM,StateView,feedback,mature seed,components/feedback/StateView.jsx,extract/generalize
+AAPM,Toast,feedback,mature seed,components/feedback/Toast.jsx,extract/generalize
+AAPM,Checkbox,forms,mature seed,components/forms/Checkbox.jsx,extract/generalize
+AAPM,CurrencyInput,forms,mature seed,components/forms/CurrencyInput.jsx,extract/generalize
+AAPM,DatePicker,forms,mature seed,components/forms/DatePicker.jsx,extract/generalize
+AAPM,DateRangePicker,forms,mature seed,components/forms/DateRangePicker.jsx,extract/generalize
+AAPM,FileUpload,forms,mature seed,components/forms/FileUpload.jsx,extract/generalize
+AAPM,FormField,forms,mature seed,components/forms/FormField.jsx,extract/generalize
+AAPM,Input,forms,mature seed,components/forms/Input.jsx,extract/generalize
+AAPM,Label,forms,mature seed,components/forms/Label.jsx,extract/generalize
+AAPM,MultiSelect,forms,mature seed,components/forms/MultiSelect.jsx,extract/generalize
+AAPM,NumberInput,forms,mature seed,components/forms/NumberInput.jsx,extract/generalize
+AAPM,OtpInput,forms,mature seed,components/forms/OtpInput.jsx,extract/generalize
+AAPM,PercentInput,forms,mature seed,components/forms/PercentInput.jsx,extract/generalize
+AAPM,Radio,forms,mature seed,components/forms/Radio.jsx,extract/generalize
+AAPM,SearchInput,forms,mature seed,components/forms/SearchInput.jsx,extract/generalize
+AAPM,Select,forms,mature seed,components/forms/Select.jsx,extract/generalize
+AAPM,Switch,forms,mature seed,components/forms/Switch.jsx,extract/generalize
+AAPM,Textarea,forms,mature seed,components/forms/Textarea.jsx,extract/generalize
+AAPM,Breadcrumb,navigation,mature seed,components/navigation/Breadcrumb.jsx,extract/generalize
+AAPM,CommandMenu,navigation,mature seed,components/navigation/CommandMenu.jsx,extract/generalize
+AAPM,NavItem,navigation,mature seed,components/navigation/NavItem.jsx,extract/generalize
+AAPM,Pagination,navigation,mature seed,components/navigation/Pagination.jsx,extract/generalize
+AAPM,Stepper,navigation,mature seed,components/navigation/Stepper.jsx,extract/generalize
+AAPM,Tabs,navigation,mature seed,components/navigation/Tabs.jsx,extract/generalize
+AAPM,Drawer,overlay,mature seed,components/overlay/Drawer.jsx,extract/generalize
+AAPM,Modal,overlay,mature seed,components/overlay/Modal.jsx,extract/generalize
+AAPM,Popover,overlay,mature seed,components/overlay/Popover.jsx,extract/generalize
+AAPM,PopoverItem,overlay,mature seed,components/overlay/Popover.jsx,extract/generalize
+AAPM,Tooltip,overlay,mature seed,components/overlay/Tooltip.jsx,extract/generalize
+HeroUI,Button,core,mature interaction reference,dist/components/button/ and @heroui-pro/react,behavior only
+HeroUI,Input,forms,mature interaction reference,dist/components/input/ and @heroui-pro/react,behavior only
+HeroUI,Card,core,mature interaction reference,dist/components/card/ and @heroui-pro/react,composition only
+HeroUI,DataTable,data,mature interaction reference,dist/components/table/ and @heroui-pro/react,behavior only
+HeroUI,Drawer,overlay,mature interaction reference,dist/components/drawer/ and @heroui-pro/react,behavior only
+Minimal TS,Button,core,MUI-bound reference,vite-ts/src/theme/core/components/button.tsx,API ideas only
+Minimal TS,DataGrid,data,MUI-bound reference,vite-ts/src/theme/core/components/mui-x-data-grid.tsx,do not adopt dependency
+shadcnblocks,Button,core,source-owned primitive reference,shadcnblocks-Components/Button/,selective source pattern
+shadcnblocks,DataTable,data,source-owned block reference,shadcnblocks-Blocks/ and template sources,composition only
+shadcnblocks,Dialog,overlay,source-owned primitive reference,shadcnblocks-Components/Alert Dialog/,selective behavior
+shadcnblocks,Sidebar,navigation,source-owned block reference,template project shell sources,composition only

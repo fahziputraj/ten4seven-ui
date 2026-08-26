@@ -1,0 +1,13 @@
+source,block,evidence,decision
+AAPM,ActionFooter,components/blocks/ActionFooter.jsx,generic block candidate
+AAPM,ApprovalPanel,components/blocks/ApprovalPanel.jsx,generic block candidate
+AAPM,BulkActionBar,components/blocks/BulkActionBar.jsx,generic block candidate
+AAPM,FilterToolbar,components/blocks/FilterToolbar.jsx,generic block candidate
+AAPM,FormSection,components/blocks/FormSection.jsx,generic block candidate
+AAPM,KPICluster,components/blocks/KPICluster.jsx,generic block candidate
+AAPM,PageHeader,components/blocks/PageHeader.jsx,generic block candidate
+AAPM,RecordSummary,components/blocks/RecordSummary.jsx,generic block candidate
+Minimal TS,dashboard shell,vite-ts/src/layouts/ and src/sections/,composition reference; no MUI runtime
+shadcnblocks,admin shell,shadcn-admin-2.2.0/src/components/aapm-shell/,reference-only; preserve preview boundaries
+shadcnblocks,page sections,shadcnblocks-Blocks/,catalogue ideas; re-author generic recipes
+HeroUI,sidebar / command / sheet,@heroui-pro/react/dist/components/,interaction reference only

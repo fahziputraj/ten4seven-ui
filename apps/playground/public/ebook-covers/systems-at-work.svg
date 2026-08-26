@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 332" role="img" aria-labelledby="title author">
+  <title id="title">Systems at Work</title>
+  <desc id="author">Ibrahim Wells</desc>
+  <rect width="240" height="332" fill="#e7eef3"/>
+  <rect x="24" y="34" width="192" height="82" fill="#1f526d"/>
+  <path d="M24 152h192M24 164h112M24 176h72" stroke="#1f526d" stroke-width="2" opacity=".55"/>
+  <path d="M52 226h136M52 238h96M52 250h56" stroke="#1f526d" stroke-width="9" opacity=".78"/>
+  <text x="24" y="202" fill="#173849" font-family="Inter,Arial,sans-serif" font-size="25" font-weight="650">SYSTEMS</text>
+  <text x="24" y="228" fill="#173849" font-family="Inter,Arial,sans-serif" font-size="25" font-weight="650">AT WORK</text>
+  <text x="24" y="294" fill="#39667a" font-family="Inter,Arial,sans-serif" font-size="11" letter-spacing="1.5">IBRAHIM WELLS</text>
+</svg>

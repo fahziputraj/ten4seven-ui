@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Teknologi Tepat Guna untuk Layanan Publik</title>
+  <desc id="desc">Editorial cover in black, cyan, and orange.</desc>
+  <rect width="600" height="900" fill="#132b32"/>
+  <path d="M0 0H600V260L0 620z" fill="#41c4c0"/>
+  <path d="M0 690L600 420V900H0z" fill="#ed9b45"/>
+  <circle cx="456" cy="188" r="80" fill="#132b32"/>
+  <circle cx="456" cy="188" r="42" fill="#41c4c0"/>
+  <text x="54" y="108" fill="#132b32" font-family="Inter, Arial, sans-serif" font-size="22" letter-spacing="4">LEAF &amp; LETTER</text>
+  <text x="54" y="450" fill="#f5f2e8" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="700">TEKNOLOGI</text>
+  <text x="54" y="500" fill="#f5f2e8" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="700">TEPAT GUNA</text>
+  <text x="54" y="548" fill="#41c4c0" font-family="Inter, Arial, sans-serif" font-size="23">untuk layanan publik</text>
+  <text x="54" y="688" fill="#f5f2e8" font-family="Inter, Arial, sans-serif" font-size="22">Yusuf Maulana</text>
+  <text x="54" y="826" fill="#132b32" font-family="Inter, Arial, sans-serif" font-size="18" letter-spacing="3">PUBLISHING / 09</text>
+</svg>
