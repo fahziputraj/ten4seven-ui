@@ -1,0 +1,46 @@
+<!-- @dsCard group="Brand" viewport="700x980" name="Domain icons — poultry corporate" subtitle="Farm, flock, eggs, veterinary, warehouse, logistics, economics, accounting. Solar first, AAPM Solar-like domain glyphs where meaning needs control, Phosphor duotone for nouns Solar lacks, six provider exceptions." -->
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css"><style>
+body{margin:0;padding:16px;background:var(--background);color:var(--foreground);font-family:var(--font-body)}
+h2{margin:0 0 8px;font-size:var(--text-2xs);font-weight:600;letter-spacing:var(--tracking-overline);text-transform:uppercase;color:var(--muted-foreground)}
+section{margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:6px}
+.it{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 4px;border-radius:var(--radius-control);border:1px solid var(--surface-border);background:var(--card)}
+.it iconify-icon{color:var(--brand-green)}
+.nm{font-size:9px;font-weight:600;color:var(--muted-foreground);text-align:center;word-break:break-word;line-height:1.15}
+.note{margin:0 0 16px;padding:10px 12px;border-radius:var(--radius-panel);background:var(--tint-green);border:1px solid var(--tint-green-border);color:var(--tint-green-foreground);font-size:var(--text-xs);line-height:1.5}
+.note b{font-weight:650}
+code{font-family:ui-monospace,monospace;font-size:11px}
+</style></head><body>
+<p class="note"><b>One registry, one primary visual language.</b> <code>solar:*</code> carries everything it draws, including <code>warehouse</code> through Solar buildings. The semantic <code>egg</code> and <code>chicken</code> keys use small local Solar-like silhouettes so they remain unmistakable without introducing another visual family. <code>ph:*-duotone</code> (Phosphor duotone) carries the remaining physical and biological nouns Solar has no glyph for — bird, barn, tractor, virus, microscope, scales, coins, percent, and truck. Six provider compatibility exceptions cover poultry-industrial nouns neither family draws: <code>healthicons:animal-chicken</code>, <code>game-icons:rooster</code>, <code>game-icons:egg-clutch</code>, <code>mdi:silo</code>, <code>mdi:corn</code>, <code>mdi:forklift</code>. Feature code still writes the semantic name only.</p>
+<div id="out"></div>
+<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+<script src="../_ds_bundle.js"></script>
+<script>
+var GROUPS = [
+  ["Corporate & company", ["company","group","branch","department","board","contract","policy","regulation","compliance","audit","checklist","fixedAsset"]],
+  ["Shop & sales", ["shop","storefront","outlet","cart","order","addOrder","salesOrder","pos","price","discount","customer","sales","commission","cash","banknote","moneyIn","moneyOut","safe","vault"]],
+  ["Procurement", ["supplier","purchase","goodsReceipt","goodsIssue"]],
+  ["Farm site & housing", ["farmSite","barn","house","tractor","field","grain","silo","corn","feed","feedMill","water","waterIntake","temperature","thermometer","humidity","ventilation","wind","lighting","lightProgram","weather","organic","biosecurity"]],
+  ["Chickens & flock", ["chicken","rooster","bird","doc","flock","population","mortality","culling","bodyWeight","uniformity","flockAge","productionRate"]],
+  ["Eggs", ["egg","eggCracked","eggTray","grading","packing","carton"]],
+  ["Veterinary", ["vet","health","vitals","vaccine","medicine","dosage","treatment","sample","lab","disease","quarantine"]],
+  ["Warehouse", ["warehouse","rack","bin","forklift","inbound","outbound","scan","barcode","qr","expiry","uom","weighbridge","reorderPoint","opname","stock","item","transfer","mutation","adjustment"]],
+  ["Logistics", ["fleet","truck","driver","trip","route","tracking","geofence","location","fuel","fuelStation","shipment","manifest","dispatch","delivery"]],
+  ["Economics", ["budget","cashflow","revenue","cost","cogs","forecast","composition","savings","coins","currency","subsidy","depreciation","wallet","money","bank"]],
+  ["Accounting", ["ledger","chartOfAccounts","journal","debit","credit","balanceSheet","tax","invoice","receipt","payable","receivable","reconcile","closing","archived","period","accountBank","calculator"]],
+  ["People", ["employee","payroll","training","user","users","role"]]
+];
+(function () {
+  var reg = (window.AAPMDesignSystem_07e1a3 || {}).IconRegistry || {};
+  var out = document.getElementById("out");
+  GROUPS.forEach(function (g) {
+    var s = document.createElement("section");
+    var tiles = g[1].map(function (k) {
+      return '<div class="it"><iconify-icon icon="' + (reg[k] || "solar:info-circle-bold") + '" width="22"></iconify-icon><span class="nm">' + k + "</span></div>";
+    }).join("");
+    s.innerHTML = "<h2>" + g[0] + " · " + g[1].length + '</h2><div class="grid">' + tiles + "</div>";
+    out.appendChild(s);
+  });
+})();
+</script>
+</body></html>

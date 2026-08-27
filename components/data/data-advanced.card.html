@@ -1,0 +1,40 @@
+<!-- @dsCard group="Components" viewport="700x400" name="Data — table modes & activity" subtitle="Grouped rows, expandable rows, editable cells, sticky column, ActivityFeed" -->
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css"><style>body{margin:0;padding:18px;background:var(--background);font-family:var(--font-body)}.lbl{font-size:var(--text-2xs);font-weight:600;letter-spacing:var(--tracking-overline);text-transform:uppercase;color:var(--muted-foreground);margin:0 0 7px}.row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:14px}.col{display:flex;flex-direction:column;gap:8px}</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { DataTable, StatusChip, KeyValueList, ActivityFeed, Surface, Badge } = window.AAPMDesignSystem_07e1a3;
+function Demo(){
+const [open,setOpen]=React.useState(["PI-2026-00841"]);
+const [rows,setRows]=React.useState([
+{id:"PI-2026-00841",no:"PI-2026-00841",sup:"CV Sumber Pakan Jaya",qty:"1.240",status:"in-review",total:"Rp 482.650.000"},
+{id:"PI-2026-00836",no:"PI-2026-00836",sup:"CV Sumber Pakan Jaya",qty:"820",status:"rejected",total:"Rp 312.000.000"},
+{id:"PI-2026-00840",no:"PI-2026-00840",sup:"PT Agro Nusantara",qty:"340",status:"approved",total:"Rp 128.400.000"},
+{id:"PI-2026-00835",no:"PI-2026-00835",sup:"PT Agro Nusantara",qty:"260",status:"completed",total:"Rp 96.120.000"}]);
+return <>
+<div className="lbl">Grouped · expandable · editable qty · sticky first column</div>
+<DataTable rows={rows} groupBy={(r)=>r.sup} groupLabel={(k)=>k} groupSummary={(k,rs)=>rs.length+" dokumen"}
+ expandedIds={open} onToggleExpand={(id)=>setOpen(o=>o.includes(id)?o.filter(x=>x!==id):[...o,id])}
+ renderExpanded={(r)=><KeyValueList columns={2} dense items={[{label:"Nomor PO",value:"PO-2026-00612"},{label:"Termin",value:"Net 30 hari"},{label:"PPN 11%",value:"Rp 47.829.279",numeric:true},{label:"Selisih terhadap PO",value:"Rp 0",numeric:true,strong:true}]} />}
+ onCellCommit={({id,key,value})=>setRows(rs=>rs.map(r=>r.id===id?{...r,[key]:value}:r))}
+ sort={{key:"total",dir:"desc"}} onSort={()=>{}}
+ columns={[{key:"no",label:"Nomor",strong:true,sortable:true,sticky:true},
+ {key:"qty",label:"Qty diterima",numeric:true,editable:true},
+ {key:"status",label:"Status",render:(r)=><StatusChip status={r.status} size="sm" icon={false} />},
+ {key:"total",label:"Total",numeric:true,sortable:true,strong:true}]}
+ summary={{no:"4 dokumen",total:"Rp 1.019.170.000"}} style={{marginBottom:16}} />
+<div className="lbl">Activity feed</div>
+<Surface padding={4}>
+<ActivityFeed dense entries={[
+{day:"Hari ini",actor:"Rahmat Hidayat",action:"mengirim laporan harian",target:"Kandang 2",at:"14:12",module:"Farm",tone:"progress"},
+{day:"Hari ini",actor:"Dewi Lestari",action:"menyetujui",target:"PI-2026-00840",at:"11:48",module:"Purchase",meta:"Rp 128,4 jt",tone:"approved",highlight:true},
+{day:"Hari ini",action:"Batas stok pakan Kandang 3 terlampaui",at:"09:40",icon:"warning",tone:"blocked",meta:"168 karung"},
+{day:"Kemarin",actor:"Budi Santoso",action:"meminta revisi",target:"SA-2026-00219",at:"17:05",module:"Inventory",tone:"progress"},
+{day:"Kemarin",action:"APPI merangkum performa mingguan",at:"08:00",icon:"ai",tone:"ai"}]} />
+</Surface>
+</>}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script></body></html>

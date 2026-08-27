@@ -1,0 +1,47 @@
+<!-- @dsCard group="Components" viewport="700x340" name="Core — groups, split, chips, accordion, stats" subtitle="ButtonGroup, SplitButton, Chip, Accordion, Spinner, Stat" -->
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css"><style>body{margin:0;padding:18px;background:var(--background);font-family:var(--font-body)}.lbl{font-size:var(--text-2xs);font-weight:600;letter-spacing:var(--tracking-overline);text-transform:uppercase;color:var(--muted-foreground);margin:0 0 7px}.row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:14px}.col{display:flex;flex-direction:column;gap:8px}</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { ButtonGroup, SplitButton, Chip, Accordion, Spinner, Stat, TrendIndicator, Avatar, Surface, KeyValueList } = window.AAPMDesignSystem_07e1a3;
+function Demo(){
+const [density,setDensity]=React.useState("default");const [mode,setMode]=React.useState("table");
+return <>
+<div className="lbl">Button group · split button</div>
+<div className="row">
+<ButtonGroup size="sm" value={density} onChange={setDensity} items={[{value:"comfortable",icon:"expand",title:"Comfortable"},{value:"default",icon:"sidebar",title:"Default"},{value:"compact",icon:"collapse",title:"Compact"}]} />
+<ButtonGroup value={mode} onChange={setMode} items={[{value:"table",label:"Tabel"},{value:"card",label:"Kartu"},{value:"chart",label:"Grafik"}]} />
+<span style={{width:8}} />
+<SplitButton label="Ajukan verifikasi" icon="submit" actions={[{label:"Ajukan & buat berikutnya",icon:"add"},{label:"Simpan sebagai template",icon:"save"},{label:"Hapus draft",icon:"delete",tone:"danger"}]} />
+<SplitButton variant="outline" size="sm" label="Ekspor" icon="export" actions={[{label:"Ekspor Excel",icon:"spreadsheet"},{label:"Ekspor PDF",icon:"pdf"}]} />
+</div>
+<div className="lbl">Chip · spinner</div>
+<div className="row">
+<Chip tone="green" onRemove={()=>{}}>Status: In review</Chip>
+<Chip tone="orange" onRemove={()=>{}}>Periode: Agustus 2026</Chip>
+<Chip icon="location" selected onClick={()=>{}}>Kandang 3</Chip>
+<Chip icon="filter" onClick={()=>{}}>Belum lengkap</Chip>
+<Chip size="sm" avatar={<Avatar name="Dewi Lestari" size="xs" />}>Dewi Lestari</Chip>
+<Chip tone="slate" size="sm">Draft</Chip>
+<span style={{width:10}} />
+<Spinner label="Menyimpan perubahan..." />
+<Spinner size={14} tone="muted" />
+</div>
+<div className="lbl">Stat strip</div>
+<Surface padding={4} style={{display:'flex',gap:'var(--space-5)',marginBottom:14}}>
+<Stat label="Populasi" value="93.270" unit="ekor" />
+<Stat divider label="Hen-day" value="89,4" unit="%" trend={<TrendIndicator value={2.4} size="sm" />} />
+<Stat divider label="Mortalitas" value="0,08" unit="%" trend={<TrendIndicator value={-0.01} sentiment="inverse" size="sm" />} />
+<Stat divider label="Nilai tertahan" value="Rp 1,81 M" caption="5 dokumen" />
+</Surface>
+<div className="lbl">Accordion</div>
+<Accordion items={[
+{id:"a",title:"Informasi dokumen",description:"Nomor, tanggal, termin pembayaran",icon:"note",meta:"6 field",content:<KeyValueList columns={2} dense items={[{label:"Nomor invoice",value:"PI-2026-00841"},{label:"Nomor PO",value:"PO-2026-00612"},{label:"Tanggal",value:"24 Agustus 2026"},{label:"Jatuh tempo",value:"23 September 2026"}]} />},
+{id:"b",title:"Detail item",description:"Rekonsiliasi terhadap nilai PO",icon:"item",meta:"4 baris"},
+{id:"c",title:"Lampiran",description:"Invoice, surat jalan, faktur pajak",icon:"attachment",meta:"2 dari 3"}]} />
+</>}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script></body></html>

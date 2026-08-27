@@ -1,0 +1,70 @@
+<!-- @dsCard group="Domain — poultry" viewport="700x880" name="KPI dashboard — sepuluh angka operasi" subtitle="Hen-day, FCR, mortalitas, egg mass, pakan, body weight, pendapatan, HPP, margin, umur flock — desktop, density, mobile, loading" -->
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css"><style>body{margin:0;padding:18px;background:var(--background);font-family:var(--font-body)}.lbl{font-size:var(--text-2xs);font-weight:600;letter-spacing:var(--tracking-overline);text-transform:uppercase;color:var(--muted-foreground);margin:0 0 7px}.sub{font:var(--type-caption);color:var(--muted-foreground);margin:-4px 0 8px}.phone{width:360px;border:1px solid var(--surface-border);border-radius:var(--radius-shell);padding:12px;background:var(--card)}</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script src="./aapm-domain-data.js"></script>
+<script type="text/babel">
+const { KPICluster, MetricCard, BulletChart, Sparkline, DonutChart, Progress, StateView, Skeleton, Surface, Badge } = window.AAPMDesignSystem_07e1a3;
+const D = window.AAPMDomain;
+const items = D.kpi.map(k => ({ icon: k.icon, label: k.label, value: k.value, unit: k.unit, delta: k.delta, direction: k.direction, caption: k.caption, tone: k.tone, accent: k.accent,
+  visualization: k.progress ? <Progress value={k.progress} tone="lime" size="sm" /> : undefined }));
+
+function Demo(){return <>
+<div className="lbl">Dashboard operasi · 10 KPI</div>
+<p className="sub">Satu klaster, dibaca kiri ke kanan: produksi, efisiensi, risiko, lalu uang. Angka mengikuti format Indonesia dan selalu tabular.</p>
+<KPICluster title="Snapshot 24 Agustus 2026" compact items={items} style={{marginBottom:18}} />
+
+<div className="lbl">Metric card · dengan visualisasi</div>
+<div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:10,marginBottom:18}}>
+<MetricCard icon="egg" label="Hen-day production" value="91,8" unit="%" delta="+2,4%" direction="up" caption="12 minggu terakhir · target 90%"
+ visualization={<Sparkline data={[86,88,91,92,90,93,92,94,91,89,92,92]} target={90} />} />
+<MetricCard icon="feed" label="FCR kumulatif" value="2,08" delta="-0,04" direction="up" caption="Standar strain 2,15"
+ visualization={<Sparkline data={[2.3,2.26,2.22,2.19,2.16,2.14,2.12,2.11,2.1,2.09,2.08,2.08]} tone="teal" />} />
+<MetricCard icon="cogs" label="Struktur HPP per kg" value="Rp 22.400" delta="+2,1%" direction="down" tone="orange" accent="orange" caption="Pakan 71% · obat 6% · tenaga 12%"
+ visualization={<DonutChart size={72} thickness={11} data={[{label:"Pakan",value:71},{label:"Tenaga",value:12},{label:"Obat",value:6,tone:3},{label:"Lain",value:11,tone:5}]} />} />
+</div>
+
+<div className="lbl">Aktual terhadap target</div>
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px 20px',marginBottom:18}}>
+<BulletChart label="Hen-day production" valueLabel="91,8% / 90,0%" value={91.8} target={90} max={100} />
+<BulletChart label="FCR (semakin kecil semakin baik)" valueLabel="2,08 / 2,15" value={2.08} target={2.15} max={2.6} />
+<BulletChart label="Mortalitas mingguan" valueLabel="0,08% / ambang 0,10%" value={0.08} target={0.1} max={0.2} />
+<BulletChart label="Realisasi anggaran pakan" valueLabel="Rp 482,6 jt / Rp 520,0 jt" value={482.6} target={520} />
+</div>
+
+<div style={{display:'grid',gridTemplateColumns:'1fr 360px',gap:20,alignItems:'start'}}>
+<div>
+<div className="lbl">Density · properti halaman, bukan pilihan komponen</div>
+{[["comfortable","Executive dashboard"],["default","Operasional harian"],["compact","Register besar"]].map(([d,note])=>
+<div key={d} data-density={d} style={{marginBottom:8}}>
+  <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:4}}><Badge size="sm" tone="slate">{d}</Badge><span style={{font:'var(--type-caption)',color:'var(--muted-foreground)'}}>{note}</span></div>
+  <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8}}>
+    <MetricCard compact icon="egg" label="Hen-day" value="91,8" unit="%" delta="+2,4%" direction="up" />
+    <MetricCard compact icon="mortality" label="Mortalitas" value="0,08" unit="%" delta="-0,01%" direction="up" tone="orange" accent="orange" />
+    <MetricCard compact icon="revenue" label="Pendapatan/kg" value="Rp 27.500" delta="+1,8%" direction="up" />
+  </div>
+</div>)}
+<div className="lbl" style={{marginTop:14}}>Loading · sebelum angka pertama tiba</div>
+<div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8}}>
+{[0,1,2].map(i=><Surface key={i} padding={4}><Skeleton width={72} height={10} /><div style={{height:8}} /><Skeleton width={110} height={22} /><div style={{height:6}} /><Skeleton width={90} height={9} /></Surface>)}
+</div>
+<div style={{marginTop:10}}><StateView state="error" title="KPI belum dapat dimuat" description="Tiga kandang belum mengirim laporan harian. Angka akan lengkap setelah data masuk." onRetry={()=>{}} /></div>
+</div>
+
+<div>
+<div className="lbl">Mobile · task-oriented</div>
+<div className="phone" data-density="comfortable">
+<div style={{font:'var(--type-overline)',color:'var(--muted-foreground)',marginBottom:8}}>SNAPSHOT HARI INI</div>
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
+{D.kpi.slice(0,6).map(k=><MetricCard key={k.key} compact icon={k.icon} label={k.label} value={k.value} unit={k.unit} delta={k.delta} direction={k.direction} tone={k.tone} accent={k.accent} />)}
+</div>
+<div style={{marginTop:10}}><BulletChart label="Hen-day vs target" valueLabel="91,8% / 90,0%" value={91.8} target={90} max={100} /></div>
+</div>
+</div>
+</div>
+</>}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script></body></html>

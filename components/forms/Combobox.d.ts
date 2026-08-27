@@ -1,0 +1,3 @@
+export interface ComboboxOption { value: string; label: React.ReactNode; description?: React.ReactNode; icon?: string; disabled?: boolean; }
+export interface ComboboxProps extends React.HTMLAttributes<HTMLDivElement> { id?: string; label?: React.ReactNode; value?: string; defaultValue?: string; onChange?: (value: string, option?: ComboboxOption | null) => void; options?: Array<ComboboxOption | string>; placeholder?: string; searchPlaceholder?: string; emptyText?: string; helpText?: React.ReactNode; error?: React.ReactNode; invalid?: boolean; disabled?: boolean; clearable?: boolean; name?: string; }
+export declare function Combobox(props: ComboboxProps): JSX.Element;

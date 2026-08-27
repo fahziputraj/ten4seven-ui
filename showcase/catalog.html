@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="hsl(0 0% 100%)" />
+    <meta name="description" content="AAPM UI — katalog template dan live demo untuk Academy, Ebook, operasi, auth, dan AI workspace." />
+    <title>AAPM UI — Template catalog</title>
+    <link rel="icon" href="../assets/logos/aapm-app-icon.svg" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="./catalog.css?v=0.2.4" />
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+  </head>
+  <body>
+    <div class="catalog-app" id="catalog-app" data-density="default">
+      <header class="catalog-topbar">
+        <div class="catalog-container catalog-topbar__inner">
+          <a class="catalog-brand" href="#overview" aria-label="AAPM UI beranda">
+            <img src="../assets/logos/aapm-logo.svg" alt="AAPM" />
+            <span><strong>AAPM UI</strong><small>Design system</small></span>
+          </a>
+
+          <nav class="catalog-nav" aria-label="Navigasi katalog">
+            <a class="is-active" href="#templates">Templates</a>
+            <a href="#icons">Iconify</a>
+            <a href="#patterns">Patterns</a>
+            <a href="./index.html">Foundation</a>
+          </nav>
+
+          <div class="catalog-topbar__actions">
+            <a class="catalog-button catalog-button--quiet" href="../readme.md" aria-label="Buka dokumentasi AAPM UI"><iconify-icon icon="solar:document-text-bold-duotone" width="17" height="17" aria-hidden="true"></iconify-icon><span>Docs</span></a>
+            <button class="catalog-icon-button" id="theme-toggle" type="button" aria-label="Aktifkan dark mode" title="Aktifkan dark mode"><iconify-icon icon="solar:moon-bold-duotone" width="19" height="19" aria-hidden="true"></iconify-icon></button>
+            <button class="catalog-icon-button" id="density-toggle" type="button" aria-label="Ubah density" title="Ubah density"><iconify-icon icon="solar:tuning-square-2-bold-duotone" width="19" height="19" aria-hidden="true"></iconify-icon></button>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <section class="catalog-container catalog-hero" id="overview" aria-labelledby="catalog-title">
+          <div class="catalog-hero__copy">
+            <span class="catalog-eyebrow catalog-eyebrow--inverse"><i></i> AAPM UI · live catalog</span>
+            <h1 id="catalog-title">Satu sistem.<br /><em>Banyak produk.</em></h1>
+            <p>Mulai dari learning workspace, Ebook library, reader, sampai dashboard operasional. Komposisi berubah sesuai konteks; token, shell, dan ikon tetap satu bahasa.</p>
+            <div class="catalog-hero__actions">
+              <a class="catalog-button catalog-button--hero" href="#templates">Jelajahi template <iconify-icon icon="solar:arrow-right-linear" width="17" height="17" aria-hidden="true"></iconify-icon></a>
+              <a class="catalog-button catalog-button--hero-quiet" href="./index.html">Lihat foundation</a>
+            </div>
+            <div class="catalog-hero__facts" aria-label="Ringkasan sistem">
+              <div><strong>290</strong><span>semantic icon keys</span></div>
+              <div><strong>81</strong><span>React modules</span></div>
+              <div><strong>1</strong><span>token language</span></div>
+            </div>
+            <div class="catalog-hero__stack" aria-label="Model pembentukan AAPM UI">
+              <span><iconify-icon icon="solar:widget-5-bold-duotone" width="15" height="15" aria-hidden="true"></iconify-icon> Minimal patterns</span>
+              <span><iconify-icon icon="solar:shield-check-bold-duotone" width="15" height="15" aria-hidden="true"></iconify-icon> HeroUI behavior</span>
+              <span><iconify-icon icon="solar:layers-minimalistic-bold-duotone" width="15" height="15" aria-hidden="true"></iconify-icon> Iconify registry</span>
+            </div>
+          </div>
+
+          <div class="catalog-hero__stage" aria-label="Preview aplikasi AAPM UI">
+            <div class="catalog-stage__glow" aria-hidden="true"></div>
+            <div class="catalog-stage__window">
+              <div class="catalog-stage__toolbar"><span class="catalog-window-dots"><i></i><i></i><i></i></span><span>academy.aapm / dashboard</span><iconify-icon icon="solar:menu-dots-bold" width="17" height="17" aria-hidden="true"></iconify-icon></div>
+              <div class="catalog-stage__body">
+                <aside class="catalog-stage__sidebar" aria-hidden="true"><span class="catalog-stage__mark"><iconify-icon icon="solar:home-angle-bold-duotone" width="17" height="17"></iconify-icon></span><i></i><i></i><i class="is-active"></i><i></i><i></i></aside>
+                <div class="catalog-stage__content">
+                  <div class="catalog-stage__heading"><div><small>LEARNING WORKSPACE</small><strong>Dashboard</strong></div><span class="catalog-stage__avatar">F</span></div>
+                  <div class="catalog-stage__metric-row"><div class="catalog-stage__metric"><span>Modul selesai</span><strong>8/22</strong><i></i></div><div class="catalog-stage__metric" data-tone="orange"><span>Rata-rata kuis</span><strong>75%</strong><i></i></div></div>
+                  <div class="catalog-stage__roadmap"><div><span class="catalog-stage__icon-tile"><iconify-icon icon="solar:notebook-bold-duotone" width="18" height="18"></iconify-icon></span><span><small>LANJUTKAN BELAJAR</small><strong>Siklus hidup ayam petelur</strong></span></div><iconify-icon icon="solar:alt-arrow-right-linear" width="18" height="18" aria-hidden="true"></iconify-icon></div>
+                  <div class="catalog-stage__chips"><span><iconify-icon icon="solar:check-circle-bold" width="13" height="13"></iconify-icon> Progress</span><span><iconify-icon icon="solar:stars-bold-duotone" width="13" height="13"></iconify-icon> APPI ready</span></div>
+                </div>
+              </div>
+            </div>
+            <span class="catalog-stage__caption"><iconify-icon icon="solar:verified-check-bold" width="15" height="15" aria-hidden="true"></iconify-icon> Built from the same AAPM foundation</span>
+          </div>
+        </section>
+
+        <section class="catalog-container catalog-section" id="templates" aria-labelledby="templates-title">
+          <div class="catalog-section__heading">
+            <div><span class="catalog-eyebrow"><i></i> Template library</span><h2 id="templates-title">Pilih starting point yang sesuai.</h2><p>Setiap demo memperlihatkan struktur nyata, bukan placeholder kosong. Buka preview untuk melihat responsive behavior dan pola komponennya.</p></div>
+            <span class="catalog-section__count" id="template-count">6 templates</span>
+          </div>
+
+          <div class="catalog-toolbar" aria-label="Filter template">
+            <label class="catalog-search"><iconify-icon icon="solar:card-search-bold-duotone" width="19" height="19" aria-hidden="true"></iconify-icon><span class="catalog-sr-only">Cari template</span><input id="template-search" type="search" placeholder="Cari template atau produk..." autocomplete="off" /></label>
+            <div class="catalog-filters" role="group" aria-label="Kategori template">
+              <button class="is-active" type="button" data-filter="all" aria-pressed="true">Semua</button>
+              <button type="button" data-filter="learning" aria-pressed="false">Learning</button>
+              <button type="button" data-filter="publishing" aria-pressed="false">Publishing</button>
+              <button type="button" data-filter="operations" aria-pressed="false">Operations</button>
+              <button type="button" data-filter="ai" aria-pressed="false">AI</button>
+              <button type="button" data-filter="auth" aria-pressed="false">Auth</button>
+            </div>
+          </div>
+
+          <div class="catalog-template-grid" id="template-grid" aria-live="polite"></div>
+          <div class="catalog-empty" id="template-empty" hidden><span class="catalog-empty__icon"><iconify-icon icon="solar:card-search-bold-duotone" width="25" height="25"></iconify-icon></span><strong>Template belum ditemukan</strong><p>Coba kata kunci lain atau tampilkan semua kategori.</p><button class="catalog-button catalog-button--quiet" type="button" id="clear-filters">Reset filter</button></div>
+        </section>
+
+        <section class="catalog-container catalog-section catalog-section--split" id="icons" aria-labelledby="icons-title">
+          <div class="catalog-section__heading catalog-section__heading--compact"><div><span class="catalog-eyebrow"><i></i> Iconify surface</span><h2 id="icons-title">Ikon yang konsisten, dari Academy sampai Ebook.</h2><p>Feature code memakai nama semantik. Registry memegang family, fallback, dan keputusan domain agar icon tidak blank atau berganti gaya tanpa alasan. Pola visual dapat mengikuti Minimal UI dan perilaku control mengikuti HeroUI, tetapi surface ikon tetap satu.</p></div><a class="catalog-text-link" href="../guidelines/iconography.md">Baca contract <iconify-icon icon="solar:arrow-right-up-bold" width="15" height="15" aria-hidden="true"></iconify-icon></a></div>
+          <div class="catalog-icon-section">
+            <div class="catalog-icon-section__summary"><div class="catalog-number"><strong>290</strong><span>semantic keys</span></div><div class="catalog-family-list"><span><i data-family="solar"></i> Solar · default</span><span><i data-family="ph"></i> Phosphor · objects</span><span><i data-family="aapm"></i> Solar · domain glyphs</span><span><i data-family="domain"></i> Domain · compatibility</span></div><p>Unknown key selalu mendapat fallback info yang terlihat. Reliability lebih penting daripada glyph literal yang kosong.</p></div>
+            <div class="catalog-icon-gallery" id="icon-gallery"></div>
+          </div>
+        </section>
+
+        <section class="catalog-container catalog-section" id="patterns" aria-labelledby="patterns-title">
+          <div class="catalog-section__heading"><div><span class="catalog-eyebrow"><i></i> Composition patterns</span><h2 id="patterns-title">Bangun halaman tanpa membuat bahasa baru.</h2><p>Gunakan pola sesuai pekerjaan pengguna. Konten boleh berbeda; hierarchy, spacing, state, dan feedback tetap familiar.</p></div></div>
+          <div class="catalog-pattern-grid">
+            <article class="catalog-pattern-card" data-tone="green"><div class="catalog-pattern-card__top"><span class="catalog-pattern-icon"><iconify-icon icon="solar:sidebar-minimalistic-bold-duotone" width="21" height="21"></iconify-icon></span><span class="catalog-pattern-index">01</span></div><h3>Shell &amp; navigation</h3><p>Sidebar, topbar, bottom nav, breadcrumbs, dan responsive drawer untuk workspace dengan banyak modul.</p><div class="catalog-pattern-tags"><span>AppShell</span><span>BottomNav</span><span>CommandMenu</span></div></article>
+            <article class="catalog-pattern-card" data-tone="orange"><div class="catalog-pattern-card__top"><span class="catalog-pattern-icon"><iconify-icon icon="solar:chart-square-bold-duotone" width="21" height="21"></iconify-icon></span><span class="catalog-pattern-index">02</span></div><h3>Metrics &amp; data</h3><p>Metric card, table, chart, status, dan filter yang tetap terbaca ketika data bertambah padat.</p><div class="catalog-pattern-tags"><span>DashboardGrid</span><span>DataTable</span><span>Trend</span></div></article>
+            <article class="catalog-pattern-card" data-tone="violet"><div class="catalog-pattern-card__top"><span class="catalog-pattern-icon"><iconify-icon icon="solar:magic-stick-3-bold-duotone" width="21" height="21"></iconify-icon></span><span class="catalog-pattern-index">03</span></div><h3>AI &amp; guided work</h3><p>Workspace percakapan, quick actions, context panel, streaming state, dan empty state yang jelas.</p><div class="catalog-pattern-tags"><span>AI surface</span><span>Feedback</span><span>Activity</span></div></article>
+            <article class="catalog-pattern-card" data-tone="blue"><div class="catalog-pattern-card__top"><span class="catalog-pattern-icon"><iconify-icon icon="solar:book-2-bold-duotone" width="21" height="21"></iconify-icon></span><span class="catalog-pattern-index">04</span></div><h3>Content &amp; reading</h3><p>Library, discovery, detail, bookmark, reader, dan long-form content untuk produk pengetahuan.</p><div class="catalog-pattern-tags"><span>Library</span><span>Reader</span><span>Article</span></div></article>
+            <article class="catalog-pattern-card" data-tone="green"><div class="catalog-pattern-card__top"><span class="catalog-pattern-icon"><iconify-icon icon="solar:history-bold-duotone" width="21" height="21"></iconify-icon></span><span class="catalog-pattern-index">05</span></div><h3>Operational flow</h3><p>Milestone, process board, approval, audit, dan table untuk pekerjaan yang harus bergerak dan dapat ditelusuri.</p><div class="catalog-pattern-tags"><span>MilestoneTimeline</span><span>ProcessBoard</span><span>DataTable</span></div></article>
+          </div>
+        </section>
+
+        <section class="catalog-container catalog-cta" aria-labelledby="cta-title">
+          <div><span class="catalog-eyebrow catalog-eyebrow--inverse"><i></i> Ready to compose</span><h2 id="cta-title">Mulai dari token. Selesai sebagai produk.</h2><p>Ambil template sebagai referensi, lalu compose dengan komponen React, assets, dan contract yang sudah ada.</p></div>
+          <div class="catalog-cta__actions"><a class="catalog-button catalog-button--hero" href="./index.html">Buka foundation</a><a class="catalog-button catalog-button--hero-quiet" href="../ui_kits/academy/index.html">Lihat Academy kit <iconify-icon icon="solar:arrow-right-up-bold" width="16" height="16" aria-hidden="true"></iconify-icon></a></div>
+        </section>
+      </main>
+
+      <footer class="catalog-footer"><div class="catalog-container catalog-footer__inner"><span>AAPM UI · v0.2.0 · local Inter Variable</span><span><a href="../readme.md">Architecture notes</a><span aria-hidden="true">·</span><a href="../aapm-ui.manifest.json">Manifest</a></span></div></footer>
+    </div>
+
+    <div class="catalog-modal" id="template-dialog" hidden>
+      <div class="catalog-modal__scrim" data-close-dialog></div>
+      <section class="catalog-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title" aria-describedby="dialog-description" tabindex="-1">
+        <header class="catalog-modal__header"><div><span class="catalog-eyebrow" id="dialog-category"><i></i> Live demo</span><h2 id="dialog-title">Template preview</h2><p id="dialog-description">Preview komposisi AAPM UI.</p></div><button class="catalog-icon-button" type="button" data-close-dialog aria-label="Tutup preview"><iconify-icon icon="solar:close-circle-bold" width="20" height="20" aria-hidden="true"></iconify-icon></button></header>
+        <div class="catalog-modal__preview" id="dialog-preview"></div>
+        <footer class="catalog-modal__footer"><span><iconify-icon icon="solar:shield-check-bold-duotone" width="16" height="16" aria-hidden="true"></iconify-icon> Token-led · responsive · Iconify ready</span><div><button class="catalog-button catalog-button--quiet" type="button" data-close-dialog>Tutup</button><button class="catalog-button catalog-button--primary" type="button" id="use-template">Gunakan template <iconify-icon icon="solar:arrow-right-linear" width="16" height="16" aria-hidden="true"></iconify-icon></button></div></footer>
+      </section>
+    </div>
+
+    <div class="catalog-toast" id="catalog-toast" role="status" aria-live="polite"></div>
+    <script type="module" src="./catalog.js?v=0.2.4"></script>
+  </body>
+</html>

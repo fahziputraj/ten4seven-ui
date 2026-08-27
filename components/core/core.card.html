@@ -1,0 +1,40 @@
+<!-- @dsCard group="Components" viewport="700x300" name="Core — actions, badges, surfaces" subtitle="Button intents, icon actions, badges, tiles, surfaces, progress" -->
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css"><style>body{margin:0;padding:18px;background:var(--background)}.row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:12px}.lbl{font-size:var(--text-2xs);font-weight:600;letter-spacing:var(--tracking-overline);text-transform:uppercase;color:var(--muted-foreground);margin:0 0 6px}.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { Button, IconButton, Badge, Icon, IconTile, Surface, Progress, Card, CardHeader, CardTitle, CardDescription, CardContent } = window.AAPMDesignSystem_07e1a3;
+function Demo(){return <>
+<div class="lbl">Button</div>
+<div className="row">
+<Button variant="default" icon="submit">Submit</Button>
+<Button variant="outline" icon="export">Export</Button>
+<Button variant="secondary">Secondary</Button>
+<Button variant="soft" icon="filter">Filter</Button>
+<Button variant="ghost" icon="refresh">Refresh</Button>
+<Button variant="destructive" icon="reject">Reject</Button>
+<Button variant="default" size="sm">Small</Button>
+<Button variant="default" loading>Saving</Button>
+<Button variant="outline" disabled>Disabled</Button>
+<Button variant="link" iconEnd="arrowRight">Lihat semua</Button>
+</div>
+<div className="lbl">Icon action · Badge · Icon tile</div>
+<div className="row">
+<IconButton icon="edit" label="Edit" /><IconButton icon="delete" label="Delete" tone="danger" /><IconButton icon="sidebar" label="Collapse" variant="outline" /><IconButton icon="more" label="More" variant="soft" />
+<span style={{width:8}} />
+<Badge variant="default">22</Badge><Badge variant="soft" dot>Workspace</Badge><Badge variant="success" icon="check">Verified</Badge><Badge variant="warning" icon="warning">Overdue</Badge><Badge variant="info">In review</Badge><Badge variant="ai" icon="ai">APPI</Badge><Badge variant="lime" overline>Lanjutkan</Badge>
+<span style={{width:8}} />
+<IconTile icon="farm" tone="green" /><IconTile icon="warehouse" tone="blue" /><IconTile icon="wallet" tone="orange" size="sm" /><IconTile icon="truck" tone="slate" /><IconTile icon="ai" tone="violet" />
+</div>
+<div className="lbl">Surface · Progress · Card</div>
+<div className="grid">
+<Surface padding={4} style={{fontSize:'var(--text-sm)'}}><div style={{fontWeight:600,fontSize:'var(--text-base)'}}>default</div><div style={{color:'var(--muted-foreground)',marginTop:4}}>Resting card, level 1</div><Progress value={72} tone="green" size="sm" style={{marginTop:10}} /></Surface>
+<Surface variant="muted" padding={4} style={{fontSize:'var(--text-sm)'}}><div style={{fontWeight:600,fontSize:'var(--text-base)'}}>muted</div><div style={{color:'var(--muted-foreground)',marginTop:4}}>Inset panel, no shadow</div><Progress value={41} tone="orange" size="sm" style={{marginTop:10}} /></Surface>
+<Surface tone="green" padding={4} style={{fontSize:'var(--text-sm)'}}><div style={{fontWeight:600,fontSize:'var(--text-base)',color:'var(--tint-green-foreground)'}}>tone green</div><div style={{color:'var(--muted-foreground)',marginTop:4}}>Category wash</div><Progress value={91} tone="lime" size="sm" track="hsl(var(--foreground-hsl) / .1)" style={{marginTop:10}} /></Surface>
+</div>
+</>}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script></body></html>

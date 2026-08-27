@@ -1,0 +1,33 @@
+<!-- @dsCard group="Components" viewport="700x330" name="Forms — inputs, choice, fields" subtitle="Text, select, textarea, checkbox, radio, switch, validation and permission states" -->
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css"><style>body{margin:0;padding:18px;background:var(--background);font-family:var(--font-body)}.lbl{font-size:var(--text-2xs);font-weight:600;letter-spacing:var(--tracking-overline);text-transform:uppercase;color:var(--muted-foreground);margin:0 0 7px}.row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:14px}.col{display:flex;flex-direction:column;gap:8px}</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { Input, Textarea, Select, Checkbox, Radio, Switch, Label, FormField } = window.AAPMDesignSystem_07e1a3;
+function Demo(){
+const [on,setOn]=React.useState(true);const [chk,setChk]=React.useState(true);const [pick,setPick]=React.useState("approve");
+return <>
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'16px 20px'}}>
+<FormField id="no" label="Nomor invoice" required hint="Mengikuti periode akuntansi aktif."><Input id="no" defaultValue="PI-2026-00841" /></FormField>
+<FormField id="sup" label="Supplier" required error="Supplier belum dipilih."><Select id="sup" invalid placeholder="Pilih supplier" icon="users" options={["CV Sumber Pakan Jaya","PT Agro Nusantara"]} /></FormField>
+<FormField id="tot" label="Total" permission="Read only"><Input id="tot" defaultValue="Rp 482.650.000" disabled style={{textAlign:'right',fontVariantNumeric:'tabular-nums'}} /></FormField>
+<FormField id="cari" label="Cari dokumen"><Input id="cari" icon="search" placeholder="Nomor, supplier, referensi..." /></FormField>
+</div>
+<div style={{marginTop:16,display:'grid',gridTemplateColumns:'1.1fr 1fr',gap:20}}>
+<div><div className="lbl">Textarea</div><Textarea rows={3} placeholder="Wajib diisi jika menolak atau meminta revisi." /></div>
+<div><div className="lbl">Choice</div>
+<div className="col">
+<Radio name="d" value="approve" checked={pick==="approve"} onChange={()=>setPick("approve")} label="Setujui transaksi" description="Dokumen lengkap dan nilai sesuai PO." />
+<div className="row" style={{marginBottom:0,gap:16}}>
+<Checkbox checked={chk} onChange={()=>setChk(!chk)} label="Kirim notifikasi" />
+<Checkbox checked={false} label="Arsipkan" />
+<label style={{display:'inline-flex',alignItems:'center',gap:8,font:'var(--type-label)'}}><Switch checked={on} onChange={()=>setOn(!on)} /> Aktif</label>
+</div>
+</div></div>
+</div>
+</>}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script></body></html>

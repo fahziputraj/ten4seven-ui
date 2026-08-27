@@ -1,0 +1,21 @@
+# Local dependency and build output
+node_modules/
+dist/
+build/
+coverage/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# Browser/tooling scratch files
+.playwright-mcp/
+.vite/
+*.log
+
+# OS/editor metadata
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

@@ -1,0 +1,127 @@
+<!-- @dsCard group="Domain — poultry" viewport="700x1020" name="Form — produksi harian & mortalitas" subtitle="Input produksi harian per kandang dan laporan mortalitas/culling: default, validasi, read-only, mobile" -->
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css"><style>body{margin:0;padding:18px;background:var(--background);font-family:var(--font-body)}.lbl{font-size:var(--text-2xs);font-weight:600;letter-spacing:var(--tracking-overline);text-transform:uppercase;color:var(--muted-foreground);margin:0 0 7px}.sub{font:var(--type-caption);color:var(--muted-foreground);margin:-4px 0 10px}.phone{width:360px;border:1px solid var(--surface-border);border-radius:var(--radius-shell);padding:14px;background:var(--card)}</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script src="./aapm-domain-data.js"></script>
+<script type="text/babel">
+const { PageHeader, FormSection, FormField, Input, NumberInput, PercentInput, Select, DatePicker, Textarea, MultiSelect, FileUpload, Checkbox, ActionFooter, Button, Alert, StatusChip, Badge, Surface, KeyValueList, Icon } = window.AAPMDesignSystem_07e1a3;
+const D = window.AAPMDomain;
+const HOUSES = D.flocks.map(f => f.house);
+
+function ProduksiHarian({ mobile }) {
+  const [egg,setEgg] = React.useState(22536);
+  const [weight,setWeight] = React.useState(63.4);
+  const [feed,setFeed] = React.useState(2752);
+  const [water,setWater] = React.useState(5555);
+  const [dead,setDead] = React.useState(19);
+  const [culled,setCulled] = React.useState(4);
+  const [cracked,setCracked] = React.useState(214);
+  const [date,setDate] = React.useState("2026-08-24");
+  const cols = mobile ? 1 : 2;
+  return <>
+    <FormSection title="Identitas pencatatan" description="Satu laporan untuk satu kandang per shift. Nomor dokumen dibuat otomatis saat disimpan." columns={cols}>
+      <FormField id="p-house" label={D.labels.farm.house} required hint="Populasi dan umur terisi otomatis dari master flock.">
+        <Select id="p-house" icon="barn" options={HOUSES} defaultValue="Kandang 1" /></FormField>
+      <FormField id="p-date" label={D.labels.farm.date} required><DatePicker id="p-date" value={date} onValueChange={setDate} max="2026-08-24" /></FormField>
+      <FormField id="p-shift" label={D.labels.farm.shift} required><Select id="p-shift" options={["Pagi (06.00)","Siang (12.00)","Sore (16.00)"]} defaultValue="Pagi (06.00)" /></FormField>
+      <FormField id="p-op" label={D.labels.farm.operator} permission="Terisi dari akun yang login"><Input id="p-op" defaultValue="Rahmat Hidayat" disabled /></FormField>
+    </FormSection>
+    <FormSection title="Telur" description="Butir yang benar-benar terkumpul, bukan estimasi. Retak dan kotor dicatat terpisah agar grading tidak menghitung ulang." columns={cols}>
+      <FormField id="p-egg" label={D.labels.production.eggTotal} required hint="Populasi hidup 24.781 ekor → HD 90,9%">
+        <NumberInput id="p-egg" value={egg} onValueChange={setEgg} step={10} min={0} unit="butir" /></FormField>
+      <FormField id="p-w" label={D.labels.production.eggWeight} required hint="Standar minggu 42: 63,0 g">
+        <NumberInput id="p-w" value={weight} onValueChange={setWeight} step={0.1} unit="g" /></FormField>
+      <FormField id="p-crack" label={D.labels.production.cracked}><NumberInput id="p-crack" value={cracked} onValueChange={setCracked} step={1} unit="butir" /></FormField>
+      <FormField id="p-dirty" label={D.labels.production.dirty} error="Jumlah kotor melebihi telur terkumpul.">
+        <NumberInput id="p-dirty" value={132} invalid step={1} unit="butir" /></FormField>
+      <FormField id="p-hd" label="Hen-day production" permission="Dihitung sistem, tidak dapat diubah"><PercentInput id="p-hd" value="90,9" disabled /></FormField>
+    </FormSection>
+    <FormSection title="Pakan, air, dan populasi" description="Deplesi di atas 0,10% per hari memicu verifikasi supervisor sebelum laporan bisa ditutup." columns={cols}>
+      <FormField id="p-feed" label={D.labels.production.feed} required hint="≈ 111 g/ekor · standar 112 g">
+        <NumberInput id="p-feed" value={feed} onValueChange={setFeed} step={5} unit="kg" /></FormField>
+      <FormField id="p-water" label={D.labels.production.water} required hint="≈ 224 ml/ekor">
+        <NumberInput id="p-water" value={water} onValueChange={setWater} step={5} unit="liter" /></FormField>
+      <FormField id="p-dead" label={D.labels.production.dead} required hint="0,08% dari populasi hidup">
+        <NumberInput id="p-dead" value={dead} onValueChange={setDead} step={1} unit="ekor" /></FormField>
+      <FormField id="p-cull" label={D.labels.production.culled}><NumberInput id="p-cull" value={culled} onValueChange={setCulled} step={1} unit="ekor" /></FormField>
+    </FormSection>
+  </>;
+}
+
+function Demo(){
+const [note,setNote] = React.useState("");
+const [cause,setCause] = React.useState([]);
+const [files,setFiles] = React.useState([{name:"Foto kandang 3 - 24 Agu.jpg",sizeLabel:"1,2 MB"}]);
+return <>
+<PageHeader overline="Farm · Produksi" title="Input produksi harian" description="Catat hasil satu kandang per shift. Laporan yang sudah diverifikasi tidak dapat diubah, hanya direvisi lewat koreksi."
+ actions={<><Button variant="outline" size="sm" icon="copy">Salin laporan kemarin</Button><Button size="sm" icon="add">Laporan baru</Button></>}
+ meta={<><StatusChip status="draft" size="sm" /><span style={{font:'var(--type-caption)',color:'var(--muted-foreground)'}}>Kandang 1 · minggu 42 · disimpan otomatis 06:41</span></>}
+ style={{marginBottom:14}} />
+
+<div style={{display:'grid',gridTemplateColumns:'1fr 360px',gap:22,alignItems:'start'}}>
+<div>
+<ProduksiHarian />
+<ActionFooter sticky={false} hint="Satu field masih bermasalah — perbaiki sebelum mengajukan."
+ tertiary={<Button variant="ghost" size="sm" icon="delete">Hapus draft</Button>}
+ secondary={<Button variant="outline" size="sm">Simpan draft</Button>}
+ primary={<Button size="sm" icon="submit" disabled>Ajukan verifikasi</Button>}
+ style={{borderRadius:'var(--radius-panel)',border:'1px solid var(--border)',marginBottom:20}} />
+
+<div className="lbl">Form kedua · laporan mortalitas & culling</div>
+<p className="sub">Dipisah dari produksi harian karena alurnya berbeda: butuh penyebab, bukti foto, dan persetujuan dokter hewan.</p>
+<Alert tone="warning" title="Deplesi harian 0,14% di Kandang 3" style={{marginBottom:12}}>Di atas ambang 0,10%. Laporan ini akan diteruskan ke drh. Anisa Putri sebelum ditutup.</Alert>
+<FormSection title="Kejadian" description="Angka mati dan afkir dicatat per sebab agar tren penyakit terbaca, bukan hanya totalnya." columns={2}>
+  <FormField id="m-house" label={D.labels.farm.house} required><Select id="m-house" icon="barn" options={HOUSES} defaultValue="Kandang 3" /></FormField>
+  <FormField id="m-date" label={D.labels.farm.date} required><DatePicker id="m-date" value="2026-08-24" /></FormField>
+  <FormField id="m-dead" label={D.labels.production.dead} required><NumberInput id="m-dead" value={32} step={1} unit="ekor" /></FormField>
+  <FormField id="m-cull" label={D.labels.production.culled} required hint="Afkir karena produksi berhenti, bukan kematian."><NumberInput id="m-cull" value={11} step={1} unit="ekor" /></FormField>
+  <FormField id="m-cause" label="Penyebab" required span={2} hint="Pilih satu penyebab utama; catatan untuk detailnya.">
+    <MultiSelect single value={cause} onValueChange={setCause} placeholder="Pilih penyebab" searchPlaceholder="Cari penyebab..."
+      options={[{value:"nd",label:"Suspect ND",description:"Perlu konfirmasi lab"},{value:"heat",label:"Heat stress",description:"Suhu kandang > 32°C"},{value:"prolaps",label:"Prolaps",description:"Umumnya pada flock tua"},{value:"cann",label:"Kanibalisme"},{value:"lain",label:"Lain-lain"}]} /></FormField>
+  <FormField id="m-note" label="Catatan lapangan" span={2} hint="Tiga baris cukup. Sebutkan lokasi baris kandang bila terpusat.">
+    <Textarea id="m-note" rows={3} value={note} onChange={(e)=>setNote(e.target.value)} placeholder="Terpusat di baris C1–C4, ayam lesu sejak sore kemarin." /></FormField>
+  <FormField id="m-file" label="Bukti foto" span={2}>
+    <FileUpload files={files} onAdd={(n)=>setFiles(f=>[...f,...n])} onRemove={(i)=>setFiles(f=>f.filter((_,j)=>j!==i))} label="Unggah foto kondisi kandang" hint="JPG atau PNG · maksimal 10 MB" /></FormField>
+  <div style={{gridColumn:'1 / -1',display:'flex',flexDirection:'column',gap:8}}>
+    <Checkbox checked label="Bangkai sudah dimusnahkan sesuai SOP biosecurity" />
+    <Checkbox checked={false} label="Kirim notifikasi ke dokter hewan sekarang" />
+  </div>
+</FormSection>
+<ActionFooter sticky={false} hint="Laporan mortalitas tidak bisa disimpan sebagai draft setelah lewat 24 jam."
+ secondary={<Button variant="outline" size="sm">Simpan draft</Button>}
+ primary={<Button size="sm" icon="submit">Kirim ke dokter hewan</Button>}
+ style={{borderRadius:'var(--radius-panel)',border:'1px solid var(--border)'}} />
+</div>
+
+<div>
+<div className="lbl">Mobile · satu kolom, 44px target</div>
+<p className="sub">Urutan field sama, hanya turun jadi satu kolom. Operator mengisi di kandang, sambil berdiri.</p>
+<div className="phone" data-density="comfortable">
+  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}>
+    <div><div style={{font:'var(--type-overline)',color:'var(--muted-foreground)'}}>PRODUKSI HARIAN</div>
+    <div style={{font:'var(--type-title)',color:'var(--foreground)'}}>Kandang 1 · Pagi</div></div>
+    <StatusChip status="draft" size="sm" />
+  </div>
+  <ProduksiHarian mobile />
+  <Button size="lg" icon="submit" style={{width:'100%',marginTop:12}}>Ajukan verifikasi</Button>
+</div>
+
+<div className="lbl" style={{marginTop:16}}>Setelah diverifikasi · read-only</div>
+<Surface padding={4}>
+  <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:8}}><Icon name="verified" size={18} style={{color:'var(--state-approved)'}} /><span style={{font:'var(--type-label)'}}>PRD-2026-0823-K1</span><StatusChip status="verified" size="sm" /></div>
+  <KeyValueList dense items={[
+    {label:"Telur terkumpul",value:D.fmt.butir(22412),numeric:true},
+    {label:"Hen-day",value:"90,4%",numeric:true,strong:true},
+    {label:"Pakan",value:D.fmt.kg(2748),numeric:true},
+    {label:"Mati / afkir",value:"17 / 3 ekor",numeric:true},
+    {label:"Diverifikasi",value:"Budi Santoso · 23 Agu 17:20"}]} />
+  <div style={{display:'flex',gap:8,marginTop:10}}><Button variant="outline" size="sm" icon="edit">Ajukan koreksi</Button><Button variant="ghost" size="sm" icon="print">Cetak</Button></div>
+</Surface>
+</div>
+</div>
+</>}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script></body></html>

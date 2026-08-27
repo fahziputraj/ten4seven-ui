@@ -1,0 +1,55 @@
+<!-- @dsCard group="Components" viewport="700x460" name="Charts — trend, variance, comparison" subtitle="Sparkline, TrendIndicator, BulletChart, BarChart, LineChart, DonutChart, Heatmap" -->
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css"><style>body{margin:0;padding:18px;background:var(--background);font-family:var(--font-body)}.lbl{font-size:var(--text-2xs);font-weight:600;letter-spacing:var(--tracking-overline);text-transform:uppercase;color:var(--muted-foreground);margin:0 0 7px}.row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:14px}.col{display:flex;flex-direction:column;gap:8px}</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { Sparkline, TrendIndicator, BulletChart, BarChart, LineChart, DonutChart, Heatmap, Surface, MetricCard } = window.AAPMDesignSystem_07e1a3;
+function Demo(){return <>
+<div className="lbl">Sparkline · trend indicator</div>
+<div className="row" style={{gap:20}}>
+<Sparkline data={[86,88,91,92,90,93,92,94,91,89,92,93]} target={90} />
+<Sparkline data={[42,40,37,34,30,28,25,22,20,18,15,12]} tone="orange" area={false} />
+<Sparkline data={[10,14,13,18,22,21,26,30,29,34,38,42]} tone="teal" />
+<span style={{width:10}} />
+<TrendIndicator value={2.4} caption="vs minggu lalu" />
+<TrendIndicator value={-0.01} sentiment="inverse" />
+<TrendIndicator value={-6.1} />
+<TrendIndicator value="flat" direction="flat" size="sm" />
+</div>
+<div className="lbl">Bullet · progress vs target</div>
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px 20px',marginBottom:14}}>
+<BulletChart label="Hen-day production" valueLabel="91,8% / 90,0%" value={91.8} target={90} max={100} />
+<BulletChart label="Realisasi anggaran pakan" valueLabel="Rp 482,6 jt / Rp 520,0 jt" value={482.6} target={520} />
+<BulletChart label="Penagihan piutang" valueLabel="Rp 1,28 M / Rp 1,50 M" value={1.28} target={1.5} />
+<BulletChart label="Kepatuhan laporan harian" valueLabel="5 / 7 kandang" value={5} target={7} />
+</div>
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:20,marginBottom:14}}>
+<Surface padding={4}><div className="lbl">Bar chart · target</div>
+<BarChart height={130} target={90} targetLabel="Target 90%" data={[86,88,91,92,90,93,92,94,91,89,92,93].map((v,i)=>({label:String(13+i),value:v}))} />
+</Surface>
+<Surface padding={4}><div className="lbl">Stacked bar</div>
+<BarChart height={130} stacked series={["Pakan","Obat","Tenaga kerja"]} data={[{label:"Mei",values:[312,38,86]},{label:"Jun",values:[320,40,90]},{label:"Jul",values:[344,38,92]},{label:"Agu",values:[352,44,94]}]} />
+</Surface>
+</div>
+<div style={{display:'grid',gridTemplateColumns:'1.2fr 1fr',gap:20,marginBottom:14}}>
+<Surface padding={4}><div className="lbl">Line chart · aktual vs standar</div>
+<LineChart height={150} target={90} targetLabel="Standar 90%" labels={["W16","W17","W18","W19","W20","W21"]}
+ series={[{name:"Aktual",data:[72,84,90,93,92,91]},{name:"Standar breed",data:[70,82,89,92,94,95],tone:2}]} />
+</Surface>
+<Surface padding={4}><div className="lbl">Donut · komposisi grade</div>
+<DonutChart size={112} thickness={14} centerValue="24.150" centerLabel="butir"
+ data={[{label:"Grade A",value:64},{label:"Grade B",value:24},{label:"Retak",value:8,tone:3},{label:"Reject",value:4,tone:5}]} />
+</Surface>
+</div>
+<div className="lbl">Heatmap · mortalitas per kandang / minggu</div>
+<Surface padding={4}>
+<Heatmap tone="danger" rows={["Kandang 1","Kandang 2","Kandang 3","Kandang 5"]} columns={["W20","W21","W22","W23","W24"]}
+ data={[[0.04,0.05,0.04,0.06,0.05],[0.06,0.07,0.06,0.08,0.07],[0.09,0.11,null,0.14,0.12],[0.12,0.13,0.14,0.16,0.14]]}
+ valueFormat={(v)=>v.toFixed(2).replace(".",",")} />
+</Surface>
+</>}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script></body></html>

@@ -1,0 +1,17 @@
+/* AAPM Design System — global entry point. Consumers link this single file. */
+@import "tokens/fonts.css";
+@import "tokens/palette.css";
+@import "tokens/semantic.css";
+@import "tokens/typography.css";
+@import "tokens/spacing.css";
+@import "tokens/elevation.css";
+@import "tokens/motion.css";
+@import "tokens/dark.css";
+@import "tokens/base.css";
+@import "tokens/components.css";
+@import "tokens/layout.css";
+@import "components/layout/layout.css";
+@import "components/forms/forms.css";
+@import "components/blocks/blocks.css";
+@import "components/feedback/feedback.css";
+@import "components/operations/operations.css";

@@ -1,0 +1,43 @@
+/* Type. One family, Inter Variable, across display / heading / body / UI.
+   Numeric UI is always tabular — see --font-numeric. */
+:root{
+  --font-display:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  --font-heading:var(--font-display);
+  --font-body:var(--font-display);
+  --font-mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+  --font-numeric:var(--font-display);
+
+  /* Size ramp (rem / line-height pairs) */
+  --text-2xs:0.625rem;   --leading-2xs:0.875rem;/* @kind font */  /* 10px — overlines, meta chips */
+  --text-xs:0.6875rem;   --leading-xs:1rem;/* @kind font */       /* 11px — dense meta, table meta */
+  --text-sm:0.75rem;     --leading-sm:1rem;/* @kind font */       /* 12px — captions, badges */
+  --text-base:0.875rem;  --leading-base:1.25rem;/* @kind font */  /* 14px — DEFAULT body + table + UI */
+  --text-md:1rem;        --leading-md:1.5rem;/* @kind font */     /* 16px — long-form body, inputs */
+  --text-lg:1.125rem;    --leading-lg:1.75rem;/* @kind font */    /* 18px — card lead */
+  --text-xl:1.25rem;     --leading-xl:1.75rem;/* @kind font */    /* 20px — card title / section */
+  --text-2xl:1.5rem;     --leading-2xl:2rem;/* @kind font */      /* 24px — page title */
+  --text-3xl:1.875rem;   --leading-3xl:2.25rem;/* @kind font */   /* 30px — page title lg, metrics */
+  --text-4xl:2.25rem;    --leading-4xl:2.5rem;/* @kind font */    /* 36px — auth + hero */
+
+  /* Weights. 650 is deliberate: table headers sit between semibold and bold. */
+  --weight-regular:400;/* @kind font */--weight-medium:500;/* @kind font */--weight-semibold:600;/* @kind font */--weight-table-head:650;/* @kind font */--weight-bold:700;/* @kind font */
+
+  /* Tracking. Display type tightens; overlines open up. */
+  --tracking-display:-0.045em;/* @kind font */
+  --tracking-metric:-0.04em;/* @kind font */
+  --tracking-title:-0.03em;/* @kind font */
+  --tracking-tight:-0.02em;/* @kind font */
+  --tracking-normal:0;/* @kind font */
+  --tracking-overline:0.16em;/* @kind font */
+  --tracking-overline-wide:0.18em;/* @kind font */
+
+  /* Composed roles */
+  --type-metric:var(--weight-semibold) var(--text-3xl)/var(--leading-3xl) var(--font-display);/* @kind font */
+  --type-page-title:var(--weight-semibold) var(--text-2xl)/var(--leading-2xl) var(--font-heading);/* @kind font */
+  --type-card-title:var(--weight-semibold) var(--text-base)/1.2 var(--font-heading);/* @kind font */
+  --type-body:var(--weight-regular) var(--text-base)/var(--leading-base) var(--font-body);/* @kind font */
+  --type-label:var(--weight-semibold) var(--text-sm)/var(--leading-sm) var(--font-body);/* @kind font */
+  --type-caption:var(--weight-regular) var(--text-xs)/var(--leading-xs) var(--font-body);/* @kind font */
+  --type-metadata:var(--weight-regular) var(--text-xs)/var(--leading-xs) var(--font-body);/* @kind font */
+  --type-overline:var(--weight-semibold) var(--text-2xs)/var(--leading-2xs) var(--font-body);/* @kind font */
+}

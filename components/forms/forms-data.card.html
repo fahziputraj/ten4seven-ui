@@ -1,0 +1,37 @@
+<!-- @dsCard group="Components" viewport="700x460" name="Forms — business data entry" subtitle="Number, currency, percent, search, date, date range, multi-select, upload, OTP" -->
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css"><style>body{margin:0;padding:18px;background:var(--background);font-family:var(--font-body)}.lbl{font-size:var(--text-2xs);font-weight:600;letter-spacing:var(--tracking-overline);text-transform:uppercase;color:var(--muted-foreground);margin:0 0 7px}.row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:14px}.col{display:flex;flex-direction:column;gap:8px}</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { NumberInput, CurrencyInput, PercentInput, SearchInput, DatePicker, DateRangePicker, MultiSelect, FileUpload, OtpInput, FormField, Surface } = window.AAPMDesignSystem_07e1a3;
+function Demo(){
+const [qty,setQty]=React.useState(1240);const [amt,setAmt]=React.useState("482650000");const [pct,setPct]=React.useState("91,8");
+const [q,setQ]=React.useState("");const [date,setDate]=React.useState("2026-08-24");const [range,setRange]=React.useState({from:"2026-08-01",to:"2026-08-24"});
+const [houses,setHouses]=React.useState(["k1","k3"]);const [sup,setSup]=React.useState([]);const [code,setCode]=React.useState("482");
+const [files,setFiles]=React.useState([{name:"Invoice supplier.pdf",sizeLabel:"412 KB"},{name:"Surat jalan DO-4471.pdf",progress:64},{name:"Faktur pajak.pdf",error:"Ukuran melebihi 10 MB"}]);
+return <>
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'14px 16px',marginBottom:16}}>
+<FormField id="n1" label="Qty diterima" required><NumberInput value={qty} onValueChange={setQty} unit="karung" step={10} min={0} /></FormField>
+<FormField id="n2" label="Total tagihan" required><CurrencyInput value={amt} onValueChange={setAmt} /></FormField>
+<FormField id="n3" label="Hen-day production"><PercentInput value={pct} onValueChange={setPct} /></FormField>
+<FormField id="n4" label="Konsumsi pakan" hint="Standar 112 g/ekor"><NumberInput value={114} unit="g/ekor" step={0.5} steppers={false} /></FormField>
+<FormField id="n5" label="Tanggal dokumen" required><DatePicker value={date} onValueChange={setDate} min="2026-08-01" max="2026-08-31" /></FormField>
+<FormField id="n6" label="Supplier" required error="Supplier belum dipilih."><MultiSelect single invalid value={sup} onValueChange={setSup} placeholder="Pilih supplier" searchPlaceholder="Cari nama atau NPWP..." options={[{value:"a",label:"CV Sumber Pakan Jaya",description:"Blitar · NPWP 01.234.567.8",meta:"Rp 794,6 jt"},{value:"b",label:"PT Agro Nusantara",description:"Surabaya",meta:"Rp 128,4 jt"}]} /></FormField>
+</div>
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16,marginBottom:16}}>
+<div className="col">
+<div><div className="lbl">Search</div><SearchInput value={q} onValueChange={setQ} placeholder="Cari nomor invoice, supplier, atau PO..." shortcut="⌘K" /></div>
+<div><div className="lbl">Multi select</div><MultiSelect value={houses} onValueChange={setHouses} placeholder="Semua kandang" options={[{value:"k1",label:"Kandang 1",description:"Blitar",meta:"24.800"},{value:"k2",label:"Kandang 2",description:"Blitar",meta:"24.150"},{value:"k3",label:"Kandang 3",description:"Blitar",meta:"22.940"},{value:"k5",label:"Kandang 5",description:"Kediri",meta:"21.380"}]} /></div>
+<div><div className="lbl">OTP</div><OtpInput value={code} onValueChange={setCode} /></div>
+</div>
+<div className="col">
+<div><div className="lbl">Date range · presets</div><DateRangePicker from={range.from} to={range.to} onChange={setRange} activePreset="mtd" onPreset={()=>{}} /></div>
+<div><div className="lbl">File upload</div><FileUpload required files={files} onAdd={(n)=>setFiles(f=>[...f,...n])} onRemove={(i)=>setFiles(f=>f.filter((_,j)=>j!==i))} label="Unggah lampiran dokumen" hint="PDF, JPG atau XLSX · maksimal 10 MB" /></div>
+</div>
+</div>
+</>}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script></body></html>

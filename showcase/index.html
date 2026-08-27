@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="hsl(0 0% 100%)" />
+    <title>AAPM UI — Review Showcase</title>
+    <link rel="icon" href="../assets/logos/academy-app-icon.svg" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="./showcase.css" />
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+  </head>
+  <body>
+    <div class="aapm-app-shell showcase-root" id="showcase-root" data-has-sidebar="true" data-sidebar-open="false" data-sidebar-collapsed="false" data-density="default">
+      <button class="aapm-shell-overlay" id="mobile-overlay" type="button" aria-label="Tutup navigasi" tabindex="-1"></button>
+      <aside class="aapm-shell-sidebar showcase-sidebar" aria-label="Navigasi katalog">
+        <div class="aapm-shell-sidebar__brand showcase-sidebar__brand">
+          <a href="#overview" class="showcase-brand" aria-label="AAPM UI beranda">
+            <img src="../assets/logos/academy-logo-long.svg" alt="AAPM Layer Academy" />
+          </a>
+          <button class="aapm-sidebar-toggle" id="sidebar-toggle" type="button" aria-label="Ringkas navigasi" title="Ringkas navigasi">
+            <iconify-icon icon="solar:alt-arrow-left-linear" width="18" height="18"></iconify-icon>
+          </button>
+        </div>
+        <div class="aapm-shell-sidebar__scroll">
+          <section class="aapm-shell-sidebar__section">
+            <div class="aapm-shell-sidebar__section-label">Katalog</div>
+            <nav class="aapm-shell-sidebar__nav" aria-label="Katalog komponen">
+              <a class="showcase-nav-item is-active" href="#overview"><iconify-icon icon="solar:home-angle-bold-duotone" width="19" height="19"></iconify-icon><span>Overview</span></a>
+              <a class="showcase-nav-item" href="./catalog.html"><iconify-icon icon="solar:widget-5-bold-duotone" width="19" height="19"></iconify-icon><span>Template catalog</span></a>
+              <a class="showcase-nav-item" href="#dashboard"><iconify-icon icon="solar:chart-square-bold-duotone" width="19" height="19"></iconify-icon><span>Dashboard</span></a>
+              <a class="showcase-nav-item" href="#forms"><iconify-icon icon="solar:pen-new-square-bold-duotone" width="19" height="19"></iconify-icon><span>Forms</span></a>
+              <a class="showcase-nav-item" href="#data"><iconify-icon icon="solar:database-bold-duotone" width="19" height="19"></iconify-icon><span>Data &amp; charts</span></a>
+              <a class="showcase-nav-item" href="#feedback"><iconify-icon icon="solar:bell-bing-bold-duotone" width="19" height="19"></iconify-icon><span>Feedback</span></a>
+            </nav>
+          </section>
+          <section class="aapm-shell-sidebar__section">
+            <div class="aapm-shell-sidebar__section-label">Kits</div>
+            <nav class="aapm-shell-sidebar__nav" aria-label="UI kits">
+              <a class="showcase-nav-item" href="../ui_kits/academy/index.html"><iconify-icon icon="solar:notebook-bold-duotone" width="19" height="19"></iconify-icon><span>Academy kit</span></a>
+              <a class="showcase-nav-item" href="../ui_kits/erp/index.html"><iconify-icon icon="solar:buildings-2-bold-duotone" width="19" height="19"></iconify-icon><span>ERP kit</span></a>
+            </nav>
+          </section>
+        </div>
+        <div class="aapm-shell-sidebar__footer showcase-sidebar__footer">
+          <span class="showcase-version">AAPM UI <strong>v0.2</strong></span>
+          <span class="showcase-font-note">Inter Variable · local</span>
+        </div>
+      </aside>
+
+      <div class="aapm-shell-main">
+        <header class="aapm-shell-topbar showcase-topbar">
+          <button class="aapm-shell-topbar__menu showcase-icon-button" id="mobile-menu" type="button" aria-label="Buka navigasi">
+            <iconify-icon icon="solar:list-bold" width="20" height="20"></iconify-icon>
+          </button>
+          <div class="aapm-shell-topbar__heading">
+            <div class="aapm-shell-topbar__overline">Design foundation</div>
+            <h1 class="aapm-shell-topbar__title">AAPM UI</h1>
+          </div>
+          <div class="aapm-shell-topbar__actions">
+            <button class="showcase-control" id="density-toggle" type="button"><iconify-icon icon="solar:sort-vertical-bold-duotone" width="17" height="17"></iconify-icon><span>Density</span></button>
+            <button class="showcase-control" id="theme-toggle" type="button"><iconify-icon icon="solar:moon-stars-bold-duotone" width="17" height="17"></iconify-icon><span>Dark</span></button>
+            <a class="showcase-control" href="./catalog.html"><iconify-icon icon="solar:widget-5-bold-duotone" width="17" height="17"></iconify-icon><span>Templates</span></a>
+            <a class="showcase-control showcase-control--solid" href="../readme.md"><iconify-icon icon="solar:book-2-bold-duotone" width="17" height="17"></iconify-icon><span>Docs</span></a>
+          </div>
+        </header>
+
+        <main class="aapm-shell-content" id="overview">
+          <div class="aapm-page-container">
+            <section class="showcase-intro">
+              <div>
+                <div class="showcase-eyebrow">AAPM UI · review surface</div>
+                <h2>Foundation untuk produk yang rapi, bukan sekadar cantik.</h2>
+                <p>Token, shell, data, forms, dan feedback yang siap dipakai lintas Academy, ERP, dan operational tools—dengan Inter lokal dan canvas light yang bersih.</p>
+              </div>
+              <div class="showcase-intro__meta">
+                <span class="showcase-status"><span></span> Ready for review</span>
+                <span class="showcase-meta">Light default · Dark semantic</span>
+              </div>
+            </section>
+
+            <section class="showcase-hero" aria-labelledby="hero-title">
+              <div class="showcase-hero__copy">
+                <div class="showcase-eyebrow showcase-eyebrow--inverse">Application layer</div>
+                <h2 id="hero-title">Satu bahasa visual untuk setiap ruang kerja AAPM.</h2>
+                <p>Shell yang adaptif, komponen yang punya hierarki, dan warna yang dipakai dengan maksud—dari halaman belajar sampai dashboard operasional.</p>
+                <div class="showcase-actions">
+                  <a class="showcase-button showcase-button--light" href="#dashboard">Lihat pola dashboard <iconify-icon icon="solar:arrow-right-up-bold" width="16" height="16"></iconify-icon></a>
+                  <button class="showcase-button showcase-button--quiet" id="toast-preview" type="button">Preview feedback</button>
+                </div>
+              </div>
+              <div class="showcase-hero__mark" aria-hidden="true"><img src="../assets/logos/academy-icon.svg" alt="" /></div>
+            </section>
+
+            <section class="showcase-section" id="dashboard" aria-labelledby="dashboard-title">
+              <div class="showcase-section__heading">
+                <div><div class="showcase-eyebrow">01 · Dashboard</div><h2 id="dashboard-title">Signal sebelum decoration.</h2></div>
+                <span class="showcase-section__note">Tints category · no card gradient</span>
+              </div>
+              <div class="showcase-metrics">
+                <article class="showcase-metric" data-tone="green">
+                  <div class="showcase-metric__top"><span class="showcase-icon-tile"><iconify-icon icon="solar:users-group-rounded-bold-duotone" width="20" height="20"></iconify-icon></span><span class="showcase-trend is-positive">+8,4%</span></div>
+                  <div class="showcase-metric__label">Learner aktif</div><strong>1.248</strong><span class="showcase-metric__caption">30 hari terakhir</span>
+                  <svg class="showcase-spark" viewBox="0 0 120 36" aria-hidden="true"><path d="M2 29C16 26 17 14 30 18s13 14 24 8 13-20 25-17 12 16 20 12 10-13 19-12" /></svg>
+                </article>
+                <article class="showcase-metric" data-tone="lime">
+                  <div class="showcase-metric__top"><span class="showcase-icon-tile"><iconify-icon icon="solar:check-read-bold-duotone" width="20" height="20"></iconify-icon></span><span class="showcase-trend is-positive">+12,1%</span></div>
+                  <div class="showcase-metric__label">Modul selesai</div><strong>684</strong><span class="showcase-metric__caption">Dari 1.420 enrolment</span>
+                  <svg class="showcase-spark" viewBox="0 0 120 36" aria-hidden="true"><path d="M2 25c12 3 16-12 28-7s12 11 24 7 13-10 22-8 14-8 23-5 11 11 19 2" /></svg>
+                </article>
+                <article class="showcase-metric" data-tone="orange">
+                  <div class="showcase-metric__top"><span class="showcase-icon-tile"><iconify-icon icon="solar:chart-square-bold-duotone" width="20" height="20"></iconify-icon></span><span class="showcase-trend is-neutral">0,0%</span></div>
+                  <div class="showcase-metric__label">Rata-rata progres</div><strong>48,6%</strong><span class="showcase-metric__caption">Seluruh jalur belajar</span>
+                  <svg class="showcase-spark" viewBox="0 0 120 36" aria-hidden="true"><path d="M2 27c10-2 14-12 25-10s14 7 22 5 14-13 22-8 12 14 21 11 14-10 27-18" /></svg>
+                </article>
+                <article class="showcase-metric" data-tone="blue">
+                  <div class="showcase-metric__top"><span class="showcase-icon-tile"><iconify-icon icon="solar:shield-check-bold-duotone" width="20" height="20"></iconify-icon></span><span class="showcase-trend is-positive">+4,7%</span></div>
+                  <div class="showcase-metric__label">Completion rate</div><strong>76,2%</strong><span class="showcase-metric__caption">Target kuartal ini</span>
+                  <svg class="showcase-spark" viewBox="0 0 120 36" aria-hidden="true"><path d="M2 30c12-4 15-2 25-8s14-6 22-1 12-13 22-11 14 7 22 3 13-4 25-11" /></svg>
+                </article>
+              </div>
+              <div class="showcase-dashboard-grid">
+                <article class="showcase-panel showcase-panel--wide">
+                  <div class="showcase-panel__header"><div><h3>Aktivitas pembelajaran</h3><p>Pergerakan learner dan modul sepanjang minggu.</p></div><button class="showcase-icon-button" aria-label="Opsi panel"><iconify-icon icon="solar:menu-dots-bold" width="18" height="18"></iconify-icon></button></div>
+                  <div class="showcase-chart" role="img" aria-label="Contoh grafik aktivitas pembelajaran"><div class="showcase-chart__y"><span>100</span><span>75</span><span>50</span><span>25</span><span>0</span></div><svg viewBox="0 0 640 210" preserveAspectRatio="none"><g class="showcase-chart__grid"><path d="M0 20H640M0 62H640M0 104H640M0 146H640M0 188H640" /></g><path class="showcase-chart__area" d="M0 156C36 148 46 164 76 139s42-42 70-21 40 51 72 29 40-64 73-56 40 59 72 38 46-74 78-59 40 44 68 29 42-54 74-39 42 37 67 18v129H0Z" /><path class="showcase-chart__line" d="M0 156C36 148 46 164 76 139s42-42 70-21 40 51 72 29 40-64 73-56 40 59 72 38 46-74 78-59 40 44 68 29 42-54 74-39 42 37 67 18" /></svg></div>
+                  <div class="showcase-chart__legend"><span><i data-tone="green"></i> Learner aktif</span><span><i data-tone="orange"></i> Modul selesai</span></div>
+                </article>
+                <article class="showcase-panel">
+                  <div class="showcase-panel__header"><div><h3>Prioritas hari ini</h3><p>Exception-first, bukan noise.</p></div><span class="showcase-count">4</span></div>
+                  <ul class="showcase-priority"><li><span class="showcase-priority__icon" data-tone="orange"><iconify-icon icon="solar:danger-triangle-bold" width="16" height="16"></iconify-icon></span><span><strong>3 learner tertahan</strong><small>Menunggu verifikasi progres</small></span><iconify-icon icon="solar:alt-arrow-right-linear" width="16" height="16"></iconify-icon></li><li><span class="showcase-priority__icon" data-tone="blue"><iconify-icon icon="solar:calendar-date-bold-duotone" width="16" height="16"></iconify-icon></span><span><strong>Review batch mingguan</strong><small>Jadwal 15:00 WIB</small></span><iconify-icon icon="solar:alt-arrow-right-linear" width="16" height="16"></iconify-icon></li><li><span class="showcase-priority__icon" data-tone="green"><iconify-icon icon="solar:verified-check-bold" width="16" height="16"></iconify-icon></span><span><strong>12 sertifikat siap</strong><small>Menunggu publikasi</small></span><iconify-icon icon="solar:alt-arrow-right-linear" width="16" height="16"></iconify-icon></li></ul>
+                </article>
+              </div>
+            </section>
+
+            <section class="showcase-section" id="forms" aria-labelledby="forms-title">
+              <div class="showcase-section__heading"><div><div class="showcase-eyebrow">02 · Forms</div><h2 id="forms-title">Input yang terasa seimbang.</h2></div><span class="showcase-section__note">Label · hint · state · action</span></div>
+              <article class="showcase-panel showcase-form-panel">
+                <div class="showcase-panel__header"><div><h3>Konfigurasi provider</h3><p>Field konsisten untuk setting Academy atau ERP.</p></div><span class="showcase-status showcase-status--quiet"><span></span> Draft</span></div>
+                <div class="showcase-form-grid">
+                  <label class="showcase-field"><span>Nama koneksi</span><input value="AAPM Provider" /></label>
+                  <label class="showcase-field"><span>Preset / protokol</span><select><option>OpenAI-compatible</option><option>Local gateway</option></select></label>
+                  <label class="showcase-field showcase-field--wide"><span>Base URL API</span><input value="https://api.example.test/v1" /></label>
+                  <label class="showcase-field"><span>Model default</span><div class="showcase-input-with-icon"><iconify-icon icon="solar:card-search-bold-duotone" width="17" height="17"></iconify-icon><input placeholder="Cari model..." /></div><small>Combobox mendukung pencarian dan keyboard.</small></label>
+                  <label class="showcase-field"><span>Mode respons</span><div class="showcase-segmented"><button type="button" class="is-active">Streaming</button><button type="button">Batch</button></div></label>
+                </div>
+                <div class="showcase-form-footer"><span><iconify-icon icon="solar:shield-check-bold-duotone" width="16" height="16"></iconify-icon> Credential disimpan server-side.</span><div class="showcase-actions"><button class="showcase-button showcase-button--quiet-dark" type="button">Batal</button><button class="showcase-button showcase-button--primary" id="save-preview" type="button"><iconify-icon icon="solar:diskette-bold-duotone" width="16" height="16"></iconify-icon> Simpan konfigurasi</button></div></div>
+              </article>
+            </section>
+
+            <section class="showcase-section" id="data" aria-labelledby="data-title">
+              <div class="showcase-section__heading"><div><div class="showcase-eyebrow">03 · Data</div><h2 id="data-title">Dense, tapi tetap terbaca.</h2></div><span class="showcase-section__note">Table · status · action</span></div>
+              <article class="showcase-panel">
+                <div class="showcase-panel__header"><div><h3>Daftar enrolment</h3><p>Contoh table dengan status lifecycle.</p></div><div class="showcase-actions"><button class="showcase-button showcase-button--quiet-dark" type="button"><iconify-icon icon="solar:filter-bold-duotone" width="16" height="16"></iconify-icon> Filter</button><button class="showcase-button showcase-button--primary" type="button"><iconify-icon icon="solar:add-circle-bold" width="16" height="16"></iconify-icon> Tambah</button></div></div>
+                <div class="showcase-table-wrap"><table class="showcase-table"><thead><tr><th>Learner</th><th>Jalur</th><th>Progres</th><th>Status</th><th>Terakhir aktif</th><th><span class="showcase-sr-only">Aksi</span></th></tr></thead><tbody><tr><td><div class="showcase-person"><span class="showcase-avatar">FA</span><span><strong>Fahzi Putraj</strong><small>fahzi@example.id</small></span></div></td><td>Layer Management</td><td><div class="showcase-progress"><span style="width:72%"></span></div><small>18 / 25 modul</small></td><td><span class="showcase-chip" data-tone="green"><i></i> Aktif</span></td><td>Hari ini, 09:42</td><td><button class="showcase-icon-button" aria-label="Opsi Fahzi Putraj"><iconify-icon icon="solar:menu-dots-bold" width="17" height="17"></iconify-icon></button></td></tr><tr><td><div class="showcase-person"><span class="showcase-avatar" data-tone="orange">AN</span><span><strong>Adjie Nugraha</strong><small>adjie@example.id</small></span></div></td><td>Foundation</td><td><div class="showcase-progress"><span style="width:38%"></span></div><small>4 / 12 modul</small></td><td><span class="showcase-chip" data-tone="orange"><i></i> Review</span></td><td>Kemarin, 16:08</td><td><button class="showcase-icon-button" aria-label="Opsi Adjie Nugraha"><iconify-icon icon="solar:menu-dots-bold" width="17" height="17"></iconify-icon></button></td></tr><tr><td><div class="showcase-person"><span class="showcase-avatar" data-tone="blue">NR</span><span><strong>Nadia Rahma</strong><small>nadia@example.id</small></span></div></td><td>Biosecurity</td><td><div class="showcase-progress"><span style="width:91%"></span></div><small>20 / 22 modul</small></td><td><span class="showcase-chip" data-tone="blue"><i></i> Verifikasi</span></td><td>12 Agu 2026</td><td><button class="showcase-icon-button" aria-label="Opsi Nadia Rahma"><iconify-icon icon="solar:menu-dots-bold" width="17" height="17"></iconify-icon></button></td></tr></tbody></table></div>
+              </article>
+            </section>
+
+            <section class="showcase-section" id="feedback" aria-labelledby="feedback-title">
+              <div class="showcase-section__heading"><div><div class="showcase-eyebrow">04 · Feedback</div><h2 id="feedback-title">Outcome yang tidak membuat pengguna menebak.</h2></div><span class="showcase-section__note">Toast · confirmation · state</span></div>
+              <div class="showcase-feedback-grid"><article class="showcase-panel"><div class="showcase-panel__header"><div><h3>State view</h3><p>Empty dan error punya arah lanjut.</p></div></div><div class="showcase-state"><span class="showcase-state__icon"><iconify-icon icon="solar:folder-open-bold-duotone" width="22" height="22"></iconify-icon></span><strong>Belum ada data tersimpan</strong><p>Tambahkan koneksi pertama untuk mulai menguji workflow.</p><button class="showcase-button showcase-button--primary" type="button">Tambah koneksi</button></div></article><article class="showcase-panel"><div class="showcase-panel__header"><div><h3>Confirmation</h3><p>Dialog desain untuk tindakan berisiko.</p></div></div><div class="showcase-confirm"><span class="showcase-confirm__icon"><iconify-icon icon="solar:danger-triangle-bold" width="22" height="22"></iconify-icon></span><div><strong>Hapus draft provider?</strong><p>Perubahan yang belum disimpan akan hilang. Pengguna tetap punya jalan keluar yang jelas.</p><div class="showcase-actions"><button class="showcase-button showcase-button--quiet-dark" type="button">Batal</button><button class="showcase-button showcase-button--danger" id="confirm-preview" type="button">Hapus draft</button></div></div></div></article></div>
+            </section>
+
+            <footer class="showcase-footer"><span>AAPM UI · built from Academy foundation</span><a href="../readme.md">Baca architecture notes <iconify-icon icon="solar:arrow-right-up-bold" width="15" height="15"></iconify-icon></a></footer>
+          </div>
+        </main>
+      </div>
+      <nav class="aapm-bottom-nav showcase-bottom-nav" aria-label="Navigasi katalog mobile"><div class="aapm-bottom-nav__items"><button class="aapm-bottom-nav__item" data-active="true"><iconify-icon icon="solar:home-angle-bold-duotone" width="18" height="18"></iconify-icon><span>Overview</span></button><button class="aapm-bottom-nav__item" data-center="true"><iconify-icon icon="solar:widget-5-bold-duotone" width="20" height="20"></iconify-icon><span>Components</span></button><button class="aapm-bottom-nav__item"><iconify-icon icon="solar:book-2-bold-duotone" width="18" height="18"></iconify-icon><span>Docs</span></button></div></nav>
+    </div>
+    <div class="showcase-live-region" id="live-region" aria-live="polite"></div>
+    <script src="./showcase.js"></script>
+  </body>
+</html>

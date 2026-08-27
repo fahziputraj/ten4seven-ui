@@ -1,0 +1,32 @@
+/* 4 / 8 rhythm. Density is a documented property of a page, not a per-component guess. */
+:root{
+  --space-1:0.25rem;--space-2:0.5rem;--space-3:0.75rem;--space-4:1rem;--space-5:1.25rem;
+  --space-6:1.5rem;--space-7:1.75rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;--space-16:4rem;
+
+  /* Radius. Mirrors the Academy runtime exactly: --radius drives the Tailwind sm/md/lg trio. */
+  --radius-sm:0.625rem;   /* 10px */
+  --radius-md:0.875rem;   /* 14px — the base --radius */
+  --radius-lg:1.25rem;    /* 20px */
+  --radius:var(--radius-md);
+  --radius-control:0.75rem;  /* 12px — buttons, inputs, nav items, icon tiles */
+  --radius-panel:1rem;       /* 16px — inner panels, progress cards */
+  --radius-shell:1.5rem;     /* 24px — auth card, marketing shells */
+  --radius-full:9999px;      /* badges, chips, progress tracks, avatars */
+
+  /* Component geometry */
+  --card-radius:var(--radius-lg);
+  --card-padding:var(--space-6);
+  --control-height:2.75rem;/* @kind spacing */      /* 44px input / touch target */
+  --control-height-sm:2rem;/* @kind spacing */      /* 32px */
+  --control-height-md:2.5rem;/* @kind spacing */    /* 40px default button */
+  --control-height-lg:3rem;/* @kind spacing */      /* 48px auth + primary CTA */
+  --shell-header-height:73px;/* @kind spacing */
+  --sidebar-width:264px;/* @kind spacing */
+  --sidebar-width-collapsed:76px;/* @kind spacing */
+  --content-max:80rem;/* @kind spacing */
+
+  /* Density: comfortable | default | compact. Applied via [data-density]. */
+  --row-height:2.75rem;/* @kind spacing */--cell-padding-y:var(--space-2);--cell-padding-x:var(--space-3);
+}
+[data-density="comfortable"]{--row-height:3.25rem;/* @kind spacing */--cell-padding-y:var(--space-3);--cell-padding-x:var(--space-4);--card-padding:var(--space-6)}
+[data-density="compact"]{--row-height:2.25rem;/* @kind spacing */--cell-padding-y:0.375rem;--cell-padding-x:var(--space-2);--card-padding:var(--space-4)}

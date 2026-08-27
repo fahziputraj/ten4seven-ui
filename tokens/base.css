@@ -1,0 +1,12 @@
+/* Minimal element defaults so a bare page already reads as AAPM. */
+html{font-family:var(--font-body);text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;overflow-x:hidden !important}
+body{margin:0;max-width:100%;overflow-x:hidden !important;background:var(--background);color:var(--foreground);font:var(--type-body)}
+*,*::before,*::after{box-sizing:border-box}
+::selection{background:hsl(var(--brand-lime-hsl) / .34);color:var(--foreground)}
+button,a,input,select,textarea{-webkit-tap-highlight-color:transparent}
+a{color:var(--brand-green);text-decoration:none;text-underline-offset:4px}
+a:hover{color:var(--brand-green);text-decoration:underline}
+.dark a,.dark a:hover{color:var(--primary)}
+:focus-visible{outline:2px solid var(--ring);outline-offset:2px}
+[data-numeric],.aapm-numeric{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}}

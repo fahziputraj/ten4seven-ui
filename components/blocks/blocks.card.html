@@ -1,0 +1,43 @@
+<!-- @dsCard group="Components" viewport="700x480" name="Blocks — page, filters, KPIs, record, decision" subtitle="PageHeader, FilterToolbar, KPICluster, RecordSummary, FormSection, ApprovalPanel, BulkActionBar, ActionFooter" -->
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css"><style>body{margin:0;padding:18px;background:var(--background);font-family:var(--font-body)}.lbl{font-size:var(--text-2xs);font-weight:600;letter-spacing:var(--tracking-overline);text-transform:uppercase;color:var(--muted-foreground);margin:0 0 7px}.row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:14px}.col{display:flex;flex-direction:column;gap:8px}</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { PageHeader, FilterToolbar, KPICluster, RecordSummary, FormSection, ApprovalPanel, BulkActionBar, ActionFooter, Breadcrumb, Button, StatusChip, Select, Input, FormField, Progress } = window.AAPMDesignSystem_07e1a3;
+function Demo(){
+const [q,setQ]=React.useState("");const [note,setNote]=React.useState("");
+return <>
+<PageHeader overline="Purchase · Invoice" title="Purchase Invoice" description="Kelola tagihan supplier, verifikasi dokumen, dan ajukan pembayaran."
+ breadcrumb={<Breadcrumb items={[{label:"Purchase",href:"#"},{label:"Purchase Invoice"}]} />}
+ actions={<><Button variant="outline" size="sm" icon="export">Ekspor</Button><Button size="sm" icon="add">Buat invoice</Button></>}
+ meta={<><StatusChip status="in-review" size="sm" /><span style={{font:'var(--type-caption)',color:'var(--muted-foreground)'}}>482 dokumen · diperbarui 14:32</span></>}
+ style={{marginBottom:14}} />
+<FilterToolbar searchValue={q} onSearchChange={setQ}
+ filters={<><div style={{width:150}}><Select size="sm" placeholder="Semua status" options={["In review","Approved","Overdue"]} /></div><div style={{width:140}}><Select size="sm" placeholder="30 hari" options={["7 hari","30 hari","90 hari"]} /></div></>}
+ applied={[{key:"status",label:"Status: In review"},{key:"farm",label:"Farm: Kandang 3"}]} onRemoveFilter={()=>{}} onClearAll={()=>{}}
+ trailing={<Button variant="outline" size="sm" icon="filter">Filter lanjutan</Button>} style={{marginBottom:14}} />
+<KPICluster title="Snapshot hari ini" compact items={[
+{icon:"egg",label:"Produksi telur",value:"91,8",unit:"%",delta:"+2,4%",direction:"up",caption:"vs minggu lalu",visualization:<Progress value={92} tone="lime" size="sm" />},
+{icon:"invoice",label:"Menunggu verifikasi",value:"24",unit:"dok",status:"Finance",tone:"blue",accent:"blue"},
+{icon:"mortality",label:"Mortalitas",value:"0,08",unit:"%",delta:"-0,01%",direction:"up",tone:"orange",accent:"orange"},
+{icon:"wallet",label:"Penjualan",value:"Rp 482,6 jt",delta:"+6,1%",direction:"up"}]} style={{marginBottom:14}} />
+<BulkActionBar count={3} noun="dokumen" onClear={()=>{}} actions={<><Button variant="ghost" size="sm" icon="approve">Setujui</Button><Button variant="ghost" size="sm" icon="export">Ekspor</Button><Button variant="ghost" size="sm" icon="archive">Arsipkan</Button></>} style={{marginBottom:14}} />
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16,alignItems:'start',marginBottom:14}}>
+<RecordSummary recordId="PI-2026-00841" title="CV Sumber Pakan Jaya" status="in-review"
+ fields={[{label:"Tanggal",value:"24 Agustus 2026"},{label:"Jatuh tempo",value:"23 Sep 2026"},{label:"Nomor PO",value:"PO-2026-00612"},{label:"Total",value:"Rp 482.650.000",numeric:true,strong:true}]}
+ actions={<Button variant="outline" size="sm" icon="print">Cetak</Button>} />
+<ApprovalPanel description="Periksa kelengkapan dokumen sebelum menyetujui." noteValue={note} onNoteChange={(e)=>setNote(e.target.value)}
+ checks={[{state:"pass",label:"Nilai invoice sesuai PO",detail:"Selisih Rp 0"},{state:"warn",label:"Surat jalan discan sebagian",detail:"2 dari 3 lampiran"},{state:"fail",label:"Faktur pajak belum diunggah"}]}
+ onApprove={()=>{}} onRevise={()=>{}} onReject={()=>{}} />
+</div>
+<FormSection title="Informasi dokumen" description="Nomor dan tanggal mengikuti periode akuntansi yang aktif." columns={2} divider={false}>
+<FormField id="a" label="Nomor invoice" required><Input id="a" defaultValue="PI-2026-00841" /></FormField>
+<FormField id="b" label="Tanggal dokumen" required><Input id="b" type="date" defaultValue="2026-08-24" /></FormField>
+</FormSection>
+<ActionFooter sticky={false} hint="Perubahan terakhir disimpan 14:32" tertiary={<Button variant="ghost" size="sm" icon="delete">Hapus draft</Button>} secondary={<Button variant="outline" size="sm">Simpan draft</Button>} primary={<Button size="sm" icon="submit">Ajukan untuk verifikasi</Button>} style={{borderRadius:'var(--radius-panel)',border:'1px solid var(--border)'}} />
+</>}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script></body></html>

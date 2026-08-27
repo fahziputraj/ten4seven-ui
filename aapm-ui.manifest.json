@@ -1,0 +1,52 @@
+{
+  "displayName": "AAPM UI",
+  "version": "0.2.0",
+  "namespace": "AAPMUI_0826",
+  "sourceOfTruth": "index.js + styles.css + tokens/",
+  "defaultTheme": "light",
+  "compositionModel": {
+    "name": "AAPM UI Instant",
+    "visualReference": "Minimal UI patterns",
+    "interactionReference": "HeroUI behavior and accessibility",
+    "iconSurface": "Iconify semantic registry",
+    "ownedLayer": "AAPM UI tokens, components, recipes, and responsive contracts"
+  },
+  "themes": ["light", "dark", "system"],
+  "font": {
+    "family": "Inter",
+    "files": [
+      "assets/fonts/Inter-Variable.woff2",
+      "assets/fonts/Inter-Variable-Italic.woff2"
+    ],
+    "license": "assets/fonts/Inter-OFL.txt"
+  },
+  "styles": "styles.css",
+  "entrypoint": "index.js",
+  "compatibility": {
+    "react": ">=18",
+    "runtimeFramework": false,
+    "iconSurface": "Local Iconify React data through components/core/Icon.jsx",
+    "canvas": "white by default; semantic dark theme via .dark"
+  },
+  "componentGroups": {
+    "layout": ["AppShell", "Sidebar", "Topbar", "PageContainer", "BottomNav"],
+    "core": ["Accordion", "Badge", "Button", "ButtonGroup", "Card", "Chip", "Divider", "Icon", "IconButton", "IconTile", "Progress", "Spinner", "SplitButton", "Stat", "Surface"],
+    "blocks": ["PageHeader", "FilterToolbar", "DataTableToolbar", "KPICluster", "TrendCard", "ExceptionCard", "RecordSummary", "DetailSidebar", "FormSection", "TransactionDetailGrid", "ApprovalPanel", "VerificationPanel", "BulkActionBar", "ActionFooter", "DashboardGrid", "DashboardPanel"],
+    "operations": ["MilestoneTimeline", "ProcessBoard"],
+    "data": ["Avatar", "DataTable", "KeyValueList", "MetricCard", "ProgressRing", "Skeleton", "StatusChip", "ActivityFeed", "AuditTimeline"],
+    "charts": ["Sparkline", "TrendIndicator", "BulletChart", "BarChart", "LineChart", "DonutChart", "Heatmap"],
+    "forms": ["Checkbox", "Combobox", "CurrencyInput", "DatePicker", "DateRangePicker", "DateTimePicker", "FileUpload", "FormField", "Input", "Label", "MultiSelect", "NumberInput", "OtpInput", "PercentInput", "Radio", "SearchInput", "Select", "Switch", "Textarea", "TimePicker"],
+    "feedback": ["Alert", "Toast", "ToastProvider", "ConfirmDialog", "EmptyState", "StateView", "PermissionGate"],
+    "navigation": ["Tabs", "Breadcrumb", "NavItem", "Pagination", "Stepper", "CommandMenu"],
+    "overlays": ["Modal", "Drawer", "Popover", "Tooltip"]
+  },
+  "tokens": {
+    "primitive": ["palette.css", "spacing.css", "typography.css", "elevation.css", "motion.css"],
+    "semantic": ["semantic.css", "dark.css"],
+    "component": ["components.css", "layout.css"]
+  },
+  "kits": ["ui_kits/academy", "ui_kits/erp"],
+  "showcase": "showcase/catalog.html",
+  "foundationShowcase": "showcase/index.html",
+  "guidelines": ["guidelines/architecture.md", "guidelines/responsive.md", "guidelines/accessibility.md", "guidelines/component-matrix.md", "guidelines/iconography.md", "guidelines/instant-composition.md", "guidelines/operational-composition.md", "guidelines/governance.md", "guidelines/master-spec-review.md", "guidelines/page-templates.md"]
+}

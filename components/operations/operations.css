@@ -1,0 +1,72 @@
+.aapm-milestone-empty,
+.aapm-process-board-empty{margin:0;padding:var(--space-6);border:1px dashed var(--border);border-radius:var(--component-card-radius);background:var(--surface-subtle);color:var(--muted-foreground);font:var(--type-body);text-align:center}
+.aapm-milestone-timeline{display:flex;gap:0;margin:0;padding:0;list-style:none;color:var(--foreground)}
+.aapm-milestone-timeline__item{position:relative;min-width:0}
+.aapm-milestone-timeline[data-orientation="vertical"]{flex-direction:column}
+.aapm-milestone-timeline[data-orientation="vertical"] .aapm-milestone-timeline__item{display:grid;grid-template-columns:2rem minmax(0,1fr);column-gap:var(--space-3)}
+.aapm-milestone-timeline[data-orientation="horizontal"]{flex-direction:row}
+.aapm-milestone-timeline[data-orientation="horizontal"] .aapm-milestone-timeline__item{display:flex;flex:1;flex-direction:column}
+.aapm-milestone-timeline__rail{display:flex;align-items:center;flex:none}
+.aapm-milestone-timeline[data-orientation="vertical"] .aapm-milestone-timeline__rail{flex-direction:column}
+.aapm-milestone-timeline[data-orientation="horizontal"] .aapm-milestone-timeline__rail{width:100%}
+.aapm-milestone-timeline__marker{position:relative;z-index:1;display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;flex:none;border:1px solid var(--border);border-radius:var(--radius-full);background:var(--surface-muted);color:var(--muted-foreground);transition:background-color var(--duration-fast) var(--ease-out),border-color var(--duration-fast) var(--ease-out),color var(--duration-fast) var(--ease-out),transform var(--duration-fast) var(--ease-out)}
+.aapm-milestone-timeline__connector{display:block;flex:1;background:var(--border-subtle)}
+.aapm-milestone-timeline[data-orientation="vertical"] .aapm-milestone-timeline__connector{width:2px;min-height:1.25rem;margin-block:var(--space-1)}
+.aapm-milestone-timeline[data-orientation="horizontal"] .aapm-milestone-timeline__connector{height:2px;margin-inline:var(--space-2)}
+.aapm-milestone-timeline__connector[data-complete="true"]{background:var(--state-approved)}
+.aapm-milestone-timeline__content{min-width:0;padding:0 0 var(--space-5);text-align:left}
+.aapm-milestone-timeline[data-density="compact"] .aapm-milestone-timeline__content{padding-bottom:var(--space-3)}
+.aapm-milestone-timeline[data-orientation="horizontal"] .aapm-milestone-timeline__content{padding:var(--space-3) var(--space-4) 0 0}
+.aapm-milestone-timeline__content--button{display:block;width:100%;border:0;background:transparent;color:inherit;font:inherit;cursor:pointer}
+.aapm-milestone-timeline__content--button:focus-visible{border-radius:var(--radius-control);box-shadow:var(--component-focus-ring)}
+.aapm-milestone-timeline__content--button:hover .aapm-milestone-timeline__marker{transform:scale(1.04)}
+.aapm-milestone-timeline__heading{display:flex;align-items:center;flex-wrap:wrap;gap:var(--space-2);min-width:0}
+.aapm-milestone-timeline__label{font:var(--type-label);color:var(--foreground)}
+.aapm-milestone-timeline__state{display:inline-flex;align-items:center;min-height:1.5rem;padding-inline:var(--space-2);border:1px solid var(--border-subtle);border-radius:var(--radius-full);font:var(--type-caption);font-weight:var(--weight-semibold);white-space:nowrap}
+.aapm-milestone-timeline__state[data-state="complete"]{border-color:hsl(var(--state-approved-hsl) / .3);background:hsl(var(--state-approved-hsl) / .1);color:var(--state-approved)}
+.aapm-milestone-timeline__state[data-state="current"]{border-color:hsl(var(--state-progress-hsl) / .34);background:hsl(var(--state-progress-hsl) / .1);color:var(--state-progress)}
+.aapm-milestone-timeline__state[data-state="blocked"]{border-color:hsl(var(--state-blocked-hsl) / .3);background:hsl(var(--state-blocked-hsl) / .1);color:var(--state-blocked)}
+.aapm-milestone-timeline__state[data-state="upcoming"],
+.aapm-milestone-timeline__state[data-state="skipped"]{color:var(--muted-foreground)}
+.aapm-milestone-timeline__description{display:block;margin-top:var(--space-1);color:var(--muted-foreground);font:var(--type-caption);line-height:1.45}
+.aapm-milestone-timeline__meta{display:flex;align-items:center;flex-wrap:wrap;gap:var(--space-3);margin-top:var(--space-2);color:var(--muted-foreground);font:var(--type-caption);font-variant-numeric:tabular-nums}
+.aapm-milestone-timeline__meta span{display:inline-flex;align-items:center;gap:var(--space-1)}
+.aapm-milestone-timeline__action{display:block;margin-top:var(--space-2);color:var(--brand-green);font:var(--type-caption);font-weight:var(--weight-semibold)}
+.aapm-milestone-timeline__item[data-state="complete"] .aapm-milestone-timeline__marker{border-color:hsl(var(--state-approved-hsl) / .4);background:hsl(var(--state-approved-hsl) / .12);color:var(--state-approved)}
+.aapm-milestone-timeline__item[data-state="current"] .aapm-milestone-timeline__marker{border-color:var(--state-progress);background:var(--state-progress);color:var(--primary-foreground);box-shadow:0 0 0 4px hsl(var(--state-progress-hsl) / .14)}
+.aapm-milestone-timeline__item[data-state="blocked"] .aapm-milestone-timeline__marker{border-color:hsl(var(--state-blocked-hsl) / .5);background:hsl(var(--state-blocked-hsl) / .1);color:var(--state-blocked)}
+.aapm-milestone-timeline__item[data-state="skipped"] .aapm-milestone-timeline__marker{color:var(--muted-foreground)}
+.aapm-process-board{min-width:0;color:var(--foreground)}
+.aapm-process-board__scroll{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:1px 1px var(--space-2)}
+.aapm-process-board__grid{display:grid;grid-template-columns:repeat(var(--aapm-process-columns),minmax(17rem,1fr));gap:var(--space-4);min-width:max(100%,calc(var(--aapm-process-columns) * 17rem))}
+.aapm-process-board[data-mobile="stack"] .aapm-process-board__grid{min-width:0}
+.aapm-process-board__column{min-width:0;border:1px solid var(--component-border-subtle);border-radius:var(--component-card-radius);background:var(--surface-subtle);overflow:hidden}
+.aapm-process-board__column-header{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-3);padding:var(--space-4);border-bottom:1px solid var(--component-border-subtle);background:var(--card)}
+.aapm-process-board__column-title{display:flex;align-items:flex-start;gap:var(--space-3);min-width:0}
+.aapm-process-board__column-title>span{min-width:0}
+.aapm-process-board__column-title h2{margin:0;font:var(--type-card-title);font-size:var(--text-sm);letter-spacing:var(--tracking-title)}
+.aapm-process-board__column-title p{margin:var(--space-1) 0 0;color:var(--muted-foreground);font:var(--type-caption)}
+.aapm-process-board__count{display:inline-flex;align-items:center;justify-content:center;min-width:1.75rem;height:1.75rem;padding-inline:var(--space-2);border-radius:var(--radius-full);background:var(--surface-muted);color:var(--muted-foreground);font:var(--type-caption);font-weight:var(--weight-semibold);font-variant-numeric:tabular-nums}
+.aapm-process-board__list{display:flex;flex-direction:column;gap:var(--space-3);margin:0;padding:var(--space-3);list-style:none}
+.aapm-process-board__list>li{min-width:0}
+.aapm-process-board__empty{padding:var(--space-5) var(--space-3);border:1px dashed var(--border);border-radius:var(--radius-control);color:var(--muted-foreground);font:var(--type-caption);text-align:center}
+.aapm-process-card{display:flex;flex-direction:column;gap:var(--space-2);min-width:0;padding:var(--space-3);border:1px solid var(--component-border-subtle);border-radius:var(--radius-control);background:var(--card);box-shadow:var(--component-card-shadow);transition:var(--component-elevation-transition);outline:none}
+.aapm-process-card:hover{border-color:hsl(var(--primary-hsl) / .34);box-shadow:var(--component-card-shadow-hover);transform:translateY(-1px)}
+.aapm-process-card:focus-visible{border-color:var(--border-focus);box-shadow:var(--component-focus-ring)}
+.aapm-process-card--movable{cursor:grab}
+.aapm-process-card--movable:active{cursor:grabbing}
+.aapm-process-card[data-priority="high"]{border-inline-start:3px solid var(--state-blocked)}
+.aapm-process-card[data-priority="medium"]{border-inline-start:3px solid var(--state-progress)}
+.aapm-process-card[data-priority="low"]{border-inline-start:3px solid var(--state-approved)}
+.aapm-process-card__top{display:flex;align-items:center;gap:var(--space-2);color:var(--muted-foreground)}
+.aapm-process-card__priority{margin-left:auto;font:var(--type-caption);font-weight:var(--weight-semibold)}
+.aapm-process-card__priority[data-priority="high"]{color:var(--state-blocked)}
+.aapm-process-card__priority[data-priority="medium"]{color:var(--state-progress)}
+.aapm-process-card__priority[data-priority="low"]{color:var(--state-approved)}
+.aapm-process-card__title{display:block;color:var(--foreground);font:var(--type-label);font-weight:var(--weight-semibold)}
+.aapm-process-card__description{display:block;color:var(--muted-foreground);font:var(--type-caption);line-height:1.45}
+.aapm-process-card__footer{display:flex;align-items:center;gap:var(--space-2);min-width:0;margin-top:var(--space-1)}
+.aapm-process-card__meta{min-width:0;overflow:hidden;margin-left:auto;color:var(--muted-foreground);font:var(--type-caption);font-variant-numeric:tabular-nums;text-overflow:ellipsis;white-space:nowrap}
+.aapm-process-board__hint{display:flex;align-items:center;gap:var(--space-2);margin:var(--space-2) 0 0;color:var(--muted-foreground);font:var(--type-caption)}
+@media (max-width:48rem){.aapm-milestone-timeline[data-orientation="horizontal"]{flex-direction:column}.aapm-milestone-timeline[data-orientation="horizontal"] .aapm-milestone-timeline__item{display:grid;grid-template-columns:2rem minmax(0,1fr);column-gap:var(--space-3);flex:none}.aapm-milestone-timeline[data-orientation="horizontal"] .aapm-milestone-timeline__rail{width:auto;flex-direction:column;align-items:center}.aapm-milestone-timeline[data-orientation="horizontal"] .aapm-milestone-timeline__connector{width:2px;height:auto;min-height:1.25rem;margin-block:var(--space-1);margin-inline:0}.aapm-milestone-timeline[data-orientation="horizontal"] .aapm-milestone-timeline__content{padding:0 0 var(--space-4)}.aapm-process-board[data-mobile="stack"] .aapm-process-board__grid{grid-template-columns:1fr}.aapm-process-board[data-mobile="scroll"] .aapm-process-board__grid{grid-template-columns:repeat(var(--aapm-process-columns),17rem);min-width:max-content}}
+@media (prefers-reduced-motion:reduce){.aapm-milestone-timeline__marker,.aapm-process-card{transition:none}.aapm-milestone-timeline__content--button:hover .aapm-milestone-timeline__marker,.aapm-process-card:hover{transform:none}}

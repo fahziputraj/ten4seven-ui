@@ -1,0 +1,114 @@
+<!-- @dsCard group="Domain — poultry" viewport="700x900" name="Register — performa flock & grading telur" subtitle="DataTable dengan total, kolom sticky, grouping, density compact, dan versi mobile sebagai kartu" -->
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css"><style>body{margin:0;padding:18px;background:var(--background);font-family:var(--font-body)}.lbl{font-size:var(--text-2xs);font-weight:600;letter-spacing:var(--tracking-overline);text-transform:uppercase;color:var(--muted-foreground);margin:0 0 7px}.sub{font:var(--type-caption);color:var(--muted-foreground);margin:-4px 0 10px}.phone{width:360px;border:1px solid var(--surface-border);border-radius:var(--radius-shell);padding:14px;background:var(--card)}.num{font-variant-numeric:tabular-nums}</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script src="./aapm-domain-data.js"></script>
+<script type="text/babel">
+const { PageHeader, FilterToolbar, DataTable, StatusChip, IconButton, Button, Select, Badge, Surface, KeyValueList, Sparkline, Progress, StateView, Icon } = window.AAPMDesignSystem_07e1a3;
+const D = window.AAPMDomain, f = D.fmt;
+const hdTone = (v) => v >= 90 ? "var(--state-approved)" : v >= 85 ? "var(--warning)" : "var(--danger)";
+const g = D.grading.map(r => ({ ...r, total: r.jumbo + r.besar + r.sedang + r.kecil + r.retak + r.kotor }));
+const sum = (k) => g.reduce((a, r) => a + r[k], 0);
+
+function Demo(){
+const [q,setQ] = React.useState("");
+const [sel,setSel] = React.useState(["K3"]);
+const [sort,setSort] = React.useState({key:"hd",dir:"desc"});
+const [exp,setExp] = React.useState(["K6"]);
+const flocks = [...D.flocks].sort((a,b)=> (sort.dir==="desc"?-1:1)*(a[sort.key]>b[sort.key]?1:-1));
+return <>
+<PageHeader overline="Farm · Monitoring" title="Performa flock per kandang" description="Satu baris per kandang, minggu berjalan. Kandang di bawah standar strain naik ke atas lewat sortir, tidak lewat warna saja."
+ actions={<><Button variant="outline" size="sm" icon="export">Ekspor</Button><Button size="sm" icon="report">Laporan mingguan</Button></>}
+ meta={<><Badge size="sm" tone="slate">Minggu 34 · 2026</Badge><span style={{font:'var(--type-caption)',color:'var(--muted-foreground)'}}>6 kandang aktif · 145.390 ekor</span></>}
+ style={{marginBottom:14}} />
+<FilterToolbar searchValue={q} onSearchChange={setQ}
+ filters={<><div style={{width:150}}><Select size="sm" placeholder="Semua strain" options={["Isa Brown","Lohmann Brown","Hy-Line Brown"]} /></div><div style={{width:150}}><Select size="sm" placeholder="Semua fase" options={["Pullet","Puncak","Pasca puncak","Afkir"]} /></div></>}
+ applied={[{key:"a",label:"Fase: Puncak & pasca puncak"}]} onRemoveFilter={()=>{}} onClearAll={()=>{}}
+ trailing={<Button variant="outline" size="sm" icon="filter">Filter lanjutan</Button>} style={{marginBottom:12}} />
+
+<DataTable selectable selectedIds={sel} getRowId={(r)=>r.id}
+ onToggleRow={(id)=>setSel(s=>s.includes(id)?s.filter(x=>x!==id):[...s,id])} onToggleAll={(n)=>setSel(n?D.flocks.map(r=>r.id):[])}
+ sort={sort} onSort={(k)=>setSort(s=>({key:k,dir:s.key===k&&s.dir==="desc"?"asc":"desc"}))}
+ rows={flocks} expandedIds={exp} onToggleExpand={(id)=>setExp(e=>e.includes(id)?e.filter(x=>x!==id):[...e,id])}
+ renderExpanded={(r)=><div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1.2fr',gap:16,alignItems:'start'}}>
+   <KeyValueList dense items={[{label:"Strain",value:r.strain},{label:"Populasi",value:f.num(r.pop)+" ekor",numeric:true},{label:"Deplesi kumulatif",value:f.pct(r.depl),numeric:true}]} />
+   <KeyValueList dense items={[{label:"Berat telur",value:f.gram(r.eggWeight,1),numeric:true},{label:"Pakan/ekor",value:f.gram(r.feed),numeric:true},{label:"FCR",value:f.num(r.fcr,2),numeric:true}]} />
+   <div><div style={{font:'var(--type-caption)',color:'var(--muted-foreground)',marginBottom:4}}>Hen-day 12 minggu terakhir</div>
+   <Sparkline data={[92,91,90,89,88,86,85,83,82,80,79,r.hd]} target={90} /></div>
+ </div>}
+ columns={[
+  {key:"house",label:"Kandang",strong:true,sticky:true,sortable:true,width:118},
+  {key:"strain",label:"Strain",muted:true,width:132},
+  {key:"age",label:"Umur",numeric:true,sortable:true,width:70,render:(r)=>f.num(r.age)+" mg"},
+  {key:"pop",label:"Populasi",numeric:true,sortable:true,render:(r)=>f.num(r.pop)},
+  {key:"hd",label:"HD%",numeric:true,sortable:true,render:(r)=><span className="num" style={{color:hdTone(r.hd),fontWeight:650}}>{f.pct(r.hd)}</span>},
+  {key:"fcr",label:"FCR",numeric:true,sortable:true,render:(r)=>f.num(r.fcr,2)},
+  {key:"depl",label:"Deplesi",numeric:true,sortable:true,render:(r)=>f.pct(r.depl)},
+  {key:"eggWeight",label:"Berat telur",numeric:true,render:(r)=>f.gram(r.eggWeight,1)},
+  {key:"status",label:"Laporan",width:118,render:(r)=><StatusChip status={r.status} size="sm" icon={false} />},
+  {key:"act",label:"",width:44,render:()=><IconButton icon="more" label="Tindakan" size="sm" />}]}
+ summary={{house:"6 kandang",pop:f.num(145390),hd:"89,4%",fcr:"2,13",depl:"4,0%"}} style={{marginBottom:20}} />
+
+<div className="lbl">Register grading telur · density compact</div>
+<p className="sub">Register besar dijalankan pada <code>[data-density="compact"]</code> — baris 36px, angka tetap tabular, total direkonsiliasi di baris ringkasan tabel, bukan di kartu terpisah.</p>
+<div data-density="compact" style={{marginBottom:20}}>
+<DataTable stickyHeader rows={g} getRowId={(r)=>r.id}
+ columns={[
+  {key:"house",label:"Kandang",strong:true,sticky:true,width:110},
+  {key:"date",label:"Tanggal",muted:true,width:92},
+  {key:"jumbo",label:"Jumbo",numeric:true,render:(r)=>f.num(r.jumbo)},
+  {key:"besar",label:"Besar (L)",numeric:true,render:(r)=>f.num(r.besar)},
+  {key:"sedang",label:"Sedang (M)",numeric:true,render:(r)=>f.num(r.sedang)},
+  {key:"kecil",label:"Kecil (S)",numeric:true,render:(r)=>f.num(r.kecil)},
+  {key:"retak",label:"Retak",numeric:true,render:(r)=><span className="num" style={{color:'var(--warning)'}}>{f.num(r.retak)}</span>},
+  {key:"kotor",label:"Kotor",numeric:true,render:(r)=><span className="num" style={{color:'var(--warning)'}}>{f.num(r.kotor)}</span>},
+  {key:"total",label:"Total",numeric:true,strong:true,render:(r)=>f.num(r.total)},
+  {key:"tray",label:"Tray",numeric:true,muted:true,render:(r)=>f.num(Math.round(r.total/30))},
+  {key:"status",label:"Status",width:104,render:(r)=><StatusChip status={r.status} size="sm" icon={false} />}]}
+ summary={{house:"5 laporan",jumbo:f.num(sum("jumbo")),besar:f.num(sum("besar")),sedang:f.num(sum("sedang")),kecil:f.num(sum("kecil")),retak:f.num(sum("retak")),kotor:f.num(sum("kotor")),total:f.num(sum("total")),tray:f.num(Math.round(sum("total")/30))}} />
+</div>
+
+<div style={{display:'grid',gridTemplateColumns:'360px 1fr',gap:22,alignItems:'start'}}>
+<div>
+<div className="lbl">Mobile · tabel jadi kartu</div>
+<p className="sub">Di bawah 768px register tidak diperkecil, tetapi diubah jadi daftar kartu: identitas, satu angka utama, sisanya baris kunci-nilai.</p>
+<div className="phone" data-density="comfortable">
+{D.flocks.slice(0,3).map(r=>
+<Surface key={r.id} padding={4} style={{marginBottom:8}}>
+  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:6}}>
+    <div style={{display:'flex',alignItems:'center',gap:7}}><Icon name="barn" size={18} style={{color:'var(--brand-green)'}} />
+    <span style={{font:'var(--type-label)',fontWeight:650}}>{r.house}</span></div>
+    <StatusChip status={r.status} size="sm" icon={false} />
+  </div>
+  <div style={{display:'flex',alignItems:'baseline',gap:6,marginBottom:6}}>
+    <span className="num" style={{fontSize:'var(--text-3xl)',fontWeight:600,letterSpacing:'-0.04em',color:hdTone(r.hd)}}>{f.pct(r.hd)}</span>
+    <span style={{font:'var(--type-caption)',color:'var(--muted-foreground)'}}>hen-day · minggu {r.age}</span>
+  </div>
+  <Progress value={r.hd} tone={r.hd>=90?"lime":"orange"} size="sm" />
+  <div style={{height:8}} />
+  <KeyValueList dense items={[{label:"FCR",value:f.num(r.fcr,2),numeric:true},{label:"Deplesi",value:f.pct(r.depl),numeric:true},{label:"Populasi",value:f.num(r.pop),numeric:true}]} />
+</Surface>)}
+</div>
+</div>
+<div>
+<div className="lbl">Kosong · belum ada laporan</div>
+<StateView state="empty" title="Belum ada laporan grading hari ini" description="Register terisi setelah petugas grading mengirim laporan pertama. Laporan kemarin bisa dijadikan acuan." style={{marginBottom:12}} />
+<div className="lbl">Gagal muat</div>
+<StateView state="error" title="Register belum dapat dimuat" description="Data performa flock gagal diambil dari server. Coba lagi untuk melanjutkan." onRetry={()=>{}} />
+<div className="lbl" style={{marginTop:14}}>Aturan kolom</div>
+<Surface padding={4}>
+<KeyValueList dense items={[
+ {label:"Kolom identitas",value:"strong + sticky"},
+ {label:"Angka & uang",value:"numeric — kanan, tabular"},
+ {label:"Ambang batas",value:"warna hanya pada nilai, bukan baris"},
+ {label:"Total",value:"baris summary tabel"},
+ {label:"Baris > 12 kolom",value:"expandable row, bukan scroll"}]} />
+</Surface>
+</div>
+</div>
+</>}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script></body></html>

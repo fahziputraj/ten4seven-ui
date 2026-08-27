@@ -1,0 +1,49 @@
+/* Component tokens. Keep component geometry and interaction contracts separate
+   from brand primitives and semantic meaning. Consumers may tune density, but
+   components should never invent their own values. */
+:root{
+  --component-border-subtle:hsl(var(--border-hsl) / .72);
+  --component-control-radius:var(--radius-control);
+  --component-control-height:var(--control-height);
+  --component-control-height-sm:var(--control-height-sm);
+  --component-control-height-md:var(--control-height-md);
+  --component-control-height-lg:var(--control-height-lg);
+  --component-control-padding-x:var(--space-4);
+  --component-control-gap:var(--space-2);
+  --component-control-transition:background-color var(--duration-fast),border-color var(--duration-fast),box-shadow var(--duration-fast),color var(--duration-fast),transform var(--duration-fast);
+  --component-focus-ring:0 0 0 3px hsl(var(--ring-hsl) / .2);
+  --component-card-radius:var(--card-radius);
+  --component-card-padding:var(--card-padding);
+  --component-card-shadow:var(--card-shadow);
+  --component-card-shadow-hover:var(--card-shadow-hover);
+  --component-panel-radius:var(--radius-panel);
+  --component-dialog-radius:var(--radius-shell);
+  --component-dialog-shadow:var(--shadow-3);
+  --component-popover-radius:var(--radius-panel);
+  --component-popover-shadow:var(--shadow-3);
+  --component-toast-radius:var(--radius-panel);
+  --component-toast-shadow:var(--shadow-3);
+  --component-nav-radius:var(--radius-control);
+  --component-nav-item-height:2.5rem;
+  --component-nav-gap:var(--space-1);
+  --component-table-row-height:var(--row-height);
+  --component-table-cell-x:var(--cell-padding-x);
+  --component-table-cell-y:var(--cell-padding-y);
+  --component-overlay-scrim:hsl(var(--aapm-green-950-hsl) / .46);
+  --component-sidebar-bg:var(--sidebar-background);
+  --component-sidebar-border:var(--sidebar-border);
+  --component-topbar-height:var(--shell-header-height);
+  --component-bottom-nav-height:4rem;
+  --component-bottom-nav-bg:hsl(var(--background-hsl) / .96);
+  --component-content-max:var(--content-max);
+  --component-elevation-transition:box-shadow var(--duration-normal) var(--ease-out),border-color var(--duration-normal) var(--ease-out),transform var(--duration-normal) var(--ease-out);
+}
+
+[data-density="comfortable"]{
+  --component-nav-item-height:2.75rem;
+}
+
+[data-density="compact"]{
+  --component-control-padding-x:var(--space-3);
+  --component-nav-item-height:2.25rem;
+}

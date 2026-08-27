@@ -1,0 +1,3 @@
+/* Inter Variable — the single product typeface, self-hosted (SIL OFL, see assets/fonts/Inter-OFL.txt). */
+@font-face{font-family:"Inter";src:url("../assets/fonts/Inter-Variable.woff2") format("woff2");font-style:normal;font-weight:100 900;font-display:swap}
+@font-face{font-family:"Inter";src:url("../assets/fonts/Inter-Variable-Italic.woff2") format("woff2");font-style:italic;font-weight:100 900;font-display:swap}

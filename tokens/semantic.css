@@ -1,0 +1,104 @@
+/* Semantic aliases. Product code names intent, not colour. */
+:root{
+  /* Core */
+  --background-hsl:0 0% 100%;/* @kind other */--background:hsl(0 0% 100%);
+  --foreground-hsl:145 38% 13%;/* @kind other */--foreground:hsl(145 38% 13%);
+  --card-hsl:0 0% 100%;/* @kind other */--card:hsl(0 0% 100%);
+  --card-foreground-hsl:145 38% 13%;/* @kind other */--card-foreground:hsl(145 38% 13%);
+  --popover-hsl:0 0% 100%;/* @kind other */--popover:hsl(0 0% 100%);
+  --popover-foreground-hsl:145 38% 13%;/* @kind other */--popover-foreground:hsl(145 38% 13%);
+  --primary-hsl:135 45% 34%;/* @kind other */--primary:hsl(135 45% 34%);
+  --primary-foreground-hsl:0 0% 100%;/* @kind other */--primary-foreground:hsl(0 0% 100%);
+  --secondary-hsl:0 0% 96%;/* @kind other */--secondary:hsl(0 0% 96%);
+  --secondary-foreground-hsl:145 29% 18%;/* @kind other */--secondary-foreground:hsl(145 29% 18%);
+  --muted-hsl:0 0% 96%;/* @kind other */--muted:hsl(0 0% 96%);
+  --muted-foreground-hsl:145 8% 43%;/* @kind other */--muted-foreground:hsl(145 8% 43%);
+  --accent-hsl:0 0% 95%;/* @kind other */--accent:hsl(0 0% 95%);
+  --accent-foreground-hsl:145 38% 13%;/* @kind other */--accent-foreground:hsl(145 38% 13%);
+  --destructive-hsl:0 84% 60%;/* @kind other */--destructive:hsl(0 84% 60%);
+  --destructive-foreground-hsl:0 0% 98%;/* @kind other */--destructive-foreground:hsl(0 0% 98%);
+  --border-hsl:0 0% 88%;/* @kind other */--border:hsl(0 0% 88%);
+  --input-hsl:0 0% 84%;/* @kind other */--input:hsl(0 0% 84%);
+  --ring-hsl:135 45% 34%;/* @kind other */--ring:hsl(135 45% 34%);
+
+  /* Brand aliases */
+  --brand-green-hsl:135 45% 34%;/* @kind other */--brand-green:hsl(135 45% 34%);
+  --brand-lime-hsl:77 100% 47%;/* @kind other */--brand-lime:hsl(77 100% 47%);
+  --brand-orange-hsl:17 76% 48%;/* @kind other */--brand-orange:hsl(17 76% 48%);
+  --brand-foreground-hsl:145 38% 13%;/* @kind other */--brand-foreground:hsl(145 38% 13%);
+  --brand-foreground-muted-hsl:145 8% 43%;/* @kind other */--brand-foreground-muted:hsl(145 8% 43%);
+
+  /* Surfaces — the vocabulary product code selects from instead of inventing greys */
+  --surface-hsl:0 0% 100%;/* @kind other */--surface:hsl(0 0% 100%);
+  --surface-default-hsl:0 0% 100%;/* @kind other */--surface-default:hsl(0 0% 100%);
+  --surface-subtle-hsl:0 0% 98%;/* @kind other */--surface-subtle:hsl(0 0% 98%);
+  --surface-muted-hsl:0 0% 96%;/* @kind other */--surface-muted:hsl(0 0% 96%);
+  --surface-elevated-hsl:0 0% 100%;/* @kind other */--surface-elevated:hsl(0 0% 100%);
+  --surface-hover-hsl:0 0% 96%;/* @kind other */--surface-hover:hsl(0 0% 96%);
+  --surface-inset-hsl:0 0% 94%;/* @kind other */--surface-inset:hsl(0 0% 94%);
+  --surface-border-hsl:0 0% 86%;/* @kind other */--surface-border:hsl(0 0% 86%);
+  --surface-accent-hsl:141 43% 92%;/* @kind other */--surface-accent:hsl(141 43% 92%);
+  --surface-accent-border-hsl:141 42% 77%;/* @kind other */--surface-accent-border:hsl(141 42% 77%);
+
+  /* Tints — a soft category wash + matching foreground + border, used for tiles, tracks and tone-coded cards */
+  --tint-green-hsl:141 43% 93%;/* @kind other */--tint-green:hsl(141 43% 93%);
+  --tint-green-foreground-hsl:135 45% 34%;/* @kind other */--tint-green-foreground:hsl(135 45% 34%);
+  --tint-green-border-hsl:141 38% 78%;/* @kind other */--tint-green-border:hsl(141 38% 78%);
+  --tint-lime-hsl:77 100% 91%;/* @kind other */--tint-lime:hsl(77 100% 91%);
+  --tint-lime-foreground-hsl:91 62% 23%;/* @kind other */--tint-lime-foreground:hsl(91 62% 23%);
+  --tint-lime-border-hsl:78 79% 65%;/* @kind other */--tint-lime-border:hsl(78 79% 65%);
+  --tint-orange-hsl:25 100% 93%;/* @kind other */--tint-orange:hsl(25 100% 93%);
+  --tint-orange-foreground-hsl:17 76% 48%;/* @kind other */--tint-orange-foreground:hsl(17 76% 48%);
+  --tint-orange-border-hsl:24 78% 78%;/* @kind other */--tint-orange-border:hsl(24 78% 78%);
+  --tint-blue-hsl:201 100% 95%;/* @kind other */--tint-blue:hsl(201 100% 95%);
+  --tint-blue-foreground-hsl:198 100% 40%;/* @kind other */--tint-blue-foreground:hsl(198 100% 40%);
+  --tint-blue-border-hsl:201 82% 84%;/* @kind other */--tint-blue-border:hsl(201 82% 84%);
+  --tint-violet-hsl:252 100% 96%;/* @kind other */--tint-violet:hsl(252 100% 96%);
+  --tint-violet-foreground-hsl:258 72% 56%;/* @kind other */--tint-violet-foreground:hsl(258 72% 56%);
+  --tint-violet-border-hsl:254 100% 89%;/* @kind other */--tint-violet-border:hsl(254 100% 89%);
+  --tint-slate-hsl:214 33% 95%;/* @kind other */--tint-slate:hsl(214 33% 95%);
+  --tint-slate-foreground-hsl:214 34% 33%;/* @kind other */--tint-slate-foreground:hsl(214 34% 33%);
+  --tint-slate-border-hsl:214 30% 86%;/* @kind other */--tint-slate-border:hsl(214 30% 86%);
+
+  /* Semantic status */
+  --success-hsl:142 61% 35%;/* @kind other */--success:hsl(142 61% 35%);
+  --warning-hsl:38 92% 50%;/* @kind other */--warning:hsl(38 92% 50%);
+  --danger-hsl:0 72% 51%;/* @kind other */--danger:hsl(0 72% 51%);
+  --info-hsl:199 89% 48%;/* @kind other */--info:hsl(199 89% 48%);
+  --ai-hsl:262 83% 58%;/* @kind other */--ai:hsl(262 83% 58%);
+  --ai-foreground-hsl:0 0% 100%;/* @kind other */--ai-foreground:hsl(0 0% 100%);
+
+  /* Operational record lifecycle (spec §4.1). Draft/Pending/… map onto these five, never onto ad-hoc colours */
+  --state-neutral-hsl:215 16% 47%;/* @kind other */--state-neutral:hsl(215 16% 47%);
+  --state-progress-hsl:17 76% 48%;/* @kind other */--state-progress:hsl(17 76% 48%);
+  --state-review-hsl:199 89% 48%;/* @kind other */--state-review:hsl(199 89% 48%);
+  --state-approved-hsl:142 61% 35%;/* @kind other */--state-approved:hsl(142 61% 35%);
+  --state-blocked-hsl:0 72% 51%;/* @kind other */--state-blocked:hsl(0 72% 51%);
+
+  /* Learning states (Academy) */
+  --learning-active-hsl:17 76% 48%;/* @kind other */--learning-active:hsl(17 76% 48%);
+  --learning-complete-hsl:142 61% 35%;/* @kind other */--learning-complete:hsl(142 61% 35%);
+  --learning-locked-hsl:215 16% 47%;/* @kind other */--learning-locked:hsl(215 16% 47%);
+
+  /* Metric direction */
+  --metric-positive-hsl:142 61% 35%;/* @kind other */--metric-positive:hsl(142 61% 35%);
+  --metric-negative-hsl:0 72% 51%;/* @kind other */--metric-negative:hsl(0 72% 51%);
+  --metric-neutral-hsl:215 16% 47%;/* @kind other */--metric-neutral:hsl(215 16% 47%);
+
+  /* Chart series — ordered. Green first, then teal, terracotta, lime, violet */
+  --chart-1-hsl:135 45% 34%;/* @kind other */--chart-1:hsl(135 45% 34%);
+  --chart-2-hsl:190 65% 42%;/* @kind other */--chart-2:hsl(190 65% 42%);
+  --chart-3-hsl:17 76% 48%;/* @kind other */--chart-3:hsl(17 76% 48%);
+  --chart-4-hsl:77 100% 47%;/* @kind other */--chart-4:hsl(77 100% 47%);
+  --chart-5-hsl:265 56% 56%;/* @kind other */--chart-5:hsl(265 56% 56%);
+
+  /* Sidebar */
+  --sidebar-background-hsl:0 0% 98%;/* @kind other */--sidebar-background:hsl(0 0% 98%);
+  --sidebar-foreground-hsl:145 14% 26%;/* @kind other */--sidebar-foreground:hsl(145 14% 26%);
+  --sidebar-primary-hsl:135 45% 34%;/* @kind other */--sidebar-primary:hsl(135 45% 34%);
+  --sidebar-primary-foreground-hsl:0 0% 100%;/* @kind other */--sidebar-primary-foreground:hsl(0 0% 100%);
+  --sidebar-accent-hsl:141 35% 92%;/* @kind other */--sidebar-accent:hsl(141 35% 92%);
+  --sidebar-accent-foreground-hsl:138 48% 25%;/* @kind other */--sidebar-accent-foreground:hsl(138 48% 25%);
+  --sidebar-border-hsl:140 16% 88%;/* @kind other */--sidebar-border:hsl(140 16% 88%);
+  --sidebar-ring-hsl:135 45% 34%;/* @kind other */--sidebar-ring:hsl(135 45% 34%);
+}

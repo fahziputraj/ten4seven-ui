@@ -1,0 +1,41 @@
+/* Raw brand primitives, lifted from the AAPM logo files and the Academy runtime.
+   Every colour token ships twice:
+     --x       a ready-to-use colour  ->  color: var(--primary)
+     --x-hsl   the bare HSL channels  ->  hsl(var(--primary-hsl) / .12)  for alpha work
+   Source of truth: assets/logos/*.svg (#318139 green, #d4451a orange) and
+   aapmlayeracademy.id/src/index.css. */
+:root{
+  /* Deepest green. Photo scrims, hero gradient end. */
+  --aapm-green-950-hsl:144 48% 10%;/* @kind other */--aapm-green-950:hsl(144 48% 10%);
+  /* Hero gradient end, inverse surfaces. */
+  --aapm-green-900-hsl:141 47% 17%;/* @kind other */--aapm-green-900:hsl(141 47% 17%);
+  /* Hero gradient start, dark accents. */
+  --aapm-green-800-hsl:138 48% 25%;/* @kind other */--aapm-green-800:hsl(138 48% 25%);
+  /* THE AAPM green (#318139). Primary action, focus, brand. */
+  --aapm-green-700-hsl:135 45% 34%;/* @kind other */--aapm-green-700:hsl(135 45% 34%);
+  /* Accent surface wash. */
+  --aapm-green-100-hsl:141 43% 92%;/* @kind other */--aapm-green-100:hsl(141 43% 92%);
+  /* Signal lime. Progress fills, selection, highlight-in-green. */
+  --aapm-lime-500-hsl:77 100% 47%;/* @kind other */--aapm-lime-500:hsl(77 100% 47%);
+  /* Lime tint surface. */
+  --aapm-lime-100-hsl:77 100% 91%;/* @kind other */--aapm-lime-100:hsl(77 100% 91%);
+  /* AAPM terracotta (#d4451a). Eyebrows, secondary CTA, "in progress". */
+  --aapm-orange-700-hsl:17 76% 48%;/* @kind other */--aapm-orange-700:hsl(17 76% 48%);
+  /* Orange tint surface. */
+  --aapm-orange-100-hsl:25 100% 93%;/* @kind other */--aapm-orange-100:hsl(25 100% 93%);
+  /* Foreground. A green-shifted near-black, never pure #000. */
+  --aapm-ink-hsl:145 38% 13%;/* @kind other */--aapm-ink:hsl(145 38% 13%);
+  /* Canvas. */
+  --aapm-paper-hsl:0 0% 100%;/* @kind other */--aapm-paper:hsl(0 0% 100%);
+
+  /* Neutral ramp — warm-free greys used for surfaces, borders and muted text. */
+  --neutral-0-hsl:0 0% 100%;/* @kind other */--neutral-0:hsl(0 0% 100%);
+  --neutral-50-hsl:0 0% 98%;/* @kind other */--neutral-50:hsl(0 0% 98%);
+  --neutral-100-hsl:0 0% 96%;/* @kind other */--neutral-100:hsl(0 0% 96%);
+  --neutral-150-hsl:0 0% 94%;/* @kind other */--neutral-150:hsl(0 0% 94%);
+  --neutral-200-hsl:0 0% 88%;/* @kind other */--neutral-200:hsl(0 0% 88%);
+  --neutral-300-hsl:0 0% 84%;/* @kind other */--neutral-300:hsl(0 0% 84%);
+  --neutral-500-hsl:145 8% 43%;/* @kind other */--neutral-500:hsl(145 8% 43%);
+  --neutral-700-hsl:145 14% 26%;/* @kind other */--neutral-700:hsl(145 14% 26%);
+  --neutral-900-hsl:145 29% 18%;/* @kind other */--neutral-900:hsl(145 29% 18%);
+}

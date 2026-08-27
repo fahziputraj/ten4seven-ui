@@ -1,0 +1,48 @@
+{
+  "name": "@aapm/ui",
+  "version": "0.2.0",
+  "private": true,
+  "description": "AAPM UI — token-led, responsive React components for Academy, ERP and operational dashboards.",
+  "type": "module",
+  "main": "./index.js",
+  "module": "./index.js",
+  "style": "./styles.css",
+  "exports": {
+    ".": "./index.js",
+    "./styles.css": "./styles.css",
+    "./tokens/*": "./tokens/*",
+    "./assets/*": "./assets/*",
+    "./fonts/*": "./assets/fonts/*"
+  },
+  "files": [
+    "assets",
+    "components",
+    "domain",
+    "guidelines",
+    "tokens",
+    "utils",
+    "showcase",
+    "tests",
+    "styles.css",
+    "index.js",
+    "aapm-ui.manifest.json",
+    "readme.md",
+    "SKILL.md"
+  ],
+  "dependencies": {
+    "@iconify-icons/game-icons": "^2.0.0",
+    "@iconify-icons/healthicons": "^2.0.0",
+    "@iconify-icons/mingcute": "^2.0.0",
+    "@iconify-icons/mdi": "^2.0.0",
+    "@iconify-icons/ph": "^2.0.0",
+    "@iconify-icons/solar": "^1.2.3",
+    "@iconify/react": "^6.0.2"
+  },
+  "scripts": {
+    "test": "node tests/contract.mjs"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  }
+}

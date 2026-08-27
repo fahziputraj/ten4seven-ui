@@ -1,0 +1,2 @@
+export interface ConfirmDialogProps extends React.HTMLAttributes<HTMLDivElement> { open?: boolean; onClose?: () => void; onConfirm?: () => void | Promise<void>; title?: React.ReactNode; description?: React.ReactNode; confirmLabel?: React.ReactNode; cancelLabel?: React.ReactNode; tone?: "danger" | "warning"; loading?: boolean; }
+export declare function ConfirmDialog(props: ConfirmDialogProps): JSX.Element;

@@ -1,0 +1,34 @@
+<!-- @dsCard group="Components" viewport="700x400" name="Overlay — modal, drawer, popover, tooltip" subtitle="Confirmation modal, filter drawer, row-action popover, icon tooltips" -->
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css"><style>body{margin:0;padding:18px;background:var(--background);font-family:var(--font-body)}.lbl{font-size:var(--text-2xs);font-weight:600;letter-spacing:var(--tracking-overline);text-transform:uppercase;color:var(--muted-foreground);margin:0 0 7px}.row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:14px}.col{display:flex;flex-direction:column;gap:8px}.stage{position:relative;height:236px;border-radius:var(--radius-panel);border:1px solid var(--border);background:var(--surface-subtle);overflow:hidden}</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { Modal, Drawer, Tooltip, Popover, PopoverItem, Button, IconButton, Icon, FormField, Select } = window.AAPMDesignSystem_07e1a3;
+function Demo(){return <>
+<div className="lbl">Tooltip · popover</div>
+<div className="row" style={{marginBottom:14}}>
+<Tooltip label="Ekspor ke Excel"><IconButton icon="export" label="Ekspor" variant="outline" /></Tooltip>
+<Tooltip label="Cetak dokumen"><IconButton icon="print" label="Cetak" variant="outline" /></Tooltip>
+<Tooltip label="Hanya Finance Manager dapat menyetujui" side="right"><span><Button disabled icon="approve">Setujui</Button></span></Tooltip>
+<Popover align="start" trigger={<Button variant="soft" icon="more" iconEnd="chevronDown">Tindakan</Button>}>
+<PopoverItem><Icon name="edit" size={15} /> Ubah dokumen</PopoverItem>
+<PopoverItem><Icon name="duplicate" size={15} /> Duplikat</PopoverItem>
+<PopoverItem tone="danger"><Icon name="delete" size={15} /> Hapus</PopoverItem>
+</Popover>
+</div>
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}}>
+<div><div className="lbl">Confirmation modal</div>
+<div className="stage"><Modal open onClose={()=>{}} icon="delete" tone="danger" size="sm" title="Hapus stock adjustment?" description="Dokumen SA-2026-00219 dan 14 baris detailnya akan dihapus permanen." footer={<><Button variant="outline" size="sm">Batal</Button><Button variant="destructive" size="sm" icon="delete">Hapus</Button></>} style={{position:'absolute',maxWidth:300}} /></div></div>
+<div><div className="lbl">Filter drawer</div>
+<div className="stage"><Drawer open onClose={()=>{}} width={276} title="Filter lanjutan" description="Terapkan untuk memperbarui daftar" footer={<><Button variant="ghost" size="sm">Hapus semua</Button><Button size="sm" icon="filter">Terapkan</Button></>} style={{position:'absolute',right:0,top:0,bottom:0,height:'100%'}}>
+<div style={{display:'flex',flexDirection:'column',gap:12}}>
+<FormField id="s" label="Status"><Select id="s" size="sm" placeholder="Semua status" options={["In review","Approved","Overdue"]} /></FormField>
+<FormField id="f" label="Farm"><Select id="f" size="sm" placeholder="Semua kandang" options={["Kandang 1","Kandang 3"]} /></FormField>
+</div></Drawer></div></div>
+</div>
+</>}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script></body></html>

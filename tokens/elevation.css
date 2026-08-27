@@ -1,0 +1,28 @@
+/* Elevation is green-tinted and low. Level 1 is the ceiling for resting cards. */
+:root{
+  --card-shadow:0 1px 2px rgba(19,64,35,.06),0 12px 26px -24px rgba(19,64,35,.34);
+  --card-shadow-hover:0 12px 26px -22px rgba(19,64,35,.32);
+  --surface-shadow:var(--card-shadow);
+  --surface-shadow-hover:var(--card-shadow-hover);
+  --shadow-0:none;
+  --shadow-1:var(--card-shadow);
+  --shadow-2:0 4px 12px -4px rgba(19,64,35,.14),0 2px 4px -2px rgba(19,64,35,.08);  /* popover */
+  --shadow-3:0 24px 48px -24px rgba(19,64,35,.34),0 2px 8px -2px rgba(19,64,35,.10); /* drawer / modal */
+  --shadow-4:0 28px 60px -28px rgba(19,64,35,.42);                                    /* floating */
+  --hero-shadow:0 24px 46px -28px rgba(24,91,48,.58);
+
+  /* Borders */
+  --border-subtle:hsl(var(--border-hsl) / .5);/* @kind color */
+  --border-default:var(--border);/* @kind color */
+  --border-strong:var(--surface-border);/* @kind color */
+  --border-interactive:hsl(var(--brand-green-hsl) / .35);/* @kind color */
+  --border-focus:hsl(var(--brand-green-hsl) / .65);/* @kind color */
+  --focus-ring:0 0 0 3px hsl(var(--brand-lime-hsl) / .2);/* @kind shadow */
+  --focus-ring-offset:0 0 0 2px var(--background),0 0 0 4px hsl(var(--ring-hsl) / .25);/* @kind shadow */
+
+  /* Hero gradient (brand storytelling surfaces only) */
+  --hero-start:var(--aapm-green-700);/* @kind color */
+  --hero-end:var(--aapm-green-900);/* @kind color */
+  --hero-accent:var(--aapm-lime-500);/* @kind color */
+  --scrim-photo:linear-gradient(to top,hsl(var(--aapm-green-950-hsl) / .78) 0%,hsl(var(--aapm-green-950-hsl) / .48) 18%,hsl(var(--aapm-green-950-hsl) / .16) 33%,transparent 48%);/* @kind color */
+}

@@ -1,0 +1,48 @@
+<!-- @dsCard group="Components" viewport="700x420" name="Data — table, status, metrics, trail" subtitle="DataTable, StatusChip lifecycle, MetricCard, KeyValueList, Avatar, Skeleton, AuditTimeline" -->
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css"><style>body{margin:0;padding:18px;background:var(--background);font-family:var(--font-body)}.lbl{font-size:var(--text-2xs);font-weight:600;letter-spacing:var(--tracking-overline);text-transform:uppercase;color:var(--muted-foreground);margin:0 0 7px}.row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:14px}.col{display:flex;flex-direction:column;gap:8px}</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { DataTable, StatusChip, MetricCard, KeyValueList, Avatar, Skeleton, AuditTimeline, Progress, IconButton } = window.AAPMDesignSystem_07e1a3;
+function Demo(){
+const [sel,setSel]=React.useState(["PI-2026-00841"]);
+const rows=[
+{id:"PI-2026-00841",no:"PI-2026-00841",sup:"CV Sumber Pakan Jaya",status:"in-review",total:"Rp 482.650.000"},
+{id:"PI-2026-00840",no:"PI-2026-00840",sup:"PT Agro Nusantara",status:"approved",total:"Rp 128.400.000"},
+{id:"PI-2026-00839",no:"PI-2026-00839",sup:"UD Karya Mandiri",status:"overdue",total:"Rp 64.250.000"}];
+return <>
+<div className="lbl">Status chip · lifecycle</div>
+<div className="row">{["draft","submitted","in-review","verified","approved","revised","rejected","overdue","blocked","completed","closed","archived"].map(s=><StatusChip key={s} status={s} size="sm" />)}</div>
+<div className="lbl">Metric card</div>
+<div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:10,marginBottom:14}}>
+<MetricCard compact icon="egg" label="Produksi telur" value="91,8" unit="%" delta="+2,4%" direction="up" caption="vs minggu lalu" visualization={<Progress value={92} tone="lime" size="sm" />} />
+<MetricCard compact icon="mortality" label="Mortalitas" value="0,08" unit="%" delta="-0,01%" direction="up" tone="orange" accent="orange" caption="Ambang 0,10%" />
+<MetricCard compact icon="wallet" label="Piutang jatuh tempo" value="Rp 482,6 jt" delta="+6,1%" direction="down" tone="slate" accent="none" caption="24 dokumen" />
+</div>
+<div className="lbl">Data table</div>
+<DataTable selectable selectedIds={sel} onToggleRow={(id)=>setSel(s=>s.includes(id)?s.filter(x=>x!==id):[...s,id])} onToggleAll={(n)=>setSel(n?rows.map(r=>r.id):[])}
+ sort={{key:"total",dir:"desc"}} onSort={()=>{}} rows={rows} onRowClick={()=>{}}
+ columns={[{key:"no",label:"Nomor",strong:true,sortable:true},{key:"sup",label:"Supplier",wrap:true},
+ {key:"status",label:"Status",render:(r)=><StatusChip status={r.status} size="sm" icon={false} />},
+ {key:"total",label:"Total",numeric:true,sortable:true},
+ {key:"act",label:"",width:44,render:()=><IconButton icon="more" label="Tindakan" size="sm" />}]}
+ summary={{sup:"3 dokumen",total:"Rp 675.300.000"}} style={{marginBottom:14}} />
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:20}}>
+<div><div className="lbl">Key value · avatar · skeleton</div>
+<KeyValueList dense items={[{label:"Tanggal",value:"24 Agustus 2026"},{label:"Jatuh tempo",value:"23 September 2026"},{label:"Total",value:"Rp 482.650.000",numeric:true,strong:true},{label:"Catatan",value:null}]} />
+<div className="row" style={{marginTop:10,marginBottom:0}}>
+<Avatar name="Rahmat Hidayat" ring /><Avatar name="Siti Aminah" /><Avatar name="Budi Santoso" size="sm" /><Avatar name="Dewi" size="sm" tone="orange" />
+<Skeleton width={90} height={12} style={{marginLeft:6}} />
+</div></div>
+<div><div className="lbl">Audit timeline</div>
+<AuditTimeline dense entries={[
+{action:"Dibuat",at:"22 Agu · 09:12",actor:"Dewi Lestari",role:"Purchasing",state:"draft",icon:"add"},
+{action:"Diajukan untuk verifikasi",at:"22 Agu · 16:40",actor:"Dewi Lestari",state:"submitted",icon:"submit"},
+{action:"Diminta revisi",at:"23 Agu · 10:05",actor:"Budi Santoso",role:"Finance",state:"revised",icon:"edit",note:"Lampiran surat jalan belum sesuai nomor DO."}]} />
+</div></div>
+</>}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script></body></html>

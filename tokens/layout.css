@@ -1,0 +1,18 @@
+/* Layout contract for general web and dashboard products. */
+:root{
+  --layout-sidebar-width:var(--sidebar-width);
+  --layout-sidebar-collapsed-width:var(--sidebar-width-collapsed);
+  --layout-topbar-height:var(--shell-header-height);
+  --layout-bottom-nav-height:var(--component-bottom-nav-height);
+  --layout-content-max:var(--content-max);
+  --layout-page-gutter:clamp(var(--space-4),3vw,var(--space-8));
+  --layout-page-gutter-mobile:var(--space-4);
+  --layout-section-gap:clamp(var(--space-6),4vw,var(--space-10));
+  --layout-grid-gap:clamp(var(--space-3),2vw,var(--space-6));
+  --layout-safe-top:env(safe-area-inset-top,0px);
+  --layout-safe-right:env(safe-area-inset-right,0px);
+  --layout-safe-bottom:env(safe-area-inset-bottom,0px);
+  --layout-safe-left:env(safe-area-inset-left,0px);
+  --layout-mobile-breakpoint:48rem;
+  --layout-tablet-breakpoint:64rem;
+}
