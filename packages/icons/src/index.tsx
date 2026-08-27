@@ -183,6 +183,142 @@ export const IconRegistry = Object.freeze({
   },
   close: { provider: "solar:close-circle-bold", body: solarBodies.close },
   plus: { provider: "solar:add-circle-bold", body: solarBodies.plus },
+  menu: { provider: "solar:list-bold", body: solarBodies.menu },
+  chevronLeft: {
+    provider: "solar:alt-arrow-left-linear",
+    body: solarBodies.chevronLeft,
+  },
+  chevronRight: {
+    provider: "solar:alt-arrow-right-linear",
+    body: solarBodies.chevronRight,
+  },
+  chevronUp: {
+    provider: "solar:alt-arrow-up-linear",
+    body: solarBodies.chevronUp,
+  },
+  delete: {
+    provider: "solar:trash-bin-trash-bold",
+    body: solarBodies.delete,
+  },
+  upload: {
+    provider: "solar:upload-minimalistic-bold",
+    body: solarBodies.upload,
+  },
+  import: {
+    provider: "solar:inbox-in-bold-duotone",
+    body: solarBodies.import,
+  },
+  info: { provider: "solar:info-circle-bold", body: solarBodies.info },
+  pending: {
+    provider: "solar:clock-circle-bold",
+    body: solarBodies.pending,
+  },
+  clock: { provider: "solar:clock-circle-bold", body: solarBodies.clock },
+  blocked: {
+    provider: "solar:lock-keyhole-minimalistic-bold-duotone",
+    body: solarBodies.blocked,
+  },
+  lock: {
+    provider: "solar:lock-keyhole-minimalistic-bold-duotone",
+    body: solarBodies.lock,
+  },
+  unlock: {
+    provider: "solar:lock-keyhole-unlocked-bold-duotone",
+    body: solarBodies.unlock,
+  },
+  calendar: {
+    provider: "solar:calendar-date-bold-duotone",
+    body: solarBodies.calendar,
+  },
+  command: {
+    provider: "solar:command-bold-duotone",
+    body: solarBodies.command,
+  },
+  keyboard: {
+    provider: "solar:keyboard-bold-duotone",
+    body: solarBodies.keyboard,
+  },
+  refresh: {
+    provider: "solar:refresh-bold-duotone",
+    body: solarBodies.refresh,
+  },
+  chart: {
+    provider: "solar:chart-square-bold-duotone",
+    body: solarBodies.chart,
+  },
+  analytics: {
+    provider: "solar:chart-square-bold-duotone",
+    body: solarBodies.analytics,
+  },
+  kpi: { provider: "solar:chart-2-bold-duotone", body: solarBodies.kpi },
+  progress: {
+    provider: "solar:chart-square-bold-duotone",
+    body: solarBodies.progress,
+  },
+  trendUp: {
+    provider: "solar:graph-up-bold-duotone",
+    body: solarBodies.trendUp,
+  },
+  trendDown: {
+    provider: "solar:graph-down-bold-duotone",
+    body: solarBodies.trendDown,
+  },
+  timeline: {
+    provider: "solar:history-bold-duotone",
+    body: solarBodies.timeline,
+  },
+  user: {
+    provider: "solar:user-circle-bold-duotone",
+    body: solarBodies.user,
+  },
+  users: {
+    provider: "solar:users-group-rounded-bold-duotone",
+    body: solarBodies.users,
+  },
+  file: { provider: "solar:file-bold-duotone", body: solarBodies.file },
+  folder: {
+    provider: "solar:folder-bold-duotone",
+    body: solarBodies.folder,
+  },
+  pdf: { provider: "solar:file-text-bold", body: solarBodies.pdf },
+  image: {
+    provider: "solar:gallery-wide-bold",
+    body: solarBodies.image,
+  },
+  fileCheck: {
+    provider: "solar:file-check-bold-duotone",
+    body: solarBodies.fileCheck,
+  },
+  notification: {
+    provider: "solar:bell-bold-duotone",
+    body: solarBodies.notification,
+  },
+  eye: { provider: "solar:eye-bold", body: solarBodies.eye },
+  eyeOff: { provider: "solar:eye-closed-bold", body: solarBodies.eyeOff },
+  finance: {
+    provider: "solar:wallet-money-bold-duotone",
+    body: solarBodies.finance,
+  },
+  accounting: {
+    provider: "solar:calculator-bold-duotone",
+    body: solarBodies.accounting,
+  },
+  logistics: {
+    provider: "solar:delivery-bold-duotone",
+    body: solarBodies.logistics,
+  },
+  admin: {
+    provider: "solar:shield-user-bold-duotone",
+    body: solarBodies.admin,
+  },
+  files: {
+    provider: "solar:folder-with-files-bold-duotone",
+    body: solarBodies.files,
+  },
+  communication: {
+    provider: "solar:chat-round-line-bold-duotone",
+    body: solarBodies.communication,
+  },
 } as const);
 
 export type IconName = keyof typeof IconRegistry;

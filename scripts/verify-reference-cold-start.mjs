@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import { execFileSync } from "node:child_process";
 
 const repoRoot = path.resolve(import.meta.dirname, "..");
 const read = (relativePath) =>
@@ -16,13 +16,28 @@ const allowedReads = [
   "packages/ai/templates/AGENTS.ten4seven.md",
   "packages/ai/catalog/recipes.json",
   "packages/ai/catalog/components.json",
+  "packages/ai/catalog/blocks.json",
   "packages/ai/catalog/icons.json",
+];
+const forbiddenRoots = [
+  "AAPM",
+  "HeroUI",
+  "Minimal",
+  "shadcnblocks",
+  "research/00",
+  "research/01",
 ];
 for (const relativePath of allowedReads)
   assert.ok(fs.existsSync(path.join(repoRoot, relativePath)), relativePath);
+for (const forbiddenRoot of forbiddenRoots)
+  assert.ok(
+    !allowedReads.some((relativePath) => relativePath.includes(forbiddenRoot)),
+    `cold-start read set leaks donor or extraction source: ${forbiddenRoot}`,
+  );
 
 const recipes = readJson("packages/ai/catalog/recipes.json");
 const components = readJson("packages/ai/catalog/components.json");
+const blocks = readJson("packages/ai/catalog/blocks.json");
 const icons = readJson("packages/ai/catalog/icons.json");
 const migrationContract = read(
   "docs/ai/APPLY_TO_EXISTING_WEB.md",
@@ -31,7 +46,23 @@ const agentContract =
   `${read("AGENTS.md")}\n${read("packages/ai/templates/AGENTS.ten4seven.md")}`.toLowerCase();
 const routeContract = `${read("AGENTS.md")}\n${read("llms.txt")}`.toLowerCase();
 
-for (const route of ["/theme-studio", "/warehouse-inventory", "/ebook-store"])
+for (const route of [
+  "/theme-studio",
+  "/component-lab",
+  "/tokens",
+  "/components",
+  "/components/patterns",
+  "/components/tables",
+  "/components/filtering-bulk-actions",
+  "/icons",
+  "/recipes",
+  "/recipes/cart",
+  "/warehouse-inventory",
+  "/ebook-store",
+  "/blocks",
+  "/blocks/hero-split",
+  "/public-showcase",
+])
   assert.match(
     routeContract,
     new RegExp(route),
@@ -40,21 +71,24 @@ for (const route of ["/theme-studio", "/warehouse-inventory", "/ebook-store"])
 
 const tasks = [
   {
+    name: "Registration Form",
+    query: "registration form",
+    recipe: "auth",
+    profile: "commerce",
+    icons: ["user", "lock", "eye", "check"],
+  },
+  {
+    name: "Advanced Employee Form",
+    query: "advanced employee form",
+    recipe: "entity-form",
+    profile: "enterprise",
+    icons: ["user", "edit", "calendar", "upload", "check"],
+  },
+  {
     name: "Warehouse Inventory",
-    query: "inventory list",
+    query: "warehouse inventory list",
     recipe: "entity-list",
     profile: "enterprise",
-    components: [
-      "AppShell",
-      "Sidebar",
-      "PageHeader",
-      "KPICluster",
-      "FilterToolbar",
-      "DataTable",
-      "Pagination",
-      "BulkActionBar",
-      "DetailDrawer",
-    ],
     icons: [
       "warehouse",
       "inventory",
@@ -67,17 +101,38 @@ const tasks = [
     ],
   },
   {
-    name: "Ebook Store Catalog",
-    query: "ebook store catalog",
+    name: "Modal Confirmation",
+    query: "modal confirmation",
+    recipe: "entity-detail",
+    profile: "enterprise",
+    icons: ["modal", "check", "close"],
+  },
+  {
+    name: "Mobile Filter Drawer",
+    query: "mobile filter drawer",
+    recipe: "entity-list",
+    profile: "enterprise",
+    icons: ["filter", "search", "close", "check"],
+  },
+  {
+    name: "File Upload Form",
+    query: "file upload",
+    recipe: "entity-form",
+    profile: "enterprise",
+    icons: ["file", "upload", "delete", "check"],
+  },
+  {
+    name: "KPI Dashboard",
+    query: "KPI dashboard",
+    recipe: "dashboard",
+    profile: "dashboard",
+    icons: ["kpi", "chart", "analytics", "filter"],
+  },
+  {
+    name: "Public Catalog",
+    query: "public catalog",
     recipe: "catalog",
     profile: "commerce",
-    components: [
-      "AppShell",
-      "PageHeader",
-      "Input",
-      "ProductCard",
-      "Pagination",
-    ],
     icons: [
       "book",
       "ebook",
@@ -93,8 +148,30 @@ const tasks = [
       "preview",
     ],
   },
+  {
+    name: "Cart Review",
+    query: "cart review",
+    recipe: "cart",
+    profile: "commerce",
+    icons: ["cart", "checkout", "delete", "plus"],
+  },
+  {
+    name: "Checkout",
+    query: "checkout",
+    recipe: "checkout",
+    profile: "commerce",
+    icons: ["cart", "checkout", "lock", "check"],
+  },
+  {
+    name: "Public Showcase",
+    query: "public showcase",
+    recipe: "marketing-home",
+    profile: "marketing",
+    icons: ["components", "type", "chart", "book", "arrowRight"],
+  },
 ];
 
+const cliPath = path.join(repoRoot, "packages/ai/bin/t7ui.mjs");
 for (const task of tasks) {
   const recipe = recipes[task.recipe];
   assert.ok(recipe, `${task.name}: recipe missing`);
@@ -102,27 +179,38 @@ for (const task of tasks) {
     recipe.profiles.includes(task.profile),
     `${task.name}: profile missing`,
   );
-  for (const componentName of task.components) {
-    assert.ok(
-      recipe.components.includes(componentName),
-      `${task.name}: recipe omits ${componentName}`,
-    );
+  for (const componentName of [
+    ...recipe.components,
+    ...(recipe.optional ?? []),
+  ])
     assert.equal(
       components[componentName]?.status,
-      "available",
+      "implemented",
       `${task.name}: ${componentName} is not implemented`,
     );
-  }
   for (const iconName of task.icons)
     assert.ok(icons[iconName], `${task.name}: icon missing: ${iconName}`);
 
   const cliOutput = execFileSync(
     process.execPath,
-    [path.join(repoRoot, "packages/ai/bin/t7ui.mjs"), "find", task.query],
+    [cliPath, "find", task.query],
     { cwd: repoRoot, encoding: "utf8" },
   );
   assert.match(cliOutput, new RegExp(`Recipe: ${task.recipe}`));
-  assert.match(cliOutput, new RegExp(task.components[0]));
+  for (const componentName of recipe.components)
+    assert.match(
+      cliOutput,
+      new RegExp(componentName),
+      `${task.name}: CLI omits ${componentName}`,
+    );
+  for (const blockName of recipe.blocks ?? []) {
+    assert.ok(blocks[blockName], `${task.name}: block missing: ${blockName}`);
+    assert.match(
+      cliOutput,
+      new RegExp(blockName),
+      `${task.name}: CLI omits ${blockName}`,
+    );
+  }
 }
 
 for (const requiredPhrase of [
@@ -136,7 +224,13 @@ for (const requiredPhrase of [
     new RegExp(requiredPhrase),
     `migration boundary missing: ${requiredPhrase}`,
   );
-for (const requiredPhrase of ["recipe", "component", "semantic", "donor"])
+for (const requiredPhrase of [
+  "recipe",
+  "component",
+  "semantic",
+  "donor",
+  "shell",
+])
   assert.match(
     agentContract,
     new RegExp(requiredPhrase),

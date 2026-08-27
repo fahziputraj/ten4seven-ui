@@ -14,6 +14,25 @@ description: Apply ten4seven UI to a new or existing React web application throu
 7. Use local CSS only for composition, layout, or a documented domain exception.
 8. Validate static gates, accessibility, responsive behavior, the primary interaction, and browser console health.
 
+## Shell and catalog rules
+
+Compose the route as `AppShell → [Sidebar | TopNavigation] → [PageHeader] → bounded route content`. Choose `Sidebar` for private application navigation and `TopNavigation` for public, content, or commerce composition. Use `DetailDrawer` for contextual record inspection, `Modal` for focused tasks, and `AlertDialog` for irreversible confirmation.
+
+Only catalog entries with status `implemented` are feature APIs. Use the
+catalog's `displayName`, level, maturity, API, state, accessibility, token,
+and relationship metadata as the contract. Do not solve a missing capability
+with local parallel primitives. Treat a donor lookup as a design-system gap
+event: canonical package first, AAPM extraction second, one bounded donor
+lookup only when still necessary, then normalize the result into ten4seven and
+update the catalog, AI contract, and provenance.
+
+`Select` is the custom accessible popup; `NativeSelect` is the explicitly
+native alternative. Commerce uses the shared `QuantityControl`, `CartTrigger`,
+`CartLineItem`, `CartPanel`, and `OrderSummary` contracts with the `cart` and
+`checkout` recipes. Do not create `CommerceButton`, `CommerceInput`, or
+another parallel primitive system. Keep `DataTable` under Tables and reusable
+compositions under Patterns.
+
 ## Retrieval commands
 
 ```bash

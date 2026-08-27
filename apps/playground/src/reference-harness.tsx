@@ -15,12 +15,15 @@ export type ReferenceViewState = "ready" | "loading" | "error" | "empty";
 
 const routeIcons: Record<PlaygroundRoute, IconName> = {
   "Theme Studio": "theme",
+  "Component Lab": "components",
   Tokens: "tokens",
   Components: "components",
+  Blocks: "components",
   Icons: "category",
   Recipes: "table",
   "Warehouse Inventory": "warehouse",
   "Publishing Store": "book",
+  "Public Showcase": "dashboard",
 };
 
 const routeGroups = [

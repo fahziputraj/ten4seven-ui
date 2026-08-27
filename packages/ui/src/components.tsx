@@ -1,8 +1,11 @@
 import {
+  Children,
   forwardRef,
+  isValidElement,
   useEffect,
   useId,
   useRef,
+  useState,
   type ButtonHTMLAttributes,
   type InputHTMLAttributes,
   type ReactNode,
@@ -12,6 +15,12 @@ import type * as React from "react";
 
 import { T7Icon, type IconName } from "@ten4seven/icons";
 import type { TypographyRole } from "@ten4seven/tokens";
+
+import {
+  FloatingPortal,
+  useFloatingPosition,
+  useNativeDialog,
+} from "./overlay";
 
 function cx(...values: Array<string | false | null | undefined>) {
   return values.filter(Boolean).join(" ");
@@ -25,6 +34,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: ButtonSize;
   leadingIcon?: IconName;
   trailingIcon?: IconName;
+  loading?: boolean;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -35,6 +45,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       intent = "primary",
       size = "md",
       leadingIcon,
+      loading = false,
       trailingIcon,
       type = "button",
       ...props
@@ -47,12 +58,21 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         className={cx("t7-button", className)}
         data-intent={intent}
+        data-loading={loading || undefined}
         data-size={size}
+        aria-busy={loading || undefined}
+        disabled={props.disabled || loading}
         type={type}
       >
-        {leadingIcon ? <T7Icon name={leadingIcon} size={16} /> : null}
+        {loading ? (
+          <span aria-hidden="true" className="t7-button-spinner" />
+        ) : leadingIcon ? (
+          <T7Icon name={leadingIcon} size={16} />
+        ) : null}
         <span>{children}</span>
-        {trailingIcon ? <T7Icon name={trailingIcon} size={16} /> : null}
+        {!loading && trailingIcon ? (
+          <T7Icon name={trailingIcon} size={16} />
+        ) : null}
       </button>
     );
   },
@@ -288,6 +308,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
 });
 
 export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
+  error?: string;
   label?: string;
   hint?: string;
 }
@@ -295,6 +316,7 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 export function Select({
   children,
   className,
+  error,
   hint,
   id,
   label,
@@ -302,21 +324,169 @@ export function Select({
 }: SelectProps) {
   const generatedId = useId();
   const selectId = id ?? generatedId;
+  const labelId = `${selectId}-label`;
+  const listboxId = `${selectId}-listbox`;
+  const hintId = `${selectId}-hint`;
+  const describedBy = error || hint ? hintId : props["aria-describedby"];
+  const rootRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const nativeRef = useRef<HTMLSelectElement>(null);
+  const options = Children.toArray(children).flatMap((child) => {
+    if (!isValidElement<React.OptionHTMLAttributes<HTMLOptionElement>>(child))
+      return [];
+    return [
+      {
+        disabled: Boolean(child.props.disabled),
+        label: String(child.props.children ?? child.props.value ?? ""),
+        value: String(child.props.value ?? child.props.children ?? ""),
+      },
+    ];
+  });
+  const controlledValue =
+    props.value === undefined ? undefined : String(props.value);
+  const [internalValue, setInternalValue] = useState(
+    () =>
+      controlledValue ?? String(props.defaultValue ?? options[0]?.value ?? ""),
+  );
+  const [open, setOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(() =>
+    Math.max(
+      0,
+      options.findIndex((option) => option.value === internalValue),
+    ),
+  );
+  const floating = useFloatingPosition(triggerRef, open, {
+    minWidth: true,
+    side: "bottom",
+  });
+  const selectedValue = controlledValue ?? internalValue;
+  const selected = options.find((option) => option.value === selectedValue);
+
+  useEffect(() => {
+    if (!open) return;
+    const dismiss = (event: PointerEvent) => {
+      if (
+        !rootRef.current?.contains(event.target as Node) &&
+        !floating.contentRef.current?.contains(event.target as Node)
+      )
+        setOpen(false);
+    };
+    document.addEventListener("pointerdown", dismiss);
+    return () => document.removeEventListener("pointerdown", dismiss);
+  }, [open]);
+
+  function choose(nextValue: string) {
+    if (controlledValue === undefined) setInternalValue(nextValue);
+    const native = nativeRef.current;
+    if (native) {
+      native.value = nextValue;
+      native.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+    setOpen(false);
+  }
+
+  function move(direction: 1 | -1) {
+    if (!options.length) return;
+    let next = activeIndex;
+    do next = (next + direction + options.length) % options.length;
+    while (options[next]?.disabled && next !== activeIndex);
+    setActiveIndex(next);
+  }
+
   return (
-    <label className="t7-field" htmlFor={selectId}>
-      {label ? <span className="t7-field-label">{label}</span> : null}
+    <div className="t7-field t7-select-field" ref={rootRef}>
+      {label ? (
+        <span className="t7-field-label" id={labelId}>
+          {label}
+        </span>
+      ) : null}
       <span className="t7-select-wrap">
         <select
           {...props}
-          className={cx("t7-input t7-select", className)}
+          aria-describedby={describedBy}
+          aria-hidden="true"
+          aria-invalid={error ? true : props["aria-invalid"]}
+          className="t7-native-control"
           id={selectId}
+          ref={nativeRef}
+          tabIndex={-1}
         >
           {children}
         </select>
-        <T7Icon className="t7-select-chevron" name="chevronDown" size={16} />
+        <button
+          aria-controls={listboxId}
+          aria-describedby={describedBy}
+          aria-expanded={open}
+          aria-haspopup="listbox"
+          aria-invalid={error ? true : undefined}
+          aria-labelledby={label ? labelId : undefined}
+          className={cx(
+            "t7-input t7-select-trigger",
+            error && "is-error",
+            className,
+          )}
+          disabled={props.disabled}
+          ref={triggerRef}
+          onClick={() => setOpen((current) => !current)}
+          onKeyDown={(event) => {
+            if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+              event.preventDefault();
+              setOpen(true);
+              move(event.key === "ArrowDown" ? 1 : -1);
+            } else if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              if (open && options[activeIndex])
+                choose(options[activeIndex].value);
+              else setOpen(true);
+            } else if (event.key === "Escape" && open) {
+              event.preventDefault();
+              event.stopPropagation();
+              setOpen(false);
+            }
+          }}
+          type="button"
+        >
+          <span>{selected?.label ?? "Select an option"}</span>
+          <T7Icon aria-hidden="true" name="chevronDown" size={16} />
+        </button>
+        {open ? (
+          <FloatingPortal>
+            <span
+              className="t7-select-list t7-floating-content"
+              data-floating-placement={floating.placement}
+              id={listboxId}
+              ref={floating.setContentRef}
+              role="listbox"
+              style={floating.style}
+            >
+              {options.map((option, index) => (
+                <button
+                  aria-selected={option.value === selectedValue}
+                  className="t7-option-row"
+                  data-active={index === activeIndex || undefined}
+                  disabled={option.disabled}
+                  key={option.value}
+                  onClick={() => choose(option.value)}
+                  onMouseEnter={() => setActiveIndex(index)}
+                  role="option"
+                  type="button"
+                >
+                  <span>{option.label}</span>
+                  {option.value === selectedValue ? (
+                    <T7Icon aria-hidden="true" name="check" size={15} />
+                  ) : null}
+                </button>
+              ))}
+            </span>
+          </FloatingPortal>
+        ) : null}
       </span>
-      {hint ? <span className="t7-field-hint">{hint}</span> : null}
-    </label>
+      {error || hint ? (
+        <span className={cx("t7-field-hint", error && "is-error")} id={hintId}>
+          {error ?? hint}
+        </span>
+      ) : null}
+    </div>
   );
 }
 
@@ -367,11 +537,15 @@ export interface DataTableColumn<Row> {
   key: string;
   header: string;
   align?: "left" | "right";
+  /** A required column cannot be hidden through a visibility control. */
+  required?: boolean;
   sortable?: boolean;
+  sticky?: "left" | "right";
   render?: (row: Row) => ReactNode;
 }
 
 export type DataTableSortDirection = "asc" | "desc";
+export type DataTableDensity = "comfortable" | "default" | "compact" | "dense";
 
 export interface DataTableSort {
   key: string;
@@ -382,6 +556,8 @@ export interface DataTableProps<
   Row,
 > extends React.HTMLAttributes<HTMLDivElement> {
   columns: DataTableColumn<Row>[];
+  columnVisibility?: Record<string, boolean>;
+  density?: DataTableDensity;
   rows: Row[];
   rowKey: (row: Row) => string;
   emptyMessage?: string;
@@ -399,7 +575,9 @@ export interface DataTableProps<
 
 export function DataTable<Row>({
   caption,
+  columnVisibility,
   columns,
+  density,
   emptyMessage = "No records yet.",
   emptyState,
   error,
@@ -415,6 +593,9 @@ export function DataTable<Row>({
   className,
   ...props
 }: DataTableProps<Row>) {
+  const visibleColumns = columns.filter(
+    (column) => column.required || columnVisibility?.[column.key] !== false,
+  );
   const visibleKeys = rows.map(rowKey);
   const selectedSet = new Set(selectedRowKeys);
   const allVisibleSelected =
@@ -446,6 +627,7 @@ export function DataTable<Row>({
       {...props}
       aria-busy={loading || undefined}
       className={cx("t7-table-wrap", className)}
+      data-density={density}
     >
       <table aria-label={caption} className="t7-table">
         <thead>
@@ -467,7 +649,7 @@ export function DataTable<Row>({
                 />
               </th>
             ) : null}
-            {columns.map((column) => (
+            {visibleColumns.map((column) => (
               <th
                 key={column.key}
                 aria-sort={
@@ -480,6 +662,7 @@ export function DataTable<Row>({
                       : undefined
                 }
                 data-align={column.align ?? "left"}
+                data-sticky={column.sticky}
                 scope="col"
               >
                 {column.sortable && onSort ? (
@@ -507,7 +690,7 @@ export function DataTable<Row>({
             <tr>
               <td
                 className="t7-table-state"
-                colSpan={columns.length + selectionColumnCount}
+                colSpan={visibleColumns.length + selectionColumnCount}
               >
                 <span className="t7-state-indicator" aria-hidden="true" />
                 Loading records…
@@ -517,7 +700,7 @@ export function DataTable<Row>({
             <tr>
               <td
                 className="t7-table-state is-error"
-                colSpan={columns.length + selectionColumnCount}
+                colSpan={visibleColumns.length + selectionColumnCount}
               >
                 {error}
               </td>
@@ -526,7 +709,7 @@ export function DataTable<Row>({
             <tr>
               <td
                 className="t7-table-state"
-                colSpan={columns.length + selectionColumnCount}
+                colSpan={visibleColumns.length + selectionColumnCount}
               >
                 {emptyState ?? emptyMessage}
               </td>
@@ -553,8 +736,12 @@ export function DataTable<Row>({
                     />
                   </td>
                 ) : null}
-                {columns.map((column) => (
-                  <td key={column.key} data-align={column.align ?? "left"}>
+                {visibleColumns.map((column) => (
+                  <td
+                    key={column.key}
+                    data-align={column.align ?? "left"}
+                    data-sticky={column.sticky}
+                  >
                     {column.render
                       ? column.render(row)
                       : String(
@@ -577,11 +764,13 @@ export interface ModalProps {
   description?: string;
   children: ReactNode;
   onClose: () => void;
+  initialFocus?: React.RefObject<HTMLElement | null>;
 }
 
 export function Modal({
   children,
   description,
+  initialFocus,
   onClose,
   open,
   title,
@@ -589,33 +778,25 @@ export function Modal({
   const closeRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
   const descriptionId = `${titleId}-description`;
-
-  useEffect(() => {
-    if (!open) return undefined;
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", onKeyDown);
-    closeRef.current?.focus();
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, [onClose, open]);
-
-  if (!open) return null;
+  const dialogRef = useNativeDialog(open, onClose, initialFocus ?? closeRef);
 
   return (
-    <div
+    <dialog
+      ref={dialogRef}
+      aria-describedby={description ? descriptionId : undefined}
+      aria-labelledby={titleId}
       className="t7-modal-backdrop"
-      onMouseDown={(event) => {
+      onClick={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
+      onKeyDown={(event) => {
+        if (event.key === "Escape") {
+          event.preventDefault();
+          onClose();
+        }
+      }}
     >
-      <section
-        aria-describedby={description ? descriptionId : undefined}
-        aria-labelledby={titleId}
-        aria-modal="true"
-        className="t7-modal"
-        role="dialog"
-      >
+      <section className="t7-modal">
         <div className="t7-modal-header">
           <div>
             <h2 className="t7-modal-title" id={titleId}>
@@ -639,7 +820,7 @@ export function Modal({
         </div>
         <div className="t7-modal-body">{children}</div>
       </section>
-    </div>
+    </dialog>
   );
 }
 
@@ -677,32 +858,35 @@ export interface SidebarItem {
   badge?: ReactNode;
 }
 
-export interface SidebarProps extends Omit<
-  React.HTMLAttributes<HTMLElement>,
-  "onSelect"
-> {
-  brand?: ReactNode;
+export interface SidebarGroupData {
+  key: string;
+  label?: ReactNode;
   items: SidebarItem[];
-  activeKey?: string;
-  onSelect?: (key: string) => void;
-  footer?: ReactNode;
-  label?: string;
 }
 
-export function Sidebar({
+export interface SidebarGroupProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  "onSelect"
+> {
+  activeKey?: string;
+  items: SidebarItem[];
+  label?: ReactNode;
+  onSelect?: (key: string) => void;
+}
+
+/** A labelled navigation group; combine with Collapsible when groups are long. */
+export function SidebarGroup({
   activeKey,
-  brand,
   className,
-  footer,
   items,
-  label = "Application navigation",
+  label,
   onSelect,
   ...props
-}: SidebarProps) {
+}: SidebarGroupProps) {
   return (
-    <div {...props} className={cx("t7-sidebar", className)}>
-      {brand ? <div className="t7-sidebar-brand">{brand}</div> : null}
-      <nav aria-label={label} className="t7-sidebar-nav">
+    <div {...props} className={cx("t7-sidebar-group", className)}>
+      {label ? <span className="t7-sidebar-group-label">{label}</span> : null}
+      <div className="t7-sidebar-group-items">
         {items.map((item) => (
           <div className="t7-sidebar-item" key={item.key}>
             <NavItem
@@ -716,6 +900,62 @@ export function Sidebar({
             ) : null}
           </div>
         ))}
+      </div>
+    </div>
+  );
+}
+
+export interface SidebarProps extends Omit<
+  React.HTMLAttributes<HTMLElement>,
+  "onSelect"
+> {
+  brand?: ReactNode;
+  groups?: SidebarGroupData[];
+  items?: SidebarItem[];
+  activeKey?: string;
+  onSelect?: (key: string) => void;
+  footer?: ReactNode;
+  label?: string;
+}
+
+export function Sidebar({
+  activeKey,
+  brand,
+  className,
+  footer,
+  groups,
+  items,
+  label = "Application navigation",
+  onSelect,
+  ...props
+}: SidebarProps) {
+  return (
+    <div {...props} className={cx("t7-sidebar", className)}>
+      {brand ? <div className="t7-sidebar-brand">{brand}</div> : null}
+      <nav
+        aria-label={label}
+        className={cx(
+          "t7-sidebar-nav",
+          Boolean(groups?.length) && "has-groups",
+        )}
+      >
+        {groups?.length ? (
+          groups.map((group) => (
+            <SidebarGroup
+              activeKey={activeKey}
+              items={group.items}
+              key={group.key}
+              label={group.label}
+              onSelect={onSelect}
+            />
+          ))
+        ) : (
+          <SidebarGroup
+            activeKey={activeKey}
+            items={items ?? []}
+            onSelect={onSelect}
+          />
+        )}
       </nav>
       {footer ? <div className="t7-sidebar-footer">{footer}</div> : null}
     </div>
@@ -982,34 +1222,25 @@ export function DetailDrawer({
   const closeRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
   const descriptionId = `${titleId}-description`;
-
-  useEffect(() => {
-    if (!open) return undefined;
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", onKeyDown);
-    closeRef.current?.focus();
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, [onClose, open]);
-
-  if (!open) return null;
+  const dialogRef = useNativeDialog(open, onClose, closeRef);
 
   return (
-    <div
+    <dialog
+      ref={dialogRef}
+      aria-describedby={description ? descriptionId : undefined}
+      aria-labelledby={titleId}
       className="t7-drawer-backdrop"
-      onMouseDown={(event) => {
+      onClick={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
+      onKeyDown={(event) => {
+        if (event.key === "Escape") {
+          event.preventDefault();
+          onClose();
+        }
+      }}
     >
-      <aside
-        aria-describedby={description ? descriptionId : undefined}
-        aria-labelledby={titleId}
-        aria-modal="true"
-        className="t7-drawer"
-        data-side={side}
-        role="dialog"
-      >
+      <aside className="t7-drawer" data-side={side}>
         <div className="t7-drawer-header">
           <div>
             <Typography as="h2" typeRole="heading-lg" id={titleId}>
@@ -1038,7 +1269,7 @@ export function DetailDrawer({
         </div>
         <div className="t7-drawer-body">{children}</div>
       </aside>
-    </div>
+    </dialog>
   );
 }
 
@@ -1119,15 +1350,7 @@ export function ProductCard({
           </Typography>
         ) : null}
         {details ? <div className="t7-product-details">{details}</div> : null}
-        {price ? (
-          <Typography
-            as="strong"
-            className="t7-product-price"
-            typeRole="heading-sm"
-          >
-            {price}
-          </Typography>
-        ) : null}
+        {price ? <div className="t7-product-price">{price}</div> : null}
         {actions ? <div className="t7-product-actions">{actions}</div> : null}
       </div>
     </article>

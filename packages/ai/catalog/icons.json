@@ -220,5 +220,165 @@
     "provider": "solar:close-circle-bold",
     "useWhen": ["close", "dismiss"]
   },
-  "plus": { "provider": "solar:add-circle-bold", "useWhen": ["add", "create"] }
+  "plus": { "provider": "solar:add-circle-bold", "useWhen": ["add", "create"] },
+  "menu": {
+    "provider": "solar:list-bold",
+    "useWhen": ["open navigation", "show menu"]
+  },
+  "chevronLeft": {
+    "provider": "solar:alt-arrow-left-linear",
+    "useWhen": ["previous", "collapse", "navigate left"]
+  },
+  "chevronRight": {
+    "provider": "solar:alt-arrow-right-linear",
+    "useWhen": ["next", "breadcrumb separator", "navigate right"]
+  },
+  "chevronUp": {
+    "provider": "solar:alt-arrow-up-linear",
+    "useWhen": ["collapse", "move up"]
+  },
+  "delete": {
+    "provider": "solar:trash-bin-trash-bold",
+    "useWhen": ["delete", "remove"]
+  },
+  "upload": {
+    "provider": "solar:upload-minimalistic-bold",
+    "useWhen": ["upload", "select files"]
+  },
+  "import": {
+    "provider": "solar:inbox-in-bold-duotone",
+    "useWhen": ["import", "receive records"]
+  },
+  "info": {
+    "provider": "solar:info-circle-bold",
+    "useWhen": ["information", "help", "context"]
+  },
+  "pending": {
+    "provider": "solar:clock-circle-bold",
+    "useWhen": ["pending", "waiting"]
+  },
+  "clock": {
+    "provider": "solar:clock-circle-bold",
+    "useWhen": ["time", "activity timestamp"]
+  },
+  "blocked": {
+    "provider": "solar:lock-keyhole-minimalistic-bold-duotone",
+    "useWhen": ["blocked", "restricted", "error state"]
+  },
+  "lock": {
+    "provider": "solar:lock-keyhole-minimalistic-bold-duotone",
+    "useWhen": ["locked", "permission", "secure"]
+  },
+  "unlock": {
+    "provider": "solar:lock-keyhole-unlocked-bold-duotone",
+    "useWhen": ["unlocked", "allow access"]
+  },
+  "calendar": {
+    "provider": "solar:calendar-date-bold-duotone",
+    "useWhen": ["date", "calendar", "schedule"]
+  },
+  "command": {
+    "provider": "solar:command-bold-duotone",
+    "useWhen": ["command menu", "keyboard command"]
+  },
+  "keyboard": {
+    "provider": "solar:keyboard-bold-duotone",
+    "useWhen": ["keyboard shortcut", "input"]
+  },
+  "refresh": {
+    "provider": "solar:refresh-bold-duotone",
+    "useWhen": ["refresh", "retry", "reload"]
+  },
+  "chart": {
+    "provider": "solar:chart-square-bold-duotone",
+    "useWhen": ["chart", "analytics"]
+  },
+  "analytics": {
+    "provider": "solar:chart-square-bold-duotone",
+    "useWhen": ["analytics", "metric insight"]
+  },
+  "kpi": {
+    "provider": "solar:chart-2-bold-duotone",
+    "useWhen": ["KPI", "metric"]
+  },
+  "progress": {
+    "provider": "solar:chart-square-bold-duotone",
+    "useWhen": ["progress", "completion"]
+  },
+  "trendUp": {
+    "provider": "solar:graph-up-bold-duotone",
+    "useWhen": ["positive trend", "increase"]
+  },
+  "trendDown": {
+    "provider": "solar:graph-down-bold-duotone",
+    "useWhen": ["negative trend", "decrease"]
+  },
+  "timeline": {
+    "provider": "solar:history-bold-duotone",
+    "useWhen": ["activity timeline", "history"]
+  },
+  "user": {
+    "provider": "solar:user-circle-bold-duotone",
+    "useWhen": ["person", "account", "owner"]
+  },
+  "users": {
+    "provider": "solar:users-group-rounded-bold-duotone",
+    "useWhen": ["people", "team", "collaborators"]
+  },
+  "file": {
+    "provider": "solar:file-bold-duotone",
+    "useWhen": ["file", "document"]
+  },
+  "folder": {
+    "provider": "solar:folder-bold-duotone",
+    "useWhen": ["folder", "collection"]
+  },
+  "pdf": {
+    "provider": "solar:file-text-bold",
+    "useWhen": ["PDF", "text document"]
+  },
+  "image": {
+    "provider": "solar:gallery-wide-bold",
+    "useWhen": ["image", "media fallback"]
+  },
+  "fileCheck": {
+    "provider": "solar:file-check-bold-duotone",
+    "useWhen": ["verified file", "complete document"]
+  },
+  "notification": {
+    "provider": "solar:bell-bold-duotone",
+    "useWhen": ["notification", "alert inbox"]
+  },
+  "eye": {
+    "provider": "solar:eye-bold",
+    "useWhen": ["show password", "reveal"]
+  },
+  "eyeOff": {
+    "provider": "solar:eye-closed-bold",
+    "useWhen": ["hide password", "conceal"]
+  },
+  "finance": {
+    "provider": "solar:wallet-money-bold-duotone",
+    "useWhen": ["finance", "money"]
+  },
+  "accounting": {
+    "provider": "solar:calculator-bold-duotone",
+    "useWhen": ["accounting", "calculation"]
+  },
+  "logistics": {
+    "provider": "solar:delivery-bold-duotone",
+    "useWhen": ["logistics", "fulfillment"]
+  },
+  "admin": {
+    "provider": "solar:shield-user-bold-duotone",
+    "useWhen": ["administration", "admin access"]
+  },
+  "files": {
+    "provider": "solar:folder-with-files-bold-duotone",
+    "useWhen": ["multiple files", "document collection"]
+  },
+  "communication": {
+    "provider": "solar:chat-round-line-bold-duotone",
+    "useWhen": ["communication", "message"]
+  }
 }

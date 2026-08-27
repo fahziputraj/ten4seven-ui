@@ -1,0 +1,398 @@
+{
+  "hero-split": {
+    "category": "Hero",
+    "purpose": "Lead a public page with one proposition, clear actions, and supporting media.",
+    "useWhen": [
+      "a public page needs a primary proposition plus supporting media"
+    ],
+    "avoidWhen": [
+      "the page is a dense application workspace",
+      "the headline needs several competing actions"
+    ],
+    "requiredComponents": ["Typography", "Button", "MediaFrame"],
+    "optionalComponents": ["TopNavigation", "Card"],
+    "contentSlots": [
+      "title",
+      "description",
+      "primaryAction",
+      "secondaryAction",
+      "media",
+      "trust"
+    ],
+    "responsive": [
+      "copy and media stack intentionally on compact screens",
+      "actions become a vertical group when width requires it"
+    ],
+    "motion": [
+      "reveal content once when it enters view",
+      "respect prefers-reduced-motion and keep content visible without JavaScript"
+    ],
+    "accessibility": [
+      "use one h1 and preserve logical action order",
+      "keep media decorative unless it carries meaningful alternative text"
+    ],
+    "performance": [
+      "reserve media dimensions",
+      "do not lazy-load the primary above-the-fold media blindly"
+    ],
+    "recommendedRecipes": ["marketing-home", "catalog"],
+    "variants": [
+      "centered",
+      "split",
+      "media-right",
+      "media-left",
+      "product-preview",
+      "editorial"
+    ],
+    "source": "packages/ui/src/blocks.tsx",
+    "displayName": "Hero",
+    "example": "<Hero variant=\"split\" />"
+  },
+  "cta-contained": {
+    "category": "CTA",
+    "purpose": "Close a section or page with one dominant action and a concise benefit statement.",
+    "useWhen": [
+      "a public flow needs a clear next step after context has been established"
+    ],
+    "avoidWhen": [
+      "four equal actions are competing",
+      "an application Alert is the correct semantic"
+    ],
+    "requiredComponents": ["Typography", "Button"],
+    "optionalComponents": ["MediaFrame", "Card"],
+    "contentSlots": ["title", "description", "actions", "media"],
+    "responsive": [
+      "copy and media stack without shrinking the action target",
+      "secondary actions remain visually subordinate"
+    ],
+    "motion": [
+      "use shared transition tokens for hover and focus",
+      "never hide the primary action before JavaScript runs"
+    ],
+    "accessibility": [
+      "preserve clear action names and visible focus",
+      "keep heading and action order logical"
+    ],
+    "performance": ["avoid animated filters and large decorative layers"],
+    "recommendedRecipes": ["marketing-home", "content-detail"],
+    "variants": ["inline", "contained", "split", "with-proof"],
+    "source": "packages/ui/src/blocks.tsx",
+    "displayName": "Contained CTA",
+    "example": "<CtaBlock tone=\"accent\" />"
+  },
+  "feature-showcase": {
+    "category": "Features",
+    "purpose": "Explain a small set of capabilities through one lead visual and readable supporting items.",
+    "useWhen": [
+      "three or fewer related capabilities need section-level hierarchy"
+    ],
+    "avoidWhen": [
+      "a comparable data set belongs in a table",
+      "cards would add more chrome than clarity"
+    ],
+    "requiredComponents": ["Typography", "Card", "MediaFrame"],
+    "optionalComponents": ["Button", "T7Icon", "ChartPanel"],
+    "contentSlots": ["title", "description", "leadMedia", "items"],
+    "responsive": [
+      "lead media remains readable above supporting items",
+      "supporting items stack without changing their content contract"
+    ],
+    "motion": [
+      "use restrained border and opacity transitions only",
+      "respect reduced motion"
+    ],
+    "accessibility": [
+      "use section and item headings",
+      "do not make complex cards one undifferentiated link"
+    ],
+    "performance": ["keep lead media bounded and dimensioned"],
+    "recommendedRecipes": ["marketing-home", "content-list"],
+    "variants": ["lead-and-list", "media-and-copy"],
+    "source": "packages/ui/src/blocks.tsx",
+    "displayName": "Feature Showcase",
+    "example": "<FeatureShowcase items={items} />"
+  },
+  "stats-section": {
+    "category": "Stats",
+    "purpose": "Present public proof or outcomes with metric typography distinct from operational KPIs.",
+    "useWhen": [
+      "a public page needs a concise set of verified outcomes or system counts"
+    ],
+    "avoidWhen": [
+      "the values are unverified business claims",
+      "a dashboard KPICluster already expresses the operational need"
+    ],
+    "requiredComponents": ["Typography"],
+    "optionalComponents": ["TrendIndicator", "Sparkline"],
+    "contentSlots": ["title", "description", "items"],
+    "responsive": [
+      "metrics reflow to two columns and then one column",
+      "numeric values keep tabular figures"
+    ],
+    "motion": [
+      "count-up is optional and must start only when visible",
+      "final values remain readable with reduced motion"
+    ],
+    "accessibility": [
+      "provide text labels for every value",
+      "do not rely on color alone"
+    ],
+    "performance": ["prefer static values when animation adds no meaning"],
+    "recommendedRecipes": ["marketing-home", "report"],
+    "variants": ["outcomes", "catalog-proof"],
+    "source": "packages/ui/src/blocks.tsx",
+    "displayName": "Stats Section",
+    "example": "<StatsSection items={items} />"
+  },
+  "logo-cloud": {
+    "category": "Social proof",
+    "purpose": "Show a quiet, accessible row of organizations or communities without forcing logos into cards.",
+    "useWhen": ["a public page has a small set of names that support trust"],
+    "avoidWhen": ["the names are unverified or decorative filler"],
+    "requiredComponents": ["Typography"],
+    "optionalComponents": ["T7Icon"],
+    "contentSlots": ["label", "items"],
+    "responsive": ["names wrap naturally and remain readable at narrow widths"],
+    "motion": [
+      "no autoplay or marquee motion by default",
+      "respect reduced motion"
+    ],
+    "accessibility": ["company names remain visible text or meaningful labels"],
+    "performance": [
+      "avoid loading a large logo asset set for a small proof strip"
+    ],
+    "recommendedRecipes": ["marketing-home"],
+    "variants": ["monochrome", "text-led"],
+    "source": "packages/ui/src/blocks.tsx",
+    "displayName": "Logo Cloud",
+    "example": "<LogoCloud items={items} />"
+  },
+  "testimonials": {
+    "category": "Testimonials",
+    "purpose": "Present specific customer quotes with legible attribution and restrained social proof treatment.",
+    "useWhen": ["a public page has verified quotes that deserve context"],
+    "avoidWhen": ["a quote is being used as a substitute for product evidence"],
+    "requiredComponents": ["Typography"],
+    "optionalComponents": ["Carousel", "T7Icon", "MediaFrame"],
+    "contentSlots": [
+      "title",
+      "description",
+      "quote",
+      "person",
+      "role",
+      "company",
+      "avatar"
+    ],
+    "responsive": [
+      "quotes stack without shrinking body type",
+      "attribution stays attached to its quote"
+    ],
+    "motion": [
+      "use a carousel only when the number of quotes warrants it",
+      "no autoplay by default"
+    ],
+    "accessibility": [
+      "use blockquote and figcaption semantics",
+      "keep attribution text available to assistive technology"
+    ],
+    "performance": [
+      "avoid remote avatar work when initials or text are sufficient"
+    ],
+    "recommendedRecipes": ["marketing-home", "content-detail"],
+    "variants": ["grid", "carousel", "single-quote"],
+    "source": "packages/ui/src/blocks.tsx",
+    "displayName": "Testimonials",
+    "example": "<Testimonials items={items} />"
+  },
+  "pricing-section": {
+    "category": "Pricing",
+    "purpose": "Compare plan presentation with one recommended option without owning subscription logic.",
+    "useWhen": [
+      "a public page needs a plan comparison before product-owned checkout"
+    ],
+    "avoidWhen": [
+      "entitlements or billing calculations need to be encoded in UI"
+    ],
+    "requiredComponents": ["Card", "Typography", "Button"],
+    "optionalComponents": ["Badge", "Tooltip"],
+    "contentSlots": [
+      "title",
+      "description",
+      "plans",
+      "features",
+      "price",
+      "action"
+    ],
+    "responsive": [
+      "plans stack at narrow widths",
+      "recommended state remains understandable without color"
+    ],
+    "motion": [
+      "use only shared hover and focus transitions",
+      "do not animate prices repeatedly"
+    ],
+    "accessibility": [
+      "use plan headings and explicit action names",
+      "do not communicate recommended state by color alone"
+    ],
+    "performance": ["keep plan content static until product data is available"],
+    "recommendedRecipes": ["marketing-home", "checkout"],
+    "variants": ["three-column", "comparison", "featured-plan"],
+    "source": "packages/ui/src/blocks.tsx",
+    "displayName": "Pricing Section",
+    "example": "<PricingSection plans={plans} />"
+  },
+  "content-showcase": {
+    "category": "Content",
+    "purpose": "Present editorial or educational items with stable media, metadata, copy, and secondary actions.",
+    "useWhen": [
+      "content needs visual browse hierarchy rather than table semantics"
+    ],
+    "avoidWhen": ["the content is a dense operational record set"],
+    "requiredComponents": ["Card", "Typography", "MediaFrame"],
+    "optionalComponents": ["Button", "Pagination"],
+    "contentSlots": [
+      "title",
+      "description",
+      "items",
+      "media",
+      "meta",
+      "action"
+    ],
+    "responsive": [
+      "cards collapse to one column without media distortion",
+      "actions remain reachable after copy"
+    ],
+    "motion": [
+      "limit motion to subtle surface transitions",
+      "respect reduced motion"
+    ],
+    "accessibility": [
+      "use content headings and meaningful media alternatives",
+      "avoid nested interactive card semantics"
+    ],
+    "performance": [
+      "reserve media aspect ratios and size images intentionally"
+    ],
+    "recommendedRecipes": ["marketing-home", "content-list"],
+    "variants": ["editorial-grid", "lead-story"],
+    "source": "packages/ui/src/blocks.tsx",
+    "displayName": "Content Showcase",
+    "example": "<ContentShowcase items={items} />"
+  },
+  "product-showcase": {
+    "category": "Commerce",
+    "purpose": "Compose a product-led browse section from ProductGrid and ProductCard without inventing commerce primitives.",
+    "useWhen": ["a public or commerce page needs a featured product set"],
+    "avoidWhen": [
+      "products are comparable operational rows",
+      "purchase logic belongs in the block"
+    ],
+    "requiredComponents": ["ProductGrid", "ProductCard", "Typography"],
+    "optionalComponents": ["Carousel", "Price", "Rating", "Button"],
+    "contentSlots": ["title", "description", "products", "actions"],
+    "responsive": [
+      "grid and carousel stay bounded without page-level overflow",
+      "product media keeps its aspect ratio"
+    ],
+    "motion": ["use restrained card transitions", "respect reduced motion"],
+    "accessibility": [
+      "product actions have specific names",
+      "do not make nested purchase actions ambiguous"
+    ],
+    "performance": [
+      "load only the visible product media needed for the initial section"
+    ],
+    "recommendedRecipes": ["catalog", "marketing-home"],
+    "variants": ["grid", "carousel", "featured-product"],
+    "source": "packages/ui/src/blocks.tsx",
+    "displayName": "Product Showcase",
+    "example": "<ProductShowcase title=\"Featured\">…</ProductShowcase>"
+  },
+  "announcement-bar": {
+    "category": "Navigation",
+    "purpose": "Communicate a public update or promotion with optional dismissal and one supporting action.",
+    "useWhen": ["a site-wide public notice needs communication semantics"],
+    "avoidWhen": [
+      "the message represents an application error or workflow status"
+    ],
+    "requiredComponents": ["Typography"],
+    "optionalComponents": ["Button", "IconButton"],
+    "contentSlots": ["message", "action", "dismiss"],
+    "responsive": [
+      "message wraps before controls disappear",
+      "dismiss remains keyboard reachable"
+    ],
+    "motion": [
+      "dismiss without a dramatic exit animation",
+      "respect reduced motion"
+    ],
+    "accessibility": [
+      "use an aside or region label and an explicit dismiss name"
+    ],
+    "performance": ["do not block page content on announcement state"],
+    "recommendedRecipes": ["marketing-home", "catalog"],
+    "variants": ["update", "promotion", "notice"],
+    "source": "packages/ui/src/blocks.tsx",
+    "displayName": "Announcement Bar",
+    "example": "<AnnouncementBar dismissible>New documentation is live.</AnnouncementBar>"
+  },
+  "carousel": {
+    "category": "Navigation",
+    "purpose": "Present a bounded sequence of content with accessible controls and native scroll-snap behavior.",
+    "useWhen": ["sequential content benefits from horizontal browsing"],
+    "avoidWhen": [
+      "all items should be visible and comparable at once",
+      "autoplay is being used as decoration"
+    ],
+    "requiredComponents": ["IconButton"],
+    "optionalComponents": ["ProductCard", "Card"],
+    "contentSlots": ["slides", "label", "previous", "next", "indicators"],
+    "responsive": [
+      "slides use a bounded internal viewport",
+      "touch scroll and snap remain available at narrow widths"
+    ],
+    "motion": [
+      "no autoplay by default",
+      "smooth scroll becomes instant under prefers-reduced-motion"
+    ],
+    "accessibility": [
+      "region and slide labels identify position",
+      "previous and next controls have explicit accessible names",
+      "keyboard arrows and Home/End are supported"
+    ],
+    "performance": [
+      "use native scroll instead of a heavy engine for simple sequences",
+      "avoid creating a page-level overflow context"
+    ],
+    "recommendedRecipes": ["marketing-home", "catalog"],
+    "variants": ["content", "product", "testimonial"],
+    "source": "packages/ui/src/blocks.tsx",
+    "displayName": "Carousel",
+    "example": "<Carousel aria-label=\"Featured guides\">…</Carousel>"
+  },
+  "public-footer": {
+    "category": "Footer",
+    "purpose": "Close a public surface with brand, link groups, legal copy, and optional social actions.",
+    "useWhen": ["a public shell needs consistent lower-page wayfinding"],
+    "avoidWhen": ["a private application sidebar is the navigation surface"],
+    "requiredComponents": ["Typography"],
+    "optionalComponents": ["Button", "IconButton"],
+    "contentSlots": ["brand", "groups", "legal", "social"],
+    "responsive": [
+      "link groups reflow into readable columns",
+      "legal copy and social actions stack at narrow widths"
+    ],
+    "motion": ["use shared link and focus transitions only"],
+    "accessibility": [
+      "each link group has a useful nav label",
+      "legal and social links remain keyboard reachable"
+    ],
+    "performance": ["keep footer media and social integrations optional"],
+    "recommendedRecipes": ["marketing-home", "content-list", "catalog"],
+    "variants": ["link-groups", "compact"],
+    "source": "packages/ui/src/blocks.tsx",
+    "displayName": "Public Footer",
+    "example": "<PublicFooter brand={brand} groups={groups} />"
+  }
+}

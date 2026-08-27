@@ -2,34 +2,46 @@
 
 Status: **PASS**.
 
-The executable `scripts/verify-reference-cold-start.mjs` limits its reads to:
+`scripts/verify-reference-cold-start.mjs` constrains its read set to eight consumer-facing contracts/catalogs:
 
-- `AGENTS.md` and the consumer `AGENTS.ten4seven.md` template.
-- `llms.txt` and the focused AI quickstart/migration contracts.
-- `packages/ai/catalog/recipes.json`.
-- `packages/ai/catalog/components.json`.
-- `packages/ai/catalog/icons.json`.
+- `AGENTS.md`, `llms.txt`, and `packages/ai/templates/AGENTS.ten4seven.md`.
+- `docs/ai/AI_QUICKSTART.md` and `docs/ai/APPLY_TO_EXISTING_WEB.md`.
+- `packages/ai/catalog/recipes.json`, `components.json`, and `icons.json`.
 
-It does not inspect the AAPM extraction, HeroUI, Minimal, shadcnblocks, application reference source, or donor folders. It resolves:
+It explicitly excludes donor extraction, reference-screen source, and donor
+folders. Every recipe component (including optional composition) and every
+referenced expressive block must have catalog status `implemented`; the public
+`t7ui find` CLI must return the expected recipe and core structure.
 
-- Direct reference URLs from `AGENTS.md`/`llms.txt`: `/theme-studio`, `/warehouse-inventory`, and `/ebook-store`.
+## Deterministic route retrieval
 
-## Task A — Inventory List
+The consumer contract lists these direct local URLs: `/theme-studio`,
+`/component-lab`, `/tokens`, `/components`, `/blocks`, `/blocks/hero-split`,
+`/components/patterns`, `/components/tables`,
+`/components/filtering-bulk-actions`, `/icons`, `/recipes`, `/recipes/cart`,
+`/warehouse-inventory`, `/ebook-store`, and `/public-showcase`.
 
-- Direct URL: `/warehouse-inventory`.
-- Profile: `enterprise`.
-- Recipe: `entity-list`.
-- Required production composition: `AppShell`, `Sidebar`, `PageHeader`, `KPICluster`, `FilterToolbar`, `DataTable`, `Pagination`, `BulkActionBar`, `DetailDrawer`.
-- Semantic domain/action meanings: warehouse, inventory, stock in/out, transfer, search, filter, sort.
+## Simulated prompts
 
-## Task B — Ebook Store Catalog
+| Prompt type            | Query                      | Resolved recipe  | Profile    |
+| ---------------------- | -------------------------- | ---------------- | ---------- |
+| Registration Form      | `registration form`        | `auth`           | commerce   |
+| Advanced Employee Form | `advanced employee form`   | `entity-form`    | enterprise |
+| Warehouse Inventory    | `warehouse inventory list` | `entity-list`    | enterprise |
+| Modal Confirmation     | `modal confirmation`       | `entity-detail`  | enterprise |
+| Mobile Filter Drawer   | `mobile filter drawer`     | `entity-list`    | enterprise |
+| File Upload Form       | `file upload`              | `entity-form`    | enterprise |
+| KPI Dashboard          | `KPI dashboard`            | `dashboard`      | dashboard  |
+| Public Catalog         | `public catalog`           | `catalog`        | commerce   |
+| Cart Review            | `cart review`              | `cart`           | commerce   |
+| Checkout               | `checkout`                 | `checkout`       | commerce   |
+| Public Showcase        | `public showcase`          | `marketing-home` | marketing  |
 
-- Direct URL: `/ebook-store`.
-- Profile: `commerce`.
-- Recipe: `catalog`.
-- Required composition: `AppShell`, `PageHeader`, `Input`, `ProductCard`, `Pagination`.
-- Optional composition contracts: `Checkbox`, `Radio`, `Select`, `Button`, `Badge`, `EmptyState`, `DetailDrawer`; use `FilterToolbar` only when a catalog genuinely benefits from a toolbar rather than a browse rail.
-- Semantic domain/action meanings: book, ebook, publisher, catalog, category, cart, favorite, rating, search, filter, sort, preview.
-- Migration boundary: preserve API, routing, cart state, auth, and business logic.
+For Warehouse, the simulation reconstructs the exact entity-list chain: `AppShell`, `Sidebar`, `PageHeader`, `KPICluster`, `FilterToolbar`, `DataTable`, `Pagination`, `BulkActionBar`, and `DetailDrawer`. For Ebook, it reconstructs the catalog chain: `AppShell`, `TopNavigation`, `PageHeader`, `SearchInput`, `ProductGrid`, `ProductCard`, and `Pagination`, with `CartTrigger`, `CartPanel`, `CartLineItem`, `QuantityControl`, `Price`, `Rating`, and `FilterDrawer` available as canonical optional composition. The separate cart recipe adds `OrderSummary` without creating a commerce-only primitive family.
 
-The simulation also runs the public `t7ui find` lookup for both prompts and asserts that every required component is `available`. The consuming agent can reconstruct both screen structures from the contracts without donor-library research.
+For the public showcase, the simulation resolves `PublicShell`, the
+`marketing-home` recipe, twelve expressive blocks, shared chart/carousel
+contracts, and semantic icons without reading donor implementation folders.
+The migration contract still preserves API calls, cart state, routing,
+authentication, validation, permissions, schemas, and events. The read-limited
+simulation completed **11 tasks, 9 contract/catalog reads, and 0 donor reads**.

@@ -24,6 +24,7 @@ import {
 
 export interface Ten4SevenProviderProps extends PropsWithChildren<ThemeConfig> {
   theme?: ThemeConfig;
+  persistenceKey?: string;
   className?: string;
   style?: CSSProperties;
 }
@@ -31,6 +32,7 @@ export interface Ten4SevenProviderProps extends PropsWithChildren<ThemeConfig> {
 interface ThemeContextValue {
   theme: ResolvedTheme;
   setTheme: (next: Partial<ThemeConfig>) => void;
+  resetTheme: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
@@ -43,6 +45,7 @@ export function Ten4SevenProvider({
   typography = "modern",
   elevation = "soft",
   theme: themeConfig,
+  persistenceKey,
   className,
   style,
   children,
@@ -51,7 +54,23 @@ export function Ten4SevenProvider({
   const [systemAppearance, setSystemAppearance] = useState(() =>
     resolveAppearance("system"),
   );
-  const [overrides, setOverrides] = useState<Partial<ThemeConfig>>({});
+  const [overrides, setOverrides] = useState<Partial<ThemeConfig>>(() => {
+    if (!persistenceKey || typeof window === "undefined") return {};
+    try {
+      return JSON.parse(
+        window.localStorage.getItem(persistenceKey) ?? "{}",
+      ) as Partial<ThemeConfig>;
+    } catch {
+      return {};
+    }
+  });
+
+  useEffect(() => {
+    if (!persistenceKey) return;
+    if (Object.keys(overrides).length === 0)
+      window.localStorage.removeItem(persistenceKey);
+    else window.localStorage.setItem(persistenceKey, JSON.stringify(overrides));
+  }, [overrides, persistenceKey]);
 
   useEffect(() => {
     if (appearanceSetting !== "system") return undefined;
@@ -103,6 +122,7 @@ export function Ten4SevenProvider({
     () => ({
       theme,
       setTheme: (next) => setOverrides((current) => ({ ...current, ...next })),
+      resetTheme: () => setOverrides({}),
     }),
     [theme],
   );
@@ -119,6 +139,7 @@ export function Ten4SevenProvider({
         style={rootStyle}
       >
         {children}
+        <div id="t7-overlay-root" />
       </div>
     </ThemeContext.Provider>
   );

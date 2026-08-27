@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 
 import { T7Icon } from "@ten4seven/icons";
 import {
@@ -6,6 +6,9 @@ import {
   Badge,
   BulkActionBar,
   Button,
+  CartLineItem,
+  CartPanel,
+  CartTrigger,
   Checkbox,
   DataTable,
   DetailDrawer,
@@ -15,35 +18,20 @@ import {
   KPICluster,
   PageHeader,
   Pagination,
+  Popover,
+  Price,
   ProductCard,
+  ProductGrid,
+  ProductMeta,
   Radio,
+  Rating,
   Select,
   Sidebar,
   Typography,
+  OrderSummary,
   type DataTableColumn,
   type DataTableSort,
 } from "@ten4seven/ui";
-
-export type ReferenceRoute =
-  "Theme Studio" | "Warehouse Inventory" | "Ebook Store";
-
-export const referenceRoutePaths: Record<ReferenceRoute, string> = {
-  "Theme Studio": "/theme-studio",
-  "Warehouse Inventory": "/warehouse-inventory",
-  "Ebook Store": "/ebook-store",
-};
-
-export function referenceRouteFromPath(pathname: string): ReferenceRoute {
-  const normalizedPath = pathname.replace(/\/+$/, "") || "/";
-  const entry = Object.entries(referenceRoutePaths).find(
-    ([, path]) => path === normalizedPath,
-  );
-  return (entry?.[0] as ReferenceRoute | undefined) ?? "Theme Studio";
-}
-
-type ReferenceNavigationProps = {
-  onNavigate: (route: ReferenceRoute) => void;
-};
 
 function ReferenceBrand({
   icon,
@@ -67,30 +55,6 @@ function ReferenceBrand({
           {subtitle}
         </Typography>
       </div>
-    </div>
-  );
-}
-
-function ReferenceSwitcher({ onNavigate }: ReferenceNavigationProps) {
-  return (
-    <div className="reference-switcher">
-      <Typography typeRole="overline">Reference surfaces</Typography>
-      <Button
-        intent="quiet"
-        leadingIcon="theme"
-        onClick={() => onNavigate("Theme Studio")}
-        size="sm"
-      >
-        Theme Studio
-      </Button>
-      <Button
-        intent="quiet"
-        leadingIcon="book"
-        onClick={() => onNavigate("Ebook Store")}
-        size="sm"
-      >
-        Ebook Store
-      </Button>
     </div>
   );
 }
@@ -289,7 +253,7 @@ function StockStatusBadge({ status }: { status: StockStatus }) {
   );
 }
 
-function ReferenceTopbar({
+function OperationalTopbar({
   children,
   context,
   icon,
@@ -303,8 +267,8 @@ function ReferenceTopbar({
       <div className="reference-topbar-context">
         <T7Icon name={icon} size={18} />
         <div>
-          <Typography typeRole="label">ten4seven reference</Typography>
-          <Typography typeRole="caption">{context}</Typography>
+          <Typography typeRole="label">{context}</Typography>
+          <Typography typeRole="caption">Operations workspace</Typography>
         </div>
       </div>
       <div className="reference-topbar-actions">{children}</div>
@@ -427,12 +391,21 @@ function InventoryDrawerContent({
   );
 }
 
-export function WarehouseInventory({ onNavigate }: ReferenceNavigationProps) {
+export type WarehouseViewState = "ready" | "loading" | "error" | "empty";
+
+export interface WarehouseInventoryProps {
+  viewState: WarehouseViewState;
+  onViewStateChange: (viewState: WarehouseViewState) => void;
+}
+
+export function WarehouseInventory({
+  onViewStateChange,
+  viewState,
+}: WarehouseInventoryProps) {
   const [query, setQuery] = useState("");
   const [warehouse, setWarehouse] = useState("all");
   const [category, setCategory] = useState("all");
   const [status, setStatus] = useState("all");
-  const [viewState, setViewState] = useState("ready");
   const [page, setPage] = useState(1);
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const [detailItem, setDetailItem] = useState<InventoryItem | null>(null);
@@ -593,7 +566,6 @@ export function WarehouseInventory({ onNavigate }: ReferenceNavigationProps) {
           title="Northstar"
         />
       }
-      footer={<ReferenceSwitcher onNavigate={onNavigate} />}
       items={[
         { icon: "inventory", key: "inventory", label: "Inventory" },
         { icon: "stockIn", key: "inbound", label: "Inbound" },
@@ -609,18 +581,14 @@ export function WarehouseInventory({ onNavigate }: ReferenceNavigationProps) {
       className="reference-app-shell warehouse-app-shell"
       sidebar={warehouseSidebar}
       topbar={
-        <ReferenceTopbar context="Warehouse / Inventory" icon="warehouse">
-          <Badge tone="success">
-            <T7Icon name="success" size={13} />
-            Fixture connected
-          </Badge>
+        <OperationalTopbar context="Northstar / Inventory" icon="warehouse">
           <Button
+            aria-label="Open warehouse settings"
             intent="quiet"
             leadingIcon="settings"
-            aria-label="Open warehouse settings"
             size="sm"
           />
-        </ReferenceTopbar>
+        </OperationalTopbar>
       }
     >
       <div className="reference-page" data-profile="enterprise">
@@ -759,16 +727,6 @@ export function WarehouseInventory({ onNavigate }: ReferenceNavigationProps) {
             <option value="Low stock">Low stock</option>
             <option value="Out of stock">Out of stock</option>
           </Select>
-          <Select
-            label="View state"
-            onChange={(event) => setViewState(event.target.value)}
-            value={viewState}
-          >
-            <option value="ready">Ready</option>
-            <option value="loading">Loading</option>
-            <option value="error">Error</option>
-            <option value="empty">Empty</option>
-          </Select>
         </FilterToolbar>
 
         {notice ? (
@@ -869,7 +827,7 @@ export function WarehouseInventory({ onNavigate }: ReferenceNavigationProps) {
                   </span>
                   <Button
                     intent="secondary"
-                    onClick={() => setViewState("ready")}
+                    onClick={() => onViewStateChange("ready")}
                     size="sm"
                   >
                     Retry
@@ -926,14 +884,13 @@ const ebookCategories = [
 ] as const;
 type EbookCategory = (typeof ebookCategories)[number];
 type EbookCategoryFilter = EbookCategory | "all";
-type EbookAvailability =
-  "Google Play Books" | "Unduh DRM-free" | "Print + ebook";
+type EbookAvailability = "Google Play Books" | "Ebook" | "Buku cetak";
 type EbookPriceRange = "all" | "under-80000" | "80000-100000" | "over-100000";
 
 const ebookAvailabilityOptions: EbookAvailability[] = [
   "Google Play Books",
-  "Unduh DRM-free",
-  "Print + ebook",
+  "Ebook",
+  "Buku cetak",
 ];
 
 const ebookPriceOptions: Array<{ label: string; value: EbookPriceRange }> = [
@@ -977,7 +934,7 @@ const ebooks: Ebook[] = [
     price: 110000,
     rating: 4.8,
     format: "PDF",
-    availability: "Print + ebook",
+    availability: "Buku cetak",
     cover: "/publishing-covers/akuntansi-keuangan.svg",
   },
   {
@@ -988,7 +945,7 @@ const ebooks: Ebook[] = [
     price: 78000,
     rating: 4.7,
     format: "EPUB",
-    availability: "Unduh DRM-free",
+    availability: "Ebook",
     cover: "/publishing-covers/pembelajaran-bermakna.svg",
     badge: "Baru",
   },
@@ -1000,7 +957,7 @@ const ebooks: Ebook[] = [
     price: 125000,
     rating: 4.9,
     format: "EPUB + PDF",
-    availability: "Print + ebook",
+    availability: "Buku cetak",
     cover: "/publishing-covers/kesehatan-masyarakat.svg",
   },
   {
@@ -1022,7 +979,7 @@ const ebooks: Ebook[] = [
     price: 89000,
     rating: 4.6,
     format: "PDF",
-    availability: "Unduh DRM-free",
+    availability: "Ebook",
     cover: "/publishing-covers/hukum-perjanjian.svg",
   },
   {
@@ -1044,7 +1001,7 @@ const ebooks: Ebook[] = [
     price: 75000,
     rating: 4.5,
     format: "EPUB",
-    availability: "Unduh DRM-free",
+    availability: "Ebook",
     cover: "/publishing-covers/laporan-keuangan.svg",
   },
   {
@@ -1055,7 +1012,7 @@ const ebooks: Ebook[] = [
     price: 82000,
     rating: 4.7,
     format: "PDF",
-    availability: "Print + ebook",
+    availability: "Buku cetak",
     cover: "/publishing-covers/teknologi-layanan.svg",
   },
   {
@@ -1105,10 +1062,10 @@ function EbookCatalogFilters({
       <section className="ebook-filter-group" id="ebook-categories">
         <div className="ebook-filter-group-heading">
           <T7Icon name="category" size={16} />
-          <Typography typeRole="label">Browse subjects</Typography>
+          <Typography typeRole="label">Jelajahi kategori</Typography>
         </div>
         <nav
-          aria-label="Browse book categories"
+          aria-label="Jelajahi kategori buku"
           className="ebook-category-list"
         >
           <Button
@@ -1118,7 +1075,7 @@ function EbookCatalogFilters({
             onClick={() => onCategoryChange("all")}
             size="sm"
           >
-            All books
+            Semua buku
           </Button>
           {ebookCategories.map((value) => (
             <Button
@@ -1138,13 +1095,13 @@ function EbookCatalogFilters({
       <div className="ebook-filter-group">
         <div className="ebook-filter-group-heading">
           <T7Icon name="author" size={16} />
-          <Typography typeRole="label">Author</Typography>
+          <Typography typeRole="label">Penulis</Typography>
         </div>
         <Input
-          aria-label="Filter by author"
-          label="Filter by author"
+          aria-label="Saring berdasarkan penulis"
+          label="Saring berdasarkan penulis"
           onChange={(event) => onAuthorQueryChange(event.target.value)}
-          placeholder="Search author"
+          placeholder="Cari penulis"
           value={authorQuery}
         />
       </div>
@@ -1152,7 +1109,7 @@ function EbookCatalogFilters({
       <fieldset className="ebook-filter-group ebook-filter-fieldset">
         <legend className="ebook-filter-group-heading">
           <T7Icon name="sort" size={16} />
-          <span>Price range</span>
+          <span>Rentang harga</span>
         </legend>
         <div className="ebook-choice-list">
           {ebookPriceOptions.map((option) => (
@@ -1171,7 +1128,7 @@ function EbookCatalogFilters({
       <fieldset className="ebook-filter-group ebook-filter-fieldset">
         <legend className="ebook-filter-group-heading">
           <T7Icon name="ebook" size={16} />
-          <span>Availability</span>
+          <span>Ketersediaan</span>
         </legend>
         <div className="ebook-choice-list">
           {ebookAvailabilityOptions.map((value) => (
@@ -1187,7 +1144,7 @@ function EbookCatalogFilters({
 
       {hasActiveFilters ? (
         <Button intent="quiet" leadingIcon="clear" onClick={onClear} size="sm">
-          Clear filters
+          Hapus filter
         </Button>
       ) : null}
     </div>
@@ -1206,11 +1163,11 @@ function EbookCover({
   return (
     <div className="ebook-cover-frame">
       <div className="ebook-cover">
-        <img alt={`${book.title} cover`} src={book.cover} />
+        <img alt={`Sampul ${book.title}`} src={book.cover} />
       </div>
       {onToggleFavorite ? (
         <Button
-          aria-label={`${isFavorite ? "Remove" : "Save"} ${book.title}`}
+          aria-label={`${isFavorite ? "Hapus" : "Simpan"} ${book.title}`}
           aria-pressed={isFavorite}
           className="ebook-favorite-button"
           intent={isFavorite ? "secondary" : "quiet"}
@@ -1226,17 +1183,7 @@ function EbookCover({
   );
 }
 
-function formatRupiah(value: number) {
-  return new Intl.NumberFormat("id-ID", {
-    currency: "IDR",
-    maximumFractionDigits: 0,
-    style: "currency",
-  })
-    .format(value)
-    .replace(/\s/g, "");
-}
-
-export function EbookStoreCatalog({ onNavigate }: ReferenceNavigationProps) {
+export function EbookStoreCatalog() {
   const [query, setQuery] = useState("");
   const [authorQuery, setAuthorQuery] = useState("");
   const [category, setCategory] = useState<EbookCategoryFilter>("all");
@@ -1244,13 +1191,31 @@ export function EbookStoreCatalog({ onNavigate }: ReferenceNavigationProps) {
   const [view, setView] = useState("grid");
   const [page, setPage] = useState(1);
   const [favorites, setFavorites] = useState<string[]>([]);
-  const [cartCount, setCartCount] = useState(0);
+  const [cart, setCart] = useState<Record<string, number>>({});
+  const [cartOpen, setCartOpen] = useState(false);
+  const [mobileCart, setMobileCart] = useState(false);
   const [priceRange, setPriceRange] = useState<EbookPriceRange>("all");
   const [availability, setAvailability] = useState<EbookAvailability[]>([]);
   const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState<Ebook | null>(null);
   const [notice, setNotice] = useState("");
   const pageSize = 8;
+  const cartItems = ebooks
+    .filter((book) => cart[book.id])
+    .map((book) => ({ book, quantity: cart[book.id] }));
+  const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+  const cartSubtotal = cartItems.reduce(
+    (total, item) => total + item.book.price * item.quantity,
+    0,
+  );
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 720px)");
+    const update = () => setMobileCart(media.matches);
+    update();
+    media.addEventListener?.("change", update);
+    return () => media.removeEventListener?.("change", update);
+  }, []);
 
   const filteredBooks = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -1327,9 +1292,86 @@ export function EbookStoreCatalog({ onNavigate }: ReferenceNavigationProps) {
   }
 
   function addToCart(book: Ebook) {
-    setCartCount((current) => current + 1);
+    setCart((current) => ({
+      ...current,
+      [book.id]: (current[book.id] ?? 0) + 1,
+    }));
     setNotice(`${book.title} ditambahkan ke keranjang.`);
   }
+
+  function setCartQuantity(book: Ebook, quantity: number) {
+    setCart((current) => {
+      if (quantity <= 0) {
+        const next = { ...current };
+        delete next[book.id];
+        return next;
+      }
+      return { ...current, [book.id]: quantity };
+    });
+  }
+
+  const cartPanel = (
+    <CartPanel
+      actions={
+        <>
+          <Button intent="secondary">Lihat keranjang</Button>
+          <Button leadingIcon="checkout">Checkout</Button>
+        </>
+      }
+      aria-label="Keranjang"
+      emptyState={
+        <EmptyState
+          description="Tambahkan judul dari katalog untuk memulai pesanan."
+          icon="cart"
+          title="Keranjang masih kosong"
+        />
+      }
+      itemCount={cartCount ? `${cartCount} item pilihan` : undefined}
+      summary={
+        <div>
+          <OrderSummary
+            rows={[
+              { label: "Subtotal", value: <Price amount={cartSubtotal} /> },
+            ]}
+            total={<Price amount={cartSubtotal} />}
+          />
+          <Typography typeRole="caption">
+            Pajak dan biaya dihitung saat checkout.
+          </Typography>
+        </div>
+      }
+      title="Keranjang"
+    >
+      {cartItems.map(({ book, quantity }) => (
+        <CartLineItem
+          key={book.id}
+          media={<img alt="" src={book.cover} />}
+          meta={`${book.author} · ${book.format}`}
+          onQuantityChange={(nextQuantity) =>
+            setCartQuantity(book, nextQuantity)
+          }
+          onRemove={() => setCartQuantity(book, 0)}
+          price={<Price amount={book.price} />}
+          quantity={quantity}
+          quantityLabel={`Jumlah ${book.title}`}
+          removeLabel={`Hapus ${book.title} dari keranjang`}
+          title={book.title}
+        />
+      ))}
+    </CartPanel>
+  );
+
+  const cartTrigger = (
+    <CartTrigger
+      aria-label={
+        cartCount ? `${cartCount} item di keranjang` : "Buka keranjang"
+      }
+      count={cartCount}
+      intent="quiet"
+      label="Keranjang"
+      size="sm"
+    />
+  );
 
   function toggleFavorite(book: Ebook) {
     const isSaved = favorites.includes(book.id);
@@ -1375,35 +1417,35 @@ export function EbookStoreCatalog({ onNavigate }: ReferenceNavigationProps) {
                 Leaf &amp; Letter
               </Typography>
               <Typography as="span" typeRole="caption">
-                Publishing store
+                Toko penerbitan
               </Typography>
             </div>
           </div>
-          <nav aria-label="Store navigation" className="ebook-store-nav">
+          <nav aria-label="Navigasi toko" className="ebook-store-nav">
             <Button
               intent="quiet"
               onClick={() => scrollTo("ebook-catalog")}
               size="sm"
             >
-              Books
+              Buku
             </Button>
             <Button
               intent="quiet"
               onClick={() =>
                 setNotice(
-                  "Collaboration keeps authors, editors, and readers connected.",
+                  "Kolaborasi menghubungkan penulis, editor, dan pembaca.",
                 )
               }
               size="sm"
             >
-              Collaboration
+              Kolaborasi
             </Button>
             <Button
               intent="quiet"
               onClick={() => scrollTo("ebook-categories")}
               size="sm"
             >
-              Explore
+              Jelajahi
             </Button>
           </nav>
           <div className="ebook-store-actions">
@@ -1413,53 +1455,36 @@ export function EbookStoreCatalog({ onNavigate }: ReferenceNavigationProps) {
               leadingIcon="publisher"
               onClick={() =>
                 setNotice(
-                  "Terbitkan is the primary publishing path for this storefront.",
+                  "Jalur terbitkan siap dihubungkan ke alur penerbitan Anda.",
                 )
               }
               size="sm"
             >
               Terbitkan
             </Button>
-            <Button
-              aria-label={
-                cartCount ? `${cartCount} books in cart` : "Open cart"
-              }
-              intent="quiet"
-              leadingIcon="cart"
-              onClick={() =>
-                setNotice(
-                  cartCount
-                    ? `${cartCount} ${cartCount === 1 ? "judul" : "judul"} ada di keranjang.`
-                    : "Keranjang masih kosong. Pilih judul saat Anda siap.",
-                )
-              }
-              size="sm"
-            >
-              Cart{cartCount ? ` (${cartCount})` : ""}
-            </Button>
+            {mobileCart ? (
+              <span onClick={() => setCartOpen(true)}>{cartTrigger}</span>
+            ) : (
+              <Popover
+                className="ebook-cart-popover"
+                onOpenChange={setCartOpen}
+                open={cartOpen}
+                side="bottom"
+                trigger={cartTrigger}
+              >
+                {cartPanel}
+              </Popover>
+            )}
             <Button
               className="ebook-account-button"
               intent="quiet"
               onClick={() =>
-                setNotice("Account access stays with the consuming storefront.")
+                setNotice("Akses akun tetap berada pada storefront pengelola.")
               }
               size="sm"
             >
-              Account
+              Akun
             </Button>
-            <div className="ebook-reference-utility">
-              <Typography typeRole="overline">Reference</Typography>
-              <Button
-                aria-label="Open Theme Studio"
-                className="ebook-reference-link"
-                intent="quiet"
-                leadingIcon="theme"
-                onClick={() => onNavigate("Theme Studio")}
-                size="sm"
-              >
-                Theme Studio
-              </Button>
-            </div>
           </div>
         </div>
       }
@@ -1472,7 +1497,7 @@ export function EbookStoreCatalog({ onNavigate }: ReferenceNavigationProps) {
               leadingIcon="category"
               onClick={() => scrollTo("ebook-categories")}
             >
-              Browse subjects
+              Jelajahi kategori
             </Button>
           }
           description="Buku pilihan untuk manajemen, ilmu terapan, dan gagasan yang membantu pekerjaan sehari-hari bergerak maju."
@@ -1483,30 +1508,30 @@ export function EbookStoreCatalog({ onNavigate }: ReferenceNavigationProps) {
                 {ebooks.length} judul
               </Badge>
               <Typography typeRole="caption">
-                Digital, print, dan akses Google Play Books
+                Ebook, buku cetak, dan Google Play Books
               </Typography>
             </>
           }
-          overline="Leaf & Letter · Publishing catalog"
+          overline="Leaf & Letter · Katalog penerbitan"
           title="Buku untuk ide yang bertahan"
         />
 
         <div className="ebook-catalog-layout" id="ebook-catalog">
-          <aside aria-label="Catalog filters" className="ebook-filter-rail">
+          <aside aria-label="Filter katalog" className="ebook-filter-rail">
             <div className="ebook-filter-rail-heading">
               <div>
                 <Typography as="h2" typeRole="heading-sm">
-                  Filter books
+                  Filter buku
                 </Typography>
                 <Typography typeRole="caption">
                   {activeFilterCount
-                    ? `${activeFilterCount} filters active`
-                    : "Browse the collection"}
+                    ? `${activeFilterCount} filter aktif`
+                    : "Jelajahi koleksi"}
                 </Typography>
               </div>
               {activeFilterCount ? (
                 <Button intent="quiet" onClick={clearCatalogFilters} size="sm">
-                  Clear
+                  Hapus
                 </Button>
               ) : null}
             </div>
@@ -1519,14 +1544,14 @@ export function EbookStoreCatalog({ onNavigate }: ReferenceNavigationProps) {
           >
             <div className="ebook-results-search-row">
               <Input
-                aria-label="Search books"
+                aria-label="Cari buku"
                 className="ebook-catalog-search"
-                label="Search books"
+                label="Cari buku"
                 leadingIcon="search"
                 onChange={(event) =>
                   updateCatalogFilter(setQuery, event.target.value)
                 }
-                placeholder="Search title, author, or subject"
+                placeholder="Cari judul, penulis, atau kategori"
                 value={query}
               />
               <div className="ebook-results-controls">
@@ -1538,29 +1563,29 @@ export function EbookStoreCatalog({ onNavigate }: ReferenceNavigationProps) {
                   onClick={() => setFilterDrawerOpen(true)}
                   size="sm"
                 >
-                  Filters{activeFilterCount ? ` (${activeFilterCount})` : ""}
+                  Filter{activeFilterCount ? ` (${activeFilterCount})` : ""}
                 </Button>
                 <Select
                   className="ebook-compact-select"
-                  label="Sort by"
+                  label="Urutkan"
                   onChange={(event) =>
                     updateCatalogFilter(setSort, event.target.value)
                   }
                   value={sort}
                 >
-                  <option value="featured">Featured</option>
-                  <option value="rating">Top rated</option>
-                  <option value="price-low">Price: low to high</option>
-                  <option value="price-high">Price: high to low</option>
+                  <option value="featured">Unggulan</option>
+                  <option value="rating">Rating tertinggi</option>
+                  <option value="price-low">Harga terendah</option>
+                  <option value="price-high">Harga tertinggi</option>
                 </Select>
                 <div
-                  aria-label="View mode"
+                  aria-label="Tampilan katalog"
                   className="ebook-view-switch"
                   role="group"
                 >
-                  <Typography typeRole="caption">View</Typography>
+                  <Typography typeRole="caption">Tampilan</Typography>
                   <Button
-                    aria-label="Grid view"
+                    aria-label="Tampilan grid"
                     aria-pressed={view === "grid"}
                     className="ebook-view-button"
                     intent={view === "grid" ? "secondary" : "quiet"}
@@ -1571,7 +1596,7 @@ export function EbookStoreCatalog({ onNavigate }: ReferenceNavigationProps) {
                     Grid
                   </Button>
                   <Button
-                    aria-label="List view"
+                    aria-label="Tampilan daftar"
                     aria-pressed={view === "list"}
                     className="ebook-view-button"
                     intent={view === "list" ? "secondary" : "quiet"}
@@ -1579,7 +1604,7 @@ export function EbookStoreCatalog({ onNavigate }: ReferenceNavigationProps) {
                     onClick={() => setView("list")}
                     size="sm"
                   >
-                    List
+                    Daftar
                   </Button>
                 </div>
               </div>
@@ -1590,7 +1615,7 @@ export function EbookStoreCatalog({ onNavigate }: ReferenceNavigationProps) {
                 <T7Icon name="check" size={15} />
                 <Typography typeRole="caption">{notice}</Typography>
                 <Button intent="quiet" onClick={() => setNotice("")} size="sm">
-                  Dismiss
+                  Tutup
                 </Button>
               </div>
             ) : null}
@@ -1602,20 +1627,23 @@ export function EbookStoreCatalog({ onNavigate }: ReferenceNavigationProps) {
                   id="ebook-results-title"
                   typeRole="heading-sm"
                 >
-                  Books in the collection
+                  Buku dalam koleksi
                 </Typography>
                 <Typography typeRole="body-sm">
-                  Cover-led editions with clear format and access details.
+                  Edisi dengan informasi format dan akses yang jelas.
                 </Typography>
               </div>
               <Typography typeRole="caption">
-                {filteredBooks.length}{" "}
-                {filteredBooks.length === 1 ? "title" : "titles"}
+                {filteredBooks.length} judul
               </Typography>
             </div>
 
             {visibleBooks.length > 0 ? (
-              <div className="ebook-product-grid" data-view={view}>
+              <ProductGrid
+                className="ebook-product-grid"
+                data-view={view}
+                minCardWidth={172}
+              >
                 {visibleBooks.map((book) => (
                   <ProductCard
                     actions={
@@ -1630,7 +1658,7 @@ export function EbookStoreCatalog({ onNavigate }: ReferenceNavigationProps) {
                           }}
                           size="sm"
                         >
-                          View details
+                          Lihat detail
                         </Button>
                         <Button
                           className="ebook-primary-action"
@@ -1642,7 +1670,7 @@ export function EbookStoreCatalog({ onNavigate }: ReferenceNavigationProps) {
                           }}
                           size="sm"
                         >
-                          Add to cart
+                          Tambah ke keranjang
                         </Button>
                       </>
                     }
@@ -1653,14 +1681,18 @@ export function EbookStoreCatalog({ onNavigate }: ReferenceNavigationProps) {
                     }
                     className="ebook-product-card"
                     details={
-                      <span className="ebook-product-detail-line">
-                        <span>{book.format}</span>
-                        <span>·</span>
-                        <span>{book.availability}</span>
-                        <span>·</span>
-                        <T7Icon name="rating" size={12} />
-                        <span>{book.rating}</span>
-                      </span>
+                      <ProductMeta
+                        className="ebook-product-detail-line"
+                        items={[
+                          book.format,
+                          book.availability,
+                          <Rating
+                            key="rating"
+                            label={`Rating ${book.rating} dari 5`}
+                            value={book.rating}
+                          />,
+                        ]}
+                      />
                     }
                     eyebrow={book.category}
                     key={book.id}
@@ -1672,21 +1704,24 @@ export function EbookStoreCatalog({ onNavigate }: ReferenceNavigationProps) {
                       />
                     }
                     meta={
-                      <>
-                        <T7Icon name="author" size={14} />
-                        <span>{book.author}</span>
-                      </>
+                      <ProductMeta
+                        items={[
+                          <>
+                            <T7Icon name="author" size={14} /> {book.author}
+                          </>,
+                        ]}
+                      />
                     }
                     onClick={(event) => {
                       if ((event.target as HTMLElement).closest("button"))
                         return;
                       setSelectedBook(book);
                     }}
-                    price={formatRupiah(book.price)}
+                    price={<Price amount={book.price} />}
                     title={book.title}
                   />
                 ))}
-              </div>
+              </ProductGrid>
             ) : (
               <EmptyState
                 action={
@@ -1695,12 +1730,12 @@ export function EbookStoreCatalog({ onNavigate }: ReferenceNavigationProps) {
                     onClick={clearCatalogFilters}
                     size="sm"
                   >
-                    Clear catalog filters
+                    Hapus filter katalog
                   </Button>
                 }
-                description="Try a different title, author, subject, or availability option."
+                description="Coba judul, penulis, kategori, atau ketersediaan lain."
                 icon="book"
-                title="No books match these filters"
+                title="Tidak ada buku yang sesuai dengan filter ini"
               />
             )}
 
@@ -1715,18 +1750,27 @@ export function EbookStoreCatalog({ onNavigate }: ReferenceNavigationProps) {
       </div>
 
       <DetailDrawer
-        description="Use the same catalog filters on a narrow screen."
+        description="Gunakan filter katalog yang sama pada layar sempit."
         onClose={() => setFilterDrawerOpen(false)}
         open={filterDrawerOpen}
         side="left"
-        title="Filter books"
+        title="Filter buku"
       >
         <EbookCatalogFilters {...filterProps} />
         <div className="ebook-filter-drawer-footer">
           <Button onClick={() => setFilterDrawerOpen(false)}>
-            View results
+            Lihat hasil
           </Button>
         </div>
+      </DetailDrawer>
+
+      <DetailDrawer
+        description="Tinjau item, jumlah, dan subtotal sebelum checkout."
+        onClose={() => setCartOpen(false)}
+        open={mobileCart && cartOpen}
+        title="Keranjang"
+      >
+        {cartPanel}
       </DetailDrawer>
 
       <DetailDrawer
@@ -1737,7 +1781,7 @@ export function EbookStoreCatalog({ onNavigate }: ReferenceNavigationProps) {
         }
         onClose={() => setSelectedBook(null)}
         open={Boolean(selectedBook)}
-        title={selectedBook?.title ?? "Book details"}
+        title={selectedBook?.title ?? "Detail buku"}
       >
         {selectedBook ? (
           <div className="ebook-quick-view">
@@ -1758,19 +1802,17 @@ export function EbookStoreCatalog({ onNavigate }: ReferenceNavigationProps) {
                   <T7Icon name="rating" size={13} /> {selectedBook.rating}
                 </span>
               </div>
-              <Typography as="strong" typeRole="heading-sm">
-                {formatRupiah(selectedBook.price)}
-              </Typography>
+              <Price amount={selectedBook.price} />
             </div>
             <div className="reference-drawer-actions">
               <Button
                 leadingIcon="cart"
                 onClick={() => addToCart(selectedBook)}
               >
-                Add to cart
+                Tambah ke keranjang
               </Button>
               <Button intent="quiet" onClick={() => setSelectedBook(null)}>
-                Close details
+                Tutup detail
               </Button>
             </div>
           </div>

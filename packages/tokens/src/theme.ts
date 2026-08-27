@@ -1,11 +1,23 @@
 export type Appearance = "light" | "dark" | "system";
-export type PaletteName = "emerald" | "blue" | "violet" | "slate";
+export type PaletteName =
+  | "slate"
+  | "emerald"
+  | "teal"
+  | "cyan"
+  | "blue"
+  | "indigo"
+  | "violet"
+  | "rose"
+  | "red"
+  | "orange"
+  | "amber";
 export type RadiusName = "sharp" | "soft" | "rounded";
 export type DensityName = "comfortable" | "default" | "compact" | "dense";
 export type TypographyName = "modern" | "humanist" | "mono";
 export type ElevationName = "flat" | "soft" | "standard";
 
 export type TypographyRole =
+  | "display-xl"
   | "display-lg"
   | "display-md"
   | "heading-xl"
@@ -96,18 +108,48 @@ export const defaultTheme: ResolvedTheme = {
 
 export const paletteProfiles: Record<PaletteName, PaletteProfile> = {
   emerald: {
-    primary: "148 54% 34%",
+    primary: "148 58% 29%",
     primaryHover: "148 58% 28%",
     primaryActive: "148 62% 23%",
     primaryForeground: "0 0% 100%",
     accent: "78 82% 45%",
     accentForeground: "145 50% 12%",
     chart: [
-      "148 54% 34%",
+      "148 58% 29%",
       "193 74% 42%",
       "30 90% 52%",
       "262 72% 58%",
       "343 72% 52%",
+    ],
+  },
+  teal: {
+    primary: "173 74% 27%",
+    primaryHover: "173 78% 23%",
+    primaryActive: "174 82% 19%",
+    primaryForeground: "0 0% 100%",
+    accent: "165 72% 42%",
+    accentForeground: "173 70% 12%",
+    chart: [
+      "173 74% 31%",
+      "199 82% 45%",
+      "38 90% 50%",
+      "262 68% 58%",
+      "342 72% 52%",
+    ],
+  },
+  cyan: {
+    primary: "192 84% 32%",
+    primaryHover: "193 88% 27%",
+    primaryActive: "194 90% 22%",
+    primaryForeground: "0 0% 100%",
+    accent: "184 78% 43%",
+    accentForeground: "194 80% 12%",
+    chart: [
+      "192 84% 36%",
+      "221 82% 52%",
+      "153 62% 40%",
+      "35 90% 52%",
+      "286 66% 56%",
     ],
   },
   blue: {
@@ -125,6 +167,21 @@ export const paletteProfiles: Record<PaletteName, PaletteProfile> = {
       "342 72% 52%",
     ],
   },
+  indigo: {
+    primary: "232 70% 48%",
+    primaryHover: "234 72% 41%",
+    primaryActive: "236 74% 34%",
+    primaryForeground: "0 0% 100%",
+    accent: "204 86% 52%",
+    accentForeground: "232 66% 14%",
+    chart: [
+      "232 70% 52%",
+      "190 78% 42%",
+      "153 58% 42%",
+      "37 90% 52%",
+      "340 72% 54%",
+    ],
+  },
   violet: {
     primary: "262 72% 52%",
     primaryHover: "263 70% 44%",
@@ -138,6 +195,66 @@ export const paletteProfiles: Record<PaletteName, PaletteProfile> = {
       "35 92% 52%",
       "145 54% 40%",
       "342 72% 52%",
+    ],
+  },
+  rose: {
+    primary: "344 72% 42%",
+    primaryHover: "345 76% 35%",
+    primaryActive: "346 80% 29%",
+    primaryForeground: "0 0% 100%",
+    accent: "322 72% 54%",
+    accentForeground: "344 66% 14%",
+    chart: [
+      "344 72% 46%",
+      "275 66% 56%",
+      "205 78% 47%",
+      "153 58% 40%",
+      "38 90% 50%",
+    ],
+  },
+  red: {
+    primary: "2 72% 42%",
+    primaryHover: "1 76% 35%",
+    primaryActive: "0 80% 29%",
+    primaryForeground: "0 0% 100%",
+    accent: "18 82% 52%",
+    accentForeground: "2 68% 13%",
+    chart: [
+      "2 72% 46%",
+      "28 86% 50%",
+      "204 78% 46%",
+      "153 58% 40%",
+      "275 64% 56%",
+    ],
+  },
+  orange: {
+    primary: "24 88% 34%",
+    primaryHover: "22 90% 29%",
+    primaryActive: "20 92% 24%",
+    primaryForeground: "0 0% 100%",
+    accent: "38 92% 50%",
+    accentForeground: "24 76% 13%",
+    chart: [
+      "24 88% 40%",
+      "42 90% 50%",
+      "199 76% 44%",
+      "153 58% 39%",
+      "275 64% 56%",
+    ],
+  },
+  amber: {
+    primary: "38 88% 31%",
+    primaryHover: "36 92% 26%",
+    primaryActive: "34 94% 21%",
+    primaryForeground: "0 0% 100%",
+    accent: "48 92% 49%",
+    accentForeground: "38 82% 12%",
+    chart: [
+      "38 88% 38%",
+      "24 88% 48%",
+      "190 74% 40%",
+      "153 58% 39%",
+      "258 66% 58%",
     ],
   },
   slate: {
@@ -159,6 +276,7 @@ export const paletteProfiles: Record<PaletteName, PaletteProfile> = {
 
 export const radiusProfiles: Record<RadiusName, Record<string, string>> = {
   sharp: {
+    indicator: "3px",
     control: "6px",
     base: "8px",
     panel: "10px",
@@ -166,6 +284,7 @@ export const radiusProfiles: Record<RadiusName, Record<string, string>> = {
     shell: "16px",
   },
   soft: {
+    indicator: "4px",
     control: "10px",
     base: "12px",
     panel: "16px",
@@ -173,6 +292,7 @@ export const radiusProfiles: Record<RadiusName, Record<string, string>> = {
     shell: "24px",
   },
   rounded: {
+    indicator: "6px",
     control: "14px",
     base: "16px",
     panel: "20px",
@@ -217,6 +337,13 @@ export const densityProfiles: Record<DensityName, Record<string, string>> = {
 };
 
 const typographyRoleDefaults: Record<TypographyRole, TypographyRoleProfile> = {
+  "display-xl": {
+    size: "clamp(38px, 5vw, 56px)",
+    lineHeight: "clamp(42px, 5.4vw, 60px)",
+    weight: "600",
+    tracking: "-0.045em",
+    family: "display",
+  },
   "display-lg": {
     size: "clamp(28px, 3vw, 32px)",
     lineHeight: "36px",
@@ -370,6 +497,7 @@ function createTypographyProfile(
   profile: Omit<TypographyProfile, "roles">,
 ): TypographyProfile {
   const headingRoles: TypographyRole[] = [
+    "display-xl",
     "display-lg",
     "display-md",
     "heading-xl",
@@ -522,7 +650,7 @@ export function buildThemeVariables(
         : "0 1px 2px hsl(222 30% 12% / .08), 0 16px 36px -26px hsl(var(--t7-primary-hsl) / .38)";
 
   const semantic = {
-    success: "142 61% 36%",
+    success: "142 66% 29%",
     warning: "38 92% 50%",
     danger: "0 72% 51%",
     info: "199 89% 48%",
@@ -545,6 +673,9 @@ export function buildThemeVariables(
     "--t7-primary-active-hsl": palette.primaryActive,
     "--t7-primary-foreground-hsl": palette.primaryForeground,
     "--t7-accent-hsl": palette.accent,
+    "--t7-accent-hover-hsl": palette.primaryHover,
+    "--t7-accent-pressed-hsl": palette.primaryActive,
+    "--t7-accent-subtle-hsl": palette.accent,
     "--t7-accent-foreground-hsl": palette.accentForeground,
     "--t7-chart-1-hsl": palette.chart[0],
     "--t7-chart-2-hsl": palette.chart[1],
@@ -556,17 +687,30 @@ export function buildThemeVariables(
     "--t7-surface-subtle-hsl": neutrals.surfaceSubtle,
     "--t7-surface-muted-hsl": neutrals.surfaceMuted,
     "--t7-surface-raised-hsl": neutrals.surfaceRaised,
+    "--t7-surface-overlay-hsl": neutrals.surfaceRaised,
     "--t7-foreground-hsl": neutrals.foreground,
     "--t7-muted-foreground-hsl": neutrals.mutedForeground,
     "--t7-border-hsl": neutrals.border,
     "--t7-border-strong-hsl": neutrals.borderStrong,
     "--t7-muted-hsl": neutrals.muted,
     "--t7-focus-hsl": palette.primary,
+    "--t7-selected-hsl": palette.primary,
+    "--t7-selected-hover-hsl": palette.primaryHover,
+    "--t7-interactive-border-hsl": palette.primary,
+    "--t7-input-background-hsl": neutrals.surface,
+    "--t7-input-border-hsl": neutrals.borderStrong,
+    "--t7-input-hover-border-hsl": palette.primary,
+    "--t7-input-focus-border-hsl": palette.primary,
+    "--t7-disabled-background-hsl": neutrals.muted,
+    "--t7-disabled-foreground-hsl": neutrals.mutedForeground,
     "--t7-success-hsl": semantic.success,
     "--t7-warning-hsl": semantic.warning,
+    "--t7-warning-foreground-hsl":
+      theme.appearance === "dark" ? "42 92% 72%" : "28 72% 27%",
     "--t7-danger-hsl": semantic.danger,
     "--t7-info-hsl": semantic.info,
     "--t7-radius-control": radius.control,
+    "--t7-radius-indicator": radius.indicator,
     "--t7-radius-base": radius.base,
     "--t7-radius-panel": radius.panel,
     "--t7-radius-card": radius.card,
@@ -591,10 +735,44 @@ export function buildThemeVariables(
     "--t7-heading-tracking": typography.headingTracking,
     "--t7-body-tracking": typography.bodyTracking,
     "--t7-shadow-card": shadow,
+    "--t7-shadow-button":
+      theme.elevation === "flat"
+        ? "none"
+        : "0 5px 12px -9px hsl(var(--t7-primary-hsl) / .8)",
+    "--t7-shadow-surface":
+      theme.elevation === "flat" ? "none" : "0 1px 2px hsl(222 30% 12% / .08)",
+    "--t7-shadow-raised":
+      theme.elevation === "flat"
+        ? "none"
+        : "0 10px 28px -20px hsl(222 30% 12% / .34)",
     "--t7-shadow-popover":
       theme.elevation === "flat"
         ? "none"
         : "0 18px 44px -24px hsl(222 30% 12% / .48)",
+    "--t7-shadow-modal":
+      theme.elevation === "flat"
+        ? "none"
+        : "0 28px 80px -30px hsl(222 30% 8% / .56)",
+    "--t7-duration-instant": "80ms",
+    "--t7-duration-fast": "140ms",
+    "--t7-duration-normal": "220ms",
+    "--t7-duration-slow": "320ms",
+    "--t7-ease-standard": "cubic-bezier(.2, 0, 0, 1)",
+    "--t7-ease-enter": "cubic-bezier(.16, 1, .3, 1)",
+    "--t7-ease-exit": "cubic-bezier(.4, 0, 1, 1)",
+    "--t7-z-base": "0",
+    "--t7-z-sticky": "10",
+    "--t7-z-focus": "20",
+    "--t7-z-dropdown": "30",
+    "--t7-z-popover": "40",
+    "--t7-z-tooltip": "50",
+    "--t7-z-drawer": "60",
+    "--t7-z-overlay": "70",
+    "--t7-z-modal": "80",
+    "--t7-z-toast": "90",
+    "--t7-z-command": "100",
+    "--t7-doc-sticky-offset": "76px",
+    "--t7-scrim-hsl": "222 30% 12%",
     ...typographyVariables,
   };
 }

@@ -1,4 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
 
 import { T7Icon, type IconName } from "@ten4seven/icons";
 import {
@@ -11,12 +17,15 @@ import {
   CardTitle,
   DataTable,
   Input,
+  CommandMenu,
+  MobileSidebar,
   Modal,
   NavItem,
   Select,
   Ten4SevenProvider,
   Typography,
   useTen4SevenTheme,
+  ToastProvider,
   Badge,
   type DataTableColumn,
 } from "@ten4seven/ui";
@@ -27,13 +36,50 @@ import type {
   RadiusName,
   TypographyName,
 } from "@ten4seven/tokens";
+import { paletteProfiles } from "@ten4seven/tokens";
 import {
   EbookStoreCatalog,
-  referenceRouteFromPath,
-  referenceRoutePaths,
   WarehouseInventory,
-  type ReferenceRoute,
+  type WarehouseViewState,
 } from "./reference-screens";
+import {
+  BlockDetailExplorer,
+  BlocksExplorer,
+  ComponentsExplorer,
+  ComponentDetailExplorer,
+  ComponentFamilyExplorer,
+  ComponentLabExplorer,
+  IconsExplorer,
+  RecipeDetailExplorer,
+  RecipesExplorer,
+  TokensExplorer,
+} from "./library-explorers";
+import { PublicShowcase } from "./public-showcase";
+import {
+  blockCatalog,
+  categoryLabels,
+  componentCatalog,
+  componentFamilyAnchor,
+  componentFamilyDefinitions,
+  componentFamilyPath,
+  componentPath,
+  componentsInCategory,
+  iconCatalog,
+  recipeCatalog,
+  recipePath,
+} from "./catalog-model";
+import {
+  libraryNavigation,
+  playgroundRoutePaths,
+  playgroundRouteDescriptions,
+  playgroundRouteTitles,
+  referenceNavigation,
+  routeFromPath,
+  studioNavigation,
+  type PlaygroundRoute,
+  type RouteMatch,
+} from "./playground-routes";
+import { ReferenceHarness, type ReferenceViewState } from "./reference-harness";
 
 type StudioSettings = {
   appearance: Appearance;
@@ -80,15 +126,204 @@ const columns: DataTableColumn<InventoryRow>[] = [
   },
 ];
 
-const navItems: Array<{ label: StudioRoute; icon: IconName }> = [
-  { label: "Theme Studio", icon: "theme" },
-  { label: "Warehouse Inventory", icon: "warehouse" },
-  { label: "Ebook Store", icon: "book" },
-  { label: "Tokens", icon: "tokens" },
-  { label: "Components", icon: "components" },
+const routeIcons: Record<PlaygroundRoute, IconName> = {
+  "Theme Studio": "theme",
+  "Component Lab": "components",
+  Tokens: "tokens",
+  Components: "components",
+  Blocks: "components",
+  Icons: "category",
+  Recipes: "table",
+  "Warehouse Inventory": "warehouse",
+  "Publishing Store": "book",
+  "Public Showcase": "dashboard",
+};
+
+const studioNavGroups: Array<{
+  label: string;
+  routes: PlaygroundRoute[];
+}> = [
+  { label: "Studio", routes: studioNavigation },
+  { label: "Library", routes: libraryNavigation },
+  { label: "References", routes: referenceNavigation },
 ];
 
-type StudioRoute = ReferenceRoute | "Tokens" | "Components";
+function WorkbenchNavigation({
+  activePath,
+  onNavigate,
+  onNavigatePath,
+}: {
+  activePath: string;
+  onNavigate: (route: PlaygroundRoute) => void;
+  onNavigatePath: (path: string) => void;
+}) {
+  const activeCategory = componentFamilyDefinitions.find((family) => {
+    if (activePath === componentFamilyPath(family.category)) return true;
+    return componentsInCategory(family.category).some(
+      ([name]) => activePath === componentPath(name),
+    );
+  })?.category;
+  const [familiesOpen, setFamiliesOpen] = useState(true);
+
+  return (
+    <div className="studio-navigation-tree">
+      {studioNavGroups.map((group) => (
+        <div className="studio-nav-group" key={group.label}>
+          <span className="studio-nav-label">{group.label}</span>
+          {group.routes.map((route) => {
+            if (group.label === "Library" && route === "Components") {
+              return (
+                <div className="studio-component-nav" key={route}>
+                  <div className="studio-component-nav-heading">
+                    <NavItem
+                      active={activePath.startsWith("/components")}
+                      icon={routeIcons[route]}
+                      label={route}
+                      onClick={() => onNavigatePath("/components")}
+                    />
+                    <button
+                      aria-expanded={familiesOpen}
+                      aria-label={`${familiesOpen ? "Collapse" : "Expand"} component families`}
+                      className="studio-family-toggle"
+                      onClick={() => setFamiliesOpen((current) => !current)}
+                      type="button"
+                    >
+                      <T7Icon
+                        aria-hidden="true"
+                        name={familiesOpen ? "chevronUp" : "chevronDown"}
+                        size={14}
+                      />
+                    </button>
+                  </div>
+                  {familiesOpen ? (
+                    <div className="studio-component-family-list">
+                      {componentFamilyDefinitions.map((family) => {
+                        const familyItems = componentsInCategory(
+                          family.category,
+                        );
+                        return (
+                          <a
+                            aria-current={
+                              activeCategory === family.category
+                                ? "location"
+                                : undefined
+                            }
+                            className={
+                              activeCategory === family.category
+                                ? "studio-family-name is-active"
+                                : "studio-family-name"
+                            }
+                            href={`/components${componentFamilyAnchor(family.category)}`}
+                            key={family.category}
+                            onClick={(event) => {
+                              if (
+                                event.metaKey ||
+                                event.ctrlKey ||
+                                event.shiftKey ||
+                                event.altKey
+                              ) {
+                                return;
+                              }
+                              event.preventDefault();
+                              onNavigatePath(
+                                `/components${componentFamilyAnchor(family.category)}`,
+                              );
+                            }}
+                            title={`${family.label}: ${familyItems.length} canonical contracts`}
+                          >
+                            <span>{family.label}</span>
+                            <small>{familyItems.length}</small>
+                          </a>
+                        );
+                      })}
+                    </div>
+                  ) : null}
+                </div>
+              );
+            }
+            return (
+              <NavItem
+                active={activePath === playgroundRoutePaths[route]}
+                icon={routeIcons[route]}
+                key={route}
+                label={route}
+                onClick={() => onNavigate(route)}
+              />
+            );
+          })}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function WorkbenchSearch({
+  onNavigatePath,
+}: {
+  onNavigatePath: (path: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const commands = useMemo(
+    () => [
+      ...Object.entries(componentCatalog).map(([name, component]) => ({
+        description: categoryLabels[component.category] ?? component.category,
+        group: "Components",
+        icon: "components" as IconName,
+        id: `component-${name}`,
+        keywords: [
+          component.displayName ?? "",
+          ...component.useWhen,
+          ...component.relatedComponents,
+          component.aliasOf ?? "",
+        ],
+        label: component.displayName ?? name,
+        onSelect: () => onNavigatePath(componentPath(name)),
+      })),
+      ...Object.keys(iconCatalog).map((name) => ({
+        description: "Semantic icon",
+        group: "Icons",
+        icon: "category" as IconName,
+        id: `icon-${name}`,
+        keywords: iconCatalog[name].useWhen,
+        label: name,
+        onSelect: () => onNavigatePath("/icons"),
+      })),
+      ...Object.entries(recipeCatalog).map(([name, recipe]) => ({
+        description: recipe.purpose,
+        group: "Recipes",
+        icon: "table" as IconName,
+        id: `recipe-${name}`,
+        keywords: recipe.components,
+        label: name,
+        onSelect: () => onNavigatePath(recipePath(name)),
+      })),
+    ],
+    [onNavigatePath],
+  );
+
+  return (
+    <>
+      <Button
+        aria-label="Search ten4seven catalog"
+        className="studio-search-trigger"
+        intent="quiet"
+        leadingIcon="search"
+        onClick={() => setOpen(true)}
+        size="sm"
+      >
+        <span>Search catalog</span>
+        <kbd>Ctrl K</kbd>
+      </Button>
+      <CommandMenu
+        commands={commands}
+        onOpenChange={setOpen}
+        open={open}
+        placeholder="Search components, tokens, icons, recipes…"
+        shortcut
+      />
+    </>
+  );
+}
 
 function StudioMark() {
   return (
@@ -201,45 +436,28 @@ function TypographySpecimen() {
   );
 }
 
-function Studio() {
-  const { theme } = useTen4SevenTheme();
-  const [activeNav, setActiveNav] = useState<StudioRoute>(() =>
-    typeof window === "undefined"
-      ? "Theme Studio"
-      : referenceRouteFromPath(window.location.pathname),
-  );
+function Studio({
+  activeRoute,
+  activePath,
+  breadcrumbItems,
+  contentOverride,
+  onNavigate,
+  onNavigatePath,
+}: {
+  activeRoute: Exclude<
+    PlaygroundRoute,
+    "Warehouse Inventory" | "Publishing Store" | "Public Showcase"
+  >;
+  activePath: string;
+  breadcrumbItems?: Array<{ label: string; path?: string }>;
+  contentOverride?: ReactNode;
+  onNavigate: (route: PlaygroundRoute) => void;
+  onNavigatePath: (path: string) => void;
+}) {
+  const { resetTheme, theme } = useTen4SevenTheme();
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isMobileNavOpen, setMobileNavOpen] = useState(false);
   const [saved, setSaved] = useState(false);
-
-  useEffect(() => {
-    const handlePopState = () => {
-      setActiveNav(referenceRouteFromPath(window.location.pathname));
-    };
-
-    window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
-  }, []);
-
-  useEffect(() => {
-    const titles: Record<StudioRoute, string> = {
-      "Theme Studio": "ten4seven UI — Theme Studio",
-      "Warehouse Inventory": "ten4seven UI — Warehouse Inventory",
-      "Ebook Store": "Leaf & Letter — Ebook Store",
-      Tokens: "ten4seven UI — Tokens",
-      Components: "ten4seven UI — Components",
-    };
-    document.title = titles[activeNav];
-  }, [activeNav]);
-
-  function navigateTo(route: StudioRoute) {
-    const referenceRoute: ReferenceRoute =
-      route === "Tokens" || route === "Components" ? "Theme Studio" : route;
-    const nextPath = referenceRoutePaths[referenceRoute];
-    if (window.location.pathname !== nextPath) {
-      window.history.pushState({}, "", nextPath);
-    }
-    setActiveNav(route);
-  }
 
   const axisRows = useMemo(
     () => [
@@ -252,13 +470,6 @@ function Studio() {
     [theme],
   );
 
-  if (activeNav === "Warehouse Inventory") {
-    return <WarehouseInventory onNavigate={navigateTo} />;
-  }
-  if (activeNav === "Ebook Store") {
-    return <EbookStoreCatalog onNavigate={navigateTo} />;
-  }
-
   return (
     <div className="studio-shell">
       <aside className="studio-sidebar">
@@ -270,34 +481,75 @@ function Studio() {
           </div>
         </div>
 
-        <div className="studio-nav-group">
-          <span className="studio-nav-label">Workspace</span>
-          {navItems.map((item) => (
-            <NavItem
-              key={item.label}
-              active={activeNav === item.label}
-              icon={item.icon}
-              label={item.label}
-              onClick={() => navigateTo(item.label)}
-            />
-          ))}
-        </div>
+        <nav aria-label="ten4seven UI navigation" className="studio-nav-groups">
+          <WorkbenchNavigation
+            activePath={activePath}
+            onNavigate={onNavigate}
+            onNavigatePath={onNavigatePath}
+          />
+        </nav>
 
         <div className="studio-sidebar-note">
           <span className="studio-nav-label">Proof scope</span>
-          <p>Six representative surfaces. One token contract.</p>
-          <span className="studio-sidebar-version">v0.1 foundation</span>
+          <p>One catalog source. Deep links for every canonical contract.</p>
+          <span className="studio-sidebar-version">v1 workbench</span>
         </div>
       </aside>
 
       <main className="studio-main">
         <header className="studio-topbar">
-          <div className="studio-breadcrumb">
-            <span>ten4seven UI</span>
-            <T7Icon name="chevronDown" size={13} />
-            <strong>{activeNav}</strong>
+          <div className="studio-topbar-leading">
+            <Button
+              aria-label="Open library navigation"
+              className="studio-mobile-menu"
+              intent="quiet"
+              leadingIcon="menu"
+              onClick={() => setMobileNavOpen(true)}
+              size="sm"
+            />
+            <div className="studio-breadcrumb">
+              <span>ten4seven UI</span>
+              <T7Icon aria-hidden="true" name="chevronRight" size={13} />
+              {(breadcrumbItems ?? [{ label: activeRoute }]).map(
+                (item, index, items) => (
+                  <span className="studio-breadcrumb-item" key={item.label}>
+                    {item.path ? (
+                      <a
+                        href={item.path}
+                        onClick={(event) => {
+                          if (
+                            event.defaultPrevented ||
+                            event.button !== 0 ||
+                            event.metaKey ||
+                            event.ctrlKey ||
+                            event.shiftKey ||
+                            event.altKey
+                          ) {
+                            return;
+                          }
+                          event.preventDefault();
+                          onNavigatePath(item.path!);
+                        }}
+                      >
+                        {item.label}
+                      </a>
+                    ) : (
+                      <strong>{item.label}</strong>
+                    )}
+                    {index < items.length - 1 ? (
+                      <T7Icon
+                        aria-hidden="true"
+                        name="chevronRight"
+                        size={13}
+                      />
+                    ) : null}
+                  </span>
+                ),
+              )}
+            </div>
           </div>
           <div className="studio-top-actions">
+            <WorkbenchSearch onNavigatePath={onNavigatePath} />
             <span className="studio-live-dot">
               <i /> Local proof
             </span>
@@ -312,282 +564,344 @@ function Studio() {
           </div>
         </header>
 
-        <div className="studio-content">
-          <section className="studio-intro">
-            <div>
-              <Typography typeRole="display-lg" as="h1">
-                Theme Studio
-              </Typography>
-              <p>
-                Adjust the system axes, then inspect how the same surfaces
-                respond without local restyling.
-              </p>
-            </div>
-            <div className="studio-intro-actions">
-              <Badge tone="primary">
-                <T7Icon name="check" size={13} /> Gate B proof
-              </Badge>
-              <span className="studio-last-updated">
-                Changes are local to this preview
-              </span>
-            </div>
-          </section>
+        <MobileSidebar
+          onClose={() => setMobileNavOpen(false)}
+          open={isMobileNavOpen}
+          title="Library navigation"
+        >
+          <div className="studio-mobile-navigation">
+            <WorkbenchNavigation
+              activePath={activePath}
+              onNavigate={(route) => {
+                setMobileNavOpen(false);
+                onNavigate(route);
+              }}
+              onNavigatePath={(path) => {
+                setMobileNavOpen(false);
+                onNavigatePath(path);
+              }}
+            />
+          </div>
+        </MobileSidebar>
 
-          <section className="studio-control-row">
-            <Card className="studio-controls-card">
-              <CardHeader>
+        {activeRoute === "Theme Studio" && !contentOverride ? (
+          <>
+            <div className="studio-content">
+              <section className="studio-intro">
                 <div>
-                  <CardTitle>Global controls</CardTitle>
-                  <CardDescription>
-                    Every control below writes semantic variables at the
-                    provider root.
-                  </CardDescription>
+                  <Typography typeRole="display-lg" as="h1">
+                    Theme Studio
+                  </Typography>
+                  <p>
+                    Adjust the system axes, then inspect how the same surfaces
+                    respond without local restyling.
+                  </p>
                 </div>
-                <T7Icon className="studio-card-icon" name="palette" size={24} />
-              </CardHeader>
-              <CardContent className="studio-controls-grid">
-                <SettingSelect
-                  label="Appearance"
-                  value={theme.appearance}
-                  options={["light", "dark"]}
-                />
-                <SettingSelect
-                  label="Palette"
-                  value={theme.palette}
-                  options={["emerald", "blue", "violet", "slate"]}
-                />
-                <SettingSelect
-                  label="Radius"
-                  value={theme.radius}
-                  options={["sharp", "soft", "rounded"]}
-                />
-                <SettingSelect
-                  label="Density"
-                  value={theme.density}
-                  options={["comfortable", "default", "compact", "dense"]}
-                />
-                <SettingSelect
-                  label="Typography"
-                  value={theme.typography}
-                  options={["modern", "humanist", "mono"]}
-                />
-              </CardContent>
-            </Card>
-
-            <Card className="studio-axis-card" tone="accent">
-              <CardHeader>
-                <div>
-                  <CardTitle>Active profile</CardTitle>
-                  <CardDescription>
-                    Resolved values in this render.
-                  </CardDescription>
-                </div>
-                <span className="studio-axis-value">{theme.palette}</span>
-              </CardHeader>
-              <CardContent>
-                <dl className="studio-axis-list">
-                  {axisRows.map(([label, value]) => (
-                    <div key={label}>
-                      <dt>{label}</dt>
-                      <dd data-numeric={label === "Density" ? undefined : true}>
-                        {value}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </CardContent>
-              <CardFooter>
-                <span className="studio-axis-line" />
-                <span>Root variables active</span>
-              </CardFooter>
-            </Card>
-          </section>
-
-          <TypographySpecimen />
-
-          <section className="studio-section-heading">
-            <div>
-              <h2>Component proof</h2>
-              <p>
-                Six surfaces are intentionally rendered together so global
-                changes stay visible.
-              </p>
-            </div>
-            <span className="studio-section-count">6 surfaces / 5 axes</span>
-          </section>
-
-          <section className="proof-grid">
-            <Card className="proof-panel">
-              <CardHeader>
-                <div>
-                  <CardTitle>Button</CardTitle>
-                  <CardDescription>
-                    Intent and size consume the same control height.
-                  </CardDescription>
-                </div>
-                <T7Icon className="proof-icon" name="components" size={20} />
-              </CardHeader>
-              <CardContent className="proof-button-stack">
-                <Button leadingIcon="plus">Create recipe</Button>
-                <Button intent="secondary">Inspect API</Button>
-                <Button intent="quiet" size="sm">
-                  Quiet action
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="proof-panel">
-              <CardHeader>
-                <div>
-                  <CardTitle>Input</CardTitle>
-                  <CardDescription>
-                    Focus treatment stays semantic across palettes.
-                  </CardDescription>
-                </div>
-                <T7Icon className="proof-icon" name="search" size={20} />
-              </CardHeader>
-              <CardContent className="proof-form">
-                <Input
-                  label="Search components"
-                  defaultValue="DataTable"
-                  leadingIcon="search"
-                  hint="Semantic field / local value"
-                />
-              </CardContent>
-            </Card>
-
-            <Card className="proof-panel" tone="success">
-              <CardHeader>
-                <div>
-                  <CardTitle>Card</CardTitle>
-                  <CardDescription>
-                    Surface elevation follows the global profile.
-                  </CardDescription>
-                </div>
-                <T7Icon className="proof-icon" name="check" size={20} />
-              </CardHeader>
-              <CardContent>
-                <div className="mini-record">
-                  <span className="mini-record-label">Tokens indexed</span>
-                  <strong data-numeric>476</strong>
-                  <span className="mini-record-foot">
-                    <T7Icon name="check" size={13} /> Ready for extraction
+                <div className="studio-intro-actions">
+                  <Badge tone="primary">
+                    <T7Icon name="check" size={13} /> System coherence
+                  </Badge>
+                  <span className="studio-last-updated">
+                    Theme Studio controls the active ten4seven theme
                   </span>
                 </div>
-              </CardContent>
-            </Card>
+              </section>
 
-            <Card className="proof-panel proof-table-panel">
-              <CardHeader>
-                <div>
-                  <CardTitle>DataTable row</CardTitle>
-                  <CardDescription>
-                    Declared density changes rows, not readability.
-                  </CardDescription>
-                </div>
-                <T7Icon className="proof-icon" name="table" size={20} />
-              </CardHeader>
-              <CardContent>
-                <DataTable
-                  columns={columns}
-                  rows={inventoryRows}
-                  rowKey={(row) => row.id}
-                />
-              </CardContent>
-            </Card>
+              <section className="studio-control-row">
+                <Card className="studio-controls-card">
+                  <CardHeader>
+                    <div>
+                      <CardTitle>Global controls</CardTitle>
+                      <CardDescription>
+                        Every control below writes semantic variables at the
+                        provider root.
+                      </CardDescription>
+                    </div>
+                    <T7Icon
+                      className="studio-card-icon"
+                      name="palette"
+                      size={24}
+                    />
+                  </CardHeader>
+                  <CardContent className="studio-controls-grid">
+                    <SettingSelect
+                      label="Appearance"
+                      value={theme.appearance}
+                      options={["light", "dark"]}
+                    />
+                    <PalettePicker value={theme.palette} />
+                    <SettingSelect
+                      label="Radius"
+                      value={theme.radius}
+                      options={["sharp", "soft", "rounded"]}
+                    />
+                    <SettingSelect
+                      label="Density"
+                      value={theme.density}
+                      options={["comfortable", "default", "compact", "dense"]}
+                    />
+                    <SettingSelect
+                      label="Typography"
+                      value={theme.typography}
+                      options={["modern", "humanist", "mono"]}
+                    />
+                  </CardContent>
+                  <CardFooter>
+                    <Button
+                      intent="quiet"
+                      leadingIcon="refresh"
+                      onClick={resetTheme}
+                    >
+                      Reset to defaults
+                    </Button>
+                  </CardFooter>
+                </Card>
 
-            <Card className="proof-panel">
-              <CardHeader>
+                <Card className="studio-axis-card" tone="accent">
+                  <CardHeader>
+                    <div>
+                      <CardTitle>Active profile</CardTitle>
+                      <CardDescription>
+                        Resolved values in this render.
+                      </CardDescription>
+                    </div>
+                    <span className="studio-axis-value">{theme.palette}</span>
+                  </CardHeader>
+                  <CardContent>
+                    <dl className="studio-axis-list">
+                      {axisRows.map(([label, value]) => (
+                        <div key={label}>
+                          <dt>{label}</dt>
+                          <dd
+                            data-numeric={
+                              label === "Density" ? undefined : true
+                            }
+                          >
+                            {value}
+                          </dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </CardContent>
+                  <CardFooter>
+                    <span className="studio-axis-line" />
+                    <span>Root variables active</span>
+                  </CardFooter>
+                </Card>
+              </section>
+
+              <TypographySpecimen />
+
+              <section className="studio-section-heading">
                 <div>
-                  <CardTitle>Modal</CardTitle>
-                  <CardDescription>
-                    Overlay surface uses the same radius and elevation family.
-                  </CardDescription>
+                  <h2>Component proof</h2>
+                  <p>
+                    Six surfaces are intentionally rendered together so global
+                    changes stay visible.
+                  </p>
                 </div>
-                <T7Icon className="proof-icon" name="modal" size={20} />
-              </CardHeader>
-              <CardContent className="proof-modal-content">
-                <Button
-                  intent="secondary"
-                  leadingIcon="modal"
-                  onClick={() => setModalOpen(true)}
-                >
-                  Open dialog
-                </Button>
-                <span>
-                  {isModalOpen ? "Open and keyboard-dismissable" : "Closed"}
+                <span className="studio-section-count">
+                  6 surfaces / 5 axes
                 </span>
-              </CardContent>
-            </Card>
+              </section>
 
-            <Card className="proof-panel">
-              <CardHeader>
+              <section className="proof-grid">
+                <Card className="proof-panel">
+                  <CardHeader>
+                    <div>
+                      <CardTitle>Button</CardTitle>
+                      <CardDescription>
+                        Intent and size consume the same control height.
+                      </CardDescription>
+                    </div>
+                    <T7Icon
+                      className="proof-icon"
+                      name="components"
+                      size={20}
+                    />
+                  </CardHeader>
+                  <CardContent className="proof-button-stack">
+                    <Button leadingIcon="plus">Create recipe</Button>
+                    <Button intent="secondary">Inspect API</Button>
+                    <Button intent="quiet" size="sm">
+                      Quiet action
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                <Card className="proof-panel">
+                  <CardHeader>
+                    <div>
+                      <CardTitle>Input</CardTitle>
+                      <CardDescription>
+                        Focus treatment stays semantic across palettes.
+                      </CardDescription>
+                    </div>
+                    <T7Icon className="proof-icon" name="search" size={20} />
+                  </CardHeader>
+                  <CardContent className="proof-form">
+                    <Input
+                      label="Search components"
+                      defaultValue="DataTable"
+                      leadingIcon="search"
+                      hint="Semantic field / local value"
+                    />
+                  </CardContent>
+                </Card>
+
+                <Card className="proof-panel" tone="success">
+                  <CardHeader>
+                    <div>
+                      <CardTitle>Card</CardTitle>
+                      <CardDescription>
+                        Surface elevation follows the global profile.
+                      </CardDescription>
+                    </div>
+                    <T7Icon className="proof-icon" name="check" size={20} />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="mini-record">
+                      <span className="mini-record-label">Tokens indexed</span>
+                      <strong data-numeric>476</strong>
+                      <span className="mini-record-foot">
+                        <T7Icon name="check" size={13} /> Ready for extraction
+                      </span>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="proof-panel proof-table-panel">
+                  <CardHeader>
+                    <div>
+                      <CardTitle>DataTable row</CardTitle>
+                      <CardDescription>
+                        Declared density changes rows, not readability.
+                      </CardDescription>
+                    </div>
+                    <T7Icon className="proof-icon" name="table" size={20} />
+                  </CardHeader>
+                  <CardContent>
+                    <DataTable
+                      columns={columns}
+                      rows={inventoryRows}
+                      rowKey={(row) => row.id}
+                    />
+                  </CardContent>
+                </Card>
+
+                <Card className="proof-panel">
+                  <CardHeader>
+                    <div>
+                      <CardTitle>Modal</CardTitle>
+                      <CardDescription>
+                        Overlay surface uses the same radius and elevation
+                        family.
+                      </CardDescription>
+                    </div>
+                    <T7Icon className="proof-icon" name="modal" size={20} />
+                  </CardHeader>
+                  <CardContent className="proof-modal-content">
+                    <Button
+                      intent="secondary"
+                      leadingIcon="modal"
+                      onClick={() => setModalOpen(true)}
+                    >
+                      Open dialog
+                    </Button>
+                    <span>
+                      {isModalOpen ? "Open and keyboard-dismissable" : "Closed"}
+                    </span>
+                  </CardContent>
+                </Card>
+
+                <Card className="proof-panel">
+                  <CardHeader>
+                    <div>
+                      <CardTitle>Sidebar item</CardTitle>
+                      <CardDescription>
+                        Navigation state uses semantic foregrounds.
+                      </CardDescription>
+                    </div>
+                    <T7Icon className="proof-icon" name="sidebar" size={20} />
+                  </CardHeader>
+                  <CardContent className="proof-nav-content">
+                    <NavItem active icon="theme" label="Theme Studio" />
+                    <NavItem icon="components" label="Components" />
+                  </CardContent>
+                </Card>
+              </section>
+
+              <section className="studio-footer-card">
                 <div>
-                  <CardTitle>Sidebar item</CardTitle>
-                  <CardDescription>
-                    Navigation state uses semantic foregrounds.
-                  </CardDescription>
+                  <T7Icon name="check" size={18} />
+                  <strong>System coherence verified</strong>
+                  <span>
+                    Change green → blue, soft → sharp, default → compact, font,
+                    and light → dark from the controls above.
+                  </span>
                 </div>
-                <T7Icon className="proof-icon" name="sidebar" size={20} />
-              </CardHeader>
-              <CardContent className="proof-nav-content">
-                <NavItem active icon="theme" label="Theme Studio" />
-                <NavItem icon="components" label="Components" />
-              </CardContent>
-            </Card>
-          </section>
-
-          <section className="studio-footer-card">
-            <div>
-              <T7Icon name="check" size={18} />
-              <strong>Gate B ready for extension</strong>
-              <span>
-                Change green → blue, soft → sharp, default → compact, font, and
-                light → dark from the controls above.
-              </span>
+                <Button
+                  intent={saved ? "secondary" : "primary"}
+                  size="sm"
+                  onClick={() => setSaved(true)}
+                >
+                  {saved ? "Proof saved" : "Save local proof"}
+                </Button>
+              </section>
             </div>
-            <Button
-              intent={saved ? "secondary" : "primary"}
-              size="sm"
-              onClick={() => setSaved(true)}
-            >
-              {saved ? "Proof saved" : "Save local proof"}
-            </Button>
-          </section>
-        </div>
 
-        <Modal
-          description="This is a local interaction proof. No server action is performed."
-          onClose={() => setModalOpen(false)}
-          open={isModalOpen}
-          title="Theme engine response"
-        >
-          <div className="modal-proof-copy">
-            <span className="modal-proof-icon">
-              <T7Icon name="check" size={22} />
-            </span>
-            <div>
-              <strong>Global variables are active.</strong>
-              <p>
-                Radius, density, palette, typography, and appearance are
-                resolved at the provider root. Escape closes this dialog.
-              </p>
-            </div>
-          </div>
-          <div className="modal-proof-actions">
-            <Button intent="quiet" onClick={() => setModalOpen(false)}>
-              Cancel
-            </Button>
-            <Button
-              onClick={() => {
-                setModalOpen(false);
-                setSaved(true);
-              }}
+            <Modal
+              description="This is a local interaction proof. No server action is performed."
+              onClose={() => setModalOpen(false)}
+              open={isModalOpen}
+              title="Theme engine response"
             >
-              Confirm proof
-            </Button>
+              <div className="modal-proof-copy">
+                <span className="modal-proof-icon">
+                  <T7Icon name="check" size={22} />
+                </span>
+                <div>
+                  <strong>Global variables are active.</strong>
+                  <p>
+                    Radius, density, palette, typography, and appearance are
+                    resolved at the provider root. Escape closes this dialog.
+                  </p>
+                </div>
+              </div>
+              <div className="modal-proof-actions">
+                <Button intent="quiet" onClick={() => setModalOpen(false)}>
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() => {
+                    setModalOpen(false);
+                    setSaved(true);
+                  }}
+                >
+                  Confirm proof
+                </Button>
+              </div>
+            </Modal>
+          </>
+        ) : (
+          <div className="studio-content">
+            {contentOverride ? (
+              contentOverride
+            ) : activeRoute === "Component Lab" ? (
+              <ComponentLabExplorer />
+            ) : activeRoute === "Tokens" ? (
+              <TokensExplorer />
+            ) : activeRoute === "Components" ? (
+              <ComponentsExplorer onNavigatePath={onNavigatePath} />
+            ) : activeRoute === "Blocks" ? (
+              <BlocksExplorer onNavigatePath={onNavigatePath} />
+            ) : activeRoute === "Icons" ? (
+              <IconsExplorer />
+            ) : (
+              <RecipesExplorer onNavigatePath={onNavigatePath} />
+            )}
           </div>
-        </Modal>
+        )}
       </main>
     </div>
   );
@@ -621,18 +935,313 @@ function SettingSelect({
   );
 }
 
+const paletteNames = Object.keys(paletteProfiles) as PaletteName[];
+
+function PalettePicker({ value }: { value: PaletteName }) {
+  const { setTheme } = useTen4SevenTheme();
+  return (
+    <fieldset className="studio-palette-picker">
+      <legend className="t7-field-label">Palette</legend>
+      <div className="studio-palette-options">
+        {paletteNames.map((palette) => (
+          <button
+            aria-label={`Use ${palette} palette`}
+            aria-pressed={value === palette}
+            className="studio-palette-option"
+            key={palette}
+            onClick={() => setTheme({ palette })}
+            type="button"
+          >
+            <span
+              aria-hidden="true"
+              style={
+                {
+                  "--palette-swatch": `hsl(${paletteProfiles[palette].primary})`,
+                } as CSSProperties
+              }
+            />
+            <Typography as="span" typeRole="caption">
+              {palette}
+            </Typography>
+          </button>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
+
+function NotFoundSurface({
+  onNavigate,
+  pathname,
+}: {
+  onNavigate: (route: PlaygroundRoute) => void;
+  pathname: string;
+}) {
+  return (
+    <main className="not-found-shell">
+      <span className="not-found-icon">
+        <T7Icon name="danger" size={24} />
+      </span>
+      <Typography as="p" typeRole="overline">
+        404 · Route not found
+      </Typography>
+      <Typography as="h1" typeRole="display-lg">
+        This playground route does not exist.
+      </Typography>
+      <Typography as="p" typeRole="body">
+        <code>{pathname}</code> is not a registered ten4seven UI route.
+      </Typography>
+      <Button leadingIcon="theme" onClick={() => onNavigate("Theme Studio")}>
+        Return to Theme Studio
+      </Button>
+    </main>
+  );
+}
+
 export default function App() {
   const [settings] = useState<StudioSettings>({
-    appearance: "light",
+    appearance: "system",
     palette: "emerald",
     radius: "soft",
     density: "default",
     typography: "modern",
   });
+  const [routeMatch, setRouteMatch] = useState<RouteMatch>(() =>
+    typeof window === "undefined"
+      ? { kind: "known", route: "Theme Studio" }
+      : routeFromPath(window.location.pathname),
+  );
+  const [warehouseViewState, setWarehouseViewState] =
+    useState<ReferenceViewState>("ready");
+
+  useEffect(() => {
+    const restoreDocumentPosition = () => {
+      const hash = window.location.hash.replace(/^#/, "");
+      if (hash) {
+        const target = document.getElementById(decodeURIComponent(hash));
+        if (target) {
+          target.scrollIntoView({ block: "start", behavior: "auto" });
+          return;
+        }
+      }
+      window.scrollTo({ behavior: "auto", top: 0 });
+    };
+    const syncRoute = () => {
+      if (window.location.pathname === "/") {
+        window.history.replaceState(
+          {},
+          "",
+          playgroundRoutePaths["Theme Studio"],
+        );
+        setRouteMatch({ kind: "known", route: "Theme Studio" });
+        restoreDocumentPosition();
+        return;
+      }
+      setRouteMatch(routeFromPath(window.location.pathname));
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(restoreDocumentPosition);
+      });
+    };
+    syncRoute();
+    const handlePopState = () => syncRoute();
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  useEffect(() => {
+    const routeTitle =
+      routeMatch.kind === "known"
+        ? playgroundRouteTitles[routeMatch.route]
+        : routeMatch.kind === "component-family"
+          ? `ten4seven UI — ${categoryLabels[routeMatch.category] ?? routeMatch.category}`
+          : routeMatch.kind === "component-detail"
+            ? `ten4seven UI — ${componentCatalog[routeMatch.name].displayName ?? routeMatch.name}`
+            : routeMatch.kind === "recipe-detail"
+              ? `ten4seven UI — ${recipeCatalog[routeMatch.name].displayName ?? routeMatch.name}`
+              : routeMatch.kind === "block-detail"
+                ? `ten4seven UI — ${blockCatalog[routeMatch.name].displayName ?? routeMatch.name}`
+                : "ten4seven UI — Route not found";
+    document.title = routeTitle;
+    const description = document.querySelector('meta[name="description"]');
+    description?.setAttribute(
+      "content",
+      routeMatch.kind === "known"
+        ? playgroundRouteDescriptions[routeMatch.route]
+        : routeMatch.kind === "component-family"
+          ? `Canonical ${categoryLabels[routeMatch.category] ?? routeMatch.category} components in the ten4seven UI catalog.`
+          : routeMatch.kind === "component-detail"
+            ? componentCatalog[routeMatch.name].purpose
+            : routeMatch.kind === "recipe-detail"
+              ? recipeCatalog[routeMatch.name].purpose
+              : routeMatch.kind === "block-detail"
+                ? blockCatalog[routeMatch.name].purpose
+                : "The requested ten4seven UI playground route does not exist.",
+    );
+  }, [routeMatch]);
+
+  function navigateTo(route: PlaygroundRoute) {
+    navigateToPath(playgroundRoutePaths[route]);
+  }
+
+  function navigateToPath(nextPath: string) {
+    const nextLocation = new URL(nextPath, window.location.origin);
+    const currentLocation = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+    const nextLocationString = `${nextLocation.pathname}${nextLocation.search}${nextLocation.hash}`;
+    if (currentLocation !== nextLocationString) {
+      window.history.pushState({}, "", nextLocationString);
+    }
+    setRouteMatch(routeFromPath(nextLocation.pathname));
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        const hash = nextLocation.hash.replace(/^#/, "");
+        const target = hash
+          ? document.getElementById(decodeURIComponent(hash))
+          : null;
+        if (target) {
+          target.scrollIntoView({ block: "start", behavior: "auto" });
+        } else {
+          window.scrollTo({ behavior: "auto", top: 0 });
+        }
+      });
+    });
+  }
+
+  let routeContent: ReactNode;
+  if (routeMatch.kind === "not-found") {
+    routeContent = (
+      <NotFoundSurface onNavigate={navigateTo} pathname={routeMatch.pathname} />
+    );
+  } else if (
+    routeMatch.kind === "known" &&
+    routeMatch.route === "Warehouse Inventory"
+  ) {
+    routeContent = (
+      <WarehouseInventory
+        onViewStateChange={setWarehouseViewState}
+        viewState={warehouseViewState as WarehouseViewState}
+      />
+    );
+  } else if (
+    routeMatch.kind === "known" &&
+    routeMatch.route === "Publishing Store"
+  ) {
+    routeContent = <EbookStoreCatalog />;
+  } else if (
+    routeMatch.kind === "known" &&
+    routeMatch.route === "Public Showcase"
+  ) {
+    routeContent = <PublicShowcase />;
+  } else {
+    const activeRoute: Exclude<
+      PlaygroundRoute,
+      "Warehouse Inventory" | "Publishing Store" | "Public Showcase"
+    > =
+      routeMatch.kind === "known" &&
+      routeMatch.route !== "Warehouse Inventory" &&
+      routeMatch.route !== "Publishing Store" &&
+      routeMatch.route !== "Public Showcase"
+        ? routeMatch.route
+        : routeMatch.kind === "component-family" ||
+            routeMatch.kind === "component-detail"
+          ? "Components"
+          : routeMatch.kind === "block-detail"
+            ? "Blocks"
+            : "Recipes";
+    const activePath =
+      routeMatch.kind === "known"
+        ? playgroundRoutePaths[routeMatch.route]
+        : routeMatch.pathname;
+    const breadcrumbItems =
+      routeMatch.kind === "component-family"
+        ? [
+            { label: "Components", path: "/components" },
+            {
+              label: categoryLabels[routeMatch.category] ?? routeMatch.category,
+            },
+          ]
+        : routeMatch.kind === "component-detail"
+          ? [
+              { label: "Components", path: "/components" },
+              {
+                label:
+                  categoryLabels[componentCatalog[routeMatch.name].category] ??
+                  componentCatalog[routeMatch.name].category,
+                path: componentFamilyPath(
+                  componentCatalog[routeMatch.name].category,
+                ),
+              },
+              {
+                label:
+                  componentCatalog[routeMatch.name].displayName ??
+                  routeMatch.name,
+              },
+            ]
+          : routeMatch.kind === "recipe-detail"
+            ? [
+                { label: "Recipes", path: "/recipes" },
+                {
+                  label:
+                    recipeCatalog[routeMatch.name].displayName ??
+                    routeMatch.name,
+                },
+              ]
+            : routeMatch.kind === "block-detail"
+              ? [
+                  { label: "Blocks", path: "/blocks" },
+                  { label: blockCatalog[routeMatch.name].displayName },
+                ]
+              : [{ label: activeRoute }];
+    const contentOverride =
+      routeMatch.kind === "component-family" ? (
+        <ComponentFamilyExplorer
+          category={routeMatch.category}
+          onNavigatePath={navigateToPath}
+        />
+      ) : routeMatch.kind === "component-detail" ? (
+        <ComponentDetailExplorer
+          name={routeMatch.name}
+          onNavigatePath={navigateToPath}
+        />
+      ) : routeMatch.kind === "recipe-detail" ? (
+        <RecipeDetailExplorer
+          name={routeMatch.name}
+          onNavigatePath={navigateToPath}
+        />
+      ) : routeMatch.kind === "block-detail" ? (
+        <BlockDetailExplorer
+          name={routeMatch.name}
+          onNavigatePath={navigateToPath}
+        />
+      ) : undefined;
+    routeContent = (
+      <Studio
+        activePath={activePath}
+        activeRoute={activeRoute}
+        breadcrumbItems={breadcrumbItems}
+        contentOverride={contentOverride}
+        onNavigate={navigateTo}
+        onNavigatePath={navigateToPath}
+      />
+    );
+  }
 
   return (
-    <Ten4SevenProvider {...settings}>
-      <Studio />
+    <Ten4SevenProvider
+      {...settings}
+      persistenceKey="ten4seven.playground.theme.v1"
+    >
+      <ToastProvider>
+        {routeContent}
+        {routeMatch.kind === "known" &&
+        routeMatch.route !== "Public Showcase" ? (
+          <ReferenceHarness
+            activeRoute={routeMatch.route}
+            onNavigate={navigateTo}
+            onWarehouseViewStateChange={setWarehouseViewState}
+            warehouseViewState={warehouseViewState}
+          />
+        ) : null}
+      </ToastProvider>
     </Ten4SevenProvider>
   );
 }

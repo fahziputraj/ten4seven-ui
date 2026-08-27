@@ -8,10 +8,25 @@
 
 :root {
   color-scheme: light;
-  --t7-transition-fast: 150ms cubic-bezier(0.22, 1, 0.36, 1);
-  --t7-transition-standard: 200ms cubic-bezier(0.22, 1, 0.36, 1);
-  --t7-transition-large: 350ms cubic-bezier(0.22, 1, 0.36, 1);
+  --t7-transition-fast: var(--t7-duration-fast, 140ms)
+    var(--t7-ease-standard, cubic-bezier(0.2, 0, 0, 1));
+  --t7-transition-standard: var(--t7-duration-normal, 220ms)
+    var(--t7-ease-standard, cubic-bezier(0.2, 0, 0, 1));
+  --t7-transition-large: var(--t7-duration-slow, 320ms)
+    var(--t7-ease-enter, cubic-bezier(0.16, 1, 0.3, 1));
   --t7-focus-ring: 0 0 0 3px hsl(var(--t7-accent-hsl) / 0.28);
+  --t7-z-base: 0;
+  --t7-z-sticky: 10;
+  --t7-z-focus: 20;
+  --t7-z-dropdown: 30;
+  --t7-z-popover: 40;
+  --t7-z-tooltip: 50;
+  --t7-z-drawer: 60;
+  --t7-z-overlay: 70;
+  --t7-z-modal: 80;
+  --t7-z-toast: 90;
+  --t7-z-command: 100;
+  --t7-doc-sticky-offset: 76px;
 }
 
 [data-theme-appearance="dark"] {

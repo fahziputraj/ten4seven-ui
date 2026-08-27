@@ -1,55 +1,37 @@
 # AI application QA
 
-Status: PASS for retrieval, bootstrap, deterministic reference routing, and first production-reference composition.
+Status: **PASS** for retrieval, bootstrap, deterministic routing, v1 component contracts, and cold-start recipe reproduction.
 
-Direct reference URLs used by AI agents and Playwright:
+## Consumer-visible direct URLs
 
 - Theme Studio: `http://localhost:4173/theme-studio`
+- Tokens: `http://localhost:4173/tokens`
+- Components: `http://localhost:4173/components`
+- Icons: `http://localhost:4173/icons`
+- Recipes: `http://localhost:4173/recipes`
 - Warehouse Inventory: `http://localhost:4173/warehouse-inventory`
 - Ebook Store Catalog: `http://localhost:4173/ebook-store`
 
-## Test 1 — warehouse inventory list
+## Retrieval proof
 
-Prompt: “Build an inventory list page for an existing warehouse React application using ten4seven UI.”
-
-Cold-start lookup:
+The public CLI resolves the intended contract without opening source or donors:
 
 ```text
-pnpm t7ui find "inventory list"
-```
+pnpm t7ui find "warehouse inventory list"
+→ entity-list / enterprise
+→ AppShell, Sidebar, PageHeader, KPICluster, FilterToolbar, DataTable,
+  Pagination, BulkActionBar, DetailDrawer
 
-Resolved without opening donor repositories:
-
-- Recipe: `entity-list`
-- Profiles: `enterprise`, `dashboard`
-- Components: `AppShell`, `Sidebar`, `PageHeader`, `KPICluster`, `FilterToolbar`, `DataTable`, `Pagination`, `BulkActionBar`, `DetailDrawer`, plus `EmptyState`, `Badge`, and `Button`
-- Icons: `warehouse`, `inventory`, `stockIn`, `stockOut`, `transfer`, `filter`, `sort`, `search` (the catalog also exposes export/add/view/status meanings)
-
-Context used: `AGENTS.md`, `docs/ai/AI_QUICKSTART.md`, one recipe entry, the required component entries, and the required icon entries. Source components opened: 0. Donor repositories needed: 0.
-
-## Test 2 — ebook store catalog migration
-
-Prompt: “Restyle an ebook store catalog to ten4seven UI without modifying business logic.”
-
-Cold-start lookup:
-
-```text
 pnpm t7ui find "ebook store catalog"
+→ catalog / commerce
+→ AppShell, TopNavigation, PageHeader, SearchInput, ProductGrid,
+  ProductCard, Pagination
 ```
 
-Resolved:
+`pnpm t7ui show DatePicker` returns the implemented catalog contract and its package source. The AI catalog gate rejects the retired `available` status, validates every catalog source path/export name, validates all recipe references as `implemented`, and compares the 97 catalogued semantic icons against the local registry exactly.
 
-- Recipe: `catalog`
-- Profiles: `commerce`, `content`
-- Components: `AppShell`, `PageHeader`, `Input`, `ProductCard`, `Pagination`, plus `Checkbox`, `Radio`, `Select`, `Button`, `Badge`, `EmptyState`, and `DetailDrawer`
-- Icons: `book`, `ebook`, `catalog`, `category`, `cart`, `favorite`, `rating`, `search`
+## Cold-start result
 
-The migration playbook explicitly preserves API calls, cart state, routing, authentication, validation, permissions, form schemas, and events. Source components opened: 0. Donor repositories needed by the cold-start consumer: 0. The storefront refinement changed only composition, action feedback, normalized selection controls, Indonesian fixture data, and deterministic local editorial SVG fixtures.
+The executable simulation uses only `AGENTS.md`, AI contract docs, templates, and three catalogs. It verifies Warehouse/Ebook plus eight additional archetypes: entity detail, entity form, approval queue, report, settings, auth, ebook reader, and product detail. Every lookup resolved to its intended recipe and profile with **0 donor reads**.
 
-## Bootstrap test
-
-`t7ui agents init` created `AGENTS.md` in an empty consumer directory. When `AGENTS.md` already existed, it created `AGENTS.ten4seven.md`; a subsequent run reported the target as not overwritten.
-
-## Efficiency conclusion
-
-The normal consuming Agent can resolve the page archetype, complete component composition, semantic icons, theme-first rule, and business-logic boundary from the short agent contract, AI guides, catalogs, and CLI. The Warehouse and Ebook reference surfaces were then reproduced from those contracts without reopening AAPM, HeroUI, Minimal UI, or shadcnblocks source. The implementation-only Checkbox/Radio gap event is not part of the cold-start consumer read set.
+The system contract tells consuming agents to preserve business logic and to stop at a missing generic capability rather than introduce a local parallel component. Canonical package → AAPM extraction → bounded donor lookup only if necessary → normalization/catalog/provenance update is a system-owner workflow, not a feature migration workflow.

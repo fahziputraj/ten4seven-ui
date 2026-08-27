@@ -16,12 +16,26 @@
 - `packages/tokens/src/theme.css` — local Inter variable font and global token CSS.
 - `packages/ui/src/provider.tsx` — provider and runtime theme propagation.
 - `packages/ui/src/components.tsx` — canonical React primitives.
+- `packages/ui/src/blocks.tsx` — reusable expressive blocks and public shell
+  compositions built from canonical contracts.
 - `packages/icons/src/index.tsx` — local semantic icon boundary.
+
+## SHELL GRAMMAR
+
+`AppShell → [Sidebar | TopNavigation] → [PageHeader] → bounded route content`
+
+- `Sidebar` / `SidebarGroup`: private, information-dense applications.
+- `TopNavigation`: public, content, and commerce composition.
+- `PageHeader`: one route-level title, context, and primary action.
+- `DetailDrawer`: contextual inspection; `Modal`: focused task; `AlertDialog`: irreversible confirmation.
+- Use `MobileSidebar` and `FilterDrawer` to relocate secondary controls at narrow widths. Do not create a second mobile or commerce primitive family.
 
 ## AI CATALOGS
 
 - `packages/ai/catalog/recipes.json` — page archetypes and component composition.
 - `packages/ai/catalog/components.json` — searchable component contracts.
+- `packages/ai/catalog/blocks.json` — expressive block contracts, quality
+  metadata, content slots, and recipe references.
 - `packages/ai/catalog/icons.json` — semantic icon lookup; provider names are implementation detail.
 - `packages/ai/templates/AGENTS.ten4seven.md` — copy into consuming repositories.
 
@@ -37,6 +51,7 @@
 - report
 - catalog
 - product-detail
+- cart
 - checkout
 - content-list
 - content-detail
@@ -44,15 +59,47 @@
 - auth
 - marketing-home
 
+## COMPONENT LEVELS AND TAXONOMY
+
+Use the catalog's level metadata instead of treating every entry as the same
+kind of component:
+
+- L0 Foundations: provider, typography, icons, and token runtime.
+- L1 Primitives: actions, forms, navigation, layout, surfaces, date/time,
+  files, media, and charts.
+- L2 Components: data display, tables, filtering, overlays, feedback, and
+  commerce building blocks.
+- L3 Patterns: reusable compositions such as AppShell, ActionFooter,
+  CartPanel, and OrderSummary.
+- L4 Blocks: reusable expressive sections such as Hero, FeatureShowcase,
+  ProductShowcase, Carousel, and PublicFooter.
+- L5 Recipes: page composition contracts such as `entity-list`, `catalog`,
+  `cart`, and `checkout`.
+- L6 References: Warehouse Inventory, Publishing Store, and Public Showcase
+  proof screens.
+
+Canonical family routes are `/components/patterns`, `/components/tables`, and
+`/components/filtering-bulk-actions`. Older `/components/application`,
+`/components/tables-filtering`, and `/components/charts` paths remain accepted
+as compatibility routes.
+
 ## COMPONENTS
 
-- forms: `Input`, `Select`, `FormSection`
-- layout/navigation: `AppShell`, `Sidebar`, `NavItem`, `PageHeader`
-- surfaces: `Card`, `Badge`, `Typography`
-- data: `DataTable`, `FilterToolbar`, `Pagination`, `KPICluster`, `EmptyState`
-- overlays: `Modal`, `DetailDrawer`, `Drawer`
-- catalog: `ProductCard`
-- actions: `Button`, `BulkActionBar`, `ActionFooter`
+- actions: `Button`, `IconButton`, `ButtonGroup`, `ToggleButtonGroup`, `SplitButton`
+- forms: `Field`, `Input`, `Textarea`, `Select`, `Combobox`, `MultiSelect`, `DatePicker`, `FormSection`
+- layout/navigation: `AppShell`, `Sidebar`, `TopNavigation`, `Breadcrumb`, `Tabs`, `CommandMenu`, `PageHeader`
+- surfaces: `Card`, `Surface`, `Panel`, `Section`, `Typography`
+- data: `DataTable`, `DataTableColumnPicker`, `RecordSummary`, `MetricCard`, `ActivityFeed`, `StatusChip`
+- filtering/workflow: `FilterToolbar`, `AppliedFilters`, `FilterDrawer`, `BulkActionBar`, `ApprovalPanel`, `ActionFooter`
+- overlays/feedback: `Modal`, `DetailDrawer`, `AlertDialog`, `Popover`, `Tooltip`, `Toast`, `StateView`, `Skeleton`
+- commerce/media: `ProductGrid`, `ProductCard`, `Price`, `Rating`, `QuantityControl`, `CartTrigger`, `CartLineItem`, `CartPanel`, `OrderSummary`, `MediaFrame`, `Image`
+- charts/files: `LineChart`, `BarChart`, `DonutChart`, `Progress`, `FileUpload`
+- expressive compositions: `Hero`, `CtaBlock`, `FeatureShowcase`,
+  `StatsSection`, `LogoCloud`, `Testimonials`, `PricingSection`,
+  `ContentShowcase`, `ProductShowcase`, `Carousel`, `ChartPanel`,
+  `PublicShell`, `PublicFooter`
+
+Catalog status is exact: use only `implemented` components in production composition. A donor lookup is a design-system gap event: canonical package → AAPM extraction → one bounded donor lookup only if still missing → normalize into ten4seven → update catalog, AI contract, and provenance. Consumer code never imports a donor component.
 
 ## CLI
 
@@ -64,7 +111,19 @@
 ## REFERENCE ROUTES
 
 - Theme Studio: `http://localhost:4173/theme-studio`
+- Component Lab: `http://localhost:4173/component-lab`
+- Tokens: `http://localhost:4173/tokens`
+- Components: `http://localhost:4173/components`
+- Blocks: `http://localhost:4173/blocks`
+- Hero block detail: `http://localhost:4173/blocks/hero-split`
+- Icons: `http://localhost:4173/icons`
+- Recipes: `http://localhost:4173/recipes`
+- Cart recipe: `http://localhost:4173/recipes/cart`
+- Patterns: `http://localhost:4173/components/patterns`
+- Tables: `http://localhost:4173/components/tables`
+- Filtering & Bulk Actions: `http://localhost:4173/components/filtering-bulk-actions`
 - Warehouse Inventory: `http://localhost:4173/warehouse-inventory`
 - Ebook Store Catalog: `http://localhost:4173/ebook-store`
+- Public Showcase: `http://localhost:4173/public-showcase`
 
 Open these deterministic URLs directly for refresh-safe AI-agent and Playwright QA.

@@ -28,4 +28,4 @@ Example foundation:
 </Ten4SevenProvider>
 ```
 
-Avoid adding a second UI library for convenience. If a recipe names a component that is currently a `recipe-contract`, compose the first version from available primitives and record the missing system component for later extraction.
+Avoid adding a second UI library for convenience. Use only catalog entries with status `implemented`. If a generic capability is missing, record a design-system gap rather than composing a competing local primitive; the system owner follows canonical ten4seven → AAPM extraction → bounded donor lookup only if needed → normalization and catalog/provenance update.

@@ -8,7 +8,7 @@ Record the framework, routing, existing component system, global CSS, theme prov
 
 ## Step 2 — Classify
 
-Map the current screen to one recipe in `packages/ai/catalog/recipes.json`: dashboard, entity-list, detail, form, master-detail, approval queue, settings, report, commerce, content, auth, or marketing. List the canonical ten4seven components that cover the current surfaces.
+Map the current screen to one recipe in `packages/ai/catalog/recipes.json`: `dashboard`, `entity-list`, `entity-detail`, `entity-form`, `master-detail`, `approval-queue`, `settings`, `report`, `catalog`, `content-list`, `auth`, or `marketing-home`. List only canonical components with catalog status `implemented` that cover the current surfaces.
 
 ## Step 3 — Preserve
 
@@ -28,11 +28,11 @@ Install/configure the packages through the consumer's package manager. Add `Ten4
 
 ## Step 5 — Replace the shell
 
-Replace app shell, navigation, page framing, and responsive container behavior first. Keep route boundaries and data providers in place.
+Replace app shell, navigation, page framing, and responsive container behavior first. Keep route boundaries and data providers in place. Use the shared grammar `AppShell → [Sidebar | TopNavigation] → [PageHeader] → bounded route content`; choose Sidebar for private information-dense applications and TopNavigation for public/content/commerce composition.
 
 ## Step 6 — Replace canonical components
 
-Replace buttons, fields, cards, tables, dialogs, badges, and status elements with catalogued components. Prefer composition over local duplicates. Use a recipe-contract component only when the system has an approved implementation or when you explicitly create system work outside the feature migration.
+Replace buttons, fields, cards, tables, dialogs, badges, and status elements with implemented catalogued components. Prefer composition over local duplicates. If a required generic capability is not implemented, stop and report a design-system gap; feature code must not create a recipe-local substitute or import donor UI.
 
 ## Step 7 — Remove redundant styling
 

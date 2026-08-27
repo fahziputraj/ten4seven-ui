@@ -1,12 +1,19 @@
 {
   "dashboard": {
-    "purpose": "Monitor a small set of KPIs and operational signals",
+    "purpose": "Monitor a small, truthful set of operational signals and decide the next action.",
     "profiles": ["enterprise", "dashboard"],
-    "components": ["PageHeader", "KPICluster", "Card", "DataTable"],
-    "optional": ["FilterToolbar", "ChartRegion", "ActionFooter"]
+    "components": [
+      "PageHeader",
+      "KPICluster",
+      "MetricCard",
+      "LineChart",
+      "DataTable"
+    ],
+    "optional": ["FilterToolbar", "BarChart", "ActionFooter"],
+    "displayName": "Dashboard"
   },
   "entity-list": {
-    "purpose": "Browse and operate on structured records",
+    "purpose": "Browse and operate on comparable structured records.",
     "profiles": ["enterprise", "dashboard"],
     "components": [
       "AppShell",
@@ -19,7 +26,13 @@
       "BulkActionBar",
       "DetailDrawer"
     ],
-    "optional": ["EmptyState", "Badge", "Button"],
+    "optional": [
+      "AppliedFilters",
+      "StatusChip",
+      "ActionMenu",
+      "FilterDrawer",
+      "AlertDialog"
+    ],
     "icons": [
       "warehouse",
       "inventory",
@@ -37,34 +50,54 @@
       "more",
       "warning",
       "danger"
-    ]
+    ],
+    "references": ["Warehouse Inventory"],
+    "displayName": "Entity List"
   },
   "entity-detail": {
-    "purpose": "Read and act on one structured record",
+    "purpose": "Read and act on one structured record without inventing a new data grammar.",
     "profiles": ["enterprise", "dashboard"],
-    "components": ["PageHeader", "RecordSummary", "Card", "ActionFooter"],
-    "optional": ["DataTable", "ActivityTimeline", "Modal"]
+    "components": [
+      "PageHeader",
+      "RecordSummary",
+      "KeyValueList",
+      "ActivityFeed",
+      "ActionFooter"
+    ],
+    "optional": ["StatusChip", "Alert", "DataTable", "Modal"],
+    "displayName": "Entity Detail"
   },
   "entity-form": {
-    "purpose": "Create or edit one structured record",
+    "purpose": "Create or edit one structured record through grouped, labelled native controls.",
     "profiles": ["enterprise", "dashboard"],
     "components": [
       "PageHeader",
       "FormSection",
+      "FormGrid",
+      "Field",
       "Input",
       "Select",
       "ActionFooter"
     ],
-    "optional": ["Modal", "FieldArray"]
+    "optional": ["DatePicker", "FileUpload", "Combobox", "AlertDialog"],
+    "displayName": "Entity Form"
   },
   "master-detail": {
-    "purpose": "Keep a record list visible while inspecting one record",
+    "purpose": "Keep a record list visible while inspecting or updating one selected record.",
     "profiles": ["enterprise", "dashboard"],
-    "components": ["PageHeader", "DataTable", "RecordSummary", "Drawer"],
-    "optional": ["FilterToolbar", "Pagination"]
+    "components": [
+      "AppShell",
+      "Sidebar",
+      "PageHeader",
+      "DataTable",
+      "DetailDrawer",
+      "RecordSummary"
+    ],
+    "optional": ["FilterToolbar", "Pagination", "KeyValueList"],
+    "displayName": "Master–Detail"
   },
   "approval-queue": {
-    "purpose": "Review, approve, reject, and bulk-operate on pending records",
+    "purpose": "Review, approve, reject, and safely bulk-operate on pending records.",
     "profiles": ["enterprise", "dashboard"],
     "components": [
       "PageHeader",
@@ -74,52 +107,62 @@
       "ApprovalPanel",
       "Pagination"
     ],
-    "optional": ["Modal", "KPICluster"],
-    "icons": ["approve", "edit", "filter", "search", "export"]
+    "optional": ["Modal", "KPICluster", "AlertDialog"],
+    "icons": ["approve", "edit", "filter", "search", "export"],
+    "displayName": "Approval Queue"
   },
   "settings": {
-    "purpose": "Edit application or workspace preferences",
+    "purpose": "Edit application, workspace, or personal preferences.",
     "profiles": ["enterprise", "dashboard"],
     "components": [
       "PageHeader",
       "FormSection",
+      "FormGrid",
       "Input",
       "Select",
       "ActionFooter"
     ],
-    "optional": ["NavItem", "Badge"]
+    "optional": ["Sidebar", "Switch", "Alert"],
+    "displayName": "Settings"
   },
   "report": {
-    "purpose": "Inspect a time-bounded result set and export it",
+    "purpose": "Inspect a time-bounded result set and export a supported report.",
     "profiles": ["enterprise", "dashboard"],
     "components": [
       "PageHeader",
       "FilterToolbar",
       "KPICluster",
-      "DataTable",
-      "ChartRegion"
+      "LineChart",
+      "DataTable"
     ],
-    "optional": ["Pagination", "ExportMenu"]
+    "optional": ["BarChart", "DonutChart", "DateRangePicker", "Pagination"],
+    "displayName": "Operational Report"
   },
   "catalog": {
-    "purpose": "Browse visual products, courses, books, or inventory items",
+    "purpose": "Browse visual products, courses, books, or media with content-first composition.",
     "profiles": ["commerce", "content"],
     "components": [
       "AppShell",
+      "TopNavigation",
       "PageHeader",
-      "Input",
+      "SearchInput",
+      "ProductGrid",
       "ProductCard",
       "Pagination"
     ],
     "optional": [
-      "FilterToolbar",
-      "Checkbox",
-      "Radio",
+      "AppliedFilters",
+      "CheckboxGroup",
+      "RadioGroup",
       "Select",
-      "Button",
-      "Badge",
-      "EmptyState",
-      "DetailDrawer"
+      "Price",
+      "Rating",
+      "DetailDrawer",
+      "FilterDrawer",
+      "CartTrigger",
+      "CartPanel",
+      "CartLineItem",
+      "QuantityControl"
     ],
     "icons": [
       "book",
@@ -135,63 +178,125 @@
       "search",
       "filter",
       "sort"
-    ]
+    ],
+    "references": ["Publishing Store"],
+    "displayName": "Catalog"
   },
   "product-detail": {
-    "purpose": "Present one product with purchase or save actions",
+    "purpose": "Present one product with media, record context, price, and bounded purchase or save actions.",
     "profiles": ["commerce"],
     "components": [
       "PageHeader",
-      "ProductGallery",
+      "MediaFrame",
+      "RecordSummary",
+      "Price",
+      "ActionFooter"
+    ],
+    "optional": ["Rating", "ProductMeta", "Badge", "Alert"],
+    "references": ["Publishing Store"],
+    "displayName": "Product Detail"
+  },
+  "checkout": {
+    "purpose": "Collect the information needed to confirm an order without owning cart or payment business state.",
+    "profiles": ["commerce"],
+    "components": [
+      "PageHeader",
+      "FormSection",
+      "Input",
+      "Select",
       "RecordSummary",
       "ActionFooter"
     ],
-    "optional": ["Badge", "RelatedProducts"]
-  },
-  "checkout": {
-    "purpose": "Collect checkout information and confirm an order",
-    "profiles": ["commerce"],
-    "components": ["PageHeader", "FormSection", "OrderSummary", "ActionFooter"],
-    "optional": ["Input", "Select", "Badge", "Modal"]
+    "optional": [
+      "Alert",
+      "Modal",
+      "Checkbox",
+      "CartPanel",
+      "OrderSummary",
+      "QuantityControl"
+    ],
+    "displayName": "Checkout"
   },
   "content-list": {
-    "purpose": "Browse articles, lessons, documents, or media",
-    "profiles": ["content"],
-    "components": ["PageHeader", "FilterToolbar", "ContentCard", "Pagination"],
-    "optional": ["Badge", "SearchEmptyState"]
-  },
-  "content-detail": {
-    "purpose": "Read one article, lesson, or document with related content",
+    "purpose": "Browse articles, lessons, documents, or media without forcing table semantics.",
     "profiles": ["content"],
     "components": [
       "PageHeader",
-      "ContentMeta",
-      "ArticleBody",
-      "RelatedContent"
+      "FilterToolbar",
+      "ProductGrid",
+      "Card",
+      "Pagination"
     ],
-    "optional": ["Badge", "ActionFooter"]
+    "optional": ["Badge", "EmptyState", "SearchInput"],
+    "displayName": "Content List"
+  },
+  "content-detail": {
+    "purpose": "Read one article, lesson, or document with clear metadata and bounded supporting actions.",
+    "profiles": ["content"],
+    "components": ["PageHeader", "RecordSummary", "MediaFrame", "Typography"],
+    "optional": ["Badge", "ActionFooter", "ActivityFeed"],
+    "displayName": "Content Detail"
   },
   "ebook-reader": {
-    "purpose": "Read an ebook while preserving progress and reader controls",
+    "purpose": "Read an ebook while preserving progress and reader controls.",
     "profiles": ["content", "commerce"],
-    "components": [
-      "ReaderToolbar",
-      "ReaderProgress",
-      "ArticleBody",
-      "ReaderSettings"
-    ],
-    "optional": ["NavItem", "Modal", "Typography"]
+    "components": ["TopNavigation", "Progress", "Typography", "ActionBar"],
+    "optional": ["Modal", "Slider", "Tabs"],
+    "displayName": "Ebook Reader"
   },
   "auth": {
-    "purpose": "Sign in, register, recover access, or verify identity",
+    "purpose": "Sign in, register, recover access, or verify identity.",
     "profiles": ["enterprise", "commerce", "content"],
-    "components": ["AuthShell", "Input", "ActionFooter"],
-    "optional": ["Select", "Badge", "Modal"]
+    "components": ["Surface", "Input", "PasswordInput", "ActionFooter"],
+    "optional": ["OtpInput", "Alert", "Checkbox"],
+    "displayName": "Authentication"
   },
   "marketing-home": {
-    "purpose": "Explain a product and drive a primary acquisition action",
+    "purpose": "Explain a product through reusable expressive sections and drive one primary acquisition action.",
     "profiles": ["marketing"],
-    "components": ["MarketingHero", "FeatureGrid", "LogoCloud", "ActionFooter"],
-    "optional": ["Badge", "Card"]
+    "components": [
+      "PublicShell",
+      "TopNavigation",
+      "Typography",
+      "Button",
+      "Card",
+      "MediaFrame",
+      "ProductCard",
+      "LineChart",
+      "BarChart",
+      "ChartPanel"
+    ],
+    "optional": ["Carousel"],
+    "blocks": [
+      "hero-split",
+      "cta-contained",
+      "feature-showcase",
+      "stats-section",
+      "logo-cloud",
+      "testimonials",
+      "pricing-section",
+      "content-showcase",
+      "product-showcase",
+      "announcement-bar",
+      "carousel",
+      "public-footer"
+    ],
+    "references": ["Public Showcase"],
+    "displayName": "Marketing Home"
+  },
+  "cart": {
+    "purpose": "Review selected products, adjust bounded quantities, and continue to checkout without owning commerce persistence.",
+    "profiles": ["commerce"],
+    "components": ["AppShell", "TopNavigation", "CartPanel", "OrderSummary"],
+    "optional": [
+      "CartLineItem",
+      "QuantityControl",
+      "CartTrigger",
+      "Button",
+      "EmptyState"
+    ],
+    "icons": ["cart", "checkout", "delete", "plus"],
+    "displayName": "Cart",
+    "references": ["Publishing Store"]
   }
 }

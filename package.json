@@ -15,11 +15,17 @@
     "t7ui": "node packages/ai/bin/t7ui.mjs",
     "build": "pnpm --filter @ten4seven/playground build",
     "typecheck": "pnpm --filter @ten4seven/playground typecheck",
-    "test": "pnpm --filter @ten4seven/tokens test && pnpm test:ai",
+    "test": "pnpm --filter @ten4seven/tokens test && pnpm test:ai && pnpm test:component-system",
+    "test:e2e": "playwright test",
+    "test:visual:update": "playwright test tests/visual-regression.spec.ts --update-snapshots",
     "test:ai": "node scripts/verify-ai-catalog.mjs && node scripts/verify-reference-cold-start.mjs",
+    "test:component-system": "node scripts/verify-component-system.mjs",
+    "test:consistency": "node scripts/verify-ui-consistency.mjs",
     "format:check": "prettier --check ."
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
+    "axe-core": "^4.13.0",
     "prettier": "^3.8.3",
     "typescript": "^5.9.3"
   }
