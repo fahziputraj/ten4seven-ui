@@ -9,6 +9,9 @@
     "typecheck": "tsc -b"
   },
   "dependencies": {
+    "@ten4seven/icons": "workspace:*",
+    "@ten4seven/tokens": "workspace:*",
+    "@ten4seven/ui": "workspace:*",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },

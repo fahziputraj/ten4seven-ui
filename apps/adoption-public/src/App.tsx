@@ -1,5 +1,40 @@
 import { useEffect, useMemo, useState } from "react";
 
+import { T7Icon } from "@ten4seven/icons";
+import type {
+  Appearance,
+  DensityName,
+  PaletteName,
+  RadiusName,
+} from "@ten4seven/tokens";
+import {
+  AnnouncementBar,
+  Button,
+  CartLineItem,
+  CartPanel,
+  ContentShowcase,
+  CtaBlock,
+  DetailDrawer,
+  EmptyState,
+  Hero,
+  MediaFrame,
+  OrderSummary,
+  PageHeader,
+  Price,
+  ProductCard,
+  ProductGrid,
+  ProductMeta,
+  ProductShowcase,
+  PublicFooter,
+  PublicShell,
+  Rating,
+  SearchInput,
+  Select,
+  Ten4SevenProvider,
+  Typography,
+  CartTrigger,
+} from "@ten4seven/ui";
+
 import {
   addToCart,
   cartCount,
@@ -16,6 +51,63 @@ import {
 
 type Route = "catalog" | "guides" | "home";
 
+type SupportedAppearance = Exclude<Appearance, "system">;
+
+function queryValue<T extends string>(
+  params: URLSearchParams,
+  key: string,
+  values: readonly T[],
+  fallback: T,
+): T {
+  const value = params.get(key);
+  return values.some((candidate) => candidate === value)
+    ? (value as T)
+    : fallback;
+}
+
+function themeFromQuery() {
+  const params = new URLSearchParams(window.location.search);
+
+  return {
+    appearance: queryValue<SupportedAppearance>(
+      params,
+      "appearance",
+      ["light", "dark"],
+      "light",
+    ),
+    density: queryValue<DensityName>(
+      params,
+      "density",
+      ["comfortable", "default", "compact", "dense"],
+      "default",
+    ),
+    palette: queryValue<PaletteName>(
+      params,
+      "palette",
+      [
+        "slate",
+        "emerald",
+        "teal",
+        "cyan",
+        "blue",
+        "indigo",
+        "violet",
+        "rose",
+        "red",
+        "orange",
+        "amber",
+      ],
+      "emerald",
+    ),
+    radius: queryValue<RadiusName>(
+      params,
+      "radius",
+      ["sharp", "soft", "rounded"],
+      "soft",
+    ),
+  };
+}
+
 function routeFromPath(pathname: string): Route {
   if (pathname === "/catalog") return "catalog";
   if (pathname === "/guides") return "guides";
@@ -27,15 +119,50 @@ function navigate(pathname: string) {
   window.dispatchEvent(new PopStateEvent("popstate"));
 }
 
-function formatPrice(amount: number) {
-  return new Intl.NumberFormat("id-ID", {
-    currency: "IDR",
-    maximumFractionDigits: 0,
-    style: "currency",
-  }).format(amount);
+function initials(title: string) {
+  return title
+    .split(" ")
+    .map((word) => word[0])
+    .slice(0, 2)
+    .join("");
 }
 
-function LegacyProductCard({
+function CoverArt({
+  large = false,
+  product,
+}: {
+  large?: boolean;
+  product: Product;
+}) {
+  return (
+    <div
+      aria-label={`${product.title} cover`}
+      className={`adoption-public-cover${large ? " adoption-public-cover-large" : ""}`}
+      data-category={product.category}
+      role="img"
+    >
+      <span className="adoption-public-cover-mark">
+        {initials(product.title)}
+      </span>
+    </div>
+  );
+}
+
+function ProductMedia({
+  large = false,
+  product,
+}: {
+  large?: boolean;
+  product: Product;
+}) {
+  return (
+    <MediaFrame label={`${product.title} cover`} ratio={0.78}>
+      <CoverArt large={large} product={product} />
+    </MediaFrame>
+  );
+}
+
+function ProductCardForCatalog({
   onAdd,
   onOpen,
   product,
@@ -45,117 +172,123 @@ function LegacyProductCard({
   product: Product;
 }) {
   return (
-    <article className="legacy-public-product-card">
-      <div className={`legacy-cover legacy-cover-${product.id}`}>
-        <span>
-          {product.title
-            .split(" ")
-            .map((word) => word[0])
-            .slice(0, 2)
-            .join("")}
-        </span>
-      </div>
-      <div className="legacy-public-product-copy">
-        <span className="legacy-public-eyebrow">{product.category}</span>
-        <h2>{product.title}</h2>
-        <p>{product.description}</p>
-        <div className="legacy-public-meta">
-          <span>{product.format}</span>
-          <strong>{formatPrice(product.price)}</strong>
-        </div>
-        <div className="legacy-public-card-actions">
-          <button className="legacy-public-link" onClick={onOpen} type="button">
+    <ProductCard
+      actions={
+        <div className="adoption-public-card-actions">
+          <Button intent="quiet" onClick={onOpen} size="sm">
             View details
-          </button>
-          <button
+          </Button>
+          <Button
             aria-label={`Add ${product.title} to cart`}
-            className="legacy-public-add"
+            leadingIcon="cart"
             onClick={onAdd}
-            type="button"
+            size="sm"
           >
             Add
-          </button>
+          </Button>
         </div>
-      </div>
-    </article>
+      }
+      details={<Rating count={undefined} value={product.rating} />}
+      eyebrow={product.category}
+      media={<ProductMedia product={product} />}
+      meta={<ProductMeta items={[product.author, product.format]} />}
+      price={<Price amount={product.price} />}
+      title={product.title}
+    />
   );
 }
 
 function HomePage({
+  onAdd,
   onBrowse,
   onOpen,
 }: {
+  onAdd: (id: string) => void;
   onBrowse: () => void;
   onOpen: (id: string) => void;
 }) {
+  const featured =
+    products.find((product) => product.id === "reliable-design") ?? products[0];
+
   return (
-    <div className="legacy-public-page">
-      <section className="legacy-public-hero">
-        <div>
-          <span className="legacy-public-eyebrow">
-            A small library for useful work
-          </span>
-          <h1>Make room for better decisions.</h1>
-          <p>
-            Common Ground brings together thoughtful ebooks and practical notes
-            for people building products, teams, and systems.
-          </p>
-          <button className="legacy-button" onClick={onBrowse} type="button">
-            Browse the library →
-          </button>
-        </div>
-        <div className="legacy-public-hero-card">
-          <span>Featured reading</span>
-          <strong>Reliable by Design</strong>
-          <small>Small interaction decisions that build trust over time.</small>
-        </div>
-      </section>
-      <section className="legacy-public-feature">
-        <div>
-          <span className="legacy-public-eyebrow">Read at your pace</span>
-          <h2>Ideas that travel well.</h2>
-        </div>
-        <div className="legacy-public-feature-list">
-          <p>
-            <strong>Useful, not loud</strong>
-            <span>Clear writing for the work in front of you.</span>
-          </p>
-          <p>
-            <strong>Made for practice</strong>
-            <span>Every title ends closer to a decision.</span>
-          </p>
-          <p>
-            <strong>Keep your shelf light</strong>
-            <span>Save only what you want to return to.</span>
-          </p>
-        </div>
-      </section>
-      <section className="legacy-public-featured">
-        <div className="legacy-section-heading">
-          <div>
-            <span className="legacy-public-eyebrow">Start here</span>
-            <h2>Selected titles</h2>
-          </div>
-          <button
-            className="legacy-public-link"
-            onClick={onBrowse}
-            type="button"
-          >
-            View all
-          </button>
-        </div>
-        <div className="legacy-public-grid">
-          {products.slice(0, 2).map((product) => (
-            <LegacyProductCard
-              key={product.id}
-              onAdd={() => undefined}
-              onOpen={() => onOpen(product.id)}
-              product={product}
-            />
-          ))}
-        </div>
-      </section>
+    <div className="adoption-public-page">
+      <AnnouncementBar
+        action={
+          <Button intent="quiet" onClick={onBrowse} size="sm">
+            Browse library
+          </Button>
+        }
+        dismissible
+      >
+        New field notes are ready for the week ahead.
+      </AnnouncementBar>
+      <Hero
+        description="Common Ground brings together thoughtful ebooks and practical notes for people building products, teams, and systems."
+        eyebrow="A small library for useful work"
+        media={<ProductMedia large product={featured} />}
+        primaryAction={<Button onClick={onBrowse}>Browse the library</Button>}
+        title="Make room for better decisions."
+        variant="split"
+      />
+      <div className="adoption-public-block-stack">
+        <ProductShowcase
+          actions={
+            <Button intent="quiet" onClick={onBrowse}>
+              View all
+            </Button>
+          }
+          description="A starting point for your next useful conversation."
+          title="Selected titles"
+        >
+          <ProductGrid minCardWidth={250}>
+            {products.slice(0, 2).map((product) => (
+              <ProductCardForCatalog
+                key={product.id}
+                onAdd={() => onAdd(product.id)}
+                onOpen={() => onOpen(product.id)}
+                product={product}
+              />
+            ))}
+          </ProductGrid>
+        </ProductShowcase>
+        <FeatureShowcaseForLibrary />
+        <CtaBlock
+          actions={<Button onClick={onBrowse}>Find your next read</Button>}
+          description="Keep a shelf that earns its space, one title at a time."
+          title="Ideas that travel well."
+          tone="subtle"
+        />
+      </div>
     </div>
+  );
+}
+
+function FeatureShowcaseForLibrary() {
+  return (
+    <ContentShowcase
+      description="Thoughtful material, organized around the work it should support."
+      items={[
+        {
+          description: "Clear writing for the work in front of you.",
+          id: "useful-not-loud",
+          meta: "Useful, not loud",
+          title: "Make space for signal.",
+        },
+        {
+          description: "Every title ends closer to a decision you can try.",
+          id: "made-for-practice",
+          meta: "Made for practice",
+          title: "Read toward action.",
+        },
+        {
+          description: "Save only what you want to return to.",
+          id: "keep-shelf-light",
+          meta: "Keep your shelf light",
+          title: "Choose with care.",
+        },
+      ]}
+      title="Ideas that travel well."
+    />
   );
 }
 
@@ -174,51 +307,48 @@ function CatalogPage({
   );
 
   return (
-    <div className="legacy-public-page" data-testid="catalog-page">
-      <div className="legacy-public-heading">
-        <div>
-          <span className="legacy-public-eyebrow">The library</span>
-          <h1>Find your next useful read.</h1>
-          <p>
-            Browse field notes, system thinking, and practical guidance for the
-            work you are already doing.
-          </p>
-        </div>
-      </div>
+    <div className="adoption-public-page" data-testid="catalog-page">
+      <PageHeader
+        description="Browse field notes, system thinking, and practical guidance for the work you are already doing."
+        overline="The library"
+        title="Find your next useful read."
+      />
       <div
         aria-label="Catalog filters"
-        className="legacy-public-toolbar"
+        className="adoption-public-filter-toolbar"
         role="region"
       >
-        <label className="legacy-public-search">
-          Search
-          <input
-            aria-label="Search library"
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search titles, authors, topics"
-            value={query}
-          />
-        </label>
-        <label>
-          Collection
-          <select
-            aria-label="Collection filter"
-            onChange={(event) =>
-              setCategory(event.target.value as ProductCategory | "All")
-            }
-            value={category}
-          >
-            {categories.map((option) => (
-              <option key={option}>{option}</option>
-            ))}
-          </select>
-        </label>
-        <span role="status">{visibleProducts.length} titles</span>
+        <SearchInput
+          aria-label="Search library"
+          label="Search library"
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="Search titles, authors, topics"
+          value={query}
+        />
+        <Select
+          aria-label="Collection filter"
+          label="Collection"
+          onChange={(event) =>
+            setCategory(event.target.value as ProductCategory | "All")
+          }
+          value={category}
+        >
+          {categories.map((option) => (
+            <option key={option}>{option}</option>
+          ))}
+        </Select>
+        <Typography
+          aria-live="polite"
+          className="adoption-public-filter-result"
+          typeRole="caption"
+        >
+          {visibleProducts.length} titles
+        </Typography>
       </div>
-      <div className="legacy-public-grid">
+      <ProductGrid minCardWidth={250}>
         {visibleProducts.length ? (
           visibleProducts.map((product) => (
-            <LegacyProductCard
+            <ProductCardForCatalog
               key={product.id}
               onAdd={() => onAdd(product.id)}
               onOpen={() => onOpen(product.id)}
@@ -226,38 +356,38 @@ function CatalogPage({
             />
           ))
         ) : (
-          <div className="legacy-public-empty">
-            No titles match that search.
-          </div>
+          <EmptyState
+            description="Try another title, author, or collection."
+            icon="search"
+            title="No titles match that search."
+          />
         )}
-      </div>
+      </ProductGrid>
     </div>
   );
 }
 
 function GuidesPage() {
   return (
-    <div className="legacy-public-page">
-      <div className="legacy-public-heading">
-        <div>
-          <span className="legacy-public-eyebrow">Guides</span>
-          <h1>Reading paths for busy weeks.</h1>
-          <p>
-            Begin with one question, then choose a title that helps you move it
-            forward.
-          </p>
-        </div>
-      </div>
-      <div className="legacy-guide-list">
-        <article>
-          <strong>Starting a new system</strong>
-          <span>Building Calm Products · Reliable by Design</span>
-        </article>
-        <article>
-          <strong>Making clearer work</strong>
-          <span>Practical Type · A Map of Small Decisions</span>
-        </article>
-      </div>
+    <div className="adoption-public-page">
+      <ContentShowcase
+        description="Begin with one question, then choose a title that helps you move it forward."
+        items={[
+          {
+            description: "Building Calm Products · Reliable by Design",
+            id: "starting-a-system",
+            meta: "Starting a new system",
+            title: "Build with less noise.",
+          },
+          {
+            description: "Practical Type · A Map of Small Decisions",
+            id: "clearer-work",
+            meta: "Making clearer work",
+            title: "Make the next step visible.",
+          },
+        ]}
+        title="Reading paths for busy weeks."
+      />
     </div>
   );
 }
@@ -272,49 +402,30 @@ function ProductDetails({
   product: Product;
 }) {
   return (
-    <dialog
-      aria-label={`${product.title} details`}
-      className="legacy-public-dialog"
-      data-testid="product-detail"
+    <DetailDrawer
+      description="A closer look before you add this title to your shelf."
+      onClose={onClose}
       open
+      title={product.title}
     >
-      <div className="legacy-public-dialog-card">
-        <button
-          aria-label="Close product details"
-          className="legacy-public-close"
-          onClick={onClose}
-          type="button"
-        >
-          ×
-        </button>
-        <div
-          className={`legacy-cover legacy-cover-large legacy-cover-${product.id}`}
-        >
-          <span>
-            {product.title
-              .split(" ")
-              .map((word) => word[0])
-              .slice(0, 2)
-              .join("")}
-          </span>
+      <div className="adoption-public-detail-stack">
+        <ProductMedia large product={product} />
+        <div className="adoption-public-detail-meta">
+          <Typography typeRole="overline">{product.category}</Typography>
+          <Rating value={product.rating} />
+          <Typography typeRole="caption">{product.format}</Typography>
         </div>
-        <span className="legacy-public-eyebrow">
-          {product.category} · {product.format}
-        </span>
-        <h2>{product.title}</h2>
-        <p>{product.description}</p>
-        <p className="legacy-public-author">
-          Written by {product.author} · ★ {product.rating.toFixed(1)}
-        </p>
-        <button className="legacy-button" onClick={onAdd} type="button">
-          Add to cart · {formatPrice(product.price)}
-        </button>
+        <Typography typeRole="body">{product.description}</Typography>
+        <Typography typeRole="body-sm">Written by {product.author}</Typography>
+        <Button leadingIcon="cart" onClick={onAdd}>
+          Add to cart · <Price amount={product.price} />
+        </Button>
       </div>
-    </dialog>
+    </DetailDrawer>
   );
 }
 
-function CartDialog({
+function CartDrawer({
   cart,
   onClose,
   onRemove,
@@ -326,91 +437,64 @@ function CartDialog({
   onQuantity: (id: string, quantity: number) => void;
 }) {
   const cartProducts = products.filter((product) => cart[product.id]);
+  const totalItems = cartCount(cart);
   const subtotal = cartSubtotal(cart, products);
+
   return (
-    <dialog
-      aria-label="Shopping cart"
-      className="legacy-public-dialog"
-      data-testid="cart-dialog"
+    <DetailDrawer
+      description="Adjust your selections before continuing."
+      onClose={onClose}
       open
+      title="Shopping cart"
     >
-      <div className="legacy-public-dialog-card">
-        <div className="legacy-dialog-header">
-          <div>
-            <span className="legacy-public-eyebrow">Your shelf</span>
-            <h2>Shopping cart</h2>
-          </div>
-          <button
-            aria-label="Close shopping cart"
-            className="legacy-public-close"
-            onClick={onClose}
-            type="button"
-          >
-            ×
-          </button>
-        </div>
-        {cartProducts.length ? (
-          <>
-            <div className="legacy-cart-list">
-              {cartProducts.map((product) => (
-                <div className="legacy-cart-line" key={product.id}>
-                  <div>
-                    <strong>{product.title}</strong>
-                    <span>{formatPrice(product.price)}</span>
-                  </div>
-                  <div className="legacy-cart-controls">
-                    <button
-                      aria-label={`Decrease quantity for ${product.title}`}
-                      onClick={() =>
-                        onQuantity(product.id, (cart[product.id] ?? 1) - 1)
-                      }
-                      type="button"
-                    >
-                      −
-                    </button>
-                    <output aria-label={`Quantity for ${product.title}`}>
-                      {cart[product.id]}
-                    </output>
-                    <button
-                      aria-label={`Increase quantity for ${product.title}`}
-                      onClick={() =>
-                        onQuantity(product.id, (cart[product.id] ?? 0) + 1)
-                      }
-                      type="button"
-                    >
-                      +
-                    </button>
-                    <button
-                      aria-label={`Remove ${product.title} from cart`}
-                      className="legacy-public-remove"
-                      onClick={() => onRemove(product.id)}
-                      type="button"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="legacy-cart-total">
-              <span>Subtotal</span>
-              <strong>{formatPrice(subtotal)}</strong>
-            </div>
-            <button className="legacy-button" onClick={onClose} type="button">
-              Continue to checkout
-            </button>
-          </>
-        ) : (
-          <div className="legacy-public-empty">
-            Your cart is empty. Add a title when you find one worth keeping.
-          </div>
-        )}
+      <div className="adoption-public-cart-stack">
+        <CartPanel
+          actions={
+            cartProducts.length ? (
+              <Button onClick={onClose}>Continue to checkout</Button>
+            ) : undefined
+          }
+          emptyState={
+            <EmptyState
+              description="Add a title when you find one worth keeping."
+              icon="cart"
+              title="Your cart is empty"
+            />
+          }
+          itemCount={`${totalItems} item${totalItems === 1 ? "" : "s"}`}
+          summary={
+            cartProducts.length ? (
+              <div className="adoption-public-cart-summary">
+                <OrderSummary
+                  rows={[{ label: "Selected titles", value: totalItems }]}
+                  total={<Price amount={subtotal} />}
+                />
+              </div>
+            ) : undefined
+          }
+          title="Shopping cart"
+        >
+          {cartProducts.map((product) => (
+            <CartLineItem
+              key={product.id}
+              max={10}
+              media={<ProductMedia product={product} />}
+              meta={`${product.author} · ${product.format}`}
+              onQuantityChange={(quantity) => onQuantity(product.id, quantity)}
+              onRemove={() => onRemove(product.id)}
+              price={<Price amount={product.price} />}
+              quantity={cart[product.id]}
+              quantityLabel={`Quantity for ${product.title}`}
+              title={product.title}
+            />
+          ))}
+        </CartPanel>
       </div>
-    </dialog>
+    </DetailDrawer>
   );
 }
 
-export default function App() {
+function PublicApp() {
   const [route, setRoute] = useState<Route>(() =>
     routeFromPath(window.location.pathname),
   );
@@ -426,6 +510,12 @@ export default function App() {
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
+  useEffect(() => {
+    if (!notice) return undefined;
+    const timer = window.setTimeout(() => setNotice(""), 2400);
+    return () => window.clearTimeout(timer);
+  }, [notice]);
+
   function go(pathname: string) {
     setSelectedId(null);
     navigate(pathname);
@@ -440,70 +530,102 @@ export default function App() {
   const selectedProduct = selectedId
     ? products.find((product) => product.id === selectedId)
     : undefined;
-  const itemsInCart = cartCount(cart);
+  const totalItems = cartCount(cart);
+
+  const navigationMenu = [
+    {
+      active: route === "catalog",
+      icon: "catalog" as const,
+      key: "library",
+      label: "Library",
+      onSelect: () => go("/catalog"),
+    },
+    {
+      children: [
+        {
+          icon: "catalog" as const,
+          key: "browse-catalog",
+          label: "Browse catalog",
+          onSelect: () => go("/catalog"),
+        },
+        {
+          icon: "book" as const,
+          key: "reading-guides",
+          label: "Reading guides",
+          onSelect: () => go("/guides"),
+        },
+      ],
+      icon: "category" as const,
+      key: "explore",
+      label: "Explore",
+    },
+    {
+      active: route === "guides",
+      icon: "book" as const,
+      key: "guides",
+      label: "Guides",
+      onSelect: () => go("/guides"),
+    },
+  ];
 
   return (
-    <div className="legacy-public-shell">
-      <header className="legacy-public-header">
-        <a
-          className="legacy-public-brand"
-          href="/"
-          onClick={(event) => {
-            event.preventDefault();
-            go("/");
-          }}
-        >
-          <span className="legacy-public-mark">CG</span>
-          <span>
-            Common Ground<small>Library</small>
-          </span>
-        </a>
-        <nav aria-label="Primary navigation">
-          <a
-            className={route === "catalog" ? "is-active" : undefined}
-            href="/catalog"
-            onClick={(event) => {
-              event.preventDefault();
-              go("/catalog");
-            }}
-          >
-            Library
-          </a>
-          <a
-            className={route === "guides" ? "is-active" : undefined}
-            href="/guides"
-            onClick={(event) => {
-              event.preventDefault();
-              go("/guides");
-            }}
-          >
-            Guides
-          </a>
-        </nav>
-        <button
-          aria-label={`Open cart${itemsInCart ? ` (${itemsInCart})` : ""}`}
-          className="legacy-public-cart"
+    <PublicShell
+      actions={
+        <CartTrigger
+          count={totalItems}
           data-testid="open-cart"
+          intent="quiet"
+          label="Cart"
           onClick={() => setCartOpen(true)}
-          type="button"
-        >
-          Cart {itemsInCart ? <span>{itemsInCart}</span> : null}
-        </button>
-      </header>
-      <main>
-        {route === "home" ? (
-          <HomePage onBrowse={() => go("/catalog")} onOpen={setSelectedId} />
-        ) : route === "guides" ? (
-          <GuidesPage />
-        ) : (
-          <CatalogPage onAdd={handleAdd} onOpen={setSelectedId} />
-        )}
-      </main>
-      <footer className="legacy-public-footer">
-        <strong>Common Ground</strong>
-        <span>Thoughtful reading for useful work.</span>
-        <span>© 2026</span>
-      </footer>
+          size="sm"
+        />
+      }
+      brand={
+        <div className="adoption-public-brand">
+          <span className="adoption-public-brand-mark">
+            <T7Icon name="book" size={17} />
+          </span>
+          <span>
+            <Typography typeRole="label">Common Ground</Typography>
+            <Typography typeRole="caption">Library</Typography>
+          </span>
+        </div>
+      }
+      footer={
+        <PublicFooter
+          brand={
+            <div className="adoption-public-footer-brand">
+              <Typography typeRole="label">Common Ground</Typography>
+              <Typography typeRole="caption">
+                Thoughtful reading for useful work.
+              </Typography>
+            </div>
+          }
+          groups={[
+            {
+              items: [
+                { href: "/catalog", label: "Library" },
+                { href: "/guides", label: "Guides" },
+              ],
+              label: "Explore",
+            },
+          ]}
+          legal="© 2026 Common Ground"
+        />
+      }
+      navigationMenu={navigationMenu}
+    >
+      {route === "home" ? (
+        <HomePage
+          onAdd={handleAdd}
+          onBrowse={() => go("/catalog")}
+          onOpen={setSelectedId}
+        />
+      ) : route === "guides" ? (
+        <GuidesPage />
+      ) : (
+        <CatalogPage onAdd={handleAdd} onOpen={setSelectedId} />
+      )}
       {selectedProduct ? (
         <ProductDetails
           onAdd={() => {
@@ -515,7 +637,7 @@ export default function App() {
         />
       ) : null}
       {cartOpen ? (
-        <CartDialog
+        <CartDrawer
           cart={cart}
           onClose={() => setCartOpen(false)}
           onQuantity={(id, quantity) =>
@@ -527,12 +649,22 @@ export default function App() {
       {notice ? (
         <div
           aria-live="polite"
-          className="legacy-public-notice"
-          onAnimationEnd={() => setNotice("")}
+          className="adoption-public-notice"
+          role="status"
         >
           {notice}
         </div>
       ) : null}
-    </div>
+    </PublicShell>
+  );
+}
+
+export default function App() {
+  const theme = themeFromQuery();
+
+  return (
+    <Ten4SevenProvider {...theme}>
+      <PublicApp />
+    </Ten4SevenProvider>
   );
 }

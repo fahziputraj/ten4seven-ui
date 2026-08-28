@@ -18,6 +18,7 @@
     "test": "pnpm --filter @ten4seven/tokens test && pnpm test:ai && pnpm test:component-system",
     "test:e2e": "playwright test",
     "test:adoption": "playwright test --config=adoption.playwright.config.ts",
+    "test:adoption:static": "node scripts/verify-adoption.mjs",
     "test:visual:update": "playwright test tests/visual-regression.spec.ts --update-snapshots",
     "test:ai": "node scripts/verify-ai-catalog.mjs && node scripts/verify-reference-cold-start.mjs",
     "test:component-system": "node scripts/verify-component-system.mjs",

@@ -1,4 +1,43 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
+
+import { T7Icon } from "@ten4seven/icons";
+import type {
+  Appearance,
+  DensityName,
+  PaletteName,
+  RadiusName,
+} from "@ten4seven/tokens";
+import {
+  AppShell,
+  Avatar,
+  Button,
+  Card,
+  CardContent,
+  DataTable,
+  DetailDrawer,
+  FormActions,
+  FormGrid,
+  Input,
+  KPICluster,
+  KeyValueList,
+  MobileSidebar,
+  PageHeader,
+  SearchInput,
+  Select,
+  Sidebar,
+  StatusChip,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  Ten4SevenProvider,
+  Textarea,
+  Typography,
+  type DataTableColumn,
+  type StatusTone,
+} from "@ten4seven/ui";
 
 import {
   buildReceipt,
@@ -14,6 +53,63 @@ import {
 
 type Route = "inventory" | "new" | "receipts";
 
+type SupportedAppearance = Exclude<Appearance, "system">;
+
+function queryValue<T extends string>(
+  params: URLSearchParams,
+  key: string,
+  values: readonly T[],
+  fallback: T,
+): T {
+  const value = params.get(key);
+  return values.some((candidate) => candidate === value)
+    ? (value as T)
+    : fallback;
+}
+
+function themeFromQuery() {
+  const params = new URLSearchParams(window.location.search);
+
+  return {
+    appearance: queryValue<SupportedAppearance>(
+      params,
+      "appearance",
+      ["light", "dark"],
+      "light",
+    ),
+    density: queryValue<DensityName>(
+      params,
+      "density",
+      ["comfortable", "default", "compact", "dense"],
+      "default",
+    ),
+    palette: queryValue<PaletteName>(
+      params,
+      "palette",
+      [
+        "slate",
+        "emerald",
+        "teal",
+        "cyan",
+        "blue",
+        "indigo",
+        "violet",
+        "rose",
+        "red",
+        "orange",
+        "amber",
+      ],
+      "emerald",
+    ),
+    radius: queryValue<RadiusName>(
+      params,
+      "radius",
+      ["sharp", "soft", "rounded"],
+      "soft",
+    ),
+  };
+}
+
 function routeFromPath(pathname: string): Route {
   if (pathname === "/inventory") return "inventory";
   if (pathname === "/operations/receipts/new") return "new";
@@ -25,11 +121,80 @@ function navigate(pathname: string) {
   window.dispatchEvent(new PopStateEvent("popstate"));
 }
 
-function LegacyStatus({ status }: { status: ReceiptStatus }) {
+const receiptStatusTone: Record<ReceiptStatus, StatusTone> = {
+  Received: "success",
+  Receiving: "info",
+  Scheduled: "warning",
+};
+
+const receiptStatusIcon: Record<
+  ReceiptStatus,
+  "calendar" | "pending" | "success"
+> = {
+  Received: "success",
+  Receiving: "pending",
+  Scheduled: "calendar",
+};
+
+function ReceiptStatusChip({ status }: { status: ReceiptStatus }) {
   return (
-    <span className={`legacy-status legacy-status-${status.toLowerCase()}`}>
+    <StatusChip
+      icon={receiptStatusIcon[status]}
+      tone={receiptStatusTone[status]}
+    >
       {status}
-    </span>
+    </StatusChip>
+  );
+}
+
+function OperationsSidebar({
+  activeKey,
+  onNavigate,
+}: {
+  activeKey: string;
+  onNavigate: (key: string) => void;
+}) {
+  return (
+    <Sidebar
+      activeKey={activeKey}
+      brand={
+        <div className="adoption-sidebar-brand">
+          <span className="adoption-brand-mark">
+            <T7Icon name="inventory" size={18} />
+          </span>
+          <span>
+            <Typography typeRole="label">Ledgerly</Typography>
+            <Typography typeRole="caption">Operations</Typography>
+          </span>
+        </div>
+      }
+      groups={[
+        {
+          key: "workspace",
+          label: "Workspace",
+          items: [
+            { icon: "stockIn", key: "receipts", label: "Receipts" },
+            { icon: "inventory", key: "inventory", label: "Inventory" },
+          ],
+        },
+        {
+          key: "account",
+          label: "Account",
+          items: [{ icon: "settings", key: "settings", label: "Settings" }],
+        },
+      ]}
+      footer={
+        <div className="adoption-sidebar-profile">
+          <Avatar name="Maya Chen" size="sm" />
+          <span>
+            <Typography typeRole="label">Maya Chen</Typography>
+            <Typography typeRole="caption">Operations lead</Typography>
+          </span>
+        </div>
+      }
+      label="Operations navigation"
+      onSelect={onNavigate}
+    />
   );
 }
 
@@ -46,7 +211,7 @@ function ReceiptForm({
   const [units, setUnits] = useState("1");
   const [notes, setNotes] = useState("");
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!supplier.trim() || Number(units) < 1) return;
     onSubmit({
@@ -59,85 +224,69 @@ function ReceiptForm({
   }
 
   return (
-    <section aria-labelledby="new-receipt-title" className="legacy-page">
-      <div className="legacy-breadcrumb">Operations / Receipts / New</div>
-      <div className="legacy-page-heading">
-        <div>
-          <h1 id="new-receipt-title">Create inbound receipt</h1>
-          <p>
-            Register an expected delivery before the dock team starts scanning.
-          </p>
-        </div>
-      </div>
-      <form
-        aria-label="Create receipt form"
-        className="legacy-form"
-        onSubmit={handleSubmit}
-      >
-        <label>
-          Supplier
-          <input
-            aria-label="Supplier"
-            onChange={(event) => setSupplier(event.target.value)}
-            placeholder="e.g. Northstar Components"
-            required
-            value={supplier}
-          />
-        </label>
-        <label>
-          Warehouse
-          <select
-            aria-label="Warehouse"
-            onChange={(event) => setWarehouse(event.target.value)}
-            value={warehouse}
-          >
-            <option>Jakarta Hub</option>
-            <option>Bandung Depot</option>
-            <option>Surabaya Crossdock</option>
-          </select>
-        </label>
-        <label>
-          Expected date
-          <input
-            aria-label="Expected date"
-            onChange={(event) => setExpected(event.target.value)}
-            type="date"
-            value={expected}
-          />
-        </label>
-        <label>
-          Unit count
-          <input
-            aria-label="Unit count"
-            min="1"
-            onChange={(event) => setUnits(event.target.value)}
-            type="number"
-            value={units}
-          />
-        </label>
-        <label className="legacy-form-wide">
-          Dock notes
-          <textarea
-            aria-label="Dock notes"
-            onChange={(event) => setNotes(event.target.value)}
-            placeholder="Add handling notes"
-            value={notes}
-          />
-        </label>
-        <div className="legacy-form-actions">
-          <button
-            className="legacy-button legacy-button-secondary"
-            onClick={onCancel}
-            type="button"
-          >
-            Cancel
-          </button>
-          <button className="legacy-button" type="submit">
-            Save receipt
-          </button>
-        </div>
-      </form>
-    </section>
+    <div className="adoption-route-stack">
+      <PageHeader
+        breadcrumbs={<span>Operations / Receipts / New</span>}
+        description="Register an expected delivery before the dock team starts scanning."
+        overline="Entity form"
+        title="Create inbound receipt"
+      />
+      <Card className="adoption-form-card">
+        <CardContent>
+          <form aria-label="Create receipt form" onSubmit={handleSubmit}>
+            <FormGrid>
+              <Input
+                aria-label="Supplier"
+                label="Supplier"
+                onChange={(event) => setSupplier(event.target.value)}
+                placeholder="e.g. Northstar Components"
+                required
+                value={supplier}
+              />
+              <Select
+                aria-label="Warehouse"
+                label="Warehouse"
+                onChange={(event) => setWarehouse(event.target.value)}
+                value={warehouse}
+              >
+                <option>Jakarta Hub</option>
+                <option>Bandung Depot</option>
+                <option>Surabaya Crossdock</option>
+              </Select>
+              <Input
+                aria-label="Expected date"
+                label="Expected date"
+                onChange={(event) => setExpected(event.target.value)}
+                type="date"
+                value={expected}
+              />
+              <Input
+                aria-label="Unit count"
+                label="Unit count"
+                min="1"
+                onChange={(event) => setUnits(event.target.value)}
+                type="number"
+                value={units}
+              />
+              <Textarea
+                aria-label="Dock notes"
+                className="adoption-form-wide"
+                label="Dock notes"
+                onChange={(event) => setNotes(event.target.value)}
+                placeholder="Add handling notes"
+                value={notes}
+              />
+            </FormGrid>
+            <FormActions>
+              <Button intent="quiet" onClick={onCancel} type="button">
+                Cancel
+              </Button>
+              <Button type="submit">Save receipt</Button>
+            </FormActions>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
 
@@ -149,51 +298,45 @@ function InventoryPage() {
   ];
 
   return (
-    <section
-      aria-labelledby="inventory-title"
-      className="legacy-page"
-      data-testid="inventory-page"
-    >
-      <div className="legacy-page-heading">
-        <div>
-          <div className="legacy-eyebrow">Operations / Stock</div>
-          <h1 id="inventory-title">Inventory</h1>
-          <p>
-            Keep a quick view of the items that support the receiving workflow.
-          </p>
-        </div>
-      </div>
-      <div className="legacy-panel">
-        <table aria-label="Inventory levels">
-          <thead>
-            <tr>
-              <th>SKU</th>
-              <th>Item</th>
-              <th>Location</th>
-              <th>Available</th>
-              <th>Signal</th>
-            </tr>
-          </thead>
-          <tbody>
-            {inventory.map(([sku, item, location, available, signal]) => (
-              <tr key={sku}>
-                <td>{sku}</td>
-                <td>{item}</td>
-                <td>{location}</td>
-                <td>{available}</td>
-                <td>
-                  <span
-                    className={`legacy-status legacy-status-${signal.toLowerCase()}`}
-                  >
-                    {signal}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </section>
+    <div className="adoption-route-stack" data-testid="inventory-page">
+      <PageHeader
+        description="Keep a quick view of the items that support the receiving workflow."
+        overline="Operations / Stock"
+        title="Inventory"
+      />
+      <Card>
+        <CardContent>
+          <Table aria-label="Inventory levels">
+            <TableHeader>
+              <TableRow>
+                <TableHead>SKU</TableHead>
+                <TableHead>Item</TableHead>
+                <TableHead>Location</TableHead>
+                <TableHead>Available</TableHead>
+                <TableHead>Signal</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {inventory.map(([sku, item, location, available, signal]) => (
+                <TableRow key={sku}>
+                  <TableCell>{sku}</TableCell>
+                  <TableCell>{item}</TableCell>
+                  <TableCell>{location}</TableCell>
+                  <TableCell>{available}</TableCell>
+                  <TableCell>
+                    <StatusChip
+                      tone={signal === "Healthy" ? "success" : "warning"}
+                    >
+                      {signal}
+                    </StatusChip>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
 
@@ -207,73 +350,42 @@ function ReceiptDetails({
   receipt: Receipt;
 }) {
   return (
-    <dialog
-      aria-label={`${receipt.id} details`}
-      className="legacy-dialog"
-      data-testid="receipt-detail"
+    <DetailDrawer
+      description="Review ownership, timing, and receiving status without leaving the queue."
+      onClose={onClose}
       open
+      title={receipt.id}
     >
-      <div className="legacy-dialog-card">
-        <div className="legacy-dialog-header">
-          <div>
-            <div className="legacy-eyebrow">Inbound receipt</div>
-            <h2>{receipt.id}</h2>
-          </div>
-          <button
-            aria-label="Close receipt details"
-            className="legacy-icon-button"
-            onClick={onClose}
-            type="button"
-          >
-            ×
-          </button>
-        </div>
-        <div className="legacy-detail-grid">
-          <div>
-            <span>Supplier</span>
-            <strong>{receipt.supplier}</strong>
-          </div>
-          <div>
-            <span>Warehouse</span>
-            <strong>{receipt.warehouse}</strong>
-          </div>
-          <div>
-            <span>Expected</span>
-            <strong>{receipt.expected}</strong>
-          </div>
-          <div>
-            <span>Units</span>
-            <strong>{receipt.units.toLocaleString()}</strong>
-          </div>
-          <div>
-            <span>Status</span>
-            <LegacyStatus status={receipt.status} />
-          </div>
-          <div>
-            <span>Owner</span>
-            <strong>{receipt.owner}</strong>
-          </div>
-        </div>
-        <p className="legacy-detail-note">{receipt.notes}</p>
-        <div className="legacy-form-actions">
-          <button
-            className="legacy-button legacy-button-secondary"
-            onClick={onClose}
-            type="button"
-          >
-            Close
-          </button>
-          <button
-            className="legacy-button"
+      <div className="adoption-drawer-stack">
+        <KeyValueList
+          items={[
+            { label: "Supplier", value: receipt.supplier },
+            { label: "Warehouse", value: receipt.warehouse },
+            { label: "Expected", value: receipt.expected },
+            { label: "Units", value: receipt.units.toLocaleString() },
+            {
+              label: "Status",
+              value: <ReceiptStatusChip status={receipt.status} />,
+            },
+            { label: "Owner", value: receipt.owner },
+          ]}
+        />
+        <Card tone="subtle">
+          <CardContent>
+            <Typography typeRole="body-sm">{receipt.notes}</Typography>
+          </CardContent>
+        </Card>
+        <div className="adoption-drawer-actions">
+          <Button
             disabled={receipt.status === "Received"}
+            leadingIcon="approve"
             onClick={onReceive}
-            type="button"
           >
             Mark as received
-          </button>
+          </Button>
         </div>
       </div>
-    </dialog>
+    </DetailDrawer>
   );
 }
 
@@ -293,62 +405,100 @@ function ReceiptsPage({
     [query, receipts, status],
   );
   const counts = countReceiptsByStatus(receipts);
+  const columns: DataTableColumn<Receipt>[] = [
+    {
+      header: "Receipt",
+      key: "id",
+      render: (receipt) => <strong>{receipt.id}</strong>,
+      required: true,
+      sortable: true,
+    },
+    { header: "Supplier", key: "supplier", sortable: true },
+    { header: "Warehouse", key: "warehouse" },
+    { header: "Expected", key: "expected", sortable: true },
+    {
+      align: "right",
+      header: "Units",
+      key: "units",
+      render: (receipt) => receipt.units.toLocaleString(),
+    },
+    {
+      header: "Status",
+      key: "status",
+      render: (receipt) => <ReceiptStatusChip status={receipt.status} />,
+    },
+    {
+      align: "right",
+      header: "Action",
+      key: "action",
+      render: (receipt) => (
+        <Button
+          aria-label={`Open ${receipt.id}`}
+          intent="quiet"
+          leadingIcon="view"
+          onClick={(event) => {
+            event.stopPropagation();
+            onOpen(receipt.id);
+          }}
+          size="sm"
+        >
+          Open
+        </Button>
+      ),
+    },
+  ];
 
   return (
-    <section
-      aria-labelledby="receipts-title"
-      className="legacy-page"
-      data-testid="receipts-page"
-    >
-      <div className="legacy-page-heading">
-        <div>
-          <div className="legacy-eyebrow">Operations / Inbound</div>
-          <h1 id="receipts-title">Inbound receipts</h1>
-          <p>
-            Coordinate expected deliveries and keep the receiving queue moving.
-          </p>
-        </div>
-        <button
-          className="legacy-button"
-          data-testid="create-receipt"
-          onClick={onCreate}
-          type="button"
-        >
-          + New receipt
-        </button>
-      </div>
-      <div className="legacy-metrics" aria-label="Receipt summary">
-        <div>
-          <span>Scheduled</span>
-          <strong>{counts.Scheduled}</strong>
-        </div>
-        <div>
-          <span>Receiving</span>
-          <strong>{counts.Receiving}</strong>
-        </div>
-        <div>
-          <span>Received</span>
-          <strong>{counts.Received}</strong>
-        </div>
-      </div>
-      <div
-        className="legacy-toolbar"
-        role="region"
-        aria-label="Receipt filters"
-      >
-        <label className="legacy-search">
-          Search receipts
-          <input
+    <div className="adoption-route-stack" data-testid="receipts-page">
+      <PageHeader
+        actions={
+          <Button
+            data-testid="create-receipt"
+            leadingIcon="add"
+            onClick={onCreate}
+          >
+            New receipt
+          </Button>
+        }
+        description="Coordinate expected deliveries and keep the receiving queue moving."
+        overline="Operations / Inbound"
+        title="Inbound receipts"
+      />
+      <KPICluster
+        items={[
+          {
+            icon: "calendar",
+            label: "Scheduled",
+            tone: "warning",
+            value: counts.Scheduled,
+          },
+          {
+            icon: "pending",
+            label: "Receiving",
+            tone: "primary",
+            value: counts.Receiving,
+          },
+          {
+            icon: "success",
+            label: "Received",
+            tone: "success",
+            value: counts.Received,
+          },
+        ]}
+        label="Receipt summary"
+      />
+      <div className="adoption-filter-stack">
+        <div className="adoption-filter-toolbar">
+          <SearchInput
             aria-label="Search receipts"
+            label="Search receipts"
             onChange={(event) => setQuery(event.target.value)}
             placeholder="ID, supplier, warehouse"
             value={query}
           />
-        </label>
-        <label>
-          Status
-          <select
+          <Select
             aria-label="Status filter"
+            label="Status"
             onChange={(event) =>
               setStatus(event.target.value as ReceiptStatus | "all")
             }
@@ -360,74 +510,38 @@ function ReceiptsPage({
                 {option}
               </option>
             ))}
-          </select>
-        </label>
-        <span className="legacy-results" role="status">
-          {visibleReceipts.length} of {receipts.length} receipts
-        </span>
+          </Select>
+          <Typography
+            aria-live="polite"
+            className="adoption-filter-result"
+            typeRole="caption"
+          >
+            {visibleReceipts.length} of {receipts.length} receipts
+          </Typography>
+        </div>
       </div>
-      <div className="legacy-panel legacy-table-wrap">
-        <table aria-label="Inbound receipts">
-          <thead>
-            <tr>
-              <th>Receipt</th>
-              <th>Supplier</th>
-              <th>Warehouse</th>
-              <th>Expected</th>
-              <th>Units</th>
-              <th>Status</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {visibleReceipts.length ? (
-              visibleReceipts.map((receipt) => (
-                <tr key={receipt.id}>
-                  <td>
-                    <strong>{receipt.id}</strong>
-                  </td>
-                  <td>{receipt.supplier}</td>
-                  <td>{receipt.warehouse}</td>
-                  <td>{receipt.expected}</td>
-                  <td>{receipt.units.toLocaleString()}</td>
-                  <td>
-                    <LegacyStatus status={receipt.status} />
-                  </td>
-                  <td>
-                    <button
-                      aria-label={`Open ${receipt.id}`}
-                      className="legacy-text-button"
-                      onClick={() => onOpen(receipt.id)}
-                      type="button"
-                    >
-                      Open
-                    </button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={7}>
-                  <div className="legacy-empty">
-                    No receipts match the current filters.
-                  </div>
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-    </section>
+      <DataTable
+        caption="Inbound receipts"
+        columns={columns}
+        data-testid="receipt-table"
+        density="compact"
+        emptyMessage="No receipts match the current filters."
+        onRowClick={(receipt) => onOpen(receipt.id)}
+        rowKey={(receipt) => receipt.id}
+        rows={visibleReceipts}
+      />
+    </div>
   );
 }
 
-export default function App() {
+function OperationsApp() {
   const [route, setRoute] = useState<Route>(() =>
     routeFromPath(window.location.pathname),
   );
   const [receipts, setReceipts] = useState(initialReceipts);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
+  const [mobileNavigationOpen, setMobileNavigationOpen] = useState(false);
 
   useEffect(() => {
     const handlePopState = () =>
@@ -436,8 +550,15 @@ export default function App() {
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
+  useEffect(() => {
+    if (!notice) return undefined;
+    const timer = window.setTimeout(() => setNotice(""), 2400);
+    return () => window.clearTimeout(timer);
+  }, [notice]);
+
   function go(pathname: string) {
     setSelectedId(null);
+    setMobileNavigationOpen(false);
     navigate(pathname);
   }
 
@@ -448,71 +569,63 @@ export default function App() {
     go("/operations");
   }
 
+  const activeKey = route === "inventory" ? "inventory" : "receipts";
   const selectedReceipt = selectedId
     ? receipts.find((receipt) => receipt.id === selectedId)
     : undefined;
+  const sidebar = (
+    <OperationsSidebar
+      activeKey={activeKey}
+      onNavigate={(key) => {
+        if (key === "inventory") go("/inventory");
+        if (key === "receipts") go("/operations");
+      }}
+    />
+  );
 
   return (
-    <div className="legacy-app-shell">
-      <aside className="legacy-sidebar">
-        <div className="legacy-brand">
-          <span className="legacy-brand-mark">L</span>
-          <span>
-            Ledgerly<small>Operations</small>
-          </span>
-        </div>
-        <nav aria-label="Application navigation">
-          <div className="legacy-nav-label">Workspace</div>
-          <a
-            className={
-              route === "receipts" || route === "new" ? "is-active" : undefined
-            }
-            href="/operations"
-            onClick={(event) => {
-              event.preventDefault();
-              go("/operations");
-            }}
+    <AppShell
+      sidebar={sidebar}
+      topbar={
+        <div className="adoption-topbar">
+          <Button
+            aria-label="Open navigation"
+            className="adoption-mobile-nav-button"
+            intent="quiet"
+            leadingIcon="menu"
+            onClick={() => setMobileNavigationOpen(true)}
+            size="sm"
           >
-            <span>▣</span>Receipts
-          </a>
-          <a
-            className={route === "inventory" ? "is-active" : undefined}
-            href="/inventory"
-            onClick={(event) => {
-              event.preventDefault();
-              go("/inventory");
-            }}
-          >
-            <span>◫</span>Inventory
-          </a>
-          <a href="/settings" onClick={(event) => event.preventDefault()}>
-            <span>⚙</span>Settings
-          </a>
-        </nav>
-        <div className="legacy-sidebar-foot">
-          <span className="legacy-avatar">MC</span>
-          <span>
-            <strong>Maya Chen</strong>
-            <small>Operations lead</small>
-          </span>
+            Menu
+          </Button>
+          <Typography typeRole="label">Ledgerly Operations</Typography>
+          <Typography className="adoption-topbar-context" typeRole="caption">
+            Receiving workspace
+          </Typography>
         </div>
-      </aside>
-      <main className="legacy-main">
-        {route === "new" ? (
-          <ReceiptForm
-            onCancel={() => go("/operations")}
-            onSubmit={handleCreate}
-          />
-        ) : route === "inventory" ? (
-          <InventoryPage />
-        ) : (
-          <ReceiptsPage
-            onCreate={() => go("/operations/receipts/new")}
-            onOpen={setSelectedId}
-            receipts={receipts}
-          />
-        )}
-      </main>
+      }
+    >
+      {route === "new" ? (
+        <ReceiptForm
+          onCancel={() => go("/operations")}
+          onSubmit={handleCreate}
+        />
+      ) : route === "inventory" ? (
+        <InventoryPage />
+      ) : (
+        <ReceiptsPage
+          onCreate={() => go("/operations/receipts/new")}
+          onOpen={setSelectedId}
+          receipts={receipts}
+        />
+      )}
+      <MobileSidebar
+        onClose={() => setMobileNavigationOpen(false)}
+        open={mobileNavigationOpen}
+        title="Operations navigation"
+      >
+        {sidebar}
+      </MobileSidebar>
       {selectedReceipt ? (
         <ReceiptDetails
           onClose={() => setSelectedId(null)}
@@ -526,14 +639,20 @@ export default function App() {
         />
       ) : null}
       {notice ? (
-        <div
-          aria-live="polite"
-          className="legacy-notice"
-          onAnimationEnd={() => setNotice("")}
-        >
+        <div aria-live="polite" className="adoption-notice" role="status">
           {notice}
         </div>
       ) : null}
-    </div>
+    </AppShell>
+  );
+}
+
+export default function App() {
+  const theme = themeFromQuery();
+
+  return (
+    <Ten4SevenProvider {...theme}>
+      <OperationsApp />
+    </Ten4SevenProvider>
   );
 }

@@ -67,9 +67,8 @@ test("operational consumer preserves the receipt workflow", async ({
   await expect(page.getByRole("row", { name: /RCV-1041/ })).toHaveCount(0);
 
   await page.getByLabel("Search receipts").fill("");
-  await page
-    .locator('select[aria-label="Status filter"]')
-    .selectOption({ label: "Scheduled" });
+  await page.getByRole("button", { name: "Status", exact: true }).click();
+  await page.getByRole("option", { name: "Scheduled", exact: true }).click();
   await expect(page.getByRole("row", { name: /RCV-1041/ })).toBeVisible();
   await expect(page.getByRole("row", { name: /RCV-1042/ })).toHaveCount(0);
 
@@ -138,9 +137,8 @@ test("public consumer preserves catalog and cart behavior", async ({
     page.getByRole("heading", { name: "Building Calm Products" }),
   ).toHaveCount(0);
   await page.getByLabel("Search library").fill("");
-  await page
-    .locator('select[aria-label="Collection filter"]')
-    .selectOption({ label: "Practice" });
+  await page.getByRole("button", { name: "Collection", exact: true }).click();
+  await page.getByRole("option", { name: "Practice", exact: true }).click();
   await expect(
     page.getByRole("heading", { name: "Practical Type" }),
   ).toBeVisible();
@@ -157,9 +155,18 @@ test("public consumer preserves catalog and cart behavior", async ({
   await expect(cart).toBeVisible();
   await expect(cart.getByText("Practical Type", { exact: true })).toBeVisible();
   await cart.getByRole("button", { name: /Increase.*Practical Type/ }).click();
-  await expect(
-    cart.locator('output[aria-label="Quantity for Practical Type"]'),
-  ).toHaveText("2");
+  const legacyQuantity = cart.locator(
+    'output[aria-label="Quantity for Practical Type"]',
+  );
+  if (await legacyQuantity.count()) {
+    await expect(legacyQuantity).toHaveText("2");
+  } else {
+    await expect(
+      cart
+        .getByRole("group", { name: "Quantity for Practical Type" })
+        .locator("output"),
+    ).toHaveText("2");
+  }
   await cart
     .getByRole("button", { name: /Remove Practical Type from cart/ })
     .click();
