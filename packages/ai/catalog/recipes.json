@@ -26,6 +26,10 @@
       "BulkActionBar",
       "DetailDrawer"
     ],
+    "shell": {
+      "preferred": "AppShell",
+      "selectionRule": "Use AppShell when persistent workspace navigation and operational density are part of the task."
+    },
     "optional": [
       "AppliedFilters",
       "StatusChip",
@@ -68,7 +72,7 @@
     "displayName": "Entity Detail"
   },
   "entity-form": {
-    "purpose": "Create or edit one structured record through grouped, labelled native controls.",
+    "purpose": "Create or edit one structured record through grouped, labelled ten4seven controls.",
     "profiles": ["enterprise", "dashboard"],
     "components": [
       "PageHeader",
@@ -79,7 +83,13 @@
       "Select",
       "ActionFooter"
     ],
-    "optional": ["DatePicker", "FileUpload", "Combobox", "AlertDialog"],
+    "optional": [
+      "DatePicker",
+      "TimePicker",
+      "FileUpload",
+      "Combobox",
+      "AlertDialog"
+    ],
     "displayName": "Entity Form"
   },
   "master-detail": {
@@ -142,14 +152,19 @@
     "purpose": "Browse visual products, courses, books, or media with content-first composition.",
     "profiles": ["commerce", "content"],
     "components": [
-      "AppShell",
-      "TopNavigation",
+      "PublicShell",
+      "NavigationMenu",
       "PageHeader",
       "SearchInput",
       "ProductGrid",
       "ProductCard",
       "Pagination"
     ],
+    "shell": {
+      "preferred": "PublicShell",
+      "alternatives": ["AppShell"],
+      "selectionRule": "Use PublicShell for a public, content-first storefront; choose AppShell only when the catalog is inside a persistent authenticated workspace."
+    },
     "optional": [
       "AppliedFilters",
       "CheckboxGroup",
@@ -162,7 +177,8 @@
       "CartTrigger",
       "CartPanel",
       "CartLineItem",
-      "QuantityControl"
+      "QuantityControl",
+      "ProductMeta"
     ],
     "icons": [
       "book",
@@ -256,17 +272,19 @@
     "profiles": ["marketing"],
     "components": [
       "PublicShell",
-      "TopNavigation",
+      "NavigationMenu",
       "Typography",
       "Button",
       "Card",
       "MediaFrame",
       "ProductCard",
-      "LineChart",
-      "BarChart",
       "ChartPanel"
     ],
-    "optional": ["Carousel"],
+    "optional": ["LineChart", "BarChart", "Carousel"],
+    "shell": {
+      "preferred": "PublicShell",
+      "selectionRule": "Use PublicShell for a public acquisition surface; keep block order and page-level actions in the recipe rather than rebuilding a shell locally."
+    },
     "blocks": [
       "hero-split",
       "cta-contained",
@@ -281,6 +299,22 @@
       "carousel",
       "public-footer"
     ],
+    "blockRoles": {
+      "required": ["hero-split", "cta-contained", "public-footer"],
+      "recommended": [
+        "logo-cloud",
+        "feature-showcase",
+        "stats-section",
+        "content-showcase",
+        "testimonials"
+      ],
+      "optional": [
+        "announcement-bar",
+        "product-showcase",
+        "pricing-section",
+        "carousel"
+      ]
+    },
     "references": ["Public Showcase"],
     "displayName": "Marketing Home"
   },

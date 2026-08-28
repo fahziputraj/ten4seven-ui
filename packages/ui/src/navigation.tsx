@@ -11,6 +11,7 @@ import {
 import { T7Icon, type IconName } from "@ten4seven/icons";
 
 import { Drawer, Input, Modal } from "./components";
+import { FloatingPortal, useFloatingPosition } from "./overlay";
 import { cx } from "./utils";
 
 export interface BreadcrumbItem {
@@ -405,6 +406,244 @@ export interface TopNavigationItem {
   key: string;
   label: string;
   onSelect?: () => void;
+}
+
+export interface NavigationMenuItem {
+  active?: boolean;
+  children?: NavigationMenuItem[];
+  href?: string;
+  icon?: IconName;
+  key: string;
+  label: string;
+  onSelect?: () => void;
+}
+
+function NavigationMenuBranch({
+  item,
+  onOpenChange,
+  open,
+}: {
+  item: NavigationMenuItem;
+  onOpenChange: (key: string | null) => void;
+  open: boolean;
+}) {
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const menuId = useId();
+  const floating = useFloatingPosition(triggerRef, open, {
+    minWidth: true,
+    side: "bottom",
+  });
+  const children = item.children ?? [];
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const frame = window.requestAnimationFrame(() => {
+      floating.contentRef.current
+        ?.querySelector<HTMLElement>('[role="menuitem"]')
+        ?.focus();
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [floating.contentRef, open]);
+
+  return (
+    <li className="t7-navigation-menu-item" role="none">
+      <button
+        aria-controls={menuId}
+        aria-expanded={open}
+        aria-haspopup="menu"
+        aria-current={item.active ? "page" : undefined}
+        className="t7-navigation-menu-trigger"
+        data-active={item.active || undefined}
+        onClick={() => onOpenChange(open ? null : item.key)}
+        onKeyDown={(event) => {
+          if (event.key === "Escape") {
+            event.preventDefault();
+            onOpenChange(null);
+          }
+          if (
+            event.key === "ArrowDown" ||
+            event.key === "Enter" ||
+            event.key === " "
+          ) {
+            event.preventDefault();
+            onOpenChange(item.key);
+          }
+        }}
+        ref={triggerRef}
+        role="menuitem"
+        type="button"
+      >
+        {item.icon ? (
+          <T7Icon aria-hidden="true" name={item.icon} size={16} />
+        ) : null}
+        <span>{item.label}</span>
+        <T7Icon aria-hidden="true" name="chevronDown" size={14} />
+      </button>
+      {open ? (
+        <FloatingPortal>
+          <div
+            aria-label={`${item.label} navigation`}
+            className="t7-navigation-menu-panel t7-floating-content"
+            data-floating-placement={floating.placement}
+            id={menuId}
+            ref={floating.setContentRef}
+            role="menu"
+            style={floating.style}
+          >
+            {children.map((child) =>
+              child.href ? (
+                <a
+                  aria-current={child.active ? "page" : undefined}
+                  className="t7-navigation-menu-link"
+                  href={child.href}
+                  key={child.key}
+                  onClick={() => {
+                    child.onSelect?.();
+                    onOpenChange(null);
+                  }}
+                  role="menuitem"
+                >
+                  {child.icon ? (
+                    <T7Icon aria-hidden="true" name={child.icon} size={16} />
+                  ) : null}
+                  <span>{child.label}</span>
+                </a>
+              ) : (
+                <button
+                  aria-current={child.active ? "page" : undefined}
+                  className="t7-navigation-menu-link"
+                  key={child.key}
+                  onClick={() => {
+                    child.onSelect?.();
+                    onOpenChange(null);
+                  }}
+                  role="menuitem"
+                  type="button"
+                >
+                  {child.icon ? (
+                    <T7Icon aria-hidden="true" name={child.icon} size={16} />
+                  ) : null}
+                  <span>{child.label}</span>
+                </button>
+              ),
+            )}
+          </div>
+        </FloatingPortal>
+      ) : null}
+    </li>
+  );
+}
+
+function NavigationMenuList({ items }: { items: NavigationMenuItem[] }) {
+  const [openKey, setOpenKey] = useState<string | null>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!openKey) return undefined;
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target as Element | null;
+      if (
+        rootRef.current?.contains(target) ||
+        target?.closest(".t7-navigation-menu-panel")
+      )
+        return;
+      setOpenKey(null);
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpenKey(null);
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [openKey]);
+
+  return (
+    <div className="t7-navigation-menu-items" ref={rootRef}>
+      <ul aria-label="Navigation menu" role="menubar">
+        {items.map((item) =>
+          item.children?.length ? (
+            <NavigationMenuBranch
+              item={item}
+              key={item.key}
+              onOpenChange={setOpenKey}
+              open={openKey === item.key}
+            />
+          ) : (
+            <li className="t7-navigation-menu-item" key={item.key} role="none">
+              {item.href ? (
+                <a
+                  aria-current={item.active ? "page" : undefined}
+                  className="t7-navigation-menu-link"
+                  data-active={item.active || undefined}
+                  href={item.href}
+                  onClick={() => item.onSelect?.()}
+                  role="menuitem"
+                >
+                  {item.icon ? (
+                    <T7Icon aria-hidden="true" name={item.icon} size={16} />
+                  ) : null}
+                  <span>{item.label}</span>
+                </a>
+              ) : (
+                <button
+                  aria-current={item.active ? "page" : undefined}
+                  className="t7-navigation-menu-link"
+                  data-active={item.active || undefined}
+                  onClick={() => item.onSelect?.()}
+                  role="menuitem"
+                  type="button"
+                >
+                  {item.icon ? (
+                    <T7Icon aria-hidden="true" name={item.icon} size={16} />
+                  ) : null}
+                  <span>{item.label}</span>
+                </button>
+              )}
+            </li>
+          ),
+        )}
+      </ul>
+    </div>
+  );
+}
+
+/** Accessible one-level public navigation; nested branches share the floating overlay contract. */
+export interface NavigationMenuProps extends Omit<
+  HTMLAttributes<HTMLElement>,
+  "children"
+> {
+  items: NavigationMenuItem[];
+  label?: string;
+  leading?: ReactNode;
+  trailing?: ReactNode;
+}
+
+export function NavigationMenu({
+  className,
+  items,
+  label = "Primary navigation",
+  leading,
+  trailing,
+  ...props
+}: NavigationMenuProps) {
+  return (
+    <nav
+      {...props}
+      aria-label={label}
+      className={cx("t7-navigation-menu", className)}
+    >
+      {leading ? (
+        <div className="t7-navigation-menu-leading">{leading}</div>
+      ) : null}
+      <NavigationMenuList items={items} />
+      {trailing ? (
+        <div className="t7-navigation-menu-trailing">{trailing}</div>
+      ) : null}
+    </nav>
+  );
 }
 
 export interface TopNavigationProps extends Omit<

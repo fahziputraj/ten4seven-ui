@@ -690,6 +690,64 @@ function CatalogLink({
   );
 }
 
+type RecipeBlockRole = "required" | "recommended" | "optional";
+
+const recipeBlockRoleCopy: Record<
+  RecipeBlockRole,
+  { description: string; label: string }
+> = {
+  optional: {
+    description: "Add when the product story or interaction needs it.",
+    label: "Optional blocks",
+  },
+  recommended: {
+    description: "Use when the page needs additional proof or explanation.",
+    label: "Recommended blocks",
+  },
+  required: {
+    description: "The minimum expressive structure for this recipe.",
+    label: "Required blocks",
+  },
+};
+
+function RecipeBlockRoleList({
+  names,
+  onNavigatePath,
+  role,
+}: {
+  names: string[];
+  onNavigatePath: (path: string) => void;
+  role: RecipeBlockRole;
+}) {
+  if (!names.length) return null;
+  const copy = recipeBlockRoleCopy[role];
+  return (
+    <div className="catalog-recipe-role">
+      <div className="catalog-recipe-role-heading">
+        <Typography as="h3" typeRole="heading-sm">
+          {copy.label}
+        </Typography>
+        <Typography typeRole="caption">{copy.description}</Typography>
+      </div>
+      <ul className="catalog-recipe-flow">
+        {names.map((blockName) => (
+          <li key={blockName}>
+            <span aria-hidden="true">
+              <T7Icon name="arrowRight" size={15} />
+            </span>
+            <CatalogLink
+              href={blockCatalog[blockName] ? blockPath(blockName) : "#"}
+              onNavigatePath={onNavigatePath}
+            >
+              {blockCatalog[blockName]?.displayName ?? blockName}
+            </CatalogLink>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function CatalogListRow({
   children,
   description,
@@ -1534,10 +1592,6 @@ export function IconsExplorer() {
       ? IconNames
       : (iconGroups.find((group) => group.label === activeGroup)?.names ?? []),
   );
-  const groupedIconNames = new Set(iconGroups.flatMap((group) => group.names));
-  const ungroupedIconNames = IconNames.filter(
-    (name) => !groupedIconNames.has(name),
-  );
   const shownNames = IconNames.filter((name) => {
     const contract = iconCatalog[name];
     return (
@@ -1580,41 +1634,9 @@ export function IconsExplorer() {
           </button>
         ))}
       </div>
-      <section className="library-section icon-coverage-section">
-        <div className="library-section-heading">
-          <div>
-            <Typography as="h2" typeRole="heading-lg">
-              Registry coverage
-            </Typography>
-            <Typography typeRole="body-sm">
-              Browse every semantic name by intent. The grid is synchronized
-              with the typed local registry and its AI catalog.
-            </Typography>
-          </div>
-          <Typography typeRole="caption">
-            {groupedIconNames.size}/{IconNames.length} grouped
-          </Typography>
-        </div>
-        <div className="icon-coverage-grid" aria-label="Icon family coverage">
-          {iconGroups.map((group) => (
-            <button
-              aria-pressed={activeGroup === group.label}
-              className="icon-coverage-card"
-              key={group.label}
-              onClick={() => setActiveGroup(group.label)}
-              type="button"
-            >
-              <strong>{group.names.length}</strong>
-              <span>{group.label}</span>
-            </button>
-          ))}
-        </div>
-        <Typography typeRole="caption">
-          {ungroupedIconNames.length === 0
-            ? "Every registry entry is assigned to an intent family."
-            : `${ungroupedIconNames.length} registry entries need an intent family.`}
-        </Typography>
-      </section>
+      <Typography className="icon-registry-proof" typeRole="caption">
+        {IconNames.length} semantic icons · {iconGroups.length} intent families
+      </Typography>
       <section className="library-section">
         <div className="library-section-heading">
           <div>
@@ -1693,6 +1715,7 @@ export function RecipeDetailExplorer({
 }) {
   const recipe = recipeCatalog[name];
   if (!recipe) return null;
+  const blockRoles = recipe.blockRoles;
   return (
     <div className="library-page recipe-detail-page">
       <LibraryIntro
@@ -1703,9 +1726,76 @@ export function RecipeDetailExplorer({
       />
       <div className="catalog-detail-layout">
         <div className="catalog-detail-main">
-          <section className="catalog-doc-section">
+          {recipe.shell ? (
+            <section className="catalog-doc-section" id="recipe-shell">
+              <Typography as="h2" typeRole="heading-lg">
+                Shell selection
+              </Typography>
+              <p className="catalog-doc-copy">
+                Prefer the canonical {recipe.shell.preferred} contract for this
+                composition. {recipe.shell.selectionRule}
+              </p>
+              {recipe.shell.alternatives?.length ? (
+                <div className="catalog-related-list">
+                  {recipe.shell.alternatives.map((shell) => (
+                    <CatalogLink
+                      href={
+                        componentCatalog[shell] ? componentPath(shell) : "#"
+                      }
+                      key={shell}
+                      onNavigatePath={onNavigatePath}
+                    >
+                      Alternative:{" "}
+                      {componentCatalog[shell]?.displayName ?? shell}
+                    </CatalogLink>
+                  ))}
+                </div>
+              ) : null}
+            </section>
+          ) : null}
+          {recipe.blocks?.length ? (
+            <section className="catalog-doc-section" id="recipe-blocks">
+              <Typography as="h2" typeRole="heading-lg">
+                Blocks
+              </Typography>
+              {blockRoles ? (
+                <div className="catalog-recipe-role-stack">
+                  <RecipeBlockRoleList
+                    names={blockRoles.required}
+                    onNavigatePath={onNavigatePath}
+                    role="required"
+                  />
+                  <RecipeBlockRoleList
+                    names={blockRoles.recommended}
+                    onNavigatePath={onNavigatePath}
+                    role="recommended"
+                  />
+                  <RecipeBlockRoleList
+                    names={blockRoles.optional}
+                    onNavigatePath={onNavigatePath}
+                    role="optional"
+                  />
+                </div>
+              ) : (
+                <ol className="catalog-recipe-flow">
+                  {recipe.blocks.map((block, index) => (
+                    <li key={block}>
+                      <span>{String(index + 1).padStart(2, "0")}</span>
+                      <CatalogLink
+                        href={blockCatalog[block] ? blockPath(block) : "#"}
+                        onNavigatePath={onNavigatePath}
+                      >
+                        {blockCatalog[block]?.displayName ?? block}
+                      </CatalogLink>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </section>
+          ) : null}
+          <section className="catalog-doc-section" id="recipe-components">
             <Typography as="h2" typeRole="heading-lg">
-              Anatomy
+              {recipe.blocks?.length ? "Supporting components" : "Anatomy"}
             </Typography>
             <ol className="catalog-recipe-flow">
               {recipe.components.map((component, index) => (
@@ -1725,9 +1815,9 @@ export function RecipeDetailExplorer({
               ))}
             </ol>
           </section>
-          <section className="catalog-doc-section">
+          <section className="catalog-doc-section" id="recipe-optional">
             <Typography as="h2" typeRole="heading-lg">
-              Optional
+              {recipe.blocks?.length ? "Optional components" : "Optional"}
             </Typography>
             <div className="catalog-related-list">
               {recipe.optional?.length ? (
@@ -1753,6 +1843,17 @@ export function RecipeDetailExplorer({
           </section>
         </div>
         <aside className="catalog-detail-aside">
+          <nav aria-label="On this page" className="catalog-on-this-page">
+            <Typography typeRole="overline">On this page</Typography>
+            {recipe.shell ? <a href="#recipe-shell">Shell selection</a> : null}
+            {recipe.blocks?.length ? <a href="#recipe-blocks">Blocks</a> : null}
+            <a href="#recipe-components">
+              {recipe.blocks?.length ? "Supporting components" : "Anatomy"}
+            </a>
+            <a href="#recipe-optional">
+              {recipe.blocks?.length ? "Optional components" : "Optional"}
+            </a>
+          </nav>
           <section className="catalog-doc-section">
             <Typography as="h2" typeRole="heading-lg">
               Reference graph
@@ -1892,8 +1993,14 @@ function BlockPreview({ slug }: { slug: string }) {
       return (
         <LogoCloud
           items={[
-            { mark: <T7Icon name="components" size={15} />, name: "Northstar" },
-            { mark: <T7Icon name="book" size={15} />, name: "Leaf & Letter" },
+            {
+              mark: <T7Icon name="components" size={15} />,
+              name: "Product teams",
+            },
+            {
+              mark: <T7Icon name="book" size={15} />,
+              name: "Publishing teams",
+            },
             {
               mark: <T7Icon name="analytics" size={15} />,
               name: "Signal House",

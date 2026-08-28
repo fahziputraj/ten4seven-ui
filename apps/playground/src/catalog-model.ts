@@ -52,6 +52,16 @@ export type IconContract = {
 
 export type RecipeContract = {
   blocks?: string[];
+  blockRoles?: {
+    optional: string[];
+    recommended: string[];
+    required: string[];
+  };
+  shell?: {
+    alternatives?: string[];
+    preferred: string;
+    selectionRule?: string;
+  };
   purpose: string;
   profiles: string[];
   components: string[];

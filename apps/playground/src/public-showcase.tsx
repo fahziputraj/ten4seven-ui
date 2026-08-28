@@ -24,6 +24,7 @@ import {
   Typography,
   useToast,
 } from "@ten4seven/ui";
+import { catalogCounts } from "./catalog-model";
 
 function ShowcaseBrand() {
   return (
@@ -78,24 +79,24 @@ function ShowcasePreview() {
             <div className="public-showcase-preview-metric-row">
               <div>
                 <Typography typeRole="caption">Contracts</Typography>
-                <strong>129</strong>
+                <strong>{catalogCounts.canonicalComponents}</strong>
               </div>
               <div>
                 <Typography typeRole="caption">Themes</Typography>
                 <strong>11</strong>
               </div>
               <div>
-                <Typography typeRole="caption">Gaps</Typography>
+                <Typography typeRole="caption">Catalog sync errors</Typography>
                 <strong>0</strong>
               </div>
             </div>
             <ChartPanel
               className="public-showcase-preview-chart"
-              description="Last 6 releases"
-              title="Adoption by surface"
+              description="Illustrative local fixture"
+              title="Local proof by surface"
               chart={
                 <BarChart
-                  ariaLabel="Adoption by surface chart"
+                  ariaLabel="Illustrative local proof by surface chart"
                   data={[
                     { label: "App", value: 82 },
                     { label: "Web", value: 64 },
@@ -103,7 +104,7 @@ function ShowcasePreview() {
                     { label: "Labs", value: 36 },
                   ]}
                   height={112}
-                  summary="App adoption leads at 82 percent, followed by Web at 64 percent."
+                  summary="Illustrative reference values show how a shared chart surface can carry comparison without implying product telemetry."
                 />
               }
             />
@@ -245,7 +246,7 @@ export function PublicShowcase() {
           }
         />
       }
-      navigation={[
+      navigationMenu={[
         {
           active: true,
           href: "#showcase-top",
@@ -253,14 +254,20 @@ export function PublicShowcase() {
           label: "Overview",
         },
         {
-          href: "#showcase-features",
-          key: "blocks",
-          label: "Blocks",
+          children: [
+            { href: "#showcase-features", key: "blocks", label: "Blocks" },
+            { href: "#showcase-products", key: "recipes", label: "Recipes" },
+          ],
+          key: "explore",
+          label: "Explore",
         },
         {
-          href: "#showcase-products",
-          key: "recipes",
-          label: "Recipes",
+          children: [
+            { href: "#showcase-stats", key: "proof", label: "System proof" },
+            { href: "/components", key: "components", label: "Components" },
+          ],
+          key: "system",
+          label: "System",
         },
       ]}
     >
@@ -336,25 +343,25 @@ export function PublicShowcase() {
               detail: "canonical contracts",
               id: "contracts",
               label: "Components",
-              value: "129",
+              value: String(catalogCounts.canonicalComponents),
             },
             {
               detail: "reusable page recipes",
               id: "recipes",
               label: "Recipes",
-              value: "17",
+              value: String(catalogCounts.recipes),
             },
             {
               detail: "semantic names",
               id: "icons",
               label: "Icons",
-              value: "97",
+              value: String(catalogCounts.icons),
             },
             {
               detail: "separate expressive blocks",
               id: "blocks",
               label: "Blocks",
-              value: "12",
+              value: String(catalogCounts.blocks),
             },
           ]}
           title="A system that scales by composition"
@@ -393,7 +400,7 @@ export function PublicShowcase() {
               title="Signals remain readable"
               chart={
                 <LineChart
-                  ariaLabel="Token adoption trend chart"
+                  ariaLabel="Illustrative local coverage trend chart"
                   labels={["May", "Jun", "Jul", "Aug", "Sep", "Oct"]}
                   series={[
                     {
@@ -412,7 +419,7 @@ export function PublicShowcase() {
                       values: [8, 12, 19, 25, 33, 45],
                     },
                   ]}
-                  summary="App surfaces rise from 32 to 82, while public surfaces reach 58 by October."
+                  summary="Illustrative local values show a readable multi-series signal; this fixture is not production usage telemetry."
                 />
               }
             />

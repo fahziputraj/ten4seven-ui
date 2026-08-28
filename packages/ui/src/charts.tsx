@@ -48,6 +48,44 @@ function valueRange(values: number[]) {
   return { max: maximum + padding, min: minimum - padding };
 }
 
+function formatChartValue(value: number) {
+  if (!Number.isFinite(value)) return "0";
+  return String(Number(value.toFixed(4)));
+}
+
+function niceStep(range: number, targetIntervals: number) {
+  const rawStep = Math.max(range / Math.max(targetIntervals, 1), 1e-6);
+  const exponent = Math.floor(Math.log10(rawStep));
+  const magnitude = 10 ** exponent;
+  const fraction = rawStep / magnitude;
+  const niceFraction =
+    fraction <= 1
+      ? 1
+      : fraction <= 2
+        ? 2
+        : fraction <= 2.5
+          ? 2.5
+          : fraction <= 5
+            ? 5
+            : 10;
+  return niceFraction * magnitude;
+}
+
+function chartScale(values: number[], targetTicks = 5) {
+  const finiteValues = values.filter(Number.isFinite);
+  const minimum = Math.min(...(finiteValues.length ? finiteValues : [0]), 0);
+  const maximum = Math.max(...(finiteValues.length ? finiteValues : [0]), 0);
+  const step = niceStep(Math.max(maximum - minimum, 1), targetTicks - 1);
+  const min = minimum >= 0 ? 0 : Math.floor(minimum / step) * step;
+  const max = maximum <= 0 ? 0 : Math.ceil(maximum / step) * step;
+  const safeMax = max === min ? min + step : max;
+  const intervalCount = Math.max(1, Math.round((safeMax - min) / step));
+  const ticks = Array.from({ length: intervalCount + 1 }, (_, index) =>
+    Number((min + index * step).toFixed(4)),
+  );
+  return { max: safeMax, min, ticks };
+}
+
 function pointsFor(
   values: number[],
   width: number,
@@ -127,14 +165,14 @@ export function LineChart({
   series,
   summary,
   title,
-  valueFormatter = String,
+  valueFormatter = formatChartValue,
   ...props
 }: LineChartProps) {
   const width = 640;
   const horizontalPadding = 34;
   const verticalPadding = 18;
   const allValues = series.flatMap((item) => item.values);
-  const { min, max } = valueRange(allValues.length ? allValues : [0]);
+  const { max, min, ticks } = chartScale(allValues.length ? allValues : [0]);
   const scaleY = (value: number) =>
     height -
     verticalPadding -
@@ -142,10 +180,6 @@ export function LineChart({
   const scaleX = (index: number, count: number) =>
     horizontalPadding +
     (index / Math.max(count - 1, 1)) * (width - horizontalPadding - 12);
-  const ticks = Array.from(
-    { length: 4 },
-    (_, index) => min + ((max - min) * index) / 3,
-  );
   const [hovered, setHovered] = useState<{
     label: string;
     series: string;
@@ -285,7 +319,7 @@ export function BarChart({
   height = 220,
   summary,
   title,
-  valueFormatter = String,
+  valueFormatter = formatChartValue,
   ...props
 }: BarChartProps) {
   const width = 640;
@@ -412,7 +446,7 @@ export function DonutChart({
   segments,
   summary,
   title,
-  valueFormatter = String,
+  valueFormatter = formatChartValue,
   ...props
 }: DonutChartProps) {
   const total = segments.reduce((sum, segment) => sum + segment.value, 0);

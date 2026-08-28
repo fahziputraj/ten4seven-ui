@@ -59,11 +59,9 @@ import {
   blockCatalog,
   categoryLabels,
   componentCatalog,
-  componentFamilyAnchor,
   componentFamilyDefinitions,
   componentFamilyPath,
   componentPath,
-  componentsInCategory,
   iconCatalog,
   recipeCatalog,
   recipePath,
@@ -157,14 +155,6 @@ function WorkbenchNavigation({
   onNavigate: (route: PlaygroundRoute) => void;
   onNavigatePath: (path: string) => void;
 }) {
-  const activeCategory = componentFamilyDefinitions.find((family) => {
-    if (activePath === componentFamilyPath(family.category)) return true;
-    return componentsInCategory(family.category).some(
-      ([name]) => activePath === componentPath(name),
-    );
-  })?.category;
-  const [familiesOpen, setFamiliesOpen] = useState(true);
-
   return (
     <div className="studio-navigation-tree">
       {studioNavGroups.map((group) => (
@@ -173,72 +163,13 @@ function WorkbenchNavigation({
           {group.routes.map((route) => {
             if (group.label === "Library" && route === "Components") {
               return (
-                <div className="studio-component-nav" key={route}>
-                  <div className="studio-component-nav-heading">
-                    <NavItem
-                      active={activePath.startsWith("/components")}
-                      icon={routeIcons[route]}
-                      label={route}
-                      onClick={() => onNavigatePath("/components")}
-                    />
-                    <button
-                      aria-expanded={familiesOpen}
-                      aria-label={`${familiesOpen ? "Collapse" : "Expand"} component families`}
-                      className="studio-family-toggle"
-                      onClick={() => setFamiliesOpen((current) => !current)}
-                      type="button"
-                    >
-                      <T7Icon
-                        aria-hidden="true"
-                        name={familiesOpen ? "chevronUp" : "chevronDown"}
-                        size={14}
-                      />
-                    </button>
-                  </div>
-                  {familiesOpen ? (
-                    <div className="studio-component-family-list">
-                      {componentFamilyDefinitions.map((family) => {
-                        const familyItems = componentsInCategory(
-                          family.category,
-                        );
-                        return (
-                          <a
-                            aria-current={
-                              activeCategory === family.category
-                                ? "location"
-                                : undefined
-                            }
-                            className={
-                              activeCategory === family.category
-                                ? "studio-family-name is-active"
-                                : "studio-family-name"
-                            }
-                            href={`/components${componentFamilyAnchor(family.category)}`}
-                            key={family.category}
-                            onClick={(event) => {
-                              if (
-                                event.metaKey ||
-                                event.ctrlKey ||
-                                event.shiftKey ||
-                                event.altKey
-                              ) {
-                                return;
-                              }
-                              event.preventDefault();
-                              onNavigatePath(
-                                `/components${componentFamilyAnchor(family.category)}`,
-                              );
-                            }}
-                            title={`${family.label}: ${familyItems.length} canonical contracts`}
-                          >
-                            <span>{family.label}</span>
-                            <small>{familyItems.length}</small>
-                          </a>
-                        );
-                      })}
-                    </div>
-                  ) : null}
-                </div>
+                <NavItem
+                  active={activePath.startsWith("/components")}
+                  icon={routeIcons[route]}
+                  key={route}
+                  label={route}
+                  onClick={() => onNavigatePath("/components")}
+                />
               );
             }
             return (

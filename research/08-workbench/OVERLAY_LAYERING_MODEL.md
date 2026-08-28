@@ -4,7 +4,7 @@
 
 Non-modal floating content is mounted into the single `#t7-overlay-root`.
 Modal and drawer content uses the native dialog top layer through the canonical
-`Modal` and `DetailDrawer` contracts. Consumers keep the same component APIs;
+`Modal`, `Drawer`, and `DetailDrawer` contracts. Consumers keep the same component APIs;
 the portal is an implementation boundary.
 
 ## Semantic stack

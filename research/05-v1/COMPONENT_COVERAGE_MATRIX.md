@@ -7,7 +7,7 @@ completion, and expressive block coverage.
 
 `STABLE` is accepted foundation behavior that remains unchanged. `IMPLEMENTED` means the capability has a package-owned, token-driven public API, a catalog entry with status `implemented`, a documented selection path, and static/browser proof. `NOT_NEEDED` and `DOMAIN_SPECIFIC` are deliberate v1 boundaries.
 
-The machine-readable source of truth is `packages/ai/catalog/components.json` (135 public entries: 129 canonical contracts and 6 aliases), `packages/ai/catalog/recipes.json` (17 recipes), and `packages/ai/catalog/blocks.json` (12 expressive blocks). `scripts/verify-ai-catalog.mjs` validates source paths, catalog fields, recipe/block references, status, local icon synchronization, and CLI retrieval. The component explorer at `/components`, the block catalog at `/blocks`, the Public Showcase, Warehouse, and Ebook provide representative interaction and composition proof.
+The machine-readable source of truth is `packages/ai/catalog/components.json` (144 public entries: 138 canonical contracts and 6 aliases), `packages/ai/catalog/recipes.json` (17 recipes), and `packages/ai/catalog/blocks.json` (12 expressive blocks). `scripts/verify-ai-catalog.mjs` validates source paths, catalog fields, recipe/block references, status, local icon synchronization, and CLI retrieval. The component explorer at `/components`, the block catalog at `/blocks`, the Public Showcase, Warehouse, and Ebook provide representative interaction and composition proof.
 
 ## Foundations and actions
 
@@ -23,29 +23,29 @@ The machine-readable source of truth is `packages/ai/catalog/components.json` (1
 
 ## Forms, selection, and date/time
 
-| Capability                                | v1 status   | Canonical contract / proof                                                                           |
-| ----------------------------------------- | ----------- | ---------------------------------------------------------------------------------------------------- |
-| Label, description, error, field grouping | IMPLEMENTED | `Field`, `Label`, `FieldDescription`, `FieldError`, `FieldGroup`.                                    |
-| Form sections, grid, actions              | IMPLEMENTED | `FormSection`, `FormGrid`, `FormActions`, `ActionFooter`.                                            |
-| Text, password, multiline, numeric entry  | IMPLEMENTED | `Input`, `SearchInput`, `PasswordInput`, `Textarea`, `NumberInput`, `CurrencyInput`, `PercentInput`. |
-| Select and bounded choices                | IMPLEMENTED | `Select`, `NativeSelect`, `Checkbox`, `Radio`, `CheckboxGroup`, `RadioGroup`, `Switch`.              |
-| Searchable / multi-value choices          | IMPLEMENTED | `Combobox`, `MultiSelect`; live explorer proof.                                                      |
-| Range and OTP controls                    | IMPLEMENTED | `Slider`, `RangeSlider`, `OtpInput`; native control foundations.                                     |
-| Calendar and date selection               | IMPLEMENTED | keyboard-addressable `Calendar`, `DatePicker`, `DateRangePicker`.                                    |
-| Time and date-time composition            | IMPLEMENTED | `TimeInput`, `DateTimeInput`; no date-library dependency.                                            |
+| Capability                                | v1 status   | Canonical contract / proof                                                                              |
+| ----------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------- |
+| Label, description, error, field grouping | IMPLEMENTED | `Field`, `Label`, `FieldDescription`, `FieldError`, `FieldGroup`.                                       |
+| Form sections, grid, actions              | IMPLEMENTED | `FormSection`, `FormGrid`, `FormActions`, `ActionFooter`.                                               |
+| Text, password, multiline, numeric entry  | IMPLEMENTED | `Input`, `SearchInput`, `PasswordInput`, `Textarea`, `NumberInput`, `CurrencyInput`, `PercentInput`.    |
+| Select and bounded choices                | IMPLEMENTED | `Select`, `NativeSelect`, `Checkbox`, `Radio`, `CheckboxGroup`, `RadioGroup`, `Switch`.                 |
+| Searchable / multi-value choices          | IMPLEMENTED | `Combobox`, `MultiSelect`; live explorer proof.                                                         |
+| Range and OTP controls                    | IMPLEMENTED | `Slider`, `RangeSlider`, `OtpInput`; native control foundations.                                        |
+| Calendar and date selection               | IMPLEMENTED | keyboard-addressable `Calendar`, `DatePicker`, `DateRangePicker`.                                       |
+| Time and date-time composition            | IMPLEMENTED | `NativeTimeInput`, tokenized `TimePicker`, and `DateTimeInput` composition; no date-library dependency. |
 
 ## Navigation, shell, surfaces, and layout
 
-| Capability                                  | v1 status   | Canonical contract / proof                                                                                                    |
-| ------------------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| Shared shell grammar                        | IMPLEMENTED | `AppShell → [Sidebar \| TopNavigation] → [PageHeader] → bounded route content`; documented in `docs/ai/SHELL_COMPOSITION.md`. |
-| Private and public navigation               | IMPLEMENTED | `Sidebar`, `SidebarGroup`, `NavItem`, `TopNavigation`, `MobileSidebar`.                                                       |
-| Breadcrumb, tabs, disclosure, step progress | IMPLEMENTED | `Breadcrumb`, `Tabs`, `TabPanel`, `Accordion`, `Collapsible`, `Stepper`.                                                      |
-| Command surface                             | IMPLEMENTED | `CommandMenu` / `CommandPalette`; live dialog proof.                                                                          |
-| Card and surface anatomy                    | IMPLEMENTED | `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`, `Surface`, `Panel`, `Section`.             |
-| Dividers and bounded scroll                 | IMPLEMENTED | `Separator`, `ScrollArea`.                                                                                                    |
-| Layout utility component suite              | NOT_NEEDED  | Use CSS grid/flex composition; do not create a Tailwind replacement abstraction.                                              |
-| Resizable pane / split view                 | NOT_NEEDED  | Defer until an actual reference requires its interaction model.                                                               |
+| Capability                                  | v1 status   | Canonical contract / proof                                                                                                                      |
+| ------------------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Shared shell grammar                        | IMPLEMENTED | `AppShell → [Sidebar \| TopNavigation \| NavigationMenu] → [PageHeader] → bounded route content`; documented in `docs/ai/SHELL_COMPOSITION.md`. |
+| Private and public navigation               | IMPLEMENTED | `Sidebar`, `SidebarGroup`, `NavItem`, `TopNavigation`, nested `NavigationMenu`, and `MobileSidebar`.                                            |
+| Breadcrumb, tabs, disclosure, step progress | IMPLEMENTED | `Breadcrumb`, `Tabs`, `TabPanel`, `Accordion`, `Collapsible`, `Stepper`.                                                                        |
+| Command surface                             | IMPLEMENTED | `CommandMenu` / `CommandPalette`; live dialog proof.                                                                                            |
+| Card and surface anatomy                    | IMPLEMENTED | `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`, `Surface`, `Panel`, `Section`.                               |
+| Dividers and bounded scroll                 | IMPLEMENTED | `Separator`, `ScrollArea`.                                                                                                                      |
+| Layout utility component suite              | NOT_NEEDED  | Use CSS grid/flex composition; do not create a Tailwind replacement abstraction.                                                                |
+| Resizable pane / split view                 | NOT_NEEDED  | Defer until an actual reference requires its interaction model.                                                                                 |
 
 ## Data, filtering, and application workflow
 
@@ -62,17 +62,17 @@ The machine-readable source of truth is `packages/ai/catalog/components.json` (1
 
 ## Overlays, feedback, charts, files, and media
 
-| Capability                       | v1 status   | Canonical contract / proof                                                                                       |
-| -------------------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------- |
-| Modal / drawer lifecycle         | IMPLEMENTED | native-dialog-backed `Modal` and `DetailDrawer`, focus return, Escape and backdrop behavior.                     |
-| Confirmation / popover / tooltip | IMPLEMENTED | `AlertDialog`, `Popover`, `Tooltip`, `DropdownMenu`, `ContextMenu`.                                              |
-| Alerts, state, toast, loading    | IMPLEMENTED | `Alert`, `StateView`, `EmptyState`, `ToastProvider`, `Toast`, `Toaster`, `Skeleton`, `Spinner`.                  |
-| Determinate and compact progress | IMPLEMENTED | `Progress`, `CircularProgress`, `TrendIndicator`, `Sparkline`.                                                   |
-| General SVG charts               | IMPLEMENTED | `LineChart`, `BarChart`, `DonutChart`, `ChartLegend`; token chart palette.                                       |
-| Heatmap / bullet chart           | NOT_NEEDED  | Defer until a real analytics reference proves the need.                                                          |
-| Local file selection UI          | IMPLEMENTED | `FileUpload`, `FileItem`, `FileList`; intentionally no storage/backend promise.                                  |
-| Generic media composition        | IMPLEMENTED | `AspectRatio`, `MediaFrame`, `Image` fallback.                                                                   |
-| Generic commerce composition     | IMPLEMENTED | `ProductGrid`, `Price`, `Rating`, `ProductMeta`; Ebook uses `ProductGrid`, `ProductCard`, `Price`, and `Rating`. |
+| Capability                       | v1 status   | Canonical contract / proof                                                                                            |
+| -------------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------- |
+| Modal / drawer lifecycle         | IMPLEMENTED | native-dialog-backed `Modal`, generic `Drawer`, and `DetailDrawer`, with focus return, Escape, and backdrop behavior. |
+| Confirmation / popover / tooltip | IMPLEMENTED | `AlertDialog`, `Popover`, `Tooltip`, `DropdownMenu`, `ContextMenu`.                                                   |
+| Alerts, state, toast, loading    | IMPLEMENTED | `Alert`, `StateView`, `EmptyState`, `ToastProvider`, `Toast`, `Toaster`, `Skeleton`, `Spinner`.                       |
+| Determinate and compact progress | IMPLEMENTED | `Progress`, `CircularProgress`, `TrendIndicator`, `Sparkline`.                                                        |
+| General SVG charts               | IMPLEMENTED | `LineChart`, `BarChart`, `DonutChart`, `ChartLegend`; rounded tick scale, zero baseline, and token chart palette.     |
+| Heatmap / bullet chart           | NOT_NEEDED  | Defer until a real analytics reference proves the need.                                                               |
+| Local file selection UI          | IMPLEMENTED | `FileUpload`, `FileItem`, `FileList`; intentionally no storage/backend promise.                                       |
+| Generic media composition        | IMPLEMENTED | `AspectRatio`, `MediaFrame`, `Image` fallback.                                                                        |
+| Generic commerce composition     | IMPLEMENTED | `ProductGrid`, `Price`, `Rating`, `ProductMeta`; Ebook uses `ProductGrid`, `ProductCard`, `Price`, and `Rating`.      |
 
 ## Expressive composition
 

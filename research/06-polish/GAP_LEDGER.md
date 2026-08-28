@@ -15,7 +15,7 @@ Date: 2026-08-27
 ## Deferred intentionally
 
 - Packaging and release hardening remain paused until this gate is accepted.
-- TimeInput remains a semantic wrapper over the native time control. A custom time popup is not justified by a verified product mismatch.
+- Time selection is now explicit: `NativeTimeInput` preserves intentional platform behavior, while `TimePicker` provides a tokenized bounded listbox and `DateTimeInput` composes it with `DatePicker`.
 - Cart remains a recipe composition, not a new canonical component, until reuse in another domain proves a stable contract.
 - Automated axe checks supplement but do not replace manual screen-reader and platform high-contrast testing.
 

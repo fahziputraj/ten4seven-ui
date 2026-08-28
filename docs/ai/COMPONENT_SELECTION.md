@@ -11,15 +11,15 @@ Only `implemented` catalog entries are available to product work. `experimental`
 | Text, number, currency, percentage, password, or multiline entry | `Field` with `Input`, `Textarea`, `NumberInput`, `CurrencyInput`, `PercentInput`, or `PasswordInput`     | manually assembled label/error spacing                             |
 | Known bounded choice                                             | `Select` for the custom accessible popup, or `NativeSelect` when native platform behavior is intentional | exposing both models in one consumer control                       |
 | Searchable or multi-value choice                                 | `Combobox`, `MultiSelect`, `CheckboxGroup`, or `RadioGroup`                                              | an unlabelled custom popover                                       |
-| Date, range, time, or date-time entry                            | `DatePicker`, `DateRangePicker`, `TimeInput`, or `DateTimeInput`                                         | local calendar math or a one-off date widget                       |
-| Route framing                                                    | `AppShell → [Sidebar                                                                                     | TopNavigation] → [PageHeader]`                                     | repeated local shell/heading markup |
+| Date, range, time, or date-time entry                            | `DatePicker`, `DateRangePicker`, `NativeTimeInput`, `TimePicker`, or `DateTimeInput`                     | local calendar/time math or a one-off date widget                  |
+| Route framing                                                    | `AppShell → [Sidebar                                                                                     | TopNavigation                                                      | NavigationMenu] → [PageHeader]` | repeated local shell/heading markup |
 | Private information-dense navigation                             | `Sidebar` with optional `SidebarGroup`                                                                   | a public storefront navbar                                         |
-| Public/content/commerce navigation                               | `TopNavigation`                                                                                          | an ERP-like sidebar by default                                     |
+| Public/content/commerce navigation                               | `PublicShell` + `NavigationMenu` (or `TopNavigation` for flat links)                                     | an ERP-like sidebar by default                                     |
 | Comparable, sortable, selectable records                         | `DataTable`, `DataTableColumnPicker`, `BulkActionBar`                                                    | cards posing as a table                                            |
 | One record summary or facts                                      | `RecordSummary`, `KeyValueList` / `DescriptionList`, `ActivityFeed` / `Timeline`                         | an ad hoc metric wall                                              |
 | Compact status or category                                       | `StatusChip` for meaning; `Badge` for neutral category                                                   | colored text spans                                                 |
 | Filtered list/report                                             | `FilterToolbar`, `AppliedFilters`, `FilterChip`, and `FilterDrawer` on narrow screens                    | scattered unlabelled controls                                      |
-| Contextual inspection or editing                                 | `DetailDrawer`                                                                                           | a locally implemented drawer                                       |
+| Contextual inspection or editing                                 | `Drawer` or `DetailDrawer`                                                                               | a locally implemented drawer                                       |
 | Focused task or confirmation                                     | `Modal`; `AlertDialog` for irreversible actions                                                          | browser `confirm()` or another dialog implementation               |
 | Supplemental anchored content or action menu                     | `Popover`, `Tooltip`, `DropdownMenu`, `ContextMenu`, `ActionMenu`                                        | a new positioning/focus implementation                             |
 | Feedback and recovery                                            | `Alert`, `Toast`, `StateView`, `EmptyState`, `Skeleton`, `Spinner`, `Progress`                           | fake success state or layout placeholders pretending data is ready |
@@ -30,7 +30,7 @@ Only `implemented` catalog entries are available to product work. `experimental`
 
 ## Shell and recipe decisions
 
-Use `entity-list` for comparable operational records, `catalog` for content-first visual products, `cart` for cart review, `checkout` for order confirmation, `entity-detail` and `entity-form` for focused record work, `approval-queue` for review/decision flow, and `report` for time-bounded result analysis. Recipes define the public composition; components own interaction, focus, density, typography, and tokens.
+Use `entity-list` for comparable operational records, `catalog` for content-first visual products, `cart` for cart review, `checkout` for order confirmation, `entity-detail` and `entity-form` for focused record work, `approval-queue` for review/decision flow, and `report` for time-bounded result analysis. For expressive recipes, use `blockRoles` to separate required, recommended, and optional blocks instead of rendering the full available block list. Recipes define the public composition; components own interaction, focus, density, typography, and tokens.
 
 The canonical family taxonomy is Foundations, Actions, Forms, Navigation,
 Layout, Patterns, Surfaces, Data Display, Tables, Filtering & Bulk Actions,
@@ -39,7 +39,7 @@ Visualization, Media, and Commerce. `DataTable` belongs to Tables; reusable
 composition contracts such as `AppShell`, `CartPanel`, and `OrderSummary`
 belong to Patterns.
 
-`AppShell → [Sidebar | TopNavigation] → [PageHeader] → bounded route content` is the default shell grammar. Keep PageHeader as the only route-level title. Use `MobileSidebar` or `FilterDrawer` to move secondary controls on narrow screens instead of duplicating a mobile component system.
+`AppShell → [Sidebar | TopNavigation | NavigationMenu] → [PageHeader]` is the default shell grammar. Use `PublicShell` when the route is public or content-first. Keep PageHeader as the only route-level title. Use `MobileSidebar` or `FilterDrawer` to move secondary controls on narrow screens instead of duplicating a mobile component system.
 
 ## A real component gap
 

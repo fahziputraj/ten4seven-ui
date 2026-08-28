@@ -8,25 +8,26 @@ Date: 2026-08-27
 
 ## Canonical sources
 
-- `packages/ai/catalog/components.json` is the component source of truth: 132 contracts, 126 canonical components, and 6 documented aliases.
+- `packages/ai/catalog/components.json` is the component source of truth: 144 contracts, 138 canonical components, and 6 documented aliases.
 - `packages/ai/catalog/recipes.json` is the recipe source of truth: 17 composition recipes, including `cart`.
 - `packages/ai/catalog/icons.json` plus the local icon registry provide 97 semantic icon contracts.
 - `apps/playground/src/catalog-model.ts` derives family labels, slugs, counts, and deep-link paths from those catalogs; it does not create a second catalog.
 
 ## Information architecture
 
-| Surface          | Route                                  | Contract                                                                   |
-| ---------------- | -------------------------------------- | -------------------------------------------------------------------------- |
-| Theme Studio     | `/theme-studio`                        | Global theme controls and live typography specimen                         |
-| Component Lab    | `/component-lab`                       | Separate interaction stress-test surface                                   |
-| Tokens           | `/tokens`                              | Intent-first token families with in-page navigation and copy actions       |
-| Components       | `/components`                          | Compact canonical overview with search, common components, and families    |
-| Component family | `/components/<family-slug>`            | Family list with the current family expanded                               |
-| Component detail | `/components/<component-slug>`         | Preview, usage, API, accessibility, tokens, recipes, and related contracts |
-| Icons            | `/icons`                               | Searchable, category-filtered semantic icon grid with copy feedback        |
-| Recipes          | `/recipes`                             | Compact recipe index with direct composition detail routes                 |
-| Recipe detail    | `/recipes/<recipe-slug>`               | Anatomy flow with links to canonical component contracts                   |
-| References       | `/warehouse-inventory`, `/ebook-store` | Production-shaped recipe proof surfaces                                    |
+| Surface          | Route                                                      | Contract                                                                   |
+| ---------------- | ---------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Theme Studio     | `/theme-studio`                                            | Global theme controls and live typography specimen                         |
+| Component Lab    | `/component-lab`                                           | Separate interaction stress-test surface                                   |
+| Tokens           | `/tokens`                                                  | Intent-first token families with in-page navigation and copy actions       |
+| Components       | `/components`                                              | Compact canonical overview with search, common components, and families    |
+| Component family | `/components/<family-slug>`                                | Family list with the current family expanded                               |
+| Component detail | `/components/<component-slug>`                             | Preview, usage, API, accessibility, tokens, recipes, and related contracts |
+| Icons            | `/icons`                                                   | Searchable, category-filtered semantic icon grid with copy feedback        |
+| Recipes          | `/recipes`                                                 | Compact recipe index with direct composition detail routes                 |
+| Recipe detail    | `/recipes/<recipe-slug>`                                   | Anatomy flow with links to canonical component contracts                   |
+| Blocks           | `/blocks`                                                  | Live expressive block previews and detail contracts                        |
+| References       | `/warehouse-inventory`, `/ebook-store`, `/public-showcase` | Production-shaped recipe proof surfaces                                    |
 
 Canonical taxonomy routes include `/components/patterns`,
 `/components/tables`, and `/components/filtering-bulk-actions`. The previous
@@ -37,18 +38,18 @@ Every registered route is deterministic and refresh-safe. Unknown paths render t
 
 ## Interaction and responsive proof
 
-- The desktop sidebar is generated from the same catalog metadata as the overview and keeps component families collapsed by default; the active family is opened for context.
+- The desktop sidebar is a shallow workbench index: it exposes Studio, Library, and References only. Component families stay in the `/components` document and remain anchor-addressable from the catalog.
 - The component navigation is scrollable and the mobile equivalent is the canonical `MobileSidebar` drawer.
 - Breadcrumbs preserve hierarchy and normal browser modifier-key behavior.
 - Token-family anchors are visible near the top of `/tokens`; semantic swatches and icon entries expose copy actions with `ToastProvider` feedback.
 - Component detail routes now use category-aware live contract fixtures; the catalog no longer falls back to a generic "live preview" placeholder. The Scroll Area fixture demonstrates a real bounded event list, while overlay, commerce, chart, media, and feedback entries expose their canonical interaction anatomy.
 - Component Lab now includes the shared commerce contracts (`CartTrigger`, `CartPanel`, `CartLineItem`, `QuantityControl`, `OrderSummary`) with quantity, removal, empty-state, and checkout-action feedback.
-- Icons reports `97/97` typed registry entries assigned across eight intent families, while preserving the compact search, filter, and copy workflow.
+- Icons reports the live semantic registry in one compact proof line while preserving the search, filter, and copy workflow.
 - No commerce-specific primitive family was introduced. Component Lab remains separate from the production-shaped references.
 
 ## Verification
 
-- `tests/catalog-integrity.spec.ts`: route and interaction coverage now includes 126 canonical component routes with live non-placeholder fixtures, 17 canonical family routes plus legacy aliases, 17 recipe routes, root/404 behavior, singular Select accessibility, global search, icon intent search/copy feedback, and the mobile drawer.
+- `tests/catalog-integrity.spec.ts`: route and interaction coverage now includes 138 canonical component routes with live non-placeholder fixtures, 17 canonical family routes plus legacy aliases, 17 recipe routes, root/404 behavior, singular Select accessibility, global search, icon intent search/copy feedback, and the mobile drawer.
 - `tests/visual-regression.spec.ts`: 41 tests passed with explicit `1440 × 900`, `1280 × 800`, `768 × 900`, `390 × 844`, and `360 × 800` baselines for the workbench and references plus the Component Lab modal state.
 - The visual matrix checks meaningful `main` content and horizontal overflow for every route at every viewport; the 768px Ebook render now transitions to the stacked commerce layout.
 - Direct browser QA confirmed `/components/surface` resolves with the expected title and heading after direct navigation; `/tokens` exposes one visible `Token families` navigation.

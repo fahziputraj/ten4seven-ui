@@ -21,13 +21,13 @@ count of entries is not a quality signal by itself.
 
 Compose routes as:
 
-`AppShell → [Sidebar | TopNavigation] → [PageHeader] → bounded route content`
+`AppShell → [Sidebar | TopNavigation | NavigationMenu] → [PageHeader] → bounded route content`
 
 - Use `Sidebar` (and optional `SidebarGroup`) for private, information-dense application navigation.
-- Use `TopNavigation` for public, content, and commerce contexts; do not give a storefront an enterprise sidebar by default.
+- Use `PublicShell` with `NavigationMenu` for public, content, and commerce contexts; use `TopNavigation` for flat links and do not give a storefront an enterprise sidebar by default.
 - Use `PageHeader` for the route-level title, summary, metadata, and primary action. Do not repeat page-heading shells inside route content.
 - Keep tables, filters, grids, forms, drawers, and cards inside a bounded route content region. On narrow screens move secondary navigation or filtering into `MobileSidebar` or `FilterDrawer`; do not duplicate a second mobile component system.
-- Use `DetailDrawer` for contextual inspection, `Modal` for a focused task, and `AlertDialog` for irreversible confirmation.
+- Use `Drawer` as the generic contextual surface, `DetailDrawer` for record inspection, `Modal` for a focused task, and `AlertDialog` for irreversible confirmation.
 
 Hard rules:
 
@@ -46,6 +46,11 @@ Hard rules:
   they are not a second primitive library.
 - The canonical Select is a custom accessible popup with one authoritative
   trigger; use `NativeSelect` only when native platform behavior is intentional.
+- Use `NativeTimeInput` for intentional platform time controls, `TimePicker` for
+  the shared bounded time listbox, and `DateTimeInput` when both compose.
+- Use the lightweight semantic `Table` family for readable comparison data;
+  use `DataTable` when selection, sorting, pagination, or column management is
+  part of the contract.
 - Component taxonomy is `Foundations`, `Actions`, `Forms`, `Navigation`,
   `Layout`, `Patterns`, `Surfaces`, `Data Display`, `Tables`, `Filtering & Bulk
 Actions`, `Overlays`, `Feedback & Progress`, `Date & Time`, `Files`,

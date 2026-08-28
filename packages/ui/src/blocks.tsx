@@ -20,7 +20,12 @@ import {
   Drawer,
   Typography,
 } from "./components";
-import { TopNavigation, type TopNavigationItem } from "./navigation";
+import {
+  NavigationMenu,
+  TopNavigation,
+  type NavigationMenuItem,
+  type TopNavigationItem,
+} from "./navigation";
 import { cx } from "./utils";
 
 export interface SectionHeaderProps extends Omit<
@@ -1152,7 +1157,8 @@ export interface PublicShellProps extends HTMLAttributes<HTMLDivElement> {
   actions?: ReactNode;
   brand: ReactNode;
   footer?: ReactNode;
-  navigation: TopNavigationItem[];
+  navigation?: TopNavigationItem[];
+  navigationMenu?: NavigationMenuItem[];
 }
 
 /** Public/content shell composition; it reuses AppShell geometry and TopNavigation semantics. */
@@ -1163,6 +1169,7 @@ export function PublicShell({
   className,
   footer,
   navigation,
+  navigationMenu,
   ...props
 }: PublicShellProps) {
   return (
@@ -1170,7 +1177,19 @@ export function PublicShell({
       {...props}
       className={cx("t7-public-shell", className)}
       topbar={
-        <TopNavigation items={navigation} leading={brand} trailing={actions} />
+        navigationMenu?.length ? (
+          <NavigationMenu
+            items={navigationMenu}
+            leading={brand}
+            trailing={actions}
+          />
+        ) : (
+          <TopNavigation
+            items={navigation ?? []}
+            leading={brand}
+            trailing={actions}
+          />
+        )
       }
     >
       {children}

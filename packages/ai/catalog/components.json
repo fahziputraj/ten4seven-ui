@@ -3078,14 +3078,15 @@
     "usedByPatterns": ["report"]
   },
   "TimeInput": {
+    "aliasOf": "NativeTimeInput",
     "status": "implemented",
     "category": "date-time",
-    "purpose": "Collect a native time value inside the standard input field contract.",
-    "useWhen": ["a time is required without date composition"],
-    "avoidWhen": ["duration or time zone conversion logic"],
+    "purpose": "Compatibility alias for the intentional browser-native time input.",
+    "useWhen": ["maintaining an existing native time field contract"],
+    "avoidWhen": ["new UI that needs a tokenized bounded time selection"],
     "recipes": ["entity-form"],
     "importantProps": ["label", "value", "onChange"],
-    "relatedComponents": ["DateTimeInput", "DatePicker"],
+    "relatedComponents": ["NativeTimeInput", "TimePicker", "DateTimeInput"],
     "source": "packages/ui/src/date-time.tsx",
     "displayName": "Time Input",
     "level": "primitive",
@@ -3109,14 +3110,7 @@
       "Uses shared duration and easing variables for state transitions.",
       "Respects prefers-reduced-motion."
     ],
-    "tokens": [
-      "input-background",
-      "input-border",
-      "surface-overlay",
-      "shadow-popover",
-      "control-height",
-      "focus-ring"
-    ],
+    "tokens": ["input-background", "control-height", "focus-ring"],
     "api": [
       {
         "name": "label",
@@ -3142,18 +3136,179 @@
     ],
     "example": "<TimeInput />",
     "alternativeTo": [],
-    "composesWith": ["DateTimeInput", "DatePicker"],
+    "composesWith": ["NativeTimeInput"],
     "usedByPatterns": []
+  },
+  "NativeTimeInput": {
+    "status": "implemented",
+    "category": "date-time",
+    "purpose": "Collect a browser-native time value when platform-specific time input is intentional.",
+    "useWhen": ["native mobile or operating-system time controls are required"],
+    "avoidWhen": ["a shared custom time-selection interaction is required"],
+    "recipes": ["entity-form"],
+    "importantProps": ["label", "value", "onChange"],
+    "relatedComponents": ["TimePicker", "TimeInput", "DateTimeInput"],
+    "source": "packages/ui/src/date-time.tsx",
+    "displayName": "Native Time Input",
+    "level": "primitive",
+    "maturity": "implemented",
+    "states": ["default", "focused", "disabled", "invalid", "empty"],
+    "accessibility": [
+      "Expose a visible label or stable accessible name for the native input.",
+      "Preserve the platform's keyboard, touch, validation, and disabled semantics."
+    ],
+    "responsive": [
+      "Uses the platform time control without changing the field contract.",
+      "Retains shared control geometry and focus treatment."
+    ],
+    "motion": [
+      "Uses shared control transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "control-height",
+      "focus-ring"
+    ],
+    "api": [
+      {
+        "name": "label",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Visible or accessible name for the control."
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Current native time value in HH:mm form."
+      },
+      {
+        "name": "onChange",
+        "type": "(event) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Callback fired by the native time control."
+      }
+    ],
+    "example": "<NativeTimeInput label=\"Review time\" />",
+    "alternativeTo": ["TimePicker"],
+    "composesWith": ["DateTimeInput"],
+    "usedByPatterns": []
+  },
+  "TimePicker": {
+    "status": "implemented",
+    "category": "date-time",
+    "purpose": "Choose a bounded time from a tokenized ten4seven listbox interaction.",
+    "useWhen": [
+      "time selection should share the custom DatePicker interaction language"
+    ],
+    "avoidWhen": [
+      "duration math, time-zone conversion, or intentional native controls"
+    ],
+    "recipes": ["entity-form"],
+    "importantProps": [
+      "value",
+      "onValueChange",
+      "minuteStep",
+      "min",
+      "max",
+      "label"
+    ],
+    "relatedComponents": ["DatePicker", "NativeTimeInput", "DateTimeInput"],
+    "source": "packages/ui/src/date-time.tsx",
+    "displayName": "Time Picker",
+    "level": "primitive",
+    "maturity": "polished",
+    "states": [
+      "closed",
+      "open listbox",
+      "selected",
+      "focused",
+      "disabled",
+      "empty or unavailable"
+    ],
+    "accessibility": [
+      "Expose a labelled input with aria-expanded, aria-controls, and listbox semantics.",
+      "Support keyboard opening, Escape dismissal, visible focus, and selected option state."
+    ],
+    "responsive": [
+      "Positions the listbox in viewport space and keeps it inside narrow viewports.",
+      "Retains shared touch-target minimums and field geometry."
+    ],
+    "motion": [
+      "Uses shared popup duration and easing.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "surface-overlay",
+      "shadow-popover",
+      "control-height",
+      "focus-ring"
+    ],
+    "api": [
+      {
+        "name": "value",
+        "type": "string | undefined",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Current selected time in HH:mm form."
+      },
+      {
+        "name": "onValueChange",
+        "type": "(value) => void",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Callback fired with the next selected time or undefined when cleared."
+      },
+      {
+        "name": "minuteStep",
+        "type": "number",
+        "defaultValue": "30",
+        "required": false,
+        "description": "Spacing in minutes between available options."
+      },
+      {
+        "name": "min",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Earliest available time in HH:mm form."
+      },
+      {
+        "name": "max",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Latest available time in HH:mm form."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Visible or accessible name for the control."
+      }
+    ],
+    "example": "<TimePicker label=\"Review time\" onValueChange={setTime} />",
+    "alternativeTo": ["NativeTimeInput"],
+    "composesWith": ["DatePicker", "DateTimeInput"],
+    "usedByPatterns": ["entity-form"]
   },
   "DateTimeInput": {
     "status": "implemented",
     "category": "date-time",
-    "purpose": "Compose a DatePicker and TimeInput without owning time zone or persistence logic.",
+    "purpose": "Compose a DatePicker and TimePicker without owning time zone or persistence logic.",
     "useWhen": ["one local date and time are collected together"],
     "avoidWhen": ["scheduling engine behavior"],
     "recipes": ["entity-form"],
     "importantProps": ["date", "time", "onDateChange", "onTimeChange"],
-    "relatedComponents": ["DatePicker", "TimeInput"],
+    "relatedComponents": ["DatePicker", "TimePicker", "NativeTimeInput"],
     "source": "packages/ui/src/date-time.tsx",
     "displayName": "Date–Time Input",
     "level": "primitive",
@@ -3217,7 +3372,7 @@
     ],
     "example": "<DateTimeInput />",
     "alternativeTo": [],
-    "composesWith": ["DatePicker", "TimeInput"],
+    "composesWith": ["DatePicker", "TimePicker"],
     "usedByPatterns": []
   },
   "FileUpload": {
@@ -3783,6 +3938,85 @@
     "alternativeTo": [],
     "composesWith": ["Sidebar", "TopNavigation"],
     "usedByPatterns": []
+  },
+  "NavigationMenu": {
+    "status": "implemented",
+    "category": "navigation",
+    "purpose": "Render compact public navigation with one-level nested branches and shared floating positioning.",
+    "useWhen": ["public or commerce headers need a small set of grouped links"],
+    "avoidWhen": [
+      "dense operational navigation needs a persistent Sidebar",
+      "a large mega-menu would become a separate product surface"
+    ],
+    "recipes": ["catalog", "marketing-home"],
+    "importantProps": ["items", "label", "leading", "trailing"],
+    "relatedComponents": ["TopNavigation", "PublicShell", "MobileSidebar"],
+    "source": "packages/ui/src/navigation.tsx",
+    "displayName": "Navigation Menu",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "default",
+      "active link",
+      "open branch",
+      "focused",
+      "Escape dismissed",
+      "responsive overflow"
+    ],
+    "accessibility": [
+      "Expose nav, menubar, menuitem, aria-haspopup, aria-expanded, and current-page semantics.",
+      "Open branches with keyboard controls, focus the first item, and dismiss on Escape or outside interaction."
+    ],
+    "responsive": [
+      "Keeps the link row horizontally usable on narrow public headers.",
+      "Positions branch panels in viewport space so parent containers do not clip them."
+    ],
+    "motion": [
+      "Uses shared popup duration and easing.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "selected",
+      "control-height",
+      "shadow-popover",
+      "focus-ring"
+    ],
+    "api": [
+      {
+        "name": "items",
+        "type": "NavigationMenuItem[]",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Top-level links and one-level nested branches."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "defaultValue": "Primary navigation",
+        "required": false,
+        "description": "Accessible name for the public navigation."
+      },
+      {
+        "name": "leading",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Brand or leading content."
+      },
+      {
+        "name": "trailing",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Action or account content."
+      }
+    ],
+    "example": "<NavigationMenu items={[{ key: \"products\", label: \"Products\", children: [{ href: \"/books\", key: \"books\", label: \"Books\" }] }]} />",
+    "alternativeTo": ["TopNavigation"],
+    "composesWith": ["PublicShell", "TopNavigation", "MobileSidebar"],
+    "usedByPatterns": ["catalog", "marketing-home"]
   },
   "TopNavigation": {
     "status": "implemented",
@@ -5280,6 +5514,349 @@
     "alternativeTo": [],
     "composesWith": ["Toolbar", "ButtonGroup"],
     "usedByPatterns": ["ebook-reader"]
+  },
+  "Table": {
+    "status": "implemented",
+    "category": "table",
+    "purpose": "Render a lightweight semantic table for readable summaries and comparison data.",
+    "useWhen": [
+      "simple tabular content does not need selection, sorting, or grid behavior"
+    ],
+    "avoidWhen": [
+      "records need interactive selection, sorting, pagination, or column management"
+    ],
+    "recipes": ["report", "content-detail", "catalog"],
+    "importantProps": ["children", "caption", "className"],
+    "relatedComponents": [
+      "TableHeader",
+      "TableBody",
+      "TableRow",
+      "TableHead",
+      "TableCell",
+      "DataTable"
+    ],
+    "source": "packages/ui/src/data-display.tsx",
+    "displayName": "Table",
+    "level": "primitive",
+    "maturity": "implemented",
+    "states": [
+      "default",
+      "dense content",
+      "responsive overflow",
+      "empty when applicable"
+    ],
+    "accessibility": [
+      "Keep native table, caption, header, row, and cell semantics available to the consumer.",
+      "Use TableHead scope to identify column or row headers and preserve readable focus order."
+    ],
+    "responsive": [
+      "Uses a bounded horizontal scroll owner when content exceeds the viewport.",
+      "Keeps semantic rows and columns intact instead of switching to an unrelated card layout."
+    ],
+    "motion": [
+      "Uses shared row and surface transitions only where state changes.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "table-header",
+      "table-cell",
+      "radius-panel"
+    ],
+    "api": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Semantic table sections and rows."
+      },
+      {
+        "name": "caption",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Optional native table caption."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Additional class for the semantic table."
+      }
+    ],
+    "example": "<Table><TableHeader><TableRow><TableHead>Signal</TableHead></TableRow></TableHeader></Table>",
+    "alternativeTo": ["DataTable"],
+    "composesWith": [
+      "TableHeader",
+      "TableBody",
+      "TableRow",
+      "TableHead",
+      "TableCell"
+    ],
+    "usedByPatterns": ["report", "content-detail", "catalog"]
+  },
+  "TableHeader": {
+    "status": "implemented",
+    "category": "table",
+    "purpose": "Provide the native table header section for a lightweight semantic Table.",
+    "useWhen": ["a Table needs column or row header semantics"],
+    "avoidWhen": ["a data grid header owns sorting or selection behavior"],
+    "recipes": ["report", "content-detail", "catalog"],
+    "importantProps": ["children", "className"],
+    "relatedComponents": ["Table", "TableRow", "TableHead"],
+    "source": "packages/ui/src/data-display.tsx",
+    "displayName": "Table Header",
+    "level": "primitive",
+    "maturity": "implemented",
+    "states": ["default", "responsive overflow"],
+    "accessibility": [
+      "Retains native thead semantics and contains header rows."
+    ],
+    "responsive": ["Reflows with the table's bounded scroll owner."],
+    "motion": [
+      "Uses shared table transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": ["surface-subtle", "border", "table-header"],
+    "api": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Table header rows."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Additional class for the header section."
+      }
+    ],
+    "example": "<TableHeader><TableRow><TableHead>Signal</TableHead></TableRow></TableHeader>",
+    "alternativeTo": [],
+    "composesWith": ["Table", "TableRow", "TableHead"],
+    "usedByPatterns": ["report", "content-detail", "catalog"]
+  },
+  "TableBody": {
+    "status": "implemented",
+    "category": "table",
+    "purpose": "Provide the native table body section for lightweight semantic rows.",
+    "useWhen": ["a Table needs a semantic body section"],
+    "avoidWhen": [
+      "rows need DataTable loading, error, selection, or sorting state"
+    ],
+    "recipes": ["report", "content-detail", "catalog"],
+    "importantProps": ["children", "className"],
+    "relatedComponents": ["Table", "TableRow", "TableCell"],
+    "source": "packages/ui/src/data-display.tsx",
+    "displayName": "Table Body",
+    "level": "primitive",
+    "maturity": "implemented",
+    "states": ["default", "empty when applicable", "responsive overflow"],
+    "accessibility": [
+      "Retains native tbody semantics and keeps row order readable."
+    ],
+    "responsive": ["Reflows with the table's bounded scroll owner."],
+    "motion": [
+      "Uses shared row transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": ["surface", "border", "table-cell"],
+    "api": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Table body rows."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Additional class for the body section."
+      }
+    ],
+    "example": "<TableBody><TableRow><TableCell>Available</TableCell></TableRow></TableBody>",
+    "alternativeTo": [],
+    "composesWith": ["Table", "TableRow", "TableCell"],
+    "usedByPatterns": ["report", "content-detail", "catalog"]
+  },
+  "TableRow": {
+    "status": "implemented",
+    "category": "table",
+    "purpose": "Keep one semantic table record or header row together.",
+    "useWhen": ["a lightweight Table needs a native row boundary"],
+    "avoidWhen": ["row selection or sorting behavior requires DataTable"],
+    "recipes": ["report", "content-detail", "catalog"],
+    "importantProps": ["children", "className"],
+    "relatedComponents": [
+      "Table",
+      "TableHeader",
+      "TableBody",
+      "TableHead",
+      "TableCell"
+    ],
+    "source": "packages/ui/src/data-display.tsx",
+    "displayName": "Table Row",
+    "level": "primitive",
+    "maturity": "implemented",
+    "states": ["default", "hover", "responsive overflow"],
+    "accessibility": [
+      "Retains native tr semantics and keeps cell sequence intact."
+    ],
+    "responsive": ["Preserves row structure inside the table scroll owner."],
+    "motion": [
+      "Uses the shared row transition.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": ["border", "selected-hover", "table-cell"],
+    "api": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Header or body cells."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Additional class for the row."
+      }
+    ],
+    "example": "<TableRow><TableCell>Available</TableCell></TableRow>",
+    "alternativeTo": [],
+    "composesWith": ["TableHeader", "TableBody", "TableHead", "TableCell"],
+    "usedByPatterns": ["report", "content-detail", "catalog"]
+  },
+  "TableHead": {
+    "status": "implemented",
+    "category": "table",
+    "purpose": "Label a semantic table column or row header with explicit scope.",
+    "useWhen": ["a lightweight Table needs a native th"],
+    "avoidWhen": ["a sortable or selectable DataTable header is required"],
+    "recipes": ["report", "content-detail", "catalog"],
+    "importantProps": ["children", "scope", "className"],
+    "relatedComponents": [
+      "Table",
+      "TableHeader",
+      "TableRow",
+      "TableCell",
+      "DataTable"
+    ],
+    "source": "packages/ui/src/data-display.tsx",
+    "displayName": "Table Head",
+    "level": "primitive",
+    "maturity": "implemented",
+    "states": ["default", "focused when interactive", "responsive overflow"],
+    "accessibility": [
+      "Defaults to scope=col while allowing explicit row scope."
+    ],
+    "responsive": [
+      "Retains header association when the table scrolls horizontally."
+    ],
+    "motion": [
+      "Uses shared table transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": ["surface-subtle", "border", "table-header", "table-header-text"],
+    "api": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Header label."
+      },
+      {
+        "name": "scope",
+        "type": "\"col\" | \"row\"",
+        "defaultValue": "col",
+        "required": false,
+        "description": "Native header association scope."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Additional class for the header cell."
+      }
+    ],
+    "example": "<TableHead scope=\"col\">Signal</TableHead>",
+    "alternativeTo": ["DataTable"],
+    "composesWith": ["Table", "TableHeader", "TableRow", "TableCell"],
+    "usedByPatterns": ["report", "content-detail", "catalog"]
+  },
+  "TableCell": {
+    "status": "implemented",
+    "category": "table",
+    "purpose": "Render one semantic data cell in a lightweight Table.",
+    "useWhen": ["a lightweight Table needs a native td"],
+    "avoidWhen": [
+      "cell selection, sorting, or column visibility belongs to DataTable"
+    ],
+    "recipes": ["report", "content-detail", "catalog"],
+    "importantProps": ["children", "colSpan", "className"],
+    "relatedComponents": [
+      "Table",
+      "TableBody",
+      "TableRow",
+      "TableHead",
+      "DataTable"
+    ],
+    "source": "packages/ui/src/data-display.tsx",
+    "displayName": "Table Cell",
+    "level": "primitive",
+    "maturity": "implemented",
+    "states": ["default", "empty when applicable", "responsive overflow"],
+    "accessibility": [
+      "Retains native td semantics and keeps content associated with its row headers."
+    ],
+    "responsive": [
+      "Preserves readable cell content inside the table scroll owner."
+    ],
+    "motion": [
+      "Uses shared table transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": ["surface", "border", "table-cell"],
+    "api": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Cell content."
+      },
+      {
+        "name": "colSpan",
+        "type": "number",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Optional native column span."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Additional class for the cell."
+      }
+    ],
+    "example": "<TableCell>48,920</TableCell>",
+    "alternativeTo": ["DataTable"],
+    "composesWith": ["Table", "TableBody", "TableRow", "TableHead"],
+    "usedByPatterns": ["report", "content-detail", "catalog"]
   },
   "DataTable": {
     "status": "implemented",
@@ -6944,14 +7521,20 @@
     ]
   },
   "Drawer": {
-    "aliasOf": "DetailDrawer",
     "status": "implemented",
     "category": "overlay",
-    "purpose": "Inspect or edit contextual content while retaining the parent route context.",
+    "purpose": "Present contextual content in a reusable modal side surface while retaining the parent route context.",
     "useWhen": ["master-detail inspection, contextual form, mobile navigation"],
     "avoidWhen": ["short confirmation or full-page workflow"],
     "recipes": ["master-detail", "entity-form"],
-    "importantProps": ["open", "title", "description", "onClose", "side"],
+    "importantProps": [
+      "open",
+      "title",
+      "description",
+      "onClose",
+      "side",
+      "initialFocus"
+    ],
     "relatedComponents": ["DetailDrawer", "FilterDrawer", "MobileSidebar"],
     "source": "packages/ui/src/components.tsx",
     "displayName": "Drawer",
@@ -6992,14 +7575,14 @@
       },
       {
         "name": "title",
-        "type": "string",
+        "type": "ReactNode",
         "defaultValue": "—",
         "required": false,
         "description": "Primary heading for the surface."
       },
       {
         "name": "description",
-        "type": "string",
+        "type": "ReactNode",
         "defaultValue": "—",
         "required": false,
         "description": "Supporting context announced with the primary content."
@@ -7013,10 +7596,17 @@
       },
       {
         "name": "side",
-        "type": "\"top\" | \"right\" | \"bottom\" | \"left\"",
+        "type": "\"left\" | \"right\"",
         "defaultValue": "—",
         "required": false,
         "description": "Configures side for Drawer."
+      },
+      {
+        "name": "initialFocus",
+        "type": "RefObject<HTMLElement>",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Optional element that receives focus when the drawer opens."
       }
     ],
     "example": "<Drawer />",
@@ -7031,8 +7621,20 @@
     "useWhen": ["row quick view, master-detail inspection, catalog preview"],
     "avoidWhen": ["full-page workflows or short confirmations"],
     "recipes": ["entity-list", "master-detail", "catalog"],
-    "importantProps": ["open", "title", "description", "onClose", "side"],
-    "relatedComponents": ["DataTable", "ProductCard", "RecordSummary"],
+    "importantProps": [
+      "open",
+      "title",
+      "description",
+      "onClose",
+      "side",
+      "initialFocus"
+    ],
+    "relatedComponents": [
+      "Drawer",
+      "DataTable",
+      "ProductCard",
+      "RecordSummary"
+    ],
     "source": "packages/ui/src/components.tsx",
     "displayName": "Detail Drawer",
     "level": "component",
@@ -7072,14 +7674,14 @@
       },
       {
         "name": "title",
-        "type": "string",
+        "type": "ReactNode",
         "defaultValue": "—",
         "required": false,
         "description": "Primary heading for the surface."
       },
       {
         "name": "description",
-        "type": "string",
+        "type": "ReactNode",
         "defaultValue": "—",
         "required": false,
         "description": "Supporting context announced with the primary content."
@@ -7093,15 +7695,22 @@
       },
       {
         "name": "side",
-        "type": "\"top\" | \"right\" | \"bottom\" | \"left\"",
+        "type": "\"left\" | \"right\"",
         "defaultValue": "—",
         "required": false,
         "description": "Configures side for Detail Drawer."
+      },
+      {
+        "name": "initialFocus",
+        "type": "RefObject<HTMLElement>",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Optional element that receives focus when the drawer opens."
       }
     ],
     "example": "<DetailDrawer />",
     "alternativeTo": [],
-    "composesWith": ["DataTable", "ProductCard", "RecordSummary"],
+    "composesWith": ["Drawer", "DataTable", "ProductCard", "RecordSummary"],
     "usedByPatterns": ["entity-list", "master-detail", "catalog"]
   },
   "AlertDialog": {
@@ -10231,7 +10840,7 @@
         "description": "Supporting context for the chart surface."
       }
     ],
-    "example": "<ChartPanel title=\"Adoption\" chart={<LineChart ... />} />",
+    "example": "<ChartPanel title=\"Signal\" chart={<LineChart ... />} />",
     "alternativeTo": [],
     "composesWith": ["LineChart", "BarChart", "DonutChart", "Card"],
     "usedByPatterns": ["dashboard", "report", "marketing-home"]

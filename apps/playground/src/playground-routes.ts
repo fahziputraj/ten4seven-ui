@@ -40,7 +40,7 @@ export const playgroundRouteTitles: Record<PlaygroundRoute, string> = {
   Icons: "ten4seven UI — Icons",
   Recipes: "ten4seven UI — Recipes",
   "Warehouse Inventory": "ten4seven UI — Warehouse Inventory",
-  "Publishing Store": "Leaf & Letter — Publishing Store",
+  "Publishing Store": "ten4seven UI — Publishing Store",
   "Public Showcase": "ten4seven UI — Public Showcase",
 };
 

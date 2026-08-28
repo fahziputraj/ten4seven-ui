@@ -10,10 +10,11 @@ recipe references, and direct URLs.
 ## Navigation contract
 
 - Studio: Theme Studio and Component Lab.
-- Library: Tokens, Components, Icons, and Recipes.
-- References: Warehouse Inventory and Publishing Store.
-- Components expands to 17 family anchors with canonical counts; it does not
-  render component leaves.
+- Library: Tokens, Components, Blocks, Icons, and Recipes.
+- References: Warehouse Inventory, Publishing Store, and Public Showcase.
+- Components stays shallow in the global navigation; its single document
+  exposes 17 family anchors with canonical counts and does not render
+  component leaves in the sidebar.
 - `/components/<component-slug>` remains the full contract detail route.
 - `/components#component-family-<category>` is the deterministic family anchor
   format used by the sidebar and catalog document.

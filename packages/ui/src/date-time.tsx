@@ -553,8 +553,208 @@ export interface TimeInputProps extends Omit<
   label?: string;
 }
 
-export function TimeInput(props: TimeInputProps) {
+export interface NativeTimeInputProps extends TimeInputProps {}
+
+/** Intentional browser-native time field for platform-specific input behavior. */
+export function NativeTimeInput(props: NativeTimeInputProps) {
   return <Input {...props} type="time" />;
+}
+
+export function TimeInput(props: TimeInputProps) {
+  return <NativeTimeInput {...props} />;
+}
+
+function formatTimeLabel(value: string) {
+  const [hours, minutes] = value.split(":").map(Number);
+  if (!Number.isFinite(hours) || !Number.isFinite(minutes)) return value;
+  const meridiem = hours >= 12 ? "PM" : "AM";
+  const displayHour = hours % 12 || 12;
+  return `${String(displayHour).padStart(2, "0")}:${String(minutes).padStart(2, "0")} ${meridiem}`;
+}
+
+function timeOptions(minuteStep: number, min?: string, max?: string) {
+  const options: string[] = [];
+  const safeStep = Math.max(1, Math.floor(minuteStep));
+  for (let totalMinutes = 0; totalMinutes < 24 * 60; totalMinutes += safeStep) {
+    const value = `${String(Math.floor(totalMinutes / 60)).padStart(2, "0")}:${String(totalMinutes % 60).padStart(2, "0")}`;
+    if ((!min || value >= min) && (!max || value <= max)) options.push(value);
+  }
+  return options;
+}
+
+export interface TimePickerProps extends Omit<
+  TimeInputProps,
+  "type" | "value" | "defaultValue" | "onChange" | "min" | "max"
+> {
+  clearLabel?: string;
+  max?: string;
+  min?: string;
+  minuteStep?: number;
+  onValueChange: (value: string | undefined) => void;
+  value?: string;
+}
+
+/** Tokenized time selection with a bounded listbox; use NativeTimeInput for native behavior. */
+export function TimePicker({
+  className,
+  clearLabel = "Clear time",
+  error,
+  hint,
+  id,
+  label,
+  max,
+  min,
+  minuteStep = 30,
+  onBlur,
+  onValueChange,
+  value,
+  ...props
+}: TimePickerProps) {
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
+  const helpId = `${inputId}-hint`;
+  const listboxId = `${inputId}-options`;
+  const [open, setOpen] = useState(false);
+  const [draft, setDraft] = useState(value ?? "");
+  const pickerRef = useRef<HTMLSpanElement>(null);
+  const options = useMemo(
+    () => timeOptions(minuteStep, min, max),
+    [max, min, minuteStep],
+  );
+  const floating = useFloatingPosition(pickerRef, open, {
+    minWidth: true,
+    side: "bottom",
+  });
+
+  useEffect(() => {
+    setDraft(value ?? "");
+  }, [value]);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const dismiss = (event: PointerEvent) => {
+      if (
+        !pickerRef.current?.contains(event.target as Node) &&
+        !floating.contentRef.current?.contains(event.target as Node)
+      )
+        setOpen(false);
+    };
+    document.addEventListener("pointerdown", dismiss);
+    return () => document.removeEventListener("pointerdown", dismiss);
+  }, [floating.contentRef, open]);
+
+  function choose(next: string | undefined) {
+    setDraft(next ?? "");
+    onValueChange(next);
+    setOpen(false);
+  }
+
+  return (
+    <label className="t7-field" htmlFor={inputId}>
+      {label ? <span className="t7-field-label">{label}</span> : null}
+      <span
+        className={cx("t7-time-picker", error && "is-error")}
+        ref={pickerRef}
+      >
+        <input
+          {...props}
+          aria-controls={listboxId}
+          aria-describedby={error || hint ? helpId : props["aria-describedby"]}
+          aria-expanded={open}
+          aria-haspopup="listbox"
+          aria-invalid={error ? true : props["aria-invalid"]}
+          className={cx("t7-input", className)}
+          id={inputId}
+          onBlur={(event) => {
+            onBlur?.(event);
+            window.setTimeout(() => {
+              if (
+                !pickerRef.current?.contains(document.activeElement) &&
+                !floating.contentRef.current?.contains(document.activeElement)
+              )
+                setOpen(false);
+            }, 100);
+          }}
+          onChange={undefined}
+          onClick={() => setOpen(true)}
+          onKeyDown={(event) => {
+            if (
+              event.key === "ArrowDown" ||
+              event.key === "Enter" ||
+              event.key === " "
+            ) {
+              event.preventDefault();
+              setOpen(true);
+            }
+            if (event.key === "Escape") {
+              event.preventDefault();
+              setOpen(false);
+            }
+          }}
+          placeholder="Select time"
+          readOnly
+          value={draft ? formatTimeLabel(draft) : ""}
+        />
+        <button
+          aria-label={open ? "Close time options" : "Open time options"}
+          className="t7-input-action"
+          onMouseDown={(event) => event.preventDefault()}
+          onClick={() => setOpen((current) => !current)}
+          type="button"
+        >
+          <T7Icon aria-hidden="true" name="clock" size={16} />
+        </button>
+        {open ? (
+          <FloatingPortal>
+            <div
+              aria-label={`${label ?? "Time"} options`}
+              className="t7-time-picker-popover t7-floating-content"
+              data-floating-placement={floating.placement}
+              id={listboxId}
+              ref={floating.setContentRef}
+              role="listbox"
+              style={floating.style}
+            >
+              <div className="t7-time-picker-options">
+                {options.length ? (
+                  options.map((option) => (
+                    <button
+                      aria-selected={value === option}
+                      className="t7-time-picker-option"
+                      key={option}
+                      onClick={() => choose(option)}
+                      role="option"
+                      type="button"
+                    >
+                      {formatTimeLabel(option)}
+                    </button>
+                  ))
+                ) : (
+                  <span className="t7-time-picker-empty">
+                    No available times
+                  </span>
+                )}
+              </div>
+              {value ? (
+                <Button
+                  intent="quiet"
+                  onClick={() => choose(undefined)}
+                  size="sm"
+                >
+                  {clearLabel}
+                </Button>
+              ) : null}
+            </div>
+          </FloatingPortal>
+        ) : null}
+      </span>
+      {error || hint ? (
+        <span className={cx("t7-field-hint", error && "is-error")} id={helpId}>
+          {error ?? hint}
+        </span>
+      ) : null}
+    </label>
+  );
 }
 
 export interface DateTimeInputProps extends Omit<
@@ -582,9 +782,9 @@ export function DateTimeInput({
   return (
     <div {...props} className={cx("t7-date-time-input", className)}>
       <DatePicker label={dateLabel} onValueChange={onDateChange} value={date} />
-      <TimeInput
+      <TimePicker
         label={timeLabel}
-        onChange={(event) => onTimeChange(event.target.value)}
+        onValueChange={(next) => onTimeChange(next ?? "")}
         value={time}
       />
     </div>

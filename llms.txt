@@ -22,17 +22,18 @@
 
 ## SHELL GRAMMAR
 
-`AppShell → [Sidebar | TopNavigation] → [PageHeader] → bounded route content`
+`AppShell → [Sidebar | TopNavigation | NavigationMenu] → [PageHeader] → bounded route content`
 
 - `Sidebar` / `SidebarGroup`: private, information-dense applications.
-- `TopNavigation`: public, content, and commerce composition.
+- `PublicShell` + `NavigationMenu`: public, content, and commerce composition; `TopNavigation` remains the flat-link option.
 - `PageHeader`: one route-level title, context, and primary action.
-- `DetailDrawer`: contextual inspection; `Modal`: focused task; `AlertDialog`: irreversible confirmation.
+- `Drawer` / `DetailDrawer`: contextual inspection; `Modal`: focused task; `AlertDialog`: irreversible confirmation.
 - Use `MobileSidebar` and `FilterDrawer` to relocate secondary controls at narrow widths. Do not create a second mobile or commerce primitive family.
 
 ## AI CATALOGS
 
-- `packages/ai/catalog/recipes.json` — page archetypes and component composition.
+- `packages/ai/catalog/recipes.json` — page archetypes, shell selection,
+  component composition, and required/recommended/optional block roles.
 - `packages/ai/catalog/components.json` — searchable component contracts.
 - `packages/ai/catalog/blocks.json` — expressive block contracts, quality
   metadata, content slots, and recipe references.
@@ -86,12 +87,12 @@ as compatibility routes.
 ## COMPONENTS
 
 - actions: `Button`, `IconButton`, `ButtonGroup`, `ToggleButtonGroup`, `SplitButton`
-- forms: `Field`, `Input`, `Textarea`, `Select`, `Combobox`, `MultiSelect`, `DatePicker`, `FormSection`
-- layout/navigation: `AppShell`, `Sidebar`, `TopNavigation`, `Breadcrumb`, `Tabs`, `CommandMenu`, `PageHeader`
+- forms: `Field`, `Input`, `Textarea`, `Select`, `Combobox`, `MultiSelect`, `DatePicker`, `NativeTimeInput`, `TimePicker`, `FormSection`
+- layout/navigation: `AppShell`, `Sidebar`, `TopNavigation`, `NavigationMenu`, `PublicShell`, `Breadcrumb`, `Tabs`, `CommandMenu`, `PageHeader`
 - surfaces: `Card`, `Surface`, `Panel`, `Section`, `Typography`
-- data: `DataTable`, `DataTableColumnPicker`, `RecordSummary`, `MetricCard`, `ActivityFeed`, `StatusChip`
+- data: `Table`, `TableHeader`, `TableBody`, `TableRow`, `TableHead`, `TableCell`, `DataTable`, `DataTableColumnPicker`, `RecordSummary`, `MetricCard`, `ActivityFeed`, `StatusChip`
 - filtering/workflow: `FilterToolbar`, `AppliedFilters`, `FilterDrawer`, `BulkActionBar`, `ApprovalPanel`, `ActionFooter`
-- overlays/feedback: `Modal`, `DetailDrawer`, `AlertDialog`, `Popover`, `Tooltip`, `Toast`, `StateView`, `Skeleton`
+- overlays/feedback: `Drawer`, `Modal`, `DetailDrawer`, `AlertDialog`, `Popover`, `Tooltip`, `Toast`, `StateView`, `Skeleton`
 - commerce/media: `ProductGrid`, `ProductCard`, `Price`, `Rating`, `QuantityControl`, `CartTrigger`, `CartLineItem`, `CartPanel`, `OrderSummary`, `MediaFrame`, `Image`
 - charts/files: `LineChart`, `BarChart`, `DonutChart`, `Progress`, `FileUpload`
 - expressive compositions: `Hero`, `CtaBlock`, `FeatureShowcase`,

@@ -197,6 +197,12 @@ for (const task of tasks) {
     { cwd: repoRoot, encoding: "utf8" },
   );
   assert.match(cliOutput, new RegExp(`Recipe: ${task.recipe}`));
+  if (recipe.shell)
+    assert.match(
+      cliOutput,
+      new RegExp(`Shell: ${recipe.shell.preferred}`),
+      `${task.name}: CLI omits the recipe shell contract`,
+    );
   for (const componentName of recipe.components)
     assert.match(
       cliOutput,
@@ -210,6 +216,25 @@ for (const task of tasks) {
       new RegExp(blockName),
       `${task.name}: CLI omits ${blockName}`,
     );
+  }
+  if (recipe.blockRoles) {
+    const roleNames = [
+      ...(recipe.blockRoles.required ?? []),
+      ...(recipe.blockRoles.recommended ?? []),
+      ...(recipe.blockRoles.optional ?? []),
+    ];
+    assert.deepEqual(
+      [...new Set(roleNames)].sort(),
+      [...new Set(recipe.blocks ?? [])].sort(),
+      `${task.name}: block role metadata does not classify every block`,
+    );
+    for (const role of ["required", "recommended", "optional"])
+      for (const blockName of recipe.blockRoles[role] ?? [])
+        assert.match(
+          cliOutput,
+          new RegExp(blockName),
+          `${task.name}: CLI omits ${role} block ${blockName}`,
+        );
   }
 }
 

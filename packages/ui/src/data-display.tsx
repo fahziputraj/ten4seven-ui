@@ -1,4 +1,12 @@
-import { useMemo, useState, type HTMLAttributes, type ReactNode } from "react";
+import {
+  useMemo,
+  useState,
+  type HTMLAttributes,
+  type ReactNode,
+  type TableHTMLAttributes,
+  type TdHTMLAttributes,
+  type ThHTMLAttributes,
+} from "react";
 
 import { T7Icon, type IconName } from "@ten4seven/icons";
 
@@ -240,6 +248,58 @@ export function ActivityFeed({
 }
 
 export const Timeline = ActivityFeed;
+
+export function Table({
+  className,
+  ...props
+}: TableHTMLAttributes<HTMLTableElement>) {
+  return (
+    <div className="t7-table-wrap">
+      <table
+        {...props}
+        className={cx("t7-table", "t7-semantic-table", className)}
+      />
+    </div>
+  );
+}
+
+export function TableHeader({
+  className,
+  ...props
+}: HTMLAttributes<HTMLTableSectionElement>) {
+  return <thead {...props} className={cx("t7-table-header", className)} />;
+}
+
+export function TableBody({
+  className,
+  ...props
+}: HTMLAttributes<HTMLTableSectionElement>) {
+  return <tbody {...props} className={cx("t7-table-body", className)} />;
+}
+
+export function TableRow({
+  className,
+  ...props
+}: HTMLAttributes<HTMLTableRowElement>) {
+  return <tr {...props} className={cx("t7-table-row", className)} />;
+}
+
+export function TableHead({
+  className,
+  scope = "col",
+  ...props
+}: ThHTMLAttributes<HTMLTableCellElement>) {
+  return (
+    <th {...props} className={cx("t7-table-head", className)} scope={scope} />
+  );
+}
+
+export function TableCell({
+  className,
+  ...props
+}: TdHTMLAttributes<HTMLTableCellElement>) {
+  return <td {...props} className={cx("t7-table-cell", className)} />;
+}
 
 export interface RecordSummaryProps extends Omit<
   HTMLAttributes<HTMLElement>,

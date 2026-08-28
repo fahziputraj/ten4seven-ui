@@ -40,6 +40,7 @@ import {
   DateTimeInput,
   DetailDrawer,
   DonutChart,
+  Drawer,
   DropdownMenu,
   EmptyState,
   Field,
@@ -62,6 +63,8 @@ import {
   Modal,
   MobileSidebar,
   MultiSelect,
+  NavigationMenu,
+  NativeTimeInput,
   NativeSelect,
   NumberInput,
   OtpInput,
@@ -97,7 +100,14 @@ import {
   Surface,
   Switch,
   Tabs,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
   Textarea,
+  TimePicker,
   TimeInput,
   Toast,
   Toaster,
@@ -260,6 +270,7 @@ export function ComponentPreview({
   const [team, setTeam] = useState("maya");
   const [tags, setTags] = useState<string[]>(["design"]);
   const [date, setDate] = useState<string | undefined>("2026-08-26");
+  const [time, setTime] = useState("09:30");
   const [range, setRange] = useState<{ start?: string; end?: string }>({
     start: "2026-08-26",
     end: "2026-08-30",
@@ -610,7 +621,7 @@ export function ComponentPreview({
           }
           label="Project name"
         >
-          <Input aria-label="Project name" defaultValue="Northstar" />
+          <Input aria-label="Project name" defaultValue="ten4seven" />
         </Field>,
       );
     if (component.displayName === "Field Group")
@@ -774,7 +785,7 @@ export function ComponentPreview({
       return frame(
         <Sidebar
           activeKey="inventory"
-          brand={<strong>Northstar</strong>}
+          brand={<strong>ten4seven UI</strong>}
           groups={[
             {
               items: [
@@ -872,6 +883,23 @@ export function ComponentPreview({
           <a href="#">Reports</a>
         </div>,
       );
+    if (component.displayName === "Navigation Menu")
+      return frame(
+        <NavigationMenu
+          items={[
+            { href: "#", key: "overview", label: "Overview" },
+            {
+              children: [
+                { href: "#", key: "books", label: "Books" },
+                { href: "#", key: "collections", label: "Collections" },
+              ],
+              key: "products",
+              label: "Products",
+            },
+            { href: "#", key: "about", label: "About" },
+          ]}
+        />,
+      );
     if (
       component.displayName === "Command Menu" ||
       component.displayName === "Command Palette"
@@ -958,6 +986,36 @@ export function ComponentPreview({
           ]}
           rowKey={(row) => row.id}
         />,
+      );
+    if (
+      [
+        "Table",
+        "Table Header",
+        "Table Body",
+        "Table Row",
+        "Table Head",
+        "Table Cell",
+      ].includes(component.displayName ?? "")
+    )
+      return frame(
+        <Table aria-label="Inventory summary">
+          <TableHeader>
+            <TableRow>
+              <TableHead>Signal</TableHead>
+              <TableHead>Value</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow>
+              <TableCell>Available units</TableCell>
+              <TableCell>48,920</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Reorder review</TableCell>
+              <TableCell>12 items</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>,
       );
     if (
       component.displayName === "Metric Card" ||
@@ -1148,19 +1206,32 @@ export function ComponentPreview({
           <Button intent="secondary" onClick={() => setDrawerOpen(true)}>
             Open detail drawer
           </Button>
-          <DetailDrawer
-            description="A contextual side surface for the selected record."
-            onClose={() => setDrawerOpen(false)}
-            open={drawerOpen}
-            title="Record detail"
-          >
-            <KeyValueList
-              items={[
-                { label: "Status", value: "Ready" },
-                { label: "Owner", value: "Maya Chen" },
-              ]}
-            />
-          </DetailDrawer>
+          {component.displayName === "Drawer" ? (
+            <Drawer
+              description="A reusable side surface for contextual content."
+              onClose={() => setDrawerOpen(false)}
+              open={drawerOpen}
+              title="Contextual surface"
+            >
+              <Typography typeRole="body-sm">
+                Specialized detail and filter drawers compose this base.
+              </Typography>
+            </Drawer>
+          ) : (
+            <DetailDrawer
+              description="A contextual side surface for the selected record."
+              onClose={() => setDrawerOpen(false)}
+              open={drawerOpen}
+              title="Record detail"
+            >
+              <KeyValueList
+                items={[
+                  { label: "Status", value: "Ready" },
+                  { label: "Owner", value: "Maya Chen" },
+                ]}
+              />
+            </DetailDrawer>
+          )}
         </>,
       );
     if (component.displayName === "Popover")
@@ -1323,6 +1394,18 @@ export function ComponentPreview({
           onTimeChange={() => undefined}
           time="09:30"
         />,
+      );
+    if (component.displayName === "Time Picker")
+      return frame(
+        <TimePicker
+          label="Review time"
+          onValueChange={(next) => setTime(next ?? "")}
+          value={time}
+        />,
+      );
+    if (component.displayName === "Native Time Input")
+      return frame(
+        <NativeTimeInput label="Review time" defaultValue="09:30" />,
       );
     return frame(<TimeInput label="Review time" defaultValue="09:30" />);
   }
@@ -1562,7 +1645,7 @@ export function ComponentPreview({
               />
             }
             topbar={
-              <Typography typeRole="label">Northstar workspace</Typography>
+              <Typography typeRole="label">ten4seven workspace</Typography>
             }
           >
             <Panel>

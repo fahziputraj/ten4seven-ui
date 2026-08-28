@@ -10,9 +10,12 @@ differences:
   loading/empty/error helper states.
 - `DatePicker` and `DateRangePicker` use stable `YYYY-MM-DD` values and the
   shared floating positioning model.
-- `TimeInput` remains a native time input; it does not pretend to normalize
-  locale-specific time-picker UI.
-- `DateTimeInput` composes date and time without owning timezone or persistence.
+- `NativeTimeInput` is the explicit browser-native time contract for
+  platform-specific behavior; `TimePicker` is the tokenized bounded listbox
+  for shared interaction language.
+- `TimeInput` remains the compatibility alias for `NativeTimeInput`, and
+  `DateTimeInput` composes `DatePicker` with `TimePicker` without owning
+  timezone or persistence.
 
 The Component Lab form section is the comparison fixture. The overlay stress
 fixture adds the nested and constrained contexts that ordinary form examples do

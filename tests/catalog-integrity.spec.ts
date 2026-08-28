@@ -121,6 +121,26 @@ test.describe("catalog information architecture", () => {
       ).toBeVisible();
     }
 
+    await page.goto("/recipes/marketing-home");
+    await expect(
+      page.getByRole("heading", { name: "Required blocks", exact: true }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", {
+        name: "Recommended blocks",
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Optional blocks", exact: true }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", {
+        name: "Optional components",
+        exact: true,
+      }),
+    ).toBeVisible();
+
     await page.goto("/components");
     await page
       .getByRole("button", { name: "Search ten4seven catalog" })
@@ -190,12 +210,19 @@ test.describe("catalog information architecture", () => {
     await page.setViewportSize({ height: 844, width: 390 });
     await page.goto("/components/forms");
     await page.getByRole("button", { name: "Open library navigation" }).click();
+    const navigation = page.getByRole("dialog", {
+      name: "Library navigation",
+    });
+    await expect(navigation).toBeVisible();
     await expect(
-      page.getByRole("dialog", { name: "Library navigation" }),
+      navigation.getByRole("button", { name: "Components", exact: true }),
     ).toBeVisible();
     await expect(
-      page.getByRole("link", { name: /^Forms 26$/ }).first(),
+      navigation.getByRole("button", { name: "Blocks", exact: true }),
     ).toBeVisible();
+    await expect(
+      navigation.locator(".studio-component-family-list a"),
+    ).toHaveCount(0);
     await page.keyboard.press("Escape");
     await expect(
       page.getByRole("dialog", { name: "Library navigation" }),

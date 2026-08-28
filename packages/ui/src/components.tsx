@@ -1202,27 +1202,32 @@ export function BulkActionBar({
   );
 }
 
-export interface DetailDrawerProps {
+export interface DrawerProps {
+  closeLabel?: string;
   open: boolean;
-  title: string;
-  description?: string;
+  title: ReactNode;
+  description?: ReactNode;
   children: ReactNode;
   onClose: () => void;
   side?: "left" | "right";
+  initialFocus?: React.RefObject<HTMLElement | null>;
 }
 
-export function DetailDrawer({
+/** Generic modal side surface; specialized drawers should compose this contract. */
+export function Drawer({
   children,
+  closeLabel = "Close drawer",
   description,
+  initialFocus,
   onClose,
   open,
   side = "right",
   title,
-}: DetailDrawerProps) {
+}: DrawerProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
   const descriptionId = `${titleId}-description`;
-  const dialogRef = useNativeDialog(open, onClose, closeRef);
+  const dialogRef = useNativeDialog(open, onClose, initialFocus ?? closeRef);
 
   return (
     <dialog
@@ -1259,7 +1264,7 @@ export function DetailDrawer({
           </div>
           <button
             ref={closeRef}
-            aria-label="Close detail drawer"
+            aria-label={closeLabel}
             className="t7-icon-button"
             onClick={onClose}
             type="button"
@@ -1273,7 +1278,14 @@ export function DetailDrawer({
   );
 }
 
-export const Drawer = DetailDrawer;
+export interface DetailDrawerProps extends DrawerProps {}
+
+/** Record-focused composition over the generic Drawer contract. */
+export function DetailDrawer(props: DetailDrawerProps) {
+  return (
+    <Drawer {...props} closeLabel={props.closeLabel ?? "Close detail drawer"} />
+  );
+}
 
 export interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;

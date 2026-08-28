@@ -34,7 +34,11 @@ test.describe("workbench documentation and overlay integrity", () => {
     await expect(page.locator(".studio-component-leaves")).toHaveCount(0);
     await expect(
       page.locator(".studio-sidebar .studio-component-family-list a"),
-    ).toHaveCount(17);
+    ).toHaveCount(0);
+    await expect(page.locator(".studio-sidebar")).toContainText("Blocks");
+    await expect(page.locator(".studio-sidebar")).toContainText("Tokens");
+    await expect(page.locator(".studio-sidebar")).toContainText("Recipes");
+    await expect(page.locator(".catalog-family-anchors a")).toHaveCount(17);
 
     await page
       .locator(".catalog-family-anchors a")

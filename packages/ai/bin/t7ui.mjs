@@ -181,13 +181,28 @@ function printFind(query) {
   console.log(`Recipe: ${recipeName ?? "inspect manually"}`);
   if (recipe) {
     console.log(`Profiles: ${recipe.profiles.join(", ")}`);
+    if (recipe.shell)
+      console.log(
+        `Shell: ${recipe.shell.preferred}${recipe.shell.alternatives?.length ? ` (alternatives: ${recipe.shell.alternatives.join(", ")})` : ""}`,
+      );
     console.log("Components:");
     for (const name of [...recipe.components, ...(recipe.optional ?? [])])
       console.log(`- ${name}`);
     if (recipe.blocks?.length) {
       console.log("Blocks:");
-      for (const name of recipe.blocks)
-        console.log(`- ${name}: ${blocks[name]?.displayName ?? name}`);
+      const blockGroups = recipe.blockRoles
+        ? [
+            ["required", recipe.blockRoles.required],
+            ["recommended", recipe.blockRoles.recommended],
+            ["optional", recipe.blockRoles.optional],
+          ]
+        : [["available", recipe.blocks]];
+      for (const [role, names] of blockGroups) {
+        if (!names?.length) continue;
+        console.log(`${role[0].toUpperCase()}${role.slice(1)} blocks:`);
+        for (const name of names)
+          console.log(`- ${name}: ${blocks[name]?.displayName ?? name}`);
+      }
     }
   }
   console.log("Icons:");

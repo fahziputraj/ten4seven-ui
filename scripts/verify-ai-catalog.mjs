@@ -95,6 +95,7 @@ const requiredComponents = [
   "AppShell",
   "Sidebar",
   "TopNavigation",
+  "NavigationMenu",
   "Button",
   "IconButton",
   "Input",
@@ -103,8 +104,16 @@ const requiredComponents = [
   "Radio",
   "Combobox",
   "DatePicker",
+  "TimePicker",
+  "NativeTimeInput",
   "Card",
   "DataTable",
+  "Table",
+  "TableHeader",
+  "TableBody",
+  "TableRow",
+  "TableHead",
+  "TableCell",
   "Modal",
   "AlertDialog",
   "Popover",
@@ -114,6 +123,7 @@ const requiredComponents = [
   "KPICluster",
   "BulkActionBar",
   "DetailDrawer",
+  "Drawer",
   "EmptyState",
   "ProductGrid",
   "ProductCard",
@@ -345,6 +355,12 @@ assert.doesNotMatch(
 );
 assert.equal(components.DataTable.category, "table");
 assert.equal(components.DataTableColumnPicker.category, "table");
+assert.equal(components.Drawer.aliasOf, undefined);
+assert.equal(components.TimeInput.aliasOf, "NativeTimeInput");
+assert.equal(
+  components.DateTimeInput.relatedComponents.includes("TimePicker"),
+  true,
+);
 assert.equal(components.AppShell.category, "pattern");
 assert.equal(components.ApprovalPanel.category, "pattern");
 assert.equal(components.ActionFooter.category, "pattern");
@@ -372,6 +388,45 @@ for (const [name, recipe] of Object.entries(recipes)) {
       blocks[blockName],
       `${name}: unknown expressive block ${blockName}`,
     );
+  if (recipe.blockRoles) {
+    const roleNames = [
+      ...(recipe.blockRoles.required ?? []),
+      ...(recipe.blockRoles.recommended ?? []),
+      ...(recipe.blockRoles.optional ?? []),
+    ];
+    for (const role of ["required", "recommended", "optional"])
+      assert.ok(
+        Array.isArray(recipe.blockRoles[role]),
+        `${name}: ${role} block role list missing`,
+      );
+    assert.equal(
+      new Set(roleNames).size,
+      roleNames.length,
+      `${name}: repeated block role entry`,
+    );
+    assert.deepEqual(
+      [...new Set(roleNames)].sort(),
+      [...new Set(recipe.blocks ?? [])].sort(),
+      `${name}: block roles must classify every listed block exactly once`,
+    );
+  }
+  if (recipe.shell) {
+    assert.equal(
+      components[recipe.shell.preferred]?.status,
+      "implemented",
+      `${name}: preferred shell is not implemented`,
+    );
+    for (const shellName of recipe.shell.alternatives ?? [])
+      assert.equal(
+        components[shellName]?.status,
+        "implemented",
+        `${name}: shell alternative is not implemented`,
+      );
+    assert.ok(
+      recipe.shell.selectionRule,
+      `${name}: shell selection rule missing`,
+    );
+  }
   for (const iconName of recipe.icons ?? [])
     assert.ok(icons[iconName], `${name}: unknown semantic icon ${iconName}`);
   for (const reference of recipe.references ?? [])
@@ -418,8 +473,8 @@ assert.deepEqual(recipes["entity-list"].components, [
   "DetailDrawer",
 ]);
 assert.deepEqual(recipes.catalog.components, [
-  "AppShell",
-  "TopNavigation",
+  "PublicShell",
+  "NavigationMenu",
   "PageHeader",
   "SearchInput",
   "ProductGrid",

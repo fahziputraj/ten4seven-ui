@@ -19,7 +19,7 @@
 
 ## Render evidence
 
-All captures are first-viewport renders from direct deterministic URLs, recorded after the mobile shell correction. `scrollWidth === clientWidth` for each document.
+All captures are first-viewport renders from the direct deterministic URLs, recaptured after neutralizing the local editorial cover lettering, normalizing inventory bulk-selection copy, and retaining the mobile shell correction. `scrollWidth === clientWidth` for each document.
 
 | Route     | Desktop `1440 × 900` | Mobile `390 × 844` | Mobile `360 × 800` |
 | --------- | -------------------- | ------------------ | ------------------ |

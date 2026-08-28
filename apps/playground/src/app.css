@@ -3261,6 +3261,30 @@
 .catalog-recipe-flow a:focus-visible {
   text-decoration: underline;
 }
+.catalog-recipe-role-stack {
+  display: grid;
+  gap: 22px;
+}
+.catalog-recipe-role {
+  display: grid;
+  gap: 8px;
+}
+.catalog-recipe-role-heading {
+  display: grid;
+  gap: 3px;
+}
+.catalog-recipe-role-heading [data-t7-type="caption"] {
+  color: hsl(var(--t7-muted-foreground-hsl));
+}
+.catalog-recipe-role .catalog-recipe-flow li {
+  grid-template-columns: 22px minmax(0, 1fr);
+  padding-block: 9px;
+}
+.catalog-recipe-role .catalog-recipe-flow li > span {
+  display: grid;
+  place-items: center;
+  color: hsl(var(--t7-primary-hsl));
+}
 .token-family-nav,
 .catalog-filter-tabs {
   display: flex;
@@ -3349,6 +3373,9 @@
 }
 .icon-coverage-section {
   gap: 14px;
+}
+.icon-registry-proof {
+  color: hsl(var(--t7-muted-foreground-hsl));
 }
 .icon-coverage-grid {
   display: grid;

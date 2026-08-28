@@ -48,10 +48,12 @@ pnpm t7ui find "inventory list"
 
 Start from the closest recipe. Do not invent a new information architecture before checking the catalog.
 
-When a page needs expressive presentation, read the recipe's optional `blocks`
-list and then `packages/ai/catalog/blocks.json`. Use the block contract for
-content slots, responsive behavior, motion, accessibility, and performance;
-keep interaction primitives in `@ten4seven/ui`.
+When a page needs expressive presentation, read the recipe's `blocks` list and
+its `blockRoles` classification (`required`, `recommended`, or `optional`),
+then read `packages/ai/catalog/blocks.json`. Do not render every available
+block by default. Use each block contract for content slots, responsive
+behavior, motion, accessibility, and performance; keep interaction primitives
+in `@ten4seven/ui`.
 
 ## 5. Find implemented components
 
@@ -67,9 +69,9 @@ Use the capability family—not the visual mood—to narrow selection:
 
 - actions: `Button`, `IconButton`, `ButtonGroup`, `ToggleButtonGroup`, `SplitButton`;
 - forms: `Field`, native labelled controls, `Combobox`, `MultiSelect`, date/time controls;
-- shell/navigation: `AppShell`, `Sidebar`, `TopNavigation`, `Breadcrumb`, `Tabs`, `CommandMenu`;
+- shell/navigation: `AppShell`, `Sidebar`, `TopNavigation`, `NavigationMenu`, `PublicShell`, `Breadcrumb`, `Tabs`, `CommandMenu`;
 - data/workflow: `DataTable`, `RecordSummary`, `MetricCard`, `FilterToolbar`, `ApprovalPanel`;
-- overlays/feedback: `DetailDrawer`, `Modal`, `AlertDialog`, `Popover`, `Toast`, `StateView`;
+- overlays/feedback: `Drawer`, `DetailDrawer`, `Modal`, `AlertDialog`, `Popover`, `Toast`, `StateView`;
 - commerce/media: `ProductGrid`, `ProductCard`, `Price`, `Rating`, `QuantityControl`, `CartTrigger`, `CartLineItem`, `CartPanel`, `OrderSummary`, `MediaFrame`;
 - charts/files: SVG chart components, `Progress`, `FileUpload`.
 - expressive blocks: `Hero`, `CtaBlock`, `FeatureShowcase`, `StatsSection`,
@@ -82,13 +84,13 @@ Read [COMPONENT_SELECTION.md](COMPONENT_SELECTION.md) for the compact decision m
 
 Use one shared grammar:
 
-`AppShell → [Sidebar | TopNavigation] → [PageHeader] → bounded route content`
+`AppShell → [Sidebar | TopNavigation | NavigationMenu] → [PageHeader] → bounded route content`
 
 - Use `Sidebar` / `SidebarGroup` for private, information-dense applications.
-- Use `TopNavigation` for public, content, and commerce composition.
+- Use `PublicShell` with `NavigationMenu` for public, content, and commerce composition; use `TopNavigation` for flat links.
 - Keep one route-level `PageHeader`; do not nest competing page headings.
 - Relocate secondary navigation and filters through `MobileSidebar` or `FilterDrawer` at narrow widths.
-- Use `DetailDrawer` for contextual inspection, `Modal` for a focused task, and `AlertDialog` for irreversible confirmation.
+- Use `Drawer` or `DetailDrawer` for contextual inspection, `Modal` for a focused task, and `AlertDialog` for irreversible confirmation.
 
 ## 7. Use theme tokens
 

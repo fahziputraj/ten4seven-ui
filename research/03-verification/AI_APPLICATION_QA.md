@@ -24,7 +24,7 @@ pnpm t7ui find "warehouse inventory list"
 
 pnpm t7ui find "ebook store catalog"
 → catalog / commerce
-→ AppShell, TopNavigation, PageHeader, SearchInput, ProductGrid,
+→ PublicShell, NavigationMenu, PageHeader, SearchInput, ProductGrid,
   ProductCard, Pagination
 ```
 

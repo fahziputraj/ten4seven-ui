@@ -34,19 +34,28 @@ repeated, and worth promoting. The following outcomes are now package-owned:
   commerce contracts. They compose the existing Button, Typography, EmptyState,
   Price, and surface language; they do not create a commerce-only primitive
   family or own persistence/payment.
-- `DataTable` and `DataTableColumnPicker` are classified under `Tables`.
+- `DataTable`, `Table`, and `DataTableColumnPicker` are classified under `Tables`.
   `AppShell`, `ApprovalPanel`, `ActionFooter`, `CartPanel`, and `OrderSummary`
   are reusable `Patterns`; `Filtering & Bulk Actions` is separate from both
   `Data Display` and `Tables`.
 - `InputGroup`/`InputAddon` are composition responsibilities for the existing
-  Input anatomy; `TagInput` is not needed by current recipes; NavigationMenu,
-  HoverCard, CopyButton, Kbd, Listbox, TreeView, FilterRail,
-  NotificationItem, SearchResultItem, Skeleton patterns, and Carousel are
-  either existing contracts, simple composition, or not evidenced by current
-  product/reference flows. They are not added speculatively.
+  Input anatomy; `TagInput` is not needed by current recipes. `NavigationMenu`
+  is now the compact nested public-navigation contract, `Drawer` is the generic
+  overlay base, and `Table` is the lightweight semantic table family. HoverCard,
+  CopyButton, Kbd, Listbox, TreeView, FilterRail, NotificationItem,
+  SearchResultItem, and Skeleton patterns remain either existing contracts,
+  simple composition, or not evidenced by current product/reference flows.
 - Rich text, Kanban, spreadsheet editing, schedulers, node graphs, GIS, video
   editors, 3D viewers, and code editors remain explicit non-goals.
 
 This completion pass introduced **0 new donor gap events**. Any future donor
 lookup must still be recorded as a gap event with source, reason, normalization,
 and verification evidence before a consumer uses the resulting contract.
+
+## Continuation contract refinement — 2026-08-28
+
+The `marketing-home` recipe now classifies its existing expressive block list
+with `blockRoles` (`required`, `recommended`, and `optional`). This is an AI
+contract/documentation refinement over package-owned blocks, not a donor lookup
+or a parallel visual system. Validators, the `t7ui find` CLI, and the rendered
+recipe detail route all enforce and expose the classification.

@@ -15,10 +15,12 @@ ten4seven UI is the design-system authority for this application. Preserve the a
 - Identify the screen archetype and retrieve its recipe.
 - Search the component catalog before writing JSX.
 - If the recipe names expressive blocks, search `packages/ai/catalog/blocks.json`
-  and use the block contract for content slots and responsive quality.
+  and use its `blockRoles` (`required`, `recommended`, `optional`) so the
+  page does not render every available block by default. Use each block
+  contract for content slots and responsive quality.
 - Configure `Ten4SevenProvider` for appearance, palette, radius, density, and typography.
 - Use `T7Icon` with semantic names from the icon catalog; never paste provider identifiers.
-- Build the shell and navigation with canonical primitives first: `AppShell → [Sidebar | TopNavigation] → [PageHeader] → bounded route content`. Use `Sidebar` for private information-dense applications and `TopNavigation` for public/content/commerce surfaces.
+- Build the shell and navigation with canonical primitives first: `AppShell → [Sidebar | TopNavigation | NavigationMenu] → [PageHeader] → bounded route content`. Use `Sidebar` for private information-dense applications and `PublicShell` with `NavigationMenu` for public/content/commerce surfaces.
 - Preserve API calls, state, validation, routes, permissions, form schemas, and events.
 - Keep responsive behavior intentional: test narrow layout, overflow, focus order, and touch targets.
 - Use semantic labels, keyboard interaction, visible focus, and correct table/dialog semantics.

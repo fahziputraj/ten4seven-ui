@@ -45,12 +45,12 @@ const relationFields = ["alternativeTo", "composesWith"];
 
 assert.equal(
   canonical.length,
-  129,
+  138,
   "canonical component count changed; update evidence intentionally",
 );
 assert.equal(
   Object.keys(components).length,
-  135,
+  144,
   "component catalog count changed; update evidence intentionally",
 );
 assert.equal(
@@ -172,6 +172,28 @@ for (const [name, recipe] of Object.entries(recipes)) {
       blocks[blockName],
       `${name}: unknown expressive block ${blockName}`,
     );
+  if (recipe.blockRoles) {
+    const roleNames = [
+      ...(recipe.blockRoles.required ?? []),
+      ...(recipe.blockRoles.recommended ?? []),
+      ...(recipe.blockRoles.optional ?? []),
+    ];
+    for (const role of ["required", "recommended", "optional"])
+      assert.ok(
+        Array.isArray(recipe.blockRoles[role]),
+        `${name}: ${role} block role list missing`,
+      );
+    assert.equal(
+      new Set(roleNames).size,
+      roleNames.length,
+      `${name}: repeated block role entry`,
+    );
+    assert.deepEqual(
+      [...new Set(roleNames)].sort(),
+      [...new Set(recipe.blocks ?? [])].sort(),
+      `${name}: block roles must classify every listed block exactly once`,
+    );
+  }
 }
 
 assert.deepEqual(recipes["entity-list"].components, [
@@ -186,14 +208,33 @@ assert.deepEqual(recipes["entity-list"].components, [
   "DetailDrawer",
 ]);
 assert.deepEqual(recipes.catalog.components, [
-  "AppShell",
-  "TopNavigation",
+  "PublicShell",
+  "NavigationMenu",
   "PageHeader",
   "SearchInput",
   "ProductGrid",
   "ProductCard",
   "Pagination",
 ]);
+assert.equal(recipes.catalog.shell.preferred, "PublicShell");
+assert.equal(recipes["marketing-home"].shell.preferred, "PublicShell");
+assert.ok(recipes["marketing-home"].blocks.includes("hero-split"));
+assert.deepEqual(recipes["marketing-home"].blockRoles, {
+  required: ["hero-split", "cta-contained", "public-footer"],
+  recommended: [
+    "logo-cloud",
+    "feature-showcase",
+    "stats-section",
+    "content-showcase",
+    "testimonials",
+  ],
+  optional: [
+    "announcement-bar",
+    "product-showcase",
+    "pricing-section",
+    "carousel",
+  ],
+});
 assert.deepEqual(recipes.cart.components, [
   "AppShell",
   "TopNavigation",

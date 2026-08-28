@@ -23,8 +23,10 @@ import {
   ProductCard,
   ProductGrid,
   ProductMeta,
+  PublicShell,
   Radio,
   Rating,
+  SearchInput,
   Select,
   Sidebar,
   Typography,
@@ -95,7 +97,7 @@ const inventoryItems: InventoryItem[] = [
     movementRank: 6,
     reorderPoint: 320,
     unitCost: 2.84,
-    supplier: "Northstar Foods",
+    supplier: "Prima Pangan",
   },
   {
     id: "inv-1048",
@@ -163,7 +165,7 @@ const inventoryItems: InventoryItem[] = [
     movementRank: 2,
     reorderPoint: 240,
     unitCost: 1.18,
-    supplier: "Northstar Foods",
+    supplier: "Prima Pangan",
   },
   {
     id: "inv-1157",
@@ -563,7 +565,7 @@ export function WarehouseInventory({
         <ReferenceBrand
           icon="warehouse"
           subtitle="Operations workspace"
-          title="Northstar"
+          title="ten4seven UI"
         />
       }
       items={[
@@ -581,7 +583,7 @@ export function WarehouseInventory({
       className="reference-app-shell warehouse-app-shell"
       sidebar={warehouseSidebar}
       topbar={
-        <OperationalTopbar context="Northstar / Inventory" icon="warehouse">
+        <OperationalTopbar context="ten4seven UI / Inventory" icon="warehouse">
           <Button
             aria-label="Open warehouse settings"
             intent="quiet"
@@ -793,7 +795,7 @@ export function WarehouseInventory({
                   </Button>
                 </>
               }
-              noun="items"
+              noun={selectedRowKeys.length === 1 ? "item" : "items"}
               onClear={() => setSelectedRowKeys([])}
               selectedCount={selectedRowKeys.length}
             />
@@ -1404,90 +1406,85 @@ export function EbookStoreCatalog() {
   };
 
   return (
-    <AppShell
-      className="reference-app-shell ebook-app-shell"
-      topbar={
-        <div className="ebook-store-header">
-          <div className="ebook-store-brand">
-            <span className="reference-brand-mark">
-              <T7Icon name="book" size={18} />
-            </span>
-            <div>
-              <Typography as="strong" typeRole="card-title">
-                Leaf &amp; Letter
-              </Typography>
-              <Typography as="span" typeRole="caption">
-                Toko penerbitan
-              </Typography>
-            </div>
-          </div>
-          <nav aria-label="Navigasi toko" className="ebook-store-nav">
-            <Button
-              intent="quiet"
-              onClick={() => scrollTo("ebook-catalog")}
-              size="sm"
+    <PublicShell
+      actions={
+        <div className="ebook-store-actions">
+          <Button
+            className="ebook-publish-button"
+            intent="primary"
+            leadingIcon="publisher"
+            onClick={() =>
+              setNotice(
+                "Jalur terbitkan siap dihubungkan ke alur penerbitan Anda.",
+              )
+            }
+            size="sm"
+          >
+            Terbitkan
+          </Button>
+          {mobileCart ? (
+            <span onClick={() => setCartOpen(true)}>{cartTrigger}</span>
+          ) : (
+            <Popover
+              className="ebook-cart-popover"
+              onOpenChange={setCartOpen}
+              open={cartOpen}
+              side="bottom"
+              trigger={cartTrigger}
             >
-              Buku
-            </Button>
-            <Button
-              intent="quiet"
-              onClick={() =>
-                setNotice(
-                  "Kolaborasi menghubungkan penulis, editor, dan pembaca.",
-                )
-              }
-              size="sm"
-            >
-              Kolaborasi
-            </Button>
-            <Button
-              intent="quiet"
-              onClick={() => scrollTo("ebook-categories")}
-              size="sm"
-            >
-              Jelajahi
-            </Button>
-          </nav>
-          <div className="ebook-store-actions">
-            <Button
-              className="ebook-publish-button"
-              intent="primary"
-              leadingIcon="publisher"
-              onClick={() =>
-                setNotice(
-                  "Jalur terbitkan siap dihubungkan ke alur penerbitan Anda.",
-                )
-              }
-              size="sm"
-            >
-              Terbitkan
-            </Button>
-            {mobileCart ? (
-              <span onClick={() => setCartOpen(true)}>{cartTrigger}</span>
-            ) : (
-              <Popover
-                className="ebook-cart-popover"
-                onOpenChange={setCartOpen}
-                open={cartOpen}
-                side="bottom"
-                trigger={cartTrigger}
-              >
-                {cartPanel}
-              </Popover>
-            )}
-            <Button
-              className="ebook-account-button"
-              intent="quiet"
-              onClick={() =>
-                setNotice("Akses akun tetap berada pada storefront pengelola.")
-              }
-              size="sm"
-            >
-              Akun
-            </Button>
+              {cartPanel}
+            </Popover>
+          )}
+          <Button
+            className="ebook-account-button"
+            intent="quiet"
+            onClick={() =>
+              setNotice("Akses akun tetap berada pada storefront pengelola.")
+            }
+            size="sm"
+          >
+            Akun
+          </Button>
+        </div>
+      }
+      brand={
+        <div className="ebook-store-brand">
+          <span className="reference-brand-mark">
+            <T7Icon name="book" size={18} />
+          </span>
+          <div>
+            <Typography as="strong" typeRole="card-title">
+              ten4seven UI
+            </Typography>
+            <Typography as="span" typeRole="caption">
+              Toko penerbitan
+            </Typography>
           </div>
         </div>
       }
+      className="reference-app-shell ebook-app-shell"
+      navigationMenu={[
+        {
+          active: true,
+          href: "#ebook-catalog",
+          key: "books",
+          label: "Buku",
+        },
+        {
+          children: [
+            { href: "#ebook-categories", key: "categories", label: "Kategori" },
+            { href: "#ebook-catalog", key: "collection", label: "Koleksi" },
+          ],
+          key: "explore",
+          label: "Jelajahi",
+        },
+        {
+          key: "collaboration",
+          label: "Kolaborasi",
+          onSelect: () =>
+            setNotice("Kolaborasi menghubungkan penulis, editor, dan pembaca."),
+        },
+      ]}
     >
       <div className="reference-page ebook-reference" data-profile="commerce">
         <PageHeader
@@ -1512,7 +1509,7 @@ export function EbookStoreCatalog() {
               </Typography>
             </>
           }
-          overline="Leaf & Letter · Katalog penerbitan"
+          overline="ten4seven UI · Katalog penerbitan"
           title="Buku untuk ide yang bertahan"
         />
 
@@ -1543,7 +1540,7 @@ export function EbookStoreCatalog() {
             className="ebook-results"
           >
             <div className="ebook-results-search-row">
-              <Input
+              <SearchInput
                 aria-label="Cari buku"
                 className="ebook-catalog-search"
                 label="Cari buku"
@@ -1792,8 +1789,8 @@ export function EbookStoreCatalog() {
             />
             <div className="ebook-quick-copy">
               <Typography as="p" typeRole="body">
-                Edisi pilihan dari Leaf &amp; Letter untuk pembaca profesional
-                dan komunitas belajar.
+                Edisi pilihan dari ten4seven UI untuk pembaca profesional dan
+                komunitas belajar.
               </Typography>
               <div className="ebook-quick-facts">
                 <span>{selectedBook.format}</span>
@@ -1818,6 +1815,6 @@ export function EbookStoreCatalog() {
           </div>
         ) : null}
       </DetailDrawer>
-    </AppShell>
+    </PublicShell>
   );
 }
