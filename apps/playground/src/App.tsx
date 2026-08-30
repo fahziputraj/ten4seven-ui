@@ -1,5 +1,6 @@
 import {
   useEffect,
+  useLayoutEffect,
   useMemo,
   useState,
   type CSSProperties,
@@ -21,7 +22,9 @@ import {
   MobileSidebar,
   Modal,
   NavItem,
+  Popover,
   Select,
+  Slider,
   Ten4SevenProvider,
   Typography,
   useTen4SevenTheme,
@@ -31,16 +34,25 @@ import {
 } from "@ten4seven/ui";
 import type {
   Appearance,
+  CanvasName,
+  ChartPaletteName,
   DensityName,
   PaletteName,
   RadiusName,
   TypographyName,
 } from "@ten4seven/tokens";
-import { paletteProfiles } from "@ten4seven/tokens";
+import {
+  buildRadiusProfile,
+  densityProfiles,
+  motionDurationRange,
+  paletteProfiles,
+  radiusProfiles,
+  radiusValueRange,
+} from "@ten4seven/tokens";
 import {
   EbookStoreCatalog,
-  WarehouseInventory,
-  type WarehouseViewState,
+  OperationsTracker,
+  type OperationsViewState,
 } from "./reference-screens";
 import {
   BlockDetailExplorer,
@@ -82,8 +94,13 @@ import { ReferenceHarness, type ReferenceViewState } from "./reference-harness";
 type StudioSettings = {
   appearance: Appearance;
   palette: PaletteName;
+  primary: PaletteName;
+  accent: PaletteName;
+  canvas: CanvasName;
+  chartPalette: ChartPaletteName;
   radius: RadiusName;
   density: DensityName;
+  motionDuration: number;
   typography: TypographyName;
 };
 
@@ -132,7 +149,7 @@ const routeIcons: Record<PlaygroundRoute, IconName> = {
   Blocks: "components",
   Icons: "category",
   Recipes: "table",
-  "Warehouse Inventory": "warehouse",
+  "Operations Tracker": "analytics",
   "Publishing Store": "book",
   "Public Showcase": "dashboard",
 };
@@ -145,6 +162,104 @@ const studioNavGroups: Array<{
   { label: "Library", routes: libraryNavigation },
   { label: "References", routes: referenceNavigation },
 ];
+
+function LibraryMenu({
+  activePath,
+  onNavigate,
+  onNavigatePath,
+}: {
+  activePath: string;
+  onNavigate: (route: PlaygroundRoute) => void;
+  onNavigatePath: (path: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const isLibraryActive = libraryNavigation.some(
+    (route) =>
+      activePath === playgroundRoutePaths[route] ||
+      (route === "Components" && activePath.startsWith("/components")),
+  );
+
+  const goRoute = (route: PlaygroundRoute) => {
+    setOpen(false);
+    onNavigate(route);
+  };
+  const goPath = (path: string) => {
+    setOpen(false);
+    onNavigatePath(path);
+  };
+
+  return (
+    <Popover
+      aria-label="Library menu"
+      className="studio-library-popover"
+      onOpenChange={setOpen}
+      open={open}
+      side="right"
+      trigger={
+        <NavItem active={isLibraryActive} icon="components" label="Library" />
+      }
+    >
+      <div className="studio-library-menu">
+        <div className="studio-library-menu-heading">
+          <div>
+            <Typography typeRole="overline">Library</Typography>
+            <Typography as="h2" typeRole="heading-sm">
+              Browse contracts
+            </Typography>
+          </div>
+          <span>{componentFamilyDefinitions.length} families</span>
+        </div>
+
+        <section className="studio-library-menu-section">
+          <div className="studio-library-menu-section-heading">
+            <Typography typeRole="label">Components</Typography>
+            <span>Direct family access</span>
+          </div>
+          <NavItem
+            active={activePath.startsWith("/components")}
+            icon="components"
+            label="Components"
+            onClick={() => goPath("/components")}
+          />
+          <div
+            aria-label="Component families"
+            className="studio-library-family-grid"
+          >
+            {componentFamilyDefinitions.map((family) => (
+              <button
+                className="studio-library-family-link"
+                key={family.category}
+                onClick={() => goPath(componentFamilyPath(family.category))}
+                type="button"
+              >
+                <T7Icon name={family.icon} size={16} />
+                <span>{family.label}</span>
+                <T7Icon aria-hidden="true" name="arrowRight" size={13} />
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="studio-library-menu-section">
+          <Typography typeRole="label">Other library contracts</Typography>
+          <div className="studio-library-route-grid">
+            {libraryNavigation
+              .filter((route) => route !== "Components")
+              .map((route) => (
+                <NavItem
+                  active={activePath === playgroundRoutePaths[route]}
+                  icon={routeIcons[route]}
+                  key={route}
+                  label={route}
+                  onClick={() => goRoute(route)}
+                />
+              ))}
+          </div>
+        </section>
+      </div>
+    </Popover>
+  );
+}
 
 function WorkbenchNavigation({
   activePath,
@@ -159,29 +274,26 @@ function WorkbenchNavigation({
     <div className="studio-navigation-tree">
       {studioNavGroups.map((group) => (
         <div className="studio-nav-group" key={group.label}>
-          <span className="studio-nav-label">{group.label}</span>
-          {group.routes.map((route) => {
-            if (group.label === "Library" && route === "Components") {
-              return (
+          {group.label === "Library" ? (
+            <LibraryMenu
+              activePath={activePath}
+              onNavigate={onNavigate}
+              onNavigatePath={onNavigatePath}
+            />
+          ) : (
+            <>
+              <span className="studio-nav-label">{group.label}</span>
+              {group.routes.map((route) => (
                 <NavItem
-                  active={activePath.startsWith("/components")}
+                  active={activePath === playgroundRoutePaths[route]}
                   icon={routeIcons[route]}
                   key={route}
                   label={route}
-                  onClick={() => onNavigatePath("/components")}
+                  onClick={() => onNavigate(route)}
                 />
-              );
-            }
-            return (
-              <NavItem
-                active={activePath === playgroundRoutePaths[route]}
-                icon={routeIcons[route]}
-                key={route}
-                label={route}
-                onClick={() => onNavigate(route)}
-              />
-            );
-          })}
+              ))}
+            </>
+          )}
         </div>
       ))}
     </div>
@@ -265,6 +377,8 @@ function StudioMark() {
 }
 
 function TypographySpecimen() {
+  const { theme } = useTen4SevenTheme();
+
   return (
     <section className="studio-type-section">
       <div className="studio-section-heading">
@@ -278,7 +392,7 @@ function TypographySpecimen() {
       <Card className="typography-specimen">
         <CardContent>
           <div className="type-specimen-hero">
-            <div>
+            <div className="type-specimen-hero-copy">
               <Typography typeRole="overline">Display</Typography>
               <Typography typeRole="display-lg" as="h2">
                 Make the system legible.
@@ -288,17 +402,21 @@ function TypographySpecimen() {
                 emphasis—not a wall of bold text.
               </Typography>
             </div>
-            <div className="type-specimen-metric">
-              <Typography typeRole="metric-lg" as="strong" data-numeric>
-                12,480
+            <div className="type-specimen-meta">
+              <Typography typeRole="overline">Active type system</Typography>
+              <Typography typeRole="label" as="strong">
+                Role-led hierarchy
               </Typography>
-              <Typography typeRole="caption">Indexed surfaces</Typography>
+              <Typography typeRole="caption">Optical sizing enabled</Typography>
+              <Typography typeRole="caption">
+                {theme.typography} preset · Inter variable · opsz auto
+              </Typography>
             </div>
           </div>
 
           <div className="type-specimen-grid">
             <div className="type-specimen-group">
-              <Typography typeRole="overline">Headings</Typography>
+              <Typography typeRole="overline">Heading roles</Typography>
               <Typography typeRole="heading-lg" as="h3">
                 Section title
               </Typography>
@@ -311,18 +429,18 @@ function TypographySpecimen() {
             </div>
 
             <div className="type-specimen-group">
-              <Typography typeRole="overline">Body and labels</Typography>
+              <Typography typeRole="overline">Reading roles</Typography>
               <Typography typeRole="body" as="p">
                 Body text stays readable and calm at the default UI size.
               </Typography>
               <Typography typeRole="body-sm" as="p">
                 Small body text carries supporting context without competing.
               </Typography>
-              <Typography typeRole="label">Form label / 500</Typography>
-              <Typography typeRole="caption">Helper text / 400</Typography>
+              <Typography typeRole="label">Form label</Typography>
+              <Typography typeRole="caption">Helper text</Typography>
             </div>
 
-            <div className="type-specimen-group">
+            <div className="type-specimen-group type-specimen-controls">
               <Typography typeRole="overline">Controls</Typography>
               <div className="type-specimen-control-row">
                 <Button size="sm">Primary action</Button>
@@ -342,22 +460,24 @@ function TypographySpecimen() {
             </div>
 
             <div className="type-specimen-group type-specimen-data">
-              <Typography typeRole="overline">Data</Typography>
-              <div className="type-specimen-data-row">
-                <Typography typeRole="table-header">Amount</Typography>
-                <Typography typeRole="table-cell" data-numeric>
-                  $48,920.00
-                </Typography>
-              </div>
-              <div className="type-specimen-data-row">
-                <Typography typeRole="table-header">Change</Typography>
-                <Typography typeRole="table-cell" data-numeric>
-                  +18.4%
-                </Typography>
-              </div>
-              <div className="type-specimen-data-row">
-                <Typography typeRole="table-header">Updated</Typography>
-                <Typography typeRole="table-cell">Aug 26, 2026</Typography>
+              <Typography typeRole="overline">Data roles</Typography>
+              <div className="type-specimen-data-rows">
+                <div className="type-specimen-data-row">
+                  <Typography typeRole="table-header">Amount</Typography>
+                  <Typography typeRole="table-cell" data-numeric>
+                    $48,920.00
+                  </Typography>
+                </div>
+                <div className="type-specimen-data-row">
+                  <Typography typeRole="table-header">Change</Typography>
+                  <Typography typeRole="table-cell" data-numeric>
+                    +18.4%
+                  </Typography>
+                </div>
+                <div className="type-specimen-data-row">
+                  <Typography typeRole="table-header">Updated</Typography>
+                  <Typography typeRole="table-cell">Aug 26, 2026</Typography>
+                </div>
               </div>
             </div>
           </div>
@@ -377,7 +497,7 @@ function Studio({
 }: {
   activeRoute: Exclude<
     PlaygroundRoute,
-    "Warehouse Inventory" | "Publishing Store" | "Public Showcase"
+    "Operations Tracker" | "Publishing Store" | "Public Showcase"
   >;
   activePath: string;
   breadcrumbItems?: Array<{ label: string; path?: string }>;
@@ -394,8 +514,18 @@ function Studio({
     () => [
       ["Appearance", theme.appearance],
       ["Palette", theme.palette],
-      ["Radius", theme.radius],
+      ["Main color", theme.primary],
+      ["Accent color", theme.accent],
+      ["Canvas", theme.canvas],
+      ["Chart palette", theme.chartPalette],
+      [
+        "Radius",
+        theme.radiusValue === undefined
+          ? theme.radius
+          : `${theme.radiusValue}px`,
+      ],
       ["Density", theme.density],
+      ["Motion", formatMotionDuration(theme.motionDuration)],
       ["Typography", theme.typography],
     ],
     [theme],
@@ -557,22 +687,51 @@ function Studio({
                   <CardContent className="studio-controls-grid">
                     <SettingSelect
                       label="Appearance"
+                      settingKey="appearance"
                       value={theme.appearance}
                       options={["light", "dark"]}
                     />
                     <PalettePicker value={theme.palette} />
                     <SettingSelect
-                      label="Radius"
-                      value={theme.radius}
-                      options={["sharp", "soft", "rounded"]}
+                      label="Main color"
+                      settingKey="primary"
+                      value={theme.primary}
+                      options={paletteNames}
                     />
                     <SettingSelect
-                      label="Density"
-                      value={theme.density}
-                      options={["comfortable", "default", "compact", "dense"]}
+                      label="Accent color"
+                      settingKey="accent"
+                      value={theme.accent}
+                      options={paletteNames}
                     />
+                    <SettingSelect
+                      label="Canvas"
+                      optionLabels={{
+                        balanced: "Balanced",
+                        monochrome: "Monochrome",
+                        paper: "Paper white",
+                      }}
+                      settingKey="canvas"
+                      value={theme.canvas}
+                      options={["balanced", "paper", "monochrome"]}
+                    />
+                    <SettingSelect
+                      label="Chart palette"
+                      optionLabels={{
+                        four: "Four colors",
+                        monochrome: "Monochrome",
+                        spectrum: "Spectrum",
+                      }}
+                      settingKey="chartPalette"
+                      value={theme.chartPalette}
+                      options={["spectrum", "four", "monochrome"]}
+                    />
+                    <RadiusSlider value={theme.radius} />
+                    <DensitySlider value={theme.density} />
+                    <MotionSlider value={theme.motionDuration} />
                     <SettingSelect
                       label="Typography"
+                      settingKey="typography"
                       value={theme.typography}
                       options={["modern", "humanist", "mono"]}
                     />
@@ -632,7 +791,7 @@ function Studio({
                   </p>
                 </div>
                 <span className="studio-section-count">
-                  6 surfaces / 5 axes
+                  6 surfaces / 10 axes
                 </span>
               </section>
 
@@ -838,13 +997,221 @@ function Studio({
   );
 }
 
+type StudioAxisStop<Name extends string> = {
+  detail: string;
+  label: string;
+  name: Name;
+  value: number;
+};
+
+const densityStops = [
+  {
+    detail: `${densityProfiles.dense.control} control · ${densityProfiles.dense.row} row`,
+    label: "32 px",
+    name: "dense",
+    value: 32,
+  },
+  {
+    detail: `${densityProfiles.compact.control} control · ${densityProfiles.compact.row} row`,
+    label: "36 px",
+    name: "compact",
+    value: 36,
+  },
+  {
+    detail: `${densityProfiles.default.control} control · ${densityProfiles.default.row} row`,
+    label: "40 px",
+    name: "default",
+    value: 40,
+  },
+  {
+    detail: `${densityProfiles.comfortable.control} control · ${densityProfiles.comfortable.row} row`,
+    label: "44 px",
+    name: "comfortable",
+    value: 44,
+  },
+] as const satisfies readonly StudioAxisStop<DensityName>[];
+
+function StudioAxisSlider<Name extends string>({
+  axisClassName,
+  label,
+  onChange,
+  stops,
+  value,
+}: {
+  axisClassName: string;
+  label: string;
+  onChange: (name: Name) => void;
+  stops: readonly StudioAxisStop<Name>[];
+  value: Name;
+}) {
+  const activeIndex = Math.max(
+    0,
+    stops.findIndex((stop) => stop.name === value),
+  );
+  const active = stops[activeIndex] ?? stops[0];
+
+  return (
+    <div className={`studio-axis-slider ${axisClassName}`}>
+      <Slider
+        aria-label={label}
+        aria-valuetext={`${active.name}, ${active.label}; ${active.detail}`}
+        label={label}
+        max={stops.length - 1}
+        min={0}
+        onChange={(event) => {
+          const next = stops[Number(event.currentTarget.value)];
+          if (next) onChange(next.name);
+        }}
+        value={activeIndex}
+        valueLabel={active.label}
+      />
+      <span className="studio-axis-slider-detail">{active.detail}</span>
+      <div aria-hidden="true" className="studio-axis-slider-scale">
+        {stops.map((stop) => (
+          <span data-active={stop.name === value} key={stop.name}>
+            {stop.label}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RadiusSlider({ value }: { value: RadiusName }) {
+  const { setTheme, theme } = useTen4SevenTheme();
+  const namedProfile = radiusProfiles[value];
+  const currentValue =
+    theme.radiusValue ?? Number.parseFloat(namedProfile.base);
+  const activeProfile =
+    theme.radiusValue === undefined
+      ? namedProfile
+      : buildRadiusProfile(currentValue);
+
+  return (
+    <div className="studio-axis-slider studio-radius-control">
+      <Slider
+        aria-label="Radius"
+        aria-valuetext={[
+          currentValue,
+          "px base radius; exact 1 px step;",
+          activeProfile.control,
+          "control ·",
+          activeProfile.panel,
+          "panel",
+        ].join(" ")}
+        label="Radius"
+        max={radiusValueRange.max}
+        min={radiusValueRange.min}
+        onChange={(event) => {
+          const next = Math.min(
+            radiusValueRange.max,
+            Math.max(radiusValueRange.min, Number(event.currentTarget.value)),
+          );
+          const radius: RadiusName =
+            next <= 8 ? "sharp" : next <= 14 ? "soft" : "rounded";
+          setTheme({ radius, radiusValue: next });
+        }}
+        step={1}
+        value={currentValue}
+        valueLabel={String(currentValue) + " px"}
+      />
+      <span className="studio-axis-slider-detail">
+        {activeProfile.base} base · {activeProfile.control} control ·{" "}
+        {activeProfile.panel} panel
+      </span>
+      <div aria-hidden="true" className="studio-axis-slider-scale">
+        {["0 px", "12 px", "24 px"].map((stop, index) => (
+          <span
+            data-active={
+              (index === 0 && currentValue === 0) ||
+              (index === 1 && currentValue === 12) ||
+              (index === 2 && currentValue === 24)
+            }
+            key={stop}
+          >
+            {stop}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function DensitySlider({ value }: { value: DensityName }) {
+  const { setTheme } = useTen4SevenTheme();
+  return (
+    <StudioAxisSlider
+      axisClassName="studio-density-control"
+      label="Density"
+      onChange={(density) => setTheme({ density })}
+      stops={densityStops}
+      value={value}
+    />
+  );
+}
+
+function formatMotionDuration(value: number) {
+  return `${Number(value.toFixed(2))}s`;
+}
+
+function MotionSlider({ value }: { value: number }) {
+  const { setTheme } = useTen4SevenTheme();
+  const activeValue = Math.min(
+    motionDurationRange.max,
+    Math.max(motionDurationRange.min, value),
+  );
+  const valueLabel = formatMotionDuration(activeValue);
+
+  return (
+    <div className="studio-axis-slider studio-motion-control">
+      <Slider
+        aria-label="Motion duration"
+        aria-valuetext={`${valueLabel}; viewport reveal and interaction timing`}
+        label="Motion"
+        max={motionDurationRange.max}
+        min={motionDurationRange.min}
+        onChange={(event) => {
+          const next = Math.min(
+            motionDurationRange.max,
+            Math.max(
+              motionDurationRange.min,
+              Number(event.currentTarget.value),
+            ),
+          );
+          setTheme({ motionDuration: next });
+        }}
+        step={motionDurationRange.step}
+        value={activeValue}
+        valueLabel={valueLabel}
+      />
+      <span className="studio-axis-slider-detail">
+        Viewport reveals · interaction timing
+      </span>
+      <div
+        aria-hidden="true"
+        className="studio-axis-slider-scale studio-motion-scale"
+      >
+        {[0.5, 1, 1.5, 2, 2.5].map((stop) => (
+          <span data-active={activeValue === stop} key={stop}>
+            {formatMotionDuration(stop)}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function SettingSelect({
   label,
+  optionLabels,
   options,
+  settingKey,
   value,
 }: {
   label: string;
+  optionLabels?: Record<string, string>;
   options: string[];
+  settingKey: keyof StudioSettings;
   value: string;
 }) {
   const { setTheme } = useTen4SevenTheme();
@@ -854,12 +1221,12 @@ function SettingSelect({
       value={value}
       onChange={(event) => {
         const next = event.target.value;
-        setTheme({ [label.toLowerCase()]: next } as Partial<StudioSettings>);
+        setTheme({ [settingKey]: next } as Partial<StudioSettings>);
       }}
     >
       {options.map((option) => (
         <option key={option} value={option}>
-          {option}
+          {optionLabels?.[option] ?? option}
         </option>
       ))}
     </Select>
@@ -880,7 +1247,9 @@ function PalettePicker({ value }: { value: PaletteName }) {
             aria-pressed={value === palette}
             className="studio-palette-option"
             key={palette}
-            onClick={() => setTheme({ palette })}
+            onClick={() =>
+              setTheme({ palette, primary: palette, accent: palette })
+            }
             type="button"
           >
             <span
@@ -933,8 +1302,13 @@ export default function App() {
   const [settings] = useState<StudioSettings>({
     appearance: "system",
     palette: "emerald",
+    primary: "emerald",
+    accent: "emerald",
+    canvas: "balanced",
+    chartPalette: "spectrum",
     radius: "soft",
     density: "default",
+    motionDuration: 1.5,
     typography: "modern",
   });
   const [routeMatch, setRouteMatch] = useState<RouteMatch>(() =>
@@ -942,21 +1316,22 @@ export default function App() {
       ? { kind: "known", route: "Theme Studio" }
       : routeFromPath(window.location.pathname),
   );
-  const [warehouseViewState, setWarehouseViewState] =
+  const [operationsViewState, setOperationsViewState] =
     useState<ReferenceViewState>("ready");
 
-  useEffect(() => {
-    const restoreDocumentPosition = () => {
-      const hash = window.location.hash.replace(/^#/, "");
-      if (hash) {
-        const target = document.getElementById(decodeURIComponent(hash));
-        if (target) {
-          target.scrollIntoView({ block: "start", behavior: "auto" });
-          return;
-        }
+  useLayoutEffect(() => {
+    const hash = window.location.hash.replace(/^#/, "");
+    if (hash) {
+      const target = document.getElementById(decodeURIComponent(hash));
+      if (target) {
+        target.scrollIntoView({ block: "start", behavior: "instant" });
+        return;
       }
-      window.scrollTo({ behavior: "auto", top: 0 });
-    };
+    }
+    window.scrollTo({ behavior: "instant", top: 0 });
+  }, [routeMatch]);
+
+  useEffect(() => {
     const syncRoute = () => {
       if (window.location.pathname === "/") {
         window.history.replaceState(
@@ -965,13 +1340,9 @@ export default function App() {
           playgroundRoutePaths["Theme Studio"],
         );
         setRouteMatch({ kind: "known", route: "Theme Studio" });
-        restoreDocumentPosition();
         return;
       }
       setRouteMatch(routeFromPath(window.location.pathname));
-      window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(restoreDocumentPosition);
-      });
     };
     syncRoute();
     const handlePopState = () => syncRoute();
@@ -1022,19 +1393,6 @@ export default function App() {
       window.history.pushState({}, "", nextLocationString);
     }
     setRouteMatch(routeFromPath(nextLocation.pathname));
-    window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(() => {
-        const hash = nextLocation.hash.replace(/^#/, "");
-        const target = hash
-          ? document.getElementById(decodeURIComponent(hash))
-          : null;
-        if (target) {
-          target.scrollIntoView({ block: "start", behavior: "auto" });
-        } else {
-          window.scrollTo({ behavior: "auto", top: 0 });
-        }
-      });
-    });
   }
 
   let routeContent: ReactNode;
@@ -1044,12 +1402,12 @@ export default function App() {
     );
   } else if (
     routeMatch.kind === "known" &&
-    routeMatch.route === "Warehouse Inventory"
+    routeMatch.route === "Operations Tracker"
   ) {
     routeContent = (
-      <WarehouseInventory
-        onViewStateChange={setWarehouseViewState}
-        viewState={warehouseViewState as WarehouseViewState}
+      <OperationsTracker
+        onViewStateChange={setOperationsViewState}
+        viewState={operationsViewState as OperationsViewState}
       />
     );
   } else if (
@@ -1061,14 +1419,14 @@ export default function App() {
     routeMatch.kind === "known" &&
     routeMatch.route === "Public Showcase"
   ) {
-    routeContent = <PublicShowcase />;
+    routeContent = <PublicShowcase onNavigatePath={navigateToPath} />;
   } else {
     const activeRoute: Exclude<
       PlaygroundRoute,
-      "Warehouse Inventory" | "Publishing Store" | "Public Showcase"
+      "Operations Tracker" | "Publishing Store" | "Public Showcase"
     > =
       routeMatch.kind === "known" &&
-      routeMatch.route !== "Warehouse Inventory" &&
+      routeMatch.route !== "Operations Tracker" &&
       routeMatch.route !== "Publishing Store" &&
       routeMatch.route !== "Public Showcase"
         ? routeMatch.route
@@ -1168,8 +1526,8 @@ export default function App() {
           <ReferenceHarness
             activeRoute={routeMatch.route}
             onNavigate={navigateTo}
-            onWarehouseViewStateChange={setWarehouseViewState}
-            warehouseViewState={warehouseViewState}
+            onOperationsViewStateChange={setOperationsViewState}
+            operationsViewState={operationsViewState}
           />
         ) : null}
       </ToastProvider>

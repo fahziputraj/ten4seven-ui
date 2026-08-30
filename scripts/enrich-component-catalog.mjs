@@ -217,7 +217,7 @@ recipes.checkout.optional = [
   ]),
 ];
 recipes.catalog.references = ["Publishing Store"];
-recipes["entity-list"].references = ["Warehouse Inventory"];
+recipes["entity-list"].references = ["Operations Tracker"];
 recipes["product-detail"].references = ["Publishing Store"];
 
 const polished = new Set([
@@ -315,7 +315,12 @@ const propTypes = {
   className: "string",
   appearance: "Appearance",
   palette: "PaletteName",
+  primary: "PaletteName",
+  accent: "PaletteName",
+  canvas: "CanvasName",
+  chartPalette: "ChartPaletteName",
   radius: "RadiusName",
+  radiusValue: "number",
   density: "DensityName | TableDensity",
   typography: "TypographyName",
   typeRole: "TypographyRole",

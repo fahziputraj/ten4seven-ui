@@ -11,7 +11,11 @@ import {
 import { T7Icon, type IconName } from "@ten4seven/icons";
 
 import { Drawer, Input, Modal } from "./components";
-import { FloatingPortal, useFloatingPosition } from "./overlay";
+import {
+  FloatingPortal,
+  useExclusiveFloatingLayer,
+  useFloatingPosition,
+} from "./overlay";
 import { cx } from "./utils";
 
 export interface BreadcrumbItem {
@@ -480,7 +484,7 @@ function NavigationMenuBranch({
         <T7Icon aria-hidden="true" name="chevronDown" size={14} />
       </button>
       {open ? (
-        <FloatingPortal>
+        <FloatingPortal anchorRef={triggerRef}>
           <div
             aria-label={`${item.label} navigation`}
             className="t7-navigation-menu-panel t7-floating-content"
@@ -537,6 +541,7 @@ function NavigationMenuBranch({
 function NavigationMenuList({ items }: { items: NavigationMenuItem[] }) {
   const [openKey, setOpenKey] = useState<string | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
+  useExclusiveFloatingLayer(Boolean(openKey), () => setOpenKey(null));
 
   useEffect(() => {
     if (!openKey) return undefined;

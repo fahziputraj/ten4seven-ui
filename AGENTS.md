@@ -34,6 +34,9 @@ Hard rules:
 - Never recreate `Button`, `Input`, `Card`, `Dialog`/`Modal`, `Drawer`, `Table`, `Badge`, navigation primitives, or another catalogued component locally.
 - Do not directly style colors, radius, shadows, control heights, font weights, or typography when ten4seven tokens provide them.
 - Use `className` primarily for composition and layout.
+- Use the native `t7Motion` role map from `@ten4seven/ui` for custom motion;
+  canonical components already consume the same global motion tokens. Do not
+  add local animation durations, keyframes, or a second motion runtime.
 - Do not import donor UI libraries into consumer features.
 - A donor lookup is a design-system gap event, never normal feature work. Check canonical ten4seven, then the AAPM extraction; only then consult one donor for the missing generic behavior. Normalize the result in `@ten4seven/ui`, update the catalog and AI contract, and record provenance before a consumer uses it.
 - Do not use raw Iconify provider strings in application feature code; use `T7Icon` semantic names.
@@ -78,8 +81,8 @@ Reference routes:
 - Patterns: `http://localhost:4173/components/patterns`
 - Tables: `http://localhost:4173/components/tables`
 - Filtering & Bulk Actions: `http://localhost:4173/components/filtering-bulk-actions`
-- Warehouse Inventory: `http://localhost:4173/warehouse-inventory`
+- Operations Tracker: `http://localhost:4173/operations-tracker`
 - Ebook Store Catalog: `http://localhost:4173/ebook-store`
 - Public Showcase: `http://localhost:4173/public-showcase`
 
-These URLs are deterministic Vite entry points and must remain refresh-safe. Theme Studio and Library routes are system/harness surfaces; Warehouse and Ebook routes must remain production-looking and must not expose fixture or cross-reference controls inside their product shells. Use the URLs for direct AI-agent and Playwright QA instead of relying on an in-app navigation sequence.
+These URLs are deterministic Vite entry points and must remain refresh-safe. Theme Studio and Library routes are system/harness surfaces; Operations Tracker and Ebook routes must remain production-looking and must not expose fixture or cross-reference controls inside their product shells. The legacy `/warehouse-inventory` alias remains accepted for existing links. Use the canonical URLs for direct AI-agent and Playwright QA instead of relying on an in-app navigation sequence.

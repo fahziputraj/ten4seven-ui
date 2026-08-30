@@ -121,7 +121,7 @@ ${familySections}
 
 | Display name | Recipe | Purpose | Required contracts | Optional contracts | Product references |\n| --- | --- | --- | --- | --- | --- |\n${recipeRows}
 
-The current L5 reference screens are Warehouse Inventory (entity-list) and
+The current L5 reference screens are Operations Tracker (entity-list) and
 Publishing Store (catalog, cart, and checkout proof). They consume the
 same provider, typography, tokens, actions, surfaces, and interaction language.
 They are fixtures, not backend or payment implementations.
@@ -157,7 +157,7 @@ visual screenshot. Visual maturity is recorded separately from API existence.
   tokens.
 - Theme profiles: light emerald soft/default, dark blue rounded/compact, light
   red soft/default, dark orange rounded/compact, and light slate sharp/dense.
-- Responsive references: Warehouse Inventory and Publishing Store are checked
+- Responsive references: Operations Tracker and Publishing Store are checked
   at desktop, 390x844, and 360px widths with no horizontal overflow.
 - State evidence: loading, empty, error, disabled, selected, sorted, open,
   and action-feedback states must be visible or documented where applicable.
@@ -181,7 +181,7 @@ not on the number of catalog entries.
 | Are foundations, primitives, components, patterns, recipes, and references distinguishable? | Yes. L0-L5 are defined in the blueprint; family routes separate Patterns, Data Display, Tables, and Filtering & Bulk Actions. |
 | Is Select's accessibility model singular and documented? | Yes. Select exposes one custom trigger/listbox model; the mirrored form select is aria-hidden and not tabbable. NativeSelect remains explicitly native. |
 | Are APIs and docs usable without source inspection? | Yes. Public detail routes render purpose, preview, use/avoid, API prop table, minimal example, accessibility, critical states, responsive/motion guidance, tokens, recipes, relations, and alias decisions. |
-| Are recipe relationships and product references explicit? | Yes. Recipes declare required/optional contracts and only the evidence-backed Warehouse Inventory and Publishing Store references. |
+| Are recipe relationships and product references explicit? | Yes. Recipes declare required/optional contracts and only the evidence-backed Operations Tracker and Publishing Store references. |
 | Does commerce prove a different composition rather than a second component system? | Yes. Ebook uses the shared provider and package primitives plus canonical commerce contracts; no CommerceButton or CommerceInput exists. |
 | Are theme, dark mode, density, radius, motion, a11y, and responsive concerns represented? | Yes at contract level, with the required cross-component QA matrix and reference viewport checks. |
 | Did this phase introduce donor runtime code? | No. The donor protocol remains a gap-event rule; no new donor lookup was needed for this completion pass. |
@@ -208,7 +208,7 @@ pnpm test:e2e
 
 Rendered QA must use the deterministic routes in AGENTS.md, including
 /theme-studio, /component-lab, /components, the family routes,
-/recipes/cart, /warehouse-inventory, and /ebook-store. Browser evidence
+/recipes/cart, /operations-tracker, and /ebook-store. Browser evidence
 must cover desktop, 390x844, and 360px reference renders for both L5 screens.
 `;
 

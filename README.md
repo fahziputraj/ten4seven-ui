@@ -7,11 +7,14 @@ The repository currently contains:
 - Phase 0 forensic inventories under `research/00-inventory/`.
 - The AAPM-to-generic extraction map under `research/01-extraction/`.
 - Architecture decisions under `docs/adr/`.
-- A CSS-variable theme engine with appearance, palette, radius, density, and typography axes.
+- A CSS-variable theme engine with appearance, palette, independent primary/accent sources, canvas, chart colorway, radius, density, and typography axes.
+- A native `t7Motion` contract with one global duration axis, semantic easing
+  roles, viewport-gated reveals, subtle pointer-origin feedback, and one
+  reduced-motion policy.
 - A semantic typography system with local Inter variable WOFF2, optical sizing, and a live Theme Studio specimen.
 - A React + Vite playground that proves the same axes across Button, Input, Card, DataTable, Modal, Sidebar item, and typography surfaces.
-- Two production reference surfaces in the playground: Warehouse Inventory (`enterprise/entity-list`) and Ebook Store Catalog (`commerce/catalog`).
-- Deterministic refresh-safe reference URLs: `/theme-studio`, `/warehouse-inventory`, and `/ebook-store`.
+- Two production reference surfaces in the playground: Operations Tracker (`enterprise/entity-list`) and Ebook Store Catalog (`commerce/catalog`).
+- Deterministic refresh-safe reference URLs: `/theme-studio`, `/operations-tracker`, and `/ebook-store`.
 - Production QA and Gate C evidence under `research/04-production/`.
 - A local semantic icon package with no runtime Iconify CDN.
 - An AI application kit under `docs/ai/`, `packages/ai/`, and `skills/ten4seven-ui/`.

@@ -15,7 +15,11 @@ import {
 import { T7Icon, type IconName } from "@ten4seven/icons";
 
 import { Button, Modal } from "./components";
-import { FloatingPortal, useFloatingPosition } from "./overlay";
+import {
+  FloatingPortal,
+  useExclusiveFloatingLayer,
+  useFloatingPosition,
+} from "./overlay";
 import { cx } from "./utils";
 
 type OpenChange = (open: boolean) => void;
@@ -132,6 +136,7 @@ export function Popover({
   const rootRef = useRef<HTMLDivElement>(null);
   const contentId = useId();
   const floating = useFloatingPosition(rootRef, isOpen, { side });
+  useExclusiveFloatingLayer(isOpen, () => setOpen(false));
   useDismissibleLayer(isOpen, setOpen, rootRef, floating.contentRef);
 
   return (
@@ -145,11 +150,11 @@ export function Popover({
         {trigger}
       </OverlayTrigger>
       {isOpen ? (
-        <FloatingPortal>
+        <FloatingPortal anchorRef={rootRef}>
           <div
             className={cx("t7-popover", "t7-floating-content", className)}
             data-floating-placement={floating.placement}
-            data-side={side}
+            data-side={floating.placement}
             id={contentId}
             ref={floating.setContentRef}
             role="dialog"
@@ -216,7 +221,7 @@ export function Tooltip({
           )
         : children}
       {open ? (
-        <FloatingPortal>
+        <FloatingPortal anchorRef={rootRef}>
           <span
             className="t7-tooltip t7-floating-content"
             data-floating-placement={floating.placement}
@@ -275,6 +280,7 @@ export function DropdownMenu({
     align: "end",
     side: "bottom",
   });
+  useExclusiveFloatingLayer(isOpen, () => setOpen(false));
   useDismissibleLayer(isOpen, setOpen, rootRef, floating.contentRef);
   return (
     <div {...props} className={cx("t7-menu-root", className)} ref={rootRef}>
@@ -287,7 +293,7 @@ export function DropdownMenu({
         {trigger}
       </OverlayTrigger>
       {isOpen ? (
-        <FloatingPortal>
+        <FloatingPortal anchorRef={rootRef}>
           <div
             aria-label={label}
             className="t7-menu t7-floating-content"
@@ -392,6 +398,7 @@ export function ContextMenu({
   const [position, setPosition] = useState<{ left: number; top: number }>();
   const rootRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  useExclusiveFloatingLayer(Boolean(position), () => setPosition(undefined));
   useDismissibleLayer(
     Boolean(position),
     () => setPosition(undefined),
@@ -415,7 +422,7 @@ export function ContextMenu({
     >
       {children}
       {position ? (
-        <FloatingPortal>
+        <FloatingPortal anchorRef={rootRef}>
           <div
             aria-label={label}
             className="t7-menu t7-context-menu t7-floating-content"

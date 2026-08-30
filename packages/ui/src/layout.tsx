@@ -120,7 +120,7 @@ export interface ScrollAreaProps extends HTMLAttributes<HTMLDivElement> {
   maxHeight?: string | number;
 }
 
-/** A keyboard-focusable constrained area; it deliberately leaves native scrollbars intact. */
+/** A keyboard-focusable constrained area with native scrolling and shared rail styling. */
 export function ScrollArea({
   children,
   className,

@@ -7,7 +7,7 @@ completion, and expressive block coverage.
 
 `STABLE` is accepted foundation behavior that remains unchanged. `IMPLEMENTED` means the capability has a package-owned, token-driven public API, a catalog entry with status `implemented`, a documented selection path, and static/browser proof. `NOT_NEEDED` and `DOMAIN_SPECIFIC` are deliberate v1 boundaries.
 
-The machine-readable source of truth is `packages/ai/catalog/components.json` (144 public entries: 138 canonical contracts and 6 aliases), `packages/ai/catalog/recipes.json` (17 recipes), and `packages/ai/catalog/blocks.json` (12 expressive blocks). `scripts/verify-ai-catalog.mjs` validates source paths, catalog fields, recipe/block references, status, local icon synchronization, and CLI retrieval. The component explorer at `/components`, the block catalog at `/blocks`, the Public Showcase, Warehouse, and Ebook provide representative interaction and composition proof.
+The machine-readable source of truth is `packages/ai/catalog/components.json` (145 public entries: 139 canonical contracts and 6 aliases), `packages/ai/catalog/recipes.json` (17 recipes), and `packages/ai/catalog/blocks.json` (12 expressive blocks). `scripts/verify-ai-catalog.mjs` validates source paths, catalog fields, recipe/block references, status, local icon synchronization, and CLI retrieval. The component explorer at `/components`, the block catalog at `/blocks`, the Public Showcase, Operations Tracker, and Ebook provide representative interaction and composition proof.
 
 ## Foundations and actions
 
@@ -15,7 +15,7 @@ The machine-readable source of truth is `packages/ai/catalog/components.json` (1
 | ------------------------------------------------- | ----------- | ---------------------------------------------------------------------- |
 | Semantic five-axis provider                       | STABLE      | `Ten4SevenProvider`; all explorer and reference routes consume it.     |
 | Inter Variable, `opsz`, restrained semantic roles | STABLE      | `Typography` and token profiles; Theme Studio specimen and references. |
-| Local semantic icon registry                      | STABLE      | `T7Icon`, 97 local Solar glyphs, catalog-registry equality check.      |
+| Local semantic icon registry                      | STABLE      | `T7Icon`, 98 local Solar glyphs, catalog-registry equality check.      |
 | Motion / reduced-motion and semantic elevation    | IMPLEMENTED | token CSS plus `Surface`, `Panel`, and `Card` families.                |
 | Buttons, loading, icon buttons, grouping          | IMPLEMENTED | `Button`, `IconButton`, `ButtonGroup`, `SplitButton`; live explorer.   |
 | Pressed / segmented controls                      | IMPLEMENTED | `ToggleButton`, `ToggleButtonGroup`; shared action contract.           |
@@ -53,7 +53,7 @@ The machine-readable source of truth is `packages/ai/catalog/components.json` (1
 | ------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------- |
 | Status, avatar, descriptions, metrics | IMPLEMENTED | `Badge`, `StatusChip`, `Avatar`, `AvatarGroup`, `KeyValueList` / `DescriptionList`, `MetricCard`.                    |
 | Ordered activity and record summary   | IMPLEMENTED | `ActivityFeed` / `Timeline`, `RecordSummary`.                                                                        |
-| DataTable operation surface           | IMPLEMENTED | sort, controlled selection, load/error/empty state, density, column visibility and sticky subset; Warehouse proof.   |
+| DataTable operation surface           | IMPLEMENTED | sort, controlled selection, load/error/empty state, density, column visibility and sticky subset; Operations proof.  |
 | Table actions and bulk decisions      | IMPLEMENTED | `DataTableColumnPicker`, `BulkActionBar`, `ActionMenu`, `AlertDialog`.                                               |
 | Product summary surface               | IMPLEMENTED | `ProductCard` plus generic commerce metadata; Ebook proof.                                                           |
 | Filtering primitives                  | IMPLEMENTED | `FilterToolbar`, `FilterChip`, `AppliedFilters`, `FilterDrawer`; Ecommerce keeps filter composition browse-oriented. |
@@ -84,12 +84,12 @@ The machine-readable source of truth is `packages/ai/catalog/components.json` (1
 
 ## Domain boundary
 
-| Capability                                                            | Decision                                                                             |
-| --------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| Warehouse inventory fixture, replenishment rules, transfers           | DOMAIN_SPECIFIC — kept inside the operations reference.                              |
-| Publishing availability, author copy, editorial cover fixtures        | DOMAIN_SPECIFIC — kept inside the publishing reference.                              |
-| Cart, checkout, payment, authentication, storage, analytics backends  | DOMAIN_SPECIFIC — recipes frame UI only and preserve consumer business architecture. |
-| Rich text editor, kanban, scheduler, node graph, GIS, 3D, spreadsheet | NOT_NEEDED — explicit v1 boundary.                                                   |
+| Capability                                                                 | Decision                                                                             |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Operations workstream fixture, domain-specific routing and follow-up rules | DOMAIN_SPECIFIC — kept inside the operations reference.                              |
+| Publishing availability, author copy, editorial cover fixtures             | DOMAIN_SPECIFIC — kept inside the publishing reference.                              |
+| Cart, checkout, payment, authentication, storage, analytics backends       | DOMAIN_SPECIFIC — recipes frame UI only and preserve consumer business architecture. |
+| Rich text editor, kanban, scheduler, node graph, GIS, 3D, spreadsheet      | NOT_NEEDED — explicit v1 boundary.                                                   |
 
 ## Completion conclusion
 

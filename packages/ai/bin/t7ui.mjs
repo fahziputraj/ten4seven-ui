@@ -17,7 +17,7 @@ const packageInfo = readJson("package.json");
 function printInfo() {
   console.log(`ten4seven UI ${packageInfo.version}`);
   console.log(
-    "default theme: appearance=light palette=emerald radius=soft density=default typography=modern",
+    "default theme: appearance=light palette=emerald primary=emerald accent=emerald canvas=balanced chartPalette=spectrum radius=soft density=default typography=modern",
   );
   console.log(
     "available profiles: enterprise, dashboard, commerce, content, marketing",
@@ -35,6 +35,10 @@ function findRecipe(query) {
     ["registration", "auth"],
     ["employee", "entity-form"],
     ["filter drawer", "entity-list"],
+    ["operations tracker", "entity-list"],
+    ["customer intelligence", "entity-list"],
+    ["delivery tracker", "entity-list"],
+    ["work queue", "entity-list"],
     ["file upload", "entity-form"],
     ["confirmation", "entity-detail"],
     ["kpi", "dashboard"],
@@ -89,6 +93,19 @@ function findIcons(query) {
     .filter(([name, icon]) => flatten({ name, ...icon }).includes(normalized))
     .map(([name]) => name);
   const domainIcons = [
+    [
+      "operations",
+      [
+        "analytics",
+        "users",
+        "delivery",
+        "package",
+        "logistics",
+        "payment",
+        "timeline",
+        "search",
+      ],
+    ],
     [
       "inventory",
       [

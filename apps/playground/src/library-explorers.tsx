@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 
 import { IconNames, T7Icon, type IconName } from "@ten4seven/icons";
 import {
+  buildRadiusProfile,
   densityProfiles,
   paletteProfiles,
   radiusProfiles,
@@ -162,6 +163,7 @@ const iconGroups: Array<{ label: string; names: IconName[] }> = [
     label: "Warehouse & operations",
     names: [
       "delivery",
+      "fleet",
       "inventory",
       "item",
       "package",
@@ -286,7 +288,10 @@ function TokenCopyButton({
 export function TokensExplorer() {
   const { theme } = useTen4SevenTheme();
   const typography = typographyProfiles[theme.typography];
-  const radius = radiusProfiles[theme.radius];
+  const radius =
+    theme.radiusValue === undefined
+      ? radiusProfiles[theme.radius]
+      : buildRadiusProfile(theme.radiusValue);
   const density = densityProfiles[theme.density];
   const palette = paletteProfiles[theme.palette];
 
@@ -294,7 +299,7 @@ export function TokensExplorer() {
     <div className="library-page">
       <LibraryIntro
         count="Semantic, resolved tokens"
-        description="Intent-first token groups resolved from the active five-axis theme profile."
+        description="Intent-first token groups resolved from the active semantic theme profile."
         icon="tokens"
         title="Tokens"
       />
@@ -331,7 +336,7 @@ export function TokensExplorer() {
           <CardContent>
             <dl className="library-key-value-list">
               {Object.entries(theme).map(([key, value]) =>
-                key === "typographyFamilies" ? null : (
+                key === "typographyFamilies" || value === undefined ? null : (
                   <div key={key}>
                     <dt>{key}</dt>
                     <dd>{String(value)}</dd>
@@ -447,6 +452,10 @@ export function TokensExplorer() {
           <CardContent>
             <dl className="library-key-value-list">
               <div>
+                <dt>duration</dt>
+                <dd>--t7-motion-duration</dd>
+              </div>
+              <div>
                 <dt>fast</dt>
                 <dd>--t7-duration-fast</dd>
               </div>
@@ -455,11 +464,31 @@ export function TokensExplorer() {
                 <dd>--t7-duration-normal</dd>
               </div>
               <div>
+                <dt>loop</dt>
+                <dd>--t7-duration-loop</dd>
+              </div>
+              <div>
+                <dt>loop eased</dt>
+                <dd>--t7-motion-loop-eased</dd>
+              </div>
+              <div>
+                <dt>interactive</dt>
+                <dd>--t7-motion-interactive</dd>
+              </div>
+              <div>
                 <dt>enter</dt>
-                <dd>--t7-ease-enter</dd>
+                <dd>--t7-motion-enter</dd>
               </div>
               <div>
                 <dt>exit</dt>
+                <dd>--t7-motion-exit</dd>
+              </div>
+              <div>
+                <dt>enter easing</dt>
+                <dd>--t7-ease-enter</dd>
+              </div>
+              <div>
+                <dt>exit easing</dt>
                 <dd>--t7-ease-exit</dd>
               </div>
             </dl>
@@ -612,8 +641,11 @@ export function TokensExplorer() {
             ["Overlay surface", "--t7-surface-overlay-hsl"],
             ["Popup elevation", "--t7-shadow-popover"],
             ["Scrim", "--t7-scrim-hsl"],
-            ["Enter motion", "--t7-ease-enter"],
-            ["Exit motion", "--t7-ease-exit"],
+            ["Interactive motion", "--t7-motion-interactive"],
+            ["State motion", "--t7-motion-state"],
+            ["Enter motion", "--t7-motion-enter"],
+            ["Slow entrance", "--t7-motion-enter-slow"],
+            ["Exit motion", "--t7-motion-exit"],
           ].map(([label, variable]) => (
             <div className="library-token-reference" key={variable}>
               <div>
@@ -1868,8 +1900,8 @@ export function RecipeDetailExplorer({
                 recipe.references.map((reference) => (
                   <CatalogLink
                     href={
-                      reference === "Warehouse Inventory"
-                        ? "/warehouse-inventory"
+                      reference === "Operations Tracker"
+                        ? "/operations-tracker"
                         : reference === "Publishing Store"
                           ? "/ebook-store"
                           : "#"
@@ -1983,7 +2015,7 @@ function BlockPreview({ slug }: { slug: string }) {
               detail: "semantic names",
               id: "three",
               label: "Icons",
-              value: "97",
+              value: String(IconNames.length),
             },
           ]}
           title="Proof with context"

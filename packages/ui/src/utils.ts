@@ -17,3 +17,14 @@ export function formatFileSize(bytes: number) {
 export function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
+
+/** Store the latest pointer origin for canonical radial interaction feedback. */
+export function updatePointerPosition(
+  element: HTMLElement,
+  clientX: number,
+  clientY: number,
+) {
+  const rect = element.getBoundingClientRect();
+  element.style.setProperty("--t7-pointer-x", `${clientX - rect.left}px`);
+  element.style.setProperty("--t7-pointer-y", `${clientY - rect.top}px`);
+}

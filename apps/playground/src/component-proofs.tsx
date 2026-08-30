@@ -1,16 +1,23 @@
 import { useMemo, useState } from "react";
 
+import { T7Icon } from "@ten4seven/icons";
+
 import {
   Accordion,
+  ActionFooter,
   ActionBar,
   Alert,
   AlertDialog,
   AppliedFilters,
+  ApprovalPanel,
   AvatarGroup,
   BarChart,
+  Badge,
   Button,
+  ButtonGroup,
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
   CartLineItem,
@@ -18,6 +25,7 @@ import {
   CartTrigger,
   Combobox,
   CommandMenu,
+  ContextMenu,
   DatePicker,
   DateRangePicker,
   DonutChart,
@@ -52,8 +60,10 @@ import {
   Switch,
   Tabs,
   Textarea,
-  TimeInput,
+  TimePicker,
   ToastProvider,
+  ToggleButton,
+  ToggleButtonGroup,
   Tooltip,
   TrendIndicator,
   Typography,
@@ -162,38 +172,64 @@ function OverlayStressFixture() {
 
         <Card data-overlay-fixture="edge-anchors">
           <CardHeader>
-            <CardTitle>Edge anchors</CardTitle>
+            <div>
+              <CardTitle>Edge anchors</CardTitle>
+              <CardDescription>
+                Floating actions stay attached to their trigger at the edge of a
+                bounded surface.
+              </CardDescription>
+            </div>
           </CardHeader>
           <CardContent className="overlay-stress-edge-stage">
-            <div className="overlay-stress-edge-row">
-              <Popover side="top" trigger={<Button size="sm">Popover</Button>}>
-                <Typography typeRole="body-sm">
-                  Flips and shifts inside the viewport.
+            <div className="overlay-stress-edge-preview">
+              <div className="overlay-stress-edge-preview-header">
+                <Typography typeRole="overline">
+                  Bounded action surface
                 </Typography>
-              </Popover>
-              <DropdownMenu
-                items={[
-                  { icon: "edit", key: "edit", label: "Edit record" },
-                  { icon: "view", key: "view", label: "View details" },
-                ]}
-                trigger={
-                  <Button intent="secondary" size="sm">
-                    Menu
+                <Badge tone="success">
+                  <T7Icon aria-hidden="true" name="check" size={12} />
+                  Viewport safe
+                </Badge>
+              </div>
+              <div className="overlay-stress-edge-row">
+                <Popover
+                  side="top"
+                  trigger={<Button size="sm">Popover</Button>}
+                >
+                  <Typography typeRole="body-sm">
+                    Flips and shifts inside the viewport.
+                  </Typography>
+                </Popover>
+                <DropdownMenu
+                  items={[
+                    { icon: "edit", key: "edit", label: "Edit record" },
+                    { icon: "view", key: "view", label: "View details" },
+                  ]}
+                  trigger={
+                    <Button intent="secondary" size="sm">
+                      Menu
+                    </Button>
+                  }
+                />
+                <Tooltip
+                  content="Supplemental context near the edge"
+                  side="top"
+                >
+                  <Button intent="quiet" size="sm">
+                    Tooltip
                   </Button>
-                }
-              />
-              <Tooltip content="Supplemental context near the edge" side="top">
-                <Button intent="quiet" size="sm">
-                  Tooltip
-                </Button>
-              </Tooltip>
+                </Tooltip>
+              </div>
+              <div className="overlay-stress-edge-corner">
+                <DropdownMenu
+                  items={[{ icon: "download", key: "export", label: "Export" }]}
+                  trigger={<IconButton icon="more" label="Edge actions" />}
+                />
+              </div>
             </div>
-            <div className="overlay-stress-edge-corner">
-              <DropdownMenu
-                items={[{ icon: "download", key: "export", label: "Export" }]}
-                trigger={<IconButton icon="more" label="Edge actions" />}
-              />
-            </div>
+            <Typography typeRole="caption">
+              Popover shifts · Menu aligns · Tooltip supplements
+            </Typography>
           </CardContent>
         </Card>
       </div>
@@ -266,6 +302,8 @@ function OverlayStressFixture() {
 export function ComponentProofs() {
   const [modalOpen, setModalOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
+  const [alertVisible, setAlertVisible] = useState(true);
+  const [actionMode, setActionMode] = useState("review");
   const [commandOpen, setCommandOpen] = useState(false);
   const [note, setNote] = useState("");
   const [switchOn, setSwitchOn] = useState(true);
@@ -278,6 +316,7 @@ export function ComponentProofs() {
   const [rangeValue, setRangeValue] = useState({ max: 84, min: 22 });
   const [files, setFiles] = useState<File[]>([]);
   const [cartQuantity, setCartQuantity] = useState(1);
+  const [lastAction, setLastAction] = useState("No action selected");
   const [commerceNotice, setCommerceNotice] = useState(
     "Cart actions report feedback only after an interaction.",
   );
@@ -352,9 +391,9 @@ export function ComponentProofs() {
                   onValueChange={setDate}
                   value={date}
                 />
-                <TimeInput
+                <TimePicker
                   label="Review time"
-                  onChange={(event) => setTime(event.target.value)}
+                  onValueChange={(next) => setTime(next ?? "")}
                   value={time}
                 />
                 <DateRangePicker
@@ -392,111 +431,386 @@ export function ComponentProofs() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Feedback, actions, and overlays</CardTitle>
-          </CardHeader>
-          <CardContent className="component-proof-stack">
-            <Alert
-              description="This persistent message uses status semantics and can carry a recovery action."
-              title="Review needed"
-              tone="warning"
-            />
-            <AppliedFilters
-              filters={filters}
-              onClear={() => setFilters([])}
-              onRemove={(id) =>
-                setFilters((current) =>
-                  current.filter((filter) => filter.id !== id),
-                )
-              }
-            />
-            <ActionBar>
-              <Button onClick={() => setModalOpen(true)}>Open modal</Button>
-              <Button intent="secondary" onClick={() => setAlertOpen(true)}>
-                Confirm action
-              </Button>
-              <Popover trigger={<Button intent="quiet">Open popover</Button>}>
-                <p className="component-proof-popover-copy">
-                  Non-modal help remains close to its trigger.
-                </p>
-              </Popover>
-              <Tooltip content="Use a text label as well as this hint.">
-                <IconButton icon="info" label="More information" />
-              </Tooltip>
-              <DropdownMenu
-                items={[
-                  { icon: "edit", key: "edit", label: "Edit sample" },
-                  {
-                    icon: "delete",
-                    intent: "danger",
-                    key: "delete",
-                    label: "Remove sample",
-                  },
-                ]}
-                trigger={<IconButton icon="more" label="Sample actions" />}
-              />
-            </ActionBar>
-            <SplitButton
-              items={[{ icon: "download", key: "export", label: "Export" }]}
-              label="Save sample"
-              onClick={() => undefined}
-            />
-            <ToastProvider>
-              <ToastAction />
-            </ToastProvider>
-            <Button
-              intent="quiet"
-              onClick={() => setCommandOpen(true)}
-              leadingIcon="command"
-            >
-              Open command menu
-            </Button>
-          </CardContent>
-        </Card>
+        <ToastProvider>
+          <Card className="component-proof-feedback-card">
+            <CardHeader>
+              <div>
+                <CardTitle>Feedback, actions, and overlays</CardTitle>
+                <CardDescription>
+                  Persistent feedback, prioritized actions, and floating
+                  surfaces share one interaction language.
+                </CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent className="feedback-proof-content">
+              <div className="feedback-proof-grid">
+                <section
+                  aria-labelledby="feedback-proof-feedback"
+                  className="feedback-proof-group"
+                >
+                  <div className="feedback-proof-group-heading">
+                    <Typography
+                      as="span"
+                      className="feedback-proof-group-title"
+                      id="feedback-proof-feedback"
+                      typeRole="label"
+                    >
+                      Feedback
+                    </Typography>
+                    <Typography typeRole="caption">
+                      In-context status and recovery
+                    </Typography>
+                  </div>
+                  {alertVisible ? (
+                    <Alert
+                      action={
+                        <Button
+                          intent="quiet"
+                          onClick={() => setLastAction("Review opened")}
+                          size="sm"
+                        >
+                          Review issue
+                        </Button>
+                      }
+                      description="The review queue needs one decision before publishing."
+                      onDismiss={() => setAlertVisible(false)}
+                      title="Review needed"
+                      tone="warning"
+                    />
+                  ) : (
+                    <div className="feedback-proof-dismissed" role="status">
+                      <Typography typeRole="caption">
+                        The warning is dismissed for this proof.
+                      </Typography>
+                      <Button
+                        intent="quiet"
+                        onClick={() => setAlertVisible(true)}
+                        size="sm"
+                      >
+                        Show alert
+                      </Button>
+                    </div>
+                  )}
+                  <AppliedFilters
+                    className="feedback-proof-filters"
+                    filters={filters}
+                    onClear={() => setFilters([])}
+                    onRemove={(id) =>
+                      setFilters((current) =>
+                        current.filter((filter) => filter.id !== id),
+                      )
+                    }
+                  />
+                  <ApprovalPanel
+                    actions={
+                      <Button
+                        onClick={() => {
+                          setActionMode("approved");
+                          setLastAction("Approval recorded");
+                        }}
+                        size="sm"
+                      >
+                        Approve request
+                      </Button>
+                    }
+                    description="A decision checkpoint keeps context, evidence, and the next action together."
+                    metadata={
+                      <Typography typeRole="caption">
+                        Last action: {lastAction}
+                      </Typography>
+                    }
+                    title="Ready for decision"
+                    tone={actionMode === "approved" ? "success" : "default"}
+                  />
+                </section>
+
+                <section
+                  aria-labelledby="feedback-proof-actions"
+                  className="feedback-proof-group"
+                >
+                  <div className="feedback-proof-group-heading">
+                    <Typography
+                      as="span"
+                      className="feedback-proof-group-title"
+                      id="feedback-proof-actions"
+                      typeRole="label"
+                    >
+                      Actions
+                    </Typography>
+                    <Typography typeRole="caption">
+                      One primary path, then supporting choices
+                    </Typography>
+                  </div>
+                  <ActionBar
+                    className="feedback-proof-action-bar"
+                    label="Primary sample actions"
+                  >
+                    <Button
+                      leadingIcon="check"
+                      onClick={() => setLastAction("Sample saved")}
+                    >
+                      Save changes
+                    </Button>
+                    <Button
+                      intent="secondary"
+                      onClick={() => setLastAction("Preview opened")}
+                    >
+                      Preview
+                    </Button>
+                    <DropdownMenu
+                      items={[
+                        {
+                          icon: "edit",
+                          key: "edit",
+                          label: "Edit sample",
+                          onSelect: () => setLastAction("Edit selected"),
+                        },
+                        {
+                          icon: "delete",
+                          intent: "danger",
+                          key: "delete",
+                          label: "Remove sample",
+                          onSelect: () => setLastAction("Remove selected"),
+                        },
+                      ]}
+                      label="More sample actions"
+                      trigger={
+                        <IconButton icon="more" label="Sample actions" />
+                      }
+                    />
+                  </ActionBar>
+                  <div className="feedback-proof-control-row">
+                    <ButtonGroup label="Record actions">
+                      <Button
+                        intent="secondary"
+                        onClick={() => setLastAction("Draft saved")}
+                        size="sm"
+                      >
+                        Save draft
+                      </Button>
+                      <Button
+                        intent="quiet"
+                        onClick={() => setLastAction("Changes cancelled")}
+                        size="sm"
+                      >
+                        Cancel
+                      </Button>
+                    </ButtonGroup>
+                    <ToggleButtonGroup
+                      label="Review mode"
+                      onValueChange={(value) => {
+                        const next = String(value);
+                        setActionMode(next);
+                        setLastAction(`${next} mode selected`);
+                      }}
+                      value={actionMode}
+                    >
+                      <ToggleButton leadingIcon="edit" value="review">
+                        Review
+                      </ToggleButton>
+                      <ToggleButton leadingIcon="check" value="approved">
+                        Approved
+                      </ToggleButton>
+                    </ToggleButtonGroup>
+                  </div>
+                  <ActionFooter
+                    primaryAction={
+                      <Button
+                        onClick={() => setLastAction("Workflow continued")}
+                        size="sm"
+                      >
+                        Continue
+                      </Button>
+                    }
+                    secondaryActions={
+                      <Button
+                        intent="quiet"
+                        onClick={() => setLastAction("Workflow paused")}
+                        size="sm"
+                      >
+                        Pause
+                      </Button>
+                    }
+                    summary={
+                      <Typography typeRole="caption">{lastAction}</Typography>
+                    }
+                  />
+                </section>
+
+                <section
+                  aria-labelledby="feedback-proof-overlays"
+                  className="feedback-proof-group feedback-proof-overlay-group"
+                >
+                  <div className="feedback-proof-group-heading">
+                    <Typography
+                      as="span"
+                      className="feedback-proof-group-title"
+                      id="feedback-proof-overlays"
+                      typeRole="label"
+                    >
+                      Overlays
+                    </Typography>
+                    <Typography typeRole="caption">
+                      Anchored help and contextual actions
+                    </Typography>
+                  </div>
+                  <div className="feedback-proof-overlay-grid">
+                    <Popover
+                      trigger={
+                        <Button intent="secondary" leadingIcon="info" size="sm">
+                          Open popover
+                        </Button>
+                      }
+                    >
+                      <Typography typeRole="body-sm">
+                        Non-modal help stays close to its trigger.
+                      </Typography>
+                    </Popover>
+                    <Tooltip content="Supplemental context for this action.">
+                      <IconButton
+                        icon="info"
+                        label="More information"
+                        size="sm"
+                      />
+                    </Tooltip>
+                    <DropdownMenu
+                      items={[
+                        {
+                          icon: "view",
+                          key: "details",
+                          label: "View details",
+                          onSelect: () => setLastAction("Details selected"),
+                        },
+                        {
+                          icon: "download",
+                          key: "export",
+                          label: "Export sample",
+                          onSelect: () => setLastAction("Export selected"),
+                        },
+                      ]}
+                      label="Overlay actions"
+                      trigger={
+                        <Button
+                          intent="quiet"
+                          size="sm"
+                          trailingIcon="chevronDown"
+                        >
+                          Menu
+                        </Button>
+                      }
+                    />
+                    <ContextMenu
+                      items={[
+                        {
+                          icon: "edit",
+                          key: "edit",
+                          label: "Edit context",
+                          onSelect: () =>
+                            setLastAction("Context edit selected"),
+                        },
+                      ]}
+                    >
+                      <Button intent="quiet" leadingIcon="more" size="sm">
+                        Context menu
+                      </Button>
+                    </ContextMenu>
+                  </div>
+                  <div className="feedback-proof-overlay-actions">
+                    <Button
+                      intent="secondary"
+                      onClick={() => setModalOpen(true)}
+                      size="sm"
+                    >
+                      Open modal
+                    </Button>
+                    <Button
+                      intent="danger"
+                      onClick={() => setAlertOpen(true)}
+                      size="sm"
+                    >
+                      Confirm action
+                    </Button>
+                    <ToastAction />
+                    <Button
+                      intent="quiet"
+                      leadingIcon="command"
+                      onClick={() => setCommandOpen(true)}
+                      size="sm"
+                    >
+                      Open command menu
+                    </Button>
+                  </div>
+                </section>
+              </div>
+            </CardContent>
+          </Card>
+        </ToastProvider>
       </div>
 
       <div className="component-proof-grid">
-        <Card>
+        <Card className="component-proof-signals-card">
           <CardHeader>
-            <CardTitle>Data, progress, and media signals</CardTitle>
-          </CardHeader>
-          <CardContent className="component-proof-stack">
-            <div className="component-proof-metrics">
-              <MetricCard
-                change={<TrendIndicator direction="up" value="8.4%" />}
-                description="Compared with last period"
-                icon="analytics"
-                title="Sample coverage"
-                value="87%"
-              />
-              <MetricCard
-                change={
-                  <Sparkline
-                    label="Sample delivery trend"
-                    values={[4, 6, 5, 9, 8, 12]}
-                  />
-                }
-                description="A compact embedded signal"
-                icon="progress"
-                title="Delivery trend"
-                value="12"
-              />
+            <div>
+              <CardTitle>Data, progress, and media signals</CardTitle>
+              <CardDescription>
+                Keep the state a person needs to act on visible without making
+                every signal compete for attention.
+              </CardDescription>
             </div>
-            <Progress label="Review progress" showValue value={72} />
-            <div className="component-proof-data-row">
-              <AvatarGroup
-                avatars={[
-                  { name: "Maya Chen" },
-                  { name: "Jordan Park" },
-                  { name: "Lin Wu" },
-                ]}
-              />
-              <Rating count={48} value={4.6} />
-              <Spinner label="Loading sample" size="sm" />
-              <Skeleton width="7rem" />
+            <Badge tone="primary">Client-side proof</Badge>
+          </CardHeader>
+          <CardContent className="component-proof-signals-layout">
+            <div className="component-proof-signals-primary">
+              <div className="component-proof-metrics">
+                <MetricCard
+                  change={<TrendIndicator direction="up" value="8.4%" />}
+                  description="Compared with last period"
+                  icon="analytics"
+                  title="Review coverage"
+                  value="87%"
+                />
+                <MetricCard
+                  change={
+                    <Sparkline
+                      label="Sample delivery trend"
+                      values={[4, 6, 5, 9, 8, 12]}
+                    />
+                  }
+                  description="A compact embedded signal"
+                  icon="progress"
+                  title="Delivery trend"
+                  value="12"
+                />
+              </div>
+              <div className="component-proof-progress-block">
+                <Progress label="Review completion" showValue value={72} />
+                <Typography typeRole="caption">
+                  Four of five checks are ready for the next action.
+                </Typography>
+              </div>
+            </div>
+            <div className="component-proof-signal-rail">
+              <div className="component-proof-signal-block">
+                <Typography typeRole="overline">Ownership</Typography>
+                <AvatarGroup
+                  avatars={[
+                    { name: "Maya Chen" },
+                    { name: "Jordan Park" },
+                    { name: "Lin Wu" },
+                  ]}
+                />
+                <Rating count={48} value={4.6} />
+              </div>
+              <div className="component-proof-signal-block">
+                <Typography typeRole="overline">Loading state</Typography>
+                <div className="component-proof-loading-row">
+                  <Spinner label="Loading sample" size="sm" />
+                  <Skeleton width="7rem" />
+                </div>
+              </div>
             </div>
             <KeyValueList
+              className="component-proof-signal-details"
               items={[
                 { label: "State", value: "Ready for review" },
                 { label: "Updated", value: "Today" },
@@ -506,7 +820,13 @@ export function ComponentProofs() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Native file selection</CardTitle>
+            <div>
+              <CardTitle>Native file selection</CardTitle>
+              <CardDescription>
+                Media handoff stays client-side and validates before it enters a
+                list.
+              </CardDescription>
+            </div>
           </CardHeader>
           <CardContent>
             <FileUpload
@@ -583,7 +903,7 @@ export function ComponentProofs() {
             >
               {cartQuantity > 0 ? (
                 <CartLineItem
-                  meta="EPUB + PDF · Editorial sample"
+                  meta="EPUB · PDF · Editorial sample"
                   onQuantityChange={(nextQuantity) => {
                     setCartQuantity(nextQuantity);
                     setCommerceNotice("Quantity updated.");
@@ -610,10 +930,19 @@ export function ComponentProofs() {
       <div className="component-proof-grid component-proof-grid-charts">
         <Card>
           <CardHeader>
-            <CardTitle>SVG chart contracts</CardTitle>
+            <div>
+              <CardTitle>Data signals in context</CardTitle>
+              <CardDescription>
+                Trends, comparisons, and state mix use one responsive SVG
+                contract with keyboard-safe points.
+              </CardDescription>
+            </div>
+            <Badge tone="primary">SVG · interactive</Badge>
           </CardHeader>
           <CardContent className="component-proof-chart-stack">
             <LineChart
+              className="component-proof-chart-primary"
+              height={190}
               labels={["Mon", "Tue", "Wed", "Thu", "Fri"]}
               series={[
                 {
@@ -627,26 +956,36 @@ export function ComponentProofs() {
                   values: [36, 44, 62, 58, 70],
                 },
               ]}
-              title="Sample trend"
+              summary="Coverage and quality across the review week."
+              title="Coverage trend"
               valueFormatter={(value) => `${Math.round(value)}%`}
             />
             <BarChart
+              height={170}
               data={[
                 { label: "A", value: 18 },
                 { label: "B", value: 31 },
                 { label: "C", value: 24 },
                 { label: "D", value: 39 },
               ]}
-              title="Sample comparison"
+              summary="Relative score by segment."
+              title="Segment score"
             />
             <DonutChart
-              centerLabel="100"
+              className="component-proof-donut"
+              centerLabel={
+                <>
+                  <strong>100</strong>
+                  <small>records</small>
+                </>
+              }
               segments={[
                 { label: "Ready", value: 61 },
                 { label: "Review", value: 25 },
                 { label: "Blocked", value: 14 },
               ]}
-              title="Sample distribution"
+              summary="Current review-state mix · 61 ready."
+              title="Review state mix"
             />
           </CardContent>
         </Card>
@@ -654,47 +993,153 @@ export function ComponentProofs() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Navigation and disclosure</CardTitle>
+          <div>
+            <CardTitle>Navigation and disclosure</CardTitle>
+            <CardDescription>
+              Switch peer views, reveal bounded context, and keep the next
+              handoff visible without crowding one row.
+            </CardDescription>
+          </div>
         </CardHeader>
-        <CardContent className="component-proof-stack">
-          <Tabs
-            items={[
-              {
-                content:
-                  "The selected panel is managed with tab and tabpanel semantics.",
-                id: "overview",
-                label: "Overview",
-              },
-              {
-                content: "Tabs are for peer content, not page navigation.",
-                id: "details",
-                label: "Details",
-              },
-            ]}
-          />
-          <Accordion
-            items={[
-              {
-                content:
-                  "Accordion behavior stays within one bounded content group.",
-                id: "one",
-                title: "What is included?",
-              },
-              {
-                content: "Use a dialog or route for longer workflows.",
-                id: "two",
-                title: "What is deliberately excluded?",
-              },
-            ]}
-          />
-          <Stepper
-            current="review"
-            steps={[
-              { id: "draft", label: "Draft" },
-              { id: "review", label: "Review" },
-              { id: "done", label: "Done" },
-            ]}
-          />
+        <CardContent className="component-proof-stack component-proof-navigation-content">
+          <div className="component-proof-navigation-grid">
+            <section
+              aria-labelledby="component-proof-views-title"
+              className="component-proof-navigation-panel"
+            >
+              <div className="component-proof-subheading">
+                <Typography
+                  as="h3"
+                  id="component-proof-views-title"
+                  typeRole="label"
+                >
+                  Peer views
+                </Typography>
+                <Typography typeRole="caption">
+                  Change the lens without leaving the surface.
+                </Typography>
+              </div>
+              <Tabs
+                className="component-proof-tabs"
+                items={[
+                  {
+                    content: (
+                      <div className="component-proof-tab-content">
+                        <Typography typeRole="label">
+                          Current handoff
+                        </Typography>
+                        <Typography typeRole="body-sm">
+                          The selected panel stays connected to its tab and
+                          exposes one focused review state.
+                        </Typography>
+                        <Badge tone="success">
+                          <T7Icon aria-hidden="true" name="check" size={12} />
+                          Ready for review
+                        </Badge>
+                      </div>
+                    ),
+                    id: "summary",
+                    label: "Summary",
+                  },
+                  {
+                    content: (
+                      <div className="component-proof-tab-content">
+                        <Typography typeRole="label">
+                          Recent activity
+                        </Typography>
+                        <Typography typeRole="body-sm">
+                          Keep related updates close; move longer workflows to a
+                          route or dialog.
+                        </Typography>
+                      </div>
+                    ),
+                    id: "activity",
+                    label: "Activity",
+                  },
+                ]}
+              />
+            </section>
+
+            <section
+              aria-labelledby="component-proof-path-title"
+              className="component-proof-path-panel"
+            >
+              <div className="component-proof-path-heading">
+                <div className="component-proof-subheading">
+                  <Typography
+                    as="h3"
+                    id="component-proof-path-title"
+                    typeRole="label"
+                  >
+                    Handoff path
+                  </Typography>
+                  <Typography typeRole="caption">
+                    Three checkpoints keep the next action visible.
+                  </Typography>
+                </div>
+                <Badge tone="primary">
+                  <T7Icon aria-hidden="true" name="check" size={12} />2 of 3
+                </Badge>
+              </div>
+              <Stepper
+                className="component-proof-stepper"
+                current="review"
+                steps={[
+                  {
+                    description: "8 contracts linked",
+                    id: "draft",
+                    label: "Mapped",
+                  },
+                  {
+                    description: "Needs review",
+                    id: "review",
+                    label: "Review",
+                  },
+                  {
+                    description: "Ready to ship",
+                    id: "done",
+                    label: "Ready",
+                  },
+                ]}
+              />
+            </section>
+          </div>
+
+          <section
+            aria-labelledby="component-proof-disclosure-title"
+            className="component-proof-disclosure-panel"
+          >
+            <div className="component-proof-subheading">
+              <Typography
+                as="h3"
+                id="component-proof-disclosure-title"
+                typeRole="label"
+              >
+                Bounded disclosure
+              </Typography>
+              <Typography typeRole="caption">
+                Keep detail close to the selected view.
+              </Typography>
+            </div>
+            <Accordion
+              className="component-proof-accordion"
+              defaultValue="scope"
+              items={[
+                {
+                  content:
+                    "Use an accordion for short, related context that belongs to this surface.",
+                  id: "scope",
+                  title: "What belongs in this panel?",
+                },
+                {
+                  content:
+                    "Move longer workflows to a dialog or route so the current context stays easy to scan.",
+                  id: "route",
+                  title: "When should this move to a route?",
+                },
+              ]}
+            />
+          </section>
         </CardContent>
       </Card>
 

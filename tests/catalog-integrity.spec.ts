@@ -112,13 +112,11 @@ test.describe("catalog information architecture", () => {
   }) => {
     test.setTimeout(60_000);
     for (const name of Object.keys(recipeCatalog)) {
+      const displayName = recipeCatalog[name].displayName ?? name;
       await page.goto(`/recipes/${slugify(name)}`);
-      await expect(
-        page.getByRole("heading", {
-          name: recipeCatalog[name].displayName ?? name,
-          exact: true,
-        }),
-      ).toBeVisible();
+      await expect(page.locator("main h1")).toHaveText(displayName, {
+        timeout: 15_000,
+      });
     }
 
     await page.goto("/recipes/marketing-home");
@@ -215,14 +213,35 @@ test.describe("catalog information architecture", () => {
     });
     await expect(navigation).toBeVisible();
     await expect(
+      navigation.getByRole("button", { name: "Library", exact: true }),
+    ).toBeVisible();
+    await navigation
+      .getByRole("button", { name: "Library", exact: true })
+      .click();
+    await expect(
       navigation.getByRole("button", { name: "Components", exact: true }),
     ).toBeVisible();
     await expect(
       navigation.getByRole("button", { name: "Blocks", exact: true }),
     ).toBeVisible();
     await expect(
+      navigation.locator(".studio-library-family-grid"),
+    ).toBeVisible();
+    await expect(navigation.locator(".studio-library-family-link")).toHaveCount(
+      17,
+    );
+    expect(
+      await navigation.evaluate(
+        (element) => element.scrollWidth - element.clientWidth,
+      ),
+    ).toBeLessThanOrEqual(1);
+    await expect(
       navigation.locator(".studio-component-family-list a"),
     ).toHaveCount(0);
+    await page.keyboard.press("Escape");
+    await expect(navigation.locator(".studio-library-family-grid")).toHaveCount(
+      0,
+    );
     await page.keyboard.press("Escape");
     await expect(
       page.getByRole("dialog", { name: "Library navigation" }),

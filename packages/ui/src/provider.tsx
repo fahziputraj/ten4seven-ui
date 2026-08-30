@@ -13,6 +13,8 @@ import {
   resolveAppearance,
   resolveTheme,
   type Appearance,
+  type CanvasName,
+  type ChartPaletteName,
   type DensityName,
   type ElevationName,
   type PaletteName,
@@ -40,8 +42,14 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 export function Ten4SevenProvider({
   appearance = "system",
   palette = "emerald",
+  primary,
+  accent,
+  canvas = "balanced",
+  chartPalette = "spectrum",
   radius = "soft",
+  radiusValue,
   density = "default",
+  motionDuration = 1.5,
   typography = "modern",
   elevation = "soft",
   theme: themeConfig,
@@ -85,8 +93,14 @@ export function Ten4SevenProvider({
     const baseConfig: ThemeConfig = {
       appearance: appearanceSetting,
       palette: themeConfig?.palette ?? palette,
+      primary: themeConfig?.primary ?? primary,
+      accent: themeConfig?.accent ?? accent,
+      canvas: themeConfig?.canvas ?? canvas,
+      chartPalette: themeConfig?.chartPalette ?? chartPalette,
       radius: themeConfig?.radius ?? radius,
+      radiusValue: themeConfig?.radiusValue ?? radiusValue,
       density: themeConfig?.density ?? density,
+      motionDuration: themeConfig?.motionDuration ?? motionDuration,
       typography: themeConfig?.typography ?? typography,
       elevation: themeConfig?.elevation ?? elevation,
     };
@@ -98,8 +112,14 @@ export function Ten4SevenProvider({
           ? systemAppearance
           : requestedAppearance,
       palette: mergedConfig.palette,
+      primary: mergedConfig.primary,
+      accent: mergedConfig.accent,
+      canvas: mergedConfig.canvas,
+      chartPalette: mergedConfig.chartPalette,
       radius: mergedConfig.radius,
+      radiusValue: mergedConfig.radiusValue,
       density: mergedConfig.density,
+      motionDuration: mergedConfig.motionDuration,
       typography: mergedConfig.typography,
       elevation: mergedConfig.elevation,
     });
@@ -107,10 +127,16 @@ export function Ten4SevenProvider({
     appearanceSetting,
     density,
     elevation,
+    accent,
+    canvas,
+    chartPalette,
+    primary,
     overrides,
     palette,
     radius,
+    radiusValue,
     systemAppearance,
+    motionDuration,
     themeConfig,
     typography,
   ]);
@@ -133,7 +159,13 @@ export function Ten4SevenProvider({
         className={["t7-provider", className].filter(Boolean).join(" ")}
         data-density={theme.density}
         data-palette={theme.palette}
+        data-primary={theme.primary}
+        data-accent={theme.accent}
+        data-canvas={theme.canvas}
+        data-chart-palette={theme.chartPalette}
         data-radius={theme.radius}
+        data-radius-value={theme.radiusValue}
+        data-motion-duration={theme.motionDuration}
         data-theme-appearance={theme.appearance}
         data-typography={theme.typography}
         style={rootStyle}
@@ -154,6 +186,8 @@ export function useTen4SevenTheme() {
 
 export type {
   Appearance,
+  CanvasName,
+  ChartPaletteName,
   DensityName,
   ElevationName,
   PaletteName,

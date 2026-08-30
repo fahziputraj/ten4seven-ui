@@ -13,7 +13,7 @@
     "displayName": "Dashboard"
   },
   "entity-list": {
-    "purpose": "Browse and operate on comparable structured records.",
+    "purpose": "Browse and operate on comparable operational records such as customer, delivery, supply, finance, or service workstreams.",
     "profiles": ["enterprise", "dashboard"],
     "components": [
       "AppShell",
@@ -33,29 +33,36 @@
     "optional": [
       "AppliedFilters",
       "StatusChip",
+      "Avatar",
+      "RecordSummary",
+      "KeyValueList",
+      "ActivityFeed",
+      "MilestoneTracker",
       "ActionMenu",
       "FilterDrawer",
       "AlertDialog"
     ],
     "icons": [
-      "warehouse",
-      "inventory",
-      "item",
-      "stockIn",
-      "stockOut",
+      "analytics",
+      "users",
+      "delivery",
+      "package",
+      "payment",
+      "logistics",
+      "fleet",
+      "timeline",
       "transfer",
       "search",
       "filter",
       "sort",
       "export",
-      "add",
       "edit",
       "view",
       "more",
       "warning",
       "danger"
     ],
-    "references": ["Warehouse Inventory"],
+    "references": ["Operations Tracker"],
     "displayName": "Entity List"
   },
   "entity-detail": {

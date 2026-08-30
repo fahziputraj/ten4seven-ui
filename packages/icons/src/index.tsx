@@ -116,6 +116,10 @@ export const IconRegistry = Object.freeze({
     provider: "solar:home-add-bold-duotone",
     body: solarBodies.farm,
   },
+  fleet: {
+    provider: "solar:bus-bold-duotone",
+    body: solarBodies.fleet,
+  },
   delivery: {
     provider: "solar:delivery-bold-duotone",
     body: solarBodies.delivery,

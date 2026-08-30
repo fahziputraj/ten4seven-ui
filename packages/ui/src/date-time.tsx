@@ -13,7 +13,11 @@ import {
 import { T7Icon } from "@ten4seven/icons";
 
 import { Button, Input } from "./components";
-import { FloatingPortal, useFloatingPosition } from "./overlay";
+import {
+  FloatingPortal,
+  useExclusiveFloatingLayer,
+  useFloatingPosition,
+} from "./overlay";
 import { cx } from "./utils";
 
 export type DateValue = string;
@@ -323,10 +327,12 @@ export function DatePicker({
   const [draft, setDraft] = useState(value ?? "");
   const pickerRef = useRef<HTMLSpanElement>(null);
   const helpId = `${inputId}-hint`;
+  const calendarId = `${inputId}-calendar`;
   const floating = useFloatingPosition(pickerRef, open, {
     minWidth: true,
     side: "bottom",
   });
+  useExclusiveFloatingLayer(open, () => setOpen(false));
 
   useEffect(() => {
     if (!open) return undefined;
@@ -350,7 +356,10 @@ export function DatePicker({
       >
         <input
           {...props}
+          aria-controls={calendarId}
           aria-describedby={error || hint ? helpId : props["aria-describedby"]}
+          aria-expanded={open}
+          aria-haspopup="dialog"
           aria-invalid={error ? true : props["aria-invalid"]}
           className={cx("t7-input", className)}
           id={inputId}
@@ -372,10 +381,14 @@ export function DatePicker({
               onValueChange(event.target.value);
           }}
           placeholder="YYYY-MM-DD"
+          role="combobox"
           value={value ?? draft}
         />
         <button
           aria-label="Open calendar"
+          aria-controls={calendarId}
+          aria-expanded={open}
+          aria-haspopup="dialog"
           className="t7-input-action"
           onMouseDown={(event) => event.preventDefault()}
           onClick={() => setOpen((current) => !current)}
@@ -384,12 +397,13 @@ export function DatePicker({
           <T7Icon aria-hidden="true" name="calendar" size={16} />
         </button>
         {open ? (
-          <FloatingPortal>
+          <FloatingPortal anchorRef={pickerRef}>
             <div
               className="t7-date-picker-popover t7-floating-content"
               data-floating-placement={floating.placement}
-              id={`${inputId}-calendar`}
+              id={calendarId}
               ref={floating.setContentRef}
+              role="dialog"
               style={floating.style}
             >
               <Calendar
@@ -469,6 +483,7 @@ export function DateRangePicker({
     minWidth: true,
     side: "bottom",
   });
+  useExclusiveFloatingLayer(open, () => setOpen(false));
 
   useEffect(() => {
     if (!open) return undefined;
@@ -501,7 +516,9 @@ export function DateRangePicker({
       {label ? <span className="t7-field-label">{label}</span> : null}
       <div className="t7-date-range-picker" ref={pickerRef}>
         <button
+          aria-controls={`${id}-calendar`}
           aria-expanded={open}
+          aria-haspopup="dialog"
           className="t7-date-range-trigger"
           disabled={disabled}
           onClick={() => setOpen((current) => !current)}
@@ -511,12 +528,13 @@ export function DateRangePicker({
           <span>{display}</span>
         </button>
         {open ? (
-          <FloatingPortal>
+          <FloatingPortal anchorRef={pickerRef}>
             <div
               className="t7-date-picker-popover t7-floating-content"
               data-floating-placement={floating.placement}
               id={`${id}-calendar`}
               ref={floating.setContentRef}
+              role="dialog"
               style={floating.style}
             >
               <Calendar
@@ -528,14 +546,15 @@ export function DateRangePicker({
                 rangeStart={value.start}
                 value={value.start}
               />
-              <Button
-                disabled={!value.start && !value.end}
-                intent="quiet"
-                onClick={() => onValueChange({})}
-                size="sm"
-              >
-                {clearLabel}
-              </Button>
+              {value.start || value.end ? (
+                <Button
+                  intent="quiet"
+                  onClick={() => onValueChange({})}
+                  size="sm"
+                >
+                  {clearLabel}
+                </Button>
+              ) : null}
             </div>
           </FloatingPortal>
         ) : null}
@@ -572,6 +591,42 @@ function formatTimeLabel(value: string) {
   return `${String(displayHour).padStart(2, "0")}:${String(minutes).padStart(2, "0")} ${meridiem}`;
 }
 
+type TimePeriod = "AM" | "PM";
+
+type TimeParts = {
+  hour: number;
+  minute: number;
+  period: TimePeriod;
+};
+
+const timeHours = Array.from({ length: 12 }, (_, index) => index + 1);
+const timePeriods: TimePeriod[] = ["AM", "PM"];
+
+function parseTimeParts(value: string | undefined): TimeParts | undefined {
+  if (!value) return undefined;
+  const [hours, minutes] = value.split(":").map(Number);
+  if (
+    !Number.isInteger(hours) ||
+    !Number.isInteger(minutes) ||
+    hours < 0 ||
+    hours > 23 ||
+    minutes < 0 ||
+    minutes > 59
+  )
+    return undefined;
+  return {
+    hour: hours % 12 || 12,
+    minute: minutes,
+    period: hours >= 12 ? "PM" : "AM",
+  };
+}
+
+function timeFromParts({ hour, minute, period }: TimeParts) {
+  const normalizedHour = hour % 12;
+  const hours24 = period === "PM" ? normalizedHour + 12 : normalizedHour;
+  return `${String(hours24).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+}
+
 function timeOptions(minuteStep: number, min?: string, max?: string) {
   const options: string[] = [];
   const safeStep = Math.max(1, Math.floor(minuteStep));
@@ -594,7 +649,7 @@ export interface TimePickerProps extends Omit<
   value?: string;
 }
 
-/** Tokenized time selection with a bounded listbox; use NativeTimeInput for native behavior. */
+/** Tokenized time selection with independent hour, minute, and period controls. */
 export function TimePicker({
   className,
   clearLabel = "Clear time",
@@ -604,7 +659,7 @@ export function TimePicker({
   label,
   max,
   min,
-  minuteStep = 30,
+  minuteStep = 1,
   onBlur,
   onValueChange,
   value,
@@ -617,18 +672,51 @@ export function TimePicker({
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState(value ?? "");
   const pickerRef = useRef<HTMLSpanElement>(null);
+  const optionRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const options = useMemo(
     () => timeOptions(minuteStep, min, max),
     [max, min, minuteStep],
   );
+  const availableParts = useMemo(() => {
+    const hours = new Set<number>();
+    const minutes = new Set<number>();
+    const periods = new Set<TimePeriod>();
+    options.forEach((option) => {
+      const parts = parseTimeParts(option);
+      if (!parts) return;
+      hours.add(parts.hour);
+      minutes.add(parts.minute);
+      periods.add(parts.period);
+    });
+    return { hours, minutes, periods };
+  }, [options]);
   const floating = useFloatingPosition(pickerRef, open, {
     minWidth: true,
     side: "bottom",
   });
+  useExclusiveFloatingLayer(open, () => setOpen(false));
 
   useEffect(() => {
     setDraft(value ?? "");
   }, [value]);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const frame = window.requestAnimationFrame(() => {
+      const selected = parseTimeParts(draft);
+      if (!selected) return;
+      optionRefs.current[`hour-${selected.hour}`]?.scrollIntoView({
+        block: "nearest",
+      });
+      optionRefs.current[`minute-${selected.minute}`]?.scrollIntoView({
+        block: "nearest",
+      });
+      optionRefs.current[`period-${selected.period}`]?.scrollIntoView({
+        block: "nearest",
+      });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [draft, open]);
 
   useEffect(() => {
     if (!open) return undefined;
@@ -643,9 +731,28 @@ export function TimePicker({
     return () => document.removeEventListener("pointerdown", dismiss);
   }, [floating.contentRef, open]);
 
-  function choose(next: string | undefined) {
-    setDraft(next ?? "");
-    onValueChange(next);
+  function choosePart(part: keyof TimeParts, partValue: number | TimePeriod) {
+    const current = parseTimeParts(draft) ?? {
+      hour: 12,
+      minute: 0,
+      period: "AM" as TimePeriod,
+    };
+    const nextParts = { ...current, [part]: partValue } as TimeParts;
+    const nextValue = timeFromParts(nextParts);
+    const resolvedValue = options.includes(nextValue)
+      ? nextValue
+      : options.find((option) => {
+          const optionParts = parseTimeParts(option);
+          return optionParts?.[part] === partValue;
+        });
+    if (!resolvedValue) return;
+    setDraft(resolvedValue);
+    onValueChange(resolvedValue);
+  }
+
+  function clear() {
+    setDraft("");
+    onValueChange(undefined);
     setOpen(false);
   }
 
@@ -692,6 +799,7 @@ export function TimePicker({
             }
           }}
           placeholder="Select time"
+          role="combobox"
           readOnly
           value={draft ? formatTimeLabel(draft) : ""}
         />
@@ -705,7 +813,7 @@ export function TimePicker({
           <T7Icon aria-hidden="true" name="clock" size={16} />
         </button>
         {open ? (
-          <FloatingPortal>
+          <FloatingPortal anchorRef={pickerRef}>
             <div
               aria-label={`${label ?? "Time"} options`}
               className="t7-time-picker-popover t7-floating-content"
@@ -715,35 +823,110 @@ export function TimePicker({
               role="listbox"
               style={floating.style}
             >
-              <div className="t7-time-picker-options">
-                {options.length ? (
-                  options.map((option) => (
-                    <button
-                      aria-selected={value === option}
-                      className="t7-time-picker-option"
-                      key={option}
-                      onClick={() => choose(option)}
-                      role="option"
-                      type="button"
-                    >
-                      {formatTimeLabel(option)}
-                    </button>
-                  ))
+              {options.length ? (
+                <div className="t7-time-picker-columns">
+                  <div className="t7-time-picker-column">
+                    <span className="t7-time-picker-column-label">Hour</span>
+                    <div className="t7-time-picker-options">
+                      {timeHours.map((hour) => (
+                        <button
+                          aria-label={`${hour} hour${hour === 1 ? "" : "s"}`}
+                          aria-selected={
+                            Boolean(draft) &&
+                            parseTimeParts(draft)?.hour === hour
+                          }
+                          className="t7-time-picker-option"
+                          disabled={!availableParts.hours.has(hour)}
+                          key={hour}
+                          onClick={() => choosePart("hour", hour)}
+                          ref={(node) => {
+                            optionRefs.current[`hour-${hour}`] = node;
+                          }}
+                          role="option"
+                          type="button"
+                        >
+                          {String(hour).padStart(2, "0")}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="t7-time-picker-column">
+                    <span className="t7-time-picker-column-label">Minute</span>
+                    <div className="t7-time-picker-options">
+                      {Array.from({ length: 60 }, (_, minute) => minute)
+                        .filter((minute) => {
+                          const safeStep = Math.max(1, Math.floor(minuteStep));
+                          return minute % safeStep === 0;
+                        })
+                        .map((minute) => (
+                          <button
+                            aria-label={`${minute} minute${minute === 1 ? "" : "s"}`}
+                            aria-selected={
+                              Boolean(draft) &&
+                              parseTimeParts(draft)?.minute === minute
+                            }
+                            className="t7-time-picker-option"
+                            disabled={!availableParts.minutes.has(minute)}
+                            key={minute}
+                            onClick={() => choosePart("minute", minute)}
+                            ref={(node) => {
+                              optionRefs.current[`minute-${minute}`] = node;
+                            }}
+                            role="option"
+                            type="button"
+                          >
+                            {String(minute).padStart(2, "0")}
+                          </button>
+                        ))}
+                    </div>
+                  </div>
+                  <div className="t7-time-picker-column">
+                    <span className="t7-time-picker-column-label">Period</span>
+                    <div className="t7-time-picker-options">
+                      {timePeriods.map((period) => (
+                        <button
+                          aria-label={period}
+                          aria-selected={
+                            Boolean(draft) &&
+                            parseTimeParts(draft)?.period === period
+                          }
+                          className="t7-time-picker-option"
+                          disabled={!availableParts.periods.has(period)}
+                          key={period}
+                          onClick={() => choosePart("period", period)}
+                          ref={(node) => {
+                            optionRefs.current[`period-${period}`] = node;
+                          }}
+                          role="option"
+                          type="button"
+                        >
+                          {period}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <span className="t7-time-picker-empty">No available times</span>
+              )}
+              <div className="t7-time-picker-footer">
+                {value ? (
+                  <Button intent="quiet" onClick={clear} size="sm">
+                    {clearLabel}
+                  </Button>
                 ) : (
-                  <span className="t7-time-picker-empty">
-                    No available times
+                  <span className="t7-time-picker-hint">
+                    Choose hour, minute, and period
                   </span>
                 )}
-              </div>
-              {value ? (
                 <Button
-                  intent="quiet"
-                  onClick={() => choose(undefined)}
+                  intent="secondary"
+                  onClick={() => setOpen(false)}
                   size="sm"
                 >
-                  {clearLabel}
+                  Done
                 </Button>
-              ) : null}
+              </div>
             </div>
           </FloatingPortal>
         ) : null}

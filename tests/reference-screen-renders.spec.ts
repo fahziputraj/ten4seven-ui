@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 const referenceScreens = [
-  { route: "warehouse-inventory", label: "Warehouse Inventory" },
+  { route: "operations-tracker", label: "Operations Tracker" },
   { route: "ebook-store", label: "Ebook Store" },
 ];
 

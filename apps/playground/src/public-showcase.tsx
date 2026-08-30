@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { T7Icon } from "@ten4seven/icons";
 import {
   BarChart,
+  Badge,
   Button,
   Carousel,
   ChartPanel,
@@ -116,32 +117,67 @@ function ShowcasePreview() {
 }
 
 function EditorialArt({ variant }: { variant: "signal" | "orbit" | "layers" }) {
+  const content = {
+    layers: {
+      icon: "components" as const,
+      label: "COMPOSITION",
+      title: "Blocks with a point of view",
+    },
+    orbit: {
+      icon: "timeline" as const,
+      label: "RECIPES",
+      title: "A path from contract to product",
+    },
+    signal: {
+      icon: "type" as const,
+      label: "TYPOGRAPHY",
+      title: "Hierarchy that breathes",
+    },
+  }[variant];
+
   return (
     <MediaFrame
-      aria-label={`${variant} editorial illustration`}
-      className={`public-editorial-art public-editorial-art--${variant}`}
+      aria-label={`${content.label.toLowerCase()} surface preview`}
+      className={`public-surface-thumbnail public-surface-thumbnail--${variant}`}
       ratio={1.45}
     >
-      <span aria-hidden="true" />
-      <span aria-hidden="true" />
-      <T7Icon aria-hidden="true" name="components" size={28} />
+      <div className="public-surface-thumbnail-inner">
+        <div className="public-surface-thumbnail-topline">
+          <Typography typeRole="overline">{content.label}</Typography>
+          <T7Icon aria-hidden="true" name={content.icon} size={19} />
+        </div>
+        <Typography as="h3" typeRole="heading-md">
+          {content.title}
+        </Typography>
+        <div className="public-surface-thumbnail-pills">
+          <Badge tone="primary">Token-led</Badge>
+          <Badge>Responsive</Badge>
+        </div>
+      </div>
     </MediaFrame>
   );
 }
 
 function ShowcaseProduct({
   category,
+  onOpen,
   title,
   variant,
 }: {
   category: string;
+  onOpen: () => void;
   title: string;
   variant: "signal" | "orbit" | "layers";
 }) {
   return (
     <ProductCard
       actions={
-        <Button intent="quiet" size="sm" trailingIcon="arrowRight">
+        <Button
+          intent="quiet"
+          onClick={onOpen}
+          size="sm"
+          trailingIcon="arrowRight"
+        >
           Read guide
         </Button>
       }
@@ -157,9 +193,102 @@ function ShowcaseProduct({
   );
 }
 
-export function PublicShowcase() {
+function ShowcaseSectionMap({ activeSection }: { activeSection: string }) {
+  const links = [
+    {
+      description: "Tokens, roles, and responsive foundations",
+      id: "showcase-features",
+      label: "Foundations",
+    },
+    {
+      description: "Guides and editorial notes for the system",
+      id: "showcase-content",
+      label: "Guides",
+    },
+    {
+      description: "Reusable blocks ready for composition",
+      id: "showcase-products",
+      label: "Blocks",
+    },
+    {
+      description: "Specific proof from teams using the language",
+      id: "showcase-testimonials",
+      label: "Stories",
+    },
+  ];
+
+  return (
+    <nav
+      aria-label="Public showcase sections"
+      className="public-showcase-section-map"
+    >
+      <div className="public-showcase-section-map-intro">
+        <Typography typeRole="overline">Navigate the system</Typography>
+        <Typography typeRole="body-sm">
+          Start with the foundation, then move through the reusable work.
+        </Typography>
+      </div>
+      <div className="public-showcase-section-map-links">
+        {links.map((link, index) => (
+          <a
+            aria-current={activeSection === link.id ? "location" : undefined}
+            className="public-showcase-section-map-link"
+            data-active={activeSection === link.id || undefined}
+            href={`#${link.id}`}
+            key={link.id}
+          >
+            <span className="public-showcase-section-map-index">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span>
+              <strong>{link.label}</strong>
+              <small>{link.description}</small>
+            </span>
+            <T7Icon aria-hidden="true" name="arrowRight" size={15} />
+          </a>
+        ))}
+      </div>
+    </nav>
+  );
+}
+
+export function PublicShowcase({
+  onNavigatePath,
+}: {
+  onNavigatePath?: (path: string) => void;
+} = {}) {
   const [notice, setNotice] = useState<string | null>(null);
+  const [activeSection, setActiveSection] = useState("showcase-top");
   const { toast } = useToast();
+
+  useEffect(() => {
+    const sectionIds = [
+      "showcase-top",
+      "showcase-stats",
+      "showcase-features",
+      "showcase-content",
+      "showcase-products",
+      "showcase-testimonials",
+      "showcase-plans",
+      "showcase-cta",
+    ];
+    const sections = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter((section): section is HTMLElement => Boolean(section));
+    if (!sections.length || typeof IntersectionObserver === "undefined")
+      return undefined;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setActiveSection((visible.target as HTMLElement).id);
+      },
+      { rootMargin: "-18% 0px -68% 0px", threshold: [0, 0.25, 0.6] },
+    );
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
 
   function notify(title: string, description: string) {
     setNotice(title);
@@ -167,7 +296,10 @@ export function PublicShowcase() {
   }
 
   function scrollToSection(id: string) {
-    document.getElementById(id)?.scrollIntoView({
+    const target = document.getElementById(id);
+    if (!target) return;
+    window.history.pushState({}, "", `#${id}`);
+    target.scrollIntoView({
       behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
         ? "auto"
         : "smooth",
@@ -175,19 +307,23 @@ export function PublicShowcase() {
     });
   }
 
+  function navigateToPath(path: string) {
+    if (onNavigatePath) {
+      onNavigatePath(path);
+      return;
+    }
+    window.location.assign(path);
+  }
+
   return (
     <PublicShell
       actions={
         <Button
-          onClick={() =>
-            notify(
-              "Repository view queued",
-              "The local reference remains fixture-only.",
-            )
-          }
+          leadingIcon="components"
+          onClick={() => navigateToPath("/components")}
           size="sm"
         >
-          View source
+          View components
         </Button>
       }
       brand={<ShowcaseBrand />}
@@ -248,26 +384,46 @@ export function PublicShowcase() {
       }
       navigationMenu={[
         {
-          active: true,
+          active: activeSection === "showcase-top",
           href: "#showcase-top",
           key: "overview",
           label: "Overview",
         },
         {
           children: [
-            { href: "#showcase-features", key: "blocks", label: "Blocks" },
-            { href: "#showcase-products", key: "recipes", label: "Recipes" },
+            { href: "#showcase-products", key: "blocks", label: "Blocks" },
+            { href: "#showcase-content", key: "guides", label: "Guides" },
+            { href: "/recipes", key: "recipes", label: "Recipes" },
           ],
+          active: [
+            "showcase-content",
+            "showcase-plans",
+            "showcase-products",
+          ].includes(activeSection),
           key: "explore",
           label: "Explore",
         },
         {
           children: [
+            {
+              href: "#showcase-features",
+              key: "foundations",
+              label: "Foundations",
+            },
             { href: "#showcase-stats", key: "proof", label: "System proof" },
             { href: "/components", key: "components", label: "Components" },
           ],
+          active: ["showcase-stats", "showcase-features"].includes(
+            activeSection,
+          ),
           key: "system",
           label: "System",
+        },
+        {
+          active: activeSection === "showcase-testimonials",
+          href: "#showcase-testimonials",
+          key: "stories",
+          label: "Stories",
         },
       ]}
     >
@@ -278,10 +434,12 @@ export function PublicShowcase() {
 
         <Hero
           className="public-showcase-hero"
-          description="A shared set of foundations, components, and reusable blocks that keeps operational products and public experiences in the same visual conversation."
+          description="A composable system for product surfaces, reference work, and public experiences—connected by the same tokens, contracts, and visual language."
+          eyebrow="TEN4SEVEN UI / COMPOSITION SYSTEM"
           media={<ShowcasePreview />}
           primaryAction={
             <Button
+              className="public-showcase-hero-primary"
               onClick={() => scrollToSection("showcase-features")}
               size="lg"
             >
@@ -290,7 +448,8 @@ export function PublicShowcase() {
           }
           secondaryAction={
             <Button
-              intent="secondary"
+              className="public-showcase-hero-secondary"
+              intent="quiet"
               onClick={() => scrollToSection("showcase-products")}
               size="lg"
             >
@@ -314,7 +473,10 @@ export function PublicShowcase() {
           variant="product-preview"
         />
 
+        <ShowcaseSectionMap activeSection={activeSection} />
+
         <LogoCloud
+          className="public-showcase-logo-cloud"
           id="showcase-proof"
           items={[
             {
@@ -336,6 +498,7 @@ export function PublicShowcase() {
         />
 
         <StatsSection
+          className="public-showcase-stats"
           description="Counts are local catalog proof, not product performance claims."
           id="showcase-stats"
           items={[
@@ -368,6 +531,7 @@ export function PublicShowcase() {
         />
 
         <FeatureShowcase
+          className="public-showcase-features"
           description="The public layer adds section-level composition without changing the contracts that make dense product work predictable."
           id="showcase-features"
           items={[
@@ -428,12 +592,18 @@ export function PublicShowcase() {
         />
 
         <ContentShowcase
+          className="public-showcase-content"
           description="A content-led section uses the same card, media, type, and action contracts without becoming an operational list."
           id="showcase-content"
           items={[
             {
               action: (
-                <Button intent="quiet" size="sm" trailingIcon="arrowRight">
+                <Button
+                  intent="quiet"
+                  onClick={() => navigateToPath("/theme-studio")}
+                  size="sm"
+                  trailingIcon="arrowRight"
+                >
                   Read the guide
                 </Button>
               ),
@@ -446,7 +616,12 @@ export function PublicShowcase() {
             },
             {
               action: (
-                <Button intent="quiet" size="sm" trailingIcon="arrowRight">
+                <Button
+                  intent="quiet"
+                  onClick={() => navigateToPath("/recipes")}
+                  size="sm"
+                  trailingIcon="arrowRight"
+                >
                   Read the guide
                 </Button>
               ),
@@ -459,7 +634,12 @@ export function PublicShowcase() {
             },
             {
               action: (
-                <Button intent="quiet" size="sm" trailingIcon="arrowRight">
+                <Button
+                  intent="quiet"
+                  onClick={() => navigateToPath("/components")}
+                  size="sm"
+                  trailingIcon="arrowRight"
+                >
                   Read the guide
                 </Button>
               ),
@@ -475,10 +655,11 @@ export function PublicShowcase() {
         />
 
         <ProductShowcase
+          className="public-showcase-products"
           actions={
             <Button
               intent="quiet"
-              onClick={() => scrollToSection("showcase-footer")}
+              onClick={() => navigateToPath("/recipes")}
               size="sm"
               trailingIcon="arrowRight"
             >
@@ -492,16 +673,19 @@ export function PublicShowcase() {
           <Carousel aria-label="Featured ten4seven guides" slideWidth={280}>
             <ShowcaseProduct
               category="Foundations"
+              onOpen={() => navigateToPath("/theme-studio")}
               title="Tokens that explain themselves"
               variant="signal"
             />
             <ShowcaseProduct
               category="Patterns"
+              onOpen={() => navigateToPath("/recipes")}
               title="Recipes for real product work"
               variant="orbit"
             />
             <ShowcaseProduct
               category="Blocks"
+              onOpen={() => navigateToPath("/blocks")}
               title="Public sections with restraint"
               variant="layers"
             />
@@ -509,6 +693,7 @@ export function PublicShowcase() {
         </ProductShowcase>
 
         <Testimonials
+          className="public-showcase-testimonials"
           description="Proof is useful when it stays specific and readable."
           id="showcase-testimonials"
           items={[
@@ -535,6 +720,7 @@ export function PublicShowcase() {
         />
 
         <PricingSection
+          className="public-showcase-pricing"
           description="A presentation-only comparison block. Entitlements and billing remain product-owned."
           id="showcase-plans"
           plans={[
@@ -542,12 +728,7 @@ export function PublicShowcase() {
               action: (
                 <Button
                   intent="secondary"
-                  onClick={() =>
-                    notify(
-                      "Starter selected",
-                      "No subscription is created in this fixture.",
-                    )
-                  }
+                  onClick={() => navigateToPath("/theme-studio")}
                   size="sm"
                 >
                   Start with the system
@@ -561,15 +742,7 @@ export function PublicShowcase() {
             },
             {
               action: (
-                <Button
-                  onClick={() =>
-                    notify(
-                      "Team selected",
-                      "No subscription is created in this fixture.",
-                    )
-                  }
-                  size="sm"
-                >
+                <Button onClick={() => navigateToPath("/recipes")} size="sm">
                   Compose with a team
                 </Button>
               ),
@@ -616,6 +789,7 @@ export function PublicShowcase() {
         />
 
         <CtaBlock
+          className="public-showcase-cta"
           actions={
             <>
               <Button
@@ -626,12 +800,7 @@ export function PublicShowcase() {
               </Button>
               <Button
                 intent="secondary"
-                onClick={() =>
-                  notify(
-                    "Documentation queued",
-                    "The local workbench remains the source of truth.",
-                  )
-                }
+                onClick={() => navigateToPath("/components")}
                 size="lg"
               >
                 Read documentation
@@ -641,7 +810,7 @@ export function PublicShowcase() {
           description="Start with a complete recipe, then let the system carry the details through every breakpoint and theme."
           id="showcase-cta"
           title="Ready to build a surface that holds together?"
-          tone="accent"
+          tone="inverse"
         />
       </div>
     </PublicShell>

@@ -60,7 +60,10 @@ export function useFloatingPosition(
     const contentRect = content?.getBoundingClientRect();
     const viewportWidth = document.documentElement.clientWidth;
     const viewportHeight = document.documentElement.clientHeight;
-    const width = contentRect?.width || (minWidth ? anchorRect.width : 240);
+    const measuredWidth = contentRect?.width ?? 0;
+    const width = minWidth
+      ? Math.max(anchorRect.width, measuredWidth)
+      : measuredWidth || 240;
     const safeWidth = Math.min(width, viewportWidth - padding * 2);
     const height = contentRect?.height || 160;
     let nextSide = side;
@@ -134,7 +137,6 @@ export function useFloatingPosition(
       boxSizing: "border-box",
       maxHeight: `${Math.max(96, Math.round(availableHeight))}px`,
       maxWidth: `calc(100vw - ${padding * 2}px)`,
-      minWidth: minWidth ? Math.round(safeWidth) : undefined,
       position: "fixed",
       top: Math.round(top),
       visibility: "visible",
@@ -175,21 +177,56 @@ export function useFloatingPosition(
   return { contentRef, placement, setContentRef, style };
 }
 
-/** All non-modal floating content is mounted outside clipping app surfaces. */
-export function FloatingPortal({ children }: { children: ReactNode }) {
+const floatingLayerDismissers = new Set<() => void>();
+
+/** Keep interactive floating surfaces mutually exclusive across one provider. */
+export function useExclusiveFloatingLayer(open: boolean, onClose: () => void) {
+  const onCloseRef = useRef(onClose);
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
+  useEffect(() => {
+    if (!open) return undefined;
+
+    const dismiss = () => onCloseRef.current();
+    for (const current of floatingLayerDismissers) current();
+    floatingLayerDismissers.add(dismiss);
+    return () => {
+      floatingLayerDismissers.delete(dismiss);
+    };
+  }, [open]);
+}
+
+export interface FloatingPortalProps {
+  /** Resolve the nearest open native dialog when the anchor lives in one. */
+  anchorRef?: RefObject<HTMLElement | null>;
+  children: ReactNode;
+}
+
+function resolveFloatingTarget(anchorRef?: RefObject<HTMLElement | null>) {
+  if (typeof document === "undefined") return null;
+  const dialog = anchorRef?.current?.closest("dialog[open]");
+  return (
+    (dialog as HTMLElement | null) ??
+    document.getElementById("t7-overlay-root") ??
+    document.body
+  );
+}
+
+/** Mount floating content outside clipping surfaces, or inside its open native dialog. */
+export function FloatingPortal({ anchorRef, children }: FloatingPortalProps) {
   const [target, setTarget] = useState<HTMLElement | null>(() =>
-    typeof document === "undefined"
-      ? null
-      : document.getElementById("t7-overlay-root"),
+    resolveFloatingTarget(anchorRef),
   );
 
   useLayoutEffect(() => {
-    const nextTarget =
-      document.getElementById("t7-overlay-root") ?? document.body;
+    const nextTarget = resolveFloatingTarget(anchorRef);
     setTarget((currentTarget) =>
       currentTarget === nextTarget ? currentTarget : nextTarget,
     );
-  }, []);
+  }, [anchorRef]);
 
   return target ? createPortal(children, target) : null;
 }

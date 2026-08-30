@@ -15,6 +15,8 @@ export type RadiusName = "sharp" | "soft" | "rounded";
 export type DensityName = "comfortable" | "default" | "compact" | "dense";
 export type TypographyName = "modern" | "humanist" | "mono";
 export type ElevationName = "flat" | "soft" | "standard";
+export type CanvasName = "balanced" | "paper" | "monochrome";
+export type ChartPaletteName = "spectrum" | "four" | "monochrome";
 
 export type TypographyRole =
   | "display-xl"
@@ -52,8 +54,20 @@ export type TypographySetting = TypographyName | TypographyFamilies;
 export interface ThemeConfig {
   appearance?: Appearance;
   palette?: PaletteName;
+  /** Optional primary color source; defaults to the selected palette. */
+  primary?: PaletteName;
+  /** Optional accent color source; defaults to the selected palette. */
+  accent?: PaletteName;
+  /** Neutral canvas treatment shared by every surface. */
+  canvas?: CanvasName;
+  /** Chart colorway while retaining the five-slot chart contract. */
+  chartPalette?: ChartPaletteName;
   radius?: RadiusName;
+  /** Optional exact base radius in px. When set, it overrides the named radius scale. */
+  radiusValue?: number;
   density?: DensityName;
+  /** Shared motion length in seconds for reveals and interaction transitions. */
+  motionDuration?: number;
   typography?: TypographySetting;
   elevation?: ElevationName;
 }
@@ -61,8 +75,14 @@ export interface ThemeConfig {
 export interface ResolvedTheme {
   appearance: Exclude<Appearance, "system">;
   palette: PaletteName;
+  primary: PaletteName;
+  accent: PaletteName;
+  canvas: CanvasName;
+  chartPalette: ChartPaletteName;
   radius: RadiusName;
+  radiusValue?: number;
   density: DensityName;
+  motionDuration: number;
   typography: TypographyName;
   typographyFamilies?: Required<
     Pick<TypographyFamilies, "ui" | "display" | "mono">
@@ -100,8 +120,13 @@ type TypographyProfile = {
 export const defaultTheme: ResolvedTheme = {
   appearance: "light",
   palette: "emerald",
+  primary: "emerald",
+  accent: "emerald",
+  canvas: "balanced",
+  chartPalette: "spectrum",
   radius: "soft",
   density: "default",
+  motionDuration: 1.5,
   typography: "modern",
   elevation: "soft",
 };
@@ -300,6 +325,50 @@ export const radiusProfiles: Record<RadiusName, Record<string, string>> = {
     shell: "30px",
   },
 };
+
+export const radiusValueRange = Object.freeze({ min: 0, max: 24 });
+
+/** Shared motion duration in seconds. Quarter-second steps keep the axis legible. */
+export const motionDurationRange = Object.freeze({
+  min: 0.5,
+  max: 2.5,
+  step: 0.25,
+});
+
+function normalizeRadiusValue(value: number): number {
+  const finiteValue = Number.isFinite(value) ? value : radiusValueRange.min;
+  return Math.min(
+    radiusValueRange.max,
+    Math.max(radiusValueRange.min, Math.round(finiteValue)),
+  );
+}
+
+function normalizeMotionDuration(value: number): number {
+  const finiteValue = Number.isFinite(value) ? value : motionDurationRange.min;
+  const clampedValue = Math.min(
+    motionDurationRange.max,
+    Math.max(motionDurationRange.min, finiteValue),
+  );
+  return Number(
+    (
+      Math.round(clampedValue / motionDurationRange.step) *
+      motionDurationRange.step
+    ).toFixed(2),
+  );
+}
+
+/** Build the hierarchical radius scale from one exact base value. */
+export function buildRadiusProfile(value: number): Record<string, string> {
+  const base = normalizeRadiusValue(value);
+  return {
+    indicator: `${Math.round(base / 3)}px`,
+    control: `${Math.round((base * 5) / 6)}px`,
+    base: `${base}px`,
+    panel: `${Math.round((base * 4) / 3)}px`,
+    card: `${Math.round((base * 3) / 2)}px`,
+    shell: `${base * 2}px`,
+  };
+}
 
 export const densityProfiles: Record<DensityName, Record<string, string>> = {
   comfortable: {
@@ -560,7 +629,21 @@ export const typographyProfiles: Record<TypographyName, TypographyProfile> = {
   }),
 };
 
-const lightNeutral = {
+type NeutralProfile = {
+  background: string;
+  surface: string;
+  surfaceSubtle: string;
+  surfaceMuted: string;
+  surfaceRaised: string;
+  foreground: string;
+  mutedForeground: string;
+  mutedForegroundStrong: string;
+  border: string;
+  borderStrong: string;
+  muted: string;
+};
+
+const lightNeutral: NeutralProfile = {
   background: "210 20% 97%",
   surface: "0 0% 100%",
   surfaceSubtle: "210 20% 94%",
@@ -568,12 +651,13 @@ const lightNeutral = {
   surfaceRaised: "0 0% 100%",
   foreground: "222 30% 15%",
   mutedForeground: "215 14% 43%",
+  mutedForegroundStrong: "215 18% 36%",
   border: "214 18% 86%",
   borderStrong: "214 18% 73%",
   muted: "215 18% 93%",
 };
 
-const darkNeutral = {
+const darkNeutral: NeutralProfile = {
   background: "222 22% 9%",
   surface: "222 20% 12%",
   surfaceSubtle: "222 18% 16%",
@@ -581,9 +665,62 @@ const darkNeutral = {
   surfaceRaised: "222 18% 17%",
   foreground: "210 20% 96%",
   mutedForeground: "215 14% 68%",
+  mutedForegroundStrong: "215 16% 76%",
   border: "216 16% 24%",
   borderStrong: "216 16% 35%",
   muted: "216 16% 21%",
+};
+
+/** Neutral canvas families keep the palette independent from surface contrast. */
+export const canvasProfiles: Record<
+  CanvasName,
+  { light: NeutralProfile; dark: NeutralProfile }
+> = {
+  balanced: { light: lightNeutral, dark: darkNeutral },
+  paper: {
+    light: {
+      background: "0 0% 100%",
+      surface: "0 0% 100%",
+      surfaceSubtle: "210 12% 97%",
+      surfaceMuted: "215 14% 93%",
+      surfaceRaised: "0 0% 100%",
+      foreground: "222 24% 11%",
+      mutedForeground: "215 14% 43%",
+      mutedForegroundStrong: "215 18% 36%",
+      border: "215 16% 86%",
+      borderStrong: "215 16% 66%",
+      muted: "215 14% 94%",
+    },
+    dark: darkNeutral,
+  },
+  monochrome: {
+    light: {
+      background: "0 0% 97%",
+      surface: "0 0% 100%",
+      surfaceSubtle: "0 0% 95%",
+      surfaceMuted: "0 0% 91%",
+      surfaceRaised: "0 0% 100%",
+      foreground: "0 0% 12%",
+      mutedForeground: "0 0% 43%",
+      mutedForegroundStrong: "0 0% 35%",
+      border: "0 0% 84%",
+      borderStrong: "0 0% 62%",
+      muted: "0 0% 92%",
+    },
+    dark: {
+      background: "0 0% 8%",
+      surface: "0 0% 12%",
+      surfaceSubtle: "0 0% 16%",
+      surfaceMuted: "0 0% 20%",
+      surfaceRaised: "0 0% 17%",
+      foreground: "0 0% 96%",
+      mutedForeground: "0 0% 68%",
+      mutedForegroundStrong: "0 0% 76%",
+      border: "0 0% 24%",
+      borderStrong: "0 0% 36%",
+      muted: "0 0% 21%",
+    },
+  },
 };
 
 export function resolveAppearance(
@@ -604,12 +741,25 @@ export function resolveTheme(config: ThemeConfig = {}): ResolvedTheme {
       ? (typographySetting.preset ?? defaultTheme.typography)
       : (typographySetting ?? defaultTheme.typography);
   const typographyProfile = typographyProfiles[typographyName];
+  const radiusValue =
+    config.radiusValue === undefined
+      ? undefined
+      : normalizeRadiusValue(config.radiusValue);
+  const motionDuration = normalizeMotionDuration(
+    config.motionDuration ?? defaultTheme.motionDuration,
+  );
 
   return {
     appearance: resolveAppearance(config.appearance ?? defaultTheme.appearance),
     palette: config.palette ?? defaultTheme.palette,
+    primary: config.primary ?? config.palette ?? defaultTheme.primary,
+    accent: config.accent ?? config.palette ?? defaultTheme.accent,
+    canvas: config.canvas ?? defaultTheme.canvas,
+    chartPalette: config.chartPalette ?? defaultTheme.chartPalette,
     radius: config.radius ?? defaultTheme.radius,
+    ...(radiusValue === undefined ? {} : { radiusValue }),
     density: config.density ?? defaultTheme.density,
+    motionDuration,
     typography: typographyName,
     typographyFamilies: {
       ui:
@@ -633,8 +783,31 @@ export function buildThemeVariables(
   theme: ResolvedTheme,
 ): Record<string, string> {
   const palette = paletteProfiles[theme.palette];
-  const neutrals = theme.appearance === "dark" ? darkNeutral : lightNeutral;
-  const radius = radiusProfiles[theme.radius];
+  const primaryPalette = paletteProfiles[theme.primary];
+  const accentPalette = paletteProfiles[theme.accent];
+  const neutrals = canvasProfiles[theme.canvas][theme.appearance];
+  const chartColors =
+    theme.chartPalette === "four"
+      ? [
+          primaryPalette.primary,
+          accentPalette.accent,
+          palette.chart[2],
+          palette.chart[3],
+          palette.chart[3],
+        ]
+      : theme.chartPalette === "monochrome"
+        ? [
+            primaryPalette.primary,
+            primaryPalette.primaryHover,
+            primaryPalette.primaryActive,
+            primaryPalette.primary,
+            primaryPalette.primaryHover,
+          ]
+        : palette.chart;
+  const radius =
+    theme.radiusValue === undefined
+      ? radiusProfiles[theme.radius]
+      : buildRadiusProfile(theme.radiusValue);
   const density = densityProfiles[theme.density];
   const typography = typographyProfiles[theme.typography];
   const typographyFamilies = theme.typographyFamilies ?? {
@@ -648,9 +821,20 @@ export function buildThemeVariables(
       : theme.elevation === "standard"
         ? "0 12px 32px -24px hsl(222 30% 12% / .42)"
         : "0 1px 2px hsl(222 30% 12% / .08), 0 16px 36px -26px hsl(var(--t7-primary-hsl) / .38)";
+  const motionMilliseconds = Math.round(theme.motionDuration * 1000);
+  const motionDurationValue = `${theme.motionDuration}s`;
+  const motionInstant = `${Math.max(50, Math.round(motionMilliseconds * 0.1))}ms`;
+  const motionFast = `${Math.max(100, Math.round(motionMilliseconds * 0.2))}ms`;
+  const motionStandard = `${Math.max(160, Math.round(motionMilliseconds * 0.35))}ms`;
+  const motionLoop = `${Math.max(700, Math.round(motionMilliseconds * 0.8))}ms`;
+  const motionEaseStandard = "cubic-bezier(.2, 0, 0, 1)";
+  const motionEaseEnter = "cubic-bezier(.16, 1, .3, 1)";
+  const motionEaseExit = "cubic-bezier(.4, 0, 1, 1)";
 
   const semantic = {
     success: "142 66% 29%",
+    successForeground:
+      theme.appearance === "dark" ? "142 62% 72%" : "142 70% 24%",
     warning: "38 92% 50%",
     danger: "0 72% 51%",
     info: "199 89% 48%",
@@ -668,20 +852,35 @@ export function buildThemeVariables(
   }, {});
 
   return {
-    "--t7-primary-hsl": palette.primary,
-    "--t7-primary-hover-hsl": palette.primaryHover,
-    "--t7-primary-active-hsl": palette.primaryActive,
-    "--t7-primary-foreground-hsl": palette.primaryForeground,
-    "--t7-accent-hsl": palette.accent,
-    "--t7-accent-hover-hsl": palette.primaryHover,
-    "--t7-accent-pressed-hsl": palette.primaryActive,
-    "--t7-accent-subtle-hsl": palette.accent,
-    "--t7-accent-foreground-hsl": palette.accentForeground,
-    "--t7-chart-1-hsl": palette.chart[0],
-    "--t7-chart-2-hsl": palette.chart[1],
-    "--t7-chart-3-hsl": palette.chart[2],
-    "--t7-chart-4-hsl": palette.chart[3],
-    "--t7-chart-5-hsl": palette.chart[4],
+    "--t7-palette-name": theme.palette,
+    "--t7-primary-palette": theme.primary,
+    "--t7-accent-palette": theme.accent,
+    "--t7-canvas-mode": theme.canvas,
+    "--t7-chart-palette": theme.chartPalette,
+    "--t7-chart-palette-count":
+      theme.chartPalette === "four"
+        ? "4"
+        : theme.chartPalette === "monochrome"
+          ? "1"
+          : "5",
+    "--t7-primary-hsl": primaryPalette.primary,
+    "--t7-primary-hover-hsl": primaryPalette.primaryHover,
+    "--t7-primary-active-hsl": primaryPalette.primaryActive,
+    "--t7-primary-foreground-hsl": primaryPalette.primaryForeground,
+    "--t7-primary-badge-foreground-hsl":
+      theme.appearance === "dark"
+        ? primaryPalette.primaryForeground
+        : primaryPalette.primaryActive,
+    "--t7-accent-hsl": accentPalette.accent,
+    "--t7-accent-hover-hsl": accentPalette.primaryHover,
+    "--t7-accent-pressed-hsl": accentPalette.primaryActive,
+    "--t7-accent-subtle-hsl": accentPalette.accent,
+    "--t7-accent-foreground-hsl": accentPalette.accentForeground,
+    "--t7-chart-1-hsl": chartColors[0],
+    "--t7-chart-2-hsl": chartColors[1],
+    "--t7-chart-3-hsl": chartColors[2],
+    "--t7-chart-4-hsl": chartColors[3],
+    "--t7-chart-5-hsl": chartColors[4],
     "--t7-background-hsl": neutrals.background,
     "--t7-surface-hsl": neutrals.surface,
     "--t7-surface-subtle-hsl": neutrals.surfaceSubtle,
@@ -690,20 +889,22 @@ export function buildThemeVariables(
     "--t7-surface-overlay-hsl": neutrals.surfaceRaised,
     "--t7-foreground-hsl": neutrals.foreground,
     "--t7-muted-foreground-hsl": neutrals.mutedForeground,
+    "--t7-muted-foreground-strong-hsl": neutrals.mutedForegroundStrong,
     "--t7-border-hsl": neutrals.border,
     "--t7-border-strong-hsl": neutrals.borderStrong,
     "--t7-muted-hsl": neutrals.muted,
-    "--t7-focus-hsl": palette.primary,
-    "--t7-selected-hsl": palette.primary,
-    "--t7-selected-hover-hsl": palette.primaryHover,
-    "--t7-interactive-border-hsl": palette.primary,
+    "--t7-focus-hsl": primaryPalette.primary,
+    "--t7-selected-hsl": primaryPalette.primary,
+    "--t7-selected-hover-hsl": primaryPalette.primaryHover,
+    "--t7-interactive-border-hsl": primaryPalette.primary,
     "--t7-input-background-hsl": neutrals.surface,
     "--t7-input-border-hsl": neutrals.borderStrong,
-    "--t7-input-hover-border-hsl": palette.primary,
-    "--t7-input-focus-border-hsl": palette.primary,
+    "--t7-input-hover-border-hsl": primaryPalette.primary,
+    "--t7-input-focus-border-hsl": primaryPalette.primary,
     "--t7-disabled-background-hsl": neutrals.muted,
     "--t7-disabled-foreground-hsl": neutrals.mutedForeground,
     "--t7-success-hsl": semantic.success,
+    "--t7-success-foreground-hsl": semantic.successForeground,
     "--t7-warning-hsl": semantic.warning,
     "--t7-warning-foreground-hsl":
       theme.appearance === "dark" ? "42 92% 72%" : "28 72% 27%",
@@ -712,6 +913,7 @@ export function buildThemeVariables(
     "--t7-radius-control": radius.control,
     "--t7-radius-indicator": radius.indicator,
     "--t7-radius-base": radius.base,
+    "--t7-radius-value": radius.base,
     "--t7-radius-panel": radius.panel,
     "--t7-radius-card": radius.card,
     "--t7-radius-shell": radius.shell,
@@ -722,6 +924,9 @@ export function buildThemeVariables(
     "--t7-card-padding": density.cardPadding,
     "--t7-section-gap": density.sectionGap,
     "--t7-control-gap": density.controlGap,
+    "--t7-scrollbar-size": "4px",
+    "--t7-scrollbar-thumb-alpha": "0.3",
+    "--t7-scrollbar-thumb-hover-alpha": "0.5",
     "--t7-font-ui": typographyFamilies.ui,
     "--t7-font-display": typographyFamilies.display,
     "--t7-font-mono": typographyFamilies.mono,
@@ -753,13 +958,27 @@ export function buildThemeVariables(
       theme.elevation === "flat"
         ? "none"
         : "0 28px 80px -30px hsl(222 30% 8% / .56)",
-    "--t7-duration-instant": "80ms",
-    "--t7-duration-fast": "140ms",
-    "--t7-duration-normal": "220ms",
-    "--t7-duration-slow": "320ms",
-    "--t7-ease-standard": "cubic-bezier(.2, 0, 0, 1)",
-    "--t7-ease-enter": "cubic-bezier(.16, 1, .3, 1)",
-    "--t7-ease-exit": "cubic-bezier(.4, 0, 1, 1)",
+    "--t7-motion-duration": motionDurationValue,
+    "--t7-duration-instant": motionInstant,
+    "--t7-duration-fast": motionFast,
+    "--t7-duration-standard": motionStandard,
+    "--t7-duration-normal": motionStandard,
+    "--t7-duration-slow": `${motionMilliseconds}ms`,
+    "--t7-duration-loop": motionLoop,
+    "--t7-ease-standard": motionEaseStandard,
+    "--t7-ease-enter": motionEaseEnter,
+    "--t7-ease-exit": motionEaseExit,
+    "--t7-motion-interactive": `${motionInstant} ${motionEaseStandard}`,
+    "--t7-motion-state": `${motionStandard} ${motionEaseStandard}`,
+    "--t7-motion-enter-fast": `${motionFast} ${motionEaseEnter}`,
+    "--t7-motion-enter": `${motionStandard} ${motionEaseEnter}`,
+    "--t7-motion-enter-slow": `${motionMilliseconds}ms ${motionEaseEnter}`,
+    "--t7-motion-exit": `${motionFast} ${motionEaseExit}`,
+    "--t7-motion-loop": `${motionLoop} linear`,
+    "--t7-motion-loop-eased": `${motionLoop} ease-in-out`,
+    "--t7-transition-fast": `${motionFast} ${motionEaseStandard}`,
+    "--t7-transition-standard": `${motionStandard} ${motionEaseStandard}`,
+    "--t7-transition-large": `${motionMilliseconds}ms ${motionEaseEnter}`,
     "--t7-z-base": "0",
     "--t7-z-sticky": "10",
     "--t7-z-focus": "20",

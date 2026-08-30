@@ -21,7 +21,7 @@ const routeIcons: Record<PlaygroundRoute, IconName> = {
   Blocks: "components",
   Icons: "category",
   Recipes: "table",
-  "Warehouse Inventory": "warehouse",
+  "Operations Tracker": "analytics",
   "Publishing Store": "book",
   "Public Showcase": "dashboard",
 };
@@ -35,15 +35,15 @@ const routeGroups = [
 export interface ReferenceHarnessProps {
   activeRoute: PlaygroundRoute;
   onNavigate: (route: PlaygroundRoute) => void;
-  warehouseViewState: ReferenceViewState;
-  onWarehouseViewStateChange: (viewState: ReferenceViewState) => void;
+  operationsViewState: ReferenceViewState;
+  onOperationsViewStateChange: (viewState: ReferenceViewState) => void;
 }
 
 export function ReferenceHarness({
   activeRoute,
   onNavigate,
-  onWarehouseViewStateChange,
-  warehouseViewState,
+  onOperationsViewStateChange,
+  operationsViewState,
 }: ReferenceHarnessProps) {
   const [open, setOpen] = useState(false);
 
@@ -103,16 +103,16 @@ export function ReferenceHarness({
             ))}
           </div>
 
-          {activeRoute === "Warehouse Inventory" ? (
+          {activeRoute === "Operations Tracker" ? (
             <div className="reference-harness-simulation">
               <Select
                 label="Fixture state"
                 onChange={(event) =>
-                  onWarehouseViewStateChange(
+                  onOperationsViewStateChange(
                     event.target.value as ReferenceViewState,
                   )
                 }
-                value={warehouseViewState}
+                value={operationsViewState}
               >
                 <option value="ready">Ready</option>
                 <option value="loading">Loading</option>
@@ -121,7 +121,7 @@ export function ReferenceHarness({
               </Select>
               <Typography typeRole="caption">
                 State simulation belongs to this reference-only surface, not to
-                the warehouse query.
+                the operations tracker query.
               </Typography>
             </div>
           ) : null}

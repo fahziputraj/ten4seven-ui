@@ -11,7 +11,7 @@ import {
 
 import { T7Icon, type IconName } from "@ten4seven/icons";
 
-import { cx } from "./utils";
+import { cx, updatePointerPosition } from "./utils";
 
 export interface IconButtonProps extends Omit<
   ButtonHTMLAttributes<HTMLButtonElement>,
@@ -32,6 +32,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
       intent = "quiet",
       label,
       loading = false,
+      onPointerMove,
       size = "md",
       type = "button",
       ...props
@@ -49,6 +50,14 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
         data-loading={loading || undefined}
         data-size={size}
         disabled={props.disabled || loading}
+        onPointerMove={(event) => {
+          updatePointerPosition(
+            event.currentTarget,
+            event.clientX,
+            event.clientY,
+          );
+          onPointerMove?.(event);
+        }}
         type={type}
       >
         {loading ? (
@@ -104,6 +113,7 @@ export const ToggleButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
       leadingIcon,
       onClick,
       onPressedChange,
+      onPointerMove,
       pressed = false,
       type = "button",
       ...props
@@ -117,6 +127,14 @@ export const ToggleButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
         aria-pressed={pressed}
         className={cx("t7-toggle-button", className)}
         data-pressed={pressed || undefined}
+        onPointerMove={(event) => {
+          updatePointerPosition(
+            event.currentTarget,
+            event.clientX,
+            event.clientY,
+          );
+          onPointerMove?.(event);
+        }}
         onClick={(event) => {
           onClick?.(event);
           if (!event.defaultPrevented) onPressedChange?.(!pressed);

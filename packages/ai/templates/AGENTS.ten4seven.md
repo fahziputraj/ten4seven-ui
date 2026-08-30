@@ -18,7 +18,8 @@ ten4seven UI is the design-system authority for this application. Preserve the a
   and use its `blockRoles` (`required`, `recommended`, `optional`) so the
   page does not render every available block by default. Use each block
   contract for content slots and responsive quality.
-- Configure `Ten4SevenProvider` for appearance, palette, radius, density, and typography.
+- Configure `Ten4SevenProvider` for appearance, palette, primary/accent color
+  sources, canvas, chart palette, radius, density, and typography.
 - Use `T7Icon` with semantic names from the icon catalog; never paste provider identifiers.
 - Build the shell and navigation with canonical primitives first: `AppShell → [Sidebar | TopNavigation | NavigationMenu] → [PageHeader] → bounded route content`. Use `Sidebar` for private information-dense applications and `PublicShell` with `NavigationMenu` for public/content/commerce surfaces.
 - Preserve API calls, state, validation, routes, permissions, form schemas, and events.

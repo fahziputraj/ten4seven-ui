@@ -7,6 +7,7 @@ import {
 
 import { T7Icon } from "@ten4seven/icons";
 
+import { IconButton } from "./actions";
 import { Button, type ButtonProps, Typography } from "./components";
 import { cx } from "./utils";
 
@@ -116,9 +117,24 @@ export function CartTrigger({
           ? `${countLabel} in ${label.toLowerCase()}`
           : `Open ${label.toLowerCase()}`)
       }
+      className={cx("t7-cart-trigger", props.className)}
+      data-cart-count={count}
       leadingIcon={props.leadingIcon ?? "cart"}
     >
-      {children ?? `${label}${count > 0 ? ` (${count})` : ""}`}
+      {children ?? (
+        <>
+          <span>{label}</span>
+          {count > 0 ? (
+            <span
+              aria-hidden="true"
+              className="t7-cart-trigger-count"
+              key={count}
+            >
+              {count}
+            </span>
+          ) : null}
+        </>
+      )}
     </Button>
   );
 }
@@ -158,7 +174,14 @@ export function CartLineItem({
   const resolvedQuantityLabel = quantityLabel ?? `Quantity for ${title}`;
   const resolvedRemoveLabel = removeLabel ?? `Remove ${title} from cart`;
   return (
-    <article {...props} className={cx("t7-cart-line-item", className)}>
+    <article
+      {...props}
+      className={cx(
+        "t7-cart-line-item",
+        media ? "has-media" : false,
+        className,
+      )}
+    >
       {media ? <div className="t7-cart-line-item-media">{media}</div> : null}
       <div className="t7-cart-line-item-copy">
         <Typography as="h3" typeRole="label">
@@ -180,10 +203,10 @@ export function CartLineItem({
         />
       </div>
       {onRemove ? (
-        <Button
-          aria-label={resolvedRemoveLabel}
+        <IconButton
+          icon="delete"
           intent="quiet"
-          leadingIcon="delete"
+          label={resolvedRemoveLabel}
           onClick={onRemove}
           size="sm"
         />

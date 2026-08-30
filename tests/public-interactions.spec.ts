@@ -28,12 +28,16 @@ test("command menu focuses search and restores focus", async ({ page }) => {
 });
 
 test("tabs and accordion expose keyboard state", async ({ page }) => {
-  const overview = page.getByRole("tab", { name: "Overview" });
-  const details = page.getByRole("tab", { name: "Details" });
-  await overview.focus();
+  const summary = page.getByRole("tab", { name: "Summary" });
+  const activity = page.getByRole("tab", { name: "Activity" });
+  await summary.focus();
   await page.keyboard.press("ArrowRight");
-  await expect(details).toHaveAttribute("aria-selected", "true");
-  const disclosure = page.getByRole("button", { name: "What is included?" });
+  await expect(activity).toHaveAttribute("aria-selected", "true");
+  const disclosure = page.getByRole("button", {
+    name: "What belongs in this panel?",
+  });
+  await disclosure.press("Enter");
+  await expect(disclosure).toHaveAttribute("aria-expanded", "false");
   await disclosure.press("Enter");
   await expect(disclosure).toHaveAttribute("aria-expanded", "true");
 });

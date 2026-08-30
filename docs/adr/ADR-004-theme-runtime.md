@@ -2,7 +2,7 @@
 
 ## Context
 
-The target consumer API is a provider with appearance, palette, radius, density, and typography configuration. Appearance must support light, dark, and system; custom axes must propagate across the proof components.
+The target consumer API is a provider with appearance, palette, independent primary/accent color sources, canvas, chart colorway, radius, density, and typography configuration. Appearance must support light, dark, and system; custom axes must propagate across the proof components.
 
 ## Options
 
@@ -16,7 +16,7 @@ The target consumer API is a provider with appearance, palette, radius, density,
 
 ## Why
 
-It satisfies the consumer contract and makes the Gate B proof observable: palette, radius, density, typography, and appearance all change together.
+It satisfies the consumer contract and makes the Gate B proof observable: palette, primary/accent color sources, canvas, chart colorway, radius, density, typography, and appearance all change together.
 
 ## Tradeoffs
 

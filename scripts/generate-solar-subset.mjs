@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { createRequire } from "node:module";
+import * as prettier from "prettier";
 
 const repoRoot = path.resolve(import.meta.dirname, "..");
 const iconsRequire = createRequire(
@@ -44,6 +45,7 @@ const selected = {
   item: "box-minimalistic-bold-duotone",
   package: "box-bold-duotone",
   farm: "home-add-bold-duotone",
+  fleet: "bus-bold-duotone",
   delivery: "delivery-bold-duotone",
   shipment: "delivery-bold-duotone",
   book: "book-2-bold-duotone",
@@ -128,8 +130,9 @@ const output = [
   "",
 ].join("\n");
 
+const formattedOutput = await prettier.format(output, { parser: "typescript" });
 fs.writeFileSync(
   path.join(repoRoot, "packages/icons/src/solar-data.ts"),
-  output,
+  formattedOutput,
 );
 console.log(`Generated ${Object.keys(bodies).length} local Solar glyphs.`);

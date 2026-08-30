@@ -76,7 +76,7 @@ kind of component:
   ProductShowcase, Carousel, and PublicFooter.
 - L5 Recipes: page composition contracts such as `entity-list`, `catalog`,
   `cart`, and `checkout`.
-- L6 References: Warehouse Inventory, Publishing Store, and Public Showcase
+- L6 References: Operations Tracker, Publishing Store, and Public Showcase
   proof screens.
 
 Canonical family routes are `/components/patterns`, `/components/tables`, and
@@ -105,7 +105,7 @@ Catalog status is exact: use only `implemented` components in production composi
 ## CLI
 
 - `pnpm t7ui info`
-- `pnpm t7ui find "inventory list"`
+- `pnpm t7ui find "operations tracker work queue"`
 - `pnpm t7ui show DataTable`
 - `pnpm t7ui agents init`
 
@@ -123,7 +123,7 @@ Catalog status is exact: use only `implemented` components in production composi
 - Patterns: `http://localhost:4173/components/patterns`
 - Tables: `http://localhost:4173/components/tables`
 - Filtering & Bulk Actions: `http://localhost:4173/components/filtering-bulk-actions`
-- Warehouse Inventory: `http://localhost:4173/warehouse-inventory`
+- Operations Tracker: `http://localhost:4173/operations-tracker`
 - Ebook Store Catalog: `http://localhost:4173/ebook-store`
 - Public Showcase: `http://localhost:4173/public-showcase`
 

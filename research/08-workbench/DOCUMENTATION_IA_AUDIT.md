@@ -11,7 +11,7 @@ recipe references, and direct URLs.
 
 - Studio: Theme Studio and Component Lab.
 - Library: Tokens, Components, Blocks, Icons, and Recipes.
-- References: Warehouse Inventory, Publishing Store, and Public Showcase.
+- References: Operations Tracker, Publishing Store, and Public Showcase.
 - Components stays shallow in the global navigation; its single document
   exposes 17 family anchors with canonical counts and does not render
   component leaves in the sidebar.

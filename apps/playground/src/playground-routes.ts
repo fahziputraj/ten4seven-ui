@@ -14,7 +14,7 @@ export type PlaygroundRoute =
   | "Blocks"
   | "Icons"
   | "Recipes"
-  | "Warehouse Inventory"
+  | "Operations Tracker"
   | "Publishing Store"
   | "Public Showcase";
 
@@ -26,7 +26,7 @@ export const playgroundRoutePaths: Record<PlaygroundRoute, string> = {
   Blocks: "/blocks",
   Icons: "/icons",
   Recipes: "/recipes",
-  "Warehouse Inventory": "/warehouse-inventory",
+  "Operations Tracker": "/operations-tracker",
   "Publishing Store": "/ebook-store",
   "Public Showcase": "/public-showcase",
 };
@@ -39,7 +39,7 @@ export const playgroundRouteTitles: Record<PlaygroundRoute, string> = {
   Blocks: "ten4seven UI — Blocks",
   Icons: "ten4seven UI — Icons",
   Recipes: "ten4seven UI — Recipes",
-  "Warehouse Inventory": "ten4seven UI — Warehouse Inventory",
+  "Operations Tracker": "ten4seven UI — Operations Tracker",
   "Publishing Store": "ten4seven UI — Publishing Store",
   "Public Showcase": "ten4seven UI — Public Showcase",
 };
@@ -58,8 +58,8 @@ export const playgroundRouteDescriptions: Record<PlaygroundRoute, string> = {
   Icons: "Semantic local Solar icons curated for ten4seven UI consumers.",
   Recipes:
     "Composable ten4seven UI screen recipes for agents and product teams.",
-  "Warehouse Inventory":
-    "Reference warehouse inventory entity-list composed from ten4seven UI.",
+  "Operations Tracker":
+    "Reference operations tracker for customer, supply, delivery, finance, and fleet work composed from ten4seven UI.",
   "Publishing Store":
     "Reference Indonesian publishing catalog composed from ten4seven UI.",
   "Public Showcase":
@@ -74,6 +74,10 @@ export type RouteMatch =
   | { kind: "recipe-detail"; name: string; pathname: string }
   | { kind: "not-found"; pathname: string };
 
+const legacyPlaygroundRoutePaths: Record<string, PlaygroundRoute> = {
+  "/warehouse-inventory": "Operations Tracker",
+};
+
 export function routeFromPath(pathname: string): RouteMatch {
   const normalizedPath = pathname.replace(/\/+$/, "") || "/";
   if (normalizedPath === "/") {
@@ -84,6 +88,9 @@ export function routeFromPath(pathname: string): RouteMatch {
   );
 
   if (entry) return { kind: "known", route: entry[0] as PlaygroundRoute };
+
+  const legacyEntry = legacyPlaygroundRoutePaths[normalizedPath];
+  if (legacyEntry) return { kind: "known", route: legacyEntry };
 
   const componentMatch = normalizedPath.match(/^\/components\/([^/]+)$/);
   if (componentMatch) {
@@ -127,7 +134,7 @@ export const libraryNavigation: PlaygroundRoute[] = [
   "Recipes",
 ];
 export const referenceNavigation: PlaygroundRoute[] = [
-  "Warehouse Inventory",
+  "Operations Tracker",
   "Publishing Store",
   "Public Showcase",
 ];

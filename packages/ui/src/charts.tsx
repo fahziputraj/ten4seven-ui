@@ -1,5 +1,11 @@
-import { type HTMLAttributes, type ReactNode } from "react";
-import { useState } from "react";
+import {
+  type HTMLAttributes,
+  type ReactNode,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from "react";
 
 import { T7Icon } from "@ten4seven/icons";
 
@@ -86,26 +92,79 @@ function chartScale(values: number[], targetTicks = 5) {
   return { max: safeMax, min, ticks };
 }
 
+interface ChartPoint {
+  x: number;
+  y: number;
+}
+
 function pointsFor(
   values: number[],
   width: number,
   height: number,
-  padding = 3,
+  paddingX = 3,
+  paddingY = paddingX,
 ) {
-  if (values.length === 0) return "";
+  if (values.length === 0) return [];
   const { min, max } = valueRange(values);
-  return values
-    .map((value, index) => {
-      const x =
-        padding +
-        (index / Math.max(values.length - 1, 1)) * (width - padding * 2);
-      const y =
-        height -
-        padding -
-        ((value - min) / Math.max(max - min, 1)) * (height - padding * 2);
-      return `${x},${y}`;
-    })
-    .join(" ");
+  return values.map((value, index) => {
+    const x =
+      paddingX +
+      (index / Math.max(values.length - 1, 1)) * (width - paddingX * 2);
+    const y =
+      height -
+      paddingY -
+      ((value - min) / Math.max(max - min, 1)) * (height - paddingY * 2);
+    return { x, y };
+  });
+}
+
+function smoothPathFor(points: ChartPoint[]) {
+  if (points.length === 0) return "";
+  if (points.length === 1) return `M ${points[0].x} ${points[0].y}`;
+  return points.reduce((path, point, index) => {
+    if (index === 0) return `M ${point.x} ${point.y}`;
+    const previous = points[index - 1];
+    const midpoint = (previous.x + point.x) / 2;
+    return `${path} C ${midpoint} ${previous.y}, ${midpoint} ${point.y}, ${point.x} ${point.y}`;
+  }, "");
+}
+
+function areaPathFor(points: ChartPoint[], baseline: number) {
+  if (points.length === 0) return "";
+  const line = smoothPathFor(points);
+  const first = points[0];
+  const last = points[points.length - 1];
+  return `${line} L ${last.x} ${baseline} L ${first.x} ${baseline} Z`;
+}
+
+function useChartVisibility<T extends HTMLElement | SVGSVGElement>() {
+  const ref = useRef<T | null>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    if (typeof IntersectionObserver === "undefined") {
+      setVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.15 },
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  return { ref, visible };
 }
 
 export interface SparklineProps extends Omit<
@@ -125,15 +184,64 @@ export function Sparkline({
 }: SparklineProps) {
   const width = 96;
   const height = 28;
+  const gradientId = useId().replace(/:/g, "");
+  const points = pointsFor(values, width, height, 4);
+  const chartVisibility = useChartVisibility<SVGSVGElement>();
   return (
     <svg
       {...props}
       aria-label={label}
       className={cx("t7-sparkline", className)}
+      data-chart-visible={chartVisibility.visible ? "true" : "false"}
       role="img"
+      ref={chartVisibility.ref}
       viewBox={`0 0 ${width} ${height}`}
     >
-      <polyline fill="none" points={pointsFor(values, width, height)} />
+      <defs>
+        <linearGradient
+          id={`${gradientId}-sparkline-fill`}
+          x1="0"
+          x2="0"
+          y1="0"
+          y2="1"
+        >
+          <stop
+            offset="0%"
+            stopColor="hsl(var(--t7-chart-1-hsl))"
+            stopOpacity="0.24"
+          />
+          <stop
+            offset="100%"
+            stopColor="hsl(var(--t7-chart-1-hsl))"
+            stopOpacity="0"
+          />
+        </linearGradient>
+      </defs>
+      {points.length ? (
+        <path
+          aria-hidden="true"
+          className="t7-sparkline-area"
+          d={areaPathFor(points, height - 4)}
+          fill={`url(#${gradientId}-sparkline-fill)`}
+        />
+      ) : null}
+      {points.length ? (
+        <path
+          aria-hidden="true"
+          className="t7-sparkline-line"
+          d={smoothPathFor(points)}
+          pathLength={1}
+        />
+      ) : null}
+      {points.length ? (
+        <circle
+          aria-hidden="true"
+          className="t7-sparkline-point"
+          cx={points[points.length - 1].x}
+          cy={points[points.length - 1].y}
+          r="2.5"
+        />
+      ) : null}
     </svg>
   );
 }
@@ -171,6 +279,7 @@ export function LineChart({
   const width = 640;
   const horizontalPadding = 34;
   const verticalPadding = 18;
+  const gradientId = useId().replace(/:/g, "");
   const allValues = series.flatMap((item) => item.values);
   const { max, min, ticks } = chartScale(allValues.length ? allValues : [0]);
   const scaleY = (value: number) =>
@@ -187,8 +296,14 @@ export function LineChart({
     x: number;
     y: number;
   } | null>(null);
+  const chartVisibility = useChartVisibility<HTMLDivElement>();
   return (
-    <div {...props} className={cx("t7-chart", className)}>
+    <div
+      {...props}
+      className={cx("t7-chart", className)}
+      data-chart-visible={chartVisibility.visible ? "true" : "false"}
+      ref={chartVisibility.ref}
+    >
       {title ? <div className="t7-chart-title">{title}</div> : null}
       {summary ? <p className="t7-chart-summary">{summary}</p> : null}
       <div className="t7-chart-plot" onMouseLeave={() => setHovered(null)}>
@@ -198,6 +313,32 @@ export function LineChart({
           style={{ height }}
           viewBox={`0 0 ${width} ${height}`}
         >
+          <defs>
+            {series.map((_, index) => {
+              const seriesNumber = (index % 5) + 1;
+              return (
+                <linearGradient
+                  id={`${gradientId}-area-${index}`}
+                  key={index}
+                  x1="0"
+                  x2="0"
+                  y1="0"
+                  y2="1"
+                >
+                  <stop
+                    offset="0%"
+                    stopColor={`hsl(var(--t7-chart-${seriesNumber}-hsl))`}
+                    stopOpacity="0.14"
+                  />
+                  <stop
+                    offset="100%"
+                    stopColor={`hsl(var(--t7-chart-${seriesNumber}-hsl))`}
+                    stopOpacity="0"
+                  />
+                </linearGradient>
+              );
+            })}
+          </defs>
           {ticks.map((tick) => {
             const y = scaleY(tick);
             return (
@@ -209,20 +350,35 @@ export function LineChart({
               </g>
             );
           })}
+          {hovered ? (
+            <line
+              className="t7-chart-hover-line"
+              x1={hovered.x}
+              x2={hovered.x}
+              y1={verticalPadding}
+              y2={height - verticalPadding}
+            />
+          ) : null}
           {series.map((item, seriesIndex) => {
-            const points = item.values
-              .map(
-                (value, index) =>
-                  `${scaleX(index, item.values.length)},${scaleY(value)}`,
-              )
-              .join(" ");
+            const seriesNumber = (seriesIndex % 5) + 1;
+            const points = item.values.map((value, index) => ({
+              x: scaleX(index, item.values.length),
+              y: scaleY(value),
+            }));
             return (
               <g key={item.id}>
-                <polyline
-                  className={`t7-chart-line t7-chart-series-${(seriesIndex % 5) + 1}`}
+                <path
+                  aria-hidden="true"
+                  className={`t7-chart-area t7-chart-series-${seriesNumber}`}
+                  d={areaPathFor(points, height - verticalPadding)}
+                  fill={`url(#${gradientId}-area-${seriesIndex})`}
+                />
+                <path
+                  aria-hidden="true"
+                  className={`t7-chart-line t7-chart-series-${seriesNumber}`}
+                  d={smoothPathFor(points)}
                   fill="none"
                   pathLength={1}
-                  points={points}
                 />
                 {item.values.map((value, index) => {
                   const x = scaleX(index, item.values.length);
@@ -230,7 +386,7 @@ export function LineChart({
                   return (
                     <circle
                       aria-label={`${item.label}, ${labels[index] ?? "point"}: ${valueFormatter(value)}`}
-                      className={`t7-chart-point t7-chart-series-${(seriesIndex % 5) + 1}`}
+                      className={`t7-chart-point t7-chart-series-${seriesNumber}`}
                       cx={x}
                       cy={y}
                       key={`${item.id}-${index}`}
@@ -252,7 +408,7 @@ export function LineChart({
                           y,
                         })
                       }
-                      r="3"
+                      r="3.5"
                       tabIndex={0}
                     >
                       <title>{`${item.label}, ${labels[index] ?? "Point"}: ${valueFormatter(value)}`}</title>
@@ -323,13 +479,21 @@ export function BarChart({
   ...props
 }: BarChartProps) {
   const width = 640;
-  const left = 34;
+  const left = 44;
   const bottom = 28;
   const top = 14;
-  const max = Math.max(...data.map((item) => item.value), 1);
+  const gradientId = useId().replace(/:/g, "");
+  const { max, min, ticks } = chartScale(
+    data.length ? data.map((item) => item.value) : [0],
+  );
+  const scaleY = (value: number) =>
+    height -
+    bottom -
+    ((value - min) / Math.max(max - min, 1)) * (height - top - bottom);
+  const baseline = scaleY(0);
   const barWidth = Math.max(
     12,
-    (width - left - 14) / Math.max(data.length, 1) - 10,
+    (width - left - 14) / Math.max(data.length, 1) - 12,
   );
   const [hovered, setHovered] = useState<{
     label: string;
@@ -337,8 +501,14 @@ export function BarChart({
     x: number;
     y: number;
   } | null>(null);
+  const chartVisibility = useChartVisibility<HTMLDivElement>();
   return (
-    <div {...props} className={cx("t7-chart", className)}>
+    <div
+      {...props}
+      className={cx("t7-chart", className)}
+      data-chart-visible={chartVisibility.visible ? "true" : "false"}
+      ref={chartVisibility.ref}
+    >
       {title ? <div className="t7-chart-title">{title}</div> : null}
       {summary ? <p className="t7-chart-summary">{summary}</p> : null}
       <div className="t7-chart-plot" onMouseLeave={() => setHovered(null)}>
@@ -348,25 +518,64 @@ export function BarChart({
           style={{ height }}
           viewBox={`0 0 ${width} ${height}`}
         >
+          <defs>
+            {data.map((_, index) => {
+              const seriesNumber = (index % 5) + 1;
+              return (
+                <linearGradient
+                  id={`${gradientId}-bar-${index}`}
+                  key={index}
+                  x1="0"
+                  x2="0"
+                  y1="0"
+                  y2="1"
+                >
+                  <stop
+                    offset="0%"
+                    stopColor={`hsl(var(--t7-chart-${seriesNumber}-hsl))`}
+                    stopOpacity="0.98"
+                  />
+                  <stop
+                    offset="100%"
+                    stopColor={`hsl(var(--t7-chart-${seriesNumber}-hsl))`}
+                    stopOpacity="0.68"
+                  />
+                </linearGradient>
+              );
+            })}
+          </defs>
+          {ticks.map((tick) => {
+            const y = scaleY(tick);
+            return (
+              <g className="t7-chart-gridline" key={tick}>
+                <line x1={left} x2={width - 12} y1={y} y2={y} />
+                <text x={0} y={y + 4}>
+                  {valueFormatter(tick)}
+                </text>
+              </g>
+            );
+          })}
           <line
             className="t7-chart-baseline"
             x1={left}
             x2={width - 12}
-            y1={height - bottom}
-            y2={height - bottom}
+            y1={baseline}
+            y2={baseline}
           />
           {data.map((item, index) => {
+            const seriesNumber = (index % 5) + 1;
             const x =
               left +
               index * ((width - left - 14) / Math.max(data.length, 1)) +
               5;
-            const barHeight = (item.value / max) * (height - top - bottom);
-            const y = height - bottom - barHeight;
+            const valueY = scaleY(item.value);
+            const barHeight = Math.max(1, Math.abs(baseline - valueY));
+            const y = Math.min(baseline, valueY);
             return (
               <g key={item.label}>
                 <rect
                   aria-label={`${item.label}: ${valueFormatter(item.value)}`}
-                  className={`t7-chart-bar t7-chart-series-${(index % 5) + 1}`}
+                  className={`t7-chart-bar t7-chart-series-${seriesNumber}`}
                   height={barHeight}
                   onFocus={() =>
                     setHovered({
@@ -385,7 +594,10 @@ export function BarChart({
                     })
                   }
                   role="img"
-                  rx="3"
+                  rx="5"
+                  style={{
+                    fill: `url(#${gradientId}-bar-${index})`,
+                  }}
                   tabIndex={0}
                   width={barWidth}
                   x={x}
@@ -452,14 +664,47 @@ export function DonutChart({
   const total = segments.reduce((sum, segment) => sum + segment.value, 0);
   const radius = 36;
   const circumference = Math.PI * radius * 2;
+  const gradientId = useId().replace(/:/g, "");
+  const chartVisibility = useChartVisibility<HTMLDivElement>();
   let offset = 0;
   return (
-    <div {...props} className={cx("t7-donut-chart", className)}>
+    <div
+      {...props}
+      className={cx("t7-donut-chart", className)}
+      data-chart-visible={chartVisibility.visible ? "true" : "false"}
+      ref={chartVisibility.ref}
+    >
       {title ? <div className="t7-chart-title">{title}</div> : null}
       {summary ? <p className="t7-chart-summary">{summary}</p> : null}
       <div className="t7-donut-chart-body">
         <div className="t7-donut-chart-visual">
           <svg aria-label={ariaLabel} role="img" viewBox="0 0 100 100">
+            <defs>
+              {segments.map((_, index) => {
+                const seriesNumber = (index % 5) + 1;
+                return (
+                  <linearGradient
+                    id={`${gradientId}-segment-${index}`}
+                    key={index}
+                    x1="0"
+                    x2="1"
+                    y1="0"
+                    y2="1"
+                  >
+                    <stop
+                      offset="0%"
+                      stopColor={`hsl(var(--t7-chart-${seriesNumber}-hsl))`}
+                      stopOpacity="0.98"
+                    />
+                    <stop
+                      offset="100%"
+                      stopColor={`hsl(var(--t7-chart-${seriesNumber}-hsl))`}
+                      stopOpacity="0.68"
+                    />
+                  </linearGradient>
+                );
+              })}
+            </defs>
             <circle
               className="t7-donut-track"
               cx="50"
@@ -471,18 +716,22 @@ export function DonutChart({
               const length = total
                 ? (segment.value / total) * circumference
                 : 0;
-              const dashOffset = -offset;
+              const gap = length > 0 ? 2 : 0;
+              const visibleLength = Math.max(length - gap, 0);
+              const dashOffset = -(offset + gap / 2);
+              const seriesNumber = (index % 5) + 1;
               offset += length;
               return (
                 <circle
-                  className={`t7-chart-series-${(index % 5) + 1}`}
+                  className={`t7-donut-segment t7-chart-series-${seriesNumber}`}
                   cx="50"
                   cy="50"
                   fill="none"
                   key={segment.label}
                   r={radius}
                   style={{
-                    strokeDasharray: `${length} ${circumference - length}`,
+                    stroke: `url(#${gradientId}-segment-${index})`,
+                    strokeDasharray: `${visibleLength} ${circumference - visibleLength}`,
                     strokeDashoffset: dashOffset,
                   }}
                 >

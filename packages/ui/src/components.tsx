@@ -18,9 +18,11 @@ import type { TypographyRole } from "@ten4seven/tokens";
 
 import {
   FloatingPortal,
+  useExclusiveFloatingLayer,
   useFloatingPosition,
   useNativeDialog,
 } from "./overlay";
+import { updatePointerPosition } from "./utils";
 
 function cx(...values: Array<string | false | null | undefined>) {
   return values.filter(Boolean).join(" ");
@@ -46,6 +48,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       size = "md",
       leadingIcon,
       loading = false,
+      onPointerMove,
       trailingIcon,
       type = "button",
       ...props
@@ -62,6 +65,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         data-size={size}
         aria-busy={loading || undefined}
         disabled={props.disabled || loading}
+        onPointerMove={(event) => {
+          updatePointerPosition(
+            event.currentTarget,
+            event.clientX,
+            event.clientY,
+          );
+          onPointerMove?.(event);
+        }}
         type={type}
       >
         {loading ? (
@@ -359,6 +370,7 @@ export function Select({
     minWidth: true,
     side: "bottom",
   });
+  useExclusiveFloatingLayer(open, () => setOpen(false));
   const selectedValue = controlledValue ?? internalValue;
   const selected = options.find((option) => option.value === selectedValue);
 
@@ -450,7 +462,7 @@ export function Select({
           <T7Icon aria-hidden="true" name="chevronDown" size={16} />
         </button>
         {open ? (
-          <FloatingPortal>
+          <FloatingPortal anchorRef={triggerRef}>
             <span
               className="t7-select-list t7-floating-content"
               data-floating-placement={floating.placement}
@@ -518,6 +530,7 @@ export function NavItem({
   className,
   icon,
   label,
+  onPointerMove,
   ...props
 }: NavItemProps) {
   return (
@@ -525,6 +538,14 @@ export function NavItem({
       {...props}
       className={cx("t7-nav-item", className)}
       data-active={active ? "true" : undefined}
+      onPointerMove={(event) => {
+        updatePointerPosition(
+          event.currentTarget,
+          event.clientX,
+          event.clientY,
+        );
+        onPointerMove?.(event);
+      }}
       type="button"
     >
       <T7Icon name={icon} size={18} />
@@ -546,6 +567,7 @@ export interface DataTableColumn<Row> {
 
 export type DataTableSortDirection = "asc" | "desc";
 export type DataTableDensity = "comfortable" | "default" | "compact" | "dense";
+export type DataTableResponsive = "scroll" | "stacked";
 
 export interface DataTableSort {
   key: string;
@@ -560,6 +582,7 @@ export interface DataTableProps<
   density?: DataTableDensity;
   rows: Row[];
   rowKey: (row: Row) => string;
+  responsive?: DataTableResponsive;
   emptyMessage?: string;
   emptyState?: ReactNode;
   error?: ReactNode;
@@ -584,6 +607,7 @@ export function DataTable<Row>({
   loading = false,
   rows,
   rowKey,
+  responsive = "scroll",
   selectable = false,
   selectedRowKeys = [],
   onRowClick,
@@ -628,6 +652,7 @@ export function DataTable<Row>({
       aria-busy={loading || undefined}
       className={cx("t7-table-wrap", className)}
       data-density={density}
+      data-responsive={responsive}
     >
       <table aria-label={caption} className="t7-table">
         <thead>
@@ -662,6 +687,7 @@ export function DataTable<Row>({
                       : undefined
                 }
                 data-align={column.align ?? "left"}
+                data-column-key={column.key}
                 data-sticky={column.sticky}
                 scope="col"
               >
@@ -740,6 +766,7 @@ export function DataTable<Row>({
                   <td
                     key={column.key}
                     data-align={column.align ?? "left"}
+                    data-column-key={column.key}
                     data-sticky={column.sticky}
                   >
                     {column.render
@@ -754,6 +781,100 @@ export function DataTable<Row>({
           )}
         </tbody>
       </table>
+      {responsive === "stacked" ? (
+        <div aria-label={caption} className="t7-table-stacked" role="list">
+          {selectable ? (
+            <div className="t7-table-stacked-select-all">
+              <input
+                aria-label="Select all records"
+                checked={allVisibleSelected}
+                className="t7-checkbox"
+                disabled={loading || rows.length === 0}
+                onChange={(event) => updateAllSelection(event.target.checked)}
+                ref={(element) => {
+                  if (element)
+                    element.indeterminate =
+                      someVisibleSelected && !allVisibleSelected;
+                }}
+                type="checkbox"
+              />
+              <span>Select all records</span>
+            </div>
+          ) : null}
+          {loading ? (
+            <div className="t7-table-stacked-state">
+              <span className="t7-state-indicator" aria-hidden="true" />
+              Loading records…
+            </div>
+          ) : error ? (
+            <div className="t7-table-stacked-state is-error">{error}</div>
+          ) : rows.length === 0 ? (
+            <div className="t7-table-stacked-state">
+              {emptyState ?? emptyMessage}
+            </div>
+          ) : (
+            rows.map((row) => {
+              const key = rowKey(row);
+              return (
+                <article
+                  key={key}
+                  className="t7-table-stacked-row"
+                  data-clickable={onRowClick ? "true" : undefined}
+                  data-selected={selectedSet.has(key) || undefined}
+                  onClick={onRowClick ? () => onRowClick(row) : undefined}
+                  onKeyDown={
+                    onRowClick
+                      ? (event) => {
+                          if (event.key === "Enter" || event.key === " ") {
+                            event.preventDefault();
+                            onRowClick(row);
+                          }
+                        }
+                      : undefined
+                  }
+                  role="listitem"
+                  tabIndex={onRowClick ? 0 : undefined}
+                >
+                  {selectable ? (
+                    <input
+                      aria-label={`Select ${key}`}
+                      checked={selectedSet.has(key)}
+                      className="t7-checkbox t7-table-stacked-checkbox"
+                      onChange={(event) =>
+                        updateSelection(key, event.target.checked)
+                      }
+                      onClick={(event) => event.stopPropagation()}
+                      type="checkbox"
+                    />
+                  ) : null}
+                  <div className="t7-table-stacked-fields">
+                    {visibleColumns.map((column) => (
+                      <div
+                        key={column.key}
+                        className="t7-table-stacked-field"
+                        data-align={column.align ?? "left"}
+                        data-column-key={column.key}
+                      >
+                        <span className="t7-table-stacked-label">
+                          {column.header}
+                        </span>
+                        <div className="t7-table-stacked-value">
+                          {column.render
+                            ? column.render(row)
+                            : String(
+                                (row as Record<string, unknown>)[column.key] ??
+                                  "",
+                              )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </article>
+              );
+            })
+          )}
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -1203,6 +1324,7 @@ export function BulkActionBar({
 }
 
 export interface DrawerProps {
+  className?: string;
   closeLabel?: string;
   open: boolean;
   title: ReactNode;
@@ -1215,6 +1337,7 @@ export interface DrawerProps {
 
 /** Generic modal side surface; specialized drawers should compose this contract. */
 export function Drawer({
+  className,
   children,
   closeLabel = "Close drawer",
   description,
@@ -1245,7 +1368,7 @@ export function Drawer({
         }
       }}
     >
-      <aside className="t7-drawer" data-side={side}>
+      <aside className={cx("t7-drawer", className)} data-side={side}>
         <div className="t7-drawer-header">
           <div>
             <Typography as="h2" typeRole="heading-lg" id={titleId}>

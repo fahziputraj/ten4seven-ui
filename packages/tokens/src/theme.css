@@ -8,12 +8,25 @@
 
 :root {
   color-scheme: light;
-  --t7-transition-fast: var(--t7-duration-fast, 140ms)
+  --t7-motion-duration: 1.5s;
+  --t7-duration-loop: 1200ms;
+  --t7-motion-interactive: var(--t7-duration-instant, 150ms)
     var(--t7-ease-standard, cubic-bezier(0.2, 0, 0, 1));
-  --t7-transition-standard: var(--t7-duration-normal, 220ms)
+  --t7-motion-state: var(--t7-duration-standard, 525ms)
     var(--t7-ease-standard, cubic-bezier(0.2, 0, 0, 1));
-  --t7-transition-large: var(--t7-duration-slow, 320ms)
+  --t7-motion-enter-fast: var(--t7-duration-fast, 300ms)
     var(--t7-ease-enter, cubic-bezier(0.16, 1, 0.3, 1));
+  --t7-motion-enter: var(--t7-duration-standard, 525ms)
+    var(--t7-ease-enter, cubic-bezier(0.16, 1, 0.3, 1));
+  --t7-motion-enter-slow: var(--t7-duration-slow, 1500ms)
+    var(--t7-ease-enter, cubic-bezier(0.16, 1, 0.3, 1));
+  --t7-motion-exit: var(--t7-duration-fast, 300ms)
+    var(--t7-ease-exit, cubic-bezier(0.4, 0, 1, 1));
+  --t7-motion-loop: var(--t7-duration-loop, 1200ms) linear;
+  --t7-motion-loop-eased: var(--t7-duration-loop, 1200ms) ease-in-out;
+  --t7-transition-fast: var(--t7-motion-interactive);
+  --t7-transition-standard: var(--t7-motion-state);
+  --t7-transition-large: var(--t7-motion-enter-slow);
   --t7-focus-ring: 0 0 0 3px hsl(var(--t7-accent-hsl) / 0.28);
   --t7-z-base: 0;
   --t7-z-sticky: 10;
@@ -26,6 +39,9 @@
   --t7-z-modal: 80;
   --t7-z-toast: 90;
   --t7-z-command: 100;
+  --t7-scrollbar-size: 4px;
+  --t7-scrollbar-thumb-alpha: 0.3;
+  --t7-scrollbar-thumb-hover-alpha: 0.5;
   --t7-doc-sticky-offset: 76px;
 }
 
@@ -40,6 +56,49 @@
 html {
   min-width: 320px;
   background: hsl(var(--t7-background-hsl));
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--t7-doc-sticky-offset, 76px);
+  scrollbar-color: hsl(
+      var(--t7-border-strong-hsl, 215 18% 58%) /
+        var(--t7-scrollbar-thumb-alpha, 0.3)
+    )
+    transparent;
+  scrollbar-width: thin;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(
+      var(--t7-border-strong-hsl, 215 18% 58%) /
+        var(--t7-scrollbar-thumb-alpha, 0.3)
+    )
+    transparent;
+}
+
+*::-webkit-scrollbar {
+  width: var(--t7-scrollbar-size, 4px);
+  height: var(--t7-scrollbar-size, 4px);
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  border: 1px solid transparent;
+  border-radius: var(--t7-radius-full, 999px);
+  background-clip: padding-box;
+  background-color: hsl(
+    var(--t7-border-strong-hsl, 215 18% 58%) /
+      var(--t7-scrollbar-thumb-alpha, 0.3)
+  );
+}
+*::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(
+    var(--t7-foreground-hsl, 215 25% 35%) /
+      var(--t7-scrollbar-thumb-hover-alpha, 0.5)
+  );
+}
+*::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 body {

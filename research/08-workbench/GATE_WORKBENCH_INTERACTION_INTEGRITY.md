@@ -35,6 +35,9 @@ pnpm test:e2e
 ## Final status
 
 **PASS.** The listed format, type, unit, catalog, consistency, build, and
-rendered-browser checks completed successfully on 2026-08-27. The final E2E
-run completed **75 tests passed**, including the expressive block suite and
-existing Warehouse/Ebook/reference coverage.
+rendered-browser checks completed successfully on 2026-08-30. The final serial
+E2E run completed **93 tests passed**, including the expressive block suite,
+Operations Tracker/Ebook/reference coverage, chart viewport-entry checks,
+overlay interaction checks, and the focused workbench suites. The run also
+confirmed the global motion contract, reduced-motion behavior, and the
+contrast-safe accordion surface.

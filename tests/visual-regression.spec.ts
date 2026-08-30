@@ -7,7 +7,7 @@ const routes = [
   "tokens",
   "icons",
   "recipes",
-  "warehouse-inventory",
+  "operations-tracker",
   "ebook-store",
 ];
 const viewports = [

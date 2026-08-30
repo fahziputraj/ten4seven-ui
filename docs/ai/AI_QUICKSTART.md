@@ -12,7 +12,8 @@ Look for:
 - `Ten4SevenProvider` in the app root.
 - imports of `@ten4seven/tokens/theme.css` and `@ten4seven/ui/styles.css`.
 - `T7Icon` calls using semantic names.
-- `data-density`, `data-palette`, `data-radius`, or `data-typography` on the provider.
+- `data-density`, `data-palette`, `data-primary`, `data-accent`, `data-canvas`,
+  `data-radius`, or `data-typography` on the provider.
 
 If no installation exists, read the consumer's package manager and framework first, then add the packages through its normal dependency workflow. Do not copy donor libraries into the feature.
 
@@ -27,7 +28,12 @@ import { Ten4SevenProvider } from "@ten4seven/ui";
   theme={{
     appearance: "light",
     palette: "emerald",
+    primary: "emerald",
+    accent: "emerald",
+    canvas: "balanced",
+    chartPalette: "spectrum",
     radius: "soft",
+    radiusValue: 12,
     density: "default",
     typography: "modern",
   }}
@@ -43,7 +49,7 @@ For a custom family, keep the preset and override only the family axes: `typogra
 Search `packages/ai/catalog/recipes.json`, or run:
 
 ```bash
-pnpm t7ui find "inventory list"
+pnpm t7ui find "operations tracker work queue"
 ```
 
 Start from the closest recipe. Do not invent a new information architecture before checking the catalog.
@@ -94,7 +100,13 @@ Use one shared grammar:
 
 ## 7. Use theme tokens
 
-Change `Ten4SevenProvider` or a theme preset first. Components consume semantic variables for appearance, palette, radius, density, elevation, typography roles, and font families. Follow **theme first, component second, local override last**.
+Change `Ten4SevenProvider` or a theme preset first. Components consume semantic variables for appearance, palette, primary/accent color sources, canvas, chart palette, radius, density, elevation, typography roles, and font families. Follow **theme first, component second, local override last**.
+
+Motion follows the same rule. Canonical components use the native `t7Motion`
+role map and the provider's `motionDuration` axis for hover, press, expand,
+overlay, feedback, and viewport-entering behavior. Custom surfaces may import
+`t7Motion` from `@ten4seven/ui`; do not add local keyframes, durations, or a
+second animation runtime. Respect the shared reduced-motion policy.
 
 ## 8. Use icons
 
@@ -125,4 +137,4 @@ pnpm build
 
 Then test the real route in a browser: meaningful content, no runtime overlay, no console errors, keyboard/focus behavior, responsive layout, and the primary interaction.
 
-For the local proof application, open deterministic URLs directly: `/theme-studio`, `/component-lab`, `/tokens`, `/components`, `/blocks`, `/blocks/hero-split`, `/components/patterns`, `/components/tables`, `/components/filtering-bulk-actions`, `/icons`, `/recipes`, `/recipes/cart`, `/warehouse-inventory`, `/ebook-store`, and `/public-showcase`. Theme Studio, Component Lab, Library, and block routes may expose harness controls; Warehouse, Ebook, and Public Showcase product shells must remain production-looking.
+For the local proof application, open deterministic URLs directly: `/theme-studio`, `/component-lab`, `/tokens`, `/components`, `/blocks`, `/blocks/hero-split`, `/components/patterns`, `/components/tables`, `/components/filtering-bulk-actions`, `/icons`, `/recipes`, `/recipes/cart`, `/operations-tracker`, `/ebook-store`, and `/public-showcase`. Theme Studio, Component Lab, Library, and block routes may expose harness controls; Operations Tracker, Ebook, and Public Showcase product shells must remain production-looking. The legacy `/warehouse-inventory` alias remains accepted for existing links.

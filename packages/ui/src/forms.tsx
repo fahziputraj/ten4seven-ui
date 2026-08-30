@@ -23,7 +23,11 @@ import {
   type RadioProps,
   type SelectProps,
 } from "./components";
-import { FloatingPortal, useFloatingPosition } from "./overlay";
+import {
+  FloatingPortal,
+  useExclusiveFloatingLayer,
+  useFloatingPosition,
+} from "./overlay";
 import { cx } from "./utils";
 
 export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
@@ -593,6 +597,10 @@ export function Combobox({
     minWidth: true,
     side: "bottom",
   });
+  useExclusiveFloatingLayer(open, () => {
+    setOpen(false);
+    setActiveIndex(-1);
+  });
 
   function selectOption(option: ComboboxOption) {
     if (option.disabled) return;
@@ -658,7 +666,7 @@ export function Combobox({
           size={16}
         />
         {open ? (
-          <FloatingPortal>
+          <FloatingPortal anchorRef={inputRef}>
             <span
               className="t7-combobox-list t7-floating-content"
               data-floating-placement={floating.placement}
@@ -687,9 +695,14 @@ export function Combobox({
                       role="option"
                       type="button"
                     >
-                      <span>{option.label}</span>
-                      {option.description ? (
-                        <small>{option.description}</small>
+                      <span className="t7-combobox-option-copy">
+                        <span>{option.label}</span>
+                        {option.description ? (
+                          <small>{option.description}</small>
+                        ) : null}
+                      </span>
+                      {value === option.value ? (
+                        <T7Icon aria-hidden="true" name="check" size={15} />
                       ) : null}
                     </button>
                   ))
@@ -738,6 +751,7 @@ export function MultiSelect({
     minWidth: true,
     side: "bottom",
   });
+  useExclusiveFloatingLayer(open, () => setOpen(false));
 
   function toggleValue(option: ComboboxOption) {
     if (option.disabled) return;
@@ -782,7 +796,7 @@ export function MultiSelect({
         <T7Icon aria-hidden="true" name="chevronDown" size={16} />
       </button>
       {open ? (
-        <FloatingPortal>
+        <FloatingPortal anchorRef={triggerRef}>
           <div
             aria-busy={loading || undefined}
             aria-multiselectable="true"
@@ -808,10 +822,12 @@ export function MultiSelect({
                     role="option"
                     type="button"
                   >
-                    <span>{option.label}</span>
-                    {option.description ? (
-                      <small>{option.description}</small>
-                    ) : null}
+                    <span className="t7-option-copy">
+                      <span>{option.label}</span>
+                      {option.description ? (
+                        <small>{option.description}</small>
+                      ) : null}
+                    </span>
                     {values.includes(option.value) ? (
                       <T7Icon aria-hidden="true" name="check" size={15} />
                     ) : null}

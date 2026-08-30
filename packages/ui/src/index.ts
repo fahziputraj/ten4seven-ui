@@ -10,6 +10,7 @@ export * from "./files";
 export * from "./forms";
 export * from "./layout";
 export * from "./media";
+export * from "./motion";
 export * from "./navigation";
 export * from "./overlays";
 export * from "./provider";

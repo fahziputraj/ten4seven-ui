@@ -136,6 +136,10 @@
     "provider": "solar:home-add-bold-duotone",
     "useWhen": ["farm", "production site"]
   },
+  "fleet": {
+    "provider": "solar:bus-bold-duotone",
+    "useWhen": ["fleet", "vehicle", "transport"]
+  },
   "delivery": {
     "provider": "solar:delivery-bold-duotone",
     "useWhen": ["delivery", "fulfillment"]

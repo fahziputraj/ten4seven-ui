@@ -123,6 +123,7 @@ const requiredComponents = [
   "KPICluster",
   "BulkActionBar",
   "DetailDrawer",
+  "MilestoneTracker",
   "Drawer",
   "EmptyState",
   "ProductGrid",
@@ -431,7 +432,7 @@ for (const [name, recipe] of Object.entries(recipes)) {
     assert.ok(icons[iconName], `${name}: unknown semantic icon ${iconName}`);
   for (const reference of recipe.references ?? [])
     assert.ok(
-      ["Warehouse Inventory", "Publishing Store", "Public Showcase"].includes(
+      ["Operations Tracker", "Publishing Store", "Public Showcase"].includes(
         reference,
       ),
       `${name}: unknown product reference ${reference}`,
@@ -503,6 +504,11 @@ assert.match(inventoryCliResult, /Recipe: entity-list/);
 assert.match(inventoryCliResult, /DataTable/);
 assert.match(inventoryCliResult, /stockIn/);
 assert.match(inventoryCliResult, /DetailDrawer/);
+
+const operationsCliResult = find("operations tracker work queue");
+assert.match(operationsCliResult, /Recipe: entity-list/);
+assert.match(operationsCliResult, /MilestoneTracker/);
+assert.match(operationsCliResult, /ActivityFeed/);
 
 const catalogCliResult = find("ebook store catalog");
 assert.match(catalogCliResult, /Recipe: catalog/);

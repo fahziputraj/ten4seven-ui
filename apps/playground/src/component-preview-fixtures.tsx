@@ -9,6 +9,7 @@ import {
   Alert,
   AlertDialog,
   AppliedFilters,
+  ApprovalPanel,
   AspectRatio,
   Avatar,
   AvatarGroup,
@@ -60,6 +61,7 @@ import {
   LineChart,
   MediaFrame,
   MetricCard,
+  MilestoneTracker,
   Modal,
   MobileSidebar,
   MultiSelect,
@@ -942,6 +944,61 @@ export function ComponentPreview({
   }
 
   if (component.category === "data" || component.category === "table") {
+    if (component.displayName === "Milestone Tracker")
+      return frame(
+        <MilestoneTracker
+          items={[
+            {
+              description: "Signals are captured and ready for review.",
+              details: (
+                <KeyValueList
+                  items={[
+                    { label: "Records", value: "8 captured" },
+                    { label: "Owner", value: "Operations desk" },
+                  ]}
+                />
+              ),
+              icon: "analytics",
+              id: "capture",
+              label: "Capture",
+              meta: "8 of 8 records",
+              percentage: 100,
+              status: "complete",
+            },
+            {
+              description: "Health and next action are being reviewed.",
+              details: (
+                <KeyValueList
+                  items={[
+                    { label: "Ready", value: "6 of 8 records" },
+                    { label: "State", value: "In review" },
+                  ]}
+                />
+              ),
+              icon: "filter",
+              id: "triage",
+              label: "Triage",
+              meta: "6 of 8 triaged",
+              percentage: 75,
+              status: "current",
+            },
+            {
+              description: "The next accountable action is queued.",
+              details: (
+                <KeyValueList
+                  items={[{ label: "Ready", value: "5 workstreams" }]}
+                />
+              ),
+              icon: "edit",
+              id: "action",
+              label: "Next action",
+              meta: "5 of 8 ready",
+              percentage: 63,
+              status: "upcoming",
+            },
+          ]}
+        />,
+      );
     if (component.displayName === "Activity Feed")
       return frame(
         <ActivityFeed
@@ -1559,7 +1616,7 @@ export function ComponentPreview({
           }
           eyebrow="Management"
           media={<T7Icon aria-hidden="true" name="book" size={28} />}
-          meta="Rina Kartika · EPUB + PDF"
+          meta="Rina Kartika · EPUB · PDF"
           price={<Price amount={95000} />}
           title="Manajemen Strategis"
         />,
@@ -1581,7 +1638,7 @@ export function ComponentPreview({
       return frame(<Price amount={95000} originalAmount={110000} />);
     if (component.displayName === "Product Meta")
       return frame(
-        <ProductMeta items={["EPUB + PDF", "Rina Kartika", "4.8 rating"]} />,
+        <ProductMeta items={["EPUB", "PDF", "Rina Kartika", "4.8 rating"]} />,
       );
     if (component.displayName === "Rating")
       return frame(<Rating count={48} value={4.8} />);
@@ -1605,7 +1662,7 @@ export function ComponentPreview({
       return frame(
         <CartLineItem
           media={<T7Icon aria-hidden="true" name="book" size={20} />}
-          meta="Rina Kartika · EPUB + PDF"
+          meta="Rina Kartika · EPUB · PDF"
           onQuantityChange={setQuantity}
           price={<Price amount={95000} />}
           quantity={quantity}
@@ -1688,17 +1745,16 @@ export function ComponentPreview({
       );
     if (component.displayName === "Approval Panel")
       return frame(
-        <Card tone="accent">
-          <CardHeader>
-            <CardTitle>Ready for approval</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Typography typeRole="body-sm">
-              A decision checkpoint keeps evidence and actions together.
+        <ApprovalPanel
+          actions={<Button>Approve request</Button>}
+          description="A decision checkpoint keeps evidence and actions together."
+          metadata={
+            <Typography typeRole="caption">
+              Status · Ready for approval
             </Typography>
-            <Button>Approve request</Button>
-          </CardContent>
-        </Card>,
+          }
+          title="Ready for approval"
+        />,
       );
     if (component.displayName === "Action Footer")
       return frame(

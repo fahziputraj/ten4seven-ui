@@ -355,7 +355,9 @@ export function Toast({ onDismiss, toast }: ToastProps) {
       data-tone={tone}
       role={tone === "danger" ? "alert" : "status"}
     >
-      <T7Icon aria-hidden="true" name={feedbackIcons[tone]} size={18} />
+      <span aria-hidden="true" className="t7-toast-icon">
+        <T7Icon name={feedbackIcons[tone]} size={18} />
+      </span>
       <div>
         <strong>{toast.title}</strong>
         {toast.description ? <p>{toast.description}</p> : null}

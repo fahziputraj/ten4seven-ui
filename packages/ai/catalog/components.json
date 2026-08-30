@@ -2,15 +2,21 @@
   "Ten4SevenProvider": {
     "status": "implemented",
     "category": "foundation",
-    "purpose": "Resolve the semantic five-axis theme at an application root.",
+    "purpose": "Resolve the semantic theme axes at an application root, including independent color sources and neutral canvas modes.",
     "useWhen": ["starting or migrating an application"],
     "avoidWhen": ["creating a local color or typography system"],
     "recipes": ["all"],
     "importantProps": [
       "appearance",
       "palette",
+      "primary",
+      "accent",
+      "canvas",
+      "chartPalette",
       "radius",
+      "radiusValue",
       "density",
+      "motionDuration",
       "typography"
     ],
     "relatedComponents": ["Typography", "Button", "Card"],
@@ -37,7 +43,18 @@
       "Uses shared duration and easing variables for state transitions.",
       "Respects prefers-reduced-motion."
     ],
-    "tokens": ["font-ui", "font-display", "font-optical-sizing", "focus-ring"],
+    "tokens": [
+      "font-ui",
+      "font-display",
+      "font-optical-sizing",
+      "focus-ring",
+      "motion-duration",
+      "duration-loop",
+      "motion-interactive",
+      "motion-enter",
+      "motion-exit",
+      "motion-loop"
+    ],
     "api": [
       {
         "name": "appearance",
@@ -54,6 +71,34 @@
         "description": "Configures palette for Ten4Seven Provider."
       },
       {
+        "name": "primary",
+        "type": "PaletteName",
+        "defaultValue": "palette",
+        "required": false,
+        "description": "Selects the palette source for primary actions, focus, and selection tokens."
+      },
+      {
+        "name": "accent",
+        "type": "PaletteName",
+        "defaultValue": "palette",
+        "required": false,
+        "description": "Selects the palette source for accent emphasis tokens."
+      },
+      {
+        "name": "canvas",
+        "type": "CanvasName",
+        "defaultValue": "balanced",
+        "required": false,
+        "description": "Selects the shared neutral canvas and surface contrast treatment."
+      },
+      {
+        "name": "chartPalette",
+        "type": "ChartPaletteName",
+        "defaultValue": "spectrum",
+        "required": false,
+        "description": "Selects the chart colorway while preserving the five-slot chart variable contract."
+      },
+      {
         "name": "radius",
         "type": "RadiusName",
         "defaultValue": "—",
@@ -61,11 +106,25 @@
         "description": "Configures radius for Ten4Seven Provider."
       },
       {
+        "name": "radiusValue",
+        "type": "number",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures an exact 0–24 px base radius and derives the hierarchical radius tokens."
+      },
+      {
         "name": "density",
         "type": "DensityName | TableDensity",
         "defaultValue": "—",
         "required": false,
         "description": "Configures density for Ten4Seven Provider."
+      },
+      {
+        "name": "motionDuration",
+        "type": "number",
+        "defaultValue": "1.5s",
+        "required": false,
+        "description": "Sets the shared 0.5–2.5 second reveal and interaction duration in 0.25 second steps; semantic motion roles derive from it."
       },
       {
         "name": "typography",
@@ -4535,6 +4594,116 @@
     "composesWith": ["Progress", "ActionFooter"],
     "usedByPatterns": []
   },
+  "MilestoneTracker": {
+    "status": "implemented",
+    "category": "data",
+    "purpose": "Show a bounded operational journey with selectable circular progress nodes and contextual detail.",
+    "useWhen": [
+      "a tracker needs visible milestones, progress percentages, and detail on selection",
+      "customer, delivery, service, or approval work moves through a short shared flow"
+    ],
+    "avoidWhen": [
+      "unbounded task management",
+      "a simple scalar progress value is enough",
+      "deep navigation or a long form step sequence"
+    ],
+    "recipes": ["entity-list", "master-detail", "report"],
+    "importantProps": [
+      "items",
+      "percentage",
+      "status",
+      "selectedId",
+      "onSelectedIdChange"
+    ],
+    "relatedComponents": [
+      "Progress",
+      "CircularProgress",
+      "Stepper",
+      "StatusChip",
+      "KeyValueList"
+    ],
+    "source": "packages/ui/src/data-display.tsx",
+    "displayName": "Milestone Tracker",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "default",
+      "focused",
+      "selected",
+      "complete",
+      "current",
+      "upcoming",
+      "blocked",
+      "empty or unavailable when applicable"
+    ],
+    "accessibility": [
+      "Expose the journey as a labelled navigation region with an ordered list of keyboard-reachable buttons.",
+      "Expose each percentage through visible text and progress-ring semantics, with the selected milestone detail linked from its control.",
+      "Keep selection feedback in a labelled live detail region and preserve visible focus."
+    ],
+    "responsive": [
+      "Keep the milestone sequence inside a bounded horizontal scroll region when the available width is narrow.",
+      "Preserve the circular node, connector, label, and detail contracts without introducing a mobile-only component."
+    ],
+    "motion": [
+      "Animate ring progress and selected detail changes with shared transition variables.",
+      "Respect prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "border",
+      "primary",
+      "success",
+      "warning",
+      "danger",
+      "selected",
+      "focus-ring",
+      "radius-panel",
+      "transition-standard"
+    ],
+    "api": [
+      {
+        "name": "items",
+        "type": "MilestoneItem[]",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Ordered milestones with labels, percentages, status, and optional detail content."
+      },
+      {
+        "name": "selectedId",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Controlled selected milestone identifier."
+      },
+      {
+        "name": "defaultSelectedId",
+        "type": "string",
+        "defaultValue": "current milestone or first item",
+        "required": false,
+        "description": "Initial selected milestone identifier for uncontrolled usage."
+      },
+      {
+        "name": "onSelectedIdChange",
+        "type": "(id: string) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Callback fired when a milestone is selected."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "defaultValue": "Milestone progress",
+        "required": false,
+        "description": "Accessible name for the milestone navigation region."
+      }
+    ],
+    "example": "<MilestoneTracker items={milestones} />",
+    "alternativeTo": [],
+    "composesWith": ["StatusChip", "KeyValueList", "ActivityFeed"],
+    "usedByPatterns": ["entity-list", "master-detail", "report"]
+  },
   "CommandMenu": {
     "status": "implemented",
     "category": "navigation",
@@ -5871,6 +6040,7 @@
       "rowKey",
       "columnVisibility",
       "density",
+      "responsive",
       "selectable",
       "sort",
       "loading",
@@ -5893,6 +6063,7 @@
     ],
     "responsive": [
       "Reflows within constrained containers without changing the content contract.",
+      "Supports a stacked record presentation on narrow screens when row comparison needs more room than a horizontal table.",
       "Retains shared control geometry and touch-target minimums."
     ],
     "motion": [
@@ -5942,6 +6113,13 @@
         "defaultValue": "—",
         "required": false,
         "description": "Configures density for Data Table."
+      },
+      {
+        "name": "responsive",
+        "type": "\"scroll\" | \"stacked\"",
+        "defaultValue": "\"scroll\"",
+        "required": false,
+        "description": "Chooses the narrow-screen presentation; stacked keeps every visible field readable without forcing a wide horizontal table."
       },
       {
         "name": "selectable",

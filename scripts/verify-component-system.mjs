@@ -45,12 +45,12 @@ const relationFields = ["alternativeTo", "composesWith"];
 
 assert.equal(
   canonical.length,
-  138,
+  139,
   "canonical component count changed; update evidence intentionally",
 );
 assert.equal(
   Object.keys(components).length,
-  144,
+  145,
   "component catalog count changed; update evidence intentionally",
 );
 assert.equal(
@@ -162,7 +162,7 @@ for (const [name, recipe] of Object.entries(recipes)) {
     );
   for (const reference of recipe.references ?? [])
     assert.ok(
-      ["Warehouse Inventory", "Publishing Store", "Public Showcase"].includes(
+      ["Operations Tracker", "Publishing Store", "Public Showcase"].includes(
         reference,
       ),
       `${name}: reference is not evidence-backed`,
@@ -273,7 +273,7 @@ for (const evidencePath of [
   assert.match(evidence, /Accessibility|A11y/i);
   assert.match(evidence, /Responsive/i);
   assert.match(evidence, /Select/);
-  assert.match(evidence, /Warehouse Inventory/);
+  assert.match(evidence, /Operations Tracker/);
   assert.match(evidence, /Publishing Store/);
 }
 
@@ -285,7 +285,7 @@ for (const route of [
   "/components/tables",
   "/components/filtering-bulk-actions",
   "/recipes/cart",
-  "/warehouse-inventory",
+  "/operations-tracker",
   "/ebook-store",
   "/blocks",
   "/blocks/hero-split",

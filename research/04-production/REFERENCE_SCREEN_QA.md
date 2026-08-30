@@ -2,11 +2,11 @@
 
 Gate C is structurally passed. Gate C.2 retains deterministic, refresh-safe routes inside the existing Vite playground; no backend, auth, API, business-flow, or cart architecture was introduced.
 
-| Reference           | Direct URL                                                                             | Refresh result                          |
-| ------------------- | -------------------------------------------------------------------------------------- | --------------------------------------- |
-| Theme Studio        | [http://localhost:4173/theme-studio](http://localhost:4173/theme-studio)               | Theme Studio heading and title restored |
-| Warehouse Inventory | [http://localhost:4173/warehouse-inventory](http://localhost:4173/warehouse-inventory) | Warehouse heading and title restored    |
-| Ebook Store Catalog | [http://localhost:4173/ebook-store](http://localhost:4173/ebook-store)                 | Catalog heading and title restored      |
+| Reference           | Direct URL                                                                           | Refresh result                          |
+| ------------------- | ------------------------------------------------------------------------------------ | --------------------------------------- |
+| Theme Studio        | [http://localhost:4173/theme-studio](http://localhost:4173/theme-studio)             | Theme Studio heading and title restored |
+| Operations Tracker  | [http://localhost:4173/operations-tracker](http://localhost:4173/operations-tracker) | Operations heading and title restored   |
+| Ebook Store Catalog | [http://localhost:4173/ebook-store](http://localhost:4173/ebook-store)               | Catalog heading and title restored      |
 
 System exploration routes are direct as well: `/tokens`, `/components`, `/icons`, and `/recipes`. `/not-a-route` renders the honest 404 surface rather than Theme Studio.
 
@@ -15,13 +15,13 @@ Expressive composition is verified separately at `/blocks`,
 `research/09-expressive/GATE_EXPRESSIVE_DESIGN.md` and
 `tests/expressive-blocks.spec.ts`.
 
-## Warehouse Inventory — enterprise / entity-list
+## Operations Tracker — enterprise / entity-list
 
-- Composition: `AppShell → Sidebar → PageHeader → KPICluster → FilterToolbar → DataTable → Pagination → BulkActionBar → DetailDrawer`.
-- Fixture: warehouse inventory with SKUs, warehouses/bins, on-hand/reserved/available quantities, reorder points, suppliers, movement timestamps, and healthy/low/out-of-stock states.
-- Passed live interactions: search, warehouse/category/status filtering, sortable `Available` header, row selection, bulk bar, pagination, row/detail action, drawer close, loading toggle, error + retry, empty + clear search.
-- Numeric treatment: right aligned quantities with `data-numeric`/tabular figures and explicit `pcs` units.
-- Surface behavior: wide data-first table with intentional internal horizontal scroll; no card grid substituted for the entity list.
+- Composition: `AppShell → Sidebar → PageHeader → KPICluster → MilestoneTracker → FilterToolbar → DataTable → Pagination → BulkActionBar → DetailDrawer`.
+- Fixture: cross-domain operational workstreams covering customer intelligence, delivery checkpoints, supply/QC, finance follow-up, and fleet service, with owners, health, due dates, next actions, activity signals, and local currency/context values.
+- Passed live interactions: milestone selection/detail, search, workstream/health filtering, sortable workstream headers, row selection, bulk bar, pagination, row/detail action, drawer close, loading toggle, error + retry, empty + clear search.
+- Semantic treatment: one comparable work queue grammar for records from different operational domains; status, owner, next action, and recent activity remain scannable across workstreams.
+- Surface behavior: desktop rows wrap the workstream hierarchy and keep the table compact; below 860px the canonical DataTable switches to stacked records so health and next action stay visible without horizontal scrolling. The drawer remains the full-detail path.
 
 ## Ebook Store Catalog — commerce / catalog
 
@@ -35,16 +35,16 @@ Expressive composition is verified separately at `/blocks`,
 
 The direct URLs were captured and checked at each requested size:
 
-| Viewport     | Warehouse          | Ebook                                                           | Horizontal overflow                          |
+| Viewport     | Operations Tracker | Ebook                                                           | Horizontal overflow                          |
 | ------------ | ------------------ | --------------------------------------------------------------- | -------------------------------------------- |
 | `1440 × 900` | meaningful heading | meaningful heading; cover ratio `2:3` and `object-fit: contain` | none; `scrollWidth=1425`, `clientWidth=1425` |
 | `390 × 844`  | meaningful heading | meaningful heading; mobile `Filters` control visible            | none; `scrollWidth=375`, `clientWidth=375`   |
 | `360 × 800`  | meaningful heading | meaningful heading; two-column cover grid remains overflow-free | none; `scrollWidth=345`, `clientWidth=345`   |
 
-Final Warehouse/Ebook PNG evidence is retained in
+Final Operations Tracker/Ebook PNG evidence is retained in
 `research/05-v1/render-evidence/`; it was recaptured from the direct routes
-after neutralizing the local editorial cover lettering, normalizing inventory
-bulk-selection copy, and correcting the Warehouse mobile navigation rail. The
+after neutralizing the local editorial cover lettering, normalizing operations
+bulk-selection copy, and correcting the Operations mobile navigation rail. The
 expressive first-viewport snapshots are retained in
 `tests/expressive-blocks.spec.ts-snapshots/`.
 
@@ -62,4 +62,4 @@ The live proof switched the provider to `dark + blue + rounded + compact + moder
 ## Intentional limitations
 
 - Fixtures are local and deterministic; no backend or persistence is part of this proof.
-- Fixtures are intentionally local. Backend integration and product-specific policies remain outside this UI proof; native focus restoration and a bounded table column-visibility subset are now canonical behavior.
+- Fixtures are intentionally local. Backend integration and product-specific policies remain outside this UI proof; native focus restoration, bounded column visibility, and the stacked narrow-screen DataTable presentation are canonical behavior.

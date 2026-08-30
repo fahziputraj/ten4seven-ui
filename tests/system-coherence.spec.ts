@@ -42,6 +42,44 @@ async function chooseSelect(
     .click();
 }
 
+async function chooseRadius(
+  page: import("@playwright/test").Page,
+  value: Profile["radius"],
+) {
+  const radiusValue = { sharp: 8, soft: 12, rounded: 16 }[value];
+  const slider = page.getByRole("slider", { name: "Radius" });
+  await slider.focus();
+  await slider.press("Home");
+  for (let index = 0; index < radiusValue; index += 1)
+    await slider.press("ArrowRight");
+  await expect(slider).toHaveAttribute(
+    "aria-valuetext",
+    new RegExp(`${radiusValue} px base radius`),
+  );
+  await expect(page.locator(".t7-provider")).toHaveAttribute(
+    "data-radius-value",
+    String(radiusValue),
+  );
+}
+
+async function chooseDensity(
+  page: import("@playwright/test").Page,
+  value: Profile["density"],
+) {
+  const densityIndex = { dense: 0, compact: 1, default: 2, comfortable: 3 }[
+    value
+  ];
+  const slider = page.getByRole("slider", { name: "Density" });
+  await slider.focus();
+  await slider.press("Home");
+  for (let index = 0; index < densityIndex; index += 1)
+    await slider.press("ArrowRight");
+  await expect(slider).toHaveAttribute(
+    "aria-valuetext",
+    new RegExp(`${32 + densityIndex * 4} px`),
+  );
+}
+
 async function applyProfile(
   page: import("@playwright/test").Page,
   profile: Profile,
@@ -51,8 +89,8 @@ async function applyProfile(
     .getByRole("button", { name: `Use ${profile.palette} palette` })
     .click();
   await chooseSelect(page, "Appearance", profile.appearance);
-  await chooseSelect(page, "Radius", profile.radius);
-  await chooseSelect(page, "Density", profile.density);
+  await chooseRadius(page, profile.radius);
+  await chooseDensity(page, profile.density);
 }
 
 for (const profile of profiles) {
@@ -60,7 +98,7 @@ for (const profile of profiles) {
     page,
   }) => {
     await applyProfile(page, profile);
-    for (const route of ["warehouse-inventory", "ebook-store"]) {
+    for (const route of ["operations-tracker", "ebook-store"]) {
       await page.goto(`/${route}`);
       const provider = page.locator(".t7-provider");
       await expect(provider).toHaveAttribute("data-palette", profile.palette);
@@ -90,17 +128,582 @@ test("canonical Select supports arrows, Enter, Escape, and disabled options", as
   page,
 }) => {
   await page.goto("/theme-studio");
-  const radius = page.getByRole("button", { name: "Radius" });
-  await radius.focus();
-  await radius.press("ArrowDown");
-  await radius.press("Enter");
+  const appearance = page.getByRole("button", { name: "Appearance" });
+  await appearance.focus();
+  await appearance.press("ArrowDown");
+  await appearance.press("Enter");
+  await expect(page.locator(".t7-provider")).toHaveAttribute(
+    "data-theme-appearance",
+    /light|dark/,
+  );
+  await appearance.click();
+  await appearance.press("Escape");
+  await expect(appearance).toHaveAttribute("aria-expanded", "false");
+
+  await chooseRadius(page, "rounded");
   await expect(page.locator(".t7-provider")).toHaveAttribute(
     "data-radius",
-    /soft|rounded|sharp/,
+    "rounded",
   );
-  await radius.click();
-  await radius.press("Escape");
-  await expect(radius).toHaveAttribute("aria-expanded", "false");
+});
+
+test("bounded Select popups stay anchored to their trigger", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/theme-studio");
+
+  const trigger = page.getByRole("button", {
+    name: "Appearance",
+    exact: true,
+  });
+  await trigger.click();
+  const popup = page.locator("#t7-overlay-root .t7-select-list");
+  await expect(popup).toBeVisible();
+
+  const triggerRect = await trigger.boundingBox();
+  const popupRect = await popup.boundingBox();
+  const viewportWidth = await page.evaluate(
+    () => document.documentElement.clientWidth,
+  );
+
+  expect(triggerRect).not.toBeNull();
+  expect(popupRect).not.toBeNull();
+  expect(popupRect!.width).toBeGreaterThanOrEqual(triggerRect!.width - 1);
+  expect(popupRect!.width).toBeLessThan(viewportWidth / 2);
+  expect(Math.abs(popupRect!.x - triggerRect!.x)).toBeLessThan(2);
+  expect(popupRect!.x + popupRect!.width).toBeLessThanOrEqual(viewportWidth);
+});
+
+test("long select values stay inside their Theme Studio fields", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1186, height: 698 });
+  await page.goto("/theme-studio");
+
+  const fieldGeometry = await page
+    .locator(".studio-controls-grid > .t7-field")
+    .evaluateAll((fields) =>
+      fields.map((field) => {
+        const fieldRect = field.getBoundingClientRect();
+        const trigger = field.querySelector(".t7-select-trigger");
+        const triggerRect = trigger?.getBoundingClientRect();
+        const value = trigger?.querySelector("span");
+        const valueStyle = value ? getComputedStyle(value) : undefined;
+        return {
+          label: field.querySelector(".t7-field-label")?.textContent?.trim(),
+          fieldRight: fieldRect.right,
+          triggerRight: triggerRect?.right,
+          valueOverflow: valueStyle?.textOverflow,
+        };
+      }),
+    );
+  const radiusGeometry = await page
+    .locator(".studio-radius-control")
+    .evaluate((control) => {
+      const controlRect = control.getBoundingClientRect();
+      const slider = control.querySelector("input[type='range']");
+      const sliderRect = slider?.getBoundingClientRect();
+      return {
+        controlRight: controlRect.right,
+        sliderRight: sliderRect?.right,
+      };
+    });
+  const densityGeometry = await page
+    .locator(".studio-density-control")
+    .evaluate((control) => {
+      const controlRect = control.getBoundingClientRect();
+      const slider = control.querySelector("input[type='range']");
+      const sliderRect = slider?.getBoundingClientRect();
+      return {
+        controlRight: controlRect.right,
+        sliderRight: sliderRect?.right,
+      };
+    });
+  const profileGeometry = await page
+    .locator(".studio-axis-list > div")
+    .evaluateAll((items) =>
+      items.map((item) => {
+        const itemRect = item.getBoundingClientRect();
+        const label = item.querySelector("dt");
+        const value = item.querySelector("dd");
+        const labelRect = label?.getBoundingClientRect();
+        const valueRect = value?.getBoundingClientRect();
+        return {
+          label: label?.textContent?.trim(),
+          itemWidth: itemRect.width,
+          labelRight: labelRect?.right,
+          valueX: valueRect?.x,
+        };
+      }),
+    );
+
+  expect(fieldGeometry).toHaveLength(6);
+  for (const field of fieldGeometry) {
+    expect(field.triggerRight).toBeLessThanOrEqual(field.fieldRight + 0.5);
+  }
+  expect(radiusGeometry.sliderRight).toBeLessThanOrEqual(
+    radiusGeometry.controlRight + 0.5,
+  );
+  expect(densityGeometry.sliderRight).toBeLessThanOrEqual(
+    densityGeometry.controlRight + 0.5,
+  );
+  expect(profileGeometry).toHaveLength(10);
+  const densityProfile = profileGeometry.find(
+    (field) => field.label === "Density",
+  );
+  expect(densityProfile?.itemWidth).toBeGreaterThan(200);
+  expect(densityProfile?.labelRight).toBeLessThanOrEqual(
+    (densityProfile?.valueX ?? 0) + 0.5,
+  );
+});
+
+test("independent color and canvas axes propagate through the provider", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1186, height: 698 });
+  await page.goto("/theme-studio");
+
+  await page.getByRole("button", { name: "Use indigo palette" }).click();
+  const palettePropagation = await page.evaluate(() => {
+    const provider = document.querySelector<HTMLElement>(".t7-provider");
+    const primaryButton = document.querySelector<HTMLElement>(
+      ".proof-panel .t7-button[data-intent='primary']",
+    );
+    const input = document.querySelector<HTMLElement>(".proof-panel .t7-input");
+    return {
+      primary: provider
+        ? getComputedStyle(provider).getPropertyValue("--t7-primary-hsl").trim()
+        : "",
+      buttonBackground: primaryButton
+        ? getComputedStyle(primaryButton).backgroundColor
+        : "",
+      inputBorder: input ? getComputedStyle(input).borderTopColor : "",
+    };
+  });
+  expect(palettePropagation.primary).toBe("232 70% 48%");
+  expect(palettePropagation.buttonBackground).not.toBe("rgba(0, 0, 0, 0)");
+  expect(palettePropagation.inputBorder).not.toBe("");
+
+  await chooseSelect(page, "Main color", "indigo");
+  await chooseSelect(page, "Accent color", "amber");
+  await chooseSelect(page, "Canvas", "Paper white");
+  await chooseSelect(page, "Chart palette", "Four colors");
+
+  const provider = page.locator(".t7-provider");
+  await expect(provider).toHaveAttribute("data-primary", "indigo");
+  await expect(provider).toHaveAttribute("data-accent", "amber");
+  await expect(provider).toHaveAttribute("data-canvas", "paper");
+  await expect(provider).toHaveAttribute("data-chart-palette", "four");
+  await expect(provider).toHaveCSS("--t7-background-hsl", "0 0% 100%");
+  await expect(provider).toHaveCSS("--t7-chart-palette-count", "4");
+});
+
+test("radius slider applies exact zero and one-pixel steps", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1186, height: 698 });
+  await page.goto("/theme-studio");
+
+  const slider = page.getByRole("slider", { name: "Radius" });
+  await slider.focus();
+  await slider.press("Home");
+  await expect(slider).toHaveValue("0");
+  await expect(page.locator(".t7-provider")).toHaveAttribute(
+    "data-radius-value",
+    "0",
+  );
+  await expect(page.locator(".studio-controls-card")).toHaveCSS(
+    "border-radius",
+    "0px",
+  );
+  await expect(
+    page.locator(".studio-controls-card .t7-select-trigger").first(),
+  ).toHaveCSS("border-radius", "0px");
+
+  await slider.press("ArrowRight");
+  await expect(slider).toHaveValue("1");
+  await expect(page.locator(".t7-provider")).toHaveAttribute(
+    "data-radius-value",
+    "1",
+  );
+  await expect(page.locator(".t7-provider")).toHaveCSS(
+    "--t7-radius-base",
+    "1px",
+  );
+});
+
+test("motion duration slider controls shared reveal timing", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1186, height: 698 });
+  await page.goto("/theme-studio");
+
+  const slider = page.getByRole("slider", { name: "Motion duration" });
+  await slider.focus();
+  await slider.press("Home");
+  await expect(slider).toHaveValue("0.5");
+  await expect(page.locator(".t7-provider")).toHaveAttribute(
+    "data-motion-duration",
+    "0.5",
+  );
+  await expect(page.locator(".t7-provider")).toHaveCSS(
+    "--t7-duration-slow",
+    "500ms",
+  );
+
+  await slider.press("ArrowRight");
+  await expect(slider).toHaveValue("0.75");
+  await expect(page.locator(".t7-provider")).toHaveCSS(
+    "--t7-duration-standard",
+    "263ms",
+  );
+});
+
+test("operations milestone tracker reveals selected detail", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/operations-tracker");
+
+  const tracker = page.getByRole("navigation", {
+    name: "Operations milestone progress",
+  });
+  await expect(tracker.getByRole("progressbar")).toHaveCount(5);
+  await expect(
+    tracker.getByRole("region", { name: "Triage milestone details" }),
+  ).toContainText("Health and ownership");
+
+  await tracker.getByRole("button", { name: /Execution/ }).click();
+  await expect(
+    tracker.getByRole("region", { name: "Execution milestone details" }),
+  ).toContainText("Corn lot JG-882");
+  expect(
+    await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth -
+        document.documentElement.clientWidth,
+    ),
+  ).toBeLessThanOrEqual(1);
+});
+
+test("public showcase section map and route CTAs are navigable", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/public-showcase");
+
+  await expect(
+    page.getByRole("navigation", { name: "Public showcase sections" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: /Foundations Tokens, roles/ }),
+  ).toHaveAttribute("href", "#showcase-features");
+
+  await page.getByRole("button", { name: "Explore the system" }).click();
+  await expect(page).toHaveURL(/\/public-showcase#showcase-features$/);
+
+  await page.getByRole("button", { name: "View components" }).click();
+  await expect(page).toHaveURL(/\/components$/);
+});
+
+test("shared motion tokens drive smooth scroll and chart reveals", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/component-lab");
+
+  const initialCharts = await page.evaluate(() =>
+    [...document.querySelectorAll<HTMLElement>(".t7-chart")].map((chart) => {
+      const rect = chart.getBoundingClientRect();
+      return {
+        bottom: rect.bottom,
+        top: rect.top,
+        visible: chart.dataset.chartVisible,
+      };
+    }),
+  );
+  const gatedChartIndex = initialCharts.findIndex(
+    (chart) => chart.top > 900 || chart.bottom < 0,
+  );
+  expect(gatedChartIndex).toBeGreaterThanOrEqual(0);
+  expect(initialCharts[gatedChartIndex]?.visible).toBe("false");
+
+  const gatedChart = page.locator(".t7-chart").nth(gatedChartIndex);
+  await gatedChart.evaluate((element) =>
+    element.scrollIntoView({ block: "center", behavior: "instant" }),
+  );
+  await page.waitForTimeout(120);
+
+  const chartCount = await page.locator(".t7-chart").count();
+  for (let index = 0; index < chartCount; index += 1) {
+    const chart = page.locator(".t7-chart").nth(index);
+    await chart.evaluate((element) =>
+      element.scrollIntoView({ block: "center", behavior: "instant" }),
+    );
+    await page.waitForTimeout(120);
+  }
+
+  const motion = await page.evaluate(() => {
+    const provider = document.querySelector<HTMLElement>(".t7-provider");
+    const chartNodes = [
+      ...document.querySelectorAll<SVGElement>(
+        ".t7-chart-line, .t7-chart-bar, .t7-donut-segment",
+      ),
+    ];
+    return {
+      chartVisibility: [
+        ...document.querySelectorAll<HTMLElement>(".t7-chart"),
+      ].map((chart) => chart.dataset.chartVisible),
+      scrollBehavior: getComputedStyle(document.documentElement).scrollBehavior,
+      standardDuration: provider
+        ? getComputedStyle(provider)
+            .getPropertyValue("--t7-duration-standard")
+            .trim()
+        : "",
+      animatedNodes: chartNodes.map((node) => {
+        const style = getComputedStyle(node);
+        return {
+          animation: style.animationName,
+          duration: style.animationDuration,
+          className: node.className.baseVal,
+        };
+      }),
+      hasLocalChartDelay: Boolean(
+        document.querySelector(".t7-chart [style*='animation-delay']"),
+      ),
+    };
+  });
+
+  expect(
+    motion.chartVisibility.every((visibility) => visibility === "true"),
+  ).toBe(true);
+  expect(motion.scrollBehavior).toBe("smooth");
+  expect(motion.standardDuration).toBe("525ms");
+  expect(motion.animatedNodes).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({
+        className: expect.stringContaining("t7-chart-line"),
+        duration: "1.5s",
+      }),
+      expect.objectContaining({
+        className: expect.stringContaining("t7-chart-bar"),
+        duration: "1.5s",
+      }),
+      expect.objectContaining({
+        className: expect.stringContaining("t7-donut-segment"),
+        duration: "1.5s",
+      }),
+    ]),
+  );
+  expect(motion.hasLocalChartDelay).toBe(false);
+  expect(motion.animatedNodes.length).toBeGreaterThan(0);
+  expect(
+    motion.animatedNodes.every((node) =>
+      node.animation.startsWith("t7-motion-"),
+    ),
+  ).toBe(true);
+});
+
+test("canonical actions use cursor-origin feedback and cards use quiet lift", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/component-lab");
+
+  const button = page.getByRole("button", { name: "Open modal" });
+  await button.scrollIntoViewIfNeeded();
+  const buttonBox = await button.boundingBox();
+  expect(buttonBox).not.toBeNull();
+  if (!buttonBox) return;
+  await page.mouse.move(buttonBox.x + 12, buttonBox.y + buttonBox.height / 2);
+
+  const buttonFeedback = await button.evaluate((element) => ({
+    opacity: getComputedStyle(element, "::after").opacity,
+    pointerX: element.style.getPropertyValue("--t7-pointer-x"),
+    pointerY: element.style.getPropertyValue("--t7-pointer-y"),
+    transform: getComputedStyle(element, "::after").transform,
+  }));
+  expect(buttonFeedback.pointerX).not.toBe("");
+  expect(buttonFeedback.pointerY).not.toBe("");
+  expect(Number(buttonFeedback.opacity)).toBeGreaterThan(0);
+  expect(buttonFeedback.transform).not.toBe("none");
+
+  const card = page
+    .locator(".t7-card")
+    .filter({ hasText: "Card → Select" })
+    .first();
+  await card.scrollIntoViewIfNeeded();
+  const cardBox = await card.boundingBox();
+  expect(cardBox).not.toBeNull();
+  if (!cardBox) return;
+  await page.mouse.move(cardBox.x + cardBox.width - 16, cardBox.y + 16);
+  const cardFeedback = await card.evaluate((element) => ({
+    borderColor: getComputedStyle(element).borderColor,
+    boxShadow: getComputedStyle(element).boxShadow,
+    transform: getComputedStyle(element).transform,
+  }));
+  expect(cardFeedback.borderColor).not.toBe("");
+  expect(cardFeedback.boxShadow).not.toBe("");
+  expect(cardFeedback.transform).not.toBe("none");
+});
+
+test("operations sidebar opens each domain surface", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/operations-tracker");
+
+  const navigation = page.getByRole("navigation", {
+    name: "Application navigation",
+  });
+
+  for (const view of [
+    { label: "Customers", domain: "customers", heading: "Customer profiles" },
+    { label: "Deliveries", domain: "deliveries", heading: "Delivery routes" },
+    {
+      label: "Supply & QC",
+      domain: "supply",
+      heading: "Purchase and quality queue",
+    },
+    { label: "Fleet", domain: "fleet", heading: "Fleet register" },
+    {
+      label: "Reports",
+      domain: "reports",
+      heading: "Operational report lines",
+    },
+  ]) {
+    await navigation
+      .getByRole("button", { name: view.label, exact: true })
+      .click();
+    await expect(
+      navigation.getByRole("button", { name: view.label, exact: true }),
+    ).toHaveAttribute("data-active", "true");
+    const surface = page.locator(`[data-domain-view="${view.domain}"]`);
+    await expect(surface).toBeVisible();
+    await expect(
+      surface.getByRole("heading", { name: view.heading }),
+    ).toBeVisible();
+    await expect(surface.locator(".t7-table tbody tr")).toHaveCount(4);
+  }
+
+  await navigation
+    .getByRole("button", { name: "Customers", exact: true })
+    .click();
+  await page
+    .locator('[data-domain-view="customers"] .t7-table tbody tr')
+    .first()
+    .click();
+  await expect(
+    page.getByRole("dialog", { name: "PT Cipta Pakan" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Close detail drawer" }).click();
+
+  await navigation
+    .getByRole("button", { name: "Work queue", exact: true })
+    .click();
+  await expect(
+    navigation.getByRole("button", { name: "Work queue", exact: true }),
+  ).toHaveAttribute("data-active", "true");
+  await expect(
+    page.getByRole("region", { name: "Workstream health" }),
+  ).toBeVisible();
+  await expect(page.getByRole("region", { name: "Work queue" })).toContainText(
+    "8 matches",
+  );
+});
+
+test("operations navigation stays visible and usable on mobile", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/operations-tracker");
+
+  const navigation = page.getByRole("navigation", {
+    name: "Application navigation",
+  });
+  for (const label of [
+    "Work queue",
+    "Customers",
+    "Deliveries",
+    "Supply & QC",
+    "Fleet",
+    "Reports",
+  ]) {
+    await expect(
+      navigation.getByRole("button", { name: label, exact: true }),
+    ).toBeVisible();
+  }
+
+  await expect(
+    page.locator(".operations-milestone-section .t7-milestone-scroll"),
+  ).toHaveCSS("overflow-x", "visible");
+  expect(
+    await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth -
+        document.documentElement.clientWidth,
+    ),
+  ).toBeLessThanOrEqual(1);
+
+  await navigation
+    .getByRole("button", { name: "Customers", exact: true })
+    .click();
+  await expect(page.locator('[data-domain-view="customers"]')).toBeVisible();
+  await expect(
+    page.locator('[data-domain-view="customers"] .t7-table tbody tr'),
+  ).toHaveCount(4);
+  await expect(
+    page.locator('[data-domain-view="customers"] .t7-table'),
+  ).toBeVisible();
+  const mobileTableOverflow = await page
+    .locator('[data-domain-view="customers"] .t7-table-wrap')
+    .evaluate((element) => element.scrollWidth > element.clientWidth);
+  expect(mobileTableOverflow).toBe(true);
+});
+
+test("ebook grid keeps card prices and actions aligned", async ({ page }) => {
+  await page.setViewportSize({ width: 1186, height: 698 });
+  await page.goto("/ebook-store");
+
+  const ebookSurface = page.locator(".ebook-reference");
+  await expect(
+    ebookSurface.getByText("EPUB + PDF", { exact: true }),
+  ).toHaveCount(0);
+
+  const firstRow = page.locator(
+    ".ebook-product-grid[data-view='grid'] .ebook-product-card",
+  );
+  const geometry = await firstRow.evaluateAll((cards) =>
+    cards.slice(0, 4).map((card) => {
+      const getRect = (selector: string) => {
+        const rect = card.querySelector(selector)?.getBoundingClientRect();
+        return rect
+          ? { bottom: rect.bottom, top: rect.top }
+          : { bottom: null, top: null };
+      };
+      const cardRect = card.getBoundingClientRect();
+      return {
+        actions: getRect(".t7-product-actions"),
+        card: { bottom: cardRect.bottom, top: cardRect.top },
+        price: getRect(".t7-product-price"),
+      };
+    }),
+  );
+
+  expect(geometry).toHaveLength(4);
+  for (const key of ["top", "bottom"] as const) {
+    const actionValues = geometry.map((item) => item.actions[key] ?? 0);
+    const cardValues = geometry.map((item) => item.card[key]);
+    const priceValues = geometry.map((item) => item.price[key] ?? 0);
+    expect(
+      Math.max(...actionValues) - Math.min(...actionValues),
+    ).toBeLessThanOrEqual(1);
+    expect(
+      Math.max(...cardValues) - Math.min(...cardValues),
+    ).toBeLessThanOrEqual(1);
+    expect(
+      Math.max(...priceValues) - Math.min(...priceValues),
+    ).toBeLessThanOrEqual(1);
+  }
 });
 
 test("publishing cart adapts between desktop popover and mobile drawer", async ({
@@ -112,11 +715,20 @@ test("publishing cart adapts between desktop popover and mobile drawer", async (
     .getByRole("button", { name: "Tambah ke keranjang" })
     .first()
     .click();
+  // The app intentionally uses tokenized smooth scrolling; let that motion settle
+  // before capturing the cart state so this visual assertion remains deterministic.
+  await page.waitForTimeout(260);
   const desktopTrigger = page.getByRole("button", {
     name: "1 item di keranjang",
   });
+  await expect(desktopTrigger.locator(".t7-cart-trigger-count")).toHaveText(
+    "1",
+  );
   await desktopTrigger.click();
   await expect(page.getByRole("region", { name: "Keranjang" })).toBeVisible();
+  await expect(
+    page.locator("#t7-overlay-root .t7-cart-line-item"),
+  ).toBeVisible();
   await expect(page).toHaveScreenshot("publishing-cart-desktop.png", {
     animations: "disabled",
   });
@@ -127,9 +739,18 @@ test("publishing cart adapts between desktop popover and mobile drawer", async (
     .getByRole("button", { name: "Tambah ke keranjang" })
     .first()
     .click();
+  await page.waitForTimeout(260);
   await page.getByRole("button", { name: "1 item di keranjang" }).click();
   const drawer = page.getByRole("dialog", { name: "Keranjang" });
   await expect(drawer).toBeVisible();
+  await expect(drawer.locator(".t7-cart-panel-header")).toBeHidden();
+  expect(
+    await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth -
+        document.documentElement.clientWidth,
+    ),
+  ).toBeLessThanOrEqual(1);
   await expect(page).toHaveScreenshot("publishing-cart-mobile.png", {
     animations: "disabled",
   });

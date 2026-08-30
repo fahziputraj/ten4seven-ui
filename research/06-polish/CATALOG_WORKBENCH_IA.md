@@ -10,24 +10,24 @@ Date: 2026-08-27
 
 - `packages/ai/catalog/components.json` is the component source of truth: 144 contracts, 138 canonical components, and 6 documented aliases.
 - `packages/ai/catalog/recipes.json` is the recipe source of truth: 17 composition recipes, including `cart`.
-- `packages/ai/catalog/icons.json` plus the local icon registry provide 97 semantic icon contracts.
+- `packages/ai/catalog/icons.json` plus the local icon registry provide 98 semantic icon contracts.
 - `apps/playground/src/catalog-model.ts` derives family labels, slugs, counts, and deep-link paths from those catalogs; it does not create a second catalog.
 
 ## Information architecture
 
-| Surface          | Route                                                      | Contract                                                                   |
-| ---------------- | ---------------------------------------------------------- | -------------------------------------------------------------------------- |
-| Theme Studio     | `/theme-studio`                                            | Global theme controls and live typography specimen                         |
-| Component Lab    | `/component-lab`                                           | Separate interaction stress-test surface                                   |
-| Tokens           | `/tokens`                                                  | Intent-first token families with in-page navigation and copy actions       |
-| Components       | `/components`                                              | Compact canonical overview with search, common components, and families    |
-| Component family | `/components/<family-slug>`                                | Family list with the current family expanded                               |
-| Component detail | `/components/<component-slug>`                             | Preview, usage, API, accessibility, tokens, recipes, and related contracts |
-| Icons            | `/icons`                                                   | Searchable, category-filtered semantic icon grid with copy feedback        |
-| Recipes          | `/recipes`                                                 | Compact recipe index with direct composition detail routes                 |
-| Recipe detail    | `/recipes/<recipe-slug>`                                   | Anatomy flow with links to canonical component contracts                   |
-| Blocks           | `/blocks`                                                  | Live expressive block previews and detail contracts                        |
-| References       | `/warehouse-inventory`, `/ebook-store`, `/public-showcase` | Production-shaped recipe proof surfaces                                    |
+| Surface          | Route                                                     | Contract                                                                   |
+| ---------------- | --------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Theme Studio     | `/theme-studio`                                           | Global theme controls and live typography specimen                         |
+| Component Lab    | `/component-lab`                                          | Separate interaction stress-test surface                                   |
+| Tokens           | `/tokens`                                                 | Intent-first token families with in-page navigation and copy actions       |
+| Components       | `/components`                                             | Compact canonical overview with search, common components, and families    |
+| Component family | `/components/<family-slug>`                               | Family list with the current family expanded                               |
+| Component detail | `/components/<component-slug>`                            | Preview, usage, API, accessibility, tokens, recipes, and related contracts |
+| Icons            | `/icons`                                                  | Searchable, category-filtered semantic icon grid with copy feedback        |
+| Recipes          | `/recipes`                                                | Compact recipe index with direct composition detail routes                 |
+| Recipe detail    | `/recipes/<recipe-slug>`                                  | Anatomy flow with links to canonical component contracts                   |
+| Blocks           | `/blocks`                                                 | Live expressive block previews and detail contracts                        |
+| References       | `/operations-tracker`, `/ebook-store`, `/public-showcase` | Production-shaped recipe proof surfaces                                    |
 
 Canonical taxonomy routes include `/components/patterns`,
 `/components/tables`, and `/components/filtering-bulk-actions`. The previous

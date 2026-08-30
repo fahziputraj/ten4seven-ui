@@ -1,6 +1,8 @@
 import {
   useMemo,
+  useId,
   useState,
+  type CSSProperties,
   type HTMLAttributes,
   type ReactNode,
   type TableHTMLAttributes,
@@ -248,6 +250,196 @@ export function ActivityFeed({
 }
 
 export const Timeline = ActivityFeed;
+
+export type MilestoneStatus = "complete" | "current" | "upcoming" | "blocked";
+
+export interface MilestoneItem {
+  description?: ReactNode;
+  details?: ReactNode;
+  icon?: IconName;
+  id: string;
+  label: ReactNode;
+  meta?: ReactNode;
+  percentage: number;
+  status?: MilestoneStatus;
+}
+
+export interface MilestoneTrackerProps extends Omit<
+  HTMLAttributes<HTMLElement>,
+  "children" | "onChange"
+> {
+  defaultSelectedId?: string;
+  items: MilestoneItem[];
+  label?: string;
+  onSelectedIdChange?: (id: string) => void;
+  selectedId?: string;
+}
+
+function milestoneStatus(item: MilestoneItem): MilestoneStatus {
+  if (item.status) return item.status;
+  if (item.percentage >= 100) return "complete";
+  if (item.percentage > 0) return "current";
+  return "upcoming";
+}
+
+function milestonePercentage(value: number) {
+  return Math.round(Math.min(100, Math.max(0, value)));
+}
+
+/** Show a bounded operational journey with selectable circular progress nodes and contextual detail. */
+export function MilestoneTracker({
+  className,
+  defaultSelectedId,
+  items,
+  label = "Milestone progress",
+  onSelectedIdChange,
+  selectedId,
+  style,
+  ...props
+}: MilestoneTrackerProps) {
+  const trackerId = useId();
+  const initialItem =
+    items.find((item) => milestoneStatus(item) === "current") ?? items[0];
+  const [uncontrolledSelectedId, setUncontrolledSelectedId] = useState(
+    defaultSelectedId ?? initialItem?.id ?? "",
+  );
+  const activeId = selectedId ?? uncontrolledSelectedId;
+  const selectedItem =
+    items.find((item) => item.id === activeId) ?? initialItem;
+  const detailId = `${trackerId}-details`;
+  const trackerStyle = {
+    ...style,
+    "--t7-milestone-count": items.length,
+  } as CSSProperties;
+
+  const selectItem = (id: string) => {
+    if (selectedId === undefined) setUncontrolledSelectedId(id);
+    onSelectedIdChange?.(id);
+  };
+
+  return (
+    <nav
+      {...props}
+      aria-label={label}
+      className={cx("t7-milestone-tracker", className)}
+      style={trackerStyle}
+    >
+      <div className="t7-milestone-scroll">
+        <ol className="t7-milestone-list">
+          {items.map((item, index) => {
+            const status = milestoneStatus(item);
+            const percentage = milestonePercentage(item.percentage);
+            const previous = items[index - 1];
+            const previousComplete = previous
+              ? milestoneStatus(previous) === "complete" ||
+                milestonePercentage(previous.percentage) >= 100
+              : false;
+            const isSelected = selectedItem?.id === item.id;
+
+            return (
+              <li
+                className="t7-milestone-item"
+                data-connector={previousComplete ? "complete" : "pending"}
+                data-selected={isSelected || undefined}
+                data-state={status}
+                key={item.id}
+              >
+                <button
+                  aria-controls={detailId}
+                  aria-current={isSelected ? "step" : undefined}
+                  aria-pressed={isSelected}
+                  className="t7-milestone-button"
+                  onClick={() => selectItem(item.id)}
+                  type="button"
+                >
+                  <span
+                    aria-label={`${percentage}% complete`}
+                    aria-valuemax={100}
+                    aria-valuemin={0}
+                    aria-valuenow={percentage}
+                    className="t7-milestone-node"
+                    role="progressbar"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      className="t7-milestone-ring"
+                      viewBox="0 0 84 84"
+                    >
+                      <circle
+                        className="t7-milestone-ring-track"
+                        cx="42"
+                        cy="42"
+                        pathLength="100"
+                        r="34"
+                      />
+                      <circle
+                        className="t7-milestone-ring-value"
+                        cx="42"
+                        cy="42"
+                        pathLength="100"
+                        r="34"
+                        style={{ strokeDashoffset: 100 - percentage }}
+                      />
+                    </svg>
+                    <span className="t7-milestone-node-content">
+                      <span className="t7-milestone-percent">
+                        {percentage}%
+                      </span>
+                    </span>
+                  </span>
+                  <span className="t7-milestone-copy">
+                    <span className="t7-milestone-label-row">
+                      {item.icon ? (
+                        <T7Icon
+                          aria-hidden="true"
+                          className="t7-milestone-icon"
+                          name={item.icon}
+                          size={13}
+                        />
+                      ) : null}
+                      <strong>{item.label}</strong>
+                    </span>
+                    {item.meta ? <small>{item.meta}</small> : null}
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+      {selectedItem ? (
+        <section
+          aria-live="polite"
+          aria-label={`${String(selectedItem.label)} milestone details`}
+          className="t7-milestone-detail"
+          id={detailId}
+        >
+          <div className="t7-milestone-detail-heading">
+            <div>
+              <Typography typeRole="caption">Selected milestone</Typography>
+              <Typography as="h3" typeRole="heading-sm">
+                {selectedItem.label}
+              </Typography>
+              {selectedItem.description ? (
+                <Typography as="p" typeRole="body-sm">
+                  {selectedItem.description}
+                </Typography>
+              ) : null}
+            </div>
+            <Typography as="strong" typeRole="metric-md">
+              {milestonePercentage(selectedItem.percentage)}%
+            </Typography>
+          </div>
+          {selectedItem.details ? (
+            <div className="t7-milestone-detail-content">
+              {selectedItem.details}
+            </div>
+          ) : null}
+        </section>
+      ) : null}
+    </nav>
+  );
+}
 
 export function Table({
   className,
