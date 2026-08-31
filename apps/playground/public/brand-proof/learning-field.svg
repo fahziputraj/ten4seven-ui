@@ -1,0 +1,17 @@
+<svg width="960" height="720" viewBox="0 0 960 720" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Abstract learning studio</title>
+  <desc id="desc">Layered abstract shapes suggesting a shared learning table and a window of light.</desc>
+  <rect width="960" height="720" fill="#E7E3D8"/>
+  <path d="M0 0H960V254C780 212 660 232 506 320C326 423 163 430 0 356V0Z" fill="#B8D0CB"/>
+  <path d="M0 498C166 416 286 434 432 514C584 597 716 608 960 522V720H0V498Z" fill="#22383A"/>
+  <path d="M96 110H442V342H96V110Z" fill="#F7F5EF" fill-opacity=".8"/>
+  <path d="M128 144H410V166H128V144Z" fill="#D8B76A"/>
+  <path d="M128 188H342V210H128V188Z" fill="#2A7F82"/>
+  <path d="M128 232H382V254H128V232Z" fill="#22383A" fill-opacity=".76"/>
+  <circle cx="790" cy="180" r="86" fill="#D8B76A" fill-opacity=".84"/>
+  <circle cx="790" cy="180" r="54" fill="#F5C86B" fill-opacity=".46"/>
+  <path d="M180 570C251 509 331 492 405 521C473 548 535 587 606 590C687 594 742 557 834 519" stroke="#F4EFE4" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="244" cy="570" r="26" fill="#B8D0CB"/>
+  <circle cx="486" cy="568" r="26" fill="#2A7F82"/>
+  <circle cx="734" cy="565" r="26" fill="#D8B76A"/>
+</svg>

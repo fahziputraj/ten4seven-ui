@@ -5,6 +5,7 @@ import {
   recipeCatalog,
   recipePath,
 } from "./catalog-model";
+import type { BrandProfileId } from "@ten4seven/contracts";
 
 export type PlaygroundRoute =
   | "Theme Studio"
@@ -66,8 +67,20 @@ export const playgroundRouteDescriptions: Record<PlaygroundRoute, string> = {
     "Public composition showcase for ten4seven UI blocks and recipes.",
 };
 
+/** Bounded Slice B proof routes; these are intentionally not part of the main navigation. */
+export const brandProofRoutePaths: Record<BrandProfileId, string> = {
+  "neutral-product": "/brand-proof/auth-neutral",
+  "aapm-academy": "/brand-proof/auth-aapm-academy",
+};
+
+export const brandProofRouteTitles: Record<BrandProfileId, string> = {
+  "neutral-product": "ten4seven UI — Authentication · Neutral Product",
+  "aapm-academy": "ten4seven UI — Authentication · AAPM Academy",
+};
+
 export type RouteMatch =
   | { kind: "known"; route: PlaygroundRoute }
+  | { kind: "brand-proof"; profileId: BrandProfileId; pathname: string }
   | { kind: "component-family"; category: string; pathname: string }
   | { kind: "component-detail"; name: string; pathname: string }
   | { kind: "block-detail"; name: string; pathname: string }
@@ -91,6 +104,17 @@ export function routeFromPath(pathname: string): RouteMatch {
 
   const legacyEntry = legacyPlaygroundRoutePaths[normalizedPath];
   if (legacyEntry) return { kind: "known", route: legacyEntry };
+
+  const brandProofEntry = Object.entries(brandProofRoutePaths).find(
+    ([, path]) => path === normalizedPath,
+  );
+  if (brandProofEntry) {
+    return {
+      kind: "brand-proof",
+      profileId: brandProofEntry[0] as BrandProfileId,
+      pathname: normalizedPath,
+    };
+  }
 
   const componentMatch = normalizedPath.match(/^\/components\/([^/]+)$/);
   if (componentMatch) {
