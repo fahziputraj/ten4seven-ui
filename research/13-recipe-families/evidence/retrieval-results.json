@@ -1,0 +1,603 @@
+{
+  "benchmark": "Selective Retrieval + Recipe Family Kernel Proof",
+  "baseline": {
+    "historicalCompactRuntimeBytesPerScenario": 84135,
+    "historicalFullCatalogFallbacks": 0,
+    "historicalIndependentAdoptionGate": "CONDITIONAL PASS"
+  },
+  "invariantProof": {
+    "fullCatalogFallback": 0,
+    "agentOwnedDecisions": 0,
+    "sourceImplementationReads": 0,
+    "donorReads": 0,
+    "localPrimitives": 0,
+    "contractViolations": 0,
+    "duplicatedResolverArchitectures": 0,
+    "brandProfilesChanged": false
+  },
+  "entityList": [
+    {
+      "id": "invoice-list",
+      "recipe": "entity-list",
+      "family": "operational-collection",
+      "composition": [
+        "AppShell",
+        "PageHeader",
+        "DataTable",
+        "Sidebar",
+        "KPICluster",
+        "FilterToolbar",
+        "Pagination",
+        "BulkActionBar",
+        "DetailDrawer"
+      ],
+      "omitted": [],
+      "conditionalComponentCount": 6,
+      "retrieval": {
+        "actualRetrievalBytes": 6641,
+        "taskSpecificBytes": 5326,
+        "indexBytes": 1315,
+        "recipeBytes": 2688,
+        "componentContractBytes": 2638,
+        "fullCatalogFallback": 0,
+        "runtimeFiles": [
+          {
+            "kind": "index",
+            "path": "generated/index.json",
+            "bytes": 1315
+          },
+          {
+            "kind": "recipe",
+            "path": "generated/recipes/entity-list.json",
+            "bytes": 2688
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/AppShell.json",
+            "bytes": 272
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/PageHeader.json",
+            "bytes": 307
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/DataTable.json",
+            "bytes": 396
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/Sidebar.json",
+            "bytes": 306
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/KPICluster.json",
+            "bytes": 239
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/FilterToolbar.json",
+            "bytes": 280
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/Pagination.json",
+            "bytes": 288
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/BulkActionBar.json",
+            "bytes": 259
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/DetailDrawer.json",
+            "bytes": 291
+          }
+        ],
+        "componentIds": [
+          "AppShell",
+          "PageHeader",
+          "DataTable",
+          "Sidebar",
+          "KPICluster",
+          "FilterToolbar",
+          "Pagination",
+          "BulkActionBar",
+          "DetailDrawer"
+        ],
+        "conditionalComponentCount": {
+          "included": 6,
+          "omitted": 0
+        },
+        "agentOwnedDecisions": 0,
+        "sourceImplementationReads": 0,
+        "donorReads": 0,
+        "localPrimitives": 0,
+        "contractViolations": 0,
+        "historicalLogicalTaskSliceBytes": 6294
+      }
+    },
+    {
+      "id": "customer-directory",
+      "recipe": "entity-list",
+      "family": "operational-collection",
+      "composition": [
+        "AppShell",
+        "PageHeader",
+        "DataTable",
+        "FilterToolbar"
+      ],
+      "omitted": [
+        "Sidebar",
+        "KPICluster",
+        "Pagination",
+        "BulkActionBar",
+        "DetailDrawer"
+      ],
+      "conditionalComponentCount": 1,
+      "retrieval": {
+        "actualRetrievalBytes": 5258,
+        "taskSpecificBytes": 3943,
+        "indexBytes": 1315,
+        "recipeBytes": 2688,
+        "componentContractBytes": 1255,
+        "fullCatalogFallback": 0,
+        "runtimeFiles": [
+          {
+            "kind": "index",
+            "path": "generated/index.json",
+            "bytes": 1315
+          },
+          {
+            "kind": "recipe",
+            "path": "generated/recipes/entity-list.json",
+            "bytes": 2688
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/AppShell.json",
+            "bytes": 272
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/PageHeader.json",
+            "bytes": 307
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/DataTable.json",
+            "bytes": 396
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/FilterToolbar.json",
+            "bytes": 280
+          }
+        ],
+        "componentIds": [
+          "AppShell",
+          "PageHeader",
+          "DataTable",
+          "FilterToolbar"
+        ],
+        "conditionalComponentCount": {
+          "included": 1,
+          "omitted": 5
+        },
+        "agentOwnedDecisions": 0,
+        "sourceImplementationReads": 0,
+        "donorReads": 0,
+        "localPrimitives": 0,
+        "contractViolations": 0,
+        "historicalLogicalTaskSliceBytes": 4367
+      }
+    },
+    {
+      "id": "exception-queue",
+      "recipe": "entity-list",
+      "family": "operational-collection",
+      "composition": [
+        "AppShell",
+        "PageHeader",
+        "DataTable",
+        "Sidebar",
+        "FilterToolbar",
+        "Pagination",
+        "BulkActionBar",
+        "DetailDrawer"
+      ],
+      "omitted": [
+        "KPICluster"
+      ],
+      "conditionalComponentCount": 5,
+      "retrieval": {
+        "actualRetrievalBytes": 6402,
+        "taskSpecificBytes": 5087,
+        "indexBytes": 1315,
+        "recipeBytes": 2688,
+        "componentContractBytes": 2399,
+        "fullCatalogFallback": 0,
+        "runtimeFiles": [
+          {
+            "kind": "index",
+            "path": "generated/index.json",
+            "bytes": 1315
+          },
+          {
+            "kind": "recipe",
+            "path": "generated/recipes/entity-list.json",
+            "bytes": 2688
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/AppShell.json",
+            "bytes": 272
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/PageHeader.json",
+            "bytes": 307
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/DataTable.json",
+            "bytes": 396
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/Sidebar.json",
+            "bytes": 306
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/FilterToolbar.json",
+            "bytes": 280
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/Pagination.json",
+            "bytes": 288
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/BulkActionBar.json",
+            "bytes": 259
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/DetailDrawer.json",
+            "bytes": 291
+          }
+        ],
+        "componentIds": [
+          "AppShell",
+          "PageHeader",
+          "DataTable",
+          "Sidebar",
+          "FilterToolbar",
+          "Pagination",
+          "BulkActionBar",
+          "DetailDrawer"
+        ],
+        "conditionalComponentCount": {
+          "included": 5,
+          "omitted": 1
+        },
+        "agentOwnedDecisions": 0,
+        "sourceImplementationReads": 0,
+        "donorReads": 0,
+        "localPrimitives": 0,
+        "contractViolations": 0,
+        "historicalLogicalTaskSliceBytes": 5950
+      }
+    }
+  ],
+  "entityDetail": [
+    {
+      "id": "D1-operational-record",
+      "recipe": "entity-detail",
+      "family": "record-inspection",
+      "composition": [
+        "PageHeader",
+        "RecordSummary",
+        "KeyValueList",
+        "AppShell",
+        "Sidebar",
+        "StatusChip",
+        "ActivityFeed",
+        "ActionMenu",
+        "ActionFooter",
+        "DataTable"
+      ],
+      "omitted": [
+        "Alert",
+        "Modal"
+      ],
+      "conditionalComponentCount": 7,
+      "retrieval": {
+        "actualRetrievalBytes": 7017,
+        "taskSpecificBytes": 5702,
+        "indexBytes": 1315,
+        "recipeBytes": 2877,
+        "componentContractBytes": 2825,
+        "fullCatalogFallback": 0,
+        "runtimeFiles": [
+          {
+            "kind": "index",
+            "path": "generated/index.json",
+            "bytes": 1315
+          },
+          {
+            "kind": "recipe",
+            "path": "generated/recipes/entity-detail.json",
+            "bytes": 2877
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/PageHeader.json",
+            "bytes": 307
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/RecordSummary.json",
+            "bytes": 296
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/KeyValueList.json",
+            "bytes": 234
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/AppShell.json",
+            "bytes": 272
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/Sidebar.json",
+            "bytes": 306
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/StatusChip.json",
+            "bytes": 256
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/ActivityFeed.json",
+            "bytes": 224
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/ActionMenu.json",
+            "bytes": 249
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/ActionFooter.json",
+            "bytes": 285
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/DataTable.json",
+            "bytes": 396
+          }
+        ],
+        "componentIds": [
+          "PageHeader",
+          "RecordSummary",
+          "KeyValueList",
+          "AppShell",
+          "Sidebar",
+          "StatusChip",
+          "ActivityFeed",
+          "ActionMenu",
+          "ActionFooter",
+          "DataTable"
+        ],
+        "conditionalComponentCount": {
+          "included": 7,
+          "omitted": 2
+        },
+        "agentOwnedDecisions": 0,
+        "sourceImplementationReads": 0,
+        "donorReads": 0,
+        "localPrimitives": 0,
+        "contractViolations": 0
+      }
+    },
+    {
+      "id": "D2-read-only-record",
+      "recipe": "entity-detail",
+      "family": "record-inspection",
+      "composition": [
+        "PageHeader",
+        "RecordSummary",
+        "KeyValueList",
+        "StatusChip",
+        "ActivityFeed"
+      ],
+      "omitted": [
+        "AppShell",
+        "Sidebar",
+        "ActionMenu",
+        "ActionFooter",
+        "DataTable",
+        "Alert",
+        "Modal"
+      ],
+      "conditionalComponentCount": 2,
+      "retrieval": {
+        "actualRetrievalBytes": 5509,
+        "taskSpecificBytes": 4194,
+        "indexBytes": 1315,
+        "recipeBytes": 2877,
+        "componentContractBytes": 1317,
+        "fullCatalogFallback": 0,
+        "runtimeFiles": [
+          {
+            "kind": "index",
+            "path": "generated/index.json",
+            "bytes": 1315
+          },
+          {
+            "kind": "recipe",
+            "path": "generated/recipes/entity-detail.json",
+            "bytes": 2877
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/PageHeader.json",
+            "bytes": 307
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/RecordSummary.json",
+            "bytes": 296
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/KeyValueList.json",
+            "bytes": 234
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/StatusChip.json",
+            "bytes": 256
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/ActivityFeed.json",
+            "bytes": 224
+          }
+        ],
+        "componentIds": [
+          "PageHeader",
+          "RecordSummary",
+          "KeyValueList",
+          "StatusChip",
+          "ActivityFeed"
+        ],
+        "conditionalComponentCount": {
+          "included": 2,
+          "omitted": 7
+        },
+        "agentOwnedDecisions": 0,
+        "sourceImplementationReads": 0,
+        "donorReads": 0,
+        "localPrimitives": 0,
+        "contractViolations": 0
+      }
+    },
+    {
+      "id": "D3-investigation-record",
+      "recipe": "entity-detail",
+      "family": "record-inspection",
+      "composition": [
+        "PageHeader",
+        "RecordSummary",
+        "KeyValueList",
+        "AppShell",
+        "Sidebar",
+        "StatusChip",
+        "ActivityFeed",
+        "ActionMenu",
+        "DataTable"
+      ],
+      "omitted": [
+        "ActionFooter",
+        "Alert",
+        "Modal"
+      ],
+      "conditionalComponentCount": 6,
+      "retrieval": {
+        "actualRetrievalBytes": 6732,
+        "taskSpecificBytes": 5417,
+        "indexBytes": 1315,
+        "recipeBytes": 2877,
+        "componentContractBytes": 2540,
+        "fullCatalogFallback": 0,
+        "runtimeFiles": [
+          {
+            "kind": "index",
+            "path": "generated/index.json",
+            "bytes": 1315
+          },
+          {
+            "kind": "recipe",
+            "path": "generated/recipes/entity-detail.json",
+            "bytes": 2877
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/PageHeader.json",
+            "bytes": 307
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/RecordSummary.json",
+            "bytes": 296
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/KeyValueList.json",
+            "bytes": 234
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/AppShell.json",
+            "bytes": 272
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/Sidebar.json",
+            "bytes": 306
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/StatusChip.json",
+            "bytes": 256
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/ActivityFeed.json",
+            "bytes": 224
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/ActionMenu.json",
+            "bytes": 249
+          },
+          {
+            "kind": "componentContract",
+            "path": "generated/components/DataTable.json",
+            "bytes": 396
+          }
+        ],
+        "componentIds": [
+          "PageHeader",
+          "RecordSummary",
+          "KeyValueList",
+          "AppShell",
+          "Sidebar",
+          "StatusChip",
+          "ActivityFeed",
+          "ActionMenu",
+          "DataTable"
+        ],
+        "conditionalComponentCount": {
+          "included": 6,
+          "omitted": 3
+        },
+        "agentOwnedDecisions": 0,
+        "sourceImplementationReads": 0,
+        "donorReads": 0,
+        "localPrimitives": 0,
+        "contractViolations": 0
+      }
+    }
+  ]
+}
