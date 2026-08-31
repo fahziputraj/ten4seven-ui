@@ -1,0 +1,1 @@
+{"id":"CurrencyInput","displayName":"Currency Input","status":"implemented","category":"form","purpose":"Collect a numeric monetary value without owning localization or ledger business logic.","source":"packages/ui/src/forms.tsx","importantProps":["currency","min","step","value","onChange"]}

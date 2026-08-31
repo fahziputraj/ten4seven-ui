@@ -1,0 +1,1 @@
+{"id":"ActionBar","displayName":"Action Bar","status":"implemented","category":"layout","purpose":"Group compact surface actions with toolbar semantics.","source":"packages/ui/src/blocks.tsx","importantProps":["label","children"]}

@@ -1,0 +1,1 @@
+{"id":"CardFooter","displayName":"Card Footer","status":"implemented","category":"surface","purpose":"Provide a separated lower action or metadata region for a Card.","source":"packages/ui/src/components.tsx","importantProps":["children"]}

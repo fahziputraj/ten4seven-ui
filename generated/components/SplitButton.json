@@ -1,0 +1,1 @@
+{"id":"SplitButton","displayName":"Split Button","status":"implemented","category":"action","purpose":"Pair one primary action with a canonical overflow menu.","source":"packages/ui/src/overlays.tsx","importantProps":["label","onClick","items","intent","size"]}

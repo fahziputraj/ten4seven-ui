@@ -1,0 +1,1 @@
+{"id":"OrderSummary","displayName":"Order Summary","status":"implemented","category":"pattern","purpose":"Present application-calculated order rows and a total without owning payment logic.","source":"packages/ui/src/commerce.tsx","importantProps":["rows","total","totalLabel"]}

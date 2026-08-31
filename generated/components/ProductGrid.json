@@ -1,0 +1,1 @@
+{"id":"ProductGrid","displayName":"Product Grid","status":"implemented","category":"commerce","purpose":"Lay out visual products in a responsive content-first grid.","source":"packages/ui/src/commerce.tsx","importantProps":["minCardWidth","children"]}

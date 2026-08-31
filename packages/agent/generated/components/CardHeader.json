@@ -1,0 +1,1 @@
+{"id":"CardHeader","displayName":"Card Header","status":"implemented","category":"surface","purpose":"Provide the heading region of a Card.","source":"packages/ui/src/components.tsx","importantProps":["children"]}

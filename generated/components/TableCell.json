@@ -1,0 +1,1 @@
+{"id":"TableCell","displayName":"Table Cell","status":"implemented","category":"table","purpose":"Render one semantic data cell in a lightweight Table.","source":"packages/ui/src/data-display.tsx","importantProps":["children","colSpan","className"]}

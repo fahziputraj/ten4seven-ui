@@ -1,0 +1,1 @@
+{"id":"RangeSlider","displayName":"Range Slider","status":"implemented","category":"form","purpose":"Set a minimum and maximum value with two coordinated native ranges.","source":"packages/ui/src/forms.tsx","importantProps":["min","max","minValue","maxValue","onValueChange"]}

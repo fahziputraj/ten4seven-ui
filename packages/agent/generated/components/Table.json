@@ -1,0 +1,1 @@
+{"id":"Table","displayName":"Table","status":"implemented","category":"table","purpose":"Render a lightweight semantic table for readable summaries and comparison data.","source":"packages/ui/src/data-display.tsx","importantProps":["children","caption","className"]}

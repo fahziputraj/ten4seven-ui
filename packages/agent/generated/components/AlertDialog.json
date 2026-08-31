@@ -1,0 +1,1 @@
+{"id":"AlertDialog","displayName":"Alert Dialog","status":"implemented","category":"overlay","purpose":"Confirm a consequential action before it is performed.","source":"packages/ui/src/overlays.tsx","importantProps":["open","title","description","confirmLabel","onConfirm","onClose"]}

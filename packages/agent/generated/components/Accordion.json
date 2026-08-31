@@ -1,0 +1,1 @@
+{"id":"Accordion","displayName":"Accordion","status":"implemented","category":"navigation","purpose":"Progressively disclose bounded sections with explicit expansion state.","source":"packages/ui/src/navigation.tsx","importantProps":["items","multiple","value","onValueChange"]}

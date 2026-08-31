@@ -1,0 +1,1 @@
+{"id":"DatePicker","displayName":"Date Picker","status":"implemented","category":"date-time","purpose":"Collect one calendar date with native text entry and a shared calendar popover.","source":"packages/ui/src/date-time.tsx","importantProps":["value","onValueChange","min","max","label"]}

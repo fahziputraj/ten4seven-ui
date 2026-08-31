@@ -1,0 +1,1 @@
+{"id":"ToastProvider","displayName":"Toast Provider","status":"implemented","category":"feedback","purpose":"Own local transient notification state and a Toaster viewport.","source":"packages/ui/src/feedback.tsx","importantProps":["limit","children"]}

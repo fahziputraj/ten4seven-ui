@@ -1,0 +1,1 @@
+{"id":"CartTrigger","displayName":"Cart Trigger","status":"implemented","category":"commerce","purpose":"Expose a shared cart entry action while leaving cart state and navigation to the recipe.","source":"packages/ui/src/commerce.tsx","importantProps":["count","label","intent","size","onClick"]}

@@ -1,0 +1,52 @@
+{
+  "neutral-product": {
+    "id": "neutral-product",
+    "media": {
+      "prominence": "low",
+      "treatment": "product",
+      "overlay": "none"
+    },
+    "composition": {
+      "heroBias": "centered",
+      "whitespace": "balanced"
+    },
+    "typography": {
+      "displayCharacter": "neutral",
+      "emphasis": "restrained"
+    },
+    "brandMark": {
+      "prominence": "medium"
+    },
+    "surface": {
+      "mood": "neutral"
+    },
+    "actionEmphasis": {
+      "level": "balanced"
+    }
+  },
+  "aapm-academy": {
+    "id": "aapm-academy",
+    "media": {
+      "prominence": "high",
+      "treatment": "documentary",
+      "overlay": "dramatic"
+    },
+    "composition": {
+      "heroBias": "split",
+      "whitespace": "generous"
+    },
+    "typography": {
+      "displayCharacter": "editorial",
+      "emphasis": "expressive"
+    },
+    "brandMark": {
+      "prominence": "high"
+    },
+    "surface": {
+      "mood": "institutional"
+    },
+    "actionEmphasis": {
+      "level": "strong"
+    }
+  }
+}

@@ -1,0 +1,1 @@
+{"id":"CircularProgress","displayName":"Circular Progress","status":"implemented","category":"feedback","purpose":"Show compact determinate progress in a circular signal.","source":"packages/ui/src/feedback.tsx","importantProps":["value","max","label","size"]}

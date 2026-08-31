@@ -1,0 +1,1 @@
+{"id":"Field","displayName":"Field","status":"implemented","category":"form","purpose":"Provide reusable labelled field anatomy around compound or custom controls.","source":"packages/ui/src/forms.tsx","importantProps":["label","htmlFor","description","error","required","optional"]}

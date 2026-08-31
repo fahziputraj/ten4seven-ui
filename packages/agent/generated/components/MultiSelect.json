@@ -1,0 +1,1 @@
+{"id":"MultiSelect","displayName":"Multi Select","status":"implemented","category":"form","purpose":"Choose multiple options from a bounded visible list.","source":"packages/ui/src/forms.tsx","importantProps":["options","values","onValueChange","label","loading","error"]}

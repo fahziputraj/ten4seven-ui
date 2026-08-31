@@ -1,0 +1,1 @@
+{"id":"PublicShell","displayName":"Public Shell","status":"implemented","category":"pattern","purpose":"Compose the shared app frame and top navigation for public, content, and marketing references.","source":"packages/ui/src/blocks.tsx","importantProps":["brand","navigation","actions","footer","children"]}

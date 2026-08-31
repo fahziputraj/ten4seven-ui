@@ -1,0 +1,1 @@
+{"id":"OtpInput","displayName":"Otp Input","status":"implemented","category":"form","purpose":"Collect a short verification code with keyboard and paste distribution support.","source":"packages/ui/src/forms.tsx","importantProps":["length","value","onValueChange","label"]}

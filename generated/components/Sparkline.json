@@ -1,0 +1,1 @@
+{"id":"Sparkline","displayName":"Sparkline","status":"implemented","category":"chart","purpose":"Render a compact inline SVG trend signal.","source":"packages/ui/src/charts.tsx","importantProps":["values","label"]}

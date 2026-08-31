@@ -1,0 +1,1 @@
+{"id":"TimeInput","displayName":"Time Input","status":"implemented","category":"date-time","purpose":"Compatibility alias for the intentional browser-native time input.","source":"packages/ui/src/date-time.tsx","importantProps":["label","value","onChange"]}

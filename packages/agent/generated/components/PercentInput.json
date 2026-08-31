@@ -1,0 +1,1 @@
+{"id":"PercentInput","displayName":"Percent Input","status":"implemented","category":"form","purpose":"Collect a numeric percentage with clear helper wording.","source":"packages/ui/src/forms.tsx","importantProps":["min","max","step","value","onChange"]}

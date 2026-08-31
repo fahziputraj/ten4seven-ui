@@ -1,0 +1,1 @@
+{"id":"PageHeader","displayName":"Page Header","status":"implemented","category":"layout","purpose":"Frame a route with title, context, breadcrumbs, metadata, and primary actions.","source":"packages/ui/src/components.tsx","importantProps":["title","description","overline","breadcrumbs","meta","actions"]}

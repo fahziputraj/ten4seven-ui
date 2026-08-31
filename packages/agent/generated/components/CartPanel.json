@@ -1,0 +1,1 @@
+{"id":"CartPanel","displayName":"Cart Panel","status":"implemented","category":"pattern","purpose":"Compose cart lines, empty state, summary, and actions into one shared commerce surface.","source":"packages/ui/src/commerce.tsx","importantProps":["title","itemCount","emptyState","summary","actions","children"]}

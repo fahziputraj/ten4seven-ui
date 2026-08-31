@@ -1,0 +1,1 @@
+{"id":"ToggleButtonGroup","displayName":"Toggle Button Group","status":"implemented","category":"action","purpose":"Coordinate single or multiple ToggleButton values.","source":"packages/ui/src/actions.tsx","importantProps":["type","value","onValueChange","label"]}

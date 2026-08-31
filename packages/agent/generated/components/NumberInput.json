@@ -1,0 +1,1 @@
+{"id":"NumberInput","displayName":"Number Input","status":"implemented","category":"form","purpose":"Collect a native decimal or integer value.","source":"packages/ui/src/forms.tsx","importantProps":["min","max","step","value","onChange"]}

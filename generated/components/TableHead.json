@@ -1,0 +1,1 @@
+{"id":"TableHead","displayName":"Table Head","status":"implemented","category":"table","purpose":"Label a semantic table column or row header with explicit scope.","source":"packages/ui/src/data-display.tsx","importantProps":["children","scope","className"]}

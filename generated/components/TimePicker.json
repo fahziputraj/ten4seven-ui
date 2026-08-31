@@ -1,0 +1,1 @@
+{"id":"TimePicker","displayName":"Time Picker","status":"implemented","category":"date-time","purpose":"Choose a bounded time from a tokenized ten4seven listbox interaction.","source":"packages/ui/src/date-time.tsx","importantProps":["value","onValueChange","minuteStep","min","max","label"]}

@@ -1,0 +1,1 @@
+{"id":"Tabs","displayName":"Tabs","status":"implemented","category":"navigation","purpose":"Switch between peer content panels with tab and tabpanel semantics.","source":"packages/ui/src/navigation.tsx","importantProps":["items","value","defaultValue","onValueChange","label"]}

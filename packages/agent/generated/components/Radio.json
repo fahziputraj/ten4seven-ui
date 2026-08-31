@@ -1,0 +1,1 @@
+{"id":"Radio","displayName":"Radio","status":"implemented","category":"form","purpose":"Choose one value from a small mutually exclusive set.","source":"packages/ui/src/components.tsx","importantProps":["name","value","checked","label","description","onChange"]}

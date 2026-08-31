@@ -1,0 +1,1 @@
+{"id":"KPICluster","displayName":"KPI Cluster","status":"implemented","category":"data","purpose":"Present a small related set of truthful operational metrics.","source":"packages/ui/src/components.tsx","importantProps":["items","label"]}

@@ -1,0 +1,1 @@
+{"id":"Image","displayName":"Image","status":"implemented","category":"media","purpose":"Render native imagery with an honest local fallback when a source fails.","source":"packages/ui/src/media.tsx","importantProps":["src","alt","fallbackIcon","fallbackLabel"]}

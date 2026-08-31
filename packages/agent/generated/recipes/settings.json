@@ -1,0 +1,1 @@
+{"id":"settings","displayName":"Settings","purpose":"Edit application, workspace, or personal preferences.","profiles":["enterprise","dashboard"],"components":["PageHeader","FormSection","FormGrid","Input","Select","ActionFooter"],"optional":["Sidebar","Switch","Alert"],"source":"legacy-catalog-adapter"}

@@ -1,0 +1,1 @@
+{"id":"report","displayName":"Operational Report","purpose":"Inspect a time-bounded result set and export a supported report.","profiles":["enterprise","dashboard"],"components":["PageHeader","FilterToolbar","KPICluster","LineChart","DataTable"],"optional":["BarChart","DonutChart","DateRangePicker","Pagination"],"source":"legacy-catalog-adapter"}

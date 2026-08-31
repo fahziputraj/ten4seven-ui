@@ -1,0 +1,1 @@
+{"id":"Button","displayName":"Button","status":"implemented","category":"action","purpose":"Trigger an explicit application action with intent, loading, and disabled semantics.","source":"packages/ui/src/components.tsx","importantProps":["intent","size","leadingIcon","trailingIcon","loading","disabled"]}

@@ -1,0 +1,1 @@
+{"id":"Price","displayName":"Price","status":"implemented","category":"commerce","purpose":"Render a localized display price and optional previous price.","source":"packages/ui/src/commerce.tsx","importantProps":["amount","currency","locale","originalAmount"]}

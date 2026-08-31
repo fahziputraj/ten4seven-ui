@@ -1,0 +1,1 @@
+{"id":"FileList","displayName":"File List","status":"implemented","category":"file","purpose":"Render a list of FileItem contracts.","source":"packages/ui/src/files.tsx","importantProps":["files"]}

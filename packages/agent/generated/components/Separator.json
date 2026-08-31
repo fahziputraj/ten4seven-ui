@@ -1,0 +1,1 @@
+{"id":"Separator","displayName":"Separator","status":"implemented","category":"layout","purpose":"Render a semantic horizontal or vertical divider.","source":"packages/ui/src/layout.tsx","importantProps":["orientation"]}

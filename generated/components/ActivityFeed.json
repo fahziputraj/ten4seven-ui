@@ -1,0 +1,1 @@
+{"id":"ActivityFeed","displayName":"Activity Feed","status":"implemented","category":"data","purpose":"Render an ordered activity or audit event feed.","source":"packages/ui/src/data-display.tsx","importantProps":["items"]}

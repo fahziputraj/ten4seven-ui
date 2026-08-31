@@ -1,0 +1,1 @@
+{"id":"ProductMeta","displayName":"Product Meta","status":"implemented","category":"commerce","purpose":"Lay out compact product metadata without publishing-specific nouns.","source":"packages/ui/src/commerce.tsx","importantProps":["items"]}

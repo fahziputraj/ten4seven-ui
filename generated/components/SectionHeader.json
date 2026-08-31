@@ -1,0 +1,1 @@
+{"id":"SectionHeader","displayName":"Section Header","status":"implemented","category":"layout","purpose":"Render an in-flow section heading with optional eyebrow, description, and actions.","source":"packages/ui/src/blocks.tsx","importantProps":["title","description","eyebrow","actions"]}

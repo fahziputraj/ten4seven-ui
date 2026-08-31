@@ -1,0 +1,1 @@
+{"id":"ContextMenu","displayName":"Context Menu","status":"implemented","category":"overlay","purpose":"Expose a bounded semantic action menu on a secondary context interaction.","source":"packages/ui/src/overlays.tsx","importantProps":["items","label","children"]}

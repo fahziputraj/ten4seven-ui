@@ -1,0 +1,1 @@
+{"id":"NativeSelect","displayName":"Native Select","status":"implemented","category":"form","purpose":"Render an explicitly native select when platform-native behavior or form integration is the requirement.","source":"packages/ui/src/forms.tsx","importantProps":["children","value","defaultValue","onChange","disabled"]}

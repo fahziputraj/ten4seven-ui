@@ -1,0 +1,1 @@
+{"id":"FileUpload","displayName":"File Upload","status":"implemented","category":"file","purpose":"Select and validate files client-side without implying storage or upload transport.","source":"packages/ui/src/files.tsx","importantProps":["accept","multiple","maxFiles","maxSize","value","onFilesChange","onReject"]}

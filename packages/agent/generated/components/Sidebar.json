@@ -1,0 +1,1 @@
+{"id":"Sidebar","displayName":"Sidebar","status":"implemented","category":"navigation","purpose":"Render a responsive semantic workspace navigation with grouped routes and active state.","source":"packages/ui/src/components.tsx","importantProps":["brand","items","groups","activeKey","onSelect","footer"]}

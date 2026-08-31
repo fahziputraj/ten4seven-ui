@@ -1,0 +1,1 @@
+{"id":"CardTitle","displayName":"Card Title","status":"implemented","category":"surface","purpose":"Render the semantic heading inside a Card anatomy.","source":"packages/ui/src/components.tsx","importantProps":["children","as"]}

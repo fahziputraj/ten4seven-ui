@@ -1,0 +1,1 @@
+{"id":"DescriptionList","displayName":"Description List","status":"implemented","category":"data","purpose":"Expose KeyValueList under the conventional description-list alias; it remains one implementation.","source":"packages/ui/src/data-display.tsx","importantProps":["items"]}

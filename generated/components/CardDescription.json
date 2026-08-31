@@ -1,0 +1,1 @@
+{"id":"CardDescription","displayName":"Card Description","status":"implemented","category":"surface","purpose":"Render supporting copy inside a Card header without creating a local muted-text style.","source":"packages/ui/src/components.tsx","importantProps":["children","as"]}

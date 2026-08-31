@@ -1,0 +1,1 @@
+{"id":"Badge","displayName":"Badge","status":"implemented","category":"data","purpose":"Show a compact semantic category or state label.","source":"packages/ui/src/components.tsx","importantProps":["tone","children"]}

@@ -1,0 +1,1 @@
+{"id":"QuantityControl","displayName":"Quantity Control","status":"implemented","category":"commerce","purpose":"Adjust a bounded numeric quantity with a compact, accessible control.","source":"packages/ui/src/commerce.tsx","importantProps":["value","onValueChange","min","max","step","label","allowInput"]}

@@ -1,0 +1,1 @@
+{"id":"NavigationMenu","displayName":"Navigation Menu","status":"implemented","category":"navigation","purpose":"Render compact public navigation with one-level nested branches and shared floating positioning.","source":"packages/ui/src/navigation.tsx","importantProps":["items","label","leading","trailing"]}

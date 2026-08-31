@@ -1,0 +1,1 @@
+{"id":"CartLineItem","displayName":"Cart Line Item","status":"implemented","category":"commerce","purpose":"Present one cart item with content, price, bounded quantity, and an optional remove action.","source":"packages/ui/src/commerce.tsx","importantProps":["title","media","meta","price","quantity","onQuantityChange","onRemove"]}

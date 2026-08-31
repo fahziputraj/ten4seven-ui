@@ -1,0 +1,1 @@
+{"id":"TableRow","displayName":"Table Row","status":"implemented","category":"table","purpose":"Keep one semantic table record or header row together.","source":"packages/ui/src/data-display.tsx","importantProps":["children","className"]}

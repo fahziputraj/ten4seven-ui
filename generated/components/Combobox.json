@@ -1,0 +1,1 @@
+{"id":"Combobox","displayName":"Combobox","status":"implemented","category":"form","purpose":"Search and choose one option from a bounded in-memory list.","source":"packages/ui/src/forms.tsx","importantProps":["options","value","onValueChange","loading","emptyMessage"]}

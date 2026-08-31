@@ -1,0 +1,1 @@
+{"id":"DataTableColumnPicker","displayName":"Data Table Column Picker","status":"implemented","category":"table","purpose":"Control the visibility map for optional DataTable columns.","source":"packages/ui/src/data-display.tsx","importantProps":["columns","visibility","onVisibilityChange"]}

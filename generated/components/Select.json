@@ -1,0 +1,1 @@
+{"id":"Select","displayName":"Select","status":"implemented","category":"form","purpose":"Choose one value from a known bounded set through a custom ten4seven popup; use NativeSelect when platform-native behavior is intentional.","source":"packages/ui/src/components.tsx","importantProps":["label","children","value","defaultValue","onChange","disabled"]}

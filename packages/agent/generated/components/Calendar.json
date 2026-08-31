@@ -1,0 +1,1 @@
+{"id":"Calendar","displayName":"Calendar","status":"implemented","category":"date-time","purpose":"Render a keyboard-addressable month grid using stable YYYY-MM-DD values.","source":"packages/ui/src/date-time.tsx","importantProps":["value","onValueChange","min","max","rangeStart","rangeEnd"]}

@@ -1,0 +1,1 @@
+{"id":"Label","displayName":"Label","status":"implemented","category":"form","purpose":"Render an explicit field label with required or optional indication.","source":"packages/ui/src/forms.tsx","importantProps":["htmlFor","required","optional"]}

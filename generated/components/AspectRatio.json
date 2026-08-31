@@ -1,0 +1,1 @@
+{"id":"AspectRatio","displayName":"Aspect Ratio","status":"implemented","category":"media","purpose":"Preserve an explicit media ratio without page-local positioning hacks.","source":"packages/ui/src/media.tsx","importantProps":["ratio","children"]}

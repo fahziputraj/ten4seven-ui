@@ -1,0 +1,1 @@
+{"id":"Tooltip","displayName":"Tooltip","status":"implemented","category":"overlay","purpose":"Show supplemental hover and focus information.","source":"packages/ui/src/overlays.tsx","importantProps":["content","side","children"]}

@@ -1,0 +1,1 @@
+{"id":"Timeline","displayName":"Timeline","status":"implemented","category":"data","purpose":"Expose ActivityFeed under the conventional timeline alias; it remains one ordered-event implementation.","source":"packages/ui/src/data-display.tsx","importantProps":["items"]}

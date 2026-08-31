@@ -1,0 +1,1 @@
+{"id":"TableHeader","displayName":"Table Header","status":"implemented","category":"table","purpose":"Provide the native table header section for a lightweight semantic Table.","source":"packages/ui/src/data-display.tsx","importantProps":["children","className"]}

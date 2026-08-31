@@ -1,0 +1,1 @@
+{"id":"dashboard","displayName":"Dashboard","purpose":"Monitor a small, truthful set of operational signals and decide the next action.","profiles":["enterprise","dashboard"],"components":["PageHeader","KPICluster","MetricCard","LineChart","DataTable"],"optional":["FilterToolbar","BarChart","ActionFooter"],"source":"legacy-catalog-adapter"}

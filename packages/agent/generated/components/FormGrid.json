@@ -1,0 +1,1 @@
+{"id":"FormGrid","displayName":"Form Grid","status":"implemented","category":"form","purpose":"Lay out related form fields with token-led responsive columns.","source":"packages/ui/src/forms.tsx","importantProps":["columns","children"]}

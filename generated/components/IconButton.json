@@ -1,0 +1,1 @@
+{"id":"IconButton","displayName":"Icon Button","status":"implemented","category":"action","purpose":"Render an accessible compact action with a required text label.","source":"packages/ui/src/actions.tsx","importantProps":["icon","label","intent","size","loading"]}

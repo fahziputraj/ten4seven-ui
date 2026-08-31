@@ -1,0 +1,1 @@
+{"id":"ActionMenu","displayName":"Action Menu","status":"implemented","category":"overlay","purpose":"Name a DropdownMenu used specifically for secondary record actions.","source":"packages/ui/src/overlays.tsx","importantProps":["trigger","items"]}

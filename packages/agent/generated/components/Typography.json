@@ -1,0 +1,1 @@
+{"id":"Typography","displayName":"Typography","status":"implemented","category":"foundation","purpose":"Render a semantic typography role with the active Inter Variable and optical sizing contract.","source":"packages/ui/src/components.tsx","importantProps":["typeRole","as"]}

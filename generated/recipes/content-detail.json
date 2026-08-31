@@ -1,0 +1,1 @@
+{"id":"content-detail","displayName":"Content Detail","purpose":"Read one article, lesson, or document with clear metadata and bounded supporting actions.","profiles":["content"],"components":["PageHeader","RecordSummary","MediaFrame","Typography"],"optional":["Badge","ActionFooter","ActivityFeed"],"source":"legacy-catalog-adapter"}

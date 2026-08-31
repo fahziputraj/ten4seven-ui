@@ -1,0 +1,1 @@
+{"id":"Avatar","displayName":"Avatar","status":"implemented","category":"data","purpose":"Show an image or deterministic initials fallback for a person or entity.","source":"packages/ui/src/data-display.tsx","importantProps":["name","src","alt","size"]}

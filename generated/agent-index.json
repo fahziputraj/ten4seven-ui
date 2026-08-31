@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "0.1",
+  "sourceOfTruth": {
+    "typedContracts": "packages/contracts/src",
+    "themeProfile": "packages/contracts/src/theme-profile.ts",
+    "brandProfiles": "packages/contracts/src/brand-profile.ts",
+    "entityList": "packages/contracts/src/entity-list.ts",
+    "entityDetail": "packages/contracts/src/entity-detail.ts",
+    "authentication": "packages/contracts/src/authentication.ts"
+  },
+  "defaultRetrieval": [
+    "generated/index.json",
+    "generated/recipes/{recipe}.json",
+    "generated/components/{componentId}.json"
+  ],
+  "fallbackRetrieval": [
+    "packages/ai/catalog/recipes.json",
+    "packages/ai/catalog/components.json",
+    "packages/ai/catalog/blocks.json",
+    "packages/ai/catalog/icons.json"
+  ],
+  "entryPoints": {
+    "entity-list": {
+      "inspect": "t7ui recipe inspect entity-list",
+      "compose": "t7ui compose entity-list"
+    },
+    "entity-detail": {
+      "inspect": "t7ui recipe inspect entity-detail",
+      "compose": "t7ui compose entity-detail"
+    },
+    "auth": {
+      "resolve": "t7ui brand resolve auth",
+      "compose": "t7ui brand compose auth"
+    }
+  },
+  "metrics": {
+    "fullCatalogBytes": 275790,
+    "compactProjectionBytes": 67306,
+    "selectiveRecipeShardBytes": 13430,
+    "selectiveComponentShardBytes": 39299
+  }
+}

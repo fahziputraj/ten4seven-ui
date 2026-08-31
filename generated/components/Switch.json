@@ -1,0 +1,1 @@
+{"id":"Switch","displayName":"Switch","status":"implemented","category":"form","purpose":"Toggle one immediate boolean preference with a compact binary control.","source":"packages/ui/src/forms.tsx","importantProps":["label","description","checked","onChange","disabled"]}

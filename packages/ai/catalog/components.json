@@ -68,35 +68,35 @@
         "type": "PaletteName",
         "defaultValue": "—",
         "required": false,
-        "description": "Configures palette for Ten4Seven Provider."
+        "description": "Selects the base semantic color family for UI and chart defaults; Theme Studio swatches reset primary and accent to this family."
       },
       {
         "name": "primary",
         "type": "PaletteName",
         "defaultValue": "palette",
         "required": false,
-        "description": "Selects the palette source for primary actions, focus, and selection tokens."
+        "description": "Selects the independent palette source for main actions, links, and selection tokens; defaults to the base palette."
       },
       {
         "name": "accent",
         "type": "PaletteName",
         "defaultValue": "palette",
         "required": false,
-        "description": "Selects the palette source for accent emphasis tokens."
+        "description": "Selects the independent palette source for accent and focus emphasis; defaults to the base palette."
       },
       {
         "name": "canvas",
         "type": "CanvasName",
         "defaultValue": "balanced",
         "required": false,
-        "description": "Selects the shared neutral canvas and surface contrast treatment."
+        "description": "Selects the shared neutral canvas and surface contrast treatment independently from hue."
       },
       {
         "name": "chartPalette",
         "type": "ChartPaletteName",
         "defaultValue": "spectrum",
         "required": false,
-        "description": "Selects the chart colorway while preserving the five-slot chart variable contract."
+        "description": "Selects the data-series colorway while preserving the five-slot chart variable contract; UI roles stay unchanged."
       },
       {
         "name": "radius",
@@ -124,7 +124,7 @@
         "type": "number",
         "defaultValue": "1.5s",
         "required": false,
-        "description": "Sets the shared 0.5–2.5 second reveal and interaction duration in 0.25 second steps; semantic motion roles derive from it."
+        "description": "Sets the shared 0.25–2.5 second reveal and interaction duration in 0.25 second steps; semantic motion roles derive from it."
       },
       {
         "name": "typography",

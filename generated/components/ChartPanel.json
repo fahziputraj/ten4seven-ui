@@ -1,0 +1,1 @@
+{"id":"ChartPanel","displayName":"Chart Panel","status":"implemented","category":"chart","purpose":"Bound a canonical chart with a readable heading, description, and token-driven surface.","source":"packages/ui/src/blocks.tsx","importantProps":["title","description","chart"]}

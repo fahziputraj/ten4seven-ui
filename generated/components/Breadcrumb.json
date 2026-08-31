@@ -1,0 +1,1 @@
+{"id":"Breadcrumb","displayName":"Breadcrumb","status":"implemented","category":"navigation","purpose":"Show the route ancestry with current-page semantics.","source":"packages/ui/src/navigation.tsx","importantProps":["items","label"]}

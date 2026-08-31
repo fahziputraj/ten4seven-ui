@@ -1,0 +1,1 @@
+{"id":"Popover","displayName":"Popover","status":"implemented","category":"overlay","purpose":"Show dismissible non-modal anchored supporting content.","source":"packages/ui/src/overlays.tsx","importantProps":["trigger","open","defaultOpen","onOpenChange","side"]}

@@ -1,0 +1,1 @@
+{"id":"FieldGroup","displayName":"Field Group","status":"implemented","category":"form","purpose":"Group related controls with fieldset, legend, description, and error semantics.","source":"packages/ui/src/forms.tsx","importantProps":["legend","description","error","children"]}

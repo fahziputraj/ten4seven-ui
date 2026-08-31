@@ -1,0 +1,1 @@
+{"id":"Input","displayName":"Input","status":"implemented","category":"form","purpose":"Collect a labelled short text value with helper and invalid state support.","source":"packages/ui/src/components.tsx","importantProps":["label","hint","error","leadingIcon","value","onChange"]}

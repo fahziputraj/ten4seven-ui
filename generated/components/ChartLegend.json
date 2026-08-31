@@ -1,0 +1,1 @@
+{"id":"ChartLegend","displayName":"Chart Legend","status":"implemented","category":"chart","purpose":"Render the shared labeled key for a token-colored SVG chart.","source":"packages/ui/src/charts.tsx","importantProps":["items"]}

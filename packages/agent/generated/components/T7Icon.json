@@ -1,0 +1,1 @@
+{"id":"T7Icon","displayName":"T7 Icon","status":"implemented","category":"foundation","purpose":"Render a local, semantic Solar icon without exposing provider identifiers to consumers.","source":"packages/icons/src/index.tsx","importantProps":["name","size","label"]}

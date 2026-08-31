@@ -1,0 +1,1 @@
+{"id":"DetailDrawer","displayName":"Detail Drawer","status":"implemented","category":"overlay","purpose":"Inspect a selected record in a responsive contextual drawer.","source":"packages/ui/src/components.tsx","importantProps":["open","title","description","onClose","side","initialFocus"]}

@@ -1,0 +1,1 @@
+{"id":"Spinner","displayName":"Spinner","status":"implemented","category":"feedback","purpose":"Announce an indeterminate short loading operation.","source":"packages/ui/src/feedback.tsx","importantProps":["label","size"]}

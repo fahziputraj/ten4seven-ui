@@ -1,0 +1,1 @@
+{"id":"Carousel","displayName":"Carousel","status":"implemented","category":"navigation","purpose":"Present an ordered set of related content in a bounded native-scroll rail with keyboard and indicator controls.","source":"packages/ui/src/blocks.tsx","importantProps":["children","label","slideWidth","showIndicators"]}

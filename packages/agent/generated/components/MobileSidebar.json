@@ -1,0 +1,1 @@
+{"id":"MobileSidebar","displayName":"Mobile Sidebar","status":"implemented","category":"navigation","purpose":"Compose compact-screen navigation inside the canonical left Drawer.","source":"packages/ui/src/navigation.tsx","importantProps":["open","onClose","title","children"]}

@@ -1,0 +1,1 @@
+{"id":"SearchInput","displayName":"Search Input","status":"implemented","category":"form","purpose":"Apply the canonical search input type and semantic search icon.","source":"packages/ui/src/forms.tsx","importantProps":["value","onChange","label","placeholder"]}

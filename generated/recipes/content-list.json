@@ -1,0 +1,1 @@
+{"id":"content-list","displayName":"Content List","purpose":"Browse articles, lessons, documents, or media without forcing table semantics.","profiles":["content"],"components":["PageHeader","FilterToolbar","ProductGrid","Card","Pagination"],"optional":["Badge","EmptyState","SearchInput"],"source":"legacy-catalog-adapter"}

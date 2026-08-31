@@ -1,0 +1,1 @@
+{"id":"ToggleButton","displayName":"Toggle Button","status":"implemented","category":"action","purpose":"Expose a pressed state for a compact reversible view or option control.","source":"packages/ui/src/actions.tsx","importantProps":["pressed","onPressedChange","leadingIcon","value"]}

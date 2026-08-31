@@ -1,0 +1,1 @@
+{"id":"TrendIndicator","displayName":"Trend Indicator","status":"implemented","category":"chart","purpose":"Show compact up, down, or flat directional change.","source":"packages/ui/src/charts.tsx","importantProps":["direction","value","label"]}

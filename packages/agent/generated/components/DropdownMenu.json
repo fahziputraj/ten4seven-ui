@@ -1,0 +1,1 @@
+{"id":"DropdownMenu","displayName":"Dropdown Menu","status":"implemented","category":"overlay","purpose":"Expose a bounded semantic action menu from a trigger.","source":"packages/ui/src/overlays.tsx","importantProps":["trigger","items","open","onOpenChange","label"]}

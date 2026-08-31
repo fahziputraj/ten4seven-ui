@@ -1,0 +1,1 @@
+{"id":"CommandPalette","displayName":"Command Palette","status":"implemented","category":"navigation","purpose":"Expose CommandMenu under the familiar command-palette alias; it is not a second implementation.","source":"packages/ui/src/navigation.tsx","importantProps":["open","onOpenChange","commands","shortcut"]}

@@ -1,0 +1,1 @@
+{"id":"AppShell","displayName":"App Shell","status":"implemented","category":"pattern","purpose":"Provide the shared app frame for an optional sidebar, topbar, and route content.","source":"packages/ui/src/components.tsx","importantProps":["sidebar","topbar","children"]}

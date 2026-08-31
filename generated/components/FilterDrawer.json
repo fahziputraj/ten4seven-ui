@@ -1,0 +1,1 @@
+{"id":"FilterDrawer","displayName":"Filter Drawer","status":"implemented","category":"filter","purpose":"Compose mobile or compact filter controls in the canonical Drawer.","source":"packages/ui/src/blocks.tsx","importantProps":["open","onClose","onApply","onClear","children"]}

@@ -1,0 +1,2932 @@
+{
+  "Ten4SevenProvider": {
+    "id": "Ten4SevenProvider",
+    "displayName": "Ten4Seven Provider",
+    "status": "implemented",
+    "category": "foundation",
+    "level": "foundation",
+    "maturity": "polished",
+    "purpose": "Resolve the semantic theme axes at an application root, including independent color sources and neutral canvas modes.",
+    "source": "packages/ui/src/provider.tsx",
+    "recipes": [
+      "all"
+    ],
+    "importantProps": [
+      "appearance",
+      "palette",
+      "primary",
+      "accent",
+      "canvas",
+      "chartPalette",
+      "radius",
+      "radiusValue",
+      "density",
+      "motionDuration",
+      "typography"
+    ]
+  },
+  "Typography": {
+    "id": "Typography",
+    "displayName": "Typography",
+    "status": "implemented",
+    "category": "foundation",
+    "level": "foundation",
+    "maturity": "polished",
+    "purpose": "Render a semantic typography role with the active Inter Variable and optical sizing contract.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "all"
+    ],
+    "importantProps": [
+      "typeRole",
+      "as"
+    ]
+  },
+  "T7Icon": {
+    "id": "T7Icon",
+    "displayName": "T7 Icon",
+    "status": "implemented",
+    "category": "foundation",
+    "level": "foundation",
+    "maturity": "polished",
+    "purpose": "Render a local, semantic Solar icon without exposing provider identifiers to consumers.",
+    "source": "packages/icons/src/index.tsx",
+    "recipes": [
+      "all"
+    ],
+    "importantProps": [
+      "name",
+      "size",
+      "label"
+    ]
+  },
+  "Button": {
+    "id": "Button",
+    "displayName": "Button",
+    "status": "implemented",
+    "category": "action",
+    "level": "primitive",
+    "maturity": "polished",
+    "purpose": "Trigger an explicit application action with intent, loading, and disabled semantics.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "all"
+    ],
+    "importantProps": [
+      "intent",
+      "size",
+      "leadingIcon",
+      "trailingIcon",
+      "loading",
+      "disabled"
+    ]
+  },
+  "IconButton": {
+    "id": "IconButton",
+    "displayName": "Icon Button",
+    "status": "implemented",
+    "category": "action",
+    "level": "primitive",
+    "maturity": "polished",
+    "purpose": "Render an accessible compact action with a required text label.",
+    "source": "packages/ui/src/actions.tsx",
+    "recipes": [
+      "all"
+    ],
+    "importantProps": [
+      "icon",
+      "label",
+      "intent",
+      "size",
+      "loading"
+    ]
+  },
+  "ButtonGroup": {
+    "id": "ButtonGroup",
+    "displayName": "Button Group",
+    "status": "implemented",
+    "category": "action",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Visually bind closely related peer actions without inventing new button variants.",
+    "source": "packages/ui/src/actions.tsx",
+    "recipes": [
+      "entity-detail",
+      "settings",
+      "catalog"
+    ],
+    "importantProps": [
+      "label",
+      "orientation",
+      "children"
+    ]
+  },
+  "ToggleButton": {
+    "id": "ToggleButton",
+    "displayName": "Toggle Button",
+    "status": "implemented",
+    "category": "action",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Expose a pressed state for a compact reversible view or option control.",
+    "source": "packages/ui/src/actions.tsx",
+    "recipes": [
+      "catalog",
+      "report",
+      "settings"
+    ],
+    "importantProps": [
+      "pressed",
+      "onPressedChange",
+      "leadingIcon",
+      "value"
+    ]
+  },
+  "ToggleButtonGroup": {
+    "id": "ToggleButtonGroup",
+    "displayName": "Toggle Button Group",
+    "status": "implemented",
+    "category": "action",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Coordinate single or multiple ToggleButton values.",
+    "source": "packages/ui/src/actions.tsx",
+    "recipes": [
+      "catalog",
+      "report"
+    ],
+    "importantProps": [
+      "type",
+      "value",
+      "onValueChange",
+      "label"
+    ]
+  },
+  "SplitButton": {
+    "id": "SplitButton",
+    "displayName": "Split Button",
+    "status": "implemented",
+    "category": "action",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Pair one primary action with a canonical overflow menu.",
+    "source": "packages/ui/src/overlays.tsx",
+    "recipes": [
+      "entity-detail",
+      "report"
+    ],
+    "importantProps": [
+      "label",
+      "onClick",
+      "items",
+      "intent",
+      "size"
+    ]
+  },
+  "Input": {
+    "id": "Input",
+    "displayName": "Input",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "polished",
+    "purpose": "Collect a labelled short text value with helper and invalid state support.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "entity-form",
+      "settings",
+      "checkout",
+      "entity-list"
+    ],
+    "importantProps": [
+      "label",
+      "hint",
+      "error",
+      "leadingIcon",
+      "value",
+      "onChange"
+    ]
+  },
+  "SearchInput": {
+    "id": "SearchInput",
+    "displayName": "Search Input",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Apply the canonical search input type and semantic search icon.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "entity-list",
+      "catalog",
+      "content-list"
+    ],
+    "importantProps": [
+      "value",
+      "onChange",
+      "label",
+      "placeholder"
+    ]
+  },
+  "PasswordInput": {
+    "id": "PasswordInput",
+    "displayName": "Password Input",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Collect a password with a local visibility toggle and native input semantics.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "auth",
+      "settings"
+    ],
+    "importantProps": [
+      "label",
+      "hint",
+      "error",
+      "revealLabel"
+    ]
+  },
+  "Textarea": {
+    "id": "Textarea",
+    "displayName": "Textarea",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Collect labelled multiline plain text.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "entity-form",
+      "content-detail"
+    ],
+    "importantProps": [
+      "label",
+      "hint",
+      "error",
+      "rows",
+      "value",
+      "onChange"
+    ]
+  },
+  "NumberInput": {
+    "id": "NumberInput",
+    "displayName": "Number Input",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Collect a native decimal or integer value.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "entity-form",
+      "settings"
+    ],
+    "importantProps": [
+      "min",
+      "max",
+      "step",
+      "value",
+      "onChange"
+    ]
+  },
+  "CurrencyInput": {
+    "id": "CurrencyInput",
+    "displayName": "Currency Input",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Collect a numeric monetary value without owning localization or ledger business logic.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "entity-form",
+      "checkout"
+    ],
+    "importantProps": [
+      "currency",
+      "min",
+      "step",
+      "value",
+      "onChange"
+    ]
+  },
+  "PercentInput": {
+    "id": "PercentInput",
+    "displayName": "Percent Input",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Collect a numeric percentage with clear helper wording.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "entity-form",
+      "report"
+    ],
+    "importantProps": [
+      "min",
+      "max",
+      "step",
+      "value",
+      "onChange"
+    ]
+  },
+  "Select": {
+    "id": "Select",
+    "displayName": "Select",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "polished",
+    "purpose": "Choose one value from a known bounded set through a custom ten4seven popup; use NativeSelect when platform-native behavior is intentional.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "entity-form",
+      "settings",
+      "checkout",
+      "entity-list"
+    ],
+    "importantProps": [
+      "label",
+      "children",
+      "value",
+      "defaultValue",
+      "onChange",
+      "disabled"
+    ]
+  },
+  "NativeSelect": {
+    "id": "NativeSelect",
+    "displayName": "Native Select",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "polished",
+    "purpose": "Render an explicitly native select when platform-native behavior or form integration is the requirement.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "entity-form"
+    ],
+    "importantProps": [
+      "children",
+      "value",
+      "defaultValue",
+      "onChange",
+      "disabled"
+    ]
+  },
+  "Combobox": {
+    "id": "Combobox",
+    "displayName": "Combobox",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "polished",
+    "purpose": "Search and choose one option from a bounded in-memory list.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "entity-form",
+      "settings"
+    ],
+    "importantProps": [
+      "options",
+      "value",
+      "onValueChange",
+      "loading",
+      "emptyMessage"
+    ]
+  },
+  "MultiSelect": {
+    "id": "MultiSelect",
+    "displayName": "Multi Select",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "polished",
+    "purpose": "Choose multiple options from a bounded visible list.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "entity-list",
+      "entity-form",
+      "catalog"
+    ],
+    "importantProps": [
+      "options",
+      "values",
+      "onValueChange",
+      "label",
+      "loading",
+      "error"
+    ]
+  },
+  "Checkbox": {
+    "id": "Checkbox",
+    "displayName": "Checkbox",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "polished",
+    "purpose": "Choose a boolean or one item from a multi-choice list with indeterminate support.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "entity-list",
+      "catalog",
+      "checkout",
+      "settings"
+    ],
+    "importantProps": [
+      "checked",
+      "indeterminate",
+      "label",
+      "description",
+      "onChange"
+    ]
+  },
+  "CheckboxGroup": {
+    "id": "CheckboxGroup",
+    "displayName": "Checkbox Group",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Provide fieldset and legend semantics for related checkboxes.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "catalog",
+      "entity-form",
+      "settings"
+    ],
+    "importantProps": [
+      "legend",
+      "description",
+      "error",
+      "children"
+    ]
+  },
+  "Radio": {
+    "id": "Radio",
+    "displayName": "Radio",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "polished",
+    "purpose": "Choose one value from a small mutually exclusive set.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "entity-list",
+      "catalog",
+      "settings"
+    ],
+    "importantProps": [
+      "name",
+      "value",
+      "checked",
+      "label",
+      "description",
+      "onChange"
+    ]
+  },
+  "RadioGroup": {
+    "id": "RadioGroup",
+    "displayName": "Radio Group",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Provide fieldset and legend semantics for related radio controls.",
+    "source": "packages/ui/src/forms.tsx",
+    "aliasOf": "CheckboxGroup",
+    "recipes": [
+      "catalog",
+      "settings"
+    ],
+    "importantProps": [
+      "legend",
+      "description",
+      "error",
+      "children"
+    ]
+  },
+  "Switch": {
+    "id": "Switch",
+    "displayName": "Switch",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "polished",
+    "purpose": "Toggle one immediate boolean preference with a compact binary control.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "settings",
+      "entity-form"
+    ],
+    "importantProps": [
+      "label",
+      "description",
+      "checked",
+      "onChange",
+      "disabled"
+    ]
+  },
+  "Slider": {
+    "id": "Slider",
+    "displayName": "Slider",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Set one bounded numeric value using a native range input.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "settings",
+      "ebook-reader"
+    ],
+    "importantProps": [
+      "min",
+      "max",
+      "step",
+      "value",
+      "label"
+    ]
+  },
+  "RangeSlider": {
+    "id": "RangeSlider",
+    "displayName": "Range Slider",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Set a minimum and maximum value with two coordinated native ranges.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "catalog",
+      "report"
+    ],
+    "importantProps": [
+      "min",
+      "max",
+      "minValue",
+      "maxValue",
+      "onValueChange"
+    ]
+  },
+  "OtpInput": {
+    "id": "OtpInput",
+    "displayName": "Otp Input",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Collect a short verification code with keyboard and paste distribution support.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "auth"
+    ],
+    "importantProps": [
+      "length",
+      "value",
+      "onValueChange",
+      "label"
+    ]
+  },
+  "Field": {
+    "id": "Field",
+    "displayName": "Field",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Provide reusable labelled field anatomy around compound or custom controls.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "entity-form",
+      "settings",
+      "checkout"
+    ],
+    "importantProps": [
+      "label",
+      "htmlFor",
+      "description",
+      "error",
+      "required",
+      "optional"
+    ]
+  },
+  "Label": {
+    "id": "Label",
+    "displayName": "Label",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Render an explicit field label with required or optional indication.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "entity-form",
+      "settings"
+    ],
+    "importantProps": [
+      "htmlFor",
+      "required",
+      "optional"
+    ]
+  },
+  "FieldGroup": {
+    "id": "FieldGroup",
+    "displayName": "Field Group",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Group related controls with fieldset, legend, description, and error semantics.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "entity-form",
+      "settings"
+    ],
+    "importantProps": [
+      "legend",
+      "description",
+      "error",
+      "children"
+    ]
+  },
+  "FormSection": {
+    "id": "FormSection",
+    "displayName": "Form Section",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Group related fields into a neutral form section with an optional action.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "entity-form",
+      "settings",
+      "checkout"
+    ],
+    "importantProps": [
+      "title",
+      "description",
+      "action",
+      "children"
+    ]
+  },
+  "FormGrid": {
+    "id": "FormGrid",
+    "displayName": "Form Grid",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Lay out related form fields with token-led responsive columns.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "entity-form",
+      "settings",
+      "checkout"
+    ],
+    "importantProps": [
+      "columns",
+      "children"
+    ]
+  },
+  "FormActions": {
+    "id": "FormActions",
+    "displayName": "Form Actions",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Lay out local form actions before a broader ActionFooter is warranted.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "entity-form"
+    ],
+    "importantProps": [
+      "children"
+    ]
+  },
+  "Calendar": {
+    "id": "Calendar",
+    "displayName": "Calendar",
+    "status": "implemented",
+    "category": "date-time",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Render a keyboard-addressable month grid using stable YYYY-MM-DD values.",
+    "source": "packages/ui/src/date-time.tsx",
+    "recipes": [
+      "entity-form",
+      "report"
+    ],
+    "importantProps": [
+      "value",
+      "onValueChange",
+      "min",
+      "max",
+      "rangeStart",
+      "rangeEnd"
+    ]
+  },
+  "DatePicker": {
+    "id": "DatePicker",
+    "displayName": "Date Picker",
+    "status": "implemented",
+    "category": "date-time",
+    "level": "primitive",
+    "maturity": "polished",
+    "purpose": "Collect one calendar date with native text entry and a shared calendar popover.",
+    "source": "packages/ui/src/date-time.tsx",
+    "recipes": [
+      "entity-form",
+      "report"
+    ],
+    "importantProps": [
+      "value",
+      "onValueChange",
+      "min",
+      "max",
+      "label"
+    ]
+  },
+  "DateRangePicker": {
+    "id": "DateRangePicker",
+    "displayName": "Date Range Picker",
+    "status": "implemented",
+    "category": "date-time",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Collect a stable start and end date with one range-aware calendar.",
+    "source": "packages/ui/src/date-time.tsx",
+    "recipes": [
+      "report",
+      "catalog"
+    ],
+    "importantProps": [
+      "value",
+      "onValueChange",
+      "min",
+      "max",
+      "label"
+    ]
+  },
+  "TimeInput": {
+    "id": "TimeInput",
+    "displayName": "Time Input",
+    "status": "implemented",
+    "category": "date-time",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Compatibility alias for the intentional browser-native time input.",
+    "source": "packages/ui/src/date-time.tsx",
+    "aliasOf": "NativeTimeInput",
+    "recipes": [
+      "entity-form"
+    ],
+    "importantProps": [
+      "label",
+      "value",
+      "onChange"
+    ]
+  },
+  "NativeTimeInput": {
+    "id": "NativeTimeInput",
+    "displayName": "Native Time Input",
+    "status": "implemented",
+    "category": "date-time",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Collect a browser-native time value when platform-specific time input is intentional.",
+    "source": "packages/ui/src/date-time.tsx",
+    "recipes": [
+      "entity-form"
+    ],
+    "importantProps": [
+      "label",
+      "value",
+      "onChange"
+    ]
+  },
+  "TimePicker": {
+    "id": "TimePicker",
+    "displayName": "Time Picker",
+    "status": "implemented",
+    "category": "date-time",
+    "level": "primitive",
+    "maturity": "polished",
+    "purpose": "Choose a bounded time from a tokenized ten4seven listbox interaction.",
+    "source": "packages/ui/src/date-time.tsx",
+    "recipes": [
+      "entity-form"
+    ],
+    "importantProps": [
+      "value",
+      "onValueChange",
+      "minuteStep",
+      "min",
+      "max",
+      "label"
+    ]
+  },
+  "DateTimeInput": {
+    "id": "DateTimeInput",
+    "displayName": "Date–Time Input",
+    "status": "implemented",
+    "category": "date-time",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Compose a DatePicker and TimePicker without owning time zone or persistence logic.",
+    "source": "packages/ui/src/date-time.tsx",
+    "recipes": [
+      "entity-form"
+    ],
+    "importantProps": [
+      "date",
+      "time",
+      "onDateChange",
+      "onTimeChange"
+    ]
+  },
+  "FileUpload": {
+    "id": "FileUpload",
+    "displayName": "File Upload",
+    "status": "implemented",
+    "category": "file",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Select and validate files client-side without implying storage or upload transport.",
+    "source": "packages/ui/src/files.tsx",
+    "recipes": [
+      "entity-form",
+      "content-detail"
+    ],
+    "importantProps": [
+      "accept",
+      "multiple",
+      "maxFiles",
+      "maxSize",
+      "value",
+      "onFilesChange",
+      "onReject"
+    ]
+  },
+  "FileItem": {
+    "id": "FileItem",
+    "displayName": "File Item",
+    "status": "implemented",
+    "category": "file",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Show one selected, uploading, ready, or errored file state.",
+    "source": "packages/ui/src/files.tsx",
+    "recipes": [
+      "entity-form"
+    ],
+    "importantProps": [
+      "name",
+      "size",
+      "status",
+      "progress",
+      "onRemove",
+      "error"
+    ]
+  },
+  "FileList": {
+    "id": "FileList",
+    "displayName": "File List",
+    "status": "implemented",
+    "category": "file",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Render a list of FileItem contracts.",
+    "source": "packages/ui/src/files.tsx",
+    "recipes": [
+      "entity-form"
+    ],
+    "importantProps": [
+      "files"
+    ]
+  },
+  "AppShell": {
+    "id": "AppShell",
+    "displayName": "App Shell",
+    "status": "implemented",
+    "category": "pattern",
+    "level": "pattern",
+    "maturity": "implemented",
+    "purpose": "Provide the shared app frame for an optional sidebar, topbar, and route content.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "entity-list",
+      "master-detail",
+      "catalog"
+    ],
+    "importantProps": [
+      "sidebar",
+      "topbar",
+      "children"
+    ]
+  },
+  "Sidebar": {
+    "id": "Sidebar",
+    "displayName": "Sidebar",
+    "status": "implemented",
+    "category": "navigation",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Render a responsive semantic workspace navigation with grouped routes and active state.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "entity-list",
+      "master-detail",
+      "settings"
+    ],
+    "importantProps": [
+      "brand",
+      "items",
+      "groups",
+      "activeKey",
+      "onSelect",
+      "footer"
+    ]
+  },
+  "SidebarGroup": {
+    "id": "SidebarGroup",
+    "displayName": "Sidebar Group",
+    "status": "implemented",
+    "category": "navigation",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Group related sidebar items under an optional semantic label.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "entity-list",
+      "settings"
+    ],
+    "importantProps": [
+      "label",
+      "items",
+      "activeKey",
+      "onSelect"
+    ]
+  },
+  "NavItem": {
+    "id": "NavItem",
+    "displayName": "Nav Item",
+    "status": "implemented",
+    "category": "navigation",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Render one semantic navigation button with an icon and active state.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "entity-list",
+      "settings",
+      "ebook-reader"
+    ],
+    "importantProps": [
+      "label",
+      "icon",
+      "active",
+      "onClick"
+    ]
+  },
+  "NavigationMenu": {
+    "id": "NavigationMenu",
+    "displayName": "Navigation Menu",
+    "status": "implemented",
+    "category": "navigation",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Render compact public navigation with one-level nested branches and shared floating positioning.",
+    "source": "packages/ui/src/navigation.tsx",
+    "recipes": [
+      "catalog",
+      "marketing-home"
+    ],
+    "importantProps": [
+      "items",
+      "label",
+      "leading",
+      "trailing"
+    ]
+  },
+  "TopNavigation": {
+    "id": "TopNavigation",
+    "displayName": "Top Navigation",
+    "status": "implemented",
+    "category": "navigation",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Render compact horizontal navigation for public or commerce shells.",
+    "source": "packages/ui/src/navigation.tsx",
+    "recipes": [
+      "catalog",
+      "ebook-reader"
+    ],
+    "importantProps": [
+      "items",
+      "leading",
+      "trailing",
+      "label"
+    ]
+  },
+  "MobileSidebar": {
+    "id": "MobileSidebar",
+    "displayName": "Mobile Sidebar",
+    "status": "implemented",
+    "category": "navigation",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Compose compact-screen navigation inside the canonical left Drawer.",
+    "source": "packages/ui/src/navigation.tsx",
+    "recipes": [
+      "entity-list",
+      "master-detail"
+    ],
+    "importantProps": [
+      "open",
+      "onClose",
+      "title",
+      "children"
+    ]
+  },
+  "Breadcrumb": {
+    "id": "Breadcrumb",
+    "displayName": "Breadcrumb",
+    "status": "implemented",
+    "category": "navigation",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Show the route ancestry with current-page semantics.",
+    "source": "packages/ui/src/navigation.tsx",
+    "recipes": [
+      "entity-detail",
+      "content-detail",
+      "product-detail"
+    ],
+    "importantProps": [
+      "items",
+      "label"
+    ]
+  },
+  "Tabs": {
+    "id": "Tabs",
+    "displayName": "Tabs",
+    "status": "implemented",
+    "category": "navigation",
+    "level": "primitive",
+    "maturity": "polished",
+    "purpose": "Switch between peer content panels with tab and tabpanel semantics.",
+    "source": "packages/ui/src/navigation.tsx",
+    "recipes": [
+      "entity-detail",
+      "settings",
+      "ebook-reader"
+    ],
+    "importantProps": [
+      "items",
+      "value",
+      "defaultValue",
+      "onValueChange",
+      "label"
+    ]
+  },
+  "Accordion": {
+    "id": "Accordion",
+    "displayName": "Accordion",
+    "status": "implemented",
+    "category": "navigation",
+    "level": "primitive",
+    "maturity": "polished",
+    "purpose": "Progressively disclose bounded sections with explicit expansion state.",
+    "source": "packages/ui/src/navigation.tsx",
+    "recipes": [
+      "settings",
+      "content-detail"
+    ],
+    "importantProps": [
+      "items",
+      "multiple",
+      "value",
+      "onValueChange"
+    ]
+  },
+  "Collapsible": {
+    "id": "Collapsible",
+    "displayName": "Collapsible",
+    "status": "implemented",
+    "category": "navigation",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Show or hide one bounded content region with button and region semantics.",
+    "source": "packages/ui/src/navigation.tsx",
+    "recipes": [
+      "settings",
+      "content-detail"
+    ],
+    "importantProps": [
+      "title",
+      "open",
+      "defaultOpen",
+      "onOpenChange"
+    ]
+  },
+  "Stepper": {
+    "id": "Stepper",
+    "displayName": "Stepper",
+    "status": "implemented",
+    "category": "navigation",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Show a bounded sequential workflow and current step.",
+    "source": "packages/ui/src/navigation.tsx",
+    "recipes": [
+      "checkout",
+      "entity-form"
+    ],
+    "importantProps": [
+      "steps",
+      "current",
+      "onStepChange"
+    ]
+  },
+  "MilestoneTracker": {
+    "id": "MilestoneTracker",
+    "displayName": "Milestone Tracker",
+    "status": "implemented",
+    "category": "data",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Show a bounded operational journey with selectable circular progress nodes and contextual detail.",
+    "source": "packages/ui/src/data-display.tsx",
+    "recipes": [
+      "entity-list",
+      "master-detail",
+      "report"
+    ],
+    "importantProps": [
+      "items",
+      "percentage",
+      "status",
+      "selectedId",
+      "onSelectedIdChange"
+    ]
+  },
+  "CommandMenu": {
+    "id": "CommandMenu",
+    "displayName": "Command Menu",
+    "status": "implemented",
+    "category": "navigation",
+    "level": "primitive",
+    "maturity": "polished",
+    "purpose": "Search and execute a bounded local set of keyboard-first commands.",
+    "source": "packages/ui/src/navigation.tsx",
+    "recipes": [
+      "entity-list",
+      "dashboard"
+    ],
+    "importantProps": [
+      "commands",
+      "open",
+      "onOpenChange",
+      "shortcut"
+    ]
+  },
+  "Pagination": {
+    "id": "Pagination",
+    "displayName": "Pagination",
+    "status": "implemented",
+    "category": "navigation",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Move through a bounded set of results with clear result range feedback.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "entity-list",
+      "catalog",
+      "report",
+      "content-list"
+    ],
+    "importantProps": [
+      "page",
+      "pageSize",
+      "total",
+      "onPageChange",
+      "label"
+    ]
+  },
+  "Card": {
+    "id": "Card",
+    "displayName": "Card",
+    "status": "implemented",
+    "category": "surface",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Contain one visual record or concise grouped summary with semantic surface tones.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "dashboard",
+      "catalog",
+      "marketing-home"
+    ],
+    "importantProps": [
+      "tone",
+      "children"
+    ]
+  },
+  "CardHeader": {
+    "id": "CardHeader",
+    "displayName": "Card Header",
+    "status": "implemented",
+    "category": "surface",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Provide the heading region of a Card.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "dashboard",
+      "catalog"
+    ],
+    "importantProps": [
+      "children"
+    ]
+  },
+  "CardContent": {
+    "id": "CardContent",
+    "displayName": "Card Content",
+    "status": "implemented",
+    "category": "surface",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Provide the content region of a Card.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "all"
+    ],
+    "importantProps": [
+      "children"
+    ]
+  },
+  "CardFooter": {
+    "id": "CardFooter",
+    "displayName": "Card Footer",
+    "status": "implemented",
+    "category": "surface",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Provide a separated lower action or metadata region for a Card.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "dashboard",
+      "catalog"
+    ],
+    "importantProps": [
+      "children"
+    ]
+  },
+  "Surface": {
+    "id": "Surface",
+    "displayName": "Surface",
+    "status": "implemented",
+    "category": "surface",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Provide a broad semantic page-region surface.",
+    "source": "packages/ui/src/layout.tsx",
+    "recipes": [
+      "auth",
+      "marketing-home",
+      "content-detail"
+    ],
+    "importantProps": [
+      "as",
+      "tone",
+      "children"
+    ]
+  },
+  "Panel": {
+    "id": "Panel",
+    "displayName": "Panel",
+    "status": "implemented",
+    "category": "surface",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Provide a bounded supporting region such as a settings or inspector panel.",
+    "source": "packages/ui/src/layout.tsx",
+    "recipes": [
+      "settings",
+      "entity-detail"
+    ],
+    "importantProps": [
+      "as",
+      "padded",
+      "children"
+    ]
+  },
+  "Section": {
+    "id": "Section",
+    "displayName": "Section",
+    "status": "implemented",
+    "category": "layout",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Frame a route section with optional title, description, and actions.",
+    "source": "packages/ui/src/layout.tsx",
+    "recipes": [
+      "entity-detail",
+      "report",
+      "content-detail"
+    ],
+    "importantProps": [
+      "title",
+      "description",
+      "actions",
+      "children"
+    ]
+  },
+  "Separator": {
+    "id": "Separator",
+    "displayName": "Separator",
+    "status": "implemented",
+    "category": "layout",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Render a semantic horizontal or vertical divider.",
+    "source": "packages/ui/src/layout.tsx",
+    "recipes": [
+      "all"
+    ],
+    "importantProps": [
+      "orientation"
+    ]
+  },
+  "ScrollArea": {
+    "id": "ScrollArea",
+    "displayName": "Scroll Area",
+    "status": "implemented",
+    "category": "layout",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Constrain a scrollable region while preserving native browser scroll behavior.",
+    "source": "packages/ui/src/layout.tsx",
+    "recipes": [
+      "master-detail",
+      "command-menu"
+    ],
+    "importantProps": [
+      "label",
+      "maxHeight",
+      "children"
+    ]
+  },
+  "PageHeader": {
+    "id": "PageHeader",
+    "displayName": "Page Header",
+    "status": "implemented",
+    "category": "layout",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Frame a route with title, context, breadcrumbs, metadata, and primary actions.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "dashboard",
+      "entity-list",
+      "catalog",
+      "content-detail"
+    ],
+    "importantProps": [
+      "title",
+      "description",
+      "overline",
+      "breadcrumbs",
+      "meta",
+      "actions"
+    ]
+  },
+  "SectionHeader": {
+    "id": "SectionHeader",
+    "displayName": "Section Header",
+    "status": "implemented",
+    "category": "layout",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Render an in-flow section heading with optional eyebrow, description, and actions.",
+    "source": "packages/ui/src/blocks.tsx",
+    "recipes": [
+      "dashboard",
+      "report",
+      "content-detail"
+    ],
+    "importantProps": [
+      "title",
+      "description",
+      "eyebrow",
+      "actions"
+    ]
+  },
+  "Toolbar": {
+    "id": "Toolbar",
+    "displayName": "Toolbar",
+    "status": "implemented",
+    "category": "layout",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Align a small primary control region with secondary actions.",
+    "source": "packages/ui/src/blocks.tsx",
+    "recipes": [
+      "entity-detail",
+      "report"
+    ],
+    "importantProps": [
+      "label",
+      "actions",
+      "children"
+    ]
+  },
+  "ActionBar": {
+    "id": "ActionBar",
+    "displayName": "Action Bar",
+    "status": "implemented",
+    "category": "layout",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Group compact surface actions with toolbar semantics.",
+    "source": "packages/ui/src/blocks.tsx",
+    "recipes": [
+      "entity-detail",
+      "catalog"
+    ],
+    "importantProps": [
+      "label",
+      "children"
+    ]
+  },
+  "Table": {
+    "id": "Table",
+    "displayName": "Table",
+    "status": "implemented",
+    "category": "table",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Render a lightweight semantic table for readable summaries and comparison data.",
+    "source": "packages/ui/src/data-display.tsx",
+    "recipes": [
+      "report",
+      "content-detail",
+      "catalog"
+    ],
+    "importantProps": [
+      "children",
+      "caption",
+      "className"
+    ]
+  },
+  "TableHeader": {
+    "id": "TableHeader",
+    "displayName": "Table Header",
+    "status": "implemented",
+    "category": "table",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Provide the native table header section for a lightweight semantic Table.",
+    "source": "packages/ui/src/data-display.tsx",
+    "recipes": [
+      "report",
+      "content-detail",
+      "catalog"
+    ],
+    "importantProps": [
+      "children",
+      "className"
+    ]
+  },
+  "TableBody": {
+    "id": "TableBody",
+    "displayName": "Table Body",
+    "status": "implemented",
+    "category": "table",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Provide the native table body section for lightweight semantic rows.",
+    "source": "packages/ui/src/data-display.tsx",
+    "recipes": [
+      "report",
+      "content-detail",
+      "catalog"
+    ],
+    "importantProps": [
+      "children",
+      "className"
+    ]
+  },
+  "TableRow": {
+    "id": "TableRow",
+    "displayName": "Table Row",
+    "status": "implemented",
+    "category": "table",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Keep one semantic table record or header row together.",
+    "source": "packages/ui/src/data-display.tsx",
+    "recipes": [
+      "report",
+      "content-detail",
+      "catalog"
+    ],
+    "importantProps": [
+      "children",
+      "className"
+    ]
+  },
+  "TableHead": {
+    "id": "TableHead",
+    "displayName": "Table Head",
+    "status": "implemented",
+    "category": "table",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Label a semantic table column or row header with explicit scope.",
+    "source": "packages/ui/src/data-display.tsx",
+    "recipes": [
+      "report",
+      "content-detail",
+      "catalog"
+    ],
+    "importantProps": [
+      "children",
+      "scope",
+      "className"
+    ]
+  },
+  "TableCell": {
+    "id": "TableCell",
+    "displayName": "Table Cell",
+    "status": "implemented",
+    "category": "table",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Render one semantic data cell in a lightweight Table.",
+    "source": "packages/ui/src/data-display.tsx",
+    "recipes": [
+      "report",
+      "content-detail",
+      "catalog"
+    ],
+    "importantProps": [
+      "children",
+      "colSpan",
+      "className"
+    ]
+  },
+  "DataTable": {
+    "id": "DataTable",
+    "displayName": "Data Table",
+    "status": "implemented",
+    "category": "table",
+    "level": "component",
+    "maturity": "polished",
+    "purpose": "Display comparable structured records with native table, sort, selection, state, density, visibility, and sticky column support.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "entity-list",
+      "master-detail",
+      "report",
+      "approval-queue"
+    ],
+    "importantProps": [
+      "columns",
+      "rows",
+      "rowKey",
+      "columnVisibility",
+      "density",
+      "responsive",
+      "selectable",
+      "sort",
+      "loading",
+      "error"
+    ]
+  },
+  "DataTableColumnPicker": {
+    "id": "DataTableColumnPicker",
+    "displayName": "Data Table Column Picker",
+    "status": "implemented",
+    "category": "table",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Control the visibility map for optional DataTable columns.",
+    "source": "packages/ui/src/data-display.tsx",
+    "recipes": [
+      "report",
+      "entity-list"
+    ],
+    "importantProps": [
+      "columns",
+      "visibility",
+      "onVisibilityChange"
+    ]
+  },
+  "Badge": {
+    "id": "Badge",
+    "displayName": "Badge",
+    "status": "implemented",
+    "category": "data",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Show a compact semantic category or state label.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "all"
+    ],
+    "importantProps": [
+      "tone",
+      "children"
+    ]
+  },
+  "StatusChip": {
+    "id": "StatusChip",
+    "displayName": "Status Chip",
+    "status": "implemented",
+    "category": "data",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Make compact state semantics explicit with an optional state icon.",
+    "source": "packages/ui/src/data-display.tsx",
+    "recipes": [
+      "entity-list",
+      "entity-detail",
+      "approval-queue"
+    ],
+    "importantProps": [
+      "tone",
+      "icon",
+      "children"
+    ]
+  },
+  "Avatar": {
+    "id": "Avatar",
+    "displayName": "Avatar",
+    "status": "implemented",
+    "category": "data",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Show an image or deterministic initials fallback for a person or entity.",
+    "source": "packages/ui/src/data-display.tsx",
+    "recipes": [
+      "entity-detail",
+      "approval-queue"
+    ],
+    "importantProps": [
+      "name",
+      "src",
+      "alt",
+      "size"
+    ]
+  },
+  "AvatarGroup": {
+    "id": "AvatarGroup",
+    "displayName": "Avatar Group",
+    "status": "implemented",
+    "category": "data",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Show a bounded overlapping group of Avatar contracts.",
+    "source": "packages/ui/src/data-display.tsx",
+    "recipes": [
+      "entity-detail",
+      "approval-queue"
+    ],
+    "importantProps": [
+      "avatars",
+      "max"
+    ]
+  },
+  "KeyValueList": {
+    "id": "KeyValueList",
+    "displayName": "Key Value List",
+    "status": "implemented",
+    "category": "data",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Render labels and values as a semantic description list.",
+    "source": "packages/ui/src/data-display.tsx",
+    "recipes": [
+      "entity-detail",
+      "product-detail",
+      "checkout"
+    ],
+    "importantProps": [
+      "items"
+    ]
+  },
+  "MetricCard": {
+    "id": "MetricCard",
+    "displayName": "Metric Card",
+    "status": "implemented",
+    "category": "data",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Show one truthful decision signal with optional change and context.",
+    "source": "packages/ui/src/data-display.tsx",
+    "recipes": [
+      "dashboard",
+      "report"
+    ],
+    "importantProps": [
+      "title",
+      "value",
+      "description",
+      "change",
+      "icon",
+      "tone"
+    ]
+  },
+  "KPICluster": {
+    "id": "KPICluster",
+    "displayName": "KPI Cluster",
+    "status": "implemented",
+    "category": "data",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Present a small related set of truthful operational metrics.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "dashboard",
+      "entity-list",
+      "report"
+    ],
+    "importantProps": [
+      "items",
+      "label"
+    ]
+  },
+  "ActivityFeed": {
+    "id": "ActivityFeed",
+    "displayName": "Activity Feed",
+    "status": "implemented",
+    "category": "data",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Render an ordered activity or audit event feed.",
+    "source": "packages/ui/src/data-display.tsx",
+    "recipes": [
+      "entity-detail",
+      "approval-queue"
+    ],
+    "importantProps": [
+      "items"
+    ]
+  },
+  "RecordSummary": {
+    "id": "RecordSummary",
+    "displayName": "Record Summary",
+    "status": "implemented",
+    "category": "data",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Make the key context of one record scannable before its details.",
+    "source": "packages/ui/src/data-display.tsx",
+    "recipes": [
+      "entity-detail",
+      "master-detail",
+      "product-detail"
+    ],
+    "importantProps": [
+      "title",
+      "eyebrow",
+      "description",
+      "media",
+      "metadata",
+      "actions"
+    ]
+  },
+  "ProductCard": {
+    "id": "ProductCard",
+    "displayName": "Product Card",
+    "status": "implemented",
+    "category": "commerce",
+    "level": "component",
+    "maturity": "polished",
+    "purpose": "Present one visual product with media, metadata, price, and bounded actions.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "catalog",
+      "product-detail"
+    ],
+    "importantProps": [
+      "title",
+      "eyebrow",
+      "media",
+      "meta",
+      "price",
+      "details",
+      "actions"
+    ]
+  },
+  "ProductGrid": {
+    "id": "ProductGrid",
+    "displayName": "Product Grid",
+    "status": "implemented",
+    "category": "commerce",
+    "level": "component",
+    "maturity": "polished",
+    "purpose": "Lay out visual products in a responsive content-first grid.",
+    "source": "packages/ui/src/commerce.tsx",
+    "recipes": [
+      "catalog",
+      "content-list"
+    ],
+    "importantProps": [
+      "minCardWidth",
+      "children"
+    ]
+  },
+  "Price": {
+    "id": "Price",
+    "displayName": "Price",
+    "status": "implemented",
+    "category": "commerce",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Render a localized display price and optional previous price.",
+    "source": "packages/ui/src/commerce.tsx",
+    "recipes": [
+      "catalog",
+      "product-detail",
+      "checkout"
+    ],
+    "importantProps": [
+      "amount",
+      "currency",
+      "locale",
+      "originalAmount"
+    ]
+  },
+  "Rating": {
+    "id": "Rating",
+    "displayName": "Rating",
+    "status": "implemented",
+    "category": "commerce",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Render a compact read-only rating signal and optional count.",
+    "source": "packages/ui/src/commerce.tsx",
+    "recipes": [
+      "catalog",
+      "product-detail"
+    ],
+    "importantProps": [
+      "value",
+      "count",
+      "label"
+    ]
+  },
+  "ProductMeta": {
+    "id": "ProductMeta",
+    "displayName": "Product Meta",
+    "status": "implemented",
+    "category": "commerce",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Lay out compact product metadata without publishing-specific nouns.",
+    "source": "packages/ui/src/commerce.tsx",
+    "recipes": [
+      "catalog",
+      "product-detail"
+    ],
+    "importantProps": [
+      "items"
+    ]
+  },
+  "FilterToolbar": {
+    "id": "FilterToolbar",
+    "displayName": "Filter Toolbar",
+    "status": "implemented",
+    "category": "filter",
+    "level": "component",
+    "maturity": "polished",
+    "purpose": "Keep search, filters, sort, and result actions in one labelled region.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "entity-list",
+      "approval-queue",
+      "report"
+    ],
+    "importantProps": [
+      "title",
+      "summary",
+      "children",
+      "actions"
+    ]
+  },
+  "FilterChip": {
+    "id": "FilterChip",
+    "displayName": "Filter Chip",
+    "status": "implemented",
+    "category": "filter",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Show one removable applied filter value.",
+    "source": "packages/ui/src/blocks.tsx",
+    "recipes": [
+      "entity-list",
+      "catalog",
+      "report"
+    ],
+    "importantProps": [
+      "label",
+      "onRemove"
+    ]
+  },
+  "AppliedFilters": {
+    "id": "AppliedFilters",
+    "displayName": "Applied Filters",
+    "status": "implemented",
+    "category": "filter",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Render the current active filters with remove and reset actions.",
+    "source": "packages/ui/src/blocks.tsx",
+    "recipes": [
+      "entity-list",
+      "catalog",
+      "report"
+    ],
+    "importantProps": [
+      "filters",
+      "onRemove",
+      "onClear",
+      "clearLabel"
+    ]
+  },
+  "FilterDrawer": {
+    "id": "FilterDrawer",
+    "displayName": "Filter Drawer",
+    "status": "implemented",
+    "category": "filter",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Compose mobile or compact filter controls in the canonical Drawer.",
+    "source": "packages/ui/src/blocks.tsx",
+    "recipes": [
+      "entity-list",
+      "catalog",
+      "report"
+    ],
+    "importantProps": [
+      "open",
+      "onClose",
+      "onApply",
+      "onClear",
+      "children"
+    ]
+  },
+  "BulkActionBar": {
+    "id": "BulkActionBar",
+    "displayName": "Bulk Action Bar",
+    "status": "implemented",
+    "category": "filter",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Expose safe operations for selected records.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "entity-list",
+      "approval-queue"
+    ],
+    "importantProps": [
+      "selectedCount",
+      "actions",
+      "onClear",
+      "noun"
+    ]
+  },
+  "Modal": {
+    "id": "Modal",
+    "displayName": "Modal",
+    "status": "implemented",
+    "category": "overlay",
+    "level": "component",
+    "maturity": "polished",
+    "purpose": "Present focused short content or confirmation through a native modal dialog.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "entity-form",
+      "auth",
+      "catalog"
+    ],
+    "importantProps": [
+      "open",
+      "title",
+      "description",
+      "onClose",
+      "initialFocus"
+    ]
+  },
+  "Drawer": {
+    "id": "Drawer",
+    "displayName": "Drawer",
+    "status": "implemented",
+    "category": "overlay",
+    "level": "component",
+    "maturity": "polished",
+    "purpose": "Present contextual content in a reusable modal side surface while retaining the parent route context.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "master-detail",
+      "entity-form"
+    ],
+    "importantProps": [
+      "open",
+      "title",
+      "description",
+      "onClose",
+      "side",
+      "initialFocus"
+    ]
+  },
+  "DetailDrawer": {
+    "id": "DetailDrawer",
+    "displayName": "Detail Drawer",
+    "status": "implemented",
+    "category": "overlay",
+    "level": "component",
+    "maturity": "polished",
+    "purpose": "Inspect a selected record in a responsive contextual drawer.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "entity-list",
+      "master-detail",
+      "catalog"
+    ],
+    "importantProps": [
+      "open",
+      "title",
+      "description",
+      "onClose",
+      "side",
+      "initialFocus"
+    ]
+  },
+  "AlertDialog": {
+    "id": "AlertDialog",
+    "displayName": "Alert Dialog",
+    "status": "implemented",
+    "category": "overlay",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Confirm a consequential action before it is performed.",
+    "source": "packages/ui/src/overlays.tsx",
+    "recipes": [
+      "entity-list",
+      "approval-queue",
+      "entity-detail"
+    ],
+    "importantProps": [
+      "open",
+      "title",
+      "description",
+      "confirmLabel",
+      "onConfirm",
+      "onClose"
+    ]
+  },
+  "Popover": {
+    "id": "Popover",
+    "displayName": "Popover",
+    "status": "implemented",
+    "category": "overlay",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Show dismissible non-modal anchored supporting content.",
+    "source": "packages/ui/src/overlays.tsx",
+    "recipes": [
+      "settings",
+      "report",
+      "catalog"
+    ],
+    "importantProps": [
+      "trigger",
+      "open",
+      "defaultOpen",
+      "onOpenChange",
+      "side"
+    ]
+  },
+  "Tooltip": {
+    "id": "Tooltip",
+    "displayName": "Tooltip",
+    "status": "implemented",
+    "category": "overlay",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Show supplemental hover and focus information.",
+    "source": "packages/ui/src/overlays.tsx",
+    "recipes": [
+      "all"
+    ],
+    "importantProps": [
+      "content",
+      "side",
+      "children"
+    ]
+  },
+  "DropdownMenu": {
+    "id": "DropdownMenu",
+    "displayName": "Dropdown Menu",
+    "status": "implemented",
+    "category": "overlay",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Expose a bounded semantic action menu from a trigger.",
+    "source": "packages/ui/src/overlays.tsx",
+    "recipes": [
+      "entity-list",
+      "entity-detail",
+      "catalog"
+    ],
+    "importantProps": [
+      "trigger",
+      "items",
+      "open",
+      "onOpenChange",
+      "label"
+    ]
+  },
+  "ActionMenu": {
+    "id": "ActionMenu",
+    "displayName": "Action Menu",
+    "status": "implemented",
+    "category": "overlay",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Name a DropdownMenu used specifically for secondary record actions.",
+    "source": "packages/ui/src/overlays.tsx",
+    "aliasOf": "DropdownMenu",
+    "recipes": [
+      "entity-list",
+      "approval-queue"
+    ],
+    "importantProps": [
+      "trigger",
+      "items"
+    ]
+  },
+  "ContextMenu": {
+    "id": "ContextMenu",
+    "displayName": "Context Menu",
+    "status": "implemented",
+    "category": "overlay",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Expose a bounded semantic action menu on a secondary context interaction.",
+    "source": "packages/ui/src/overlays.tsx",
+    "recipes": [
+      "entity-list",
+      "report"
+    ],
+    "importantProps": [
+      "items",
+      "label",
+      "children"
+    ]
+  },
+  "Alert": {
+    "id": "Alert",
+    "displayName": "Alert",
+    "status": "implemented",
+    "category": "feedback",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Show persistent in-context information, success, warning, or danger feedback.",
+    "source": "packages/ui/src/feedback.tsx",
+    "recipes": [
+      "entity-form",
+      "settings",
+      "checkout"
+    ],
+    "importantProps": [
+      "tone",
+      "title",
+      "description",
+      "action",
+      "onDismiss"
+    ]
+  },
+  "ToastProvider": {
+    "id": "ToastProvider",
+    "displayName": "Toast Provider",
+    "status": "implemented",
+    "category": "feedback",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Own local transient notification state and a Toaster viewport.",
+    "source": "packages/ui/src/feedback.tsx",
+    "recipes": [
+      "all"
+    ],
+    "importantProps": [
+      "limit",
+      "children"
+    ]
+  },
+  "Toaster": {
+    "id": "Toaster",
+    "displayName": "Toaster",
+    "status": "implemented",
+    "category": "feedback",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Render transient toast notifications from ToastProvider or controlled data.",
+    "source": "packages/ui/src/feedback.tsx",
+    "recipes": [
+      "all"
+    ],
+    "importantProps": [
+      "toasts",
+      "onDismiss"
+    ]
+  },
+  "Toast": {
+    "id": "Toast",
+    "displayName": "Toast",
+    "status": "implemented",
+    "category": "feedback",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Render one transient live notification with optional action and dismissal.",
+    "source": "packages/ui/src/feedback.tsx",
+    "recipes": [
+      "all"
+    ],
+    "importantProps": [
+      "toast",
+      "onDismiss"
+    ]
+  },
+  "EmptyState": {
+    "id": "EmptyState",
+    "displayName": "Empty State",
+    "status": "implemented",
+    "category": "feedback",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Explain an empty result with optional recovery action.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "entity-list",
+      "catalog",
+      "content-list"
+    ],
+    "importantProps": [
+      "title",
+      "description",
+      "icon",
+      "action"
+    ]
+  },
+  "StateView": {
+    "id": "StateView",
+    "displayName": "State View",
+    "status": "implemented",
+    "category": "feedback",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Render empty, error, permission, or unavailable state with an optional recovery action.",
+    "source": "packages/ui/src/feedback.tsx",
+    "recipes": [
+      "entity-list",
+      "auth",
+      "content-list"
+    ],
+    "importantProps": [
+      "state",
+      "title",
+      "description",
+      "action",
+      "icon"
+    ]
+  },
+  "Skeleton": {
+    "id": "Skeleton",
+    "displayName": "Skeleton",
+    "status": "implemented",
+    "category": "feedback",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Represent layout-shaped loading content without pretending data is ready.",
+    "source": "packages/ui/src/feedback.tsx",
+    "recipes": [
+      "dashboard",
+      "entity-list",
+      "catalog"
+    ],
+    "importantProps": [
+      "width",
+      "height"
+    ]
+  },
+  "Spinner": {
+    "id": "Spinner",
+    "displayName": "Spinner",
+    "status": "implemented",
+    "category": "feedback",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Announce an indeterminate short loading operation.",
+    "source": "packages/ui/src/feedback.tsx",
+    "recipes": [
+      "all"
+    ],
+    "importantProps": [
+      "label",
+      "size"
+    ]
+  },
+  "Progress": {
+    "id": "Progress",
+    "displayName": "Progress",
+    "status": "implemented",
+    "category": "feedback",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Show determinate or indeterminate linear progress with progressbar semantics.",
+    "source": "packages/ui/src/feedback.tsx",
+    "recipes": [
+      "ebook-reader",
+      "entity-form"
+    ],
+    "importantProps": [
+      "value",
+      "max",
+      "indeterminate",
+      "label",
+      "showValue"
+    ]
+  },
+  "CircularProgress": {
+    "id": "CircularProgress",
+    "displayName": "Circular Progress",
+    "status": "implemented",
+    "category": "feedback",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Show compact determinate progress in a circular signal.",
+    "source": "packages/ui/src/feedback.tsx",
+    "recipes": [
+      "dashboard",
+      "ebook-reader"
+    ],
+    "importantProps": [
+      "value",
+      "max",
+      "label",
+      "size"
+    ]
+  },
+  "TrendIndicator": {
+    "id": "TrendIndicator",
+    "displayName": "Trend Indicator",
+    "status": "implemented",
+    "category": "chart",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Show compact up, down, or flat directional change.",
+    "source": "packages/ui/src/charts.tsx",
+    "recipes": [
+      "dashboard",
+      "report"
+    ],
+    "importantProps": [
+      "direction",
+      "value",
+      "label"
+    ]
+  },
+  "Sparkline": {
+    "id": "Sparkline",
+    "displayName": "Sparkline",
+    "status": "implemented",
+    "category": "chart",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Render a compact inline SVG trend signal.",
+    "source": "packages/ui/src/charts.tsx",
+    "recipes": [
+      "dashboard",
+      "report"
+    ],
+    "importantProps": [
+      "values",
+      "label"
+    ]
+  },
+  "LineChart": {
+    "id": "LineChart",
+    "displayName": "Line Chart",
+    "status": "implemented",
+    "category": "chart",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Render one or more ordered SVG data series with labels, legend, and token chart palette.",
+    "source": "packages/ui/src/charts.tsx",
+    "recipes": [
+      "dashboard",
+      "report"
+    ],
+    "importantProps": [
+      "labels",
+      "series",
+      "title",
+      "valueFormatter",
+      "height"
+    ]
+  },
+  "BarChart": {
+    "id": "BarChart",
+    "displayName": "Bar Chart",
+    "status": "implemented",
+    "category": "chart",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Render comparable categorical magnitudes as a token-colored SVG bar chart.",
+    "source": "packages/ui/src/charts.tsx",
+    "recipes": [
+      "dashboard",
+      "report"
+    ],
+    "importantProps": [
+      "data",
+      "title",
+      "valueFormatter",
+      "height"
+    ]
+  },
+  "DonutChart": {
+    "id": "DonutChart",
+    "displayName": "Donut Chart",
+    "status": "implemented",
+    "category": "chart",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Render a small whole-to-part distribution with token-based segments and legend.",
+    "source": "packages/ui/src/charts.tsx",
+    "recipes": [
+      "dashboard",
+      "report"
+    ],
+    "importantProps": [
+      "segments",
+      "centerLabel",
+      "title",
+      "valueFormatter"
+    ]
+  },
+  "AspectRatio": {
+    "id": "AspectRatio",
+    "displayName": "Aspect Ratio",
+    "status": "implemented",
+    "category": "media",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Preserve an explicit media ratio without page-local positioning hacks.",
+    "source": "packages/ui/src/media.tsx",
+    "recipes": [
+      "catalog",
+      "product-detail",
+      "marketing-home"
+    ],
+    "importantProps": [
+      "ratio",
+      "children"
+    ]
+  },
+  "MediaFrame": {
+    "id": "MediaFrame",
+    "displayName": "Media Frame",
+    "status": "implemented",
+    "category": "media",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Contain visual media in a semantic ratio and surface frame.",
+    "source": "packages/ui/src/media.tsx",
+    "recipes": [
+      "catalog",
+      "product-detail",
+      "content-detail"
+    ],
+    "importantProps": [
+      "ratio",
+      "tone",
+      "label",
+      "children"
+    ]
+  },
+  "Image": {
+    "id": "Image",
+    "displayName": "Image",
+    "status": "implemented",
+    "category": "media",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Render native imagery with an honest local fallback when a source fails.",
+    "source": "packages/ui/src/media.tsx",
+    "recipes": [
+      "catalog",
+      "content-detail"
+    ],
+    "importantProps": [
+      "src",
+      "alt",
+      "fallbackIcon",
+      "fallbackLabel"
+    ]
+  },
+  "ApprovalPanel": {
+    "id": "ApprovalPanel",
+    "displayName": "Approval Panel",
+    "status": "implemented",
+    "category": "pattern",
+    "level": "pattern",
+    "maturity": "implemented",
+    "purpose": "Frame a neutral decision checkpoint with context, metadata, and actions.",
+    "source": "packages/ui/src/blocks.tsx",
+    "recipes": [
+      "approval-queue",
+      "entity-detail"
+    ],
+    "importantProps": [
+      "title",
+      "description",
+      "metadata",
+      "actions",
+      "tone"
+    ]
+  },
+  "ActionFooter": {
+    "id": "ActionFooter",
+    "displayName": "Action Footer",
+    "status": "implemented",
+    "category": "pattern",
+    "level": "pattern",
+    "maturity": "implemented",
+    "purpose": "Create a clear primary and secondary action boundary at the end of a task.",
+    "source": "packages/ui/src/blocks.tsx",
+    "recipes": [
+      "entity-form",
+      "checkout",
+      "auth",
+      "entity-detail"
+    ],
+    "importantProps": [
+      "primaryAction",
+      "secondaryActions",
+      "summary"
+    ]
+  },
+  "CardTitle": {
+    "id": "CardTitle",
+    "displayName": "Card Title",
+    "status": "implemented",
+    "category": "surface",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Render the semantic heading inside a Card anatomy.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "all"
+    ],
+    "importantProps": [
+      "children",
+      "as"
+    ]
+  },
+  "CardDescription": {
+    "id": "CardDescription",
+    "displayName": "Card Description",
+    "status": "implemented",
+    "category": "surface",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Render supporting copy inside a Card header without creating a local muted-text style.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "all"
+    ],
+    "importantProps": [
+      "children",
+      "as"
+    ]
+  },
+  "FieldDescription": {
+    "id": "FieldDescription",
+    "displayName": "Field Description",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Attach concise helper text to a field using the shared semantic description treatment.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "entity-form",
+      "settings",
+      "auth"
+    ],
+    "importantProps": [
+      "id",
+      "children"
+    ]
+  },
+  "FieldError": {
+    "id": "FieldError",
+    "displayName": "Field Error",
+    "status": "implemented",
+    "category": "form",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Announce an actionable field validation error with the shared error treatment.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "entity-form",
+      "settings",
+      "auth"
+    ],
+    "importantProps": [
+      "id",
+      "children"
+    ]
+  },
+  "TabPanel": {
+    "id": "TabPanel",
+    "displayName": "Tab Panel",
+    "status": "implemented",
+    "category": "navigation",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Provide a semantic tabpanel for custom Tab compositions.",
+    "source": "packages/ui/src/navigation.tsx",
+    "recipes": [
+      "entity-detail",
+      "settings",
+      "product-detail"
+    ],
+    "importantProps": [
+      "id",
+      "aria-labelledby",
+      "children"
+    ]
+  },
+  "CommandPalette": {
+    "id": "CommandPalette",
+    "displayName": "Command Palette",
+    "status": "implemented",
+    "category": "navigation",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Expose CommandMenu under the familiar command-palette alias; it is not a second implementation.",
+    "source": "packages/ui/src/navigation.tsx",
+    "aliasOf": "CommandMenu",
+    "recipes": [
+      "dashboard",
+      "entity-list",
+      "settings"
+    ],
+    "importantProps": [
+      "open",
+      "onOpenChange",
+      "commands",
+      "shortcut"
+    ]
+  },
+  "DescriptionList": {
+    "id": "DescriptionList",
+    "displayName": "Description List",
+    "status": "implemented",
+    "category": "data",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Expose KeyValueList under the conventional description-list alias; it remains one implementation.",
+    "source": "packages/ui/src/data-display.tsx",
+    "aliasOf": "KeyValueList",
+    "recipes": [
+      "entity-detail",
+      "product-detail",
+      "content-detail"
+    ],
+    "importantProps": [
+      "items"
+    ]
+  },
+  "Timeline": {
+    "id": "Timeline",
+    "displayName": "Timeline",
+    "status": "implemented",
+    "category": "data",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Expose ActivityFeed under the conventional timeline alias; it remains one ordered-event implementation.",
+    "source": "packages/ui/src/data-display.tsx",
+    "aliasOf": "ActivityFeed",
+    "recipes": [
+      "entity-detail",
+      "approval-queue",
+      "content-detail"
+    ],
+    "importantProps": [
+      "items"
+    ]
+  },
+  "ChartLegend": {
+    "id": "ChartLegend",
+    "displayName": "Chart Legend",
+    "status": "implemented",
+    "category": "chart",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Render the shared labeled key for a token-colored SVG chart.",
+    "source": "packages/ui/src/charts.tsx",
+    "recipes": [
+      "dashboard",
+      "report"
+    ],
+    "importantProps": [
+      "items"
+    ]
+  },
+  "QuantityControl": {
+    "id": "QuantityControl",
+    "displayName": "Quantity Control",
+    "status": "implemented",
+    "category": "commerce",
+    "level": "component",
+    "maturity": "polished",
+    "purpose": "Adjust a bounded numeric quantity with a compact, accessible control.",
+    "source": "packages/ui/src/commerce.tsx",
+    "recipes": [
+      "catalog",
+      "cart",
+      "checkout"
+    ],
+    "importantProps": [
+      "value",
+      "onValueChange",
+      "min",
+      "max",
+      "step",
+      "label",
+      "allowInput"
+    ]
+  },
+  "CartTrigger": {
+    "id": "CartTrigger",
+    "displayName": "Cart Trigger",
+    "status": "implemented",
+    "category": "commerce",
+    "level": "component",
+    "maturity": "polished",
+    "purpose": "Expose a shared cart entry action while leaving cart state and navigation to the recipe.",
+    "source": "packages/ui/src/commerce.tsx",
+    "recipes": [
+      "catalog",
+      "cart"
+    ],
+    "importantProps": [
+      "count",
+      "label",
+      "intent",
+      "size",
+      "onClick"
+    ]
+  },
+  "CartLineItem": {
+    "id": "CartLineItem",
+    "displayName": "Cart Line Item",
+    "status": "implemented",
+    "category": "commerce",
+    "level": "component",
+    "maturity": "polished",
+    "purpose": "Present one cart item with content, price, bounded quantity, and an optional remove action.",
+    "source": "packages/ui/src/commerce.tsx",
+    "recipes": [
+      "cart",
+      "checkout"
+    ],
+    "importantProps": [
+      "title",
+      "media",
+      "meta",
+      "price",
+      "quantity",
+      "onQuantityChange",
+      "onRemove"
+    ]
+  },
+  "CartPanel": {
+    "id": "CartPanel",
+    "displayName": "Cart Panel",
+    "status": "implemented",
+    "category": "pattern",
+    "level": "pattern",
+    "maturity": "polished",
+    "purpose": "Compose cart lines, empty state, summary, and actions into one shared commerce surface.",
+    "source": "packages/ui/src/commerce.tsx",
+    "recipes": [
+      "cart",
+      "catalog",
+      "checkout"
+    ],
+    "importantProps": [
+      "title",
+      "itemCount",
+      "emptyState",
+      "summary",
+      "actions",
+      "children"
+    ]
+  },
+  "OrderSummary": {
+    "id": "OrderSummary",
+    "displayName": "Order Summary",
+    "status": "implemented",
+    "category": "pattern",
+    "level": "pattern",
+    "maturity": "polished",
+    "purpose": "Present application-calculated order rows and a total without owning payment logic.",
+    "source": "packages/ui/src/commerce.tsx",
+    "recipes": [
+      "cart",
+      "checkout"
+    ],
+    "importantProps": [
+      "rows",
+      "total",
+      "totalLabel"
+    ]
+  },
+  "Carousel": {
+    "id": "Carousel",
+    "displayName": "Carousel",
+    "status": "implemented",
+    "category": "navigation",
+    "level": "component",
+    "maturity": "polished",
+    "purpose": "Present an ordered set of related content in a bounded native-scroll rail with keyboard and indicator controls.",
+    "source": "packages/ui/src/blocks.tsx",
+    "recipes": [
+      "marketing-home",
+      "catalog",
+      "content-list"
+    ],
+    "importantProps": [
+      "children",
+      "label",
+      "slideWidth",
+      "showIndicators"
+    ]
+  },
+  "PublicShell": {
+    "id": "PublicShell",
+    "displayName": "Public Shell",
+    "status": "implemented",
+    "category": "pattern",
+    "level": "pattern",
+    "maturity": "implemented",
+    "purpose": "Compose the shared app frame and top navigation for public, content, and marketing references.",
+    "source": "packages/ui/src/blocks.tsx",
+    "recipes": [
+      "marketing-home",
+      "catalog",
+      "content-list"
+    ],
+    "importantProps": [
+      "brand",
+      "navigation",
+      "actions",
+      "footer",
+      "children"
+    ]
+  },
+  "ChartPanel": {
+    "id": "ChartPanel",
+    "displayName": "Chart Panel",
+    "status": "implemented",
+    "category": "chart",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Bound a canonical chart with a readable heading, description, and token-driven surface.",
+    "source": "packages/ui/src/blocks.tsx",
+    "recipes": [
+      "dashboard",
+      "report",
+      "marketing-home"
+    ],
+    "importantProps": [
+      "title",
+      "description",
+      "chart"
+    ]
+  }
+}

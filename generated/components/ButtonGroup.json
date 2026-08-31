@@ -1,0 +1,1 @@
+{"id":"ButtonGroup","displayName":"Button Group","status":"implemented","category":"action","purpose":"Visually bind closely related peer actions without inventing new button variants.","source":"packages/ui/src/actions.tsx","importantProps":["label","orientation","children"]}

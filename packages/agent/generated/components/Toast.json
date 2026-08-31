@@ -1,0 +1,1 @@
+{"id":"Toast","displayName":"Toast","status":"implemented","category":"feedback","purpose":"Render one transient live notification with optional action and dismissal.","source":"packages/ui/src/feedback.tsx","importantProps":["toast","onDismiss"]}

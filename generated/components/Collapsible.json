@@ -1,0 +1,1 @@
+{"id":"Collapsible","displayName":"Collapsible","status":"implemented","category":"navigation","purpose":"Show or hide one bounded content region with button and region semantics.","source":"packages/ui/src/navigation.tsx","importantProps":["title","open","defaultOpen","onOpenChange"]}

@@ -1,0 +1,8 @@
+{
+  "RadioGroup": "CheckboxGroup",
+  "TimeInput": "NativeTimeInput",
+  "ActionMenu": "DropdownMenu",
+  "CommandPalette": "CommandMenu",
+  "DescriptionList": "KeyValueList",
+  "Timeline": "ActivityFeed"
+}

@@ -1,0 +1,1 @@
+{"id":"NavItem","displayName":"Nav Item","status":"implemented","category":"navigation","purpose":"Render one semantic navigation button with an icon and active state.","source":"packages/ui/src/components.tsx","importantProps":["label","icon","active","onClick"]}

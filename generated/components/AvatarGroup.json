@@ -1,0 +1,1 @@
+{"id":"AvatarGroup","displayName":"Avatar Group","status":"implemented","category":"data","purpose":"Show a bounded overlapping group of Avatar contracts.","source":"packages/ui/src/data-display.tsx","importantProps":["avatars","max"]}

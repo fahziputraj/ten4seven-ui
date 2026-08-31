@@ -1,0 +1,1 @@
+{"id":"StatusChip","displayName":"Status Chip","status":"implemented","category":"data","purpose":"Make compact state semantics explicit with an optional state icon.","source":"packages/ui/src/data-display.tsx","importantProps":["tone","icon","children"]}

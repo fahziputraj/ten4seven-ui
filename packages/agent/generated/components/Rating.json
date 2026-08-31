@@ -1,0 +1,1 @@
+{"id":"Rating","displayName":"Rating","status":"implemented","category":"commerce","purpose":"Render a compact read-only rating signal and optional count.","source":"packages/ui/src/commerce.tsx","importantProps":["value","count","label"]}

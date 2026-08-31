@@ -1,0 +1,1 @@
+{"id":"master-detail","displayName":"Master–Detail","purpose":"Keep a record list visible while inspecting or updating one selected record.","profiles":["enterprise","dashboard"],"components":["AppShell","Sidebar","PageHeader","DataTable","DetailDrawer","RecordSummary"],"optional":["FilterToolbar","Pagination","KeyValueList"],"source":"legacy-catalog-adapter"}

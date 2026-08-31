@@ -1,0 +1,1 @@
+{"id":"DateRangePicker","displayName":"Date Range Picker","status":"implemented","category":"date-time","purpose":"Collect a stable start and end date with one range-aware calendar.","source":"packages/ui/src/date-time.tsx","importantProps":["value","onValueChange","min","max","label"]}

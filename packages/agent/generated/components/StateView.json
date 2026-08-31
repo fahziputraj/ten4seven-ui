@@ -1,0 +1,1 @@
+{"id":"StateView","displayName":"State View","status":"implemented","category":"feedback","purpose":"Render empty, error, permission, or unavailable state with an optional recovery action.","source":"packages/ui/src/feedback.tsx","importantProps":["state","title","description","action","icon"]}

@@ -1,0 +1,69 @@
+import type { RecipeContract } from "./types.ts";
+
+/** Typed Authentication recipe used by the bounded Brand Expression proof. */
+export const AUTHENTICATION_CONTRACT: RecipeContract = {
+  id: "auth",
+  displayName: "Authentication",
+  purpose: "Sign in, register, recover access, or verify identity.",
+  family: "identity",
+  profiles: ["enterprise", "commerce", "content"],
+  components: ["Surface", "Input", "PasswordInput", "ActionFooter"],
+  optional: ["OtpInput", "Alert", "Checkbox"],
+  shell: {
+    preferred: "PublicShell",
+    alternatives: ["AppShell"],
+    selectionRule:
+      "Use PublicShell for an entry route; use AppShell only when authentication is embedded in a persistent workspace.",
+  },
+  intent: {
+    visibility: "public",
+    cardinality: "single",
+    operations: ["create", "edit"],
+    density: "balanced",
+    navigation: "route",
+    workflow: "edit",
+    comparison: "none",
+    selection: "none",
+    detail: "none",
+  },
+  required: ["Surface", "Input", "PasswordInput", "ActionFooter"],
+  forbid: [
+    "local authentication form primitive",
+    "parallel authentication shell",
+    "page-specific semantic color tokens",
+    "agent-owned brand direction decisions",
+  ],
+  states: ["loading", "ready", "api-error"],
+  responsive: {
+    desktop: "inline",
+    tablet: "stacked",
+    mobile: "stacked",
+  },
+  expression: {
+    kind: "brand-profile",
+    profiles: ["neutral-product", "aapm-academy"],
+    consumerSlots: [
+      "brand-mark",
+      "media",
+      "brand-copy",
+      "authentication-handlers",
+      "legal-links",
+    ],
+    responsive: {
+      desktop: "split",
+      tablet: "rebalanced",
+      mobile: "stacked",
+    },
+  },
+  rationale: {
+    Surface:
+      "Authentication needs one broad semantic region that can host the brand expression and form without forking controls.",
+    Input:
+      "The route collects a labelled identifier while preserving the shared input contract.",
+    PasswordInput:
+      "Credential entry uses the canonical visibility toggle and native password semantics.",
+    ActionFooter:
+      "Primary submit and recovery actions remain grouped at the end of the task.",
+  },
+  references: ["Authentication recipe", "Brand Expression Plane"],
+};

@@ -1,0 +1,1 @@
+{"id":"BarChart","displayName":"Bar Chart","status":"implemented","category":"chart","purpose":"Render comparable categorical magnitudes as a token-colored SVG bar chart.","source":"packages/ui/src/charts.tsx","importantProps":["data","title","valueFormatter","height"]}

@@ -1,0 +1,1 @@
+{"id":"Checkbox","displayName":"Checkbox","status":"implemented","category":"form","purpose":"Choose a boolean or one item from a multi-choice list with indeterminate support.","source":"packages/ui/src/components.tsx","importantProps":["checked","indeterminate","label","description","onChange"]}

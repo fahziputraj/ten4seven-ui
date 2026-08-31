@@ -1,0 +1,1 @@
+{"id":"FormSection","displayName":"Form Section","status":"implemented","category":"form","purpose":"Group related fields into a neutral form section with an optional action.","source":"packages/ui/src/forms.tsx","importantProps":["title","description","action","children"]}

@@ -1,0 +1,1 @@
+{"id":"AppliedFilters","displayName":"Applied Filters","status":"implemented","category":"filter","purpose":"Render the current active filters with remove and reset actions.","source":"packages/ui/src/blocks.tsx","importantProps":["filters","onRemove","onClear","clearLabel"]}

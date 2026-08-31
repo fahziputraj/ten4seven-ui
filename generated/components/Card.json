@@ -1,0 +1,1 @@
+{"id":"Card","displayName":"Card","status":"implemented","category":"surface","purpose":"Contain one visual record or concise grouped summary with semantic surface tones.","source":"packages/ui/src/components.tsx","importantProps":["tone","children"]}

@@ -1,0 +1,1 @@
+{"id":"MediaFrame","displayName":"Media Frame","status":"implemented","category":"media","purpose":"Contain visual media in a semantic ratio and surface frame.","source":"packages/ui/src/media.tsx","importantProps":["ratio","tone","label","children"]}

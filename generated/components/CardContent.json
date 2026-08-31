@@ -1,0 +1,1 @@
+{"id":"CardContent","displayName":"Card Content","status":"implemented","category":"surface","purpose":"Provide the content region of a Card.","source":"packages/ui/src/components.tsx","importantProps":["children"]}

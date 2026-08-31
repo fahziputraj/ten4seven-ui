@@ -1,0 +1,1 @@
+{"id":"Toaster","displayName":"Toaster","status":"implemented","category":"feedback","purpose":"Render transient toast notifications from ToastProvider or controlled data.","source":"packages/ui/src/feedback.tsx","importantProps":["toasts","onDismiss"]}

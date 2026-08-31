@@ -1,0 +1,1 @@
+{"id":"LineChart","displayName":"Line Chart","status":"implemented","category":"chart","purpose":"Render one or more ordered SVG data series with labels, legend, and token chart palette.","source":"packages/ui/src/charts.tsx","importantProps":["labels","series","title","valueFormatter","height"]}

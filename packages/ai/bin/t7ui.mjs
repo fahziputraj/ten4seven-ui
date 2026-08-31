@@ -7,12 +7,50 @@ import process from "node:process";
 const repoRoot = path.resolve(import.meta.dirname, "../../..");
 const readJson = (relativePath) =>
   JSON.parse(fs.readFileSync(path.join(repoRoot, relativePath), "utf8"));
+const readJsonIfPresent = (relativePath, fallbackPath) => {
+  const target = path.join(repoRoot, relativePath);
+  return fs.existsSync(target)
+    ? readJson(relativePath)
+    : readJson(fallbackPath);
+};
 
-const recipes = readJson("packages/ai/catalog/recipes.json");
-const components = readJson("packages/ai/catalog/components.json");
-const blocks = readJson("packages/ai/catalog/blocks.json");
-const icons = readJson("packages/ai/catalog/icons.json");
+// Recipe discovery reads generated recipe shards. Full catalogs remain a
+// deliberate fallback for compatibility and the explicit `show` command.
+const selectiveIndex = readJsonIfPresent(
+  "generated/index.json",
+  "generated/agent-index.json",
+);
+const recipes = selectiveIndex.recipes
+  ? Object.fromEntries(
+      Object.entries(selectiveIndex.recipes).map(([name, reference]) => [
+        name,
+        readJson(`generated/${reference.path}`),
+      ]),
+    )
+  : readJson("packages/ai/catalog/recipes.json");
 const packageInfo = readJson("package.json");
+const {
+  composeBrandExpression,
+  composeEntityDetail,
+  composeEntityList,
+  inspectBrandExpression,
+  inspectEntityDetail,
+  inspectEntityList,
+  resolveBrandExpression,
+  resolveEntityDetailIntent,
+} = await import("../../agent/src/node.mjs");
+
+function readFullComponents() {
+  return readJson("packages/ai/catalog/components.json");
+}
+
+function readBlocks() {
+  return readJson("packages/ai/catalog/blocks.json");
+}
+
+function readIcons() {
+  return readJson("packages/ai/catalog/icons.json");
+}
 
 function printInfo() {
   console.log(`ten4seven UI ${packageInfo.version}`);
@@ -89,6 +127,7 @@ function findRecipe(query) {
 
 function findIcons(query) {
   const normalized = query.toLowerCase();
+  const icons = readIcons();
   const matches = Object.entries(icons)
     .filter(([name, icon]) => flatten({ name, ...icon }).includes(normalized))
     .map(([name]) => name);
@@ -194,6 +233,7 @@ function findIcons(query) {
 function printFind(query) {
   const recipeName = findRecipe(query);
   const recipe = recipes[recipeName];
+  const blocks = readBlocks();
   console.log(`Query: ${query}`);
   console.log(`Recipe: ${recipeName ?? "inspect manually"}`);
   if (recipe) {
@@ -227,7 +267,8 @@ function printFind(query) {
 }
 
 function printComponent(name) {
-  const key = Object.keys(components).find(
+  const fullComponents = readFullComponents();
+  const key = Object.keys(fullComponents).find(
     (candidate) => candidate.toLowerCase() === name.toLowerCase(),
   );
   if (!key) {
@@ -235,7 +276,126 @@ function printComponent(name) {
     process.exitCode = 1;
     return;
   }
-  console.log(JSON.stringify({ name: key, ...components[key] }, null, 2));
+  console.log(JSON.stringify({ name: key, ...fullComponents[key] }, null, 2));
+}
+
+function printRecipeInspect(name) {
+  if (name === "entity-list") {
+    console.log(JSON.stringify(inspectEntityList(), null, 2));
+    return;
+  }
+  if (name === "entity-detail") {
+    console.log(JSON.stringify(inspectEntityDetail(), null, 2));
+    return;
+  }
+  {
+    console.error(
+      `Only migrated recipe contracts are inspectable in this phase: ${name || "missing name"}`,
+    );
+    process.exitCode = 1;
+  }
+}
+
+function parseComposeInput(args) {
+  const input = {};
+  const operations = args.find((arg) => arg.startsWith("--operations="));
+  if (operations)
+    input.operations = operations
+      .slice("--operations=".length)
+      .split(",")
+      .map((value) => value.trim())
+      .filter(Boolean);
+  const mobile = args.find((arg) => arg.startsWith("--mobile="));
+  if (mobile) input.mobileMode = mobile.slice("--mobile=".length);
+  const selection = args.find((arg) => arg.startsWith("--selection="));
+  if (selection) input.selection = selection.slice("--selection=".length);
+  const navigation = args.find((arg) => arg.startsWith("--navigation="));
+  if (navigation) input.navigation = navigation.slice("--navigation=".length);
+  const detail = args.find((arg) => arg.startsWith("--detail="));
+  if (detail) input.detail = detail.slice("--detail=".length);
+  if (args.includes("--no-sidebar")) input.persistentNavigation = false;
+  if (args.includes("--no-metrics")) input.showMetrics = false;
+  if (args.includes("--no-filters")) input.queryControls = false;
+  if (args.includes("--no-pagination")) input.paginated = false;
+  if (args.includes("--no-bulk-actions")) input.bulkActions = false;
+  if (args.includes("--no-detail")) input.contextualDetail = false;
+  return input;
+}
+
+function printCompose(name, args) {
+  if (name === "entity-detail") {
+    console.log(
+      JSON.stringify(composeEntityDetail(parseDetailInput(args)), null, 2),
+    );
+    return;
+  }
+  if (name !== "entity-list") {
+    console.error(
+      `Only migrated recipe contracts are composable in this phase: ${name || "missing name"}`,
+    );
+    process.exitCode = 1;
+    return;
+  }
+  console.log(
+    JSON.stringify(composeEntityList(parseComposeInput(args)), null, 2),
+  );
+}
+
+function parseDetailInput(args) {
+  const input = {};
+  const operations = args.find((arg) => arg.startsWith("--operations="));
+  if (operations)
+    input.operations = operations
+      .slice("--operations=".length)
+      .split(",")
+      .map((value) => value.trim())
+      .filter(Boolean);
+  const mobile = args.find((arg) => arg.startsWith("--mobile="));
+  if (mobile) input.mobileMode = mobile.slice("--mobile=".length);
+  const navigation = args.find((arg) => arg.startsWith("--navigation="));
+  if (navigation) input.navigation = navigation.slice("--navigation=".length);
+  if (args.includes("--workspace")) input.persistentNavigation = true;
+  if (args.includes("--read-only")) input.readOnly = true;
+  if (args.includes("--no-status")) input.showStatus = false;
+  if (args.includes("--no-activity")) input.activity = "none";
+  if (args.includes("--minimal-activity")) input.activity = "minimal";
+  if (args.includes("--quick-actions")) input.quickActions = true;
+  if (args.includes("--no-actions")) input.actionFooter = false;
+  if (args.includes("--related-records")) input.relatedRecords = true;
+  if (args.includes("--alert")) input.showAlert = true;
+  if (args.includes("--confirm")) input.confirmActions = true;
+  return input;
+}
+
+function parseBrandInput(args) {
+  const input = {};
+  const profile = args.find(
+    (arg) => arg.startsWith("--profile=") || arg.startsWith("--brand-profile="),
+  );
+  if (profile) {
+    const prefix = profile.startsWith("--profile=")
+      ? "--profile="
+      : "--brand-profile=";
+    input.brandProfile = profile.slice(prefix.length);
+  }
+  return input;
+}
+
+function printBrand(command, name, args) {
+  if (name !== "auth") {
+    console.error(
+      `Only the canonical Authentication recipe has a Brand Expression proof in Slice B: ${name || "missing name"}`,
+    );
+    process.exitCode = 1;
+    return;
+  }
+
+  const input = parseBrandInput(args);
+  const result =
+    command === "resolve"
+      ? resolveBrandExpression(input)
+      : composeBrandExpression(input);
+  console.log(JSON.stringify(result, null, 2));
 }
 
 function initAgents() {
@@ -269,13 +429,40 @@ switch (command) {
   case "show":
     printComponent(args[0] ?? "");
     break;
+  case "recipe":
+    if (args[0] === "inspect") printRecipeInspect(args[1] ?? "");
+    else {
+      console.error("Usage: t7ui recipe inspect entity-list");
+      process.exitCode = 1;
+    }
+    break;
+  case "compose":
+    printCompose(args[0] ?? "", args.slice(1));
+    break;
+  case "brand":
+    if (args[0] === "inspect") {
+      if (args[1] !== "auth") {
+        console.error("Usage: t7ui brand inspect auth");
+        process.exitCode = 1;
+      } else {
+        console.log(JSON.stringify(inspectBrandExpression(), null, 2));
+      }
+    } else if (args[0] === "resolve" || args[0] === "compose") {
+      printBrand(args[0], args[1] ?? "", args.slice(2));
+    } else {
+      console.error(
+        "Usage: t7ui brand resolve auth [--profile=neutral-product|aapm-academy] | t7ui brand compose auth [--profile=neutral-product|aapm-academy]",
+      );
+      process.exitCode = 1;
+    }
+    break;
   case "agents":
     if (args[0] === "init") initAgents();
     else console.error("Usage: t7ui agents init");
     break;
   default:
     console.log(
-      "Usage: t7ui info | t7ui find <query> | t7ui show <Component> | t7ui agents init",
+      "Usage: t7ui info | t7ui find <query> | t7ui show <Component> | t7ui recipe inspect entity-list | t7ui compose entity-list [options] | t7ui brand resolve auth [--profile=neutral-product|aapm-academy] | t7ui brand compose auth [--profile=neutral-product|aapm-academy] | t7ui agents init",
     );
     process.exitCode = command ? 1 : 0;
 }

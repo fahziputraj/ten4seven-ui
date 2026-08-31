@@ -1,0 +1,1 @@
+{"id":"Pagination","displayName":"Pagination","status":"implemented","category":"navigation","purpose":"Move through a bounded set of results with clear result range feedback.","source":"packages/ui/src/components.tsx","importantProps":["page","pageSize","total","onPageChange","label"]}

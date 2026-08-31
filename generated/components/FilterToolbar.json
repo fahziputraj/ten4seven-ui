@@ -1,0 +1,1 @@
+{"id":"FilterToolbar","displayName":"Filter Toolbar","status":"implemented","category":"filter","purpose":"Keep search, filters, sort, and result actions in one labelled region.","source":"packages/ui/src/components.tsx","importantProps":["title","summary","children","actions"]}

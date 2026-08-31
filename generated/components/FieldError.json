@@ -1,0 +1,1 @@
+{"id":"FieldError","displayName":"Field Error","status":"implemented","category":"form","purpose":"Announce an actionable field validation error with the shared error treatment.","source":"packages/ui/src/forms.tsx","importantProps":["id","children"]}

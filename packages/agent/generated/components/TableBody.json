@@ -1,0 +1,1 @@
+{"id":"TableBody","displayName":"Table Body","status":"implemented","category":"table","purpose":"Provide the native table body section for lightweight semantic rows.","source":"packages/ui/src/data-display.tsx","importantProps":["children","className"]}

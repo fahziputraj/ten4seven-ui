@@ -1,0 +1,1 @@
+{"id":"ActionFooter","displayName":"Action Footer","status":"implemented","category":"pattern","purpose":"Create a clear primary and secondary action boundary at the end of a task.","source":"packages/ui/src/blocks.tsx","importantProps":["primaryAction","secondaryActions","summary"]}

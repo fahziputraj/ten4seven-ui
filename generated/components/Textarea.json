@@ -1,0 +1,1 @@
+{"id":"Textarea","displayName":"Textarea","status":"implemented","category":"form","purpose":"Collect labelled multiline plain text.","source":"packages/ui/src/forms.tsx","importantProps":["label","hint","error","rows","value","onChange"]}

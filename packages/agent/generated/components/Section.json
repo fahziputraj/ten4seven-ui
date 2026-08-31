@@ -1,0 +1,1 @@
+{"id":"Section","displayName":"Section","status":"implemented","category":"layout","purpose":"Frame a route section with optional title, description, and actions.","source":"packages/ui/src/layout.tsx","importantProps":["title","description","actions","children"]}

@@ -1,0 +1,1 @@
+{"id":"TopNavigation","displayName":"Top Navigation","status":"implemented","category":"navigation","purpose":"Render compact horizontal navigation for public or commerce shells.","source":"packages/ui/src/navigation.tsx","importantProps":["items","leading","trailing","label"]}

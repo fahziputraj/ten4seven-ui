@@ -1,0 +1,1 @@
+{"id":"Slider","displayName":"Slider","status":"implemented","category":"form","purpose":"Set one bounded numeric value using a native range input.","source":"packages/ui/src/forms.tsx","importantProps":["min","max","step","value","label"]}

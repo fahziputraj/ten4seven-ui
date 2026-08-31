@@ -1,0 +1,1 @@
+{"id":"TabPanel","displayName":"Tab Panel","status":"implemented","category":"navigation","purpose":"Provide a semantic tabpanel for custom Tab compositions.","source":"packages/ui/src/navigation.tsx","importantProps":["id","aria-labelledby","children"]}

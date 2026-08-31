@@ -1,0 +1,1 @@
+{"id":"MilestoneTracker","displayName":"Milestone Tracker","status":"implemented","category":"data","purpose":"Show a bounded operational journey with selectable circular progress nodes and contextual detail.","source":"packages/ui/src/data-display.tsx","importantProps":["items","percentage","status","selectedId","onSelectedIdChange"]}

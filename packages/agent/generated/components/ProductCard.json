@@ -1,0 +1,1 @@
+{"id":"ProductCard","displayName":"Product Card","status":"implemented","category":"commerce","purpose":"Present one visual product with media, metadata, price, and bounded actions.","source":"packages/ui/src/components.tsx","importantProps":["title","eyebrow","media","meta","price","details","actions"]}

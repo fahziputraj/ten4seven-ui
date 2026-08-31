@@ -1,0 +1,1 @@
+{"id":"Drawer","displayName":"Drawer","status":"implemented","category":"overlay","purpose":"Present contextual content in a reusable modal side surface while retaining the parent route context.","source":"packages/ui/src/components.tsx","importantProps":["open","title","description","onClose","side","initialFocus"]}

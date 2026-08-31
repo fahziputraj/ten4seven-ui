@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "0.1",
+  "rules": [
+    {
+      "scope": "canonical-contracts",
+      "owner": "ten4seven",
+      "canonicalPaths": [
+        "packages/contracts/src",
+        "packages/tokens/src",
+        "packages/ui/src",
+        "packages/icons/src"
+      ],
+      "forbiddenPatterns": [
+        "local basic Button/Input/Card/Table/Select primitive",
+        "parallel theme provider",
+        "raw external icon import"
+      ],
+      "note": "The system owns interaction contracts, semantic tokens, icon names, and recipe decisions."
+    },
+    {
+      "scope": "domain-behavior",
+      "owner": "consumer",
+      "canonicalPaths": [
+        "consumer-owned API clients",
+        "consumer-owned permissions",
+        "consumer-owned persistence and handlers"
+      ],
+      "note": "Consumers own domain data and behavior while composing canonical contracts."
+    },
+    {
+      "scope": "legacy-catalog-adapter",
+      "owner": "ten4seven",
+      "canonicalPaths": [
+        "packages/ai/catalog/components.json",
+        "packages/ai/catalog/recipes.json"
+      ],
+      "note": "Full human descriptions remain a compatibility surface until each recipe is migrated to typed contracts."
+    }
+  ]
+}

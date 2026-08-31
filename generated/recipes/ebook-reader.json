@@ -1,0 +1,1 @@
+{"id":"ebook-reader","displayName":"Ebook Reader","purpose":"Read an ebook while preserving progress and reader controls.","profiles":["content","commerce"],"components":["TopNavigation","Progress","Typography","ActionBar"],"optional":["Modal","Slider","Tabs"],"source":"legacy-catalog-adapter"}

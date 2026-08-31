@@ -1,0 +1,690 @@
+{
+  "dashboard": {
+    "id": "dashboard",
+    "displayName": "Dashboard",
+    "purpose": "Monitor a small, truthful set of operational signals and decide the next action.",
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
+    "components": [
+      "PageHeader",
+      "KPICluster",
+      "MetricCard",
+      "LineChart",
+      "DataTable"
+    ],
+    "optional": [
+      "FilterToolbar",
+      "BarChart",
+      "ActionFooter"
+    ],
+    "source": "legacy-catalog-adapter"
+  },
+  "entity-list": {
+    "id": "entity-list",
+    "displayName": "Entity List",
+    "purpose": "Resolve a comparable collection of records into a searchable, filterable, selectable workspace with contextual detail.",
+    "family": "operational-collection",
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
+    "components": [
+      "AppShell",
+      "Sidebar",
+      "PageHeader",
+      "KPICluster",
+      "FilterToolbar",
+      "DataTable",
+      "Pagination",
+      "BulkActionBar",
+      "DetailDrawer"
+    ],
+    "optional": [
+      "AppliedFilters",
+      "StatusChip",
+      "Avatar",
+      "RecordSummary",
+      "KeyValueList",
+      "ActivityFeed",
+      "MilestoneTracker",
+      "ActionMenu",
+      "FilterDrawer",
+      "AlertDialog"
+    ],
+    "shell": {
+      "preferred": "AppShell",
+      "alternatives": [
+        "PublicShell"
+      ],
+      "selectionRule": "Use AppShell when persistent workspace navigation and operational density are part of the task."
+    },
+    "references": [
+      "Operations Tracker"
+    ],
+    "source": "canonical-contract",
+    "intent": {
+      "visibility": "private",
+      "cardinality": "collection",
+      "operations": [
+        "search",
+        "filter",
+        "sort",
+        "select",
+        "open-detail",
+        "paginate",
+        "export"
+      ],
+      "density": "information-dense",
+      "navigation": "workspace",
+      "workflow": "triage",
+      "comparison": "tabular",
+      "selection": "optional",
+      "detail": "drawer"
+    },
+    "required": [
+      "AppShell",
+      "PageHeader",
+      "DataTable"
+    ],
+    "conditional": {
+      "Sidebar": "required when the consumer has persistent workspace navigation; omit for an embedded list surface.",
+      "KPICluster": "include when a small set of decision metrics frames the collection before scanning rows.",
+      "FilterToolbar": "include when search plus one or more filters, sort, or result actions are required.",
+      "Pagination": "include when the collection is server-paged or exceeds the visible row budget.",
+      "BulkActionBar": "include when selection enables one or more actions across records.",
+      "DetailDrawer": "include when a record can be inspected without losing list context."
+    },
+    "forbid": [
+      "local table primitive",
+      "parallel workspace shell",
+      "page-specific color tokens",
+      "unbounded card gallery for comparable records"
+    ],
+    "states": [
+      "loading",
+      "ready",
+      "empty",
+      "search-empty",
+      "filter-empty",
+      "permission-limited",
+      "api-error",
+      "stale",
+      "bulk-pending",
+      "bulk-partial-failure",
+      "bulk-success",
+      "detail-open"
+    ],
+    "responsive": {
+      "desktop": "table",
+      "tablet": "table-scroll",
+      "mobile": "table-scroll",
+      "navigation": "collapsible",
+      "detail": "drawer"
+    },
+    "rationale": {
+      "AppShell": "The reference intent is a persistent operational workspace, not a standalone marketing route.",
+      "PageHeader": "The collection needs an accountable title, context, and route-level actions.",
+      "DataTable": "Rows must remain comparable across stable columns and support semantic sort and selection.",
+      "FilterToolbar": "Query controls stay adjacent to the collection so the result context remains visible.",
+      "DetailDrawer": "Quick inspection preserves list position and avoids forcing every record into a new route."
+    }
+  },
+  "entity-detail": {
+    "id": "entity-detail",
+    "displayName": "Entity Detail",
+    "purpose": "Read and act on one structured record without inventing a new data grammar.",
+    "family": "record-inspection",
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
+    "components": [
+      "PageHeader",
+      "RecordSummary",
+      "KeyValueList",
+      "ActivityFeed",
+      "ActionFooter"
+    ],
+    "optional": [
+      "AppShell",
+      "Sidebar",
+      "StatusChip",
+      "ActionMenu",
+      "DataTable",
+      "Alert",
+      "Modal"
+    ],
+    "shell": {
+      "preferred": "AppShell",
+      "alternatives": [
+        "PublicShell"
+      ],
+      "selectionRule": "Use AppShell for an operational record with persistent workspace context; use PublicShell or route navigation for a read-only record outside the workspace."
+    },
+    "references": [
+      "Entity Detail representative",
+      "Operations Tracker"
+    ],
+    "source": "canonical-contract",
+    "intent": {
+      "visibility": "private",
+      "cardinality": "single",
+      "operations": [
+        "open-detail",
+        "edit"
+      ],
+      "density": "balanced",
+      "navigation": "route",
+      "workflow": "read",
+      "comparison": "none",
+      "selection": "none",
+      "detail": "route"
+    },
+    "required": [
+      "PageHeader",
+      "RecordSummary",
+      "KeyValueList"
+    ],
+    "conditional": {
+      "AppShell": "include when the record belongs to a persistent authenticated workspace; omit for an independent route or embedded detail surface.",
+      "Sidebar": "include when workspace navigation must remain available while the record is inspected.",
+      "StatusChip": "include when the record exposes a current status that changes the next decision.",
+      "ActivityFeed": "include when record history or an audit trail is part of the inspection task.",
+      "ActionMenu": "include when several contextual record actions should remain compact and close to the summary.",
+      "ActionFooter": "include when the record has a meaningful primary or secondary decision at the end of the inspection.",
+      "DataTable": "include when related records need stable cross-row comparison rather than a prose link list.",
+      "Alert": "include when a persistent record-level warning or permission message must remain visible.",
+      "Modal": "include when a short confirmation is required before a record action completes."
+    },
+    "forbid": [
+      "local record detail primitive",
+      "parallel workspace shell",
+      "page-specific semantic color tokens",
+      "unbounded property grid without a record summary"
+    ],
+    "states": [
+      "loading",
+      "ready",
+      "empty",
+      "permission-limited",
+      "api-error",
+      "stale",
+      "detail-open"
+    ],
+    "responsive": {
+      "desktop": "inline",
+      "tablet": "stacked",
+      "mobile": "stacked",
+      "navigation": "collapsible",
+      "detail": "inline"
+    },
+    "rationale": {
+      "PageHeader": "The route needs accountable context and navigation before the record is inspected.",
+      "RecordSummary": "A single record needs a scannable identity and decision context before its attributes.",
+      "KeyValueList": "Stable facts belong in the canonical description-list contract rather than ad hoc rows.",
+      "ActivityFeed": "History is conditional so read-only records do not inherit operational density without evidence.",
+      "ActionFooter": "Actions remain an explicit end boundary and are omitted when the record is strictly read-only."
+    }
+  },
+  "entity-form": {
+    "id": "entity-form",
+    "displayName": "Entity Form",
+    "purpose": "Create or edit one structured record through grouped, labelled ten4seven controls.",
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
+    "components": [
+      "PageHeader",
+      "FormSection",
+      "FormGrid",
+      "Field",
+      "Input",
+      "Select",
+      "ActionFooter"
+    ],
+    "optional": [
+      "DatePicker",
+      "TimePicker",
+      "FileUpload",
+      "Combobox",
+      "AlertDialog"
+    ],
+    "source": "legacy-catalog-adapter"
+  },
+  "master-detail": {
+    "id": "master-detail",
+    "displayName": "Master–Detail",
+    "purpose": "Keep a record list visible while inspecting or updating one selected record.",
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
+    "components": [
+      "AppShell",
+      "Sidebar",
+      "PageHeader",
+      "DataTable",
+      "DetailDrawer",
+      "RecordSummary"
+    ],
+    "optional": [
+      "FilterToolbar",
+      "Pagination",
+      "KeyValueList"
+    ],
+    "source": "legacy-catalog-adapter"
+  },
+  "approval-queue": {
+    "id": "approval-queue",
+    "displayName": "Approval Queue",
+    "purpose": "Review, approve, reject, and safely bulk-operate on pending records.",
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
+    "components": [
+      "PageHeader",
+      "FilterToolbar",
+      "DataTable",
+      "BulkActionBar",
+      "ApprovalPanel",
+      "Pagination"
+    ],
+    "optional": [
+      "Modal",
+      "KPICluster",
+      "AlertDialog"
+    ],
+    "source": "legacy-catalog-adapter"
+  },
+  "settings": {
+    "id": "settings",
+    "displayName": "Settings",
+    "purpose": "Edit application, workspace, or personal preferences.",
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
+    "components": [
+      "PageHeader",
+      "FormSection",
+      "FormGrid",
+      "Input",
+      "Select",
+      "ActionFooter"
+    ],
+    "optional": [
+      "Sidebar",
+      "Switch",
+      "Alert"
+    ],
+    "source": "legacy-catalog-adapter"
+  },
+  "report": {
+    "id": "report",
+    "displayName": "Operational Report",
+    "purpose": "Inspect a time-bounded result set and export a supported report.",
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
+    "components": [
+      "PageHeader",
+      "FilterToolbar",
+      "KPICluster",
+      "LineChart",
+      "DataTable"
+    ],
+    "optional": [
+      "BarChart",
+      "DonutChart",
+      "DateRangePicker",
+      "Pagination"
+    ],
+    "source": "legacy-catalog-adapter"
+  },
+  "catalog": {
+    "id": "catalog",
+    "displayName": "Catalog",
+    "purpose": "Browse visual products, courses, books, or media with content-first composition.",
+    "profiles": [
+      "commerce",
+      "content"
+    ],
+    "components": [
+      "PublicShell",
+      "NavigationMenu",
+      "PageHeader",
+      "SearchInput",
+      "ProductGrid",
+      "ProductCard",
+      "Pagination"
+    ],
+    "optional": [
+      "AppliedFilters",
+      "CheckboxGroup",
+      "RadioGroup",
+      "Select",
+      "Price",
+      "Rating",
+      "DetailDrawer",
+      "FilterDrawer",
+      "CartTrigger",
+      "CartPanel",
+      "CartLineItem",
+      "QuantityControl",
+      "ProductMeta"
+    ],
+    "shell": {
+      "preferred": "PublicShell",
+      "alternatives": [
+        "AppShell"
+      ],
+      "selectionRule": "Use PublicShell for a public, content-first storefront; choose AppShell only when the catalog is inside a persistent authenticated workspace."
+    },
+    "references": [
+      "Publishing Store"
+    ],
+    "source": "legacy-catalog-adapter"
+  },
+  "product-detail": {
+    "id": "product-detail",
+    "displayName": "Product Detail",
+    "purpose": "Present one product with media, record context, price, and bounded purchase or save actions.",
+    "profiles": [
+      "commerce"
+    ],
+    "components": [
+      "PageHeader",
+      "MediaFrame",
+      "RecordSummary",
+      "Price",
+      "ActionFooter"
+    ],
+    "optional": [
+      "Rating",
+      "ProductMeta",
+      "Badge",
+      "Alert"
+    ],
+    "references": [
+      "Publishing Store"
+    ],
+    "source": "legacy-catalog-adapter"
+  },
+  "checkout": {
+    "id": "checkout",
+    "displayName": "Checkout",
+    "purpose": "Collect the information needed to confirm an order without owning cart or payment business state.",
+    "profiles": [
+      "commerce"
+    ],
+    "components": [
+      "PageHeader",
+      "FormSection",
+      "Input",
+      "Select",
+      "RecordSummary",
+      "ActionFooter"
+    ],
+    "optional": [
+      "Alert",
+      "Modal",
+      "Checkbox",
+      "CartPanel",
+      "OrderSummary",
+      "QuantityControl"
+    ],
+    "source": "legacy-catalog-adapter"
+  },
+  "content-list": {
+    "id": "content-list",
+    "displayName": "Content List",
+    "purpose": "Browse articles, lessons, documents, or media without forcing table semantics.",
+    "profiles": [
+      "content"
+    ],
+    "components": [
+      "PageHeader",
+      "FilterToolbar",
+      "ProductGrid",
+      "Card",
+      "Pagination"
+    ],
+    "optional": [
+      "Badge",
+      "EmptyState",
+      "SearchInput"
+    ],
+    "source": "legacy-catalog-adapter"
+  },
+  "content-detail": {
+    "id": "content-detail",
+    "displayName": "Content Detail",
+    "purpose": "Read one article, lesson, or document with clear metadata and bounded supporting actions.",
+    "profiles": [
+      "content"
+    ],
+    "components": [
+      "PageHeader",
+      "RecordSummary",
+      "MediaFrame",
+      "Typography"
+    ],
+    "optional": [
+      "Badge",
+      "ActionFooter",
+      "ActivityFeed"
+    ],
+    "source": "legacy-catalog-adapter"
+  },
+  "ebook-reader": {
+    "id": "ebook-reader",
+    "displayName": "Ebook Reader",
+    "purpose": "Read an ebook while preserving progress and reader controls.",
+    "profiles": [
+      "content",
+      "commerce"
+    ],
+    "components": [
+      "TopNavigation",
+      "Progress",
+      "Typography",
+      "ActionBar"
+    ],
+    "optional": [
+      "Modal",
+      "Slider",
+      "Tabs"
+    ],
+    "source": "legacy-catalog-adapter"
+  },
+  "auth": {
+    "id": "auth",
+    "displayName": "Authentication",
+    "purpose": "Sign in, register, recover access, or verify identity.",
+    "family": "identity",
+    "profiles": [
+      "enterprise",
+      "commerce",
+      "content"
+    ],
+    "components": [
+      "Surface",
+      "Input",
+      "PasswordInput",
+      "ActionFooter"
+    ],
+    "optional": [
+      "OtpInput",
+      "Alert",
+      "Checkbox"
+    ],
+    "shell": {
+      "preferred": "PublicShell",
+      "alternatives": [
+        "AppShell"
+      ],
+      "selectionRule": "Use PublicShell for an entry route; use AppShell only when authentication is embedded in a persistent workspace."
+    },
+    "references": [
+      "Authentication recipe",
+      "Brand Expression Plane"
+    ],
+    "source": "canonical-contract",
+    "intent": {
+      "visibility": "public",
+      "cardinality": "single",
+      "operations": [
+        "create",
+        "edit"
+      ],
+      "density": "balanced",
+      "navigation": "route",
+      "workflow": "edit",
+      "comparison": "none",
+      "selection": "none",
+      "detail": "none"
+    },
+    "required": [
+      "Surface",
+      "Input",
+      "PasswordInput",
+      "ActionFooter"
+    ],
+    "forbid": [
+      "local authentication form primitive",
+      "parallel authentication shell",
+      "page-specific semantic color tokens",
+      "agent-owned brand direction decisions"
+    ],
+    "states": [
+      "loading",
+      "ready",
+      "api-error"
+    ],
+    "responsive": {
+      "desktop": "inline",
+      "tablet": "stacked",
+      "mobile": "stacked"
+    },
+    "expression": {
+      "kind": "brand-profile",
+      "profiles": [
+        "neutral-product",
+        "aapm-academy"
+      ],
+      "consumerSlots": [
+        "brand-mark",
+        "media",
+        "brand-copy",
+        "authentication-handlers",
+        "legal-links"
+      ],
+      "responsive": {
+        "desktop": "split",
+        "tablet": "rebalanced",
+        "mobile": "stacked"
+      }
+    },
+    "rationale": {
+      "Surface": "Authentication needs one broad semantic region that can host the brand expression and form without forking controls.",
+      "Input": "The route collects a labelled identifier while preserving the shared input contract.",
+      "PasswordInput": "Credential entry uses the canonical visibility toggle and native password semantics.",
+      "ActionFooter": "Primary submit and recovery actions remain grouped at the end of the task."
+    }
+  },
+  "marketing-home": {
+    "id": "marketing-home",
+    "displayName": "Marketing Home",
+    "purpose": "Explain a product through reusable expressive sections and drive one primary acquisition action.",
+    "profiles": [
+      "marketing"
+    ],
+    "components": [
+      "PublicShell",
+      "NavigationMenu",
+      "Typography",
+      "Button",
+      "Card",
+      "MediaFrame",
+      "ProductCard",
+      "ChartPanel"
+    ],
+    "optional": [
+      "LineChart",
+      "BarChart",
+      "Carousel"
+    ],
+    "shell": {
+      "preferred": "PublicShell",
+      "selectionRule": "Use PublicShell for a public acquisition surface; keep block order and page-level actions in the recipe rather than rebuilding a shell locally."
+    },
+    "blocks": [
+      "hero-split",
+      "cta-contained",
+      "feature-showcase",
+      "stats-section",
+      "logo-cloud",
+      "testimonials",
+      "pricing-section",
+      "content-showcase",
+      "product-showcase",
+      "announcement-bar",
+      "carousel",
+      "public-footer"
+    ],
+    "blockRoles": {
+      "required": [
+        "hero-split",
+        "cta-contained",
+        "public-footer"
+      ],
+      "recommended": [
+        "logo-cloud",
+        "feature-showcase",
+        "stats-section",
+        "content-showcase",
+        "testimonials"
+      ],
+      "optional": [
+        "announcement-bar",
+        "product-showcase",
+        "pricing-section",
+        "carousel"
+      ]
+    },
+    "references": [
+      "Public Showcase"
+    ],
+    "source": "legacy-catalog-adapter"
+  },
+  "cart": {
+    "id": "cart",
+    "displayName": "Cart",
+    "purpose": "Review selected products, adjust bounded quantities, and continue to checkout without owning commerce persistence.",
+    "profiles": [
+      "commerce"
+    ],
+    "components": [
+      "AppShell",
+      "TopNavigation",
+      "CartPanel",
+      "OrderSummary"
+    ],
+    "optional": [
+      "CartLineItem",
+      "QuantityControl",
+      "CartTrigger",
+      "Button",
+      "EmptyState"
+    ],
+    "references": [
+      "Publishing Store"
+    ],
+    "source": "legacy-catalog-adapter"
+  }
+}

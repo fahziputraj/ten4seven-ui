@@ -1,0 +1,1 @@
+{"id":"SidebarGroup","displayName":"Sidebar Group","status":"implemented","category":"navigation","purpose":"Group related sidebar items under an optional semantic label.","source":"packages/ui/src/components.tsx","importantProps":["label","items","activeKey","onSelect"]}

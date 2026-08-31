@@ -1,0 +1,1 @@
+{"id":"DonutChart","displayName":"Donut Chart","status":"implemented","category":"chart","purpose":"Render a small whole-to-part distribution with token-based segments and legend.","source":"packages/ui/src/charts.tsx","importantProps":["segments","centerLabel","title","valueFormatter"]}

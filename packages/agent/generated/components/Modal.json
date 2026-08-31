@@ -1,0 +1,1 @@
+{"id":"Modal","displayName":"Modal","status":"implemented","category":"overlay","purpose":"Present focused short content or confirmation through a native modal dialog.","source":"packages/ui/src/components.tsx","importantProps":["open","title","description","onClose","initialFocus"]}

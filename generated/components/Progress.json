@@ -1,0 +1,1 @@
+{"id":"Progress","displayName":"Progress","status":"implemented","category":"feedback","purpose":"Show determinate or indeterminate linear progress with progressbar semantics.","source":"packages/ui/src/feedback.tsx","importantProps":["value","max","indeterminate","label","showValue"]}

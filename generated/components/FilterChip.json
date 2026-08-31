@@ -1,0 +1,1 @@
+{"id":"FilterChip","displayName":"Filter Chip","status":"implemented","category":"filter","purpose":"Show one removable applied filter value.","source":"packages/ui/src/blocks.tsx","importantProps":["label","onRemove"]}

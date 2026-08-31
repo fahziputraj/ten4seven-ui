@@ -1,0 +1,1 @@
+{"id":"FieldDescription","displayName":"Field Description","status":"implemented","category":"form","purpose":"Attach concise helper text to a field using the shared semantic description treatment.","source":"packages/ui/src/forms.tsx","importantProps":["id","children"]}

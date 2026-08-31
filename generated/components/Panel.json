@@ -1,0 +1,1 @@
+{"id":"Panel","displayName":"Panel","status":"implemented","category":"surface","purpose":"Provide a bounded supporting region such as a settings or inspector panel.","source":"packages/ui/src/layout.tsx","importantProps":["as","padded","children"]}

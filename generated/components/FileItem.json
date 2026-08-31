@@ -1,0 +1,1 @@
+{"id":"FileItem","displayName":"File Item","status":"implemented","category":"file","purpose":"Show one selected, uploading, ready, or errored file state.","source":"packages/ui/src/files.tsx","importantProps":["name","size","status","progress","onRemove","error"]}

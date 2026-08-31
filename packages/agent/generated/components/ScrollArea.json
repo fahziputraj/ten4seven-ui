@@ -1,0 +1,1 @@
+{"id":"ScrollArea","displayName":"Scroll Area","status":"implemented","category":"layout","purpose":"Constrain a scrollable region while preserving native browser scroll behavior.","source":"packages/ui/src/layout.tsx","importantProps":["label","maxHeight","children"]}

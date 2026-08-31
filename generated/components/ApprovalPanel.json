@@ -1,0 +1,1 @@
+{"id":"ApprovalPanel","displayName":"Approval Panel","status":"implemented","category":"pattern","purpose":"Frame a neutral decision checkpoint with context, metadata, and actions.","source":"packages/ui/src/blocks.tsx","importantProps":["title","description","metadata","actions","tone"]}

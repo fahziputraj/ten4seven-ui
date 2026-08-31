@@ -1,0 +1,1 @@
+{"id":"MetricCard","displayName":"Metric Card","status":"implemented","category":"data","purpose":"Show one truthful decision signal with optional change and context.","source":"packages/ui/src/data-display.tsx","importantProps":["title","value","description","change","icon","tone"]}

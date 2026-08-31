@@ -1,0 +1,1 @@
+{"id":"DateTimeInput","displayName":"Date–Time Input","status":"implemented","category":"date-time","purpose":"Compose a DatePicker and TimePicker without owning time zone or persistence logic.","source":"packages/ui/src/date-time.tsx","importantProps":["date","time","onDateChange","onTimeChange"]}

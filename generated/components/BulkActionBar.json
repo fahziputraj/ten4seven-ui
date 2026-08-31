@@ -1,0 +1,1 @@
+{"id":"BulkActionBar","displayName":"Bulk Action Bar","status":"implemented","category":"filter","purpose":"Expose safe operations for selected records.","source":"packages/ui/src/components.tsx","importantProps":["selectedCount","actions","onClear","noun"]}

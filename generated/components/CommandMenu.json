@@ -1,0 +1,1 @@
+{"id":"CommandMenu","displayName":"Command Menu","status":"implemented","category":"navigation","purpose":"Search and execute a bounded local set of keyboard-first commands.","source":"packages/ui/src/navigation.tsx","importantProps":["commands","open","onOpenChange","shortcut"]}

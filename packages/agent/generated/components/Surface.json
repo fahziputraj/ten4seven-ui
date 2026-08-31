@@ -1,0 +1,1 @@
+{"id":"Surface","displayName":"Surface","status":"implemented","category":"surface","purpose":"Provide a broad semantic page-region surface.","source":"packages/ui/src/layout.tsx","importantProps":["as","tone","children"]}

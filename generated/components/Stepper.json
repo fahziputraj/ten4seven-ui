@@ -1,0 +1,1 @@
+{"id":"Stepper","displayName":"Stepper","status":"implemented","category":"navigation","purpose":"Show a bounded sequential workflow and current step.","source":"packages/ui/src/navigation.tsx","importantProps":["steps","current","onStepChange"]}

@@ -1,0 +1,1 @@
+{"id":"Toolbar","displayName":"Toolbar","status":"implemented","category":"layout","purpose":"Align a small primary control region with secondary actions.","source":"packages/ui/src/blocks.tsx","importantProps":["label","actions","children"]}

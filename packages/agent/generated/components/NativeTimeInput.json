@@ -1,0 +1,1 @@
+{"id":"NativeTimeInput","displayName":"Native Time Input","status":"implemented","category":"date-time","purpose":"Collect a browser-native time value when platform-specific time input is intentional.","source":"packages/ui/src/date-time.tsx","importantProps":["label","value","onChange"]}
