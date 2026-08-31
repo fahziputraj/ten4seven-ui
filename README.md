@@ -27,6 +27,25 @@ pnpm inventory
 pnpm dev
 ```
 
+## Private commercial package
+
+The canonical consumer artifact is the self-contained `@ten4seven/ui`
+package. It includes the React components, provider/theme runtime, tokens,
+semantic icons, motion runtime, Inter variable font, declarations, and CSS in
+one local tarball. It remains private and is not published to a registry.
+
+```bash
+pnpm package:release
+pnpm add ./artifacts/ten4seven-ui-1.0.0.tgz
+```
+
+The generated artifact and its licensing boundary are documented in
+[packages/ui/README.md](packages/ui/README.md),
+[packages/ui/LICENSE.md](packages/ui/LICENSE.md), and
+[packages/ui/THIRD_PARTY_NOTICES.md](packages/ui/THIRD_PARTY_NOTICES.md).
+React and React DOM remain peer dependencies so consuming applications keep
+one React runtime.
+
 Provider forms supported by the proof package:
 
 ```tsx

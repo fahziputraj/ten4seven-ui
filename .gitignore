@@ -2,6 +2,7 @@ node_modules/
 dist/
 coverage/
 .vite/
+artifacts/
 *.local
 *.tsbuildinfo
 .DS_Store

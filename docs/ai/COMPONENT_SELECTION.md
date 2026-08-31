@@ -1,6 +1,9 @@
 # Component selection guide
 
-The full executable authority is `packages/ai/catalog/components.json`. Pick by capability and interaction contract, not by a visual resemblance or an app-specific component name.
+The agent-facing executable authority is `generated/components.compact.json`;
+use `packages/ai/catalog/components.json` when the full human contract is
+needed. Pick by capability and interaction contract, not by a visual
+resemblance or an app-specific component name.
 
 Only `implemented` catalog entries are available to product work. `experimental` needs an explicit product decision; `planned` is a gap, not an invitation to recreate it locally.
 

@@ -17,10 +17,16 @@ Look for:
 
 If no installation exists, read the consumer's package manager and framework first, then add the packages through its normal dependency workflow. Do not copy donor libraries into the feature.
 
+For a packaged consumer, prefer the single private `@ten4seven/ui` artifact:
+it already contains the token runtime, semantic icon registry, motion runtime,
+Inter font, stylesheet, and declarations. Do not add the workspace-only
+`@ten4seven/tokens` or `@ten4seven/icons` packages alongside that artifact.
+The workspace may still use those packages as internal source layers while the
+artifact is built.
+
 ## 3. Initialize it
 
 ```tsx
-import "@ten4seven/tokens/theme.css";
 import "@ten4seven/ui/styles.css";
 import { Ten4SevenProvider } from "@ten4seven/ui";
 
@@ -46,7 +52,17 @@ For a custom family, keep the preset and override only the family axes: `typogra
 
 ## 4. Select a page recipe
 
-Search `packages/ai/catalog/recipes.json`, or run:
+Start with `generated/agent-index.json`, then read the compact recipe and
+component projections. For the migrated Entity List slice, inspect and compose
+from the contract plane:
+
+```bash
+pnpm t7ui recipe inspect entity-list
+pnpm t7ui compose entity-list
+```
+
+For recipes that are not migrated yet, search the full
+`packages/ai/catalog/recipes.json`, or run:
 
 ```bash
 pnpm t7ui find "operations tracker work queue"
@@ -63,7 +79,7 @@ in `@ten4seven/ui`.
 
 ## 5. Find implemented components
 
-Search `packages/ai/catalog/components.json`, or run `pnpm t7ui show DataTable`. Only catalog status `implemented` is a feature API. `experimental` needs an explicit product decision; `planned` is not permission to recreate a library locally.
+Search `generated/components.compact.json` first, or run `pnpm t7ui show DataTable` when the full contract is needed. Only catalog status `implemented` is a feature API. `experimental` needs an explicit product decision; `planned` is not permission to recreate a library locally.
 
 The catalog is also the documentation contract: use its human-facing
 `displayName`, level (`foundation`, `primitive`, `component`, `pattern`),
@@ -107,6 +123,11 @@ role map and the provider's `motionDuration` axis for hover, press, expand,
 overlay, feedback, and viewport-entering behavior. Custom surfaces may import
 `t7Motion` from `@ten4seven/ui`; do not add local keyframes, durations, or a
 second animation runtime. Respect the shared reduced-motion policy.
+
+The typed `ThemeProfile` aggregate in `packages/contracts/src/theme-profile.ts`
+normalizes appearance, palette, action, accent, canvas, chart, radius, density,
+typography, motion, and elevation. It adapts to the existing provider API, so
+legacy `primary`, `radiusValue`, and `motionDuration` consumers remain valid.
 
 ## 8. Use icons
 

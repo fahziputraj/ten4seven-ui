@@ -8,6 +8,10 @@
 - `docs/ai/NEW_PROJECT.md` — greenfield sequence.
 - `docs/ai/COMPONENT_SELECTION.md` — high-frequency component decisions.
 - `docs/ai/THEMING.md` — public provider and typography contract.
+- `packages/contracts/src` — typed contract source for ThemeProfile, recipes,
+  aliases, and ownership.
+- `generated/agent-index.json` — compact retrieval order and migrated entry
+  points.
 - `skills/ten4seven-ui/SKILL.md` — reusable agent workflow.
 
 ## FOUNDATIONS
@@ -32,8 +36,13 @@
 
 ## AI CATALOGS
 
+- `generated/recipes.compact.json` and `generated/components.compact.json` —
+  agent-facing default projections; read these first.
+- `generated/aliases.json` and `generated/ownership-rules.json` — canonical
+  alias and ownership decisions.
 - `packages/ai/catalog/recipes.json` — page archetypes, shell selection,
-  component composition, and required/recommended/optional block roles.
+  component composition, and required/recommended/optional block roles; use as
+  the full fallback for recipes not yet migrated to typed decision contracts.
 - `packages/ai/catalog/components.json` — searchable component contracts.
 - `packages/ai/catalog/blocks.json` — expressive block contracts, quality
   metadata, content slots, and recipe references.
@@ -107,6 +116,8 @@ Catalog status is exact: use only `implemented` components in production composi
 - `pnpm t7ui info`
 - `pnpm t7ui find "operations tracker work queue"`
 - `pnpm t7ui show DataTable`
+- `pnpm t7ui recipe inspect entity-list`
+- `pnpm t7ui compose entity-list`
 - `pnpm t7ui agents init`
 
 ## REFERENCE ROUTES

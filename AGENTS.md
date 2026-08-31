@@ -5,11 +5,28 @@ ten4seven UI is the canonical UI source for this repository.
 Before creating UI:
 
 1. Identify the page archetype.
-2. Search `packages/ai/catalog/recipes.json` for a recipe.
-3. Search `packages/ai/catalog/components.json` for canonical components.
-4. Search `packages/ai/catalog/blocks.json` when the route needs reusable expressive sections.
-5. Search `packages/ai/catalog/icons.json` for semantic icons.
-6. Configure semantic theme tokens before writing local styles.
+2. Read `generated/agent-index.json` and the compact projections first.
+3. For the migrated `entity-list` recipe, run `pnpm t7ui recipe inspect entity-list` and use `pnpm t7ui compose entity-list` for the canonical scaffold.
+4. Search the full `packages/ai/catalog/recipes.json` and `components.json` only when the compact projection does not answer the question.
+5. Search `packages/ai/catalog/blocks.json` when the route needs reusable expressive sections.
+6. Search `packages/ai/catalog/icons.json` for semantic icons.
+7. Configure semantic theme tokens before writing local styles.
+
+## AI contract plane
+
+`packages/contracts/src` is the typed source for normalized theme profiles,
+motion role profiles, migrated recipe decisions, aliases, and ownership rules.
+The reproducible agent-facing projections are:
+
+- `generated/agent-index.json` — retrieval order and entry points;
+- `generated/recipes.compact.json` — compact recipe decisions;
+- `generated/components.compact.json` — compact implemented component contracts;
+- `generated/aliases.json` — canonical alias targets;
+- `generated/ownership-rules.json` — system versus consumer ownership.
+
+The full human catalogs remain compatibility surfaces for recipes that have not
+yet migrated to typed decision contracts. Do not manually add a second
+decision manifest; update the typed source and run `pnpm contracts:generate`.
 
 Only a component with catalog status `implemented` is ready for feature use.
 `experimental` requires an explicit product decision; `planned` is not an API.

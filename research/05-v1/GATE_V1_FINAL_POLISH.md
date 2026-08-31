@@ -12,7 +12,7 @@ Publishing Store, the component catalog, and the public showcase.
 
 ## Motion contract
 
-- `motionDuration` is a provider-level axis from `0.5s` to `2.5s` in `0.25s`
+- `motionDuration` is a provider-level axis from `0.25s` to `2.5s` in `0.25s`
   steps, with `1.5s` as the default.
 - Semantic roles cover interactive, state, fast entrance, entrance, slow
   entrance, exit, linear loop, and eased loop behavior.
