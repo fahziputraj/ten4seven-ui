@@ -183,53 +183,82 @@ function OverlayStressFixture() {
           <CardContent className="overlay-stress-edge-stage">
             <div className="overlay-stress-edge-preview">
               <div className="overlay-stress-edge-preview-header">
-                <Typography typeRole="overline">
-                  Bounded action surface
-                </Typography>
+                <div className="overlay-stress-edge-preview-copy">
+                  <Typography typeRole="overline">Anchor playground</Typography>
+                  <Typography typeRole="caption">
+                    Try a trigger to inspect its viewport-safe layer.
+                  </Typography>
+                </div>
                 <Badge tone="success">
                   <T7Icon aria-hidden="true" name="check" size={12} />
                   Viewport safe
                 </Badge>
               </div>
-              <div className="overlay-stress-edge-row">
-                <Popover
-                  side="top"
-                  trigger={<Button size="sm">Popover</Button>}
-                >
-                  <Typography typeRole="body-sm">
-                    Flips and shifts inside the viewport.
+              <div className="overlay-stress-edge-demo">
+                <div className="overlay-stress-edge-demo-copy">
+                  <Typography typeRole="label">Inline actions</Typography>
+                  <Typography typeRole="caption">
+                    Portal layers detach cleanly from this bounded surface.
                   </Typography>
-                </Popover>
-                <DropdownMenu
-                  items={[
-                    { icon: "edit", key: "edit", label: "Edit record" },
-                    { icon: "view", key: "view", label: "View details" },
-                  ]}
-                  trigger={
-                    <Button intent="secondary" size="sm">
-                      Menu
-                    </Button>
-                  }
-                />
-                <Tooltip
-                  content="Supplemental context near the edge"
-                  side="top"
+                </div>
+                <div
+                  aria-label="Floating layer examples"
+                  className="overlay-stress-edge-row"
                 >
-                  <Button intent="quiet" size="sm">
-                    Tooltip
-                  </Button>
-                </Tooltip>
+                  <Popover
+                    side="top"
+                    trigger={<Button size="sm">Popover</Button>}
+                  >
+                    <Typography typeRole="body-sm">
+                      Flips and shifts inside the viewport.
+                    </Typography>
+                  </Popover>
+                  <DropdownMenu
+                    items={[
+                      { icon: "edit", key: "edit", label: "Edit record" },
+                      { icon: "view", key: "view", label: "View details" },
+                    ]}
+                    trigger={
+                      <Button intent="secondary" size="sm">
+                        Menu
+                      </Button>
+                    }
+                  />
+                  <Tooltip
+                    content="Supplemental context near the edge"
+                    side="top"
+                  >
+                    <Button intent="quiet" size="sm">
+                      Tooltip
+                    </Button>
+                  </Tooltip>
+                </div>
               </div>
-              <div className="overlay-stress-edge-corner">
-                <DropdownMenu
-                  items={[{ icon: "download", key: "export", label: "Export" }]}
-                  trigger={<IconButton icon="more" label="Edge actions" />}
-                />
+              <div className="overlay-stress-edge-footer">
+                <div className="overlay-stress-edge-footer-copy">
+                  <Typography typeRole="label">Corner action</Typography>
+                  <Typography typeRole="caption">
+                    The menu remains anchored to its trigger.
+                  </Typography>
+                </div>
+                <div className="overlay-stress-edge-corner">
+                  <DropdownMenu
+                    items={[
+                      { icon: "download", key: "export", label: "Export" },
+                    ]}
+                    trigger={<IconButton icon="more" label="Edge actions" />}
+                  />
+                </div>
               </div>
             </div>
-            <Typography typeRole="caption">
-              Popover shifts · Menu aligns · Tooltip supplements
-            </Typography>
+            <div
+              aria-label="Overlay contracts"
+              className="overlay-stress-edge-contracts"
+            >
+              <span>Flips</span>
+              <span>Aligns</span>
+              <span>Supplements</span>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -1008,13 +1037,19 @@ export function ComponentProofs() {
               className="component-proof-navigation-panel"
             >
               <div className="component-proof-subheading">
-                <Typography
-                  as="h3"
-                  id="component-proof-views-title"
-                  typeRole="label"
-                >
-                  Peer views
-                </Typography>
+                <div className="component-proof-subheading-line">
+                  <Typography
+                    as="h3"
+                    id="component-proof-views-title"
+                    typeRole="label"
+                  >
+                    Peer views
+                  </Typography>
+                  <Badge tone="success">
+                    <T7Icon aria-hidden="true" name="check" size={12} />
+                    Live lens
+                  </Badge>
+                </div>
                 <Typography typeRole="caption">
                   Change the lens without leaving the surface.
                 </Typography>

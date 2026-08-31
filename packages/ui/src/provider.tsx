@@ -39,6 +39,22 @@ interface ThemeContextValue {
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
+function readThemeOverrides(
+  persistenceKey: string | undefined,
+): Partial<ThemeConfig> {
+  if (!persistenceKey || typeof window === "undefined") return {};
+  try {
+    const stored: unknown = JSON.parse(
+      window.localStorage.getItem(persistenceKey) ?? "{}",
+    );
+    if (!stored || typeof stored !== "object" || Array.isArray(stored))
+      return {};
+    return stored as Partial<ThemeConfig>;
+  } catch {
+    return {};
+  }
+}
+
 export function Ten4SevenProvider({
   appearance = "system",
   palette = "emerald",
@@ -62,16 +78,9 @@ export function Ten4SevenProvider({
   const [systemAppearance, setSystemAppearance] = useState(() =>
     resolveAppearance("system"),
   );
-  const [overrides, setOverrides] = useState<Partial<ThemeConfig>>(() => {
-    if (!persistenceKey || typeof window === "undefined") return {};
-    try {
-      return JSON.parse(
-        window.localStorage.getItem(persistenceKey) ?? "{}",
-      ) as Partial<ThemeConfig>;
-    } catch {
-      return {};
-    }
-  });
+  const [overrides, setOverrides] = useState<Partial<ThemeConfig>>(() =>
+    readThemeOverrides(persistenceKey),
+  );
 
   useEffect(() => {
     if (!persistenceKey) return;

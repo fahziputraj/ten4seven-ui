@@ -1320,7 +1320,8 @@
 .t7-cart-panel {
   display: grid;
   gap: 16px;
-  min-width: min(360px, calc(100vw - 32px));
+  width: min(360px, 100%);
+  min-width: 0;
   animation: t7-motion-panel-in var(--t7-motion-enter-fast) both;
 }
 .t7-cart-panel-header {
@@ -3776,7 +3777,6 @@
   stroke: hsl(var(--t7-primary-hsl));
   stroke-dasharray: 100;
   stroke-linecap: round;
-  transition: stroke-dashoffset var(--t7-transition-large);
 }
 .t7-milestone-item[data-state="complete"] .t7-milestone-ring-value {
   stroke: hsl(var(--t7-success-hsl));
@@ -4429,24 +4429,15 @@
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
 }
-.t7-sparkline[data-chart-visible="true"] .t7-sparkline-line {
-  animation: t7-motion-chart-line var(--t7-motion-enter-slow) forwards;
-}
 .t7-sparkline-area {
   opacity: 0;
   pointer-events: none;
-}
-.t7-sparkline[data-chart-visible="true"] .t7-sparkline-area {
-  animation: t7-motion-chart-area var(--t7-motion-enter-slow) forwards;
 }
 .t7-sparkline-point {
   fill: hsl(var(--t7-chart-1-hsl));
   stroke: hsl(var(--t7-surface-hsl));
   stroke-width: 1.5;
   opacity: 0;
-}
-.t7-sparkline[data-chart-visible="true"] .t7-sparkline-point {
-  animation: t7-motion-chart-point var(--t7-motion-enter) both;
 }
 .t7-chart {
   display: grid;
@@ -4509,17 +4500,12 @@
   opacity: 0;
   pointer-events: none;
 }
-.t7-chart[data-chart-visible="true"] .t7-chart-area {
-  animation: t7-motion-chart-area var(--t7-motion-enter-slow) both;
-}
 .t7-chart-hover-line {
   stroke: hsl(var(--t7-border-strong-hsl) / 0.7);
   stroke-width: 1;
   stroke-dasharray: 3 4;
+  opacity: 1;
   pointer-events: none;
-}
-.t7-chart[data-chart-visible="true"] .t7-chart-hover-line {
-  animation: t7-motion-chart-hover-line var(--t7-motion-enter-fast) both;
 }
 .t7-chart-point.t7-chart-series-1,
 .t7-chart-bar.t7-chart-series-1 {
@@ -4598,6 +4584,10 @@
   position: relative;
   width: min(180px, 42vw);
   flex: none;
+  transform-origin: center;
+  transition:
+    filter var(--t7-transition-standard),
+    transform var(--t7-transition-standard);
 }
 .t7-donut-chart-visual svg {
   display: block;
@@ -4608,6 +4598,9 @@
   fill: none;
   stroke-width: 14;
   stroke-linecap: butt;
+  transition:
+    opacity var(--t7-transition-standard),
+    stroke-width var(--t7-transition-standard);
 }
 .t7-donut-chart-visual .t7-donut-segment {
   transform-box: fill-box;
@@ -4615,8 +4608,14 @@
   opacity: 0;
   scale: 0.84;
 }
-.t7-donut-chart[data-chart-visible="true"] .t7-donut-segment {
-  animation: t7-motion-donut var(--t7-motion-enter-slow) both;
+.t7-donut-chart-visual:hover,
+.t7-donut-chart-visual:focus-within {
+  filter: saturate(1.05);
+  transform: translateY(-2px) scale(1.025);
+}
+.t7-donut-chart-visual:hover .t7-donut-segment,
+.t7-donut-chart-visual:focus-within .t7-donut-segment {
+  stroke-width: 16;
 }
 .t7-donut-track {
   stroke: hsl(var(--t7-muted-hsl));
@@ -4630,6 +4629,12 @@
   color: hsl(var(--t7-foreground-hsl));
   font-size: var(--t7-type-heading-sm-size);
   font-weight: var(--t7-type-heading-sm-weight);
+  transform-origin: center;
+  transition: transform var(--t7-transition-standard);
+}
+.t7-donut-chart-visual:hover > span,
+.t7-donut-chart-visual:focus-within > span {
+  transform: scale(1.04);
 }
 @media (max-width: 460px) {
   .t7-donut-chart-body {
@@ -4796,6 +4801,9 @@
   border: 1px solid hsl(var(--t7-primary-hsl) / 0.22);
   border-radius: var(--t7-radius-panel);
   padding: clamp(22px, 4vw, 40px);
+}
+.t7-cta-block[data-has-media="false"] {
+  grid-template-columns: minmax(0, 1fr);
 }
 .t7-cta-block[data-tone="accent"] {
   background: hsl(var(--t7-primary-hsl) / 0.07);
@@ -5231,9 +5239,6 @@
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
 }
-.t7-chart[data-chart-visible="true"] .t7-chart-line {
-  animation: t7-motion-chart-line var(--t7-motion-enter-slow) forwards;
-}
 .t7-chart-point {
   cursor: pointer;
   opacity: 0;
@@ -5244,9 +5249,6 @@
     transform var(--t7-transition-fast);
   transform-box: fill-box;
   transform-origin: center;
-}
-.t7-chart[data-chart-visible="true"] .t7-chart-point {
-  animation: t7-motion-chart-point var(--t7-motion-enter) both;
 }
 .t7-chart-point:hover,
 .t7-chart-point:focus-visible {
@@ -5262,9 +5264,6 @@
   transition:
     filter var(--t7-transition-fast),
     opacity var(--t7-transition-fast);
-}
-.t7-chart[data-chart-visible="true"] .t7-chart-bar {
-  animation: t7-motion-chart-bar var(--t7-motion-enter-slow) both;
 }
 .t7-chart-bar:hover,
 .t7-chart-bar:focus-visible {
@@ -5322,7 +5321,7 @@
 }
 .t7-public-shell .t7-app-content {
   width: min(100%, 1280px);
-  padding: 0 clamp(16px, 5vw, 60px);
+  padding: clamp(24px, 3vw, 40px) clamp(16px, 5vw, 60px) 52px;
 }
 .t7-public-shell .t7-top-navigation {
   max-width: 1280px;
@@ -5345,47 +5344,6 @@
   display: block;
 }
 
-@keyframes t7-motion-chart-line {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-@keyframes t7-motion-chart-area {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@keyframes t7-motion-chart-point {
-  from {
-    opacity: 0;
-    scale: 0.45;
-  }
-  to {
-    opacity: 0.9;
-    scale: 1;
-  }
-}
-@keyframes t7-motion-chart-hover-line {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@keyframes t7-motion-chart-bar {
-  from {
-    opacity: 0.1;
-    transform: scaleY(0.04);
-  }
-  to {
-    opacity: 1;
-    transform: scaleY(1);
-  }
-}
 @keyframes t7-motion-chart-tooltip {
   from {
     opacity: 0;
@@ -5394,16 +5352,6 @@
   to {
     opacity: 1;
     transform: translate(-50%, calc(-100% - 10px)) scale(1);
-  }
-}
-@keyframes t7-motion-donut {
-  from {
-    opacity: 0;
-    scale: 0.84;
-  }
-  to {
-    opacity: 1;
-    scale: 1;
   }
 }
 

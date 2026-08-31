@@ -5,21 +5,28 @@ Configure the provider or a named preset. Do not manually restyle every componen
 ## Public axes
 
 - `appearance`: `light`, `dark`, or `system`.
-- `palette`: `emerald`, `blue`, `violet`, or `slate`.
+- `palette`: one of `emerald`, `teal`, `cyan`, `blue`, `indigo`, `violet`,
+  `rose`, `red`, `orange`, `amber`, or `slate`; the base semantic family used
+  by UI and chart defaults. Theme Studio's base swatches also reset `primary`
+  and `accent` to the selected family.
 - `primary`: optional `PaletteName` source for the main action and selection
-  color; defaults to `palette`.
-- `accent`: optional `PaletteName` source for supporting accent emphasis;
-  defaults to `palette`.
+  color; defaults to `palette` and can override it independently.
+- `accent`: optional `PaletteName` source for supporting accent and focus
+  emphasis; defaults to `palette` and can override it independently. The same
+  semantic source drives `--t7-accent-hsl`, `--t7-focus-hsl`, the focus ring,
+  and focused input borders, so the Theme Studio role is intentionally one
+  control rather than two colors that can drift apart.
 - `canvas`: `balanced`, `paper`, or `monochrome` neutral surface treatment.
-- `chartPalette`: `spectrum`, `four`, or `monochrome` chart colorway. The
-  existing five-slot chart variable contract remains stable.
+- `chartPalette`: `spectrum`, `four`, or `monochrome` data colorway. It changes
+  chart series only; the existing five-slot chart variable contract remains
+  stable and UI roles stay unchanged.
 - `radius`: `sharp`, `soft`, or `rounded`.
 - `radiusValue`: optional exact base radius in px from `0` to `24`; when set,
   it drives the entire hierarchical radius scale at one-pixel steps while
   `radius` remains the semantic family name.
 - `density`: `comfortable`, `default`, `compact`, or `dense`.
 - `motionDuration`: shared reveal and interaction duration in seconds from
-  `0.5` to `2.5` in `0.25` second steps. The default is `1.5` seconds; derived
+  `0.25` to `2.5` in `0.25` second steps. The default is `1.5` seconds; derived
   fast, standard, slow, and loop duration variables keep the component
   contracts synchronized. Native motion roles then compose those durations
   with one of the shared easing curves: `--t7-motion-interactive` for hover
@@ -29,7 +36,10 @@ Configure the provider or a named preset. Do not manually restyle every componen
   `t7Motion` is the UI package's small public role map for consumers that
   need to author a custom surface. Components should consume these roles
   instead of inventing local animation timing.
-- `typography`: `modern`, `humanist`, `mono`, or an object with `preset`, `ui`, `display`, and `mono` family overrides.
+- `typography`: `modern`, `humanist`, `editorial`, `technical`, `mono`, or an
+  object with `preset`, `ui`, `display`, and `mono` family overrides. Presets
+  change the family character and shared tracking while preserving the same
+  semantic role names.
 
 ```tsx
 <Ten4SevenProvider

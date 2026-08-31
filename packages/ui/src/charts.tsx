@@ -1,5 +1,6 @@
 import {
   type HTMLAttributes,
+  type RefObject,
   type ReactNode,
   useEffect,
   useId,
@@ -9,6 +10,11 @@ import {
 
 import { T7Icon } from "@ten4seven/icons";
 
+import {
+  observeT7InView,
+  t7AnimateChart,
+  type T7ChartMotionKind,
+} from "./motion";
 import { cx } from "./utils";
 
 export interface TrendIndicatorProps extends HTMLAttributes<HTMLSpanElement> {
@@ -137,6 +143,11 @@ function areaPathFor(points: ChartPoint[], baseline: number) {
   return `${line} L ${last.x} ${baseline} L ${first.x} ${baseline} Z`;
 }
 
+interface ChartVisibility<T extends HTMLElement | SVGSVGElement> {
+  ref: RefObject<T | null>;
+  visible: boolean;
+}
+
 function useChartVisibility<T extends HTMLElement | SVGSVGElement>() {
   const ref = useRef<T | null>(null);
   const [visible, setVisible] = useState(false);
@@ -145,26 +156,28 @@ function useChartVisibility<T extends HTMLElement | SVGSVGElement>() {
     const element = ref.current;
     if (!element) return;
 
-    if (typeof IntersectionObserver === "undefined") {
-      setVisible(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.15 },
-    );
-
-    observer.observe(element);
-    return () => observer.disconnect();
+    return observeT7InView(element, () => setVisible(true), {
+      rootMargin: "0px 0px -8% 0px",
+      threshold: 0.15,
+    });
   }, []);
 
   return { ref, visible };
+}
+
+function useChartMotion<T extends HTMLElement | SVGSVGElement>(
+  chartVisibility: ChartVisibility<T>,
+  kind: T7ChartMotionKind,
+) {
+  const { ref, visible } = chartVisibility;
+
+  useEffect(() => {
+    if (!visible) return;
+    const element = ref.current;
+    if (!element) return;
+    const motion = t7AnimateChart(element, kind);
+    return () => motion.revert();
+  }, [kind, ref, visible]);
 }
 
 export interface SparklineProps extends Omit<
@@ -187,6 +200,7 @@ export function Sparkline({
   const gradientId = useId().replace(/:/g, "");
   const points = pointsFor(values, width, height, 4);
   const chartVisibility = useChartVisibility<SVGSVGElement>();
+  useChartMotion(chartVisibility, "sparkline");
   return (
     <svg
       {...props}
@@ -297,6 +311,7 @@ export function LineChart({
     y: number;
   } | null>(null);
   const chartVisibility = useChartVisibility<HTMLDivElement>();
+  useChartMotion(chartVisibility, "line");
   return (
     <div
       {...props}
@@ -502,6 +517,7 @@ export function BarChart({
     y: number;
   } | null>(null);
   const chartVisibility = useChartVisibility<HTMLDivElement>();
+  useChartMotion(chartVisibility, "bar");
   return (
     <div
       {...props}
@@ -666,6 +682,7 @@ export function DonutChart({
   const circumference = Math.PI * radius * 2;
   const gradientId = useId().replace(/:/g, "");
   const chartVisibility = useChartVisibility<HTMLDivElement>();
+  useChartMotion(chartVisibility, "donut");
   let offset = 0;
   return (
     <div

@@ -14,3 +14,10 @@ export * from "./motion";
 export * from "./navigation";
 export * from "./overlays";
 export * from "./provider";
+
+// The distributable @ten4seven/ui package is intentionally self-contained.
+// These exports keep tokens and semantic icons available from the same package
+// boundary while the workspace packages remain useful as internal source
+// layers during development.
+export * from "@ten4seven/icons";
+export * from "@ten4seven/tokens";

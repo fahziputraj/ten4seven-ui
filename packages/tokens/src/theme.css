@@ -27,7 +27,8 @@
   --t7-transition-fast: var(--t7-motion-interactive);
   --t7-transition-standard: var(--t7-motion-state);
   --t7-transition-large: var(--t7-motion-enter-slow);
-  --t7-focus-ring: 0 0 0 3px hsl(var(--t7-accent-hsl) / 0.28);
+  --t7-focus-hsl: var(--t7-accent-hsl);
+  --t7-focus-ring: 0 0 0 3px hsl(var(--t7-focus-hsl) / 0.28);
   --t7-z-base: 0;
   --t7-z-sticky: 10;
   --t7-z-focus: 20;

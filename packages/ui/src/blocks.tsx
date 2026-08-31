@@ -420,6 +420,7 @@ export function CtaBlock({
       {...props}
       aria-labelledby={headingId}
       className={cx("t7-cta-block", className)}
+      data-has-media={media ? "true" : "false"}
       data-tone={tone}
     >
       <div className="t7-cta-copy">

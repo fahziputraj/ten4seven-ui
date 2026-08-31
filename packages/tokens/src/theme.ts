@@ -13,7 +13,8 @@ export type PaletteName =
   | "amber";
 export type RadiusName = "sharp" | "soft" | "rounded";
 export type DensityName = "comfortable" | "default" | "compact" | "dense";
-export type TypographyName = "modern" | "humanist" | "mono";
+export type TypographyName =
+  "modern" | "humanist" | "editorial" | "technical" | "mono";
 export type ElevationName = "flat" | "soft" | "standard";
 export type CanvasName = "balanced" | "paper" | "monochrome";
 export type ChartPaletteName = "spectrum" | "four" | "monochrome";
@@ -328,9 +329,9 @@ export const radiusProfiles: Record<RadiusName, Record<string, string>> = {
 
 export const radiusValueRange = Object.freeze({ min: 0, max: 24 });
 
-/** Shared motion duration in seconds. Quarter-second steps keep the axis legible. */
+/** Shared motion duration in seconds. Quarter-second steps keep the axis precise. */
 export const motionDurationRange = Object.freeze({
-  min: 0.5,
+  min: 0.25,
   max: 2.5,
   step: 0.25,
 });
@@ -343,8 +344,11 @@ function normalizeRadiusValue(value: number): number {
   );
 }
 
-function normalizeMotionDuration(value: number): number {
-  const finiteValue = Number.isFinite(value) ? value : motionDurationRange.min;
+function normalizeMotionDuration(value: unknown): number {
+  const finiteValue =
+    typeof value === "number" && Number.isFinite(value)
+      ? value
+      : defaultTheme.motionDuration;
   const clampedValue = Math.min(
     motionDurationRange.max,
     Math.max(motionDurationRange.min, finiteValue),
@@ -620,6 +624,20 @@ export const typographyProfiles: Record<TypographyName, TypographyProfile> = {
     headingTracking: "-0.025em",
     bodyTracking: "0.005em",
   }),
+  editorial: createTypographyProfile({
+    ui: 'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+    display: 'Georgia, "Times New Roman", serif',
+    mono: '"IBM Plex Mono", "SFMono-Regular", Consolas, monospace',
+    headingTracking: "-0.02em",
+    bodyTracking: "0.005em",
+  }),
+  technical: createTypographyProfile({
+    ui: '"IBM Plex Mono", "SFMono-Regular", Consolas, monospace',
+    display: "Inter, ui-sans-serif, system-ui, sans-serif",
+    mono: '"IBM Plex Mono", "SFMono-Regular", Consolas, monospace',
+    headingTracking: "-0.04em",
+    bodyTracking: "-0.01em",
+  }),
   mono: createTypographyProfile({
     ui: '"IBM Plex Mono", "SFMono-Regular", Consolas, monospace',
     display: '"IBM Plex Mono", "SFMono-Regular", Consolas, monospace',
@@ -726,7 +744,8 @@ export const canvasProfiles: Record<
 export function resolveAppearance(
   appearance: Appearance = "system",
 ): Exclude<Appearance, "system"> {
-  if (appearance !== "system") return appearance;
+  if (appearance === "light" || appearance === "dark") return appearance;
+  if (appearance !== "system") return defaultTheme.appearance;
   if (typeof window === "undefined" || typeof window.matchMedia !== "function")
     return "light";
   return window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -734,15 +753,69 @@ export function resolveAppearance(
     : "light";
 }
 
+function resolveProfileName<Name extends string>(
+  value: unknown,
+  profiles: object,
+  fallback: Name,
+): Name {
+  return typeof value === "string" &&
+    Object.prototype.hasOwnProperty.call(profiles, value)
+    ? (value as Name)
+    : fallback;
+}
+
+function resolveFamily(value: unknown, fallback: string): string {
+  return typeof value === "string" && value.trim() ? value : fallback;
+}
+
 export function resolveTheme(config: ThemeConfig = {}): ResolvedTheme {
   const typographySetting = config.typography;
-  const typographyName =
-    typeof typographySetting === "object"
-      ? (typographySetting.preset ?? defaultTheme.typography)
-      : (typographySetting ?? defaultTheme.typography);
-  const typographyProfile = typographyProfiles[typographyName];
+  const typographyOverrides =
+    typographySetting !== null && typeof typographySetting === "object"
+      ? typographySetting
+      : undefined;
+  const typographyName = typographyOverrides?.preset ?? typographySetting;
+  const resolvedTypographyName = resolveProfileName(
+    typographyName,
+    typographyProfiles,
+    defaultTheme.typography,
+  );
+  const typographyProfile = typographyProfiles[resolvedTypographyName];
+  const palette = resolveProfileName(
+    config.palette,
+    paletteProfiles,
+    defaultTheme.palette,
+  );
+  const primary = resolveProfileName(config.primary, paletteProfiles, palette);
+  const accent = resolveProfileName(config.accent, paletteProfiles, palette);
+  const canvas = resolveProfileName(
+    config.canvas,
+    canvasProfiles,
+    defaultTheme.canvas,
+  );
+  const chartPalette = resolveProfileName(
+    config.chartPalette,
+    { spectrum: true, four: true, monochrome: true },
+    defaultTheme.chartPalette,
+  );
+  const radius = resolveProfileName(
+    config.radius,
+    radiusProfiles,
+    defaultTheme.radius,
+  );
+  const density = resolveProfileName(
+    config.density,
+    densityProfiles,
+    defaultTheme.density,
+  );
+  const elevation = resolveProfileName(
+    config.elevation,
+    { flat: true, soft: true, standard: true },
+    defaultTheme.elevation,
+  );
   const radiusValue =
-    config.radiusValue === undefined
+    typeof config.radiusValue !== "number" ||
+    !Number.isFinite(config.radiusValue)
       ? undefined
       : normalizeRadiusValue(config.radiusValue);
   const motionDuration = normalizeMotionDuration(
@@ -751,31 +824,25 @@ export function resolveTheme(config: ThemeConfig = {}): ResolvedTheme {
 
   return {
     appearance: resolveAppearance(config.appearance ?? defaultTheme.appearance),
-    palette: config.palette ?? defaultTheme.palette,
-    primary: config.primary ?? config.palette ?? defaultTheme.primary,
-    accent: config.accent ?? config.palette ?? defaultTheme.accent,
-    canvas: config.canvas ?? defaultTheme.canvas,
-    chartPalette: config.chartPalette ?? defaultTheme.chartPalette,
-    radius: config.radius ?? defaultTheme.radius,
+    palette,
+    primary,
+    accent,
+    canvas,
+    chartPalette,
+    radius,
     ...(radiusValue === undefined ? {} : { radiusValue }),
-    density: config.density ?? defaultTheme.density,
+    density,
     motionDuration,
-    typography: typographyName,
+    typography: resolvedTypographyName,
     typographyFamilies: {
-      ui:
-        typeof typographySetting === "object" && typographySetting.ui
-          ? typographySetting.ui
-          : typographyProfile.ui,
-      display:
-        typeof typographySetting === "object" && typographySetting.display
-          ? typographySetting.display
-          : typographyProfile.display,
-      mono:
-        typeof typographySetting === "object" && typographySetting.mono
-          ? typographySetting.mono
-          : typographyProfile.mono,
+      ui: resolveFamily(typographyOverrides?.ui, typographyProfile.ui),
+      display: resolveFamily(
+        typographyOverrides?.display,
+        typographyProfile.display,
+      ),
+      mono: resolveFamily(typographyOverrides?.mono, typographyProfile.mono),
     },
-    elevation: config.elevation ?? defaultTheme.elevation,
+    elevation,
   };
 }
 
@@ -893,14 +960,15 @@ export function buildThemeVariables(
     "--t7-border-hsl": neutrals.border,
     "--t7-border-strong-hsl": neutrals.borderStrong,
     "--t7-muted-hsl": neutrals.muted,
-    "--t7-focus-hsl": primaryPalette.primary,
+    "--t7-focus-hsl": accentPalette.accent,
+    "--t7-focus-ring": "0 0 0 3px hsl(var(--t7-focus-hsl) / 0.28)",
     "--t7-selected-hsl": primaryPalette.primary,
     "--t7-selected-hover-hsl": primaryPalette.primaryHover,
     "--t7-interactive-border-hsl": primaryPalette.primary,
     "--t7-input-background-hsl": neutrals.surface,
     "--t7-input-border-hsl": neutrals.borderStrong,
     "--t7-input-hover-border-hsl": primaryPalette.primary,
-    "--t7-input-focus-border-hsl": primaryPalette.primary,
+    "--t7-input-focus-border-hsl": accentPalette.accent,
     "--t7-disabled-background-hsl": neutrals.muted,
     "--t7-disabled-foreground-hsl": neutrals.mutedForeground,
     "--t7-success-hsl": semantic.success,

@@ -2,6 +2,7 @@ import {
   useEffect,
   useLayoutEffect,
   useMemo,
+  useRef,
   useState,
   type CSSProperties,
   type ReactNode,
@@ -39,6 +40,7 @@ import type {
   DensityName,
   PaletteName,
   RadiusName,
+  ResolvedTheme,
   TypographyName,
 } from "@ten4seven/tokens";
 import {
@@ -48,6 +50,7 @@ import {
   paletteProfiles,
   radiusProfiles,
   radiusValueRange,
+  typographyProfiles,
 } from "@ten4seven/tokens";
 import {
   EbookStoreCatalog,
@@ -67,6 +70,7 @@ import {
   TokensExplorer,
 } from "./library-explorers";
 import { PublicShowcase } from "./public-showcase";
+import { BrandExpressionProof } from "./brand-expression";
 import {
   blockCatalog,
   categoryLabels,
@@ -80,6 +84,7 @@ import {
 } from "./catalog-model";
 import {
   libraryNavigation,
+  brandProofRouteTitles,
   playgroundRoutePaths,
   playgroundRouteDescriptions,
   playgroundRouteTitles,
@@ -103,6 +108,45 @@ type StudioSettings = {
   motionDuration: number;
   typography: TypographyName;
 };
+
+type StudioThemeChange = {
+  label: string;
+  value: string;
+};
+
+function formatRadiusSetting(
+  theme: Pick<ResolvedTheme, "radius" | "radiusValue">,
+) {
+  return theme.radiusValue === undefined
+    ? theme.radius
+    : `${theme.radiusValue}px`;
+}
+
+function getThemeChange(
+  previous: ResolvedTheme,
+  next: ResolvedTheme,
+): StudioThemeChange | null {
+  const axes: Array<[string, string, string]> = [
+    ["Appearance", previous.appearance, next.appearance],
+    ["Base palette", previous.palette, next.palette],
+    ["Main action color", previous.primary, next.primary],
+    ["Accent color", previous.accent, next.accent],
+    ["Canvas", previous.canvas, next.canvas],
+    ["Chart colorway", previous.chartPalette, next.chartPalette],
+    ["Radius", formatRadiusSetting(previous), formatRadiusSetting(next)],
+    ["Density", previous.density, next.density],
+    [
+      "Motion duration",
+      formatMotionDuration(previous.motionDuration),
+      formatMotionDuration(next.motionDuration),
+    ],
+    ["Typography", previous.typography, next.typography],
+  ];
+  const changed = axes.find(
+    ([, previousValue, nextValue]) => previousValue !== nextValue,
+  );
+  return changed ? { label: changed[0], value: changed[2] } : null;
+}
 
 type InventoryRow = {
   id: string;
@@ -386,7 +430,9 @@ function TypographySpecimen() {
           <h2>Typography specimen</h2>
           <p>One live hierarchy, resolved from the active typography preset.</p>
         </div>
-        <span className="studio-section-count">Inter variable / opsz auto</span>
+        <span className="studio-section-count">
+          {typographyPresetLabels[theme.typography]} · 22 roles
+        </span>
       </div>
 
       <Card className="typography-specimen">
@@ -409,7 +455,7 @@ function TypographySpecimen() {
               </Typography>
               <Typography typeRole="caption">Optical sizing enabled</Typography>
               <Typography typeRole="caption">
-                {theme.typography} preset · Inter variable · opsz auto
+                {typographyPresetDetails[theme.typography]} · opsz auto
               </Typography>
             </div>
           </div>
@@ -481,6 +527,34 @@ function TypographySpecimen() {
               </div>
             </div>
           </div>
+
+          <div
+            aria-label="Additional typography roles"
+            className="type-specimen-role-strip"
+          >
+            <div className="type-specimen-role-card">
+              <Typography typeRole="overline">Metric</Typography>
+              <Typography typeRole="metric-lg" data-numeric>
+                12,480
+              </Typography>
+              <Typography typeRole="caption">metric-lg</Typography>
+            </div>
+            <div className="type-specimen-role-card">
+              <Typography typeRole="overline">Navigation</Typography>
+              <Typography typeRole="nav">Operations tracker</Typography>
+              <Typography typeRole="caption">nav</Typography>
+            </div>
+            <div className="type-specimen-role-card">
+              <Typography typeRole="overline">Input</Typography>
+              <Typography typeRole="input">Search records…</Typography>
+              <Typography typeRole="caption">input</Typography>
+            </div>
+            <div className="type-specimen-role-card">
+              <Typography typeRole="overline">Code</Typography>
+              <code>--t7-focus-hsl</code>
+              <Typography typeRole="caption">mono family</Typography>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </section>
@@ -509,15 +583,29 @@ function Studio({
   const [isModalOpen, setModalOpen] = useState(false);
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
   const [saved, setSaved] = useState(false);
+  const previousThemeRef = useRef(theme);
+  const didMountThemeRef = useRef(false);
+  const [lastChange, setLastChange] = useState<StudioThemeChange | null>(null);
+
+  useEffect(() => {
+    if (!didMountThemeRef.current) {
+      didMountThemeRef.current = true;
+      previousThemeRef.current = theme;
+      return;
+    }
+    const change = getThemeChange(previousThemeRef.current, theme);
+    if (change) setLastChange(change);
+    previousThemeRef.current = theme;
+  }, [theme]);
 
   const axisRows = useMemo(
     () => [
       ["Appearance", theme.appearance],
-      ["Palette", theme.palette],
-      ["Main color", theme.primary],
+      ["Base palette", theme.palette],
+      ["Main action", theme.primary],
       ["Accent color", theme.accent],
       ["Canvas", theme.canvas],
-      ["Chart palette", theme.chartPalette],
+      ["Chart colorway", theme.chartPalette],
       [
         "Radius",
         theme.radiusValue === undefined
@@ -525,7 +613,7 @@ function Studio({
           : `${theme.radiusValue}px`,
       ],
       ["Density", theme.density],
-      ["Motion", formatMotionDuration(theme.motionDuration)],
+      ["Motion duration", formatMotionDuration(theme.motionDuration)],
       ["Typography", theme.typography],
     ],
     [theme],
@@ -671,70 +759,285 @@ function Studio({
               <section className="studio-control-row">
                 <Card className="studio-controls-card">
                   <CardHeader>
-                    <div>
+                    <div className="studio-controls-header-copy">
                       <CardTitle>Global controls</CardTitle>
                       <CardDescription>
-                        Every control below writes semantic variables at the
-                        provider root.
+                        Choose the base system, then tune the roles that travel
+                        with it. Every change writes the same provider tokens
+                        used by previews and reference routes.
                       </CardDescription>
                     </div>
-                    <T7Icon
-                      className="studio-card-icon"
-                      name="palette"
-                      size={24}
-                    />
+                    <div className="studio-controls-header-side">
+                      <div
+                        aria-atomic="true"
+                        aria-label={
+                          lastChange
+                            ? `Updated live. ${lastChange.label}: ${lastChange.value}`
+                            : "Live. Ready to preview"
+                        }
+                        aria-live="polite"
+                        className="studio-controls-live-state"
+                        data-testid="studio-controls-live-state"
+                      >
+                        <span className="studio-controls-live-badge">
+                          <i aria-hidden="true" />
+                          {lastChange ? "Updated live" : "Live"}
+                        </span>
+                        <span className="studio-controls-live-copy">
+                          {lastChange
+                            ? `${lastChange.label} · ${lastChange.value}`
+                            : "Ready to preview"}
+                        </span>
+                      </div>
+                      <T7Icon
+                        className="studio-card-icon"
+                        name="palette"
+                        size={24}
+                      />
+                    </div>
                   </CardHeader>
-                  <CardContent className="studio-controls-grid">
-                    <SettingSelect
-                      label="Appearance"
-                      settingKey="appearance"
-                      value={theme.appearance}
-                      options={["light", "dark"]}
-                    />
-                    <PalettePicker value={theme.palette} />
-                    <SettingSelect
-                      label="Main color"
-                      settingKey="primary"
-                      value={theme.primary}
-                      options={paletteNames}
-                    />
-                    <SettingSelect
-                      label="Accent color"
-                      settingKey="accent"
-                      value={theme.accent}
-                      options={paletteNames}
-                    />
-                    <SettingSelect
-                      label="Canvas"
-                      optionLabels={{
-                        balanced: "Balanced",
-                        monochrome: "Monochrome",
-                        paper: "Paper white",
-                      }}
-                      settingKey="canvas"
-                      value={theme.canvas}
-                      options={["balanced", "paper", "monochrome"]}
-                    />
-                    <SettingSelect
-                      label="Chart palette"
-                      optionLabels={{
-                        four: "Four colors",
-                        monochrome: "Monochrome",
-                        spectrum: "Spectrum",
-                      }}
-                      settingKey="chartPalette"
-                      value={theme.chartPalette}
-                      options={["spectrum", "four", "monochrome"]}
-                    />
-                    <RadiusSlider value={theme.radius} />
-                    <DensitySlider value={theme.density} />
-                    <MotionSlider value={theme.motionDuration} />
-                    <SettingSelect
-                      label="Typography"
-                      settingKey="typography"
-                      value={theme.typography}
-                      options={["modern", "humanist", "mono"]}
-                    />
+                  <CardContent className="studio-controls-content">
+                    <StudioLivePreview />
+                    <div
+                      aria-label="How global controls relate"
+                      className="studio-control-guide"
+                      data-testid="studio-control-guide"
+                      role="note"
+                    >
+                      <div className="studio-control-guide-copy">
+                        <Typography
+                          as="h3"
+                          className="studio-control-guide-title"
+                          typeRole="label"
+                        >
+                          How the controls relate
+                        </Typography>
+                        <p>
+                          <strong>Base palette</strong> sets the default hue.{" "}
+                          <strong>Main action</strong> colors buttons, links,
+                          and selected states. <strong>Accent color</strong>{" "}
+                          drives focus rings, focused fields, and emphasis.{" "}
+                          <strong>Canvas</strong> controls neutral surfaces;{" "}
+                          <strong>Chart</strong> controls data series only.
+                        </p>
+                      </div>
+                      <div className="studio-control-guide-roles">
+                        <span data-role="base">Base</span>
+                        <span data-role="role">UI roles</span>
+                        <span data-role="surface">Surfaces</span>
+                        <span data-role="motion">Motion</span>
+                      </div>
+                    </div>
+                    <div className="studio-controls-grid">
+                      <section
+                        aria-labelledby="studio-environment-heading"
+                        className="studio-control-group studio-control-group-environment"
+                      >
+                        <div className="studio-control-group-heading">
+                          <Typography
+                            as="h3"
+                            className="studio-control-group-title"
+                            id="studio-environment-heading"
+                            typeRole="label"
+                          >
+                            Environment
+                          </Typography>
+                          <p>
+                            Set the overall appearance mode for the provider.
+                          </p>
+                        </div>
+                        <SettingSelect
+                          hint="Light or dark surfaces across every route."
+                          label="Appearance"
+                          settingKey="appearance"
+                          value={theme.appearance}
+                          options={["light", "dark"]}
+                        />
+                      </section>
+
+                      <section
+                        aria-labelledby="studio-type-heading"
+                        className="studio-control-group studio-control-group-type"
+                      >
+                        <div className="studio-control-group-heading">
+                          <Typography
+                            as="h3"
+                            className="studio-control-group-title"
+                            id="studio-type-heading"
+                            typeRole="label"
+                          >
+                            Typography
+                          </Typography>
+                          <p>Choose the shared family and role hierarchy.</p>
+                        </div>
+                        <SettingSelect
+                          hint="Changes the UI, display, and mono families used by every type role."
+                          label="Typography style"
+                          optionLabels={typographyPresetLabels}
+                          settingKey="typography"
+                          value={theme.typography}
+                          options={typographyNames}
+                        />
+                        <div
+                          className="studio-typography-current"
+                          data-preset={theme.typography}
+                          data-testid="studio-typography-current"
+                        >
+                          <span
+                            aria-hidden="true"
+                            className="studio-typography-current-sample"
+                          >
+                            Aa
+                          </span>
+                          <div>
+                            <strong>
+                              {typographyPresetLabels[theme.typography]}
+                            </strong>
+                            <span>
+                              {typographyPresetDetails[theme.typography]}
+                            </span>
+                          </div>
+                        </div>
+                      </section>
+
+                      <section
+                        aria-labelledby="studio-color-heading"
+                        className="studio-control-group studio-control-group-color"
+                      >
+                        <div className="studio-control-group-heading">
+                          <Typography
+                            as="h3"
+                            className="studio-control-group-title"
+                            id="studio-color-heading"
+                            typeRole="label"
+                          >
+                            Color roles
+                          </Typography>
+                          <p>
+                            Set the base hue, then tune each semantic role. The
+                            labels below tell you exactly where each value
+                            appears.
+                          </p>
+                        </div>
+                        <PalettePicker value={theme.palette} />
+                        <div
+                          aria-label="Color role map"
+                          className="studio-color-role-map"
+                          data-testid="studio-color-role-map"
+                        >
+                          <div data-role="main">
+                            <span aria-hidden="true" />
+                            <div>
+                              <strong>Main action</strong>
+                              <small>Buttons · links · selected</small>
+                            </div>
+                          </div>
+                          <div data-role="accent">
+                            <span aria-hidden="true" />
+                            <div>
+                              <strong>Accent color</strong>
+                              <small>Focus ring · focused fields</small>
+                            </div>
+                          </div>
+                          <div data-role="surface">
+                            <span aria-hidden="true" />
+                            <div>
+                              <strong>Canvas</strong>
+                              <small>Neutral page surfaces</small>
+                            </div>
+                          </div>
+                          <div data-role="data">
+                            <span aria-hidden="true" />
+                            <div>
+                              <strong>Chart</strong>
+                              <small>Data series only</small>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="studio-control-subgrid">
+                          <SettingSelect
+                            hint="Primary actions, links, and selected states."
+                            label="Main action color"
+                            settingKey="primary"
+                            value={theme.primary}
+                            options={paletteNames}
+                          />
+                          <SettingSelect
+                            hint="Focus rings, focused inputs, and supporting emphasis use this accent."
+                            label="Accent color"
+                            settingKey="accent"
+                            value={theme.accent}
+                            options={paletteNames}
+                          />
+                          <SettingSelect
+                            hint="Neutral surfaces, independent from hue."
+                            label="Canvas"
+                            optionLabels={{
+                              balanced: "Balanced",
+                              monochrome: "Monochrome",
+                              paper: "Paper white",
+                            }}
+                            settingKey="canvas"
+                            value={theme.canvas}
+                            options={["balanced", "paper", "monochrome"]}
+                          />
+                          <SettingSelect
+                            hint="Data-series colors; UI roles stay unchanged."
+                            label="Chart colorway"
+                            optionLabels={{
+                              four: "Four colors",
+                              monochrome: "Monochrome",
+                              spectrum: "Spectrum",
+                            }}
+                            settingKey="chartPalette"
+                            value={theme.chartPalette}
+                            options={["spectrum", "four", "monochrome"]}
+                          />
+                        </div>
+                      </section>
+
+                      <section
+                        aria-labelledby="studio-rhythm-heading"
+                        className="studio-control-group studio-control-group-rhythm"
+                      >
+                        <div className="studio-control-group-heading">
+                          <Typography
+                            as="h3"
+                            className="studio-control-group-title"
+                            id="studio-rhythm-heading"
+                            typeRole="label"
+                          >
+                            Shape &amp; density
+                          </Typography>
+                          <p>Adjust shared geometry and vertical rhythm.</p>
+                        </div>
+                        <div className="studio-control-subgrid">
+                          <RadiusSlider value={theme.radius} />
+                          <DensitySlider value={theme.density} />
+                        </div>
+                      </section>
+
+                      <section
+                        aria-labelledby="studio-motion-heading"
+                        className="studio-control-group studio-control-group-motion"
+                      >
+                        <div className="studio-control-group-heading">
+                          <Typography
+                            as="h3"
+                            className="studio-control-group-title"
+                            id="studio-motion-heading"
+                            typeRole="label"
+                          >
+                            Motion
+                          </Typography>
+                          <p>
+                            One shared duration for viewport reveals, hover,
+                            expand, and chart animation. Steps are 0.25 seconds.
+                          </p>
+                        </div>
+                        <MotionSlider value={theme.motionDuration} />
+                      </section>
+                    </div>
                   </CardContent>
                   <CardFooter>
                     <Button
@@ -752,10 +1055,15 @@ function Studio({
                     <div>
                       <CardTitle>Active profile</CardTitle>
                       <CardDescription>
-                        Resolved values in this render.
+                        Current values written to the provider root.
                       </CardDescription>
                     </div>
-                    <span className="studio-axis-value">{theme.palette}</span>
+                    <span
+                      aria-label={`Base palette: ${theme.palette}`}
+                      className="studio-axis-value"
+                    >
+                      {theme.palette}
+                    </span>
                   </CardHeader>
                   <CardContent>
                     <dl className="studio-axis-list">
@@ -1137,6 +1445,111 @@ function RadiusSlider({ value }: { value: RadiusName }) {
   );
 }
 
+function StudioLivePreview() {
+  const { theme } = useTen4SevenTheme();
+
+  return (
+    <section
+      aria-labelledby="studio-live-preview-title"
+      className="studio-live-preview"
+      data-testid="studio-live-preview"
+    >
+      <div className="studio-live-preview-heading">
+        <div>
+          <Typography
+            as="h3"
+            className="studio-live-preview-title"
+            id="studio-live-preview-title"
+            typeRole="label"
+          >
+            See the roles update in place
+          </Typography>
+          <Typography as="p" typeRole="caption">
+            Change a setting below and watch the same root tokens reach the
+            controls, surfaces, focus treatment, and data colorways here.
+          </Typography>
+        </div>
+        <span className="studio-live-preview-source">root tokens · live</span>
+      </div>
+      <div className="studio-live-preview-grid">
+        <div className="studio-live-preview-sample" data-role="primary">
+          <div className="studio-live-preview-role-heading">
+            <span className="studio-live-preview-label">Primary action</span>
+            <span className="studio-live-preview-role-note">
+              Buttons · links · selected states
+            </span>
+          </div>
+          <Button leadingIcon="check" size="sm">
+            Apply
+          </Button>
+          <span className="studio-live-preview-meta" data-live-value="primary">
+            {theme.primary} · primary role
+          </span>
+        </div>
+        <div className="studio-live-preview-sample" data-role="accent">
+          <div className="studio-live-preview-role-heading">
+            <span className="studio-live-preview-label">Accent color</span>
+            <span className="studio-live-preview-role-note">
+              Focus ring · focused fields
+            </span>
+          </div>
+          <Input
+            aria-label="Live theme preview field"
+            className="studio-live-preview-focus-input"
+            defaultValue="Ready"
+          />
+          <span className="studio-live-preview-meta" data-live-value="accent">
+            {theme.accent} · shared focus role
+          </span>
+        </div>
+        <div className="studio-live-preview-sample" data-role="surface">
+          <div className="studio-live-preview-role-heading">
+            <span className="studio-live-preview-label">Canvas surface</span>
+            <span className="studio-live-preview-role-note">
+              Neutral page surfaces
+            </span>
+          </div>
+          <div
+            className="studio-live-preview-surface"
+            data-live-value="surface"
+          >
+            <span>
+              Canvas <strong>{theme.canvas}</strong>
+            </span>
+            <Badge tone="primary">{formatRadiusSetting(theme)} radius</Badge>
+          </div>
+          <span className="studio-live-preview-meta" data-live-value="density">
+            {theme.density} density · shared surface scale
+          </span>
+        </div>
+        <div className="studio-live-preview-sample" data-role="data">
+          <div className="studio-live-preview-role-heading">
+            <span className="studio-live-preview-label">Chart colorway</span>
+            <span className="studio-live-preview-role-note">
+              Data series only
+            </span>
+          </div>
+          <div
+            aria-label={`Chart preview: ${theme.chartPalette} colorway`}
+            className="studio-live-preview-chart"
+            data-live-value="chart"
+            role="img"
+          >
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+          </div>
+          <span className="studio-live-preview-meta">
+            {theme.chartPalette} · {theme.palette} base hue
+          </span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function DensitySlider({ value }: { value: DensityName }) {
   const { setTheme } = useTen4SevenTheme();
   return (
@@ -1166,8 +1579,8 @@ function MotionSlider({ value }: { value: number }) {
     <div className="studio-axis-slider studio-motion-control">
       <Slider
         aria-label="Motion duration"
-        aria-valuetext={`${valueLabel}; viewport reveal and interaction timing`}
-        label="Motion"
+        aria-valuetext={`${valueLabel}; shared viewport reveal and interaction timing; 0.25 second steps`}
+        label="Motion duration"
         max={motionDurationRange.max}
         min={motionDurationRange.min}
         onChange={(event) => {
@@ -1185,13 +1598,13 @@ function MotionSlider({ value }: { value: number }) {
         valueLabel={valueLabel}
       />
       <span className="studio-axis-slider-detail">
-        Viewport reveals · interaction timing
+        0.25s steps · shared reveal · interaction timing
       </span>
       <div
         aria-hidden="true"
         className="studio-axis-slider-scale studio-motion-scale"
       >
-        {[0.5, 1, 1.5, 2, 2.5].map((stop) => (
+        {[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5].map((stop) => (
           <span data-active={activeValue === stop} key={stop}>
             {formatMotionDuration(stop)}
           </span>
@@ -1203,12 +1616,14 @@ function MotionSlider({ value }: { value: number }) {
 
 function SettingSelect({
   label,
+  hint,
   optionLabels,
   options,
   settingKey,
   value,
 }: {
   label: string;
+  hint?: string;
   optionLabels?: Record<string, string>;
   options: string[];
   settingKey: keyof StudioSettings;
@@ -1217,6 +1632,7 @@ function SettingSelect({
   const { setTheme } = useTen4SevenTheme();
   return (
     <Select
+      hint={hint}
       label={label}
       value={value}
       onChange={(event) => {
@@ -1234,12 +1650,31 @@ function SettingSelect({
 }
 
 const paletteNames = Object.keys(paletteProfiles) as PaletteName[];
+const typographyNames = Object.keys(typographyProfiles) as TypographyName[];
+const typographyPresetLabels: Record<TypographyName, string> = {
+  modern: "Modern",
+  humanist: "Humanist",
+  editorial: "Editorial",
+  technical: "Technical",
+  mono: "Mono",
+};
+const typographyPresetDetails: Record<TypographyName, string> = {
+  modern: "Inter · balanced UI + display",
+  humanist: "DM Sans · warmer rhythm",
+  editorial: "Serif display · calm reading tone",
+  technical: "Mono UI · precise operator tone",
+  mono: "IBM Plex Mono · fully technical",
+};
 
 function PalettePicker({ value }: { value: PaletteName }) {
   const { setTheme } = useTen4SevenTheme();
   return (
     <fieldset className="studio-palette-picker">
-      <legend className="t7-field-label">Palette</legend>
+      <legend className="t7-field-label">Base palette</legend>
+      <p className="studio-palette-help">
+        Sets the default hue for UI and chart colors. Choosing a swatch also
+        resets Main action and Accent color to that family.
+      </p>
       <div className="studio-palette-options">
         {paletteNames.map((palette) => (
           <button
@@ -1354,30 +1789,34 @@ export default function App() {
     const routeTitle =
       routeMatch.kind === "known"
         ? playgroundRouteTitles[routeMatch.route]
-        : routeMatch.kind === "component-family"
-          ? `ten4seven UI — ${categoryLabels[routeMatch.category] ?? routeMatch.category}`
-          : routeMatch.kind === "component-detail"
-            ? `ten4seven UI — ${componentCatalog[routeMatch.name].displayName ?? routeMatch.name}`
-            : routeMatch.kind === "recipe-detail"
-              ? `ten4seven UI — ${recipeCatalog[routeMatch.name].displayName ?? routeMatch.name}`
-              : routeMatch.kind === "block-detail"
-                ? `ten4seven UI — ${blockCatalog[routeMatch.name].displayName ?? routeMatch.name}`
-                : "ten4seven UI — Route not found";
+        : routeMatch.kind === "brand-proof"
+          ? brandProofRouteTitles[routeMatch.profileId]
+          : routeMatch.kind === "component-family"
+            ? `ten4seven UI — ${categoryLabels[routeMatch.category] ?? routeMatch.category}`
+            : routeMatch.kind === "component-detail"
+              ? `ten4seven UI — ${componentCatalog[routeMatch.name].displayName ?? routeMatch.name}`
+              : routeMatch.kind === "recipe-detail"
+                ? `ten4seven UI — ${recipeCatalog[routeMatch.name].displayName ?? routeMatch.name}`
+                : routeMatch.kind === "block-detail"
+                  ? `ten4seven UI — ${blockCatalog[routeMatch.name].displayName ?? routeMatch.name}`
+                  : "ten4seven UI — Route not found";
     document.title = routeTitle;
     const description = document.querySelector('meta[name="description"]');
     description?.setAttribute(
       "content",
       routeMatch.kind === "known"
         ? playgroundRouteDescriptions[routeMatch.route]
-        : routeMatch.kind === "component-family"
-          ? `Canonical ${categoryLabels[routeMatch.category] ?? routeMatch.category} components in the ten4seven UI catalog.`
-          : routeMatch.kind === "component-detail"
-            ? componentCatalog[routeMatch.name].purpose
-            : routeMatch.kind === "recipe-detail"
-              ? recipeCatalog[routeMatch.name].purpose
-              : routeMatch.kind === "block-detail"
-                ? blockCatalog[routeMatch.name].purpose
-                : "The requested ten4seven UI playground route does not exist.",
+        : routeMatch.kind === "brand-proof"
+          ? "Brand expression proof for the canonical Authentication recipe in ten4seven UI."
+          : routeMatch.kind === "component-family"
+            ? `Canonical ${categoryLabels[routeMatch.category] ?? routeMatch.category} components in the ten4seven UI catalog.`
+            : routeMatch.kind === "component-detail"
+              ? componentCatalog[routeMatch.name].purpose
+              : routeMatch.kind === "recipe-detail"
+                ? recipeCatalog[routeMatch.name].purpose
+                : routeMatch.kind === "block-detail"
+                  ? blockCatalog[routeMatch.name].purpose
+                  : "The requested ten4seven UI playground route does not exist.",
     );
   }, [routeMatch]);
 
@@ -1420,6 +1859,13 @@ export default function App() {
     routeMatch.route === "Public Showcase"
   ) {
     routeContent = <PublicShowcase onNavigatePath={navigateToPath} />;
+  } else if (routeMatch.kind === "brand-proof") {
+    routeContent = (
+      <BrandExpressionProof
+        onNavigatePath={navigateToPath}
+        profileId={routeMatch.profileId}
+      />
+    );
   } else {
     const activeRoute: Exclude<
       PlaygroundRoute,

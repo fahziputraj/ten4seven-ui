@@ -47,6 +47,7 @@ describe("theme engine", () => {
 
   it("exposes restrained semantic typography roles and family overrides", () => {
     const theme = resolveTheme({
+      accent: "amber",
       typography: {
         preset: "modern",
         ui: '"A custom UI"',
@@ -62,6 +63,11 @@ describe("theme engine", () => {
     expect(variables["--t7-type-button-weight"]).toBe("550");
     expect(variables["--t7-type-table-header-weight"]).toBe("550");
     expect(variables["--t7-font-optical-sizing"]).toBe("auto");
+    expect(variables["--t7-focus-hsl"]).toBe("48 92% 49%");
+    expect(variables["--t7-input-focus-border-hsl"]).toBe("48 92% 49%");
+    expect(variables["--t7-focus-ring"]).toBe(
+      "0 0 0 3px hsl(var(--t7-focus-hsl) / 0.28)",
+    );
     expect(variables["--t7-muted-foreground-strong-hsl"]).toBe("215 18% 36%");
     expect(variables["--t7-scrollbar-size"]).toBe("4px");
     expect(variables["--t7-scrollbar-thumb-alpha"]).toBe("0.3");
@@ -90,9 +96,59 @@ describe("theme engine", () => {
 
   it("normalizes motion duration to the shared range and quarter-second step", () => {
     expect(resolveTheme().motionDuration).toBe(1.5);
+    expect(resolveTheme({ motionDuration: 0.12 }).motionDuration).toBe(0.25);
     expect(resolveTheme({ motionDuration: 0.62 }).motionDuration).toBe(0.5);
-    expect(resolveTheme({ motionDuration: 1.62 }).motionDuration).toBe(1.5);
+    expect(resolveTheme({ motionDuration: 1.12 }).motionDuration).toBe(1);
     expect(resolveTheme({ motionDuration: 4 }).motionDuration).toBe(2.5);
+  });
+
+  it("provides distinct typography characters without changing semantic roles", () => {
+    const editorial = buildThemeVariables(
+      resolveTheme({ typography: "editorial" }),
+    );
+    const technical = buildThemeVariables(
+      resolveTheme({ typography: "technical" }),
+    );
+
+    expect(editorial["--t7-font-display"]).toContain("Georgia");
+    expect(technical["--t7-font-ui"]).toContain("IBM Plex Mono");
+    expect(editorial["--t7-type-display-lg-size"]).toBe(
+      technical["--t7-type-display-lg-size"],
+    );
+    expect(editorial["--t7-font-display"]).not.toBe(
+      technical["--t7-font-display"],
+    );
+  });
+
+  it("falls back safely when persisted control values are invalid", () => {
+    const theme = resolveTheme({
+      appearance: "invalid" as never,
+      palette: "invalid" as never,
+      primary: "invalid" as never,
+      accent: "invalid" as never,
+      canvas: "invalid" as never,
+      chartPalette: "invalid" as never,
+      radius: "invalid" as never,
+      radiusValue: "invalid" as never,
+      density: "invalid" as never,
+      motionDuration: "invalid" as never,
+      typography: { preset: "invalid", ui: 42 } as never,
+      elevation: "invalid" as never,
+    });
+
+    expect(theme.appearance).toBe("light");
+    expect(theme.palette).toBe("emerald");
+    expect(theme.primary).toBe("emerald");
+    expect(theme.accent).toBe("emerald");
+    expect(theme.canvas).toBe("balanced");
+    expect(theme.chartPalette).toBe("spectrum");
+    expect(theme.radius).toBe("soft");
+    expect(theme.radiusValue).toBeUndefined();
+    expect(theme.density).toBe("default");
+    expect(theme.motionDuration).toBe(1.5);
+    expect(theme.typography).toBe("modern");
+    expect(theme.elevation).toBe("soft");
+    expect(() => buildThemeVariables(theme)).not.toThrow();
   });
 
   it("keeps primary badge labels readable across appearance modes", () => {

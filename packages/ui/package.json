@@ -1,24 +1,53 @@
 {
   "name": "@ten4seven/ui",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "Self-contained ten4seven UI system with tokens, semantic icons, motion, and React components.",
+  "license": "UNLICENSED",
   "private": true,
   "type": "module",
+  "files": [
+    "dist",
+    "LICENSE.md",
+    "README.md",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts",
-    "./styles.css": "./src/styles.css"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.js"
+    },
+    "./styles.css": {
+      "default": "./dist/styles.css"
+    },
+    "./fonts/*": "./dist/fonts/*",
+    "./package.json": "./package.json"
   },
-  "dependencies": {
-    "@ten4seven/icons": "workspace:*",
-    "@ten4seven/tokens": "workspace:*"
-  },
+  "sideEffects": [
+    "./dist/styles.css"
+  ],
   "peerDependencies": {
-    "react": ">=18",
-    "react-dom": ">=18"
+    "react": ">=18.2.0",
+    "react-dom": ">=18.2.0"
   },
   "devDependencies": {
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "animejs": "^4.5.0",
+    "rollup": "^4.62.5",
+    "rollup-plugin-dts": "^6.2.1",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.12"
+  },
+  "scripts": {
+    "build": "node ./scripts/build-package.mjs",
+    "verify": "node ./scripts/verify-package.mjs",
+    "pack:release": "pnpm build && pnpm verify && pnpm pack --pack-destination ../../artifacts"
   }
 }

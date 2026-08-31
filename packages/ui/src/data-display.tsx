@@ -1,6 +1,8 @@
 import {
+  useEffect,
   useMemo,
   useId,
+  useRef,
   useState,
   type CSSProperties,
   type HTMLAttributes,
@@ -12,6 +14,7 @@ import {
 
 import { T7Icon, type IconName } from "@ten4seven/icons";
 
+import { observeT7InView, t7AnimateMilestone } from "./motion";
 import {
   Badge,
   Card,
@@ -307,6 +310,8 @@ export function MilestoneTracker({
   const selectedItem =
     items.find((item) => item.id === activeId) ?? initialItem;
   const detailId = `${trackerId}-details`;
+  const trackerRef = useRef<HTMLElement | null>(null);
+  const [trackerVisible, setTrackerVisible] = useState(false);
   const trackerStyle = {
     ...style,
     "--t7-milestone-count": items.length,
@@ -317,11 +322,29 @@ export function MilestoneTracker({
     onSelectedIdChange?.(id);
   };
 
+  useEffect(() => {
+    const element = trackerRef.current;
+    if (!element) return;
+    return observeT7InView(element, () => setTrackerVisible(true), {
+      rootMargin: "0px 0px -10% 0px",
+      threshold: 0.12,
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!trackerVisible) return;
+    const element = trackerRef.current;
+    if (!element) return;
+    const motion = t7AnimateMilestone(element);
+    return () => motion.revert();
+  }, [trackerVisible]);
+
   return (
     <nav
       {...props}
       aria-label={label}
       className={cx("t7-milestone-tracker", className)}
+      ref={trackerRef}
       style={trackerStyle}
     >
       <div className="t7-milestone-scroll">
