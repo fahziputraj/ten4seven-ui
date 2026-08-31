@@ -182,7 +182,7 @@ test("long select values stay inside their Theme Studio fields", async ({
   await page.goto("/theme-studio");
 
   const fieldGeometry = await page
-    .locator(".studio-controls-grid > .t7-field")
+    .locator(".studio-controls-grid .t7-select-field")
     .evaluateAll((fields) =>
       fields.map((field) => {
         const fieldRect = field.getBoundingClientRect();
@@ -220,6 +220,18 @@ test("long select values stay inside their Theme Studio fields", async ({
         sliderRight: sliderRect?.right,
       };
     });
+  const controlGridGeometry = await page
+    .locator(".studio-controls-grid")
+    .evaluate((grid) => {
+      const style = getComputedStyle(grid);
+      const widths = Array.from(grid.children).map((child) =>
+        Math.round(child.getBoundingClientRect().width),
+      );
+      return {
+        columns: style.gridTemplateColumns.split(" ").filter(Boolean).length,
+        pairedWidths: widths.slice(0, 2),
+      };
+    });
   const profileGeometry = await page
     .locator(".studio-axis-list > div")
     .evaluateAll((items) =>
@@ -248,6 +260,11 @@ test("long select values stay inside their Theme Studio fields", async ({
   expect(densityGeometry.sliderRight).toBeLessThanOrEqual(
     densityGeometry.controlRight + 0.5,
   );
+  expect(controlGridGeometry.columns).toBe(2);
+  expect(
+    Math.max(...controlGridGeometry.pairedWidths) -
+      Math.min(...controlGridGeometry.pairedWidths),
+  ).toBeLessThanOrEqual(1);
   expect(profileGeometry).toHaveLength(10);
   const densityProfile = profileGeometry.find(
     (field) => field.label === "Density",
@@ -256,6 +273,139 @@ test("long select values stay inside their Theme Studio fields", async ({
   expect(densityProfile?.labelRight).toBeLessThanOrEqual(
     (densityProfile?.valueX ?? 0) + 0.5,
   );
+});
+
+test("corrupt persisted global controls fall back to a safe theme", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    window.localStorage.setItem(
+      "ten4seven.playground.theme.v1",
+      JSON.stringify({
+        appearance: "invalid",
+        palette: "invalid",
+        primary: "invalid",
+        accent: "invalid",
+        canvas: "invalid",
+        chartPalette: "invalid",
+        radius: "invalid",
+        radiusValue: "invalid",
+        density: "invalid",
+        motionDuration: "invalid",
+        typography: { preset: "invalid", ui: 42 },
+        elevation: "invalid",
+      }),
+    );
+  });
+  await page.goto("/theme-studio");
+
+  const provider = page.locator(".t7-provider");
+  await expect(
+    page.getByRole("heading", { name: "Theme Studio" }),
+  ).toBeVisible();
+  await expect(provider).toHaveAttribute("data-palette", "emerald");
+  await expect(provider).toHaveAttribute("data-primary", "emerald");
+  await expect(provider).toHaveAttribute("data-accent", "emerald");
+  await expect(provider).toHaveAttribute("data-canvas", "balanced");
+  await expect(provider).toHaveAttribute("data-radius", "soft");
+  await expect(provider).toHaveAttribute("data-motion-duration", "1.5");
+  await expect(provider).not.toHaveAttribute("data-radius-value");
+});
+
+test("global controls collapse to one column on narrow screens", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/theme-studio");
+
+  const geometry = await page
+    .locator(".studio-controls-grid")
+    .evaluate((grid) => {
+      const rects = Array.from(grid.children).map((child) => {
+        const rect = child.getBoundingClientRect();
+        return { x: Math.round(rect.x), width: Math.round(rect.width) };
+      });
+      return {
+        columnCount: getComputedStyle(grid)
+          .gridTemplateColumns.split(" ")
+          .filter(Boolean).length,
+        rects,
+      };
+    });
+
+  expect(geometry.columnCount).toBe(1);
+  expect(new Set(geometry.rects.map((rect) => rect.x)).size).toBe(1);
+  expect(new Set(geometry.rects.map((rect) => rect.width)).size).toBe(1);
+});
+
+test("Theme Studio keeps mobile token metadata readable and aligned", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/theme-studio");
+
+  const geometry = await page
+    .locator(".studio-live-preview-meta, .studio-axis-slider-detail")
+    .evaluateAll((items) =>
+      items.map((item) => {
+        const style = getComputedStyle(item);
+        return {
+          clientHeight: item.clientHeight,
+          clientWidth: item.clientWidth,
+          overflowX: style.overflowX,
+          scrollHeight: item.scrollHeight,
+          scrollWidth: item.scrollWidth,
+          text: item.textContent?.trim() ?? "",
+          whiteSpace: style.whiteSpace,
+        };
+      }),
+    );
+
+  expect(geometry.length).toBeGreaterThanOrEqual(7);
+  for (const item of geometry) {
+    expect(
+      item.scrollWidth,
+      `${item.text} should fit within its mobile metadata slot`,
+    ).toBeLessThanOrEqual(item.clientWidth + 1);
+    expect(item.scrollHeight).toBeLessThanOrEqual(item.clientHeight + 1);
+    expect(item.overflowX).toBe("visible");
+    expect(item.whiteSpace).toBe("normal");
+  }
+});
+
+test("CTA blocks without media use the full content track", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/public-showcase");
+
+  const geometry = await page
+    .locator(".public-showcase-cta")
+    .evaluate((cta) => {
+      const ctaRect = cta.getBoundingClientRect();
+      const copy = cta.querySelector<HTMLElement>(".t7-cta-copy");
+      const copyRect = copy?.getBoundingClientRect();
+      const styles = getComputedStyle(cta);
+      const paddingLeft = Number.parseFloat(styles.paddingLeft);
+      const paddingRight = Number.parseFloat(styles.paddingRight);
+      return {
+        columns: styles.gridTemplateColumns.split(" ").filter(Boolean),
+        copyLeft: copyRect?.left ?? null,
+        copyRight: copyRect?.right ?? null,
+        contentLeft: ctaRect.left + paddingLeft,
+        contentRight: ctaRect.right - paddingRight,
+      };
+    });
+
+  expect(geometry.columns).toHaveLength(1);
+  expect(geometry.copyLeft).not.toBeNull();
+  expect(geometry.copyRight).not.toBeNull();
+  expect(
+    Math.abs(geometry.copyLeft! - geometry.contentLeft),
+  ).toBeLessThanOrEqual(1);
+  expect(
+    Math.abs(geometry.copyRight! - geometry.contentRight),
+  ).toBeLessThanOrEqual(1);
 });
 
 test("independent color and canvas axes propagate through the provider", async ({
@@ -285,10 +435,10 @@ test("independent color and canvas axes propagate through the provider", async (
   expect(palettePropagation.buttonBackground).not.toBe("rgba(0, 0, 0, 0)");
   expect(palettePropagation.inputBorder).not.toBe("");
 
-  await chooseSelect(page, "Main color", "indigo");
+  await chooseSelect(page, "Main action color", "indigo");
   await chooseSelect(page, "Accent color", "amber");
   await chooseSelect(page, "Canvas", "Paper white");
-  await chooseSelect(page, "Chart palette", "Four colors");
+  await chooseSelect(page, "Chart colorway", "Four colors");
 
   const provider = page.locator(".t7-provider");
   await expect(provider).toHaveAttribute("data-primary", "indigo");
@@ -297,6 +447,100 @@ test("independent color and canvas axes propagate through the provider", async (
   await expect(provider).toHaveAttribute("data-chart-palette", "four");
   await expect(provider).toHaveCSS("--t7-background-hsl", "0 0% 100%");
   await expect(provider).toHaveCSS("--t7-chart-palette-count", "4");
+});
+
+test("Theme Studio explains semantic color roles and applies accent to focus", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1186, height: 698 });
+  await page.goto("/theme-studio");
+
+  const roleMap = page.getByTestId("studio-color-role-map");
+  await expect(roleMap).toContainText("Main action");
+  await expect(roleMap).toContainText("Buttons · links · selected");
+  await expect(roleMap).toContainText("Accent color");
+  await expect(roleMap).toContainText("Focus ring · focused fields");
+  await expect(roleMap).toContainText("Chart");
+  await expect(roleMap).toContainText("Data series only");
+
+  await chooseSelect(page, "Accent color", "amber");
+  const provider = page.locator(".t7-provider");
+  await expect(provider).toHaveAttribute("data-accent", "amber");
+  await expect(provider).toHaveCSS("--t7-focus-hsl", "48 92% 49%");
+  await expect(provider).toHaveCSS("--t7-input-focus-border-hsl", "48 92% 49%");
+  await expect(
+    page
+      .getByTestId("studio-live-preview")
+      .locator('[data-live-value="accent"]'),
+  ).toHaveText("amber · shared focus role");
+});
+
+test("Typography Studio exposes distinct preset characters and roles", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1186, height: 698 });
+  await page.goto("/theme-studio");
+
+  await page.getByRole("button", { name: "Typography style" }).click();
+  await expect(page.locator(".t7-select-list .t7-option-row")).toHaveCount(5);
+  await page.keyboard.press("Escape");
+  await chooseSelect(page, "Typography style", "Editorial");
+
+  const provider = page.locator(".t7-provider");
+  await expect(provider).toHaveAttribute("data-typography", "editorial");
+  const current = page.getByTestId("studio-typography-current");
+  await expect(current).toHaveAttribute("data-preset", "editorial");
+  await expect(current).toContainText("Editorial");
+  await expect(current).toContainText("Serif display · calm reading tone");
+  await expect(page.locator(".type-specimen-role-strip")).toContainText(
+    "Operations tracker",
+  );
+  const displayFamily = await provider.evaluate((element) =>
+    getComputedStyle(element).getPropertyValue("--t7-font-display"),
+  );
+  expect(displayFamily).toContain("Georgia");
+});
+
+test("Global Controls expose an immediate canonical preview", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1186, height: 698 });
+  await page.goto("/theme-studio");
+
+  const preview = page.getByTestId("studio-live-preview");
+  const liveState = page.getByTestId("studio-controls-live-state");
+  await expect(preview).toBeVisible();
+  await expect(liveState).toHaveAttribute(
+    "aria-label",
+    "Live. Ready to preview",
+  );
+  await expect(preview.locator('[data-live-value="primary"]')).toHaveText(
+    /emerald · primary role/,
+  );
+
+  const before = await preview
+    .locator(".t7-button")
+    .evaluate((element) => getComputedStyle(element).backgroundColor);
+  await page.getByRole("button", { name: "Use blue palette" }).click();
+  await expect(liveState).toContainText("Updated live");
+  await expect(liveState).toContainText("Base palette");
+  await expect(liveState).toContainText("blue");
+  await expect(preview.locator('[data-live-value="primary"]')).toHaveText(
+    "blue · primary role",
+  );
+
+  const after = await preview
+    .locator(".t7-button")
+    .evaluate((element) => getComputedStyle(element).backgroundColor);
+  expect(after).not.toBe(before);
+
+  const field = preview.getByRole("textbox", {
+    name: "Live theme preview field",
+  });
+  await field.fill("QA");
+  await expect(field).toHaveValue("QA");
+  await field.focus();
+  await expect(field).toHaveCSS("box-shadow", /rgb|hsl/);
 });
 
 test("radius slider applies exact zero and one-pixel steps", async ({
@@ -342,16 +586,17 @@ test("motion duration slider controls shared reveal timing", async ({
   const slider = page.getByRole("slider", { name: "Motion duration" });
   await slider.focus();
   await slider.press("Home");
-  await expect(slider).toHaveValue("0.5");
+  await expect(slider).toHaveValue("0.25");
   await expect(page.locator(".t7-provider")).toHaveAttribute(
     "data-motion-duration",
-    "0.5",
+    "0.25",
   );
   await expect(page.locator(".t7-provider")).toHaveCSS(
     "--t7-duration-slow",
-    "500ms",
+    "250ms",
   );
 
+  await slider.press("ArrowRight");
   await slider.press("ArrowRight");
   await expect(slider).toHaveValue("0.75");
   await expect(page.locator(".t7-provider")).toHaveCSS(
@@ -467,6 +712,7 @@ test("shared motion tokens drive smooth scroll and chart reveals", async ({
           animation: style.animationName,
           duration: style.animationDuration,
           className: node.className.baseVal,
+          inlineStyle: node.getAttribute("style") ?? "",
         };
       }),
       hasLocalChartDelay: Boolean(
@@ -484,15 +730,18 @@ test("shared motion tokens drive smooth scroll and chart reveals", async ({
     expect.arrayContaining([
       expect.objectContaining({
         className: expect.stringContaining("t7-chart-line"),
-        duration: "1.5s",
+        animation: "none",
+        duration: "0s",
       }),
       expect.objectContaining({
         className: expect.stringContaining("t7-chart-bar"),
-        duration: "1.5s",
+        animation: "none",
+        duration: "0s",
       }),
       expect.objectContaining({
         className: expect.stringContaining("t7-donut-segment"),
-        duration: "1.5s",
+        animation: "none",
+        duration: "0s",
       }),
     ]),
   );
@@ -500,9 +749,31 @@ test("shared motion tokens drive smooth scroll and chart reveals", async ({
   expect(motion.animatedNodes.length).toBeGreaterThan(0);
   expect(
     motion.animatedNodes.every((node) =>
-      node.animation.startsWith("t7-motion-"),
+      /stroke-dashoffset|opacity|transform/.test(node.inlineStyle),
     ),
   ).toBe(true);
+});
+
+test("motion adapters skip empty targets without console warnings", async ({
+  page,
+}) => {
+  const emptyTargetWarnings: string[] = [];
+  page.on("console", (message) => {
+    if (
+      message.type() === "warning" &&
+      message.text().includes("No target found")
+    ) {
+      emptyTargetWarnings.push(message.text());
+    }
+  });
+
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/public-showcase");
+  await page.waitForTimeout(250);
+  await page.goto("/operations-tracker");
+  await page.waitForTimeout(250);
+
+  expect(emptyTargetWarnings).toEqual([]);
 });
 
 test("canonical actions use cursor-origin feedback and cards use quiet lift", async ({
@@ -517,6 +788,15 @@ test("canonical actions use cursor-origin feedback and cards use quiet lift", as
   expect(buttonBox).not.toBeNull();
   if (!buttonBox) return;
   await page.mouse.move(buttonBox.x + 12, buttonBox.y + buttonBox.height / 2);
+  await expect
+    .poll(
+      () =>
+        button.evaluate((element) =>
+          Number(getComputedStyle(element, "::after").opacity),
+        ),
+      { message: "cursor-origin button feedback should enter its hover state" },
+    )
+    .toBeGreaterThan(0);
 
   const buttonFeedback = await button.evaluate((element) => ({
     opacity: getComputedStyle(element, "::after").opacity,
@@ -660,6 +940,78 @@ test("operations navigation stays visible and usable on mobile", async ({
   expect(mobileTableOverflow).toBe(true);
 });
 
+test("component lab commerce proof stays inside its card on mobile", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/component-lab");
+
+  const geometry = await page
+    .locator(".t7-cart-panel")
+    .first()
+    .evaluate((element) => {
+      const panel = element.getBoundingClientRect();
+      const cardContent = element
+        .closest(".t7-card-content")
+        ?.getBoundingClientRect();
+      return {
+        cardContentRight: cardContent?.right ?? null,
+        panelRight: panel.right,
+        panelWidth: panel.width,
+        viewportRight: window.innerWidth,
+      };
+    });
+
+  expect(geometry.panelWidth).toBeLessThanOrEqual(360);
+  expect(geometry.panelRight).toBeLessThanOrEqual(
+    (geometry.cardContentRight ?? geometry.viewportRight) + 1,
+  );
+  expect(geometry.panelRight).toBeLessThanOrEqual(geometry.viewportRight + 1);
+});
+
+test("semantic icon labels keep readable tiles on mobile", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/icons");
+
+  const geometry = await page
+    .locator(".compact-icon-grid")
+    .first()
+    .evaluate((grid) => {
+      const styles = getComputedStyle(grid);
+      const columns = styles.gridTemplateColumns
+        .split(" ")
+        .map((value) => value.trim())
+        .filter(Boolean);
+      const tiles = Array.from(grid.querySelectorAll(".library-icon-tile"));
+      const labels = tiles.slice(0, 7).map((tile) => {
+        const label = tile.querySelector('[data-t7-type="label"]');
+        return label
+          ? {
+              clientWidth: label.clientWidth,
+              scrollWidth: label.scrollWidth,
+              text: label.textContent?.trim() ?? "",
+            }
+          : null;
+      });
+      return {
+        columns: columns.length,
+        labels,
+        tileWidth: tiles[0]?.getBoundingClientRect().width ?? 0,
+      };
+    });
+
+  expect(geometry.columns).toBeLessThanOrEqual(3);
+  expect(geometry.tileWidth).toBeGreaterThanOrEqual(96);
+  for (const label of geometry.labels) {
+    if (label) {
+      expect(
+        label.scrollWidth,
+        `${label.text} should fit within its semantic icon tile`,
+      ).toBeLessThanOrEqual(label.clientWidth + 1);
+    }
+  }
+});
+
 test("ebook grid keeps card prices and actions aligned", async ({ page }) => {
   await page.setViewportSize({ width: 1186, height: 698 });
   await page.goto("/ebook-store");
@@ -681,8 +1033,17 @@ test("ebook grid keeps card prices and actions aligned", async ({ page }) => {
           : { bottom: null, top: null };
       };
       const cardRect = card.getBoundingClientRect();
+      const actionElement = card.querySelector(".t7-product-actions");
       return {
         actions: getRect(".t7-product-actions"),
+        actionButtons: actionElement
+          ? Array.from(actionElement.querySelectorAll(".t7-button")).map(
+              (button) => ({
+                clientWidth: button.clientWidth,
+                scrollWidth: button.scrollWidth,
+              }),
+            )
+          : [],
         card: { bottom: cardRect.bottom, top: cardRect.top },
         price: getRect(".t7-product-price"),
       };
@@ -703,6 +1064,40 @@ test("ebook grid keeps card prices and actions aligned", async ({ page }) => {
     expect(
       Math.max(...priceValues) - Math.min(...priceValues),
     ).toBeLessThanOrEqual(1);
+    for (const button of geometry.flatMap((item) => item.actionButtons)) {
+      expect(button.scrollWidth).toBeLessThanOrEqual(button.clientWidth + 1);
+    }
+  }
+});
+
+test("public shells give navigation and content a deliberate breathing room", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1186, height: 698 });
+
+  for (const route of ["/ebook-store", "/public-showcase"]) {
+    await page.goto(route);
+    const geometry = await page.evaluate(() => {
+      const topbar = document.querySelector(".t7-public-shell .t7-app-topbar");
+      const pageSurface = document.querySelector(
+        ".ebook-reference, .public-showcase-page",
+      );
+      if (!topbar || !pageSurface) return null;
+      const topbarRect = topbar.getBoundingClientRect();
+      const pageRect = pageSurface.getBoundingClientRect();
+      return {
+        gap: pageRect.top - topbarRect.bottom,
+        paddingTop: getComputedStyle(
+          document.querySelector(".t7-public-shell .t7-app-content")!,
+        ).paddingTop,
+      };
+    });
+
+    expect(geometry, `${route} should expose the shared public shell`).not.toBe(
+      null,
+    );
+    expect(geometry?.gap).toBeGreaterThanOrEqual(20);
+    expect(geometry?.paddingTop).not.toBe("0px");
   }
 });
 

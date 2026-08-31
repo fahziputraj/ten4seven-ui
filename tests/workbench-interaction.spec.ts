@@ -102,6 +102,59 @@ test.describe("workbench documentation and overlay integrity", () => {
       await popover.getAttribute("data-floating-placement"),
     );
     await page.keyboard.press("Escape");
+
+    const edgeGeometry = await edgeFixture.evaluate((element) => {
+      const card = element.getBoundingClientRect();
+      const preview = element
+        .querySelector(".overlay-stress-edge-preview")!
+        .getBoundingClientRect();
+      const contracts = element
+        .querySelector(".overlay-stress-edge-contracts")!
+        .getBoundingClientRect();
+      return { card, contracts, preview };
+    });
+    expect(edgeGeometry.preview.left).toBeGreaterThanOrEqual(
+      edgeGeometry.card.left,
+    );
+    expect(edgeGeometry.preview.right).toBeLessThanOrEqual(
+      edgeGeometry.card.right,
+    );
+    expect(edgeGeometry.contracts.right).toBeLessThanOrEqual(
+      edgeGeometry.card.right,
+    );
+  });
+
+  test("proof navigation keeps peer views and handoff checkpoints aligned", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ height: 698, width: 1186 });
+    await page.goto("/component-lab");
+
+    const geometry = await page.evaluate(() => {
+      const peer = document
+        .querySelector(".component-proof-navigation-panel")!
+        .getBoundingClientRect();
+      const path = document
+        .querySelector(".component-proof-path-panel")!
+        .getBoundingClientRect();
+      const stepper = document.querySelector(".component-proof-stepper ol")!;
+      const columns = getComputedStyle(stepper)
+        .gridTemplateColumns.split(" ")
+        .filter(Boolean);
+      return {
+        columns,
+        pathHeight: path.height,
+        pathLeft: path.left,
+        peerHeight: peer.height,
+        peerRight: peer.right,
+      };
+    });
+
+    expect(
+      Math.abs(geometry.peerHeight - geometry.pathHeight),
+    ).toBeLessThanOrEqual(1);
+    expect(geometry.columns).toHaveLength(3);
+    expect(geometry.pathLeft - geometry.peerRight).toBeGreaterThanOrEqual(12);
   });
 
   test("data, progress, and media signals use a readable proof composition", async ({
@@ -210,13 +263,37 @@ test.describe("workbench documentation and overlay integrity", () => {
         "xpath=ancestor::div[contains(concat(' ', normalize-space(@class), ' '), ' t7-chart ')]",
       ),
     ).toHaveAttribute("data-chart-visible", "true");
-    expect(
-      await line
-        .locator(".t7-chart-line")
-        .first()
-        .evaluate((element) => getComputedStyle(element).animationName),
-    ).toBe("t7-motion-chart-line");
+    const chartMotion = await line
+      .locator(".t7-chart-line")
+      .first()
+      .evaluate((element) => {
+        const style = getComputedStyle(element);
+        return {
+          animationName: style.animationName,
+          animationDuration: style.animationDuration,
+          inlineStrokeDashoffset: element.getAttribute("style") ?? "",
+        };
+      });
+    // Chart entrance choreography is owned by the shared Anime.js adapter;
+    // CSS must stay free of a second competing keyframe animation.
+    expect(chartMotion.animationName).toBe("none");
+    expect(chartMotion.animationDuration).toBe("0s");
+    expect(chartMotion.inlineStrokeDashoffset).toContain("stroke-dashoffset");
     await page.waitForTimeout(360);
+    const donutVisual = page.locator(
+      ".component-proof-donut .t7-donut-chart-visual",
+    );
+    const donutMotion = await donutVisual.evaluate((element) => {
+      const style = getComputedStyle(element);
+      return { transform: style.transform, transition: style.transition };
+    });
+    expect(donutMotion.transition).toContain("transform");
+    await donutVisual.hover();
+    await expect
+      .poll(() =>
+        donutVisual.evaluate((element) => getComputedStyle(element).transform),
+      )
+      .not.toBe("none");
     await line.locator(".t7-chart-point").first().click({ force: true });
     const chartTooltip = page.locator(".t7-chart-tooltip");
     await expect(chartTooltip).toBeVisible();

@@ -20,6 +20,10 @@ for (const screen of referenceScreens) {
         width: viewport.width,
         height: viewport.height,
       });
+      // Playwright's screenshot animation switch only disables CSS animations.
+      // The production chart choreography is JS-driven, so use the platform's
+      // reduced-motion contract to capture a deterministic settled frame.
+      await page.emulateMedia({ reducedMotion: "reduce" });
       await page.goto(`/${screen.route}`);
       await expect(page.locator("main")).toBeVisible();
 

@@ -22,6 +22,9 @@ for (const viewport of viewports) {
   for (const route of routes) {
     test(`${route} ${viewport.name} system baseline`, async ({ page }) => {
       await page.setViewportSize(viewport);
+      // Screenshot animation disabling does not stop JS-driven Anime.js
+      // timelines. Reduced motion is the deterministic settled-state contract.
+      await page.emulateMedia({ reducedMotion: "reduce" });
       await page.goto(`/${route}`);
       await expect(page.locator("main")).toBeVisible();
       const overflow = await page.evaluate(
@@ -41,6 +44,7 @@ for (const viewport of viewports) {
 
 test("component lab modal interaction baseline", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/component-lab");
   await page.getByRole("button", { name: "Open modal" }).click();
   await expect(page).toHaveScreenshot("component-lab-modal.png", {
