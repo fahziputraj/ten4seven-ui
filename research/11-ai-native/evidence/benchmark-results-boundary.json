@@ -1,0 +1,599 @@
+{
+  "benchmark": "Independent AI Adoption Benchmark",
+  "verified": "2026-08-31",
+  "freshAgentContext": "NOT VERIFIED",
+  "isolation": {
+    "root": "D:\\SA\\t7-independent-benchmark",
+    "outsideTen4SevenWorkspace": true,
+    "hasRootWorkspaceManifest": false,
+    "sourceWorkspaceImports": 0,
+    "internalImplementationReads": 0,
+    "donorReads": 0
+  },
+  "artifactResolution": [
+    {
+      "name": "@ten4seven/ui",
+      "entry": "D:\\SA\\t7-independent-benchmark\\node_modules\\.pnpm\\@ten4seven+ui@file+artifact_d2efac0a6685317fbe21ee7288cb061f\\node_modules\\@ten4seven\\ui\\dist\\index.js",
+      "packageRoot": "D:\\SA\\t7-independent-benchmark\\node_modules\\.pnpm\\@ten4seven+ui@file+artifact_d2efac0a6685317fbe21ee7288cb061f\\node_modules\\@ten4seven\\ui",
+      "version": "1.0.0",
+      "resolvedFromSourceWorkspace": false,
+      "containsWorkspaceDependency": false
+    },
+    {
+      "name": "@ten4seven/contracts",
+      "entry": "D:\\SA\\t7-independent-benchmark\\node_modules\\.pnpm\\@ten4seven+contracts@file+a_88e49400807e112f3f6ada462178ec0a\\node_modules\\@ten4seven\\contracts\\src\\index.ts",
+      "packageRoot": "D:\\SA\\t7-independent-benchmark\\node_modules\\.pnpm\\@ten4seven+contracts@file+a_88e49400807e112f3f6ada462178ec0a\\node_modules\\@ten4seven\\contracts",
+      "version": "0.1.0",
+      "resolvedFromSourceWorkspace": false,
+      "containsWorkspaceDependency": false
+    },
+    {
+      "name": "@ten4seven/agent",
+      "entry": "D:\\SA\\t7-independent-benchmark\\node_modules\\.pnpm\\@ten4seven+agent@file+artifacts+ten4seven-agent-0.1.0.tgz\\node_modules\\@ten4seven\\agent\\src\\node.mjs",
+      "packageRoot": "D:\\SA\\t7-independent-benchmark\\node_modules\\.pnpm\\@ten4seven+agent@file+artifacts+ten4seven-agent-0.1.0.tgz\\node_modules\\@ten4seven\\agent",
+      "version": "0.1.0",
+      "resolvedFromSourceWorkspace": false,
+      "containsWorkspaceDependency": false
+    },
+    {
+      "name": "@ten4seven/agent/core",
+      "entry": "D:\\SA\\t7-independent-benchmark\\node_modules\\.pnpm\\@ten4seven+agent@file+artifacts+ten4seven-agent-0.1.0.tgz\\node_modules\\@ten4seven\\agent\\src\\core.mjs",
+      "packageRoot": "D:\\SA\\t7-independent-benchmark\\node_modules\\.pnpm\\@ten4seven+agent@file+artifacts+ten4seven-agent-0.1.0.tgz\\node_modules\\@ten4seven\\agent",
+      "version": "0.1.0",
+      "resolvedFromSourceWorkspace": false,
+      "containsWorkspaceDependency": false
+    },
+    {
+      "name": "@ten4seven/agent/node",
+      "entry": "D:\\SA\\t7-independent-benchmark\\node_modules\\.pnpm\\@ten4seven+agent@file+artifacts+ten4seven-agent-0.1.0.tgz\\node_modules\\@ten4seven\\agent\\src\\node.mjs",
+      "packageRoot": "D:\\SA\\t7-independent-benchmark\\node_modules\\.pnpm\\@ten4seven+agent@file+artifacts+ten4seven-agent-0.1.0.tgz\\node_modules\\@ten4seven\\agent",
+      "version": "0.1.0",
+      "resolvedFromSourceWorkspace": false,
+      "containsWorkspaceDependency": false
+    },
+    {
+      "name": "@ten4seven/agent/generated",
+      "entry": "D:\\SA\\t7-independent-benchmark\\node_modules\\.pnpm\\@ten4seven+agent@file+artifacts+ten4seven-agent-0.1.0.tgz\\node_modules\\@ten4seven\\agent\\generated\\index.mjs",
+      "packageRoot": "D:\\SA\\t7-independent-benchmark\\node_modules\\.pnpm\\@ten4seven+agent@file+artifacts+ten4seven-agent-0.1.0.tgz\\node_modules\\@ten4seven\\agent",
+      "version": "0.1.0",
+      "resolvedFromSourceWorkspace": false,
+      "containsWorkspaceDependency": false
+    }
+  ],
+  "compactContext": {
+    "optionalAgentIndexBytes": 823,
+    "runtimeFiles": [
+      "generated/recipes.compact.json",
+      "generated/components.compact.json"
+    ],
+    "runtimeRetrievedBytesPerScenario": 84135,
+    "taskSpecificLogicalSliceBytes": [
+      {
+        "id": "invoice-list",
+        "bytes": 6294
+      },
+      {
+        "id": "customer-directory",
+        "bytes": 4367
+      },
+      {
+        "id": "exception-queue",
+        "bytes": 5950
+      }
+    ],
+    "totalRuntimeRetrievedBytes": 252405
+  },
+  "legacyContext": {
+    "runtimeFiles": [
+      "legacy-catalog/recipes.json",
+      "legacy-catalog/components.json"
+    ],
+    "runtimeRetrievedBytesPerScenario": 358487,
+    "totalRuntimeRetrievedBytes": 1075461
+  },
+  "retrievalComparison": {
+    "perScenarioRatio": 0.23469470301573,
+    "totalRatio": 0.23469470301573,
+    "compactRuntimeBytes": 84135,
+    "legacyRuntimeBytes": 358487
+  },
+  "boundaryProof": {
+    "coreImport": "@ten4seven/agent/core",
+    "nodeImport": "@ten4seven/agent/node",
+    "generatedImport": "@ten4seven/agent/generated",
+    "coreContainsNodeImport": false,
+    "directCoreResolutionParity": true,
+    "directCoreCompositionParity": true,
+    "browserCoreImport": true
+  },
+  "scenarios": [
+    {
+      "id": "invoice-list",
+      "requirement": "Authenticated operational page with search, status filters, KPI summary, multi-row selection, bulk confirmation, quick detail, and pagination.",
+      "compact": {
+        "composition": [
+          "AppShell",
+          "PageHeader",
+          "DataTable",
+          "Sidebar",
+          "KPICluster",
+          "FilterToolbar",
+          "Pagination",
+          "BulkActionBar",
+          "DetailDrawer"
+        ],
+        "includedConditionals": [
+          "Sidebar",
+          "KPICluster",
+          "FilterToolbar",
+          "Pagination",
+          "BulkActionBar",
+          "DetailDrawer"
+        ],
+        "omittedConditionals": [],
+        "runtimeFiles": [
+          "generated/recipes.compact.json",
+          "generated/components.compact.json"
+        ],
+        "runtimeRetrievedBytes": 84135,
+        "logicalTaskSliceBytes": 6294,
+        "fullCatalogFallbacks": 0,
+        "manualComponentSelections": 0,
+        "commandsNeeded": 2
+      },
+      "legacy": {
+        "composition": [
+          "AppShell",
+          "PageHeader",
+          "DataTable",
+          "Sidebar",
+          "KPICluster",
+          "FilterToolbar",
+          "Pagination",
+          "BulkActionBar",
+          "DetailDrawer"
+        ],
+        "runtimeFiles": [
+          "legacy-catalog/recipes.json",
+          "legacy-catalog/components.json"
+        ],
+        "runtimeRetrievedBytes": 358487,
+        "logicalTaskSliceBytes": 20115,
+        "fullCatalogFallbacks": 1,
+        "manualComponentSelections": 9,
+        "commandsNeeded": 3
+      },
+      "scaffoldIntegrity": {
+        "domainDataFree": true,
+        "businessLogicFree": true,
+        "permissionLogicFree": true,
+        "persistenceFree": true,
+        "leakedKeys": []
+      },
+      "stateProof": {
+        "requiredStates": ["ready"],
+        "resolvedStates": [
+          "loading",
+          "ready",
+          "empty",
+          "search-empty",
+          "filter-empty",
+          "permission-limited",
+          "api-error",
+          "stale",
+          "bulk-pending",
+          "bulk-partial-failure",
+          "bulk-success",
+          "detail-open"
+        ],
+        "passed": true
+      },
+      "responsiveProof": {
+        "desktop": "table",
+        "tablet": "table-scroll",
+        "mobile": "table-scroll",
+        "passed": true
+      },
+      "boundaryProof": {
+        "coreResolutionMatchesNode": true,
+        "coreCompositionMatchesNode": true
+      }
+    },
+    {
+      "id": "customer-directory",
+      "requirement": "Authenticated collection with search, simple filters, normal row navigation, no KPI summary, no multi-select, no bulk action, and no quick-detail drawer.",
+      "compact": {
+        "composition": ["AppShell", "PageHeader", "DataTable", "FilterToolbar"],
+        "includedConditionals": ["FilterToolbar"],
+        "omittedConditionals": [
+          "Sidebar",
+          "KPICluster",
+          "Pagination",
+          "BulkActionBar",
+          "DetailDrawer"
+        ],
+        "runtimeFiles": [
+          "generated/recipes.compact.json",
+          "generated/components.compact.json"
+        ],
+        "runtimeRetrievedBytes": 84135,
+        "logicalTaskSliceBytes": 4367,
+        "fullCatalogFallbacks": 0,
+        "manualComponentSelections": 0,
+        "commandsNeeded": 2
+      },
+      "legacy": {
+        "composition": ["AppShell", "PageHeader", "DataTable", "FilterToolbar"],
+        "runtimeFiles": [
+          "legacy-catalog/recipes.json",
+          "legacy-catalog/components.json"
+        ],
+        "runtimeRetrievedBytes": 358487,
+        "logicalTaskSliceBytes": 10151,
+        "fullCatalogFallbacks": 1,
+        "manualComponentSelections": 4,
+        "commandsNeeded": 3
+      },
+      "scaffoldIntegrity": {
+        "domainDataFree": true,
+        "businessLogicFree": true,
+        "permissionLogicFree": true,
+        "persistenceFree": true,
+        "leakedKeys": []
+      },
+      "stateProof": {
+        "requiredStates": ["ready"],
+        "resolvedStates": [
+          "loading",
+          "ready",
+          "empty",
+          "search-empty",
+          "filter-empty",
+          "permission-limited",
+          "api-error",
+          "stale",
+          "bulk-pending",
+          "bulk-partial-failure",
+          "bulk-success",
+          "detail-open"
+        ],
+        "passed": true
+      },
+      "responsiveProof": {
+        "desktop": "table",
+        "tablet": "table-scroll",
+        "mobile": "table-scroll",
+        "passed": true
+      },
+      "boundaryProof": {
+        "coreResolutionMatchesNode": true,
+        "coreCompositionMatchesNode": true
+      }
+    },
+    {
+      "id": "exception-queue",
+      "requirement": "Authenticated high-density queue with status filtering, multi-select, bulk action, quick inspection, no KPI requirement, explicit loading/error/filtered-empty states, and tablet/mobile use.",
+      "compact": {
+        "composition": [
+          "AppShell",
+          "PageHeader",
+          "DataTable",
+          "Sidebar",
+          "FilterToolbar",
+          "Pagination",
+          "BulkActionBar",
+          "DetailDrawer"
+        ],
+        "includedConditionals": [
+          "Sidebar",
+          "FilterToolbar",
+          "Pagination",
+          "BulkActionBar",
+          "DetailDrawer"
+        ],
+        "omittedConditionals": ["KPICluster"],
+        "runtimeFiles": [
+          "generated/recipes.compact.json",
+          "generated/components.compact.json"
+        ],
+        "runtimeRetrievedBytes": 84135,
+        "logicalTaskSliceBytes": 5950,
+        "fullCatalogFallbacks": 0,
+        "manualComponentSelections": 0,
+        "commandsNeeded": 2
+      },
+      "legacy": {
+        "composition": [
+          "AppShell",
+          "PageHeader",
+          "DataTable",
+          "Sidebar",
+          "FilterToolbar",
+          "Pagination",
+          "BulkActionBar",
+          "DetailDrawer"
+        ],
+        "runtimeFiles": [
+          "legacy-catalog/recipes.json",
+          "legacy-catalog/components.json"
+        ],
+        "runtimeRetrievedBytes": 358487,
+        "logicalTaskSliceBytes": 18526,
+        "fullCatalogFallbacks": 1,
+        "manualComponentSelections": 8,
+        "commandsNeeded": 3
+      },
+      "scaffoldIntegrity": {
+        "domainDataFree": true,
+        "businessLogicFree": true,
+        "permissionLogicFree": true,
+        "persistenceFree": true,
+        "leakedKeys": []
+      },
+      "stateProof": {
+        "requiredStates": ["loading", "filter-empty", "api-error"],
+        "resolvedStates": [
+          "loading",
+          "ready",
+          "empty",
+          "search-empty",
+          "filter-empty",
+          "permission-limited",
+          "api-error",
+          "stale",
+          "bulk-pending",
+          "bulk-partial-failure",
+          "bulk-success",
+          "detail-open"
+        ],
+        "passed": true
+      },
+      "responsiveProof": {
+        "desktop": "table",
+        "tablet": "table-scroll",
+        "mobile": "table-scroll",
+        "passed": true
+      },
+      "boundaryProof": {
+        "coreResolutionMatchesNode": true,
+        "coreCompositionMatchesNode": true
+      }
+    }
+  ],
+  "decisionLedger": [
+    {
+      "scenario": "invoice-list",
+      "decision": "Page recipe",
+      "compactMode": "system-resolved",
+      "legacyMode": "agent-selected",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "invoice-list",
+      "decision": "Shell",
+      "compactMode": "system-resolved",
+      "legacyMode": "agent-selected",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "invoice-list",
+      "decision": "Main comparison UI",
+      "compactMode": "system-resolved",
+      "legacyMode": "agent-selected: omitted",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "invoice-list",
+      "decision": "Search and filter surface",
+      "compactMode": "intent-resolved: included",
+      "legacyMode": "agent-selected",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "invoice-list",
+      "decision": "KPI summary",
+      "compactMode": "intent-resolved: included",
+      "legacyMode": "agent-selected",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "invoice-list",
+      "decision": "Bulk actions",
+      "compactMode": "intent-resolved: included",
+      "legacyMode": "agent-selected",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "invoice-list",
+      "decision": "Detail mode",
+      "compactMode": "intent-resolved: included",
+      "legacyMode": "agent-selected",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "invoice-list",
+      "decision": "Mobile behavior",
+      "compactMode": "system-resolved",
+      "legacyMode": "agent-selected: omitted",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "invoice-list",
+      "decision": "Required states",
+      "compactMode": "system-resolved",
+      "legacyMode": "agent-selected: omitted",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "customer-directory",
+      "decision": "Page recipe",
+      "compactMode": "system-resolved",
+      "legacyMode": "agent-selected",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "customer-directory",
+      "decision": "Shell",
+      "compactMode": "system-resolved",
+      "legacyMode": "agent-selected",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "customer-directory",
+      "decision": "Main comparison UI",
+      "compactMode": "system-resolved",
+      "legacyMode": "agent-selected: omitted",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "customer-directory",
+      "decision": "Search and filter surface",
+      "compactMode": "intent-resolved: included",
+      "legacyMode": "agent-selected",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "customer-directory",
+      "decision": "KPI summary",
+      "compactMode": "intent-resolved: omitted",
+      "legacyMode": "agent-selected: omitted",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "customer-directory",
+      "decision": "Bulk actions",
+      "compactMode": "intent-resolved: omitted",
+      "legacyMode": "agent-selected: omitted",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "customer-directory",
+      "decision": "Detail mode",
+      "compactMode": "intent-resolved: omitted",
+      "legacyMode": "agent-selected: omitted",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "customer-directory",
+      "decision": "Mobile behavior",
+      "compactMode": "system-resolved",
+      "legacyMode": "agent-selected: omitted",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "customer-directory",
+      "decision": "Required states",
+      "compactMode": "system-resolved",
+      "legacyMode": "agent-selected: omitted",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "exception-queue",
+      "decision": "Page recipe",
+      "compactMode": "system-resolved",
+      "legacyMode": "agent-selected",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "exception-queue",
+      "decision": "Shell",
+      "compactMode": "system-resolved",
+      "legacyMode": "agent-selected",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "exception-queue",
+      "decision": "Main comparison UI",
+      "compactMode": "system-resolved",
+      "legacyMode": "agent-selected: omitted",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "exception-queue",
+      "decision": "Search and filter surface",
+      "compactMode": "intent-resolved: included",
+      "legacyMode": "agent-selected",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "exception-queue",
+      "decision": "KPI summary",
+      "compactMode": "intent-resolved: omitted",
+      "legacyMode": "agent-selected: omitted",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "exception-queue",
+      "decision": "Bulk actions",
+      "compactMode": "intent-resolved: included",
+      "legacyMode": "agent-selected",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "exception-queue",
+      "decision": "Detail mode",
+      "compactMode": "intent-resolved: included",
+      "legacyMode": "agent-selected",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "exception-queue",
+      "decision": "Mobile behavior",
+      "compactMode": "system-resolved",
+      "legacyMode": "agent-selected: omitted",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    },
+    {
+      "scenario": "exception-queue",
+      "decision": "Required states",
+      "compactMode": "system-resolved",
+      "legacyMode": "agent-selected: omitted",
+      "compactAgentOwned": 0,
+      "legacyAgentOwned": 1
+    }
+  ],
+  "decisionCount": {
+    "definition": "post-intent anatomy decisions that the system should resolve",
+    "compactAgentOwnedTotal": 0,
+    "legacyAgentOwnedTotal": 27,
+    "compactPerScenario": 0,
+    "legacyPerScenario": 9
+  },
+  "staticConsumerProof": {
+    "localPrimitiveCount": 0,
+    "hardcodedColorLiterals": 0,
+    "externalIconImports": 0,
+    "copiedTen4SevenCss": false,
+    "parallelTheme": false,
+    "contractViolations": 0
+  },
+  "buildCorrectionRounds": 1,
+  "visualCorrectionRounds": 0,
+  "generatedAt": "2026-08-31T09:51:04.101Z"
+}

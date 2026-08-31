@@ -1,0 +1,11 @@
+{
+  "name": "ten4seven-entity-list-consumer-proof",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@ten4seven/agent": "file:..\\..\\packages\\agent",
+    "@ten4seven/icons": "file:../../packages/icons",
+    "@ten4seven/tokens": "file:../../packages/tokens",
+    "@ten4seven/ui": "file:../../packages/ui"
+  }
+}

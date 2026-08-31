@@ -12,16 +12,19 @@ const contractReads = [
   "AGENTS.md",
   "docs/ai/AI_QUICKSTART.md",
   "docs/ai/APPLY_TO_EXISTING_WEB.md",
-  "packages/ai/catalog/recipes.json",
-  "packages/ai/catalog/components.json",
+  "generated/agent-index.json",
+  "generated/recipes.compact.json",
+  "generated/components.compact.json",
+  "generated/aliases.json",
+  "generated/ownership-rules.json",
   "packages/ai/catalog/blocks.json",
   "packages/ai/catalog/icons.json",
 ];
 for (const relativePath of contractReads)
   assert.ok(fs.existsSync(resolve(relativePath)), relativePath);
 
-const recipes = readJson("packages/ai/catalog/recipes.json");
-const components = readJson("packages/ai/catalog/components.json");
+const recipes = readJson("generated/recipes.compact.json");
+const components = readJson("generated/components.compact.json");
 const blocks = readJson("packages/ai/catalog/blocks.json");
 const icons = readJson("packages/ai/catalog/icons.json");
 const cliPath = resolve("packages/ai/bin/t7ui.mjs");

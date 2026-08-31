@@ -9,6 +9,8 @@
     "typecheck": "tsc -b"
   },
   "dependencies": {
+    "@ten4seven/agent": "workspace:*",
+    "@ten4seven/contracts": "workspace:*",
     "@ten4seven/icons": "workspace:*",
     "@ten4seven/tokens": "workspace:*",
     "@ten4seven/ui": "workspace:*",
