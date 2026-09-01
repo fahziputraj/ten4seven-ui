@@ -124,17 +124,28 @@ export function Typography({
 }
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Opt in to elevated pointer feedback for cards that are actual actions. */
+  interactive?: boolean;
   tone?: "default" | "subtle" | "accent" | "success";
 }
 
 export function Card({
   children,
   className,
+  interactive,
+  onClick,
   tone = "default",
   ...props
 }: CardProps) {
+  const isInteractive = interactive ?? Boolean(onClick);
   return (
-    <section {...props} className={cx("t7-card", className)} data-tone={tone}>
+    <section
+      {...props}
+      className={cx("t7-card", className)}
+      data-interactive={isInteractive ? "true" : undefined}
+      data-tone={tone}
+      onClick={onClick}
+    >
       {children}
     </section>
   );
@@ -152,15 +163,21 @@ export function CardHeader({
   );
 }
 
+export interface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
+  /** Use the page's semantic heading level without changing the card anatomy. */
+  as?: "h2" | "h3" | "h4";
+}
+
 export function CardTitle({
+  as: Heading = "h3",
   children,
   className,
   ...props
-}: React.HTMLAttributes<HTMLHeadingElement>) {
+}: CardTitleProps) {
   return (
-    <h3 {...props} className={cx("t7-card-title", className)}>
+    <Heading {...props} className={cx("t7-card-title", className)}>
       {children}
-    </h3>
+    </Heading>
   );
 }
 
@@ -946,6 +963,11 @@ export function Modal({
 }
 
 export interface AppShellProps extends React.HTMLAttributes<HTMLDivElement> {
+  /**
+   * App Shell owns the document main landmark by default. Embedded previews can
+   * opt into a neutral content wrapper so a catalog page never nests landmarks.
+   */
+  contentAs?: "div" | "main";
   sidebar?: ReactNode;
   topbar?: ReactNode;
 }
@@ -953,6 +975,7 @@ export interface AppShellProps extends React.HTMLAttributes<HTMLDivElement> {
 export function AppShell({
   children,
   className,
+  contentAs: Content = "main",
   sidebar,
   topbar,
   ...props
@@ -966,7 +989,7 @@ export function AppShell({
       {sidebar ? <aside className="t7-app-sidebar">{sidebar}</aside> : null}
       <div className="t7-app-main">
         {topbar ? <header className="t7-app-topbar">{topbar}</header> : null}
-        <main className="t7-app-content">{children}</main>
+        <Content className="t7-app-content">{children}</Content>
       </div>
     </div>
   );

@@ -207,44 +207,24 @@ test.describe("catalog information architecture", () => {
   test("mobile catalog navigation uses a drawer", async ({ page }) => {
     await page.setViewportSize({ height: 844, width: 390 });
     await page.goto("/components/forms");
-    await page.getByRole("button", { name: "Open library navigation" }).click();
+    await page
+      .getByRole("button", { name: "Open design system navigation" })
+      .click();
     const navigation = page.getByRole("dialog", {
-      name: "Library navigation",
+      name: "Design system navigation",
     });
     await expect(navigation).toBeVisible();
     await expect(
-      navigation.getByRole("button", { name: "Library", exact: true }),
+      navigation.getByText("Library", { exact: true }),
     ).toBeVisible();
     await navigation
-      .getByRole("button", { name: "Library", exact: true })
+      .getByRole("button", { name: "Components", exact: true })
       .click();
     await expect(
-      navigation.getByRole("button", { name: "Components", exact: true }),
+      page.getByRole("heading", { name: "Components", exact: true }),
     ).toBeVisible();
     await expect(
-      navigation.getByRole("button", { name: "Blocks", exact: true }),
-    ).toBeVisible();
-    await expect(
-      navigation.locator(".studio-library-family-grid"),
-    ).toBeVisible();
-    await expect(navigation.locator(".studio-library-family-link")).toHaveCount(
-      17,
-    );
-    expect(
-      await navigation.evaluate(
-        (element) => element.scrollWidth - element.clientWidth,
-      ),
-    ).toBeLessThanOrEqual(1);
-    await expect(
-      navigation.locator(".studio-component-family-list a"),
-    ).toHaveCount(0);
-    await page.keyboard.press("Escape");
-    await expect(navigation.locator(".studio-library-family-grid")).toHaveCount(
-      0,
-    );
-    await page.keyboard.press("Escape");
-    await expect(
-      page.getByRole("dialog", { name: "Library navigation" }),
+      page.getByRole("dialog", { name: "Design system navigation" }),
     ).toHaveCount(0);
   });
 

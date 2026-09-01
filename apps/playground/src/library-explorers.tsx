@@ -327,7 +327,7 @@ export function TokensExplorer() {
         <Card>
           <CardHeader>
             <div>
-              <CardTitle>Active profile</CardTitle>
+              <CardTitle as="h2">Active profile</CardTitle>
               <CardDescription>
                 Root values driving this render.
               </CardDescription>
@@ -349,17 +349,39 @@ export function TokensExplorer() {
         <Card>
           <CardHeader>
             <div>
-              <CardTitle>Theme axes</CardTitle>
+              <CardTitle as="h2">How this profile applies</CardTitle>
               <CardDescription>
-                Change these from Theme Studio; this page never owns local theme
-                values.
+                Theme Studio owns these values; this page shows the semantic
+                roles they resolve into.
               </CardDescription>
             </div>
           </CardHeader>
           <CardContent className="library-axis-list">
-            <span>Appearance · palette</span>
-            <span>Radius · density</span>
-            <span>Typography</span>
+            <div>
+              <strong>Color roles</strong>
+              <span>
+                {theme.palette} base · {theme.primary} action · {theme.accent}{" "}
+                focus
+              </span>
+            </div>
+            <div>
+              <strong>Canvas</strong>
+              <span>{theme.canvas} neutral surfaces</span>
+            </div>
+            <div>
+              <strong>Geometry</strong>
+              <span>
+                {radius.base} base radius · {density.control} controls
+              </span>
+            </div>
+            <div>
+              <strong>Motion</strong>
+              <span>{theme.motionDuration}s shared duration</span>
+            </div>
+            <div>
+              <strong>Typography</strong>
+              <span>{theme.typography} role hierarchy</span>
+            </div>
           </CardContent>
         </Card>
       </section>
@@ -1946,6 +1968,7 @@ function BlockPreview({ slug }: { slug: string }) {
       return (
         <Hero
           description="Lead with a proposition, then support it with useful proof."
+          headingLevel="h2"
           media={<BlockCatalogMedia variant="hero" />}
           primaryAction={<Button size="sm">Get started</Button>}
           title="A clear starting point"

@@ -16,6 +16,15 @@ const requiredFiles = [
   "styles.css",
   "fonts/Inter-Variable.woff2",
   "fonts/Inter-OFL.txt",
+  "fonts/DM-Sans-Variable.woff2",
+  "fonts/DM-Sans-OFL.txt",
+  "fonts/Source-Serif-4-Variable.woff2",
+  "fonts/Source-Serif-4-OFL.txt",
+  "fonts/IBM-Plex-Mono-400.woff2",
+  "fonts/IBM-Plex-Mono-500.woff2",
+  "fonts/IBM-Plex-Mono-600.woff2",
+  "fonts/IBM-Plex-Mono-700.woff2",
+  "fonts/IBM-Plex-Mono-OFL.txt",
   "package-build.json",
 ];
 const requiredPackageDocs = [

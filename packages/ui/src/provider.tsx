@@ -32,6 +32,7 @@ export interface Ten4SevenProviderProps extends PropsWithChildren<ThemeConfig> {
 }
 
 interface ThemeContextValue {
+  appearanceSetting: Appearance;
   theme: ResolvedTheme;
   setTheme: (next: Partial<ThemeConfig>) => void;
   resetTheme: () => void;
@@ -53,6 +54,12 @@ function readThemeOverrides(
   } catch {
     return {};
   }
+}
+
+function resolveAppearanceSetting(value: unknown): Appearance {
+  return value === "light" || value === "dark" || value === "system"
+    ? value
+    : "system";
 }
 
 export function Ten4SevenProvider({
@@ -82,23 +89,7 @@ export function Ten4SevenProvider({
     readThemeOverrides(persistenceKey),
   );
 
-  useEffect(() => {
-    if (!persistenceKey) return;
-    if (Object.keys(overrides).length === 0)
-      window.localStorage.removeItem(persistenceKey);
-    else window.localStorage.setItem(persistenceKey, JSON.stringify(overrides));
-  }, [overrides, persistenceKey]);
-
-  useEffect(() => {
-    if (appearanceSetting !== "system") return undefined;
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
-    const update = () => setSystemAppearance(media.matches ? "dark" : "light");
-    update();
-    media.addEventListener?.("change", update);
-    return () => media.removeEventListener?.("change", update);
-  }, [appearanceSetting]);
-
-  const theme = useMemo(() => {
+  const mergedConfig = useMemo<ThemeConfig>(() => {
     const baseConfig: ThemeConfig = {
       appearance: appearanceSetting,
       palette: themeConfig?.palette ?? palette,
@@ -113,8 +104,42 @@ export function Ten4SevenProvider({
       typography: themeConfig?.typography ?? typography,
       elevation: themeConfig?.elevation ?? elevation,
     };
-    const mergedConfig = { ...baseConfig, ...themeConfig, ...overrides };
-    const requestedAppearance = mergedConfig.appearance ?? "system";
+    return { ...baseConfig, ...themeConfig, ...overrides };
+  }, [
+    accent,
+    appearanceSetting,
+    canvas,
+    chartPalette,
+    density,
+    elevation,
+    motionDuration,
+    overrides,
+    palette,
+    primary,
+    radius,
+    radiusValue,
+    themeConfig,
+    typography,
+  ]);
+  const requestedAppearance = resolveAppearanceSetting(mergedConfig.appearance);
+
+  useEffect(() => {
+    if (!persistenceKey) return;
+    if (Object.keys(overrides).length === 0)
+      window.localStorage.removeItem(persistenceKey);
+    else window.localStorage.setItem(persistenceKey, JSON.stringify(overrides));
+  }, [overrides, persistenceKey]);
+
+  useEffect(() => {
+    if (requestedAppearance !== "system") return undefined;
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const update = () => setSystemAppearance(media.matches ? "dark" : "light");
+    update();
+    media.addEventListener?.("change", update);
+    return () => media.removeEventListener?.("change", update);
+  }, [requestedAppearance]);
+
+  const theme = useMemo(() => {
     return resolveTheme({
       appearance:
         requestedAppearance === "system"
@@ -132,34 +157,19 @@ export function Ten4SevenProvider({
       typography: mergedConfig.typography,
       elevation: mergedConfig.elevation,
     });
-  }, [
-    appearanceSetting,
-    density,
-    elevation,
-    accent,
-    canvas,
-    chartPalette,
-    primary,
-    overrides,
-    palette,
-    radius,
-    radiusValue,
-    systemAppearance,
-    motionDuration,
-    themeConfig,
-    typography,
-  ]);
+  }, [mergedConfig, requestedAppearance, systemAppearance]);
 
   const variables = useMemo(() => buildThemeVariables(theme), [theme]);
   const rootStyle = { ...variables, ...style } as CSSProperties;
 
   const value = useMemo<ThemeContextValue>(
     () => ({
+      appearanceSetting: requestedAppearance,
       theme,
       setTheme: (next) => setOverrides((current) => ({ ...current, ...next })),
       resetTheme: () => setOverrides({}),
     }),
-    [theme],
+    [requestedAppearance, theme],
   );
 
   return (

@@ -675,8 +675,8 @@
 .studio-live-preview {
   display: grid;
   gap: 10px;
-  border-bottom: 1px solid hsl(var(--t7-border-hsl));
-  padding-bottom: 13px;
+  border-top: 1px solid hsl(var(--t7-border-hsl));
+  padding-top: 13px;
 }
 .studio-live-preview-heading {
   display: flex;
@@ -886,7 +886,7 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   row-gap: 0;
-  column-gap: 20px;
+  column-gap: 16px;
   margin: 0;
 }
 .studio-axis-list div {
@@ -1333,12 +1333,22 @@
   .studio-top-actions {
     gap: 8px;
   }
-  .studio-breadcrumb span,
-  .studio-breadcrumb svg {
+  .studio-breadcrumb .studio-breadcrumb-item {
     display: none;
   }
+  .studio-breadcrumb .studio-breadcrumb-item:last-child {
+    display: inline-flex;
+    min-width: 0;
+    max-width: min(34vw, 170px);
+  }
+  .studio-breadcrumb .studio-breadcrumb-item:last-child > a,
+  .studio-breadcrumb .studio-breadcrumb-item:last-child > strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   .studio-controls-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
   }
   .studio-controls-live-copy {
     max-width: 150px;
@@ -1809,7 +1819,7 @@
   }
 }
 
-@media (max-width: 820px) {
+@media (max-width: 880px) {
   .ebook-reference .ebook-catalog-layout {
     display: block;
   }
@@ -2179,6 +2189,9 @@
   width: 100%;
 }
 @media (max-width: 860px) {
+  .operations-app-shell .t7-app-topbar {
+    display: none;
+  }
   .operations-app-shell .t7-sidebar-nav {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2800,11 +2813,39 @@
 }
 .library-axis-list {
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   align-content: start;
-  gap: 10px;
+  gap: 10px 16px;
+}
+.library-axis-list > div {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+  border-bottom: 1px solid hsl(var(--t7-border-hsl) / 0.75);
+  padding-bottom: 10px;
+}
+.library-axis-list > div:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+.library-axis-list strong {
+  color: hsl(var(--t7-foreground-hsl));
+  font-size: var(--t7-type-caption-size);
+  font-weight: var(--t7-type-label-weight);
+  line-height: var(--t7-type-caption-line-height);
+}
+.library-axis-list span {
   color: hsl(var(--t7-muted-foreground-hsl));
-  font-size: var(--t7-type-body-sm-size);
-  line-height: var(--t7-type-body-sm-line-height);
+  font-size: var(--t7-type-caption-size);
+  line-height: var(--t7-type-caption-line-height);
+  overflow-wrap: anywhere;
+}
+@media (max-width: 560px) {
+  .library-axis-list {
+    grid-template-columns: 1fr;
+  }
+  .library-axis-list > div:last-child:nth-child(odd) {
+    grid-column: auto;
+  }
 }
 .library-section {
   display: grid;
@@ -3823,9 +3864,193 @@
   border-color: hsl(var(--t7-interactive-border-hsl) / 0.58);
 }
 .studio-palette-option[aria-pressed="true"] {
-  border-color: hsl(var(--t7-interactive-border-hsl));
+  border-color: hsl(var(--t7-primary-hsl));
   background: hsl(var(--t7-selected-hsl) / 0.1);
+  box-shadow: inset 0 0 0 1px hsl(var(--t7-primary-hsl) / 0.12);
+}
+.studio-palette-option:focus-visible {
+  outline: 0;
   box-shadow: var(--t7-focus-ring);
+}
+.studio-choice-picker {
+  display: grid;
+  min-width: 0;
+  gap: 6px;
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+.studio-choice-help {
+  max-width: 680px;
+  margin: 0;
+  color: hsl(var(--t7-muted-foreground-hsl));
+  font-size: var(--t7-type-caption-size);
+  line-height: var(--t7-type-caption-line-height);
+  letter-spacing: var(--t7-type-caption-tracking);
+}
+.studio-choice-options {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+  gap: 7px;
+}
+.studio-choice-option {
+  display: grid;
+  min-width: 0;
+  min-height: 70px;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 9px;
+  border: 1px solid hsl(var(--t7-border-hsl));
+  border-radius: var(--t7-radius-control);
+  background: hsl(var(--t7-surface-hsl));
+  padding: 9px;
+  color: hsl(var(--t7-foreground-hsl));
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color var(--t7-transition-fast),
+    background-color var(--t7-transition-fast),
+    box-shadow var(--t7-transition-fast),
+    transform var(--t7-transition-fast);
+}
+.studio-choice-option:hover {
+  border-color: hsl(var(--t7-interactive-border-hsl) / 0.68);
+  background: hsl(var(--t7-surface-raised-hsl));
+  transform: translateY(-1px);
+}
+.studio-choice-option:active {
+  transform: translateY(0);
+}
+.studio-choice-option[aria-pressed="true"] {
+  border-color: hsl(var(--t7-primary-hsl));
+  background: hsl(var(--t7-selected-hsl) / 0.11);
+  box-shadow: inset 0 0 0 1px hsl(var(--t7-primary-hsl) / 0.12);
+}
+.studio-choice-option:focus-visible {
+  outline: 0;
+  box-shadow: var(--t7-focus-ring);
+}
+.studio-choice-option-copy {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+.studio-choice-option-copy strong {
+  min-width: 0;
+  color: hsl(var(--t7-foreground-hsl));
+  font-size: var(--t7-type-caption-size);
+  font-weight: var(--t7-type-label-weight);
+  line-height: var(--t7-type-caption-line-height);
+}
+.studio-choice-option-copy small {
+  min-width: 0;
+  color: hsl(var(--t7-muted-foreground-hsl));
+  font-size: var(--t7-type-overline-size);
+  line-height: var(--t7-type-overline-line-height);
+  overflow-wrap: anywhere;
+}
+.studio-choice-swatch {
+  display: block;
+  width: 38px;
+  height: 30px;
+  flex: none;
+  overflow: hidden;
+  border: 1px solid hsl(var(--t7-border-strong-hsl) / 0.72);
+  border-radius: calc(var(--t7-radius-control) * 0.72);
+  box-shadow: inset 0 0 0 1px hsl(var(--t7-foreground-hsl) / 0.06);
+}
+.studio-appearance-swatch[data-appearance="system"] {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--t7-surface-raised-hsl)) 0 50%,
+    hsl(var(--t7-foreground-hsl)) 50% 100%
+  );
+}
+.studio-appearance-swatch[data-appearance="light"] {
+  background: hsl(var(--t7-surface-raised-hsl));
+}
+.studio-appearance-swatch[data-appearance="dark"] {
+  background: hsl(var(--t7-foreground-hsl));
+}
+.studio-typography-options {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.studio-typography-option:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+.studio-typography-option-sample {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: var(--t7-radius-control);
+  background: hsl(var(--t7-primary-hsl) / 0.11);
+  color: hsl(var(--t7-primary-hsl));
+  font-family: var(--studio-preset-font);
+  font-size: 19px;
+  font-weight: 650;
+  letter-spacing: -0.04em;
+}
+.studio-canvas-swatch {
+  position: relative;
+  background: var(--studio-choice-background);
+}
+.studio-canvas-swatch::before,
+.studio-canvas-swatch i {
+  position: absolute;
+  display: block;
+  border: 1px solid var(--studio-choice-border);
+  border-radius: calc(var(--t7-radius-control) * 0.46);
+  background: var(--studio-choice-surface);
+  content: "";
+}
+.studio-canvas-swatch::before {
+  inset: 6px 5px 5px 13px;
+}
+.studio-canvas-swatch i {
+  inset: 10px 11px 4px 4px;
+}
+.studio-chart-swatch {
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  gap: 2px;
+  padding: 5px 4px;
+  background: hsl(var(--t7-surface-raised-hsl));
+}
+.studio-chart-swatch i {
+  width: 5px;
+  height: 48%;
+  border-radius: var(--t7-radius-indicator) var(--t7-radius-indicator) 0 0;
+  background: var(--studio-chart-choice-color);
+}
+.studio-chart-swatch i:nth-child(2) {
+  height: 74%;
+}
+.studio-chart-swatch i:nth-child(3) {
+  height: 58%;
+}
+.studio-chart-swatch i:nth-child(4) {
+  height: 88%;
+}
+.studio-chart-swatch i:nth-child(5) {
+  height: 66%;
+}
+.studio-setting-select {
+  display: grid;
+  min-width: 0;
+  align-content: start;
+  gap: 8px;
+}
+.studio-setting-select .t7-select-trigger::before {
+  width: 13px;
+  height: 13px;
+  flex: 0 0 13px;
+  border-radius: var(--t7-radius-full);
+  background: var(--studio-setting-swatch);
+  box-shadow: inset 0 0 0 1px hsl(var(--t7-foreground-hsl) / 0.14);
+  content: "";
 }
 
 /* Catalog IA: the workbench index is list-led and metadata stays progressive. */
@@ -5015,13 +5240,20 @@
   .studio-mobile-navigation .studio-navigation-tree {
     display: grid;
     width: 100%;
-    gap: 22px;
+    gap: 16px;
+  }
+  .studio-mobile-navigation .studio-nav-group + .studio-nav-group {
+    margin-top: 0;
   }
   .studio-mobile-navigation .studio-nav-group {
     display: grid;
     width: 100%;
     align-items: stretch;
     gap: 5px;
+  }
+  .studio-mobile-navigation .studio-nav-label {
+    display: block;
+    padding: 0 2px 5px;
   }
   .studio-mobile-navigation .studio-nav-group .t7-nav-item {
     width: 100%;
@@ -6022,46 +6254,6 @@
   border-color: hsl(var(--t7-focus-hsl));
   box-shadow: var(--t7-focus-ring);
 }
-.studio-typography-current {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-  border: 1px solid hsl(var(--t7-border-hsl));
-  border-radius: var(--t7-radius-control);
-  background: hsl(var(--t7-surface-subtle-hsl));
-  padding: 9px 10px;
-}
-.studio-typography-current-sample {
-  display: grid;
-  width: 34px;
-  height: 34px;
-  place-items: center;
-  border-radius: var(--t7-radius-control);
-  background: hsl(var(--t7-primary-hsl) / 0.12);
-  color: hsl(var(--t7-primary-hsl));
-  font-family: var(--t7-font-display);
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: var(--t7-type-heading-lg-tracking);
-}
-.studio-typography-current > div {
-  display: grid;
-  min-width: 0;
-  gap: 2px;
-}
-.studio-typography-current strong {
-  color: hsl(var(--t7-foreground-hsl));
-  font-size: var(--t7-type-label-size);
-  line-height: var(--t7-type-label-line-height);
-}
-.studio-typography-current span:not(.studio-typography-current-sample) {
-  color: hsl(var(--t7-muted-foreground-hsl));
-  font-size: var(--t7-type-caption-size);
-  line-height: var(--t7-type-caption-line-height);
-  overflow-wrap: anywhere;
-}
 .studio-color-role-map {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -6186,6 +6378,13 @@
   .type-specimen-role-strip,
   .studio-live-preview-grid {
     grid-template-columns: 1fr;
+  }
+  .studio-control-subgrid,
+  .studio-typography-options {
+    grid-template-columns: 1fr;
+  }
+  .studio-typography-option:last-child:nth-child(odd) {
+    grid-column: auto;
   }
   .studio-live-preview-sample {
     min-height: 0;

@@ -65,16 +65,27 @@ await writeFile(
 
 const fontsDir = resolve(distDir, "fonts");
 await mkdir(fontsDir, { recursive: true });
-await Promise.all([
-  copyFile(
-    resolve(repoDir, "packages/tokens/src/fonts/Inter-Variable.woff2"),
-    resolve(fontsDir, "Inter-Variable.woff2"),
+const fontArtifacts = [
+  "DM-Sans-OFL.txt",
+  "DM-Sans-Variable.woff2",
+  "IBM-Plex-Mono-400.woff2",
+  "IBM-Plex-Mono-500.woff2",
+  "IBM-Plex-Mono-600.woff2",
+  "IBM-Plex-Mono-700.woff2",
+  "IBM-Plex-Mono-OFL.txt",
+  "Inter-OFL.txt",
+  "Inter-Variable.woff2",
+  "Source-Serif-4-OFL.txt",
+  "Source-Serif-4-Variable.woff2",
+];
+await Promise.all(
+  fontArtifacts.map((artifact) =>
+    copyFile(
+      resolve(repoDir, "packages/tokens/src/fonts", artifact),
+      resolve(fontsDir, artifact),
+    ),
   ),
-  copyFile(
-    resolve(repoDir, "packages/tokens/src/fonts/Inter-OFL.txt"),
-    resolve(fontsDir, "Inter-OFL.txt"),
-  ),
-]);
+);
 
 await writeFile(
   resolve(distDir, "package-build.json"),
@@ -86,7 +97,13 @@ await writeFile(
       commonjsEntry: "index.cjs",
       declarations: "index.d.ts",
       stylesheet: "styles.css",
-      includes: ["tokens", "semantic-icons", "react-components", "motion"],
+      includes: [
+        "tokens",
+        "semantic-icons",
+        "react-components",
+        "motion",
+        "self-hosted-fonts",
+      ],
     },
     null,
     2,

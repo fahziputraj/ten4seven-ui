@@ -1684,6 +1684,7 @@ export function ComponentPreview({
       return frame(
         <div className="catalog-preview-app-shell">
           <AppShell
+            contentAs="div"
             sidebar={
               <Sidebar
                 activeKey="inventory"

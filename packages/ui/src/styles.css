@@ -216,7 +216,7 @@
   opacity: 0.82;
   transform: translate(-50%, -50%) scale(3.8);
 }
-.t7-card:hover {
+.t7-card[data-interactive="true"]:hover {
   border-color: hsl(var(--t7-primary-hsl) / 0.28);
   box-shadow: var(--t7-shadow-raised);
   transform: translateY(-1px);
@@ -267,7 +267,7 @@
   opacity: 0;
   transition: opacity var(--t7-transition-standard);
 }
-.t7-card:hover::before {
+.t7-card[data-interactive="true"]:hover::before {
   opacity: 0.72;
 }
 .t7-card-header {
@@ -1144,7 +1144,7 @@
   z-index: var(--t7-z-drawer);
   inset: 0;
   display: flex;
-  width: 100vw;
+  width: 100%;
   max-width: none;
   height: 100dvh;
   max-height: none;
@@ -1469,7 +1469,7 @@
   z-index: var(--t7-z-modal);
   inset: 0;
   display: grid;
-  width: 100vw;
+  width: 100%;
   max-width: none;
   height: 100dvh;
   max-height: none;
@@ -2063,9 +2063,13 @@
 .t7-range-slider input[type="range"] {
   width: 100%;
   accent-color: hsl(var(--t7-primary-hsl));
+  min-height: var(--t7-control-height);
+  margin: 0;
+  cursor: pointer;
 }
 .t7-slider {
-  height: 18px;
+  height: var(--t7-control-height);
+  min-height: 32px;
   margin: 0;
   appearance: none;
   background: transparent;
@@ -4208,8 +4212,8 @@
 }
 .t7-filter-chip button {
   display: grid;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   place-items: center;
   border: 0;
   border-radius: 50%;
@@ -5200,14 +5204,37 @@
   gap: 6px;
 }
 .t7-carousel-indicator {
-  width: 22px;
-  height: 4px;
+  position: relative;
+  width: var(--t7-control-height);
+  height: var(--t7-control-height);
   border: 0;
-  border-radius: var(--t7-radius-full);
-  background: hsl(var(--t7-border-strong-hsl));
+  background: transparent;
   cursor: pointer;
 }
-.t7-carousel-indicator[aria-pressed="true"] {
+.t7-carousel-indicator::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 22px;
+  height: 4px;
+  border-radius: var(--t7-radius-full);
+  background: hsl(var(--t7-border-strong-hsl));
+  content: "";
+  transform: translate(-50%, -50%);
+  transition:
+    background-color var(--t7-transition-standard),
+    transform var(--t7-transition-standard);
+}
+.t7-carousel-indicator:hover::before,
+.t7-carousel-indicator:focus-visible::before {
+  transform: translate(-50%, -50%) scaleX(1.12);
+}
+.t7-carousel-indicator:focus-visible {
+  border-radius: var(--t7-radius-full);
+  outline: none;
+  box-shadow: var(--t7-focus-ring);
+}
+.t7-carousel-indicator[aria-pressed="true"]::before {
   background: hsl(var(--t7-primary-hsl));
 }
 .t7-chart-panel {
@@ -5476,6 +5503,19 @@
     order: 3;
     width: 100%;
     overflow-x: auto;
+  }
+  .t7-public-shell .t7-navigation-menu-items > ul,
+  .t7-public-shell .t7-navigation-menu-item,
+  .t7-public-shell .t7-navigation-menu-link,
+  .t7-public-shell .t7-navigation-menu-trigger {
+    min-height: 44px;
+  }
+  .t7-public-shell .t7-navigation-menu-trailing > .t7-button {
+    min-height: 40px;
+  }
+  .t7-public-shell .ebook-store-actions > .t7-button,
+  .t7-public-shell .t7-cart-trigger {
+    min-height: 40px;
   }
   .t7-public-shell .t7-top-navigation {
     flex-wrap: wrap;

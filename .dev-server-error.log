@@ -1,0 +1,21 @@
+$ pnpm --filter @ten4seven/playground dev "--host" "127.0.0.1"
+$ vite "--host" "127.0.0.1"
+10:52:56 AM [vite] (client) [console.error] [vite] SyntaxError: The requested module '/@fs/D:/SA/ten4seven-ui/packages/tokens/src/index.ts?t=1788234776210' does not provide an export named 'hslToHexColor'
+10:52:56 AM [vite] (client) [console.error] [vite] Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+11:00:59 AM [vite] (client) [console.error] [vite] Failed to reload /@fs/D:/SA/ten4seven-ui/packages/ui/dist/styles.css. This could be due to syntax errors or importing non-existent modules. (see errors above)
+11:00:59 AM [vite] (client) [console.error] [vite] Failed to reload /@fs/D:/SA/ten4seven-ui/packages/ui/dist/styles.css. This could be due to syntax errors or importing non-existent modules. (see errors above)
+11:00:59 AM [vite] (client) [console.error] [vite] Failed to reload /@fs/D:/SA/ten4seven-ui/packages/ui/dist/styles.css. This could be due to syntax errors or importing non-existent modules. (see errors above)
+11:00:59 AM [vite] (client) [console.error] [vite] Failed to reload /@fs/D:/SA/ten4seven-ui/packages/ui/dist/styles.css. This could be due to syntax errors or importing non-existent modules. (see errors above)
+11:00:59 AM [vite] (client) [console.error] [vite] Failed to reload /@fs/D:/SA/ten4seven-ui/packages/ui/dist/styles.css. This could be due to syntax errors or importing non-existent modules. (see errors above)
+11:00:59 AM [vite] (client) Pre-transform error: Failed to load url /@fs/D:/SA/ten4seven-ui/packages/ui/dist/styles.css (resolved id: D:/SA/ten4seven-ui/packages/ui/dist/styles.css) in D:/SA/ten4seven-ui/apps/playground/src/main.tsx. Does the file exist?
+11:08:43 AM [vite] (client) [console.error] [vite] Failed to reload /@fs/D:/SA/ten4seven-ui/packages/ui/dist/styles.css. This could be due to syntax errors or importing non-existent modules. (see errors above)
+11:08:43 AM [vite] (client) Pre-transform error: Failed to load url /@fs/D:/SA/ten4seven-ui/packages/ui/dist/styles.css (resolved id: D:/SA/ten4seven-ui/packages/ui/dist/styles.css) in D:/SA/ten4seven-ui/apps/playground/src/main.tsx. Does the file exist?
+11:43:42 AM [vite] (client) [console.error] [vite] Failed to reload /@fs/D:/SA/ten4seven-ui/packages/ui/dist/index.js. This could be due to syntax errors or importing non-existent modules. (see errors above)
+11:43:42 AM [vite] (client) [console.error] [vite] Failed to reload /@fs/D:/SA/ten4seven-ui/packages/ui/dist/styles.css. This could be due to syntax errors or importing non-existent modules. (see errors above)
+11:43:42 AM [vite] (client) [console.error] [vite] Failed to reload /@fs/D:/SA/ten4seven-ui/packages/ui/dist/styles.css. This could be due to syntax errors or importing non-existent modules. (see errors above)
+11:43:42 AM [vite] (client) [console.error] [vite] Failed to reload /@fs/D:/SA/ten4seven-ui/packages/ui/dist/styles.css. This could be due to syntax errors or importing non-existent modules. (see errors above)
+11:43:43 AM [vite] (client) Pre-transform error: Failed to load url /@fs/D:/SA/ten4seven-ui/packages/ui/dist/styles.css (resolved id: D:/SA/ten4seven-ui/packages/ui/dist/styles.css) in D:/SA/ten4seven-ui/apps/playground/src/main.tsx. Does the file exist?
+11:50:35 AM [vite] (client) [console.error] [vite] Failed to reload /@fs/D:/SA/ten4seven-ui/packages/ui/dist/styles.css. This could be due to syntax errors or importing non-existent modules. (see errors above)
+11:50:35 AM [vite] (client) Pre-transform error: Failed to load url /@fs/D:/SA/ten4seven-ui/packages/ui/dist/styles.css (resolved id: D:/SA/ten4seven-ui/packages/ui/dist/styles.css) in D:/SA/ten4seven-ui/apps/playground/src/main.tsx. Does the file exist?
+11:52:10 AM [vite] (client) [console.error] [vite] Failed to reload /@fs/D:/SA/ten4seven-ui/packages/ui/dist/styles.css. This could be due to syntax errors or importing non-existent modules. (see errors above)
+11:52:10 AM [vite] (client) Pre-transform error: Failed to load url /@fs/D:/SA/ten4seven-ui/packages/ui/dist/styles.css (resolved id: D:/SA/ten4seven-ui/packages/ui/dist/styles.css) in D:/SA/ten4seven-ui/apps/playground/src/main.tsx. Does the file exist?

@@ -1,0 +1,30 @@
+# Gate — Design Lineage and Reference Drift
+
+Status: **PASS — lineage understood, evidence recorded, no donor dependency introduced**  
+Verified: 2026-09-01
+
+## Gate criteria
+
+| Criterion                                                                           | Result                                                                                     |
+| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Relevant original references were inventoried before any visual change              | PASS                                                                                       |
+| Actual accessible rendered references were inspected                                | PASS — AAPM Academy login, GetPress home, HeroUI Button docs, and current ten4seven routes |
+| Unavailable/blocked references were recorded without workaround                     | PASS                                                                                       |
+| Donor libraries remain advisory and are not runtime dependencies                    | PASS                                                                                       |
+| No donor code, copied media, or donor component fork was introduced                 | PASS                                                                                       |
+| Existing ThemeProfile, BrandProfile, recipe, and component ownership remain intact  | PASS                                                                                       |
+| Current operational, public, commerce, and brand surfaces retain distinct character | PASS                                                                                       |
+| Meaningful drift/no-change decisions are documented                                 | PASS                                                                                       |
+
+## Gate decision
+
+**PASS.** This lineage-aware audit found no confirmed visual or architectural
+gap that justifies a donor-driven code change. The appropriate action is to
+retain ten4seven's canonical system while preserving the documented reference
+principles as a future review lens.
+
+## Scope confirmation
+
+No package dependency, component, BrandProfile, recipe, public route, design
+token, browser-security workaround, commit, push, publication, or deployment
+was added in this lineage audit.

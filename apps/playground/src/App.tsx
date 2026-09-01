@@ -45,6 +45,7 @@ import type {
 } from "@ten4seven/tokens";
 import {
   buildRadiusProfile,
+  canvasProfiles,
   densityProfiles,
   motionDurationRange,
   paletteProfiles,
@@ -307,35 +308,49 @@ function LibraryMenu({
 
 function WorkbenchNavigation({
   activePath,
+  mode = "sidebar",
   onNavigate,
   onNavigatePath,
 }: {
   activePath: string;
+  mode?: "mobile" | "sidebar";
   onNavigate: (route: PlaygroundRoute) => void;
   onNavigatePath: (path: string) => void;
 }) {
   return (
     <div className="studio-navigation-tree">
       {studioNavGroups.map((group) => (
-        <div className="studio-nav-group" key={group.label}>
-          {group.label === "Library" ? (
-            <LibraryMenu
-              activePath={activePath}
-              onNavigate={onNavigate}
-              onNavigatePath={onNavigatePath}
-            />
+        <div
+          aria-label={group.label}
+          className="studio-nav-group"
+          key={group.label}
+          role="group"
+        >
+          {group.label === "Library" && mode === "sidebar" ? (
+            <>
+              <span className="studio-nav-label">{group.label}</span>
+              <LibraryMenu
+                activePath={activePath}
+                onNavigate={onNavigate}
+                onNavigatePath={onNavigatePath}
+              />
+            </>
           ) : (
             <>
               <span className="studio-nav-label">{group.label}</span>
-              {group.routes.map((route) => (
-                <NavItem
-                  active={activePath === playgroundRoutePaths[route]}
-                  icon={routeIcons[route]}
-                  key={route}
-                  label={route}
-                  onClick={() => onNavigate(route)}
-                />
-              ))}
+              {group.routes.map((route) => {
+                const isActive = activePath === playgroundRoutePaths[route];
+                return (
+                  <NavItem
+                    active={isActive}
+                    aria-current={isActive ? "page" : undefined}
+                    icon={routeIcons[route]}
+                    key={route}
+                    label={route}
+                    onClick={() => onNavigate(route)}
+                  />
+                );
+              })}
             </>
           )}
         </div>
@@ -579,7 +594,7 @@ function Studio({
   onNavigate: (route: PlaygroundRoute) => void;
   onNavigatePath: (path: string) => void;
 }) {
-  const { resetTheme, theme } = useTen4SevenTheme();
+  const { appearanceSetting, resetTheme, theme } = useTen4SevenTheme();
   const [isModalOpen, setModalOpen] = useState(false);
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -600,7 +615,12 @@ function Studio({
 
   const axisRows = useMemo(
     () => [
-      ["Appearance", theme.appearance],
+      [
+        "Appearance",
+        appearanceSetting === "system"
+          ? `system · ${theme.appearance}`
+          : theme.appearance,
+      ],
       ["Base palette", theme.palette],
       ["Main action", theme.primary],
       ["Accent color", theme.accent],
@@ -616,7 +636,7 @@ function Studio({
       ["Motion duration", formatMotionDuration(theme.motionDuration)],
       ["Typography", theme.typography],
     ],
-    [theme],
+    [appearanceSetting, theme],
   );
 
   return (
@@ -649,7 +669,7 @@ function Studio({
         <header className="studio-topbar">
           <div className="studio-topbar-leading">
             <Button
-              aria-label="Open library navigation"
+              aria-label="Open design system navigation"
               className="studio-mobile-menu"
               intent="quiet"
               leadingIcon="menu"
@@ -716,11 +736,12 @@ function Studio({
         <MobileSidebar
           onClose={() => setMobileNavOpen(false)}
           open={isMobileNavOpen}
-          title="Library navigation"
+          title="Design system navigation"
         >
           <div className="studio-mobile-navigation">
             <WorkbenchNavigation
               activePath={activePath}
+              mode="mobile"
               onNavigate={(route) => {
                 setMobileNavOpen(false);
                 onNavigate(route);
@@ -760,7 +781,7 @@ function Studio({
                 <Card className="studio-controls-card">
                   <CardHeader>
                     <div className="studio-controls-header-copy">
-                      <CardTitle>Global controls</CardTitle>
+                      <CardTitle as="h2">Global controls</CardTitle>
                       <CardDescription>
                         Choose the base system, then tune the roles that travel
                         with it. Every change writes the same provider tokens
@@ -797,7 +818,6 @@ function Studio({
                     </div>
                   </CardHeader>
                   <CardContent className="studio-controls-content">
-                    <StudioLivePreview />
                     <div
                       aria-label="How global controls relate"
                       className="studio-control-guide"
@@ -846,13 +866,7 @@ function Studio({
                             Set the overall appearance mode for the provider.
                           </p>
                         </div>
-                        <SettingSelect
-                          hint="Light or dark surfaces across every route."
-                          label="Appearance"
-                          settingKey="appearance"
-                          value={theme.appearance}
-                          options={["light", "dark"]}
-                        />
+                        <AppearancePicker value={appearanceSetting} />
                       </section>
 
                       <section
@@ -870,34 +884,7 @@ function Studio({
                           </Typography>
                           <p>Choose the shared family and role hierarchy.</p>
                         </div>
-                        <SettingSelect
-                          hint="Changes the UI, display, and mono families used by every type role."
-                          label="Typography style"
-                          optionLabels={typographyPresetLabels}
-                          settingKey="typography"
-                          value={theme.typography}
-                          options={typographyNames}
-                        />
-                        <div
-                          className="studio-typography-current"
-                          data-preset={theme.typography}
-                          data-testid="studio-typography-current"
-                        >
-                          <span
-                            aria-hidden="true"
-                            className="studio-typography-current-sample"
-                          >
-                            Aa
-                          </span>
-                          <div>
-                            <strong>
-                              {typographyPresetLabels[theme.typography]}
-                            </strong>
-                            <span>
-                              {typographyPresetDetails[theme.typography]}
-                            </span>
-                          </div>
-                        </div>
+                        <TypographyPicker value={theme.typography} />
                       </section>
 
                       <section
@@ -955,43 +942,27 @@ function Studio({
                           </div>
                         </div>
                         <div className="studio-control-subgrid">
-                          <SettingSelect
+                          <PaletteRoleSelect
                             hint="Primary actions, links, and selected states."
                             label="Main action color"
                             settingKey="primary"
                             value={theme.primary}
-                            options={paletteNames}
                           />
-                          <SettingSelect
+                          <PaletteRoleSelect
                             hint="Focus rings, focused inputs, and supporting emphasis use this accent."
                             label="Accent color"
                             settingKey="accent"
                             value={theme.accent}
-                            options={paletteNames}
                           />
-                          <SettingSelect
-                            hint="Neutral surfaces, independent from hue."
-                            label="Canvas"
-                            optionLabels={{
-                              balanced: "Balanced",
-                              monochrome: "Monochrome",
-                              paper: "Paper white",
-                            }}
-                            settingKey="canvas"
+                          <CanvasPicker
+                            appearance={theme.appearance}
                             value={theme.canvas}
-                            options={["balanced", "paper", "monochrome"]}
                           />
-                          <SettingSelect
-                            hint="Data-series colors; UI roles stay unchanged."
-                            label="Chart colorway"
-                            optionLabels={{
-                              four: "Four colors",
-                              monochrome: "Monochrome",
-                              spectrum: "Spectrum",
-                            }}
-                            settingKey="chartPalette"
+                          <ChartPalettePicker
+                            accent={theme.accent}
+                            palette={theme.palette}
+                            primary={theme.primary}
                             value={theme.chartPalette}
-                            options={["spectrum", "four", "monochrome"]}
                           />
                         </div>
                       </section>
@@ -1038,6 +1009,7 @@ function Studio({
                         <MotionSlider value={theme.motionDuration} />
                       </section>
                     </div>
+                    <StudioLivePreview />
                   </CardContent>
                   <CardFooter>
                     <Button
@@ -1053,7 +1025,7 @@ function Studio({
                 <Card className="studio-axis-card" tone="accent">
                   <CardHeader>
                     <div>
-                      <CardTitle>Active profile</CardTitle>
+                      <CardTitle as="h2">Active profile</CardTitle>
                       <CardDescription>
                         Current values written to the provider root.
                       </CardDescription>
@@ -1614,43 +1586,94 @@ function MotionSlider({ value }: { value: number }) {
   );
 }
 
-function SettingSelect({
+function PaletteRoleSelect({
   label,
   hint,
-  optionLabels,
-  options,
   settingKey,
   value,
 }: {
   label: string;
-  hint?: string;
-  optionLabels?: Record<string, string>;
-  options: string[];
-  settingKey: keyof StudioSettings;
-  value: string;
+  hint: string;
+  settingKey: "primary" | "accent";
+  value: PaletteName;
 }) {
   const { setTheme } = useTen4SevenTheme();
+  const swatch =
+    settingKey === "primary"
+      ? paletteProfiles[value].primary
+      : paletteProfiles[value].accent;
+
+  function updateProfile(next: PaletteName) {
+    if (settingKey === "primary") setTheme({ primary: next });
+    else setTheme({ accent: next });
+  }
+
   return (
-    <Select
-      hint={hint}
-      label={label}
-      value={value}
-      onChange={(event) => {
-        const next = event.target.value;
-        setTheme({ [settingKey]: next } as Partial<StudioSettings>);
-      }}
+    <div
+      className="studio-setting-select"
+      style={
+        {
+          "--studio-setting-swatch": `hsl(${swatch})`,
+        } as CSSProperties
+      }
     >
-      {options.map((option) => (
-        <option key={option} value={option}>
-          {optionLabels?.[option] ?? option}
-        </option>
-      ))}
-    </Select>
+      <Select
+        hint={hint}
+        label={label}
+        value={value}
+        onChange={(event) => updateProfile(event.target.value as PaletteName)}
+      >
+        {paletteNames.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </Select>
+    </div>
   );
 }
 
 const paletteNames = Object.keys(paletteProfiles) as PaletteName[];
 const typographyNames = Object.keys(typographyProfiles) as TypographyName[];
+const appearanceOptions: Array<{
+  detail: string;
+  label: string;
+  value: Appearance;
+}> = [
+  {
+    value: "system",
+    label: "System",
+    detail: "Follow the device setting",
+  },
+  { value: "light", label: "Light", detail: "Always use light surfaces" },
+  { value: "dark", label: "Dark", detail: "Always use dark surfaces" },
+];
+const canvasNames: CanvasName[] = ["balanced", "paper", "monochrome"];
+const canvasLabels: Record<CanvasName, string> = {
+  balanced: "Balanced",
+  paper: "Pure white",
+  monochrome: "Monochrome",
+};
+const canvasDetails: Record<CanvasName, string> = {
+  balanced: "Soft neutral separation",
+  paper: "White canvas, restrained gray",
+  monochrome: "Color-free surfaces",
+};
+const chartPaletteNames: ChartPaletteName[] = [
+  "spectrum",
+  "four",
+  "monochrome",
+];
+const chartPaletteLabels: Record<ChartPaletteName, string> = {
+  spectrum: "Spectrum",
+  four: "Four colors",
+  monochrome: "Monochrome",
+};
+const chartPaletteDetails: Record<ChartPaletteName, string> = {
+  spectrum: "Five distinct data series",
+  four: "Tighter operational set",
+  monochrome: "One-hue comparison",
+};
 const typographyPresetLabels: Record<TypographyName, string> = {
   modern: "Modern",
   humanist: "Humanist",
@@ -1665,6 +1688,203 @@ const typographyPresetDetails: Record<TypographyName, string> = {
   technical: "Mono UI · precise operator tone",
   mono: "IBM Plex Mono · fully technical",
 };
+
+function AppearancePicker({ value }: { value: Appearance }) {
+  const { setTheme } = useTen4SevenTheme();
+
+  return (
+    <fieldset className="studio-choice-picker studio-appearance-picker">
+      <legend className="t7-field-label">Appearance</legend>
+      <p className="studio-choice-help">
+        System follows the device automatically; Light and Dark stay fixed.
+      </p>
+      <div className="studio-choice-options">
+        {appearanceOptions.map((option) => (
+          <button
+            aria-pressed={value === option.value}
+            className="studio-choice-option studio-appearance-option"
+            key={option.value}
+            onClick={() => setTheme({ appearance: option.value })}
+            type="button"
+          >
+            <span
+              aria-hidden="true"
+              className="studio-choice-swatch studio-appearance-swatch"
+              data-appearance={option.value}
+            />
+            <span className="studio-choice-option-copy">
+              <strong>{option.label}</strong>
+              <small>{option.detail}</small>
+            </span>
+          </button>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
+
+function TypographyPicker({ value }: { value: TypographyName }) {
+  const { setTheme } = useTen4SevenTheme();
+
+  return (
+    <fieldset className="studio-choice-picker studio-typography-picker">
+      <legend className="t7-field-label">Typography style</legend>
+      <p className="studio-choice-help">
+        Each preset changes the full role hierarchy, not only the display face.
+      </p>
+      <div className="studio-choice-options studio-typography-options">
+        {typographyNames.map((option) => (
+          <button
+            aria-pressed={value === option}
+            className="studio-choice-option studio-typography-option"
+            key={option}
+            onClick={() => setTheme({ typography: option })}
+            type="button"
+          >
+            <span
+              aria-hidden="true"
+              className="studio-typography-option-sample"
+              style={
+                {
+                  "--studio-preset-font": typographyProfiles[option].display,
+                } as CSSProperties
+              }
+            >
+              Aa
+            </span>
+            <span className="studio-choice-option-copy">
+              <strong>{typographyPresetLabels[option]}</strong>
+              <small>{typographyPresetDetails[option]}</small>
+            </span>
+          </button>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
+
+function CanvasPicker({
+  appearance,
+  value,
+}: {
+  appearance: Exclude<Appearance, "system">;
+  value: CanvasName;
+}) {
+  const { setTheme } = useTen4SevenTheme();
+
+  return (
+    <fieldset className="studio-choice-picker studio-canvas-picker">
+      <legend className="t7-field-label">Canvas</legend>
+      <p className="studio-choice-help">
+        Controls page and card neutrals independently from brand color.
+      </p>
+      <div className="studio-choice-options">
+        {canvasNames.map((option) => {
+          const profile = canvasProfiles[option][appearance];
+          return (
+            <button
+              aria-pressed={value === option}
+              className="studio-choice-option studio-canvas-option"
+              key={option}
+              onClick={() => setTheme({ canvas: option })}
+              type="button"
+            >
+              <span
+                aria-hidden="true"
+                className="studio-choice-swatch studio-canvas-swatch"
+                style={
+                  {
+                    "--studio-choice-background": `hsl(${profile.background})`,
+                    "--studio-choice-border": `hsl(${profile.borderStrong})`,
+                    "--studio-choice-surface": `hsl(${profile.surfaceMuted})`,
+                  } as CSSProperties
+                }
+              >
+                <i />
+              </span>
+              <span className="studio-choice-option-copy">
+                <strong>{canvasLabels[option]}</strong>
+                <small>{canvasDetails[option]}</small>
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </fieldset>
+  );
+}
+
+function ChartPalettePicker({
+  accent,
+  palette,
+  primary,
+  value,
+}: {
+  accent: PaletteName;
+  palette: PaletteName;
+  primary: PaletteName;
+  value: ChartPaletteName;
+}) {
+  const { setTheme } = useTen4SevenTheme();
+  const baseProfile = paletteProfiles[palette];
+  const primaryProfile = paletteProfiles[primary];
+  const accentProfile = paletteProfiles[accent];
+
+  const optionColors: Record<ChartPaletteName, string[]> = {
+    spectrum: baseProfile.chart.map((color) => `hsl(${color})`),
+    four: [
+      `hsl(${primaryProfile.primary})`,
+      `hsl(${accentProfile.accent})`,
+      `hsl(${baseProfile.chart[2]})`,
+      `hsl(${baseProfile.chart[3]})`,
+    ],
+    monochrome: [
+      `hsl(${primaryProfile.primary})`,
+      `hsl(${primaryProfile.primaryHover})`,
+      `hsl(${primaryProfile.primaryActive})`,
+    ],
+  };
+
+  return (
+    <fieldset className="studio-choice-picker studio-chart-picker">
+      <legend className="t7-field-label">Chart colorway</legend>
+      <p className="studio-choice-help">
+        Affects data series only; application surfaces keep their UI roles.
+      </p>
+      <div className="studio-choice-options">
+        {chartPaletteNames.map((option) => (
+          <button
+            aria-pressed={value === option}
+            className="studio-choice-option studio-chart-option"
+            key={option}
+            onClick={() => setTheme({ chartPalette: option })}
+            type="button"
+          >
+            <span
+              aria-hidden="true"
+              className="studio-choice-swatch studio-chart-swatch"
+            >
+              {optionColors[option].map((color, index) => (
+                <i
+                  key={`${option}-${index}`}
+                  style={
+                    {
+                      "--studio-chart-choice-color": color,
+                    } as CSSProperties
+                  }
+                />
+              ))}
+            </span>
+            <span className="studio-choice-option-copy">
+              <strong>{chartPaletteLabels[option]}</strong>
+              <small>{chartPaletteDetails[option]}</small>
+            </span>
+          </button>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
 
 function PalettePicker({ value }: { value: PaletteName }) {
   const { setTheme } = useTen4SevenTheme();
@@ -1683,7 +1903,11 @@ function PalettePicker({ value }: { value: PaletteName }) {
             className="studio-palette-option"
             key={palette}
             onClick={() =>
-              setTheme({ palette, primary: palette, accent: palette })
+              setTheme({
+                palette,
+                primary: palette,
+                accent: palette,
+              })
             }
             type="button"
           >

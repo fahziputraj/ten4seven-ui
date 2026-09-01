@@ -94,6 +94,24 @@ describe("theme engine", () => {
     expect(resolveTheme({ radiusValue: 40 }).radiusValue).toBe(24);
   });
 
+  it("keeps named action and focus profiles deterministic across chart colorways", () => {
+    const theme = resolveTheme({
+      appearance: "light",
+      primary: "emerald",
+      accent: "amber",
+      chartPalette: "four",
+    });
+    const variables = buildThemeVariables(theme);
+
+    expect(theme.primary).toBe("emerald");
+    expect(theme.accent).toBe("amber");
+    expect(variables["--t7-primary-hsl"]).toBe("148 58% 29%");
+    expect(variables["--t7-accent-hsl"]).toBe("48 92% 49%");
+    expect(variables["--t7-focus-hsl"]).toBe("48 92% 49%");
+    expect(variables["--t7-chart-1-hsl"]).toBe("148 58% 29%");
+    expect(variables["--t7-chart-2-hsl"]).toBe("48 92% 49%");
+  });
+
   it("normalizes motion duration to the shared range and quarter-second step", () => {
     expect(resolveTheme().motionDuration).toBe(1.5);
     expect(resolveTheme({ motionDuration: 0.12 }).motionDuration).toBe(0.25);

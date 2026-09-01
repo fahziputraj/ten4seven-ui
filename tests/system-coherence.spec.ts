@@ -42,6 +42,16 @@ async function chooseSelect(
     .click();
 }
 
+async function chooseAppearance(
+  page: import("@playwright/test").Page,
+  value: Profile["appearance"],
+) {
+  await page
+    .locator(".studio-appearance-picker")
+    .getByRole("button", { name: new RegExp(`^${value}\\b`, "i") })
+    .click();
+}
+
 async function chooseRadius(
   page: import("@playwright/test").Page,
   value: Profile["radius"],
@@ -88,7 +98,7 @@ async function applyProfile(
   await page
     .getByRole("button", { name: `Use ${profile.palette} palette` })
     .click();
-  await chooseSelect(page, "Appearance", profile.appearance);
+  await chooseAppearance(page, profile.appearance);
   await chooseRadius(page, profile.radius);
   await chooseDensity(page, profile.density);
 }
@@ -128,17 +138,17 @@ test("canonical Select supports arrows, Enter, Escape, and disabled options", as
   page,
 }) => {
   await page.goto("/theme-studio");
-  const appearance = page.getByRole("button", { name: "Appearance" });
-  await appearance.focus();
-  await appearance.press("ArrowDown");
-  await appearance.press("Enter");
+  const mainAction = page.getByRole("button", { name: "Main action color" });
+  await mainAction.focus();
+  await mainAction.press("ArrowDown");
+  await mainAction.press("Enter");
   await expect(page.locator(".t7-provider")).toHaveAttribute(
-    "data-theme-appearance",
-    /light|dark/,
+    "data-primary",
+    /teal|cyan|blue|indigo|violet|rose|red|orange|amber|slate/,
   );
-  await appearance.click();
-  await appearance.press("Escape");
-  await expect(appearance).toHaveAttribute("aria-expanded", "false");
+  await mainAction.click();
+  await mainAction.press("Escape");
+  await expect(mainAction).toHaveAttribute("aria-expanded", "false");
 
   await chooseRadius(page, "rounded");
   await expect(page.locator(".t7-provider")).toHaveAttribute(
@@ -153,10 +163,7 @@ test("bounded Select popups stay anchored to their trigger", async ({
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/theme-studio");
 
-  const trigger = page.getByRole("button", {
-    name: "Appearance",
-    exact: true,
-  });
+  const trigger = page.getByRole("button", { name: "Main action color" });
   await trigger.click();
   const popup = page.locator("#t7-overlay-root .t7-select-list");
   await expect(popup).toBeVisible();
@@ -250,7 +257,7 @@ test("long select values stay inside their Theme Studio fields", async ({
       }),
     );
 
-  expect(fieldGeometry).toHaveLength(6);
+  expect(fieldGeometry).toHaveLength(2);
   for (const field of fieldGeometry) {
     expect(field.triggerRight).toBeLessThanOrEqual(field.fieldRight + 0.5);
   }
@@ -437,8 +444,14 @@ test("independent color and canvas axes propagate through the provider", async (
 
   await chooseSelect(page, "Main action color", "indigo");
   await chooseSelect(page, "Accent color", "amber");
-  await chooseSelect(page, "Canvas", "Paper white");
-  await chooseSelect(page, "Chart colorway", "Four colors");
+  await page
+    .locator(".studio-canvas-picker")
+    .getByRole("button", { name: /Pure white/i })
+    .click();
+  await page
+    .locator(".studio-chart-picker")
+    .getByRole("button", { name: /Four colors/i })
+    .click();
 
   const provider = page.locator(".t7-provider");
   await expect(provider).toHaveAttribute("data-primary", "indigo");
@@ -481,18 +494,20 @@ test("Typography Studio exposes distinct preset characters and roles", async ({
   await page.setViewportSize({ width: 1186, height: 698 });
   await page.goto("/theme-studio");
 
-  await page.getByRole("button", { name: "Typography style" }).click();
-  await expect(page.locator(".t7-select-list .t7-option-row")).toHaveCount(5);
-  await page.keyboard.press("Escape");
-  await chooseSelect(page, "Typography style", "Editorial");
+  const typographyPicker = page.locator(".studio-typography-picker");
+  await expect(typographyPicker.getByRole("button")).toHaveCount(5);
+  await typographyPicker.getByRole("button", { name: /Editorial/i }).click();
 
   const provider = page.locator(".t7-provider");
   await expect(provider).toHaveAttribute("data-typography", "editorial");
-  const current = page.getByTestId("studio-typography-current");
-  await expect(current).toHaveAttribute("data-preset", "editorial");
-  await expect(current).toContainText("Editorial");
-  await expect(current).toContainText("Serif display · calm reading tone");
-  await expect(page.locator(".type-specimen-role-strip")).toContainText(
+  const specimen = page.locator(".typography-specimen");
+  await expect(
+    page.locator(".studio-type-section .studio-section-count"),
+  ).toContainText("Editorial");
+  await expect(specimen.locator(".type-specimen-meta")).toContainText(
+    "Serif display · calm reading tone",
+  );
+  await expect(specimen.locator(".type-specimen-role-strip")).toContainText(
     "Operations tracker",
   );
   const displayFamily = await provider.evaluate((element) =>
@@ -776,7 +791,7 @@ test("motion adapters skip empty targets without console warnings", async ({
   expect(emptyTargetWarnings).toEqual([]);
 });
 
-test("canonical actions use cursor-origin feedback and cards use quiet lift", async ({
+test("canonical actions use cursor-origin feedback and static cards retain neutral geometry", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -825,7 +840,8 @@ test("canonical actions use cursor-origin feedback and cards use quiet lift", as
   }));
   expect(cardFeedback.borderColor).not.toBe("");
   expect(cardFeedback.boxShadow).not.toBe("");
-  expect(cardFeedback.transform).not.toBe("none");
+  expect(cardFeedback.transform).toBe("none");
+  await expect(card).not.toHaveAttribute("data-interactive", "true");
 });
 
 test("operations sidebar opens each domain surface", async ({ page }) => {

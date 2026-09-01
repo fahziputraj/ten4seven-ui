@@ -10,6 +10,24 @@ The bundled `dist/fonts/Inter-Variable.woff2` is Inter by Rasmus Andersson and
 contributors, distributed under the SIL Open Font License 1.1. The complete
 license text is shipped at `dist/fonts/Inter-OFL.txt`.
 
+## DM Sans variable font
+
+The bundled `dist/fonts/DM-Sans-Variable.woff2` is DM Sans by Colophon Foundry,
+Jonny Pinhorn, and contributors, distributed under the SIL Open Font License
+1.1. The complete license text is shipped at `dist/fonts/DM-Sans-OFL.txt`.
+
+## Source Serif 4 variable font
+
+The bundled `dist/fonts/Source-Serif-4-Variable.woff2` is Source Serif 4 by
+Adobe and contributors, distributed under the SIL Open Font License 1.1. The
+complete license text is shipped at `dist/fonts/Source-Serif-4-OFL.txt`.
+
+## IBM Plex Mono font
+
+The bundled IBM Plex Mono 400, 500, 600, and 700 WOFF2 files are part of IBM
+Plex by IBM and contributors, distributed under the SIL Open Font License 1.1.
+The complete license text is shipped at `dist/fonts/IBM-Plex-Mono-OFL.txt`.
+
 ## Solar semantic icon subset
 
 The generated semantic SVG paths in the bundle are derived from the Solar icon

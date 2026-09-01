@@ -626,7 +626,7 @@ export const typographyProfiles: Record<TypographyName, TypographyProfile> = {
   }),
   editorial: createTypographyProfile({
     ui: 'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-    display: 'Georgia, "Times New Roman", serif',
+    display: '"Source Serif 4", Georgia, "Times New Roman", serif',
     mono: '"IBM Plex Mono", "SFMono-Regular", Consolas, monospace',
     headingTracking: "-0.02em",
     bodyTracking: "0.005em",

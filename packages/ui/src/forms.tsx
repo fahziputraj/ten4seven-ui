@@ -513,6 +513,7 @@ export function RangeSlider({
       <div>
         <input
           aria-label={`${label} minimum`}
+          className="t7-range-slider-input"
           max={maxValue}
           min={min}
           onChange={(event) =>
@@ -527,6 +528,7 @@ export function RangeSlider({
         />
         <input
           aria-label={`${label} maximum`}
+          className="t7-range-slider-input"
           max={max}
           min={minValue}
           onChange={(event) =>

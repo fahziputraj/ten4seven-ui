@@ -337,6 +337,7 @@ type BlockSectionAttributes = Omit<HTMLAttributes<HTMLElement>, "title">;
 export interface HeroProps extends BlockSectionAttributes {
   description?: ReactNode;
   eyebrow?: ReactNode;
+  headingLevel?: "h1" | "h2";
   media?: ReactNode;
   primaryAction?: ReactNode;
   secondaryAction?: ReactNode;
@@ -351,6 +352,7 @@ export function Hero({
   className,
   description,
   eyebrow,
+  headingLevel = "h1",
   media,
   primaryAction,
   secondaryAction,
@@ -372,7 +374,7 @@ export function Hero({
         {eyebrow ? (
           <Typography typeRole="overline">{eyebrow}</Typography>
         ) : null}
-        <Typography as="h1" id={headingId} typeRole="display-xl">
+        <Typography as={headingLevel} id={headingId} typeRole="display-xl">
           {title}
         </Typography>
         {description ? (

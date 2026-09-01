@@ -3024,6 +3024,7 @@ type EbookCatalogFiltersProps = {
   authorQuery: string;
   availability: EbookAvailability[];
   category: EbookCategoryFilter;
+  categorySectionId?: string;
   onAuthorQueryChange: (value: string) => void;
   onAvailabilityToggle: (value: EbookAvailability) => void;
   onCategoryChange: (value: EbookCategoryFilter) => void;
@@ -3036,6 +3037,7 @@ function EbookCatalogFilters({
   authorQuery,
   availability,
   category,
+  categorySectionId,
   onAuthorQueryChange,
   onAvailabilityToggle,
   onCategoryChange,
@@ -3051,7 +3053,7 @@ function EbookCatalogFilters({
 
   return (
     <div className="ebook-filter-stack">
-      <section className="ebook-filter-group" id="ebook-categories">
+      <section className="ebook-filter-group" id={categorySectionId}>
         <div className="ebook-filter-group-heading">
           <T7Icon name="category" size={16} />
           <Typography typeRole="label">Jelajahi kategori</Typography>
@@ -3185,7 +3187,7 @@ export function EbookStoreCatalog() {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [cart, setCart] = useState<Record<string, number>>({});
   const [cartOpen, setCartOpen] = useState(false);
-  const [mobileCart, setMobileCart] = useState(false);
+  const [isNarrowViewport, setIsNarrowViewport] = useState(false);
   const [priceRange, setPriceRange] = useState<EbookPriceRange>("all");
   const [availability, setAvailability] = useState<EbookAvailability[]>([]);
   const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
@@ -3203,7 +3205,7 @@ export function EbookStoreCatalog() {
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 720px)");
-    const update = () => setMobileCart(media.matches);
+    const update = () => setIsNarrowViewport(media.matches);
     update();
     media.addEventListener?.("change", update);
     return () => media.removeEventListener?.("change", update);
@@ -3412,7 +3414,7 @@ export function EbookStoreCatalog() {
           >
             Terbitkan
           </Button>
-          {mobileCart ? (
+          {isNarrowViewport ? (
             <span onClick={() => setCartOpen(true)}>{cartTrigger}</span>
           ) : (
             <Popover
@@ -3462,7 +3464,17 @@ export function EbookStoreCatalog() {
         },
         {
           children: [
-            { href: "#ebook-categories", key: "categories", label: "Kategori" },
+            isNarrowViewport
+              ? {
+                  key: "categories",
+                  label: "Kategori",
+                  onSelect: () => setFilterDrawerOpen(true),
+                }
+              : {
+                  href: "#ebook-categories",
+                  key: "categories",
+                  label: "Kategori",
+                },
             { href: "#ebook-catalog", key: "collection", label: "Koleksi" },
           ],
           key: "explore",
@@ -3480,9 +3492,14 @@ export function EbookStoreCatalog() {
         <PageHeader
           actions={
             <Button
+              aria-expanded={isNarrowViewport ? filterDrawerOpen : undefined}
               intent="secondary"
               leadingIcon="category"
-              onClick={() => scrollTo("ebook-categories")}
+              onClick={() =>
+                isNarrowViewport
+                  ? setFilterDrawerOpen(true)
+                  : scrollTo("ebook-categories")
+              }
             >
               Jelajahi kategori
             </Button>
@@ -3522,7 +3539,10 @@ export function EbookStoreCatalog() {
                 </Button>
               ) : null}
             </div>
-            <EbookCatalogFilters {...filterProps} />
+            <EbookCatalogFilters
+              {...filterProps}
+              categorySectionId="ebook-categories"
+            />
           </aside>
 
           <section
@@ -3742,7 +3762,10 @@ export function EbookStoreCatalog() {
         side="left"
         title="Filter buku"
       >
-        <EbookCatalogFilters {...filterProps} />
+        <EbookCatalogFilters
+          {...filterProps}
+          categorySectionId="ebook-categories-drawer"
+        />
         <div className="ebook-filter-drawer-footer">
           <Button onClick={() => setFilterDrawerOpen(false)}>
             Lihat hasil
@@ -3758,7 +3781,7 @@ export function EbookStoreCatalog() {
             : "Tinjau item dan subtotal sebelum checkout."
         }
         onClose={() => setCartOpen(false)}
-        open={mobileCart && cartOpen}
+        open={isNarrowViewport && cartOpen}
         title="Keranjang"
       >
         {cartPanel}

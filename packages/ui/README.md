@@ -2,7 +2,8 @@
 
 The private, self-contained ten4seven UI distribution. One package contains
 the React components, provider/theme runtime, semantic icon registry, token
-profiles, motion contract, Inter variable font, and stylesheet required by a
+profiles, motion contract, self-hosted Inter, DM Sans, Source Serif 4, and IBM
+Plex Mono fonts, and the stylesheet required by a
 consumer application.
 
 The package is intentionally marked `private` and `UNLICENSED`: it is prepared
