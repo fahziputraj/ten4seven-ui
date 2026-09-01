@@ -3,6 +3,8 @@ dist/
 coverage/
 .vite/
 artifacts/
+.dev-server*.log
+test-results/
 *.local
 *.tsbuildinfo
 .DS_Store

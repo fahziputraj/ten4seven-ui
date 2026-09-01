@@ -25,6 +25,9 @@ principles as a future review lens.
 
 ## Scope confirmation
 
-No package dependency, component, BrandProfile, recipe, public route, design
-token, browser-security workaround, commit, push, publication, or deployment
-was added in this lineage audit.
+The lineage audit introduced no runtime, component, token, dependency,
+BrandProfile, or recipe implementation change.
+
+Commit or push activity, if performed separately after this bounded audit, is
+repository-management activity and is not evidence of a lineage-driven
+implementation change.
