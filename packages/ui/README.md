@@ -35,26 +35,48 @@ import {
   Button,
   T7Icon,
   Ten4SevenProvider,
-  type ThemeConfig,
+  THEME_RECIPES,
 } from "@ten4seven/ui";
-
-const theme: ThemeConfig = {
-  appearance: "light",
-  palette: "emerald",
-  radius: "soft",
-  density: "default",
-  typography: "modern",
-};
 
 export function App() {
   return (
-    <Ten4SevenProvider theme={theme}>
+    <Ten4SevenProvider
+      theme="enterprise"
+      preferences={{ appearance: "system", density: "compact" }}
+    >
       <Button leadingIcon="check">Save changes</Button>
       <T7Icon name="dashboard" label="Dashboard" />
     </Ten4SevenProvider>
   );
 }
 ```
+
+`enterprise`, `product`, `editorial`, and `commerce` are authored recipes.
+`THEME_RECIPES`, `THEME_RECIPE_NAMES`, and `getThemeRecipe()` are available
+when an application needs to enumerate them for its own picker or metadata.
+Use `preferences` only for runtime choices such as appearance, density,
+contrast, and motion. The established advanced object path remains compatible:
+
+```tsx
+import type { ThemeConfig } from "@ten4seven/ui";
+
+const customTheme: ThemeConfig = {
+  palette: "blue",
+  primary: "indigo",
+  density: "compact",
+};
+
+<Ten4SevenProvider theme={customTheme}>{/* app */}</Ten4SevenProvider>;
+```
+
+For CSS-first rendering, import `@ten4seven/ui/theme.css` and
+`@ten4seven/ui/components.css`, then use `data-t7-theme`, `data-t7-mode`, and
+`data-t7-density` on a document or bounded root. Static CSS selectors require
+`data-t7-mode="light"` or `"dark"`; an application must resolve `system`
+before setting the attribute. Optional granular artifacts are also available
+as `themes.css`, `tailwind.css`, and `tokens.dtcg.json`. See the repository
+[theming guide](https://github.com/fahziputraj/ten4seven-ui/blob/main/docs/THEMING.md)
+for the scoped `ThemeScope` and expert `overrides` contracts.
 
 The package keeps React and React DOM as peer dependencies so an application
 does not accidentally load two React runtimes. Tokens and semantic icons are

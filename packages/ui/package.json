@@ -24,11 +24,34 @@
     "./styles.css": {
       "default": "./dist/styles.css"
     },
+    "./base.css": {
+      "default": "./dist/base.css"
+    },
+    "./theme.css": {
+      "default": "./dist/theme.css"
+    },
+    "./themes.css": {
+      "default": "./dist/themes.css"
+    },
+    "./components.css": {
+      "default": "./dist/components.css"
+    },
+    "./tailwind.css": {
+      "default": "./dist/tailwind.css"
+    },
+    "./tokens.dtcg.json": {
+      "default": "./dist/tokens.dtcg.json"
+    },
     "./fonts/*": "./dist/fonts/*",
     "./package.json": "./package.json"
   },
   "sideEffects": [
-    "./dist/styles.css"
+    "./dist/styles.css",
+    "./dist/base.css",
+    "./dist/theme.css",
+    "./dist/themes.css",
+    "./dist/components.css",
+    "./dist/tailwind.css"
   ],
   "peerDependencies": {
     "react": ">=18.2.0",

@@ -16,17 +16,17 @@ Verified: 2026-09-01
 
 ## Geometry outcomes
 
-| Area                  | Check                                                 | Result                                                                                                                             |
-| --------------------- | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| Page root             | `scrollWidth - clientWidth` on audited primary routes | `0` observed for the active route matrix at mobile/narrow; no accidental root scrollbar.                                           |
-| Tables                | Ownership of horizontal overflow                      | PASS — table wrapper scrolls when content requires it; page root does not.                                                         |
-| Theme Studio          | Control columns, profile labels, sliders              | PASS — one column at narrow width, role labels stay in bounds, sliders retain 36px physical hit geometry.                          |
-| Publishing/Ebook      | Intermediate toolbar and catalog grid                 | PASS — compact layout begins at 880px before control right edges can clip.                                                         |
-| Public navigation     | Wrapped menu actions and header CTA                   | PASS — links/triggers are at least 44px high; visible Public/Ebook header actions are at least 40px high at the mobile breakpoint. |
-| Operations            | Milestone nodes, selected detail, filter bar, table   | PASS — no percentage/border collision, no duplicated mobile chrome, table scroll remains local.                                    |
-| Cards and previews    | Min-content / grid balance                            | PASS — static cards retain their intended bounds; media/content regions do not force page overflow.                                |
-| Modal/Drawer backdrop | Narrow 360px width                                    | PASS — native dialog backdrop bounds do not exceed viewport.                                                                       |
-| Overlay edge anchors  | Popover, menu, combo popup                            | PASS — portal layers remain within viewport and do not clip behind scroll owners.                                                  |
+| Area                  | Check                                                    | Result                                                                                                                                                       |
+| --------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Page root             | `scrollWidth - clientWidth` on audited primary routes    | `0` observed for the active route matrix at mobile/narrow; no accidental root scrollbar.                                                                     |
+| Tables                | Ownership of horizontal overflow                         | PASS — table wrapper scrolls when content requires it; page root does not.                                                                                   |
+| Theme Studio          | Control columns, profile labels, sliders, catalog search | PASS — one column at narrow width, role labels stay in bounds, sliders retain 36px physical hit geometry, and the icon-only search control is at least 40px. |
+| Publishing/Ebook      | Intermediate toolbar and catalog grid                    | PASS — compact layout begins at 880px before control right edges can clip.                                                                                   |
+| Public navigation     | Wrapped menu actions and header CTA                      | PASS — links/triggers are at least 44px high; visible Public/Ebook header actions are at least 40px high at the mobile breakpoint.                           |
+| Operations            | Milestone nodes, selected detail, filter bar, table      | PASS — no percentage/border collision, no duplicated mobile chrome, table scroll remains local.                                                              |
+| Cards and previews    | Min-content / grid balance                               | PASS — static cards retain their intended bounds; media/content regions do not force page overflow.                                                          |
+| Modal/Drawer backdrop | Narrow 360px width                                       | PASS — native dialog backdrop bounds do not exceed viewport.                                                                                                 |
+| Overlay edge anchors  | Popover, menu, combo popup                               | PASS — portal layers remain within viewport and do not clip behind scroll owners.                                                                            |
 
 ## Precision observations
 
@@ -52,3 +52,5 @@ Verified: 2026-09-01
 6. Operations mobile identity/navigation behavior;
 7. Drawer and Modal viewport-width containment;
 8. slider, filter-chip removal, and carousel target geometry.
+9. Theme Studio's icon-only catalog-search target at exact 360×800, including
+   root-overflow protection.

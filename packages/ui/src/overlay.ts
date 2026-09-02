@@ -1,5 +1,6 @@
 import { createPortal } from "react-dom";
 import {
+  createElement,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -205,6 +206,68 @@ export interface FloatingPortalProps {
   children: ReactNode;
 }
 
+type FloatingScopeContract = {
+  attributes: Record<`data-t7-${string}`, string>;
+  scope: HTMLElement;
+  variables: Record<`--t7-${string}`, string>;
+};
+
+/**
+ * A portal keeps React context but leaves the DOM subtree where CSS custom
+ * properties inherit. Copy the resolved contract from the nearest ThemeScope
+ * onto a display-contents bridge in the existing portal root so a scoped
+ * Select, Popover, or menu retains its authored tokens without giving up the
+ * provider-level clipping and stacking behavior.
+ */
+function readFloatingScopeContract(
+  anchorRef?: RefObject<HTMLElement | null>,
+): FloatingScopeContract | null {
+  const scope = anchorRef?.current?.closest<HTMLElement>(".t7-theme-scope");
+  if (!scope || typeof window === "undefined") return null;
+
+  const computed = window.getComputedStyle(scope);
+  const variables = {} as FloatingScopeContract["variables"];
+  for (let index = 0; index < computed.length; index += 1) {
+    const name = computed.item(index);
+    if (name.startsWith("--t7-"))
+      variables[name as `--t7-${string}`] = computed
+        .getPropertyValue(name)
+        .trim();
+  }
+
+  const attributes = {} as FloatingScopeContract["attributes"];
+  for (const attribute of Array.from(scope.attributes)) {
+    if (attribute.name.startsWith("data-t7-"))
+      attributes[attribute.name as `data-t7-${string}`] = attribute.value;
+  }
+
+  return { attributes, scope, variables };
+}
+
+function sameFloatingScopeContract(
+  current: FloatingScopeContract | null,
+  next: FloatingScopeContract | null,
+) {
+  if (current === next) return true;
+  if (!current || !next || current.scope !== next.scope) return false;
+
+  const sameRecord = (
+    left: Record<string, string>,
+    right: Record<string, string>,
+  ) => {
+    const leftKeys = Object.keys(left);
+    return (
+      leftKeys.length === Object.keys(right).length &&
+      leftKeys.every((key) => left[key] === right[key])
+    );
+  };
+
+  return (
+    sameRecord(current.attributes, next.attributes) &&
+    sameRecord(current.variables, next.variables)
+  );
+}
+
 function resolveFloatingTarget(anchorRef?: RefObject<HTMLElement | null>) {
   if (typeof document === "undefined") return null;
   const dialog = anchorRef?.current?.closest("dialog[open]");
@@ -220,6 +283,8 @@ export function FloatingPortal({ anchorRef, children }: FloatingPortalProps) {
   const [target, setTarget] = useState<HTMLElement | null>(() =>
     resolveFloatingTarget(anchorRef),
   );
+  const [scopeContract, setScopeContract] =
+    useState<FloatingScopeContract | null>(null);
 
   useLayoutEffect(() => {
     const nextTarget = resolveFloatingTarget(anchorRef);
@@ -228,7 +293,41 @@ export function FloatingPortal({ anchorRef, children }: FloatingPortalProps) {
     );
   }, [anchorRef]);
 
-  return target ? createPortal(children, target) : null;
+  useLayoutEffect(() => {
+    const updateScopeContract = () => {
+      const nextContract = readFloatingScopeContract(anchorRef);
+      setScopeContract((currentContract) =>
+        sameFloatingScopeContract(currentContract, nextContract)
+          ? currentContract
+          : nextContract,
+      );
+    };
+
+    updateScopeContract();
+    const scope = anchorRef?.current?.closest<HTMLElement>(".t7-theme-scope");
+    if (!scope || typeof MutationObserver === "undefined") return undefined;
+
+    const observer = new MutationObserver(updateScopeContract);
+    observer.observe(scope, {
+      attributeFilter: ["class", "style"],
+      attributes: true,
+    });
+    return () => observer.disconnect();
+  }, [anchorRef]);
+
+  const content = scopeContract
+    ? createElement(
+        "div",
+        {
+          ...scopeContract.attributes,
+          className: "t7-floating-scope-bridge",
+          style: scopeContract.variables as CSSProperties,
+        },
+        children,
+      )
+    : children;
+
+  return target ? createPortal(content, target) : null;
 }
 
 let nativeDialogLockCount = 0;

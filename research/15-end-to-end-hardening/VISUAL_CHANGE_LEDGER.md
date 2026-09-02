@@ -28,6 +28,42 @@ visually reviewed and the underlying semantic/geometry change is intended.
 
 Total accepted baseline changes: **46**.
 
+## 2026-09-01 interaction-only revalidation
+
+Decision: **NO DEFAULT SCREENSHOT BASELINE CHANGE.**
+
+The follow-up repair changes focus, keyboard, accessible-name, dismiss, and
+touch-target behavior in the canonical component layer. The default captured
+states remain visually equivalent, so `pnpm test:visual:update` was not run and
+no snapshot was silently regenerated. Focused rendered checks covered the
+Command Menu active descendant, form-listbox Escape/outside dismissal, menu
+roving focus, nested-overlay Escape containment, DataTable row keyboard
+activation, and the exact 360px Theme Studio target geometry.
+
+This is deliberately distinct from the 46 historical accepted baselines above:
+the repairs are real behavior changes with no reviewed default-image delta.
+
+## Historical snapshot inventory — preserved, not reclassified
+
+The following nine tracked images are not referenced by the active screenshot
+assertions. They pre-date this repair cycle, were not generated or removed by
+it, and do **not** count as new accepted baseline changes:
+
+```text
+tests/visual-regression.spec.ts-snapshots/components-modal-chromium-win32.png
+tests/visual-regression.spec.ts-snapshots/warehouse-inventory-desktop-chromium-win32.png
+tests/visual-regression.spec.ts-snapshots/warehouse-inventory-wide-chromium-win32.png
+tests/visual-regression.spec.ts-snapshots/warehouse-inventory-tablet-chromium-win32.png
+tests/visual-regression.spec.ts-snapshots/warehouse-inventory-mobile-chromium-win32.png
+tests/visual-regression.spec.ts-snapshots/warehouse-inventory-narrow-chromium-win32.png
+tests/reference-screen-renders.spec.ts-snapshots/warehouse-inventory-desktop-1440x900-chromium-win32.png
+tests/reference-screen-renders.spec.ts-snapshots/warehouse-inventory-mobile-390x844-chromium-win32.png
+tests/reference-screen-renders.spec.ts-snapshots/warehouse-inventory-narrow-360x800-chromium-win32.png
+```
+
+They remain **PRE-EXISTING / HISTORICAL**. A separate, explicitly approved
+snapshot-inventory cleanup would be required before changing them.
+
 ## Independent icon-baseline proof
 
 The five icon files were specifically isolated because they were already dirty

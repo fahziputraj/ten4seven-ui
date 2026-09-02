@@ -19,7 +19,7 @@ test("modal Escape closes and restores focus", async ({ page }) => {
 test("command menu focuses search and restores focus", async ({ page }) => {
   const trigger = page.getByRole("button", { name: "Open command menu" });
   await trigger.click();
-  const search = page.getByRole("textbox", { name: "Search commands" });
+  const search = page.getByRole("combobox", { name: "Search commands" });
   await expect(search).toBeFocused();
   await search.fill("theme");
   await expect(page.getByRole("option")).not.toHaveCount(0);

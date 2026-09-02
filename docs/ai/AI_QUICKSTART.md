@@ -10,19 +10,23 @@ Look for:
 
 - `@ten4seven/tokens`, `@ten4seven/ui`, or `@ten4seven/icons` in `package.json`.
 - `Ten4SevenProvider` in the app root.
-- imports of `@ten4seven/tokens/theme.css` and `@ten4seven/ui/styles.css`.
+- imports of `@ten4seven/ui/styles.css`, or the `theme.css` and
+  `components.css` package slices.
 - `T7Icon` calls using semantic names.
-- `data-density`, `data-palette`, `data-primary`, `data-accent`, `data-canvas`,
-  `data-radius`, or `data-typography` on the provider.
+- `data-t7-theme`, `data-t7-mode`, `data-t7-density`, `data-t7-contrast`, or
+  `data-t7-motion-preference` on a provider or CSS-first root. Legacy
+  `data-density`, `data-palette`, `data-primary`, `data-accent`,
+  `data-canvas`, `data-radius`, and `data-typography` may still be present on
+  existing providers.
 
 If no installation exists, read the consumer's package manager and framework first, then add the packages through its normal dependency workflow. Do not copy donor libraries into the feature.
 
 For a packaged consumer, prefer the single private `@ten4seven/ui` artifact:
-it already contains the token runtime, semantic icon registry, motion runtime,
-Inter font, stylesheet, and declarations. Do not add the workspace-only
-`@ten4seven/tokens` or `@ten4seven/icons` packages alongside that artifact.
-The workspace may still use those packages as internal source layers while the
-artifact is built.
+it already contains the token runtime, curated static recipe CSS, semantic icon
+registry, motion runtime, self-hosted fonts, stylesheet slices, and
+declarations. Do not add the workspace-only `@ten4seven/tokens` or
+`@ten4seven/icons` packages alongside that artifact. The workspace may still
+use those packages as internal source layers while the artifact is built.
 
 ## 3. Initialize it
 
@@ -31,24 +35,17 @@ import "@ten4seven/ui/styles.css";
 import { Ten4SevenProvider } from "@ten4seven/ui";
 
 <Ten4SevenProvider
-  theme={{
-    appearance: "light",
-    palette: "emerald",
-    primary: "emerald",
-    accent: "emerald",
-    canvas: "balanced",
-    chartPalette: "spectrum",
-    radius: "soft",
-    radiusValue: 12,
-    density: "default",
-    typography: "modern",
-  }}
+  theme="enterprise"
+  preferences={{ appearance: "system", density: "default" }}
 >
   <App />
 </Ten4SevenProvider>;
 ```
 
-For a custom family, keep the preset and override only the family axes: `typography: { preset: "modern", ui: '"Brand Sans", sans-serif' }`.
+Use a recipe for normal product work. For a genuine custom brand or Theme
+Studio-like editor, the compatible object form remains available:
+`theme={{ palette: "blue", primary: "indigo", accent: "cyan" }}`. Use typed
+`ThemeOverrides` only as a bounded product-root exception after a recipe.
 
 ## 4. Select a page recipe
 
@@ -116,18 +113,23 @@ Use one shared grammar:
 
 ## 7. Use theme tokens
 
-Change `Ten4SevenProvider` or a theme preset first. Components consume semantic variables for appearance, palette, primary/accent color sources, canvas, chart palette, radius, density, elevation, typography roles, and font families. Follow **theme first, component second, local override last**.
-
-Motion follows the same rule. Canonical components use the native `t7Motion`
-role map and the provider's `motionDuration` axis for hover, press, expand,
-overlay, feedback, and viewport-entering behavior. Custom surfaces may import
-`t7Motion` from `@ten4seven/ui`; do not add local keyframes, durations, or a
-second animation runtime. Respect the shared reduced-motion policy.
+Choose a `ThemeRecipe` first, then use `RuntimePreferences` for the user's
+appearance, density, contrast, and motion-reduction choices. Components consume
+semantic variables for surfaces, text, borders, actions, fields, status, data,
+geometry, typography, motion, and elevation. Follow **theme first, component
+second, local override last**.
 
 The typed `ThemeProfile` aggregate in `packages/contracts/src/theme-profile.ts`
-normalizes appearance, palette, action, accent, canvas, chart, radius, density,
-typography, motion, and elevation. It adapts to the existing provider API, so
-legacy `primary`, `radiusValue`, and `motionDuration` consumers remain valid.
+normalizes the existing legacy axes. `ThemeRecipe` in
+`packages/contracts/src/theme-recipe.ts` coordinates that profile with an
+expression and composition. `ThemeOverrides` is a typed expert escape hatch;
+it is not permission to write raw palette styles in a feature.
+
+Motion follows the same rule. Canonical components use the native `t7Motion`
+role map and the provider's semantic duration contract. Custom surfaces may
+import `t7Motion` from `@ten4seven/ui`; do not add local keyframes, durations,
+or a second animation runtime. Respect both the shared reduced-motion policy
+and `preferences.motion: "reduced"`.
 
 ## 8. Use icons
 

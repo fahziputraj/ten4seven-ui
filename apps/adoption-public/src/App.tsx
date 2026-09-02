@@ -10,6 +10,8 @@ import type {
 import {
   AnnouncementBar,
   Button,
+  Card,
+  CardContent,
   CartLineItem,
   CartPanel,
   ContentShowcase,
@@ -49,7 +51,7 @@ import {
   type ProductCategory,
 } from "./domain";
 
-type Route = "catalog" | "guides" | "home";
+type Route = "catalog" | "guides" | "home" | "css-first";
 
 type SupportedAppearance = Exclude<Appearance, "system">;
 
@@ -109,9 +111,47 @@ function themeFromQuery() {
 }
 
 function routeFromPath(pathname: string): Route {
+  if (pathname === "/css-first-proof") return "css-first";
   if (pathname === "/catalog") return "catalog";
   if (pathname === "/guides") return "guides";
   return "home";
+}
+
+/** A consumer that deliberately uses only the generated data-attribute CSS. */
+function CssFirstThemeProof() {
+  return (
+    <main
+      aria-labelledby="css-first-proof-title"
+      className="adoption-css-first-proof"
+      data-t7-contrast="more"
+      data-t7-density="compact"
+      data-t7-mode="dark"
+      data-t7-motion-preference="reduced"
+      data-t7-theme="commerce"
+      data-testid="adoption-css-first-proof"
+    >
+      <Typography as="p" typeRole="overline">
+        CSS-first consumer
+      </Typography>
+      <Typography as="h1" id="css-first-proof-title" typeRole="display-lg">
+        Commerce without a React theme provider
+      </Typography>
+      <Typography typeRole="body">
+        These semantic variables come from static recipe selectors on this
+        element, not from Ten4SevenProvider.
+      </Typography>
+      <Card className="adoption-css-first-card">
+        <CardContent>
+          <Typography typeRole="card-title">Static token contract</Typography>
+          <Typography typeRole="body-sm">
+            Dark mode, compact geometry, more contrast, and reduced motion are
+            all expressed as data attributes.
+          </Typography>
+          <Button>CSS-first action</Button>
+        </CardContent>
+      </Card>
+    </main>
+  );
 }
 
 function navigate(pathname: string) {
@@ -661,6 +701,9 @@ function PublicApp() {
 
 export default function App() {
   const theme = themeFromQuery();
+
+  if (window.location.pathname === "/css-first-proof")
+    return <CssFirstThemeProof />;
 
   return (
     <Ten4SevenProvider {...theme}>

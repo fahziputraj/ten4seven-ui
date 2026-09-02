@@ -59,3 +59,27 @@ test("adoption consumers honor the shared theme axes", async ({ page }) => {
 
   expect(messages).toEqual([]);
 });
+
+test("a CSS-first consumer receives the recipe without a provider", async ({
+  page,
+}) => {
+  await page.goto("http://127.0.0.1:4182/css-first-proof");
+
+  const proof = page.getByTestId("adoption-css-first-proof");
+  await expect(proof).toBeVisible();
+  await expect(page.locator(".t7-provider")).toHaveCount(0);
+  await expect(proof).toHaveAttribute("data-t7-theme", "commerce");
+  await expect(proof).toHaveAttribute("data-t7-mode", "dark");
+  await expect(proof).toHaveAttribute("data-t7-density", "compact");
+  await expect(proof).toHaveAttribute("data-t7-contrast", "more");
+  await expect(proof).toHaveAttribute("data-t7-motion-preference", "reduced");
+  expect(
+    await proof.evaluate((element) => {
+      const style = getComputedStyle(element);
+      return {
+        controlHeight: style.getPropertyValue("--t7-control-height").trim(),
+        recipe: style.getPropertyValue("--t7-theme-recipe").trim(),
+      };
+    }),
+  ).toEqual({ controlHeight: "36px", recipe: "commerce" });
+});

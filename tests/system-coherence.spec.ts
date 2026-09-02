@@ -533,9 +533,13 @@ test("Global Controls expose an immediate canonical preview", async ({
     /emerald · primary role/,
   );
 
-  const before = await preview
-    .locator(".t7-button")
-    .evaluate((element) => getComputedStyle(element).backgroundColor);
+  const previewAction = preview.getByRole("button", {
+    name: "Apply",
+    exact: true,
+  });
+  const before = await previewAction.evaluate(
+    (element) => getComputedStyle(element).backgroundColor,
+  );
   await page.getByRole("button", { name: "Use blue palette" }).click();
   await expect(liveState).toContainText("Updated live");
   await expect(liveState).toContainText("Base palette");
@@ -544,9 +548,9 @@ test("Global Controls expose an immediate canonical preview", async ({
     "blue · primary role",
   );
 
-  const after = await preview
-    .locator(".t7-button")
-    .evaluate((element) => getComputedStyle(element).backgroundColor);
+  const after = await previewAction.evaluate(
+    (element) => getComputedStyle(element).backgroundColor,
+  );
   expect(after).not.toBe(before);
 
   const field = preview.getByRole("textbox", {

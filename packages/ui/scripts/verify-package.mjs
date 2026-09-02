@@ -14,6 +14,12 @@ const requiredFiles = [
   "index.cjs",
   "index.d.ts",
   "styles.css",
+  "base.css",
+  "theme.css",
+  "themes.css",
+  "components.css",
+  "tailwind.css",
+  "tokens.dtcg.json",
   "fonts/Inter-Variable.woff2",
   "fonts/Inter-OFL.txt",
   "fonts/DM-Sans-Variable.woff2",
@@ -75,10 +81,14 @@ const declarationSource = await readFile(
   "utf8",
 );
 const styleSource = await readFile(resolve(distDir, "styles.css"), "utf8");
+const tailwindSource = await readFile(resolve(distDir, "tailwind.css"), "utf8");
+const dtcgTokens = JSON.parse(
+  await readFile(resolve(distDir, "tokens.dtcg.json"), "utf8"),
+);
 const styleCode = styleSource.replace(/\/\*[\s\S]*?\*\//g, "");
 
 const runtimeImportPattern =
-  /(?:from\s*["']|require\(["'])[^"']*(?:@ten4seven\/(?:tokens|icons)|animejs)/;
+  /(?:from\s*["']|require\(["'])[^"']*(?:@ten4seven\/(?:contracts|tokens|icons)|animejs)/;
 if (
   runtimeImportPattern.test(esmSource) ||
   runtimeImportPattern.test(cjsSource)
@@ -88,7 +98,7 @@ if (
   );
 
 if (
-  /@ten4seven\/(?:tokens|icons)|(?:from|import)\s*["']animejs/.test(
+  /@ten4seven\/(?:contracts|tokens|icons)|(?:from|import)\s*["']animejs/.test(
     declarationSource,
   )
 )
@@ -98,16 +108,36 @@ if (
 
 if (
   !styleCode.includes("@font-face") ||
+  !styleCode.includes('[data-t7-theme="enterprise"]') ||
   styleCode.includes("@ten4seven/") ||
   /@import\s/i.test(styleCode)
 )
   throw new Error("the shipped stylesheet is not self-contained");
+
+if (
+  !tailwindSource.includes("@theme inline") ||
+  !tailwindSource.includes("--color-t7-primary-foreground") ||
+  tailwindSource.includes("@import")
+)
+  throw new Error(
+    "the shipped Tailwind bridge is missing or not self-contained",
+  );
+
+if (
+  dtcgTokens?.ref?.space?.[4]?.$type !== "dimension" ||
+  dtcgTokens?.semantic?.color?.action?.primary?.$value !==
+    "{ref.color.palette.emerald.primary}"
+)
+  throw new Error("the shipped DTCG-compatible token export is incomplete");
 
 const esm = await import(pathToFileURL(resolve(distDir, "index.js")).href);
 const cjs = createRequire(import.meta.url)(resolve(distDir, "index.cjs"));
 const requiredExports = [
   "Button",
   "Ten4SevenProvider",
+  "ThemeScope",
+  "THEME_RECIPES",
+  "getThemeRecipe",
   "T7Icon",
   "paletteProfiles",
   "t7Motion",

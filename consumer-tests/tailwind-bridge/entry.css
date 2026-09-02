@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@import "@ten4seven/ui/theme.css";
+@import "@ten4seven/ui/tailwind.css";
+
+/* A fixed source list keeps this package-boundary compilation proof deterministic. */
+@source inline("bg-t7-primary text-t7-primary-foreground hover:bg-t7-primary-hover rounded-t7-card border-t7-border h-t7-control");

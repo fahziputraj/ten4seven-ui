@@ -1,0 +1,11 @@
+{
+  "name": "ten4seven-tailwind-bridge-consumer-proof",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@ten4seven/ui": "file:../../packages/ui"
+  },
+  "devDependencies": {
+    "tailwindcss": "4.3.3"
+  }
+}

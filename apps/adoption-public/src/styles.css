@@ -7,6 +7,30 @@
   color: hsl(var(--t7-primary-foreground-hsl));
 }
 
+.adoption-css-first-proof {
+  display: grid;
+  min-height: 100vh;
+  align-content: center;
+  gap: var(--t7-section-gap);
+  background: hsl(var(--t7-background-hsl));
+  color: hsl(var(--t7-foreground-hsl));
+  padding: clamp(24px, 6vw, 88px);
+}
+
+.adoption-css-first-proof > [data-t7-type="body"] {
+  max-width: var(--t7-reading-measure);
+  color: hsl(var(--t7-muted-foreground-hsl));
+}
+
+.adoption-css-first-card {
+  width: min(100%, 540px);
+}
+
+.adoption-css-first-card .t7-card-content {
+  display: grid;
+  gap: var(--t7-control-gap);
+}
+
 .adoption-public-cover[data-category="Systems"] {
   background: hsl(var(--t7-info-hsl) / 0.84);
 }

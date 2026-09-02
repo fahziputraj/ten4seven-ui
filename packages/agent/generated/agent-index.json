@@ -3,6 +3,8 @@
   "sourceOfTruth": {
     "typedContracts": "packages/contracts/src",
     "themeProfile": "packages/contracts/src/theme-profile.ts",
+    "themeRecipes": "packages/contracts/src/theme-recipe.ts",
+    "dtcgTokenExport": "packages/tokens/generated/tokens.dtcg.json",
     "brandProfiles": "packages/contracts/src/brand-profile.ts",
     "entityList": "packages/contracts/src/entity-list.ts",
     "entityDetail": "packages/contracts/src/entity-detail.ts",
@@ -31,6 +33,11 @@
     "auth": {
       "resolve": "t7ui brand resolve auth",
       "compose": "t7ui brand compose auth"
+    },
+    "themes": {
+      "source": "generated/theme-recipes.json",
+      "tokenExport": "generated/tokens.dtcg.json",
+      "guidance": "docs/THEME_RECIPES.md"
     }
   },
   "metrics": {

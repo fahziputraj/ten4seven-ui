@@ -10,6 +10,11 @@ import {
 
 import { T7Icon, type IconName } from "@ten4seven/icons";
 import {
+  THEME_RECIPES,
+  type RuntimePreferences,
+  type ThemeRecipeName,
+} from "@ten4seven/contracts";
+import {
   Button,
   Card,
   CardContent,
@@ -27,6 +32,7 @@ import {
   Select,
   Slider,
   Ten4SevenProvider,
+  ThemeScope,
   Typography,
   useTen4SevenTheme,
   ToastProvider,
@@ -583,6 +589,10 @@ function Studio({
   contentOverride,
   onNavigate,
   onNavigatePath,
+  onThemePreferencesChange,
+  onThemeRecipeChange,
+  themePreferences,
+  themeRecipe,
 }: {
   activeRoute: Exclude<
     PlaygroundRoute,
@@ -593,6 +603,10 @@ function Studio({
   contentOverride?: ReactNode;
   onNavigate: (route: PlaygroundRoute) => void;
   onNavigatePath: (path: string) => void;
+  onThemePreferencesChange: (preferences: RuntimePreferences) => void;
+  onThemeRecipeChange: (recipe: ThemeRecipeName | undefined) => void;
+  themePreferences: RuntimePreferences;
+  themeRecipe: ThemeRecipeName | undefined;
 }) {
   const { appearanceSetting, resetTheme, theme } = useTen4SevenTheme();
   const [isModalOpen, setModalOpen] = useState(false);
@@ -763,8 +777,8 @@ function Studio({
                     Theme Studio
                   </Typography>
                   <p>
-                    Adjust the system axes, then inspect how the same surfaces
-                    respond without local restyling.
+                    Start with a curated recipe, then inspect how runtime
+                    preferences and advanced tokens affect the same surfaces.
                   </p>
                 </div>
                 <div className="studio-intro-actions">
@@ -776,6 +790,15 @@ function Studio({
                   </span>
                 </div>
               </section>
+
+              <ThemeRecipePicker
+                onPreferencesChange={onThemePreferencesChange}
+                onSelect={onThemeRecipeChange}
+                preferences={themePreferences}
+                value={themeRecipe}
+              />
+
+              <CssFirstThemeProof />
 
               <section className="studio-control-row">
                 <Card className="studio-controls-card">
@@ -1517,6 +1540,92 @@ function StudioLivePreview() {
             {theme.chartPalette} · {theme.palette} base hue
           </span>
         </div>
+        <ThemeScope
+          aria-label="Inverse theme scope proof"
+          className="studio-live-preview-sample studio-live-preview-inverse"
+          tone="inverse"
+        >
+          <div className="studio-live-preview-role-heading">
+            <span className="studio-live-preview-label">Inverse scope</span>
+            <span className="studio-live-preview-role-note">
+              Nested semantic contrast · same component contract
+            </span>
+          </div>
+          <Button intent="secondary" size="sm">
+            Scoped action
+          </Button>
+          <span className="studio-live-preview-meta">
+            ThemeScope · inverse tone
+          </span>
+          <ThemeScope
+            aria-label="Nested ThemeScope composition proof"
+            className="studio-live-preview-nested-scope"
+            tone="inverse"
+          >
+            Nested inverse returns to the parent contrast contract.
+          </ThemeScope>
+        </ThemeScope>
+        <ThemeScope
+          aria-label="Editorial recipe scope proof"
+          className="studio-live-preview-sample"
+          theme="editorial"
+        >
+          <div className="studio-live-preview-role-heading">
+            <span className="studio-live-preview-label">Recipe scope</span>
+            <span className="studio-live-preview-role-note">
+              Authored editorial geometry and type, bounded to this surface
+            </span>
+          </div>
+          <Button intent="secondary" size="sm">
+            Scoped editorial action
+          </Button>
+          <Select defaultValue="authored" label="Editorial scoped options">
+            <option value="authored">Authored editorial context</option>
+            <option value="inherited">Provider context</option>
+          </Select>
+          <span className="studio-live-preview-meta">
+            ThemeScope · editorial recipe defaults
+          </span>
+        </ThemeScope>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Deliberately receives no provider-generated inline variables. It proves the
+ * shipped CSS selector contract can theme a bounded non-React consumer.
+ */
+function CssFirstThemeProof() {
+  return (
+    <section
+      aria-labelledby="css-first-theme-proof-title"
+      className="studio-css-first-proof"
+    >
+      <div>
+        <Typography as="p" typeRole="overline">
+          CSS-first delivery
+        </Typography>
+        <Typography
+          as="h3"
+          id="css-first-theme-proof-title"
+          typeRole="heading-md"
+        >
+          Static recipe selectors work without provider calculation
+        </Typography>
+      </div>
+      <div
+        className="studio-css-first-proof-surface"
+        data-t7-contrast="more"
+        data-t7-density="compact"
+        data-t7-mode="dark"
+        data-t7-motion-preference="reduced"
+        data-t7-theme="editorial"
+        data-testid="css-first-theme-proof"
+      >
+        <span>Editorial · dark · compact</span>
+        <Badge tone="primary">static tokens</Badge>
+        <Button size="sm">CSS-first action</Button>
       </div>
     </section>
   );
@@ -1717,6 +1826,168 @@ function AppearancePicker({ value }: { value: Appearance }) {
               <small>{option.detail}</small>
             </span>
           </button>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
+
+function ThemeRecipePicker({
+  onPreferencesChange,
+  onSelect,
+  preferences,
+  value,
+}: {
+  onPreferencesChange: (preferences: RuntimePreferences) => void;
+  onSelect: (recipe: ThemeRecipeName | undefined) => void;
+  preferences: RuntimePreferences;
+  value: ThemeRecipeName | undefined;
+}) {
+  const { resetTheme } = useTen4SevenTheme();
+
+  function selectRecipe(recipe: ThemeRecipeName | undefined) {
+    resetTheme();
+    onSelect(recipe);
+  }
+
+  return (
+    <section
+      aria-labelledby="theme-recipe-heading"
+      className="studio-recipe-workbench"
+      data-testid="theme-recipe-workbench"
+    >
+      <div className="studio-recipe-workbench-copy">
+        <Typography as="p" typeRole="overline">
+          Theme Workbench
+        </Typography>
+        <Typography as="h2" id="theme-recipe-heading" typeRole="heading-md">
+          Choose the authored language first
+        </Typography>
+        <Typography as="p" typeRole="body-sm">
+          Recipes coordinate color, canvas, typography, geometry, and rhythm.
+          Appearance and density remain runtime preferences; detailed axes are
+          available below for advanced authoring.
+        </Typography>
+      </div>
+      <div aria-label="Theme recipes" className="studio-recipe-options">
+        <Button
+          aria-pressed={value === undefined}
+          intent={value === undefined ? "secondary" : "quiet"}
+          onClick={() => selectRecipe(undefined)}
+          size="sm"
+        >
+          Custom
+        </Button>
+        {Object.values(THEME_RECIPES).map((recipe) => (
+          <Button
+            aria-pressed={value === recipe.id}
+            intent={value === recipe.id ? "secondary" : "quiet"}
+            key={recipe.id}
+            onClick={() => selectRecipe(recipe.id)}
+            size="sm"
+            title={recipe.description}
+          >
+            {recipe.label}
+          </Button>
+        ))}
+      </div>
+      <div
+        aria-label="Runtime preferences"
+        className="studio-runtime-preferences"
+      >
+        <RuntimePreferenceOptions
+          label="Appearance"
+          onChange={(appearance) =>
+            onPreferencesChange({
+              ...preferences,
+              appearance: appearance as RuntimePreferences["appearance"],
+            })
+          }
+          options={[
+            ["system", "System"],
+            ["light", "Light"],
+            ["dark", "Dark"],
+          ]}
+          value={preferences.appearance ?? "system"}
+        />
+        <RuntimePreferenceOptions
+          label="Density"
+          onChange={(density) =>
+            onPreferencesChange({
+              ...preferences,
+              density: density as RuntimePreferences["density"],
+            })
+          }
+          options={[
+            ["compact", "Compact"],
+            ["default", "Regular"],
+            ["comfortable", "Comfortable"],
+          ]}
+          value={preferences.density ?? "default"}
+        />
+        <RuntimePreferenceOptions
+          label="Contrast"
+          onChange={(contrast) =>
+            onPreferencesChange({
+              ...preferences,
+              contrast: contrast as RuntimePreferences["contrast"],
+            })
+          }
+          options={[
+            ["standard", "Standard"],
+            ["more", "More"],
+          ]}
+          value={preferences.contrast ?? "standard"}
+        />
+        <RuntimePreferenceOptions
+          label="Motion"
+          onChange={(motion) =>
+            onPreferencesChange({
+              ...preferences,
+              motion: motion as RuntimePreferences["motion"],
+            })
+          }
+          options={[
+            ["full", "Full"],
+            ["reduced", "Reduced"],
+          ]}
+          value={preferences.motion ?? "full"}
+        />
+      </div>
+      <Typography className="studio-recipe-active" typeRole="caption">
+        {value
+          ? `${THEME_RECIPES[value].label} recipe · ${THEME_RECIPES[value].expression} expression`
+          : "Custom advanced configuration · no named recipe selected"}
+      </Typography>
+    </section>
+  );
+}
+
+function RuntimePreferenceOptions({
+  label,
+  onChange,
+  options,
+  value,
+}: {
+  label: string;
+  onChange: (value: string) => void;
+  options: Array<[string, string]>;
+  value: string;
+}) {
+  return (
+    <fieldset className="studio-runtime-preference">
+      <legend>{label}</legend>
+      <div>
+        {options.map(([optionValue, optionLabel]) => (
+          <Button
+            aria-pressed={value === optionValue}
+            intent={value === optionValue ? "secondary" : "quiet"}
+            key={optionValue}
+            onClick={() => onChange(optionValue)}
+            size="sm"
+          >
+            {optionLabel}
+          </Button>
         ))}
       </div>
     </fieldset>
@@ -1970,6 +2241,10 @@ export default function App() {
     motionDuration: 1.5,
     typography: "modern",
   });
+  const [themeRecipe, setThemeRecipe] = useState<ThemeRecipeName>();
+  const [themePreferences, setThemePreferences] = useState<RuntimePreferences>(
+    {},
+  );
   const [routeMatch, setRouteMatch] = useState<RouteMatch>(() =>
     typeof window === "undefined"
       ? { kind: "known", route: "Theme Studio" }
@@ -2180,6 +2455,10 @@ export default function App() {
         contentOverride={contentOverride}
         onNavigate={navigateTo}
         onNavigatePath={navigateToPath}
+        onThemePreferencesChange={setThemePreferences}
+        onThemeRecipeChange={setThemeRecipe}
+        themePreferences={themePreferences}
+        themeRecipe={themeRecipe}
       />
     );
   }
@@ -2188,6 +2467,8 @@ export default function App() {
     <Ten4SevenProvider
       {...settings}
       persistenceKey="ten4seven.playground.theme.v1"
+      preferences={themePreferences}
+      theme={themeRecipe}
     >
       <ToastProvider>
         {routeContent}

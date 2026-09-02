@@ -1,6 +1,8 @@
 import agentIndex from "./agent-index.json" with { type: "json" };
 import aliases from "./aliases.json" with { type: "json" };
 import brandProfiles from "./brand-profiles.json" with { type: "json" };
+import themeRecipes from "./theme-recipes.json" with { type: "json" };
+import tokensDtcg from "./tokens.dtcg.json" with { type: "json" };
 import actionFooter from "./components/ActionFooter.json" with { type: "json" };
 import input from "./components/Input.json" with { type: "json" };
 import passwordInput from "./components/PasswordInput.json" with { type: "json" };
@@ -37,4 +39,6 @@ export {
   index,
   ownershipRules,
   recipes,
+  themeRecipes,
+  tokensDtcg,
 };

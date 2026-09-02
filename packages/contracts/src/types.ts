@@ -95,6 +95,55 @@ export interface ThemeProfile {
   };
 }
 
+/** Curated authored visual starting points for common product contexts. */
+export type ThemeRecipeName =
+  "enterprise" | "product" | "editorial" | "commerce";
+
+/**
+ * Composition guidance is intentionally separate from component API and
+ * semantic theme roles. It helps choose rhythm and content bounds without
+ * creating a recipe-local primitive family.
+ */
+export type ThemeExpression =
+  "operational" | "product" | "editorial" | "commerce" | "neutral";
+
+export type ContrastPreference = "standard" | "more";
+export type MotionPreference = "full" | "reduced";
+
+/** Per-user/runtime choices that must not rewrite an authored theme recipe. */
+export interface RuntimePreferences {
+  readonly appearance?: Appearance;
+  readonly density?: DensityName;
+  readonly contrast?: ContrastPreference;
+  readonly motion?: MotionPreference;
+}
+
+export interface ResolvedRuntimePreferences {
+  readonly appearance: Appearance;
+  readonly density: DensityName;
+  readonly contrast: ContrastPreference;
+  readonly motion: MotionPreference;
+}
+
+export interface ThemeComposition {
+  readonly contentMax: string;
+  readonly readingMeasure: string;
+  readonly pageGutter: string;
+  readonly sectionGap: string;
+}
+
+export interface ThemeRecipe {
+  readonly id: ThemeRecipeName;
+  readonly label: string;
+  readonly description: string;
+  readonly expression: ThemeExpression;
+  readonly profile: ThemeProfile;
+  readonly composition: ThemeComposition;
+}
+
+/** Public name for an authored v2 theme aggregate. Recipes are definitions. */
+export type ThemeDefinition = ThemeRecipe;
+
 export type BrandProfileId = "neutral-product" | "aapm-academy";
 export type BrandMediaProminence = "none" | "low" | "medium" | "high";
 export type BrandMediaTreatment =

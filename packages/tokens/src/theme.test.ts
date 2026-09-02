@@ -183,4 +183,45 @@ describe("theme engine", () => {
       "0 0% 100%",
     );
   });
+
+  it("maps semantic action, field, and density geometry aliases", () => {
+    const variables = buildThemeVariables(
+      resolveTheme({ density: "compact", primary: "indigo" }),
+    );
+
+    expect(variables["--t7-action-primary-hsl"]).toBe("232 70% 48%");
+    expect(variables["--t7-action-primary-foreground-hsl"]).toBe("0 0% 100%");
+    expect(variables["--t7-action-danger-foreground-hsl"]).toBe("0 0% 100%");
+    expect(variables["--t7-field-foreground-hsl"]).toBe(
+      variables["--t7-foreground-hsl"],
+    );
+    expect(variables["--t7-control-padding-inline"]).toBe("13px");
+    expect(variables["--t7-field-padding-inline"]).toBe("10px");
+    expect(variables["--t7-card-header-gap"]).toBe("12px");
+    expect(variables["--t7-overlay-padding"]).toBe("16px");
+    expect(variables["--t7-ref-space-4"]).toBe("16px");
+  });
+
+  it("keeps preference-level contrast and reduced motion semantic", () => {
+    const variables = buildThemeVariables(resolveTheme(), {
+      contrast: "more",
+      motion: "reduced",
+      recipe: "enterprise",
+      expression: "operational",
+      composition: {
+        contentMax: "1200px",
+        readingMeasure: "70ch",
+        pageGutter: "24px",
+        sectionGap: "32px",
+      },
+    });
+
+    expect(variables["--t7-theme-recipe"]).toBe("enterprise");
+    expect(variables["--t7-expression"]).toBe("operational");
+    expect(variables["--t7-contrast"]).toBe("more");
+    expect(variables["--t7-focus-ring"]).toContain("4px");
+    expect(variables["--t7-motion-preference"]).toBe("reduced");
+    expect(variables["--t7-motion-duration"]).toBe("0.01ms");
+    expect(variables["--t7-content-max"]).toBe("1200px");
+  });
 });

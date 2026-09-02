@@ -1,0 +1,238 @@
+{
+  "enterprise": {
+    "id": "enterprise",
+    "label": "Enterprise",
+    "description": "Quiet, scan-friendly operational surfaces with clear actions and restrained elevation.",
+    "expression": "operational",
+    "profile": {
+      "schemaVersion": "0.1",
+      "id": "enterprise",
+      "appearance": "light",
+      "palette": {
+        "base": "slate"
+      },
+      "action": {
+        "primary": "indigo"
+      },
+      "accent": {
+        "source": "cyan"
+      },
+      "canvas": {
+        "mode": "balanced"
+      },
+      "chart": {
+        "palette": "spectrum"
+      },
+      "radius": {
+        "preset": "soft"
+      },
+      "density": {
+        "preset": "default"
+      },
+      "typography": {
+        "preset": "modern",
+        "opticalSizing": true
+      },
+      "motion": {
+        "profile": "balanced",
+        "anchorSeconds": 1.25,
+        "roles": {
+          "fast": 0.13,
+          "interaction": 0.23,
+          "state": 0.35,
+          "enter": 0.5,
+          "exit": 0.35,
+          "reveal": 0.79,
+          "chart": 1.25,
+          "loop": 2
+        }
+      },
+      "elevation": {
+        "preset": "soft"
+      }
+    },
+    "composition": {
+      "contentMax": "1440px",
+      "readingMeasure": "68ch",
+      "pageGutter": "clamp(24px, 3vw, 44px)",
+      "sectionGap": "clamp(24px, 3vw, 44px)"
+    }
+  },
+  "product": {
+    "id": "product",
+    "label": "Product",
+    "description": "Balanced application surfaces for product workflows, dashboards, and decision-making.",
+    "expression": "product",
+    "profile": {
+      "schemaVersion": "0.1",
+      "id": "product",
+      "appearance": "light",
+      "palette": {
+        "base": "blue"
+      },
+      "action": {
+        "primary": "indigo"
+      },
+      "accent": {
+        "source": "cyan"
+      },
+      "canvas": {
+        "mode": "balanced"
+      },
+      "chart": {
+        "palette": "spectrum"
+      },
+      "radius": {
+        "preset": "soft"
+      },
+      "density": {
+        "preset": "default"
+      },
+      "typography": {
+        "preset": "modern",
+        "opticalSizing": true
+      },
+      "motion": {
+        "profile": "balanced",
+        "anchorSeconds": 1.25,
+        "roles": {
+          "fast": 0.13,
+          "interaction": 0.23,
+          "state": 0.35,
+          "enter": 0.5,
+          "exit": 0.35,
+          "reveal": 0.79,
+          "chart": 1.25,
+          "loop": 2
+        }
+      },
+      "elevation": {
+        "preset": "soft"
+      }
+    },
+    "composition": {
+      "contentMax": "1320px",
+      "readingMeasure": "68ch",
+      "pageGutter": "clamp(24px, 3vw, 44px)",
+      "sectionGap": "clamp(24px, 3vw, 44px)"
+    }
+  },
+  "editorial": {
+    "id": "editorial",
+    "label": "Editorial",
+    "description": "Measured reading surfaces with generous rhythm, paper neutrals, and restrained controls.",
+    "expression": "editorial",
+    "profile": {
+      "schemaVersion": "0.1",
+      "id": "editorial",
+      "appearance": "light",
+      "palette": {
+        "base": "slate"
+      },
+      "action": {
+        "primary": "slate"
+      },
+      "accent": {
+        "source": "amber"
+      },
+      "canvas": {
+        "mode": "paper"
+      },
+      "chart": {
+        "palette": "four"
+      },
+      "radius": {
+        "preset": "sharp"
+      },
+      "density": {
+        "preset": "comfortable"
+      },
+      "typography": {
+        "preset": "editorial",
+        "opticalSizing": true
+      },
+      "motion": {
+        "profile": "balanced",
+        "anchorSeconds": 1.5,
+        "roles": {
+          "fast": 0.16,
+          "interaction": 0.28,
+          "state": 0.42,
+          "enter": 0.6,
+          "exit": 0.42,
+          "reveal": 0.95,
+          "chart": 1.5,
+          "loop": 2.4
+        }
+      },
+      "elevation": {
+        "preset": "flat"
+      }
+    },
+    "composition": {
+      "contentMax": "1180px",
+      "readingMeasure": "70ch",
+      "pageGutter": "clamp(24px, 5vw, 72px)",
+      "sectionGap": "clamp(32px, 5vw, 72px)"
+    }
+  },
+  "commerce": {
+    "id": "commerce",
+    "label": "Commerce",
+    "description": "Confident product browsing with clear buying actions and approachable rounded geometry.",
+    "expression": "commerce",
+    "profile": {
+      "schemaVersion": "0.1",
+      "id": "commerce",
+      "appearance": "light",
+      "palette": {
+        "base": "emerald"
+      },
+      "action": {
+        "primary": "emerald"
+      },
+      "accent": {
+        "source": "orange"
+      },
+      "canvas": {
+        "mode": "paper"
+      },
+      "chart": {
+        "palette": "spectrum"
+      },
+      "radius": {
+        "preset": "rounded"
+      },
+      "density": {
+        "preset": "default"
+      },
+      "typography": {
+        "preset": "humanist",
+        "opticalSizing": true
+      },
+      "motion": {
+        "profile": "balanced",
+        "anchorSeconds": 1.25,
+        "roles": {
+          "fast": 0.13,
+          "interaction": 0.23,
+          "state": 0.35,
+          "enter": 0.5,
+          "exit": 0.35,
+          "reveal": 0.79,
+          "chart": 1.25,
+          "loop": 2
+        }
+      },
+      "elevation": {
+        "preset": "soft"
+      }
+    },
+    "composition": {
+      "contentMax": "1360px",
+      "readingMeasure": "64ch",
+      "pageGutter": "clamp(20px, 3vw, 48px)",
+      "sectionGap": "clamp(28px, 4vw, 56px)"
+    }
+  }
+}

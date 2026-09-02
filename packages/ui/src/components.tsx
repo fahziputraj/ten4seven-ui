@@ -4,6 +4,7 @@ import {
   isValidElement,
   useEffect,
   useId,
+  useLayoutEffect,
   useRef,
   useState,
   type ButtonHTMLAttributes,
@@ -27,6 +28,68 @@ import { updatePointerPosition } from "./utils";
 function cx(...values: Array<string | false | null | undefined>) {
   return values.filter(Boolean).join(" ");
 }
+
+const nestedInteractiveSelector = [
+  "a[href]",
+  "button",
+  "input",
+  "select",
+  "textarea",
+  "summary",
+  "label",
+  "[contenteditable]:not([contenteditable='false'])",
+  "[role='button']",
+  "[role='checkbox']",
+  "[role='combobox']",
+  "[role='link']",
+  "[role='menuitem']",
+  "[role='option']",
+  "[role='radio']",
+  "[role='switch']",
+  "[role='tab']",
+  "[role='textbox']",
+  "[tabindex]:not([tabindex='-1'])",
+].join(", ");
+
+function isNestedInteractiveTarget(
+  target: EventTarget | null,
+  currentTarget: Element,
+) {
+  if (!(target instanceof Element)) return false;
+  const interactiveTarget = target.closest(nestedInteractiveSelector);
+  return interactiveTarget !== null && interactiveTarget !== currentTarget;
+}
+
+type InteractiveChildProps = {
+  children?: ReactNode;
+  contentEditable?: boolean | string;
+  href?: unknown;
+  onClick?: unknown;
+  role?: unknown;
+  tabIndex?: number | string;
+};
+
+const interactiveNativeElements = new Set([
+  "button",
+  "input",
+  "label",
+  "select",
+  "summary",
+  "textarea",
+]);
+
+const interactiveRoles = new Set([
+  "button",
+  "checkbox",
+  "combobox",
+  "link",
+  "menuitem",
+  "option",
+  "radio",
+  "switch",
+  "tab",
+  "textbox",
+]);
 
 export type ButtonIntent = "primary" | "secondary" | "quiet" | "danger";
 export type ButtonSize = "sm" | "md" | "lg";
@@ -89,6 +152,37 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   },
 );
 
+function hasDeclaredInteractiveDescendant(children: ReactNode): boolean {
+  return Children.toArray(children).some((child) => {
+    if (!isValidElement<InteractiveChildProps>(child)) return false;
+
+    const { contentEditable, href, onClick, role, tabIndex } = child.props;
+    const hasInteractiveRole =
+      typeof role === "string" && interactiveRoles.has(role);
+    const hasTabStop =
+      typeof tabIndex === "number"
+        ? tabIndex >= 0
+        : tabIndex !== undefined && tabIndex !== "-1";
+    const isNativeInteractive =
+      typeof child.type === "string" &&
+      (interactiveNativeElements.has(child.type) ||
+        (child.type === "a" && href !== undefined));
+
+    if (
+      child.type === Button ||
+      isNativeInteractive ||
+      hasInteractiveRole ||
+      hasTabStop ||
+      contentEditable === true ||
+      (typeof contentEditable === "string" && contentEditable !== "false") ||
+      typeof onClick === "function"
+    )
+      return true;
+
+    return hasDeclaredInteractiveDescendant(child.props.children);
+  });
+}
+
 export interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
   typeRole: TypographyRole;
   as?: "span" | "p" | "div" | "h1" | "h2" | "h3" | "strong";
@@ -124,7 +218,14 @@ export function Typography({
 }
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Opt in to elevated pointer feedback for cards that are actual actions. */
+  /**
+   * Opt in to elevated pointer feedback for cards that are actual actions.
+   *
+   * An actionable Card must not wrap controls, links, or other focusable
+   * descendants. When a nested interactive descendant is detected, Card keeps
+   * that descendant usable and disables its own button semantics instead of
+   * creating an invalid nested-interactive tree.
+   */
   interactive?: boolean;
   tone?: "default" | "subtle" | "accent" | "success";
 }
@@ -134,17 +235,106 @@ export function Card({
   className,
   interactive,
   onClick,
+  onKeyDown,
+  onKeyUp,
   tone = "default",
   ...props
 }: CardProps) {
-  const isInteractive = interactive ?? Boolean(onClick);
+  const isActionable = Boolean(onClick);
+  const cardRef = useRef<HTMLElement>(null);
+  const declaredInteractiveDescendant =
+    hasDeclaredInteractiveDescendant(children);
+  const [mountedInteractiveDescendant, setMountedInteractiveDescendant] =
+    useState(false);
+  const hasInteractiveDescendant =
+    declaredInteractiveDescendant || mountedInteractiveDescendant;
+  const canActivate = isActionable && !hasInteractiveDescendant;
+  const isInteractive =
+    (interactive ?? isActionable) &&
+    !(isActionable && hasInteractiveDescendant);
+
+  useLayoutEffect(() => {
+    if (!isActionable) {
+      setMountedInteractiveDescendant(false);
+      return undefined;
+    }
+
+    const root = cardRef.current;
+    if (!root) return undefined;
+    const synchronizeActionability = () => {
+      const nextValue = root.querySelector(nestedInteractiveSelector) !== null;
+      setMountedInteractiveDescendant((currentValue) =>
+        currentValue === nextValue ? currentValue : nextValue,
+      );
+    };
+
+    synchronizeActionability();
+    const observer = new MutationObserver(synchronizeActionability);
+    observer.observe(root, {
+      attributes: true,
+      attributeFilter: ["contenteditable", "href", "role", "tabindex"],
+      childList: true,
+      subtree: true,
+    });
+    return () => observer.disconnect();
+  }, [isActionable]);
+
   return (
     <section
       {...props}
+      ref={cardRef}
       className={cx("t7-card", className)}
       data-interactive={isInteractive ? "true" : undefined}
+      data-actionable={
+        isActionable ? (canActivate ? "true" : "blocked") : undefined
+      }
       data-tone={tone}
-      onClick={onClick}
+      onClick={
+        canActivate
+          ? (event) => {
+              if (isNestedInteractiveTarget(event.target, event.currentTarget))
+                return;
+              onClick(event);
+            }
+          : undefined
+      }
+      onKeyDown={
+        canActivate || onKeyDown
+          ? (event) => {
+              onKeyDown?.(event);
+              if (
+                event.defaultPrevented ||
+                !canActivate ||
+                isNestedInteractiveTarget(event.target, event.currentTarget)
+              )
+                return;
+              if (event.key === "Enter") {
+                event.preventDefault();
+                event.currentTarget.click();
+              } else if (event.key === " ") {
+                event.preventDefault();
+              }
+            }
+          : undefined
+      }
+      onKeyUp={
+        canActivate || onKeyUp
+          ? (event) => {
+              onKeyUp?.(event);
+              if (
+                event.defaultPrevented ||
+                !canActivate ||
+                event.key !== " " ||
+                isNestedInteractiveTarget(event.target, event.currentTarget)
+              )
+                return;
+              event.preventDefault();
+              event.currentTarget.click();
+            }
+          : undefined
+      }
+      role={canActivate ? "button" : undefined}
+      tabIndex={canActivate ? 0 : undefined}
     >
       {children}
     </section>
@@ -443,12 +633,13 @@ export function Select({
           {children}
         </select>
         <button
+          aria-label={label ? undefined : props["aria-label"]}
           aria-controls={listboxId}
           aria-describedby={describedBy}
           aria-expanded={open}
           aria-haspopup="listbox"
           aria-invalid={error ? true : undefined}
-          aria-labelledby={label ? labelId : undefined}
+          aria-labelledby={label ? labelId : props["aria-labelledby"]}
           className={cx(
             "t7-input t7-select-trigger",
             error && "is-error",
@@ -758,43 +949,78 @@ export function DataTable<Row>({
               </td>
             </tr>
           ) : (
-            rows.map((row) => (
-              <tr
-                key={rowKey(row)}
-                data-selected={selectedSet.has(rowKey(row)) || undefined}
-                data-clickable={onRowClick ? "true" : undefined}
-                onClick={onRowClick ? () => onRowClick(row) : undefined}
-              >
-                {selectable ? (
-                  <td className="t7-table-checkbox-cell">
-                    <input
-                      aria-label={`Select ${rowKey(row)}`}
-                      checked={selectedSet.has(rowKey(row))}
-                      className="t7-checkbox"
-                      onChange={(event) =>
-                        updateSelection(rowKey(row), event.target.checked)
-                      }
-                      onClick={(event) => event.stopPropagation()}
-                      type="checkbox"
-                    />
-                  </td>
-                ) : null}
-                {visibleColumns.map((column) => (
-                  <td
-                    key={column.key}
-                    data-align={column.align ?? "left"}
-                    data-column-key={column.key}
-                    data-sticky={column.sticky}
-                  >
-                    {column.render
-                      ? column.render(row)
-                      : String(
-                          (row as Record<string, unknown>)[column.key] ?? "",
-                        )}
-                  </td>
-                ))}
-              </tr>
-            ))
+            rows.map((row) => {
+              const key = rowKey(row);
+              return (
+                <tr
+                  key={key}
+                  data-selected={selectedSet.has(key) || undefined}
+                  data-clickable={onRowClick ? "true" : undefined}
+                  onClick={
+                    onRowClick
+                      ? (event) => {
+                          if (
+                            isNestedInteractiveTarget(
+                              event.target,
+                              event.currentTarget,
+                            )
+                          )
+                            return;
+                          onRowClick(row);
+                        }
+                      : undefined
+                  }
+                  onKeyDown={
+                    onRowClick
+                      ? (event) => {
+                          if (
+                            event.defaultPrevented ||
+                            isNestedInteractiveTarget(
+                              event.target,
+                              event.currentTarget,
+                            )
+                          )
+                            return;
+                          if (event.key === "Enter" || event.key === " ") {
+                            event.preventDefault();
+                            onRowClick(row);
+                          }
+                        }
+                      : undefined
+                  }
+                  tabIndex={onRowClick ? 0 : undefined}
+                >
+                  {selectable ? (
+                    <td className="t7-table-checkbox-cell">
+                      <input
+                        aria-label={`Select ${key}`}
+                        checked={selectedSet.has(key)}
+                        className="t7-checkbox"
+                        onChange={(event) =>
+                          updateSelection(key, event.target.checked)
+                        }
+                        onClick={(event) => event.stopPropagation()}
+                        type="checkbox"
+                      />
+                    </td>
+                  ) : null}
+                  {visibleColumns.map((column) => (
+                    <td
+                      key={column.key}
+                      data-align={column.align ?? "left"}
+                      data-column-key={column.key}
+                      data-sticky={column.sticky}
+                    >
+                      {column.render
+                        ? column.render(row)
+                        : String(
+                            (row as Record<string, unknown>)[column.key] ?? "",
+                          )}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })
           )}
         </tbody>
       </table>
@@ -838,10 +1064,31 @@ export function DataTable<Row>({
                   className="t7-table-stacked-row"
                   data-clickable={onRowClick ? "true" : undefined}
                   data-selected={selectedSet.has(key) || undefined}
-                  onClick={onRowClick ? () => onRowClick(row) : undefined}
+                  onClick={
+                    onRowClick
+                      ? (event) => {
+                          if (
+                            isNestedInteractiveTarget(
+                              event.target,
+                              event.currentTarget,
+                            )
+                          )
+                            return;
+                          onRowClick(row);
+                        }
+                      : undefined
+                  }
                   onKeyDown={
                     onRowClick
                       ? (event) => {
+                          if (
+                            event.defaultPrevented ||
+                            isNestedInteractiveTarget(
+                              event.target,
+                              event.currentTarget,
+                            )
+                          )
+                            return;
                           if (event.key === "Enter" || event.key === " ") {
                             event.preventDefault();
                             onRowClick(row);

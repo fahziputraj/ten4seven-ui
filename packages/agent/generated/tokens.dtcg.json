@@ -1,0 +1,1141 @@
+{
+  "$description": "Deterministic DTCG-compatible export of the typed Ten4Seven v2 token runtime.",
+  "$extensions": {
+    "org.ten4seven": {
+      "canonicalRuntime": "packages/tokens/src/theme.ts",
+      "compatibilityBoundary": "The runtime retains HSL custom properties for visual stability while this export exposes DTCG-shaped typed sRGB reference values and semantic aliases. Recipe selection remains runtime-aware.",
+      "dtcgDirection": "2025.10-compatible groups, typed $value objects, and aliases."
+    }
+  },
+  "ref": {
+    "space": {
+      "0": {
+        "$type": "dimension",
+        "$value": {
+          "value": 0,
+          "unit": "px"
+        }
+      },
+      "1": {
+        "$type": "dimension",
+        "$value": {
+          "value": 4,
+          "unit": "px"
+        }
+      },
+      "2": {
+        "$type": "dimension",
+        "$value": {
+          "value": 8,
+          "unit": "px"
+        }
+      },
+      "3": {
+        "$type": "dimension",
+        "$value": {
+          "value": 12,
+          "unit": "px"
+        }
+      },
+      "4": {
+        "$type": "dimension",
+        "$value": {
+          "value": 16,
+          "unit": "px"
+        }
+      },
+      "5": {
+        "$type": "dimension",
+        "$value": {
+          "value": 20,
+          "unit": "px"
+        }
+      },
+      "6": {
+        "$type": "dimension",
+        "$value": {
+          "value": 24,
+          "unit": "px"
+        }
+      },
+      "8": {
+        "$type": "dimension",
+        "$value": {
+          "value": 32,
+          "unit": "px"
+        }
+      },
+      "10": {
+        "$type": "dimension",
+        "$value": {
+          "value": 40,
+          "unit": "px"
+        }
+      },
+      "12": {
+        "$type": "dimension",
+        "$value": {
+          "value": 48,
+          "unit": "px"
+        }
+      }
+    },
+    "radius": {
+      "indicator": {
+        "$type": "dimension",
+        "$value": {
+          "value": 4,
+          "unit": "px"
+        }
+      },
+      "control": {
+        "$type": "dimension",
+        "$value": {
+          "value": 10,
+          "unit": "px"
+        }
+      },
+      "base": {
+        "$type": "dimension",
+        "$value": {
+          "value": 12,
+          "unit": "px"
+        }
+      },
+      "panel": {
+        "$type": "dimension",
+        "$value": {
+          "value": 16,
+          "unit": "px"
+        }
+      },
+      "card": {
+        "$type": "dimension",
+        "$value": {
+          "value": 18,
+          "unit": "px"
+        }
+      },
+      "shell": {
+        "$type": "dimension",
+        "$value": {
+          "value": 24,
+          "unit": "px"
+        }
+      }
+    },
+    "duration": {
+      "motionAnchorMinimum": {
+        "$type": "duration",
+        "$value": {
+          "value": 0.25,
+          "unit": "s"
+        }
+      },
+      "motionAnchorMaximum": {
+        "$type": "duration",
+        "$value": {
+          "value": 2.5,
+          "unit": "s"
+        }
+      }
+    },
+    "color": {
+      "palette": {
+        "emerald": {
+          "primary": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.1218,
+                0.4582,
+                0.278787
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "148 58% 29%"
+              }
+            }
+          },
+          "primaryHover": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.1176,
+                0.4424,
+                0.269173
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "148 58% 28%"
+              }
+            }
+          },
+          "primaryPressed": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.0874,
+                0.3726,
+                0.220493
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "148 62% 23%"
+              }
+            }
+          },
+          "accent": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.5976,
+                0.819,
+                0.081
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "78 82% 45%"
+              }
+            }
+          }
+        },
+        "teal": {
+          "primary": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.0702,
+                0.4698,
+                0.42318
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "173 74% 27%"
+              }
+            }
+          },
+          "primaryHover": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.0506,
+                0.4094,
+                0.36754
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "173 78% 23%"
+              }
+            }
+          },
+          "primaryPressed": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.0342,
+                0.3458,
+                0.31464
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "174 82% 19%"
+              }
+            }
+          },
+          "accent": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.1176,
+                0.7224,
+                0.5712
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "165 72% 42%"
+              }
+            }
+          }
+        },
+        "cyan": {
+          "primary": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.0512,
+                0.48128,
+                0.5888
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "192 84% 32%"
+              }
+            }
+          },
+          "primaryHover": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.0324,
+                0.40464,
+                0.5076
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "193 88% 27%"
+              }
+            }
+          },
+          "primaryPressed": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.022,
+                0.3256,
+                0.418
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "194 90% 22%"
+              }
+            }
+          },
+          "accent": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.0946,
+                0.72068,
+                0.7654
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "184 78% 43%"
+              }
+            }
+          }
+        },
+        "blue": {
+          "primary": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.0864,
+                0.42752,
+                0.8736
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "214 82% 48%"
+              }
+            }
+          },
+          "primaryHover": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.056,
+                0.3312,
+                0.744
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "216 86% 40%"
+              }
+            }
+          },
+          "primaryPressed": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.0384,
+                0.244907,
+                0.6016
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "218 88% 32%"
+              }
+            }
+          },
+          "accent": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.0924,
+                0.67116,
+                0.7476
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "187 78% 42%"
+              }
+            }
+          }
+        },
+        "indigo": {
+          "primary": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.144,
+                0.2336,
+                0.816
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "232 70% 48%"
+              }
+            }
+          },
+          "primaryHover": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.1148,
+                0.17384,
+                0.7052
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "234 72% 41%"
+              }
+            }
+          },
+          "primaryPressed": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.0884,
+                0.121947,
+                0.5916
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "236 74% 34%"
+              }
+            }
+          },
+          "accent": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.1072,
+                0.60256,
+                0.9328
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "204 86% 52%"
+              }
+            }
+          }
+        },
+        "violet": {
+          "primary": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.42784,
+                0.1744,
+                0.8656
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "262 72% 52%"
+              }
+            }
+          },
+          "primaryHover": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.368133,
+                0.132,
+                0.748
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "263 70% 44%"
+              }
+            }
+          },
+          "primaryPressed": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.3024,
+                0.112,
+                0.588
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "264 68% 35%"
+              }
+            }
+          },
+          "accent": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.8944,
+                0.2256,
+                0.716053
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "316 76% 56%"
+              }
+            }
+          }
+        },
+        "rose": {
+          "primary": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.7224,
+                0.1176,
+                0.27888
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "344 72% 42%"
+              }
+            }
+          },
+          "primaryHover": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.616,
+                0.084,
+                0.217
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "345 76% 35%"
+              }
+            }
+          },
+          "primaryPressed": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.522,
+                0.058,
+                0.166267
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "346 80% 29%"
+              }
+            }
+          },
+          "accent": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.8712,
+                0.2088,
+                0.62832
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "322 72% 54%"
+              }
+            }
+          }
+        },
+        "red": {
+          "primary": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.7224,
+                0.13776,
+                0.1176
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "2 72% 42%"
+              }
+            }
+          },
+          "primaryHover": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.616,
+                0.092867,
+                0.084
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "1 76% 35%"
+              }
+            }
+          },
+          "primaryPressed": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.522,
+                0.058,
+                0.058
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "0 80% 29%"
+              }
+            }
+          },
+          "accent": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.9136,
+                0.36256,
+                0.1264
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "18 82% 52%"
+              }
+            }
+          }
+        },
+        "orange": {
+          "primary": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.6392,
+                0.28016,
+                0.0408
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "24 88% 34%"
+              }
+            }
+          },
+          "primaryHover": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.551,
+                0.2204,
+                0.029
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "22 90% 29%"
+              }
+            }
+          },
+          "primaryPressed": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.4608,
+                0.1664,
+                0.0192
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "20 92% 24%"
+              }
+            }
+          },
+          "accent": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.96,
+                0.622667,
+                0.04
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "38 92% 50%"
+              }
+            }
+          }
+        },
+        "amber": {
+          "primary": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.5828,
+                0.382747,
+                0.0372
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "38 88% 31%"
+              }
+            }
+          },
+          "primaryHover": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.4992,
+                0.30784,
+                0.0208
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "36 92% 26%"
+              }
+            }
+          },
+          "primaryPressed": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.4074,
+                0.23632,
+                0.0126
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "34 94% 21%"
+              }
+            }
+          },
+          "accent": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.9408,
+                0.76048,
+                0.0392
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "48 92% 49%"
+              }
+            }
+          }
+        },
+        "slate": {
+          "primary": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.2625,
+                0.335417,
+                0.4375
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "215 25% 35%"
+              }
+            }
+          },
+          "primaryHover": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.2016,
+                0.266933,
+                0.3584
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "215 28% 28%"
+              }
+            }
+          },
+          "primaryPressed": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.147,
+                0.1995,
+                0.273
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "215 30% 21%"
+              }
+            }
+          },
+          "accent": {
+            "$type": "color",
+            "$value": {
+              "colorSpace": "srgb",
+              "components": [
+                0.1056,
+                0.61728,
+                0.8544
+              ],
+              "alpha": 1
+            },
+            "$extensions": {
+              "org.ten4seven": {
+                "compatibilityHsl": "199 78% 48%"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "semantic": {
+    "color": {
+      "action": {
+        "primary": {
+          "$type": "color",
+          "$value": "{ref.color.palette.emerald.primary}"
+        },
+        "primaryHover": {
+          "$type": "color",
+          "$value": "{ref.color.palette.emerald.primaryHover}"
+        },
+        "primaryPressed": {
+          "$type": "color",
+          "$value": "{ref.color.palette.emerald.primaryPressed}"
+        }
+      }
+    },
+    "geometry": {
+      "control": {
+        "height": {
+          "$type": "dimension",
+          "$value": {
+            "value": 40,
+            "unit": "px"
+          }
+        },
+        "paddingInline": {
+          "$type": "dimension",
+          "$value": {
+            "value": 15,
+            "unit": "px"
+          }
+        }
+      },
+      "field": {
+        "gap": {
+          "$type": "dimension",
+          "$value": {
+            "value": 7,
+            "unit": "px"
+          }
+        },
+        "paddingInline": {
+          "$type": "dimension",
+          "$value": {
+            "value": 12,
+            "unit": "px"
+          }
+        }
+      },
+      "card": {
+        "padding": {
+          "$type": "dimension",
+          "$value": {
+            "value": 20,
+            "unit": "px"
+          }
+        },
+        "headerGap": {
+          "$type": "dimension",
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          }
+        }
+      }
+    }
+  },
+  "theme": {
+    "$extensions": {
+      "org.ten4seven": {
+        "recipes": {
+          "enterprise": {
+            "expression": "operational",
+            "composition": {
+              "contentMax": "1440px",
+              "readingMeasure": "68ch",
+              "pageGutter": "clamp(24px, 3vw, 44px)",
+              "sectionGap": "clamp(24px, 3vw, 44px)"
+            },
+            "profileId": "enterprise"
+          },
+          "product": {
+            "expression": "product",
+            "composition": {
+              "contentMax": "1320px",
+              "readingMeasure": "68ch",
+              "pageGutter": "clamp(24px, 3vw, 44px)",
+              "sectionGap": "clamp(24px, 3vw, 44px)"
+            },
+            "profileId": "product"
+          },
+          "editorial": {
+            "expression": "editorial",
+            "composition": {
+              "contentMax": "1180px",
+              "readingMeasure": "70ch",
+              "pageGutter": "clamp(24px, 5vw, 72px)",
+              "sectionGap": "clamp(32px, 5vw, 72px)"
+            },
+            "profileId": "editorial"
+          },
+          "commerce": {
+            "expression": "commerce",
+            "composition": {
+              "contentMax": "1360px",
+              "readingMeasure": "64ch",
+              "pageGutter": "clamp(20px, 3vw, 48px)",
+              "sectionGap": "clamp(28px, 4vw, 56px)"
+            },
+            "profileId": "commerce"
+          }
+        }
+      }
+    },
+    "default": {
+      "$description": "Baseline semantic aliases for the default emerald runtime.",
+      "semantic": {
+        "color": {
+          "action": {
+            "primary": {
+              "$type": "color",
+              "$value": "{ref.color.palette.emerald.primary}"
+            },
+            "primaryHover": {
+              "$type": "color",
+              "$value": "{ref.color.palette.emerald.primaryHover}"
+            },
+            "primaryPressed": {
+              "$type": "color",
+              "$value": "{ref.color.palette.emerald.primaryPressed}"
+            }
+          }
+        }
+      }
+    },
+    "recipes": {
+      "enterprise": {
+        "$description": "Semantic aliases resolved for the Enterprise recipe.",
+        "semantic": {
+          "color": {
+            "action": {
+              "primary": {
+                "$type": "color",
+                "$value": "{ref.color.palette.indigo.primary}"
+              },
+              "primaryHover": {
+                "$type": "color",
+                "$value": "{ref.color.palette.indigo.primaryHover}"
+              },
+              "primaryPressed": {
+                "$type": "color",
+                "$value": "{ref.color.palette.indigo.primaryPressed}"
+              }
+            }
+          }
+        }
+      },
+      "product": {
+        "$description": "Semantic aliases resolved for the Product recipe.",
+        "semantic": {
+          "color": {
+            "action": {
+              "primary": {
+                "$type": "color",
+                "$value": "{ref.color.palette.indigo.primary}"
+              },
+              "primaryHover": {
+                "$type": "color",
+                "$value": "{ref.color.palette.indigo.primaryHover}"
+              },
+              "primaryPressed": {
+                "$type": "color",
+                "$value": "{ref.color.palette.indigo.primaryPressed}"
+              }
+            }
+          }
+        }
+      },
+      "editorial": {
+        "$description": "Semantic aliases resolved for the Editorial recipe.",
+        "semantic": {
+          "color": {
+            "action": {
+              "primary": {
+                "$type": "color",
+                "$value": "{ref.color.palette.slate.primary}"
+              },
+              "primaryHover": {
+                "$type": "color",
+                "$value": "{ref.color.palette.slate.primaryHover}"
+              },
+              "primaryPressed": {
+                "$type": "color",
+                "$value": "{ref.color.palette.slate.primaryPressed}"
+              }
+            }
+          }
+        }
+      },
+      "commerce": {
+        "$description": "Semantic aliases resolved for the Commerce recipe.",
+        "semantic": {
+          "color": {
+            "action": {
+              "primary": {
+                "$type": "color",
+                "$value": "{ref.color.palette.emerald.primary}"
+              },
+              "primaryHover": {
+                "$type": "color",
+                "$value": "{ref.color.palette.emerald.primaryHover}"
+              },
+              "primaryPressed": {
+                "$type": "color",
+                "$value": "{ref.color.palette.emerald.primaryPressed}"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

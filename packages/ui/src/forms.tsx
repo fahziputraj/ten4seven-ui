@@ -1,5 +1,6 @@
 import {
   forwardRef,
+  useEffect,
   useId,
   useMemo,
   useRef,
@@ -572,11 +573,15 @@ export function Combobox({
   id,
   label,
   loading = false,
+  onClick,
   onInputValueChange,
   onValueChange,
   options,
   placeholder = "Search options…",
   value,
+  onBlur,
+  onFocus,
+  onKeyDown,
   ...props
 }: ComboboxProps) {
   const generatedId = useId();
@@ -599,17 +604,40 @@ export function Combobox({
     minWidth: true,
     side: "bottom",
   });
-  useExclusiveFloatingLayer(open, () => {
+  function closeListbox() {
     setOpen(false);
     setActiveIndex(-1);
-  });
+  }
+  useExclusiveFloatingLayer(open, closeListbox);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const dismiss = (event: PointerEvent) => {
+      if (
+        !inputRef.current?.contains(event.target as Node) &&
+        !floating.contentRef.current?.contains(event.target as Node)
+      )
+        closeListbox();
+    };
+    const dismissOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape" || event.defaultPrevented) return;
+      event.preventDefault();
+      closeListbox();
+      inputRef.current?.focus();
+    };
+    document.addEventListener("pointerdown", dismiss);
+    document.addEventListener("keydown", dismissOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", dismiss);
+      document.removeEventListener("keydown", dismissOnEscape);
+    };
+  }, [open]);
 
   function selectOption(option: ComboboxOption) {
     if (option.disabled) return;
     onValueChange(option.value);
     setInputValue(option.label);
-    setOpen(false);
-    setActiveIndex(-1);
+    closeListbox();
   }
 
   return (
@@ -624,17 +652,30 @@ export function Combobox({
           aria-autocomplete="list"
           aria-controls={listboxId}
           aria-expanded={open}
+          aria-haspopup="listbox"
           className={cx("t7-input", "t7-combobox-input", className)}
           id={inputId}
-          onBlur={() => window.setTimeout(() => setOpen(false), 120)}
+          onBlur={(event) => {
+            onBlur?.(event);
+            window.setTimeout(() => closeListbox(), 120);
+          }}
           onChange={(event) => {
             setInputValue(event.target.value);
             onInputValueChange?.(event.target.value);
             setOpen(true);
             setActiveIndex(-1);
           }}
-          onFocus={() => setOpen(true)}
+          onClick={(event) => {
+            onClick?.(event);
+            if (!event.defaultPrevented) setOpen(true);
+          }}
+          onFocus={(event) => {
+            onFocus?.(event);
+            setOpen(true);
+          }}
           onKeyDown={(event) => {
+            onKeyDown?.(event);
+            if (event.defaultPrevented) return;
             if (event.key === "ArrowDown") {
               event.preventDefault();
               setOpen(true);
@@ -651,9 +692,10 @@ export function Combobox({
               const option = matchingOptions[activeIndex];
               if (option) selectOption(option);
             }
-            if (event.key === "Escape") {
-              setOpen(false);
-              setActiveIndex(-1);
+            if (event.key === "Escape" && open) {
+              event.preventDefault();
+              event.stopPropagation();
+              closeListbox();
             }
           }}
           placeholder={placeholder}
@@ -670,6 +712,8 @@ export function Combobox({
         {open ? (
           <FloatingPortal anchorRef={inputRef}>
             <span
+              aria-busy={loading || undefined}
+              aria-label={`${label ?? props["aria-label"] ?? placeholder} options`}
               className="t7-combobox-list t7-floating-content"
               data-floating-placement={floating.placement}
               id={listboxId}
@@ -695,6 +739,7 @@ export function Combobox({
                       onMouseDown={(event) => event.preventDefault()}
                       onClick={() => selectOption(option)}
                       role="option"
+                      tabIndex={-1}
                       type="button"
                     >
                       <span className="t7-combobox-option-copy">
@@ -740,6 +785,9 @@ export function MultiSelect({
   options,
   placeholder = "Select options",
   values,
+  onBlur,
+  onFocus,
+  onKeyDown,
   ...props
 }: MultiSelectProps) {
   const id = useId();
@@ -753,7 +801,33 @@ export function MultiSelect({
     minWidth: true,
     side: "bottom",
   });
-  useExclusiveFloatingLayer(open, () => setOpen(false));
+  function closeListbox() {
+    setOpen(false);
+  }
+  useExclusiveFloatingLayer(open, closeListbox);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const dismiss = (event: PointerEvent) => {
+      if (
+        !rootRef.current?.contains(event.target as Node) &&
+        !floating.contentRef.current?.contains(event.target as Node)
+      )
+        closeListbox();
+    };
+    const dismissOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape" || event.defaultPrevented) return;
+      event.preventDefault();
+      closeListbox();
+      triggerRef.current?.focus();
+    };
+    document.addEventListener("pointerdown", dismiss);
+    document.addEventListener("keydown", dismissOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", dismiss);
+      document.removeEventListener("keydown", dismissOnEscape);
+    };
+  }, [open]);
 
   function toggleValue(option: ComboboxOption) {
     if (option.disabled) return;
@@ -769,20 +843,31 @@ export function MultiSelect({
       {...props}
       ref={rootRef}
       className={cx("t7-multiselect-field", className)}
-      onBlur={() =>
+      onBlur={(event) => {
+        onBlur?.(event);
         window.setTimeout(() => {
           if (
             !rootRef.current?.contains(document.activeElement) &&
             !floating.contentRef.current?.contains(document.activeElement)
           )
-            setOpen(false);
-        }, 0)
-      }
+            closeListbox();
+        }, 0);
+      }}
+      onFocus={(event) => onFocus?.(event)}
+      onKeyDown={(event) => {
+        onKeyDown?.(event);
+        if (!open || event.defaultPrevented || event.key !== "Escape") return;
+        event.preventDefault();
+        event.stopPropagation();
+        closeListbox();
+        triggerRef.current?.focus();
+      }}
     >
       {label ? <span className="t7-field-label">{label}</span> : null}
       <button
         aria-controls={`${id}-listbox`}
         aria-expanded={open}
+        aria-haspopup="listbox"
         aria-invalid={error ? true : undefined}
         aria-busy={loading || undefined}
         className={cx("t7-multiselect-trigger", error && "is-error")}
@@ -801,6 +886,7 @@ export function MultiSelect({
         <FloatingPortal anchorRef={triggerRef}>
           <div
             aria-busy={loading || undefined}
+            aria-label={`${label ?? props["aria-label"] ?? placeholder} options`}
             aria-multiselectable="true"
             className="t7-multiselect-list t7-floating-content"
             data-floating-placement={floating.placement}

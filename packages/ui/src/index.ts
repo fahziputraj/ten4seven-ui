@@ -21,3 +21,17 @@ export * from "./provider";
 // layers during development.
 export * from "@ten4seven/icons";
 export * from "@ten4seven/tokens";
+export {
+  DEFAULT_RUNTIME_PREFERENCES,
+  getThemeRecipe,
+  isThemeRecipeName,
+  THEME_RECIPES,
+  THEME_RECIPE_NAMES,
+} from "@ten4seven/contracts";
+export type {
+  RuntimePreferences,
+  ThemeComposition,
+  ThemeDefinition,
+  ThemeRecipe,
+  ThemeRecipeName,
+} from "@ten4seven/contracts";

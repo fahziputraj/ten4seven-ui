@@ -143,7 +143,7 @@ test.describe("catalog information architecture", () => {
     await page
       .getByRole("button", { name: "Search ten4seven catalog" })
       .click();
-    const commandSearch = page.getByRole("textbox", {
+    const commandSearch = page.getByRole("combobox", {
       name: "Search commands",
     });
     await commandSearch.fill("DataTable");

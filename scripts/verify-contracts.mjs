@@ -6,8 +6,12 @@ import {
   DEFAULT_THEME_PROFILE,
   ENTITY_LIST_CONTRACT,
   ENTITY_LIST_STATES,
+  THEME_RECIPES,
+  THEME_RECIPE_NAMES,
   RESPONSIVE_MODES,
   normalizeThemeProfile,
+  resolveRuntimePreferences,
+  themeRecipeToLegacyConfig,
   themeProfileToLegacyConfig,
 } from "../packages/contracts/src/index.ts";
 import {
@@ -109,6 +113,48 @@ assert.deepEqual(
   normalizeThemeProfile(themeProfileToLegacyConfig(DEFAULT_THEME_PROFILE)),
   DEFAULT_THEME_PROFILE,
   "ThemeProfile: legacy adapter does not round-trip the default profile",
+);
+
+assert.deepEqual(
+  THEME_RECIPE_NAMES,
+  ["enterprise", "product", "editorial", "commerce"],
+  "Theme recipes: curated v2 recipe set drifted",
+);
+for (const recipeName of THEME_RECIPE_NAMES) {
+  const recipe = THEME_RECIPES[recipeName];
+  const legacy = themeRecipeToLegacyConfig(recipe);
+  const normalized = normalizeThemeProfile(legacy);
+  assert.equal(recipe.id, recipeName, `${recipeName}: id drifted`);
+  assert.equal(
+    normalized.palette.base,
+    recipe.profile.palette.base,
+    `${recipeName}: base palette adapter drifted`,
+  );
+  assert.equal(
+    normalized.action.primary,
+    recipe.profile.action.primary,
+    `${recipeName}: primary action adapter drifted`,
+  );
+  assert.equal(
+    normalized.density.preset,
+    recipe.profile.density.preset,
+    `${recipeName}: density adapter drifted`,
+  );
+}
+assert.deepEqual(
+  resolveRuntimePreferences({
+    appearance: "system",
+    density: "compact",
+    contrast: "more",
+    motion: "reduced",
+  }),
+  {
+    appearance: "system",
+    density: "compact",
+    contrast: "more",
+    motion: "reduced",
+  },
+  "Runtime preferences: valid user choices were not preserved",
 );
 
 const fullBytes =

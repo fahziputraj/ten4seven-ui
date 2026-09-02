@@ -5,26 +5,29 @@ Verified: 2026-09-01
 
 ## Semantic structure
 
-| Check                | Result                                                                                                               |
-| -------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| Main landmark        | PASS — catalog preview no longer nests a second `main`; route audit found one primary main landmark.                 |
-| Heading hierarchy    | PASS — primary routes expose one H1; token/card headings were corrected to avoid a page-level heading skip.          |
-| Forms and labels     | PASS — canonical input/select labels remain present; Theme Studio uses fieldset/legend for choice groups.            |
-| Tables               | PASS — canonical DataTable semantics, sort behavior, and localized table scrolling remain covered by existing tests. |
-| Status and feedback  | PASS — status chips, toast/tooltip/menu fixtures, and selected-state signals retain semantic roles.                  |
-| Decorative treatment | PASS — visual swatches and thumbnails are hidden from assistive naming where their paired label owns meaning.        |
+| Check                | Result                                                                                                                                      |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Main landmark        | PASS — catalog preview no longer nests a second `main`; route audit found one primary main landmark.                                        |
+| Heading hierarchy    | PASS — primary routes expose one H1; token/card headings were corrected to avoid a page-level heading skip.                                 |
+| Forms and labels     | PASS — canonical input/select labels remain present; custom Select keeps one authoritative trigger name and listboxes are named/busy-aware. |
+| Tables               | PASS — canonical DataTable semantics, sort behavior, localized table scrolling, and keyboard click-row activation are covered.              |
+| Status and feedback  | PASS — status chips, toast/tooltip/menu fixtures, and selected-state signals retain semantic roles.                                         |
+| Decorative treatment | PASS — visual swatches and thumbnails are hidden from assistive naming where their paired label owns meaning.                               |
 
 ## Keyboard and overlay behavior
 
-| Interaction                   | Result | Evidence                                                                                                                                           |
-| ----------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Custom Select                 | PASS   | Arrow navigation, Enter selection, Escape closure, disabled options, and popup anchoring are covered using the actual `Main action color` control. |
-| Semantic button-card controls | PASS   | Appearance, canvas, chart colorway, and typography are tested as buttons with `aria-pressed`, not incorrectly as selects.                          |
-| Combobox/menu/popover         | PASS   | Shared viewport layer, option check alignment, edge placement, and replacement behavior pass in Component Lab.                                     |
-| Drawer/modal                  | PASS   | Escape, focus restore, body scroll lock, nested popup usability, and 360px geometry pass.                                                          |
-| Mobile navigation             | PASS   | Touch-safe launcher opens a named design-system navigation dialog and closes after route navigation.                                               |
-| Reduced motion                | PASS   | Motion duration resolves to reduced state and chart/reveal contracts do not require animation for comprehension.                                   |
-| Pointer targets               | PASS   | Compact marks preserve at least usable physical targets for ranges, filter removal, public navigation, and carousel navigation.                    |
+| Interaction                   | Result | Evidence                                                                                                                                                          |
+| ----------------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Custom Select                 | PASS   | Arrow navigation, Enter selection, Escape closure, disabled options, and popup anchoring are covered using the actual `Main action color` control.                |
+| Semantic button-card controls | PASS   | Appearance, canvas, chart colorway, and typography are tested as buttons with `aria-pressed`, not incorrectly as selects.                                         |
+| Command menu                  | PASS   | Input owns a named combobox/listbox relationship, one active descendant, arrow/Home/End traversal, selected state, Enter action, and Modal focus return.          |
+| Combobox/MultiSelect          | PASS   | Named listboxes expose `aria-busy`/selection state; Escape and pointer-outside dismissal close safely, restore focus, and compose caller handlers.                |
+| Dropdown/Context/Popover      | PASS   | Menus focus their first enabled item, support arrows/Home/End/typeahead, restore focus on Escape, and Popover renders a named dialog.                             |
+| Clickable Card/DataTable rows | PASS   | Card and desktop/stacked table actions expose focus/Enter/Space behavior without stealing interaction from nested controls.                                       |
+| Drawer/modal                  | PASS   | Escape, focus restore, body scroll lock, nested popup usability, and 360px geometry pass.                                                                         |
+| Mobile navigation             | PASS   | Touch-safe launcher opens a named design-system navigation dialog and closes after route navigation.                                                              |
+| Reduced motion                | PASS   | Motion duration resolves to reduced state and chart/reveal contracts do not require animation for comprehension.                                                  |
+| Pointer targets               | PASS   | Compact marks preserve usable physical targets for ranges, filter removal, public navigation, carousel navigation, and Theme Studio's 40px mobile command search. |
 
 ## Motion quality decision
 
@@ -38,8 +41,10 @@ or state change rather than acting as decoration.
 
 - `public-interactions.spec.ts` reports no serious axe violation on the
   representative workbench surface.
-- Full Playwright coverage exercises keyboard interaction, nested overlays,
-  focus behavior, tabs, accordion, command menu, and feedback proof.
+- Focused hardening specs exercise CommandMenu, DataTable rows, form-listbox
+  dismissal, Dropdown Menu, Context Menu, Popover, and inner-overlay Escape in
+  addition to the existing keyboard, nested-overlay, tabs, accordion, and
+  feedback proof.
 
 ## Explicit residual boundary
 

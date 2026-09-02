@@ -5,3 +5,5 @@ export const components: Readonly<Record<string, unknown>>;
 export const index: Readonly<Record<string, unknown>>;
 export const ownershipRules: Readonly<Record<string, unknown>>;
 export const recipes: Readonly<Record<string, unknown>>;
+export const themeRecipes: Readonly<Record<string, unknown>>;
+export const tokensDtcg: Readonly<Record<string, unknown>>;

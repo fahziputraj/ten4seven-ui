@@ -94,7 +94,8 @@
   --t7-doc-sticky-offset: 76px;
 }
 
-[data-theme-appearance="dark"] {
+[data-theme-appearance="dark"],
+[data-t7-mode="dark"] {
   color-scheme: dark;
 }
 

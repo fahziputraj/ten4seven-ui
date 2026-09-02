@@ -6,6 +6,9 @@ export default defineConfig({
   root: fileURLToPath(new URL(".", import.meta.url)),
   resolve: {
     alias: {
+      "@ten4seven/contracts": fileURLToPath(
+        new URL("../contracts/src/index.ts", import.meta.url),
+      ),
       "@ten4seven/icons": fileURLToPath(
         new URL("../icons/src/index.tsx", import.meta.url),
       ),

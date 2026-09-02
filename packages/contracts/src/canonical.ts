@@ -5,6 +5,7 @@ import { BRAND_PROFILES } from "./brand-profile.ts";
 import { ENTITY_DETAIL_CONTRACT } from "./entity-detail.ts";
 import { ENTITY_LIST_CONTRACT } from "./entity-list.ts";
 import { DEFAULT_THEME_PROFILE, MOTION_PROFILES } from "./theme-profile.ts";
+import { THEME_RECIPES } from "./theme-recipe.ts";
 
 export const ALIAS_MAP: AliasMap = {
   RadioGroup: "CheckboxGroup",
@@ -61,6 +62,7 @@ export const CANONICAL_CONTRACTS = {
   themeProfiles: {
     default: DEFAULT_THEME_PROFILE,
   },
+  themeRecipes: THEME_RECIPES,
   brandProfiles: BRAND_PROFILES,
   motionProfiles: MOTION_PROFILES,
   recipes: {

@@ -1,81 +1,94 @@
-# Theme contract
+# Theme contract for agents
 
-Configure the provider or a named preset. Do not manually restyle every component.
+Use the v2 theme model in this order:
 
-## Public axes
+```text
+product context -> ThemeRecipe -> RuntimePreferences -> canonical components
+```
 
-- `appearance`: `light`, `dark`, or `system`.
-- `palette`: one of `emerald`, `teal`, `cyan`, `blue`, `indigo`, `violet`,
-  `rose`, `red`, `orange`, `amber`, or `slate`; the base semantic family used
-  by UI and chart defaults. Theme Studio's base swatches also reset `primary`
-  and `accent` to the selected family.
-- `primary`: optional `PaletteName` source for the main action and selection
-  color; defaults to `palette` and can override it independently.
-- `accent`: optional `PaletteName` source for supporting accent and focus
-  emphasis; defaults to `palette` and can override it independently. The same
-  semantic source drives `--t7-accent-hsl`, `--t7-focus-hsl`, the focus ring,
-  and focused input borders, so the Theme Studio role is intentionally one
-  control rather than two colors that can drift apart.
-- `canvas`: `balanced`, `paper`, or `monochrome` neutral surface treatment.
-- `chartPalette`: `spectrum`, `four`, or `monochrome` data colorway. It changes
-  chart series only; the existing five-slot chart variable contract remains
-  stable and UI roles stay unchanged.
-- `radius`: `sharp`, `soft`, or `rounded`.
-- `radiusValue`: optional exact base radius in px from `0` to `24`; when set,
-  it drives the entire hierarchical radius scale at one-pixel steps while
-  `radius` remains the semantic family name.
-- `density`: `comfortable`, `default`, `compact`, or `dense`.
-- `motionDuration`: shared reveal and interaction duration in seconds from
-  `0.25` to `2.5` in `0.25` second steps. The default is `1.5` seconds; derived
-  fast, standard, slow, and loop duration variables keep the component
-  contracts synchronized. Native motion roles then compose those durations
-  with one of the shared easing curves: `--t7-motion-interactive` for hover
-  and press, `--t7-motion-state` for state changes, `--t7-motion-enter-fast`,
-  `--t7-motion-enter`, `--t7-motion-enter-slow`, `--t7-motion-exit`, and
-  `--t7-motion-loop` / `--t7-motion-loop-eased` for keyframe behavior.
-  `t7Motion` is the UI package's small public role map for consumers that
-  need to author a custom surface. Components should consume these roles
-  instead of inventing local animation timing.
-- `typography`: `modern`, `humanist`, `editorial`, `technical`, `mono`, or an
-  object with `preset`, `ui`, `display`, and `mono` family overrides. Presets
-  change the family character and shared tracking while preserving the same
-  semantic role names.
+Start with the compact recipe projection at `generated/theme-recipes.json`.
+The initial curated choices are `enterprise`, `product`, `editorial`, and
+`commerce`. A recipe coordinates palette, primary action, accent/focus,
+canvas, charts, radius, density, typography, motion anchor, elevation,
+expression, and composition. It is not a component variant.
 
 ```tsx
 <Ten4SevenProvider
-  theme={{
-    appearance: "dark",
-    palette: "blue",
-    primary: "indigo",
-    accent: "cyan",
-    canvas: "paper",
-    chartPalette: "four",
-    radius: "soft",
-    radiusValue: 12,
+  theme="enterprise"
+  preferences={{
+    appearance: "system",
     density: "compact",
-    motionDuration: 1.5,
-    typography: "modern",
+    contrast: "more",
+    motion: "reduced",
   }}
 >
   <App />
 </Ten4SevenProvider>
 ```
 
-Custom family example:
+`RuntimePreferences` is intentionally limited to `appearance`, `density`,
+`contrast`, and `motion`. Do not turn a normal user settings panel into a raw
+brand editor by exposing arbitrary palette, typography, radius, elevation, or
+motion-duration controls.
+
+Use `ThemeScope` for an intentional bounded semantic context:
+
+```tsx
+<ThemeScope tone="inverse">
+  <Hero />
+</ThemeScope>
+```
+
+For a default-toned scope, explicit scope `preferences` win for appearance and
+density; otherwise an explicit scope recipe or `ThemeConfig` supplies those
+values, and a scope with neither inherits its immediate parent. The scoped
+`overrides.config` layer is an advanced exception below explicit preferences.
+`tone="inverse"` intentionally flips the immediate parent’s resolved
+appearance for that contextual surface.
+
+For an advanced product-root exception, use typed `ThemeOverrides` after a
+recipe:
+
+```tsx
+<Ten4SevenProvider theme="product" overrides={{ config: { accent: "cyan" } }}>
+  <App />
+</Ten4SevenProvider>
+```
+
+`ThemeOverrides.variables` accepts only `--t7-*` semantic custom properties.
+It is an expert escape hatch, not a local feature-styling API. For a genuine
+custom brand editor, the compatible `ThemeConfig` object remains accepted:
 
 ```tsx
 <Ten4SevenProvider
-  theme={{
-    typography: {
-      preset: "modern",
-      ui: '"Brand Sans", sans-serif',
-      display: '"Brand Display", sans-serif',
-      mono: '"Brand Mono", monospace',
-    },
-  }}
+  theme={{ palette: "blue", primary: "indigo", accent: "cyan" }}
 >
   <App />
 </Ten4SevenProvider>
 ```
 
-Use semantic typography roles (`display-lg`, `heading-lg`, `body`, `label`, `button`, `table-header`, `metric-lg`) and component tokens. The default is one-font Inter with local variable `wght` support and optical sizing enabled. Follow **theme first, component second, local override last**.
+CSS-first delivery uses `@ten4seven/ui/theme.css` plus
+`@ten4seven/ui/components.css` and the `data-t7-*` root attributes. It covers
+curated recipes; arbitrary advanced objects still require the runtime resolver
+or an application-owned compiler.
+
+```html
+<html
+  data-t7-theme="enterprise"
+  data-t7-mode="dark"
+  data-t7-density="compact"
+></html>
+```
+
+The static recipe CSS has selectors for resolved `light` and `dark` modes, not
+for `data-t7-mode="system"`. Outside the provider, use an application or
+media-query adapter to write the currently resolved mode to the root.
+
+Components consume semantic variables and the native `t7Motion` role map.
+Never re-create a primitive or introduce raw palette-family names in consumer
+feature code. Follow **theme first, component second, local override last**.
+
+Read the complete consumer guidance in [THEMING.md](../THEMING.md),
+[THEME_RECIPES.md](../THEME_RECIPES.md),
+[TOKENS.md](../TOKENS.md), and
+[LEGACY_THEME_MIGRATION.md](../LEGACY_THEME_MIGRATION.md).

@@ -91,6 +91,23 @@ export interface ResolvedTheme {
   elevation: ElevationName;
 }
 
+/**
+ * Runtime-safe metadata supplied by the v2 provider seam. It remains
+ * structural so the tokens package stays independent of contract packages.
+ */
+export interface ThemeVariableOptions {
+  contrast?: "standard" | "more";
+  motion?: "full" | "reduced";
+  recipe?: string;
+  expression?: string;
+  composition?: {
+    contentMax: string;
+    readingMeasure: string;
+    pageGutter: string;
+    sectionGap: string;
+  };
+}
+
 type PaletteProfile = {
   primary: string;
   primaryHover: string;
@@ -374,7 +391,33 @@ export function buildRadiusProfile(value: number): Record<string, string> {
   };
 }
 
-export const densityProfiles: Record<DensityName, Record<string, string>> = {
+export interface DensityProfile {
+  control: string;
+  row: string;
+  menu: string;
+  cardPadding: string;
+  sectionGap: string;
+  controlGap: string;
+  controlPaddingInline: string;
+  controlPaddingInlineSmall: string;
+  controlPaddingInlineLarge: string;
+  fieldPaddingInline: string;
+  fieldGap: string;
+  cardHeaderGap: string;
+  cardContentGap: string;
+  cardFooterPaddingBlock: string;
+  panelPadding: string;
+  menuPaddingInline: string;
+  menuPaddingBlock: string;
+  overlayPadding: string;
+  tableCellPaddingInline: string;
+}
+
+/**
+ * Semantic geometry changes as one deliberate density profile. Reference
+ * space values remain stable; component geometry is what remaps here.
+ */
+export const densityProfiles: Record<DensityName, DensityProfile> = {
   comfortable: {
     control: "44px",
     row: "52px",
@@ -382,6 +425,19 @@ export const densityProfiles: Record<DensityName, Record<string, string>> = {
     cardPadding: "24px",
     sectionGap: "24px",
     controlGap: "12px",
+    controlPaddingInline: "17px",
+    controlPaddingInlineSmall: "13px",
+    controlPaddingInlineLarge: "21px",
+    fieldPaddingInline: "14px",
+    fieldGap: "8px",
+    cardHeaderGap: "18px",
+    cardContentGap: "18px",
+    cardFooterPaddingBlock: "16px",
+    panelPadding: "24px",
+    menuPaddingInline: "12px",
+    menuPaddingBlock: "6px",
+    overlayPadding: "24px",
+    tableCellPaddingInline: "16px",
   },
   default: {
     control: "40px",
@@ -390,6 +446,19 @@ export const densityProfiles: Record<DensityName, Record<string, string>> = {
     cardPadding: "20px",
     sectionGap: "20px",
     controlGap: "10px",
+    controlPaddingInline: "15px",
+    controlPaddingInlineSmall: "11px",
+    controlPaddingInlineLarge: "19px",
+    fieldPaddingInline: "12px",
+    fieldGap: "7px",
+    cardHeaderGap: "16px",
+    cardContentGap: "16px",
+    cardFooterPaddingBlock: "14px",
+    panelPadding: "20px",
+    menuPaddingInline: "10px",
+    menuPaddingBlock: "5px",
+    overlayPadding: "20px",
+    tableCellPaddingInline: "14px",
   },
   compact: {
     control: "36px",
@@ -398,6 +467,19 @@ export const densityProfiles: Record<DensityName, Record<string, string>> = {
     cardPadding: "16px",
     sectionGap: "16px",
     controlGap: "8px",
+    controlPaddingInline: "13px",
+    controlPaddingInlineSmall: "10px",
+    controlPaddingInlineLarge: "16px",
+    fieldPaddingInline: "10px",
+    fieldGap: "6px",
+    cardHeaderGap: "12px",
+    cardContentGap: "12px",
+    cardFooterPaddingBlock: "12px",
+    panelPadding: "16px",
+    menuPaddingInline: "8px",
+    menuPaddingBlock: "4px",
+    overlayPadding: "16px",
+    tableCellPaddingInline: "12px",
   },
   dense: {
     control: "32px",
@@ -406,8 +488,35 @@ export const densityProfiles: Record<DensityName, Record<string, string>> = {
     cardPadding: "12px",
     sectionGap: "12px",
     controlGap: "6px",
+    controlPaddingInline: "11px",
+    controlPaddingInlineSmall: "8px",
+    controlPaddingInlineLarge: "14px",
+    fieldPaddingInline: "8px",
+    fieldGap: "5px",
+    cardHeaderGap: "10px",
+    cardContentGap: "10px",
+    cardFooterPaddingBlock: "10px",
+    panelPadding: "12px",
+    menuPaddingInline: "7px",
+    menuPaddingBlock: "3px",
+    overlayPadding: "12px",
+    tableCellPaddingInline: "10px",
   },
 };
+
+/** Stable raw/reference spacing values. Components consume semantic geometry. */
+export const referenceSpace = Object.freeze({
+  0: "0px",
+  1: "4px",
+  2: "8px",
+  3: "12px",
+  4: "16px",
+  5: "20px",
+  6: "24px",
+  8: "32px",
+  10: "40px",
+  12: "48px",
+});
 
 const typographyRoleDefaults: Record<TypographyRole, TypographyRoleProfile> = {
   "display-xl": {
@@ -848,6 +957,7 @@ export function resolveTheme(config: ThemeConfig = {}): ResolvedTheme {
 
 export function buildThemeVariables(
   theme: ResolvedTheme,
+  options: ThemeVariableOptions = {},
 ): Record<string, string> {
   const palette = paletteProfiles[theme.palette];
   const primaryPalette = paletteProfiles[theme.primary];
@@ -888,12 +998,23 @@ export function buildThemeVariables(
       : theme.elevation === "standard"
         ? "0 12px 32px -24px hsl(222 30% 12% / .42)"
         : "0 1px 2px hsl(222 30% 12% / .08), 0 16px 36px -26px hsl(var(--t7-primary-hsl) / .38)";
+  const reducedMotion = options.motion === "reduced";
   const motionMilliseconds = Math.round(theme.motionDuration * 1000);
-  const motionDurationValue = `${theme.motionDuration}s`;
-  const motionInstant = `${Math.max(50, Math.round(motionMilliseconds * 0.1))}ms`;
-  const motionFast = `${Math.max(100, Math.round(motionMilliseconds * 0.2))}ms`;
-  const motionStandard = `${Math.max(160, Math.round(motionMilliseconds * 0.35))}ms`;
-  const motionLoop = `${Math.max(700, Math.round(motionMilliseconds * 0.8))}ms`;
+  const motionDurationValue = reducedMotion
+    ? "0.01ms"
+    : `${theme.motionDuration}s`;
+  const motionInstant = reducedMotion
+    ? "0.01ms"
+    : `${Math.max(50, Math.round(motionMilliseconds * 0.1))}ms`;
+  const motionFast = reducedMotion
+    ? "0.01ms"
+    : `${Math.max(100, Math.round(motionMilliseconds * 0.2))}ms`;
+  const motionStandard = reducedMotion
+    ? "0.01ms"
+    : `${Math.max(160, Math.round(motionMilliseconds * 0.35))}ms`;
+  const motionLoop = reducedMotion
+    ? "0.01ms"
+    : `${Math.max(700, Math.round(motionMilliseconds * 0.8))}ms`;
   const motionEaseStandard = "cubic-bezier(.2, 0, 0, 1)";
   const motionEaseEnter = "cubic-bezier(.16, 1, .3, 1)";
   const motionEaseExit = "cubic-bezier(.4, 0, 1, 1)";
@@ -917,8 +1038,19 @@ export function buildThemeVariables(
     variables[`--t7-type-${role}-family`] = `var(--t7-font-${spec.family})`;
     return variables;
   }, {});
+  const highContrast = options.contrast === "more";
+  const composition = options.composition ?? {
+    contentMax: "1440px",
+    readingMeasure: "68ch",
+    pageGutter: "clamp(24px, 3vw, 44px)",
+    sectionGap: "clamp(24px, 3vw, 44px)",
+  };
 
   return {
+    "--t7-theme-recipe": options.recipe ?? "custom",
+    "--t7-expression": options.expression ?? "neutral",
+    "--t7-contrast": highContrast ? "more" : "standard",
+    "--t7-motion-preference": reducedMotion ? "reduced" : "full",
     "--t7-palette-name": theme.palette,
     "--t7-primary-palette": theme.primary,
     "--t7-accent-palette": theme.accent,
@@ -931,9 +1063,13 @@ export function buildThemeVariables(
           ? "1"
           : "5",
     "--t7-primary-hsl": primaryPalette.primary,
+    "--t7-action-primary-hsl": primaryPalette.primary,
     "--t7-primary-hover-hsl": primaryPalette.primaryHover,
+    "--t7-action-primary-hover-hsl": primaryPalette.primaryHover,
     "--t7-primary-active-hsl": primaryPalette.primaryActive,
+    "--t7-action-primary-pressed-hsl": primaryPalette.primaryActive,
     "--t7-primary-foreground-hsl": primaryPalette.primaryForeground,
+    "--t7-action-primary-foreground-hsl": primaryPalette.primaryForeground,
     "--t7-primary-badge-foreground-hsl":
       theme.appearance === "dark"
         ? primaryPalette.primaryForeground
@@ -949,26 +1085,40 @@ export function buildThemeVariables(
     "--t7-chart-4-hsl": chartColors[3],
     "--t7-chart-5-hsl": chartColors[4],
     "--t7-background-hsl": neutrals.background,
+    "--t7-color-bg-canvas-hsl": neutrals.background,
     "--t7-surface-hsl": neutrals.surface,
+    "--t7-color-bg-surface-hsl": neutrals.surface,
     "--t7-surface-subtle-hsl": neutrals.surfaceSubtle,
     "--t7-surface-muted-hsl": neutrals.surfaceMuted,
     "--t7-surface-raised-hsl": neutrals.surfaceRaised,
     "--t7-surface-overlay-hsl": neutrals.surfaceRaised,
     "--t7-foreground-hsl": neutrals.foreground,
-    "--t7-muted-foreground-hsl": neutrals.mutedForeground,
+    "--t7-color-text-primary-hsl": neutrals.foreground,
+    "--t7-muted-foreground-hsl": highContrast
+      ? neutrals.mutedForegroundStrong
+      : neutrals.mutedForeground,
     "--t7-muted-foreground-strong-hsl": neutrals.mutedForegroundStrong,
-    "--t7-border-hsl": neutrals.border,
+    "--t7-color-text-muted-hsl": highContrast
+      ? neutrals.mutedForegroundStrong
+      : neutrals.mutedForeground,
+    "--t7-border-hsl": highContrast ? neutrals.borderStrong : neutrals.border,
     "--t7-border-strong-hsl": neutrals.borderStrong,
     "--t7-muted-hsl": neutrals.muted,
     "--t7-focus-hsl": accentPalette.accent,
-    "--t7-focus-ring": "0 0 0 3px hsl(var(--t7-focus-hsl) / 0.28)",
+    "--t7-focus-ring": highContrast
+      ? "0 0 0 4px hsl(var(--t7-focus-hsl) / 0.42)"
+      : "0 0 0 3px hsl(var(--t7-focus-hsl) / 0.28)",
     "--t7-selected-hsl": primaryPalette.primary,
+    "--t7-selected-foreground-hsl": primaryPalette.primaryForeground,
     "--t7-selected-hover-hsl": primaryPalette.primaryHover,
     "--t7-interactive-border-hsl": primaryPalette.primary,
     "--t7-input-background-hsl": neutrals.surface,
+    "--t7-field-background-hsl": neutrals.surface,
     "--t7-input-border-hsl": neutrals.borderStrong,
+    "--t7-field-border-hsl": neutrals.borderStrong,
     "--t7-input-hover-border-hsl": primaryPalette.primary,
     "--t7-input-focus-border-hsl": accentPalette.accent,
+    "--t7-field-foreground-hsl": neutrals.foreground,
     "--t7-disabled-background-hsl": neutrals.muted,
     "--t7-disabled-foreground-hsl": neutrals.mutedForeground,
     "--t7-success-hsl": semantic.success,
@@ -977,7 +1127,17 @@ export function buildThemeVariables(
     "--t7-warning-foreground-hsl":
       theme.appearance === "dark" ? "42 92% 72%" : "28 72% 27%",
     "--t7-danger-hsl": semantic.danger,
+    "--t7-danger-foreground-hsl": "0 0% 100%",
+    "--t7-action-danger-hsl": semantic.danger,
+    "--t7-action-danger-foreground-hsl": "0 0% 100%",
     "--t7-info-hsl": semantic.info,
+    "--t7-action-secondary-background-hsl": neutrals.surface,
+    "--t7-action-secondary-foreground-hsl": neutrals.foreground,
+    "--t7-action-secondary-hover-hsl": primaryPalette.primary,
+    "--t7-action-quiet-foreground-hsl": highContrast
+      ? neutrals.mutedForegroundStrong
+      : neutrals.mutedForeground,
+    "--t7-action-quiet-hover-hsl": neutrals.muted,
     "--t7-radius-control": radius.control,
     "--t7-radius-indicator": radius.indicator,
     "--t7-radius-base": radius.base,
@@ -992,6 +1152,23 @@ export function buildThemeVariables(
     "--t7-card-padding": density.cardPadding,
     "--t7-section-gap": density.sectionGap,
     "--t7-control-gap": density.controlGap,
+    "--t7-control-padding-inline": density.controlPaddingInline,
+    "--t7-control-padding-inline-small": density.controlPaddingInlineSmall,
+    "--t7-control-padding-inline-large": density.controlPaddingInlineLarge,
+    "--t7-field-padding-inline": density.fieldPaddingInline,
+    "--t7-field-gap": density.fieldGap,
+    "--t7-card-header-gap": density.cardHeaderGap,
+    "--t7-card-content-gap": density.cardContentGap,
+    "--t7-card-footer-padding-block": density.cardFooterPaddingBlock,
+    "--t7-panel-padding": density.panelPadding,
+    "--t7-menu-padding-inline": density.menuPaddingInline,
+    "--t7-menu-padding-block": density.menuPaddingBlock,
+    "--t7-overlay-padding": density.overlayPadding,
+    "--t7-table-cell-padding-inline": density.tableCellPaddingInline,
+    "--t7-content-max": composition.contentMax,
+    "--t7-reading-measure": composition.readingMeasure,
+    "--t7-page-gutter": composition.pageGutter,
+    "--t7-composition-gap": composition.sectionGap,
     "--t7-scrollbar-size": "4px",
     "--t7-scrollbar-thumb-alpha": "0.3",
     "--t7-scrollbar-thumb-hover-alpha": "0.5",
@@ -1031,7 +1208,7 @@ export function buildThemeVariables(
     "--t7-duration-fast": motionFast,
     "--t7-duration-standard": motionStandard,
     "--t7-duration-normal": motionStandard,
-    "--t7-duration-slow": `${motionMilliseconds}ms`,
+    "--t7-duration-slow": reducedMotion ? "0.01ms" : `${motionMilliseconds}ms`,
     "--t7-duration-loop": motionLoop,
     "--t7-ease-standard": motionEaseStandard,
     "--t7-ease-enter": motionEaseEnter,
@@ -1040,13 +1217,17 @@ export function buildThemeVariables(
     "--t7-motion-state": `${motionStandard} ${motionEaseStandard}`,
     "--t7-motion-enter-fast": `${motionFast} ${motionEaseEnter}`,
     "--t7-motion-enter": `${motionStandard} ${motionEaseEnter}`,
-    "--t7-motion-enter-slow": `${motionMilliseconds}ms ${motionEaseEnter}`,
+    "--t7-motion-enter-slow": `${
+      reducedMotion ? "0.01ms" : `${motionMilliseconds}ms`
+    } ${motionEaseEnter}`,
     "--t7-motion-exit": `${motionFast} ${motionEaseExit}`,
     "--t7-motion-loop": `${motionLoop} linear`,
     "--t7-motion-loop-eased": `${motionLoop} ease-in-out`,
     "--t7-transition-fast": `${motionFast} ${motionEaseStandard}`,
     "--t7-transition-standard": `${motionStandard} ${motionEaseStandard}`,
-    "--t7-transition-large": `${motionMilliseconds}ms ${motionEaseEnter}`,
+    "--t7-transition-large": `${
+      reducedMotion ? "0.01ms" : `${motionMilliseconds}ms`
+    } ${motionEaseEnter}`,
     "--t7-z-base": "0",
     "--t7-z-sticky": "10",
     "--t7-z-focus": "20",
@@ -1060,6 +1241,12 @@ export function buildThemeVariables(
     "--t7-z-command": "100",
     "--t7-doc-sticky-offset": "76px",
     "--t7-scrim-hsl": "222 30% 12%",
+    ...Object.fromEntries(
+      Object.entries(referenceSpace).map(([step, value]) => [
+        `--t7-ref-space-${step}`,
+        value,
+      ]),
+    ),
     ...typographyVariables,
   };
 }

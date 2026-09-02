@@ -16,6 +16,9 @@ importers:
       prettier:
         specifier: ^3.8.3
         version: 3.9.6
+      tailwindcss:
+        specifier: 4.3.3
+        version: 4.3.3
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -1389,6 +1392,12 @@ packages:
         integrity: sha512-8r3mkIM/2+PpjHoOtiAW8Rg3jJLHaV7xPwG+YRGrv6FP0wwk/toTpATxWYOW0BKdWwl82VT2tFYi5DlROa0Mxg==,
       }
 
+  tailwindcss@4.3.3:
+    resolution:
+      {
+        integrity: sha512-gOhV3P7ufE62QDGg1zVaTgCR+EtPv92k2nIhVcVKcLmxT1sUBsQGhnZj175j+MqRt4zLF7ic+sCYjfhxMxj7YQ==,
+      }
+
   tinybench@2.9.0:
     resolution:
       {
@@ -2130,6 +2139,8 @@ snapshots:
   strip-literal@3.1.0:
     dependencies:
       js-tokens: 9.0.1
+
+  tailwindcss@4.3.3: {}
 
   tinybench@2.9.0: {}
 

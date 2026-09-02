@@ -1,6 +1,6 @@
 # End-to-End Hardening Plan
 
-Status: **COMPLETED — bounded final quality pass**  
+Status: **COMPLETED — follow-up interaction repair and bounded final quality pass**
 Verified: 2026-09-01
 
 ## Objective
@@ -31,23 +31,32 @@ clear.
 4. Locate root ownership for each real defect before changing code.
 5. Apply only canonical/token/consumer-layout remediation justified by the
    audit.
-6. Reinspect changed routes at the rendered viewport.
+6. Reinspect changed routes at the rendered viewport and exercise the keyboard
+   path, not only pointer activation.
 7. Review visual-baseline differences one category at a time, then regenerate
-   only accepted output.
-8. Run the full browser and root validation gates.
+   only accepted output. Do not refresh a baseline for an interaction-only
+   correction with no default visual difference.
+8. Rebuild the canonical package before browser proof because the playground
+   consumes its public distribution surface.
+9. Run the full serial browser and root validation gates.
 
 ## Ownership rules used
 
-| Observation                                                | Correct owner                    | Result in this pass                                                     |
-| ---------------------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------- |
-| A catalog preview created nested landmarks                 | `AppShell` component API         | Added the explicit `contentAs` escape hatch; preview uses `div`.        |
-| Static demo cards lifted on hover                          | Canonical `Card` state contract  | Hover/elevation is now opt-in through `interactive` or `onClick`.       |
-| Narrow native backdrops exceeded viewport width            | Modal/Drawer primitive geometry  | Backdrop width resolves to the containing viewport rather than `100vw`. |
-| Range, chip, and carousel affordances were undersized      | Canonical controls               | Kept compact visuals while expanding physical hit geometry.             |
-| Theme Studio controls collided at narrow width             | Theme Studio consumer layout     | Breaks to one column before collision.                                  |
-| Ebook toolbar clipped at intermediate width                | Ebook consumer layout breakpoint | Compact catalog layout starts before its controls can overflow.         |
-| Mobile Operations repeated the product identity            | Operations shell consumer layout | Preserves the sidebar identity and hides the redundant topbar identity. |
-| Old tests modeled semantic button-card controls as selects | Test contract                    | Tests now verify the actual, accessible control model.                  |
+| Observation                                                | Correct owner                    | Result in this pass                                                                                   |
+| ---------------------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| A catalog preview created nested landmarks                 | `AppShell` component API         | Added the explicit `contentAs` escape hatch; preview uses `div`.                                      |
+| Static demo cards lifted on hover                          | Canonical `Card` state contract  | Hover/elevation is now opt-in through `interactive` or `onClick`.                                     |
+| Narrow native backdrops exceeded viewport width            | Modal/Drawer primitive geometry  | Backdrop width resolves to the containing viewport rather than `100vw`.                               |
+| Range, chip, and carousel affordances were undersized      | Canonical controls               | Kept compact visuals while expanding physical hit geometry.                                           |
+| Theme Studio controls collided at narrow width             | Theme Studio consumer layout     | Breaks to one column before collision.                                                                |
+| Ebook toolbar clipped at intermediate width                | Ebook consumer layout breakpoint | Compact catalog layout starts before its controls can overflow.                                       |
+| Mobile Operations repeated the product identity            | Operations shell consumer layout | Preserves the sidebar identity and hides the redundant topbar identity.                               |
+| Old tests modeled semantic button-card controls as selects | Test contract                    | Tests now verify the actual, accessible control model.                                                |
+| Command search lacked an active-descendant keyboard model  | Canonical `CommandMenu`          | Input now owns a named listbox, active descendant, arrows, Home/End, and Enter selection.             |
+| Clickable Card/DataTable rows were pointer-only            | Canonical `Card` / `DataTable`   | Semantics, focus treatment, Enter/Space activation, and nested-control guards live in the primitives. |
+| Custom Select could lose a caller-provided accessible name | Canonical `Select`               | Its authoritative trigger forwards caller labelling whenever no visible label owns the name.          |
+| Form listboxes and floating menus had incomplete dismissal | Canonical form/overlay families  | Escape, pointer-outside, focus return, menu roving focus, and popover labelling are owned centrally.  |
+| Mobile Theme Studio command trigger was 32px               | Theme Studio consumer layout     | The icon-only control now has a 40px floor while respecting a larger selected density token.          |
 
 ## Review inventory
 
@@ -71,9 +80,11 @@ The pass covers all implemented route families:
   horizontally scrollable data table is accepted only when the table wrapper,
   not the page root, owns the scroll.
 - Overlay behavior was exercised with Select, Combobox, edge menu, popover,
-  Drawer, Modal, nested overlay, Escape, focus restore, and body scroll lock.
-- The final 119-test Playwright suite provides deterministic route, interaction,
-  accessibility, responsive, and visual-baseline evidence.
+  Dropdown Menu, Context Menu, Drawer, Modal, nested overlay, Escape, focus
+  restore, and body scroll lock.
+- The final serial Chromium suite provides deterministic route, interaction,
+  accessibility, responsive, and visual-baseline evidence; its final count is
+  recorded in `GATE_END_TO_END_HARDENING.md`.
 
 ## Stop rule
 

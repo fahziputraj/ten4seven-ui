@@ -1,0 +1,38 @@
+/*
+ * Optional Tailwind v4 bridge. Import this after @ten4seven/ui/theme.css (or
+ * styles.css) so utility values remain aliases of the active semantic tokens.
+ */
+@theme inline {
+  --color-t7-canvas: hsl(var(--t7-background-hsl));
+  --color-t7-surface: hsl(var(--t7-surface-hsl));
+  --color-t7-surface-subtle: hsl(var(--t7-surface-subtle-hsl));
+  --color-t7-surface-raised: hsl(var(--t7-surface-raised-hsl));
+  --color-t7-text: hsl(var(--t7-foreground-hsl));
+  --color-t7-text-muted: hsl(var(--t7-muted-foreground-hsl));
+  --color-t7-border: hsl(var(--t7-border-hsl));
+  --color-t7-primary: hsl(var(--t7-action-primary-hsl));
+  --color-t7-primary-hover: hsl(var(--t7-action-primary-hover-hsl));
+  --color-t7-primary-foreground: hsl(var(--t7-action-primary-foreground-hsl));
+  --color-t7-secondary: hsl(var(--t7-action-secondary-background-hsl));
+  --color-t7-secondary-foreground: hsl(
+    var(--t7-action-secondary-foreground-hsl)
+  );
+  --color-t7-quiet-foreground: hsl(var(--t7-action-quiet-foreground-hsl));
+  --color-t7-accent: hsl(var(--t7-accent-hsl));
+  --color-t7-success: hsl(var(--t7-success-hsl));
+  --color-t7-success-foreground: hsl(var(--t7-success-foreground-hsl));
+  --color-t7-warning: hsl(var(--t7-warning-hsl));
+  --color-t7-warning-foreground: hsl(var(--t7-warning-foreground-hsl));
+  --color-t7-danger: hsl(var(--t7-action-danger-hsl));
+  --color-t7-danger-foreground: hsl(var(--t7-action-danger-foreground-hsl));
+  --color-t7-info: hsl(var(--t7-info-hsl));
+  --radius-t7-control: var(--t7-radius-control);
+  --radius-t7-panel: var(--t7-radius-panel);
+  --radius-t7-card: var(--t7-radius-card);
+  --spacing-t7-control: var(--t7-control-height);
+  --spacing-t7-row: var(--t7-row-height);
+  --spacing-t7-content: var(--t7-page-gutter);
+  --font-sans: var(--t7-font-ui);
+  --font-serif: var(--t7-font-display);
+  --font-mono: var(--t7-font-mono);
+}

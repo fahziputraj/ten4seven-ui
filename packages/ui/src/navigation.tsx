@@ -770,7 +770,9 @@ export function CommandMenu({
 }: CommandMenuProps) {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
   const [query, setQuery] = useState("");
+  const [activeIndex, setActiveIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const listboxId = useId();
   const isOpen = open ?? uncontrolledOpen;
   const filtered = useMemo(() => {
     const normalized = query.trim().toLowerCase();
@@ -782,10 +784,31 @@ export function CommandMenu({
         .includes(normalized),
     );
   }, [commands, query]);
+  const resolvedActiveIndex = Math.min(
+    activeIndex,
+    Math.max(filtered.length - 1, 0),
+  );
+  const activeCommand = filtered[resolvedActiveIndex];
+  const activeOptionId = activeCommand
+    ? `${listboxId}-${activeCommand.id}`
+    : undefined;
   const setOpen = (next: boolean) => {
     if (open === undefined) setUncontrolledOpen(next);
     onOpenChange?.(next);
   };
+
+  function moveActive(direction: 1 | -1) {
+    if (!filtered.length) return;
+    setActiveIndex(
+      (resolvedActiveIndex + direction + filtered.length) % filtered.length,
+    );
+  }
+
+  function selectActive() {
+    if (!activeCommand) return;
+    activeCommand.onSelect();
+    setOpen(false);
+  }
 
   useEffect(() => {
     if (!shortcut) return undefined;
@@ -809,28 +832,58 @@ export function CommandMenu({
     >
       <div className="t7-command-menu">
         <Input
+          aria-activedescendant={activeOptionId}
+          aria-autocomplete="list"
           aria-label="Search commands"
+          aria-controls={listboxId}
+          aria-expanded={isOpen}
+          aria-haspopup="listbox"
           autoFocus
           leadingIcon="search"
-          onChange={(event) => setQuery(event.target.value)}
+          onChange={(event) => {
+            setQuery(event.target.value);
+            setActiveIndex(0);
+          }}
+          onKeyDown={(event) => {
+            if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+              event.preventDefault();
+              moveActive(event.key === "ArrowDown" ? 1 : -1);
+            } else if (event.key === "Home") {
+              event.preventDefault();
+              setActiveIndex(0);
+            } else if (event.key === "End") {
+              event.preventDefault();
+              setActiveIndex(Math.max(filtered.length - 1, 0));
+            } else if (event.key === "Enter") {
+              event.preventDefault();
+              selectActive();
+            }
+          }}
           placeholder={placeholder}
           ref={inputRef}
+          role="combobox"
           value={query}
         />
         <div
           aria-label="Commands"
           className="t7-command-results"
+          id={listboxId}
           role="listbox"
         >
           {filtered.length === 0 ? <p>{emptyMessage}</p> : null}
-          {filtered.map((command) => (
+          {filtered.map((command, index) => (
             <button
+              aria-selected={index === resolvedActiveIndex}
+              data-active={index === resolvedActiveIndex || undefined}
+              id={`${listboxId}-${command.id}`}
               key={command.id}
               onClick={() => {
                 command.onSelect();
                 setOpen(false);
               }}
+              onMouseEnter={() => setActiveIndex(index)}
               role="option"
+              tabIndex={-1}
               type="button"
             >
               {command.icon ? (

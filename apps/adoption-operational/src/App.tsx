@@ -648,10 +648,22 @@ function OperationsApp() {
 }
 
 export default function App() {
-  const theme = themeFromQuery();
+  const legacyTheme = themeFromQuery();
 
   return (
-    <Ten4SevenProvider {...theme}>
+    <Ten4SevenProvider
+      overrides={{
+        config: {
+          palette: legacyTheme.palette,
+          radius: legacyTheme.radius,
+        },
+      }}
+      preferences={{
+        appearance: legacyTheme.appearance,
+        density: legacyTheme.density,
+      }}
+      theme="enterprise"
+    >
       <OperationsApp />
     </Ten4SevenProvider>
   );

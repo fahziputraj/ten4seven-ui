@@ -162,6 +162,8 @@ export async function buildProjections() {
       sourceOfTruth: {
         typedContracts: "packages/contracts/src",
         themeProfile: "packages/contracts/src/theme-profile.ts",
+        themeRecipes: "packages/contracts/src/theme-recipe.ts",
+        dtcgTokenExport: "packages/tokens/generated/tokens.dtcg.json",
         brandProfiles: "packages/contracts/src/brand-profile.ts",
         entityList: "packages/contracts/src/entity-list.ts",
         entityDetail: "packages/contracts/src/entity-detail.ts",
@@ -191,6 +193,11 @@ export async function buildProjections() {
           resolve: "t7ui brand resolve auth",
           compose: "t7ui brand compose auth",
         },
+        themes: {
+          source: "generated/theme-recipes.json",
+          tokenExport: "generated/tokens.dtcg.json",
+          guidance: "docs/THEME_RECIPES.md",
+        },
       },
       metrics: {
         fullCatalogBytes: fullComponentBytes + fullRecipeBytes,
@@ -203,6 +210,14 @@ export async function buildProjections() {
       schemaVersion: CANONICAL_CONTRACTS.schemaVersion,
       sourceOfTruth: "packages/contracts/src",
       recipes: recipeReferences,
+      themeRecipes: {
+        path: "theme-recipes.json",
+        ids: Object.keys(CANONICAL_CONTRACTS.themeRecipes),
+      },
+      tokens: {
+        dtcgPath: "tokens.dtcg.json",
+        guidance: "docs/TOKENS.md",
+      },
       componentShardPattern: "components/{componentId}.json",
       generatedCompatibility: {
         recipes: "recipes.compact.json",
@@ -220,6 +235,7 @@ export async function buildProjections() {
     },
     "components.compact.json": components,
     "brand-profiles.json": CANONICAL_CONTRACTS.brandProfiles,
+    "theme-recipes.json": CANONICAL_CONTRACTS.themeRecipes,
     "recipes.compact.json": recipes,
     "aliases.json": aliases,
     "ownership-rules.json": ownership,

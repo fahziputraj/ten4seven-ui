@@ -17,6 +17,8 @@ const contractReads = [
   "generated/components.compact.json",
   "generated/aliases.json",
   "generated/ownership-rules.json",
+  "generated/theme-recipes.json",
+  "generated/tokens.dtcg.json",
   "packages/ai/catalog/blocks.json",
   "packages/ai/catalog/icons.json",
 ];
@@ -181,8 +183,40 @@ for (const consumer of consumers) {
   );
 }
 
+const operationalSource = read("apps/adoption-operational/src/App.tsx");
+const publicSource = read("apps/adoption-public/src/App.tsx");
+assert.match(
+  operationalSource,
+  /<Ten4SevenProvider[\s\S]*?theme="enterprise"/,
+  "operational: v2 recipe consumer proof is missing",
+);
+assert.match(
+  operationalSource,
+  /preferences=\{\{[\s\S]*?density:/,
+  "operational: runtime-preferences proof is missing",
+);
+assert.match(
+  publicSource,
+  /<Ten4SevenProvider \{\.\.\.theme\}>/,
+  "public: legacy ThemeConfig consumer proof is missing",
+);
+assert.match(
+  publicSource,
+  /function CssFirstThemeProof\(/,
+  "public: CSS-first consumer fixture is missing",
+);
+for (const attribute of [
+  'data-t7-theme="commerce"',
+  'data-t7-mode="dark"',
+  'data-t7-density="compact"',
+])
+  assert.ok(
+    publicSource.includes(attribute),
+    `public: CSS-first fixture is missing ${attribute}`,
+  );
+
 console.log(
-  `Adoption static proof verified: ${consumers.length} isolated consumers, 0 new basic primitives, 0 parallel design systems, 0 raw external icon imports, 0 local color literals.`,
+  `Adoption static proof verified: ${consumers.length} isolated consumers, legacy object compatibility, a v2 recipe consumer, a CSS-first consumer, 0 new basic primitives, 0 parallel design systems, 0 raw external icon imports, and 0 local color literals.`,
 );
 console.log(
   `Cold-start retrieval proof verified: ${retrievalTasks.length} product-context queries, ${contractReads.length} contract/catalog reads, 0 donor reads, 0 internal implementation reads.`,

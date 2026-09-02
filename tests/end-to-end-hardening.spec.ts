@@ -126,6 +126,23 @@ test.describe("end-to-end hardening regressions", () => {
     }
   });
 
+  test("Theme Studio keeps its icon-only command search touch-safe on mobile", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 360, height: 800 });
+    await page.goto("/theme-studio");
+
+    const search = page.getByRole("button", {
+      name: "Search ten4seven catalog",
+    });
+    const box = await search.boundingBox();
+
+    expect(box).not.toBeNull();
+    expect(box?.width).toBeGreaterThanOrEqual(40);
+    expect(box?.height).toBeGreaterThanOrEqual(40);
+    expect(await rootOverflow(page)).toBeLessThanOrEqual(1);
+  });
+
   test("static reference cards stay visually calm while interactive cards remain explicit", async ({
     page,
   }) => {

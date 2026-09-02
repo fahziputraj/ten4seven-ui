@@ -1,0 +1,16 @@
+{
+  "scope": "Canonical UI source only; token resolver and generated token CSS own raw reference values.",
+  "acceptedLiteralCategories": [
+    "1px borders and visually-hidden dimensions",
+    "intrinsic icon, media, chart, and pointer-origin geometry",
+    "transform offsets and browser-normalization mechanics",
+    "z-index 0 and 1 for local stacking inside a token-governed layer"
+  ],
+  "enforced": [
+    "No literal hex, rgb, rgba, oklch, color-mix, or numeric hsl colors in canonical component source",
+    "No palette-family names in component CSS",
+    "No ungoverned z-index values above local 0 and 1",
+    "No raw transition or animation duration in canonical component CSS",
+    "Core action and geometry variables remain present"
+  ]
+}
