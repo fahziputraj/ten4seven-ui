@@ -2338,6 +2338,50 @@
 .operations-reference .t7-filter-toolbar {
   margin-bottom: var(--t7-composition-gap);
 }
+.farm-proof-context-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: var(--t7-section-gap);
+  min-width: 0;
+  margin-bottom: var(--t7-section-gap);
+}
+.farm-proof-context-card .t7-card-content,
+.farm-proof-identity-card .t7-card-content {
+  display: grid;
+  gap: var(--t7-card-content-gap);
+}
+.farm-proof-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--t7-control-gap-lg);
+}
+.farm-proof-context-card .t7-key-value-list,
+.farm-proof-identity-card .t7-key-value-list {
+  border-top: 1px solid hsl(var(--t7-border-hsl));
+  padding-top: var(--t7-control-gap);
+}
+.farm-proof-overview {
+  min-width: 0;
+}
+.farm-proof-overview .t7-kpi-cluster {
+  margin-bottom: var(--t7-section-gap);
+}
+.farm-proof-state-card .t7-card-content {
+  display: grid;
+  min-height: 250px;
+  align-items: center;
+}
+.farm-proof-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--t7-card-content-gap);
+  padding: var(--t7-card-padding);
+}
+.farm-proof-loading > div {
+  display: grid;
+  gap: var(--t7-control-gap-sm);
+}
 .operations-milestone-section {
   margin-bottom: var(--t7-section-gap);
 }
@@ -2441,6 +2485,9 @@
   align-items: flex-start;
 }
 @media (max-width: 860px) {
+  .farm-proof-context-grid {
+    grid-template-columns: 1fr;
+  }
   .operations-domain-grid {
     grid-template-columns: 1fr;
   }
@@ -2449,6 +2496,13 @@
   }
 }
 @media (max-width: 540px) {
+  .farm-proof-controls {
+    grid-template-columns: 1fr;
+  }
+  .farm-proof-loading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
   .operations-domain-card .t7-card-header {
     flex-direction: column;
     gap: 10px;

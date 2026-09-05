@@ -87,6 +87,7 @@ import {
 import { PublicShowcase } from "./public-showcase";
 import { OperationalReference } from "./operational-reference";
 import { BrandExpressionProof } from "./brand-expression";
+import { FarmSyntheticProof } from "./farm-synthetic-proof";
 import {
   blockCatalog,
   categoryLabels,
@@ -101,6 +102,8 @@ import {
 import {
   libraryNavigation,
   brandProofRouteTitles,
+  farmSyntheticProofDescription,
+  farmSyntheticProofTitle,
   playgroundRoutePaths,
   playgroundRouteDescriptions,
   playgroundRouteTitles,
@@ -2774,34 +2777,38 @@ export default function App() {
     const routeTitle =
       routeMatch.kind === "known"
         ? playgroundRouteTitles[routeMatch.route]
-        : routeMatch.kind === "brand-proof"
-          ? brandProofRouteTitles[routeMatch.profileId]
-          : routeMatch.kind === "component-family"
-            ? `ten4seven UI — ${categoryLabels[routeMatch.category] ?? routeMatch.category}`
-            : routeMatch.kind === "component-detail"
-              ? `ten4seven UI — ${componentCatalog[routeMatch.name].displayName ?? routeMatch.name}`
-              : routeMatch.kind === "recipe-detail"
-                ? `ten4seven UI — ${recipeCatalog[routeMatch.name].displayName ?? routeMatch.name}`
-                : routeMatch.kind === "block-detail"
-                  ? `ten4seven UI — ${blockCatalog[routeMatch.name].displayName ?? routeMatch.name}`
-                  : "ten4seven UI — Route not found";
+        : routeMatch.kind === "farm-synthetic"
+          ? farmSyntheticProofTitle
+          : routeMatch.kind === "brand-proof"
+            ? brandProofRouteTitles[routeMatch.profileId]
+            : routeMatch.kind === "component-family"
+              ? `ten4seven UI — ${categoryLabels[routeMatch.category] ?? routeMatch.category}`
+              : routeMatch.kind === "component-detail"
+                ? `ten4seven UI — ${componentCatalog[routeMatch.name].displayName ?? routeMatch.name}`
+                : routeMatch.kind === "recipe-detail"
+                  ? `ten4seven UI — ${recipeCatalog[routeMatch.name].displayName ?? routeMatch.name}`
+                  : routeMatch.kind === "block-detail"
+                    ? `ten4seven UI — ${blockCatalog[routeMatch.name].displayName ?? routeMatch.name}`
+                    : "ten4seven UI — Route not found";
     document.title = routeTitle;
     const description = document.querySelector('meta[name="description"]');
     description?.setAttribute(
       "content",
       routeMatch.kind === "known"
         ? playgroundRouteDescriptions[routeMatch.route]
-        : routeMatch.kind === "brand-proof"
-          ? "Brand expression proof for the canonical Authentication recipe in ten4seven UI."
-          : routeMatch.kind === "component-family"
-            ? `Canonical ${categoryLabels[routeMatch.category] ?? routeMatch.category} components in the ten4seven UI catalog.`
-            : routeMatch.kind === "component-detail"
-              ? componentCatalog[routeMatch.name].purpose
-              : routeMatch.kind === "recipe-detail"
-                ? recipeCatalog[routeMatch.name].purpose
-                : routeMatch.kind === "block-detail"
-                  ? blockCatalog[routeMatch.name].purpose
-                  : "The requested ten4seven UI playground route does not exist.",
+        : routeMatch.kind === "farm-synthetic"
+          ? farmSyntheticProofDescription
+          : routeMatch.kind === "brand-proof"
+            ? "Brand expression proof for the canonical Authentication recipe in ten4seven UI."
+            : routeMatch.kind === "component-family"
+              ? `Canonical ${categoryLabels[routeMatch.category] ?? routeMatch.category} components in the ten4seven UI catalog.`
+              : routeMatch.kind === "component-detail"
+                ? componentCatalog[routeMatch.name].purpose
+                : routeMatch.kind === "recipe-detail"
+                  ? recipeCatalog[routeMatch.name].purpose
+                  : routeMatch.kind === "block-detail"
+                    ? blockCatalog[routeMatch.name].purpose
+                    : "The requested ten4seven UI playground route does not exist.",
     );
   }, [routeMatch]);
 
@@ -2899,6 +2906,8 @@ export default function App() {
         onOpenSettings={openThemeSettings}
       />
     );
+  } else if (routeMatch.kind === "farm-synthetic") {
+    routeContent = <FarmSyntheticProof onOpenSettings={openThemeSettings} />;
   } else if (routeMatch.kind === "brand-proof") {
     routeContent = (
       <BrandExpressionProof
