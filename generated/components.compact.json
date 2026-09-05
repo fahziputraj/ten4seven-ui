@@ -1830,6 +1830,25 @@
       "actions"
     ]
   },
+  "RevisionDiff": {
+    "id": "RevisionDiff",
+    "displayName": "Revision Diff",
+    "status": "implemented",
+    "category": "data",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Compare consumer-supplied before and after values with explicit change semantics and adjacent revision provenance.",
+    "source": "packages/ui/src/data-display.tsx",
+    "recipes": [],
+    "importantProps": [
+      "items",
+      "reason",
+      "actor",
+      "occurredAt",
+      "evidence",
+      "title"
+    ]
+  },
   "ProductCard": {
     "id": "ProductCard",
     "displayName": "Product Card",

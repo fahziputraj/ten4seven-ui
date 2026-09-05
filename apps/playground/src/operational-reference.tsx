@@ -25,6 +25,7 @@ import {
   Radio,
   RadioGroup,
   RecordSummary,
+  RevisionDiff,
   Sidebar,
   Sparkline,
   StatusChip,
@@ -1227,6 +1228,66 @@ function EntityWorkspace({ onOpenDecision }: { onOpenDecision: () => void }) {
           </CardContent>
         </Card>
       </div>
+
+      <Card className="operational-revision-card">
+        <CardHeader>
+          <div>
+            <CardTitle>Latest revision context</CardTitle>
+            <CardDescription>
+              Compare the receiving correction while keeping its reason, actor,
+              timestamp, and evidence in the same reading order.
+            </CardDescription>
+          </div>
+          <T7Icon aria-hidden="true" name="edit" size={20} />
+        </CardHeader>
+        <CardContent>
+          <RevisionDiff
+            actor="Nadia Putri · Warehouse QA"
+            evidence="RC-3841 receiving memo · evidence-2026-09-03-1428"
+            items={[
+              {
+                after: 376,
+                before: 400,
+                change: "changed",
+                context: "units received",
+                label: "Received quantity",
+              },
+              {
+                after: 3,
+                change: "added",
+                context: "units isolated",
+                label: "Damaged units",
+              },
+              {
+                after: "Needs QA review",
+                before: "Pending count",
+                change: "changed",
+                label: "Receipt status",
+              },
+              {
+                after: "Sep 6, 2026",
+                before: "Sep 5, 2026",
+                change: "changed",
+                label: "Expected delivery",
+              },
+              {
+                after: "PO-260827-044",
+                before: "PO-260827-044",
+                change: "unchanged",
+                label: "Supplier reference",
+              },
+              {
+                before: "Manual recount requested",
+                change: "removed",
+                label: "Temporary note",
+              },
+            ]}
+            occurredAt="Sep 3, 2026 · 14:28"
+            reason="Three damaged units were isolated during receiving; retain the receipt for QA review."
+            title="RC-3841 field changes"
+          />
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>

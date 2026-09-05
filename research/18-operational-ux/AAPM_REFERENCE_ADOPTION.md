@@ -11,8 +11,9 @@ without creating Farm application code.
 
 Its fixture language includes Warehouse 02, an order, vehicle capacity,
 delivery stops, receiving reconciliation, a supplier relationship, accountable
-owners, decision evidence, and consumer-evaluated readiness examples. These
-records exist only to make state and workflow semantics inspectable.
+owners, decision evidence, consumer-evaluated readiness examples, and an
+Entity 360 RevisionDiff with explicit correction provenance. These records
+exist only to make state and workflow semantics inspectable.
 
 ## What the route is not
 

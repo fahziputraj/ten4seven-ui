@@ -148,7 +148,92 @@ test("operational reference exposes all mature pattern and readiness proofs", as
   await expect(
     page.getByText("Entity activity and audit trail", { exact: true }),
   ).toBeVisible();
+  const revision = page.getByRole("region", { name: "RC-3841 field changes" });
+  await expect(revision).toBeVisible();
+  await expect(
+    revision.getByRole("table", { name: "Revision field changes" }),
+  ).toBeVisible();
+  const revisionTable = revision.getByRole("table", {
+    name: "Revision field changes",
+  });
+  for (const value of [
+    "400",
+    "376",
+    "Needs QA review",
+    "Sep 6, 2026",
+    "Added",
+    "Removed",
+  ]) {
+    await expect(revisionTable.getByText(value, { exact: true })).toBeVisible();
+  }
+  for (const value of [
+    "Nadia Putri · Warehouse QA",
+    "Sep 3, 2026 · 14:28",
+    "RC-3841 receiving memo · evidence-2026-09-03-1428",
+  ])
+    await expect(revision.getByText(value, { exact: true })).toBeVisible();
   await expectNoDocumentOverflow(page);
+});
+
+test("revision diff stacks changed facts and keeps provenance readable on mobile", async ({
+  page,
+}) => {
+  await page.setViewportSize({ height: 844, width: 390 });
+  await openOperationalReference(page);
+  await selectOperationalView(page, "Entity 360");
+
+  const revision = page.getByRole("region", { name: "RC-3841 field changes" });
+  await expect(revision).toBeVisible();
+  const stacked = revision.locator(".t7-revision-diff-stacked");
+  await expect(stacked).toBeVisible();
+  await expect(
+    stacked
+      .locator(".t7-revision-diff-stacked-row")
+      .first()
+      .locator(".t7-revision-diff-stacked-label"),
+  ).toHaveCount(4);
+  await expect(
+    stacked
+      .locator(".t7-revision-diff-stacked-row")
+      .first()
+      .locator(".t7-revision-diff-stacked-label")
+      .nth(1),
+  ).toHaveText("Before");
+  await expect(
+    revision.getByText(
+      "Three damaged units were isolated during receiving; retain the receipt for QA review.",
+      { exact: true },
+    ),
+  ).toBeVisible();
+  await expectNoDocumentOverflow(page);
+});
+
+test("revision diff desktop visual keeps changes and provenance together", async ({
+  page,
+}) => {
+  await page.setViewportSize({ height: 900, width: 1440 });
+  await openOperationalReference(page);
+  await selectOperationalView(page, "Entity 360");
+
+  await expect(
+    page.getByRole("region", { name: "RC-3841 field changes" }),
+  ).toHaveScreenshot("revision-diff-desktop.png", {
+    animations: "disabled",
+    caret: "hide",
+  });
+});
+
+test("revision diff mobile visual stacks every field", async ({ page }) => {
+  await page.setViewportSize({ height: 844, width: 390 });
+  await openOperationalReference(page);
+  await selectOperationalView(page, "Entity 360");
+
+  await expect(
+    page.getByRole("region", { name: "RC-3841 field changes" }),
+  ).toHaveScreenshot("revision-diff-mobile.png", {
+    animations: "disabled",
+    caret: "hide",
+  });
 });
 
 test("exception and entity decision drawers dismiss with Escape and restore focus", async ({

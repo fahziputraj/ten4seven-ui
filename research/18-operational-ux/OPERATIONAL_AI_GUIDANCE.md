@@ -64,6 +64,10 @@ audit guarantees.
 - Choose `DataTable` only when selection/sorting/pagination/column behavior is
   part of the contract; use the lightweight `Table` family for readable static
   comparisons.
+- Choose `RevisionDiff` when multiple consumer-supplied fields need an
+  explicit before/after comparison. Supply an explicit change kind and keep
+  reason, actor, occurred-at, and evidence/source adjacent; the component does
+  not calculate, mutate, or persist a revision.
 - Use `DetailDrawer` for record inspection, `Drawer` for generic contextual
   work, `Modal` for a focused task, and `AlertDialog` for final irreversible
   confirmation.
@@ -92,7 +96,7 @@ pnpm t7ui recipe inspect readiness-review
 returns semantic icons including `warehouse`, `stockIn`, `package`, `warning`,
 and `approve`. The existing `inventory list` query still resolves
 `entity-list` and prioritizes inventory-domain icons. `pnpm test:ai` reports
-29 recipes, 145 components, 12 expressive blocks, 98 semantic icons, and a
+29 recipes, 146 components, 12 expressive blocks, 98 semantic icons, and a
 cold-start proof of 15 tasks / 12 contract reads / 0 donor reads.
 
 ## Output boundary

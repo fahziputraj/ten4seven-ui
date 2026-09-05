@@ -85,10 +85,15 @@ smallest pattern that answers the user's operating question.
    and `AlertDialog` only for irreversible confirmation.
 7. Use `RadioGroup`, `Radio`, `Textarea`, and `ActionFooter` to compose a
    bounded decision. The consumer owns the decision policy and persistence.
-8. Use semantic `T7Icon` names. Do not introduce raw provider strings or a
+8. Use `RevisionDiff` when several consumer-supplied facts need an explicit
+   before/after comparison with change kind, reason, actor, occurred-at, and
+   evidence/source context. Keep the component presentation-only: the
+   consumer owns diff calculation, correction policy, persistence, and audit
+   storage.
+9. Use semantic `T7Icon` names. Do not introduce raw provider strings or a
    runtime icon CDN.
-9. Apply a theme recipe before local layout. Product-specific CSS may arrange
-   canonical parts but must use semantic tokens.
+10. Apply a theme recipe before local layout. Product-specific CSS may arrange
+    canonical parts but must use semantic tokens.
 
 ## Consumer ownership boundary
 
@@ -99,6 +104,8 @@ Ten4Seven owns:
 - composition guidance, pattern anatomy, semantic tokens, and semantic icons;
 - visual hierarchy for exception, state, next action, and trace;
 - presentation of values supplied by a consumer.
+- presentation of before/after values and explicit change labels supplied by a
+  consumer; `RevisionDiff` does not calculate or persist revisions.
 
 The consumer owns:
 
@@ -200,6 +207,8 @@ six bounded workspace views:
 - Receiving: Receiving Console and Decision Workspace;
 - Entity 360: Entity 360, Decision Workspace, and Activity & Audit Stream;
 - Readiness Review: consumer-supplied ready, blocked, and incomplete states.
+- Entity 360: a RevisionDiff reference with six synthetic field changes and
+  provenance metadata; it demonstrates presentation-only correction context.
 
 The fixture does not create an AAPM ERP, connect APIs, implement policies, or
 embed AAPM colors into generic primitives. A future AAPM product should apply

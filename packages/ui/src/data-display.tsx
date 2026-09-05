@@ -600,6 +600,252 @@ export function TableCell({
   return <td {...props} className={cx("t7-table-cell", className)} />;
 }
 
+export type RevisionDiffKind = "changed" | "added" | "removed" | "unchanged";
+
+export interface RevisionDiffItem {
+  /** Value after the revision; omit when the field was removed. */
+  after?: ReactNode;
+  /** Value before the revision; omit when the field was added. */
+  before?: ReactNode;
+  /** Consumer-supplied classification of what happened to this field. */
+  change: RevisionDiffKind;
+  /** Optional unit, source field, or other context for the field label. */
+  context?: ReactNode;
+  label: ReactNode;
+}
+
+export interface RevisionDiffProps extends Omit<
+  HTMLAttributes<HTMLElement>,
+  "children" | "title"
+> {
+  /** Accountable actor associated with the revision. */
+  actor?: ReactNode;
+  /** Evidence link, identifier, or source label for the revision. */
+  evidence?: ReactNode;
+  /** Message shown when the revision contains no field changes. */
+  emptyMessage?: ReactNode;
+  items: RevisionDiffItem[];
+  /** Time at which the revision occurred. */
+  occurredAt?: ReactNode;
+  /** Human-readable reason supplied by the owning consumer. */
+  reason?: ReactNode;
+  title?: ReactNode;
+}
+
+const revisionDiffKindMeta: Record<
+  RevisionDiffKind,
+  { icon: IconName; label: string; tone: StatusTone }
+> = {
+  added: { icon: "plus", label: "Added", tone: "success" },
+  changed: { icon: "edit", label: "Changed", tone: "info" },
+  removed: { icon: "close", label: "Removed", tone: "danger" },
+  unchanged: { icon: "check", label: "Unchanged", tone: "neutral" },
+};
+
+function RevisionDiffValue({
+  label,
+  value,
+}: {
+  label: string;
+  value: ReactNode;
+}) {
+  const empty = value === undefined || value === null;
+  return (
+    <span
+      aria-label={empty ? `${label}: Not present` : undefined}
+      className="t7-revision-diff-value"
+      data-empty={empty || undefined}
+    >
+      {empty ? "Not present" : value}
+    </span>
+  );
+}
+
+/**
+ * Compare consumer-supplied values while keeping provenance beside the
+ * changed facts. This is presentation-only: it does not calculate a diff,
+ * persist an audit event, or execute a correction policy.
+ */
+export function RevisionDiff({
+  actor,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledby,
+  className,
+  emptyMessage = "No field changes recorded.",
+  evidence,
+  items,
+  occurredAt,
+  reason,
+  title = "Revision summary",
+  ...props
+}: RevisionDiffProps) {
+  const headingId = useId();
+  const metadata = [
+    reason === undefined || reason === null
+      ? null
+      : { label: "Reason", value: reason },
+    actor === undefined || actor === null
+      ? null
+      : { label: "Actor", value: actor },
+    occurredAt === undefined || occurredAt === null
+      ? null
+      : { label: "Occurred at", value: occurredAt },
+    evidence === undefined || evidence === null
+      ? null
+      : { label: "Evidence / source", value: evidence },
+  ].filter((item): item is KeyValueItem => item !== null);
+
+  return (
+    <section
+      {...props}
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabel ? undefined : (ariaLabelledby ?? headingId)}
+      className={cx("t7-revision-diff", className)}
+    >
+      <div className="t7-revision-diff-heading">
+        <Typography as="h3" id={headingId} typeRole="heading-sm">
+          {title}
+        </Typography>
+      </div>
+
+      <Table
+        aria-label="Revision field changes"
+        className="t7-revision-diff-table"
+      >
+        <TableHeader>
+          <TableRow>
+            <TableHead>Field</TableHead>
+            <TableHead>Before</TableHead>
+            <TableHead>After</TableHead>
+            <TableHead>Change</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {items.length === 0 ? (
+            <TableRow>
+              <TableCell className="t7-revision-diff-empty" colSpan={4}>
+                {emptyMessage}
+              </TableCell>
+            </TableRow>
+          ) : (
+            items.map((item, index) => {
+              const kind = item.change;
+              const meta = revisionDiffKindMeta[kind];
+              return (
+                <TableRow
+                  data-change={kind}
+                  key={`${index}-${String(item.label)}`}
+                >
+                  <TableCell className="t7-revision-diff-field-cell">
+                    <span
+                      aria-hidden="true"
+                      className="t7-revision-diff-cell-label"
+                    >
+                      Field
+                    </span>
+                    <span className="t7-revision-diff-field">{item.label}</span>
+                    {item.context ? (
+                      <span className="t7-revision-diff-field-context">
+                        {item.context}
+                      </span>
+                    ) : null}
+                  </TableCell>
+                  <TableCell>
+                    <span
+                      aria-hidden="true"
+                      className="t7-revision-diff-cell-label"
+                    >
+                      Before
+                    </span>
+                    <RevisionDiffValue label="Before" value={item.before} />
+                  </TableCell>
+                  <TableCell>
+                    <span
+                      aria-hidden="true"
+                      className="t7-revision-diff-cell-label"
+                    >
+                      After
+                    </span>
+                    <RevisionDiffValue label="After" value={item.after} />
+                  </TableCell>
+                  <TableCell className="t7-revision-diff-change-cell">
+                    <span
+                      aria-hidden="true"
+                      className="t7-revision-diff-cell-label"
+                    >
+                      Change
+                    </span>
+                    <StatusChip icon={meta.icon} tone={meta.tone}>
+                      {meta.label}
+                    </StatusChip>
+                  </TableCell>
+                </TableRow>
+              );
+            })
+          )}
+        </TableBody>
+      </Table>
+
+      <div
+        aria-label="Revision field changes"
+        className="t7-revision-diff-stacked"
+        role="list"
+      >
+        {items.length === 0 ? (
+          <div className="t7-revision-diff-stacked-empty" role="listitem">
+            {emptyMessage}
+          </div>
+        ) : (
+          items.map((item, index) => {
+            const kind = item.change;
+            const meta = revisionDiffKindMeta[kind];
+            return (
+              <article
+                className="t7-revision-diff-stacked-row"
+                data-change={kind}
+                key={`${index}-${String(item.label)}`}
+                role="listitem"
+              >
+                <div className="t7-revision-diff-stacked-field">
+                  <span className="t7-revision-diff-stacked-label">Field</span>
+                  <span className="t7-revision-diff-field">{item.label}</span>
+                  {item.context ? (
+                    <span className="t7-revision-diff-field-context">
+                      {item.context}
+                    </span>
+                  ) : null}
+                </div>
+                <div className="t7-revision-diff-stacked-field">
+                  <span className="t7-revision-diff-stacked-label">Before</span>
+                  <RevisionDiffValue label="Before" value={item.before} />
+                </div>
+                <div className="t7-revision-diff-stacked-field">
+                  <span className="t7-revision-diff-stacked-label">After</span>
+                  <RevisionDiffValue label="After" value={item.after} />
+                </div>
+                <div className="t7-revision-diff-stacked-field">
+                  <span className="t7-revision-diff-stacked-label">Change</span>
+                  <StatusChip icon={meta.icon} tone={meta.tone}>
+                    {meta.label}
+                  </StatusChip>
+                </div>
+              </article>
+            );
+          })
+        )}
+      </div>
+
+      {metadata.length > 0 ? (
+        <KeyValueList
+          aria-label="Revision provenance"
+          className="t7-revision-diff-provenance"
+          items={metadata}
+        />
+      ) : null}
+    </section>
+  );
+}
+
 export interface RecordSummaryProps extends Omit<
   HTMLAttributes<HTMLElement>,
   "title"

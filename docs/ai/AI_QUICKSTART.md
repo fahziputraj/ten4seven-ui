@@ -108,7 +108,7 @@ Use the capability family—not the visual mood—to narrow selection:
 - actions: `Button`, `IconButton`, `ButtonGroup`, `ToggleButtonGroup`, `SplitButton`;
 - forms: `Field`, native labelled controls, `Combobox`, `MultiSelect`, date/time controls;
 - shell/navigation: `AppShell`, `Sidebar`, `TopNavigation`, `NavigationMenu`, `PublicShell`, `Breadcrumb`, `Tabs`, `CommandMenu`;
-- data/workflow: `DataTable`, `RecordSummary`, `MetricCard`, `FilterToolbar`, `ApprovalPanel`;
+- data/workflow: `DataTable`, `RecordSummary`, `MetricCard`, `FilterToolbar`, `ApprovalPanel`, `RevisionDiff`;
 - overlays/feedback: `Drawer`, `DetailDrawer`, `Modal`, `AlertDialog`, `Popover`, `Toast`, `StateView`;
 - commerce/media: `ProductGrid`, `ProductCard`, `Price`, `Rating`, `QuantityControl`, `CartTrigger`, `CartLineItem`, `CartPanel`, `OrderSummary`, `MediaFrame`;
 - charts/files: SVG chart components, `Progress`, `FileUpload`.
@@ -117,6 +117,12 @@ Use the capability family—not the visual mood—to narrow selection:
   `ProductShowcase`, `Carousel`, `PublicFooter`.
 
 Read [COMPONENT_SELECTION.md](COMPONENT_SELECTION.md) for the compact decision matrix and the machine-readable catalog for exact props.
+
+When a consumer must explain several field changes, use the canonical
+`RevisionDiff` component. Supply before/after values, an explicit change kind,
+and any available reason, actor, occurred-at, or evidence/source metadata. The
+component presents those facts; the consumer still owns diff calculation,
+correction policy, persistence, and audit storage.
 
 For KPI work, use `MetricCard` for one decision signal and `KPICluster` for a
 small related set. Compose `TrendIndicator`, `Sparkline`, and `Progress` through
