@@ -1657,6 +1657,30 @@
       "error"
     ]
   },
+  "AdvancedDataGrid": {
+    "id": "AdvancedDataGrid",
+    "displayName": "Advanced Data Grid",
+    "status": "implemented",
+    "category": "table",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Edit bounded structured records in a semantic table with typed cell editors, row state, validation feedback, and keyboard traversal while leaving business rules to the consumer.",
+    "source": "packages/ui/src/data-grid.tsx",
+    "recipes": [],
+    "importantProps": [
+      "caption",
+      "columns",
+      "rows",
+      "rowKey",
+      "onCellChange",
+      "rowState",
+      "cellErrors",
+      "onRowSave",
+      "onRowCancel",
+      "selectable",
+      "footer"
+    ]
+  },
   "DataTableColumnPicker": {
     "id": "DataTableColumnPicker",
     "displayName": "Data Table Column Picker",

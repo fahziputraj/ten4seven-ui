@@ -7,6 +7,7 @@ export * from "./commerce";
 export * from "./components";
 export * from "./date-time";
 export * from "./data-display";
+export * from "./data-grid";
 export * from "./feedback";
 export * from "./files";
 export * from "./forms";

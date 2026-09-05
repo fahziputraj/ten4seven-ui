@@ -121,6 +121,7 @@ const requiredComponents = [
   "NativeTimeInput",
   "Card",
   "DataTable",
+  "AdvancedDataGrid",
   "Table",
   "TableHeader",
   "TableBody",
@@ -372,6 +373,12 @@ assert.doesNotMatch(
 );
 assert.equal(components.DataTable.category, "table");
 assert.equal(components.DataTableColumnPicker.category, "table");
+assert.equal(components.AdvancedDataGrid.status, "implemented");
+assert.equal(components.AdvancedDataGrid.category, "table");
+assert.equal(
+  components.AdvancedDataGrid.source,
+  "packages/ui/src/data-grid.tsx",
+);
 assert.equal(components.Drawer.aliasOf, undefined);
 assert.equal(components.TimeInput.aliasOf, "NativeTimeInput");
 assert.equal(

@@ -108,7 +108,7 @@ Use the capability family—not the visual mood—to narrow selection:
 - actions: `Button`, `IconButton`, `ButtonGroup`, `ToggleButtonGroup`, `SplitButton`;
 - forms: `Field`, native labelled controls, `Combobox`, `MultiSelect`, `HierarchyPicker`, date/time controls;
 - shell/navigation: `AppShell`, `Sidebar`, `TopNavigation`, `NavigationMenu`, `PublicShell`, `Breadcrumb`, `Tabs`, `SectionNavigation`, `CommandMenu`;
-- data/workflow: `DataTable`, `RecordSummary`, `MetricCard`, `FilterToolbar`, `ApprovalPanel`, `RevisionDiff`;
+- data/workflow: `DataTable`, `AdvancedDataGrid`, `RecordSummary`, `MetricCard`, `FilterToolbar`, `ApprovalPanel`, `RevisionDiff`;
 - overlays/feedback: `Drawer`, `DetailDrawer`, `Modal`, `AlertDialog`, `Popover`, `Toast`, `StateView`;
 - commerce/media: `ProductGrid`, `ProductCard`, `Price`, `Rating`, `QuantityControl`, `CartTrigger`, `CartLineItem`, `CartPanel`, `OrderSummary`, `MediaFrame`, `QrCode`;
 - charts/files: SVG chart components, `Progress`, `FileUpload`.
@@ -151,6 +151,15 @@ beside it inside `Tooltip`, with visible helper text linked by
 disabled button cannot receive focus; the consumer owns the reason and policy.
 Use the same composition to show loading and completed/no-longer-available
 states without hiding the action or moving permission logic into `Button`.
+
+For repeated editable line items, use `AdvancedDataGrid` only when the generic
+gap is proven across the bounded workflow. It provides controlled text, number,
+currency, and select editors, row-state/error presentation, selection/sort
+anatomy, and keyboard traversal; the consumer owns values, validation,
+persistence, permissions, totals, and reconciliation. Keep `DataTable` for
+read-oriented comparison, compose `BulkActionBar` or `Pagination` around either
+table, and defer virtualization, grouping/tree rows, pivots, arbitrary resize or
+pinning, and remote editor orchestration until a separate architecture decision.
 
 For KPI work, use `MetricCard` for one decision signal and `KPICluster` for a
 small related set. Compose `TrendIndicator`, `Sparkline`, and `Progress` through

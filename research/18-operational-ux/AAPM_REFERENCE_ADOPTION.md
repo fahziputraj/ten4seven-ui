@@ -24,6 +24,12 @@ remains a consumer concern. The Button reference now proves the visible action
 availability states (available, disabled with reason, loading, and completed /
 no longer available) using a native-disabled `Button`, a focusable Tooltip
 reason trigger, and linked helper text.
+The catalog also includes an `AdvancedDataGrid` reference that demonstrates
+Cash Verification / General Journal-like typed editors, row state, inline cell
+feedback, keyboard traversal, and consumer-owned save/cancel intent. Its
+virtualization, grouping/tree, pivot, arbitrary resize/pinning, remote editor,
+totals, and authorization concerns remain explicit architecture or product
+decisions rather than hidden fixture behavior.
 
 ## What the route is not
 

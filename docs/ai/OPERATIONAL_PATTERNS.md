@@ -107,9 +107,14 @@ smallest pattern that answers the user's operating question.
     `Button`, expose the consumer-supplied reason as linked helper text, and
     place a focusable `IconButton` reason trigger inside `Tooltip`; do not wrap
     the disabled control directly or put permission rules into `Button`.
-13. Use semantic `T7Icon` names. Do not introduce raw provider strings or a
+13. Use `AdvancedDataGrid` only when repeated editable cells are proven across
+    a bounded operational workflow. Keep `DataTable` for read-oriented
+    comparison; pass opaque values and consumer callbacks, and keep validation,
+    totals, persistence, authorization, virtualization, grouping/tree rows,
+    pivots, and resize/pinning decisions outside the component.
+14. Use semantic `T7Icon` names. Do not introduce raw provider strings or a
     runtime icon CDN.
-14. Apply a theme recipe before local layout. Product-specific CSS may arrange
+15. Apply a theme recipe before local layout. Product-specific CSS may arrange
     canonical parts but must use semantic tokens.
 
 ## Consumer ownership boundary
@@ -129,6 +134,9 @@ Ten4Seven owns:
 - QR matrix rendering plus copy/print presentation through `QrCode`; the
   consumer owns payload meaning, resource resolution, authorization, and
   scanner/native camera behavior.
+- Bounded editable-cell presentation through `AdvancedDataGrid`; the consumer
+  owns value state, domain validation, persistence, permissions, totals, and
+  any decision to introduce a larger-data or richer grid engine.
 
 The consumer owns:
 

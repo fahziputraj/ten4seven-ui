@@ -5,6 +5,7 @@ import {
   ActivityFeed,
   Accordion,
   ActionFooter,
+  AdvancedDataGrid,
   AppShell,
   Alert,
   AlertDialog,
@@ -308,6 +309,132 @@ function ActionAvailabilityPreview() {
         </Typography>
       </div>
     </div>
+  );
+}
+
+type AdvancedDataGridPreviewRow = {
+  id: string;
+  account: string;
+  amount: string;
+  direction: string;
+  memo: string;
+};
+
+const advancedDataGridInitialRows: AdvancedDataGridPreviewRow[] = [
+  {
+    account: "4100 · Feed",
+    amount: "1250000",
+    direction: "debit",
+    id: "line-1",
+    memo: "Inbound feed",
+  },
+  {
+    account: "2100 · Payables",
+    amount: "1250000",
+    direction: "credit",
+    id: "line-2",
+    memo: "Supplier settlement",
+  },
+  {
+    account: "5100 · Variance",
+    amount: "",
+    direction: "debit",
+    id: "line-3",
+    memo: "Needs operator review",
+  },
+];
+
+function AdvancedDataGridPreview() {
+  const [rows, setRows] = useState(advancedDataGridInitialRows);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>(["line-1"]);
+  const [rowState, setRowState] = useState<
+    Record<string, "clean" | "dirty" | "saving" | "saved" | "error">
+  >({
+    "line-1": "dirty",
+    "line-2": "clean",
+    "line-3": "error",
+  });
+  const [cellErrors, setCellErrors] = useState<
+    Record<string, Record<string, string | undefined>>
+  >({
+    "line-3": { amount: "Enter an amount before saving." },
+  });
+
+  function updateCell(rowKey: string, columnKey: string, value: string) {
+    setRows((current) =>
+      current.map((row) =>
+        row.id === rowKey ? { ...row, [columnKey]: value } : row,
+      ),
+    );
+    setRowState((current) => ({ ...current, [rowKey]: "dirty" }));
+    setCellErrors((current) => {
+      const nextRowErrors = { ...current[rowKey] };
+      delete nextRowErrors[columnKey];
+      return { ...current, [rowKey]: nextRowErrors };
+    });
+  }
+
+  function saveRow(row: AdvancedDataGridPreviewRow) {
+    setRowState((current) => ({ ...current, [row.id]: "saved" }));
+  }
+
+  function cancelRow(row: AdvancedDataGridPreviewRow) {
+    setRowState((current) => ({ ...current, [row.id]: "clean" }));
+  }
+
+  return (
+    <AdvancedDataGrid
+      caption="Journal line editor"
+      cellErrors={cellErrors}
+      columns={[
+        {
+          editor: { placeholder: "Account name", type: "text" },
+          header: "Account",
+          key: "account",
+          required: true,
+          sticky: "left",
+        },
+        {
+          align: "right",
+          editor: { currency: "IDR", type: "currency" },
+          header: "Amount",
+          key: "amount",
+        },
+        {
+          editor: {
+            options: [
+              { label: "Debit", value: "debit" },
+              { label: "Credit", value: "credit" },
+            ],
+            type: "select",
+          },
+          header: "Direction",
+          key: "direction",
+        },
+        {
+          editor: { placeholder: "Memo", type: "text" },
+          header: "Memo",
+          key: "memo",
+        },
+      ]}
+      density="compact"
+      footer={
+        <Typography typeRole="caption">
+          Totals and reconciliation stay consumer-owned; this fixture only
+          demonstrates cell editing and row state.
+        </Typography>
+      }
+      onCellChange={updateCell}
+      onRowCancel={cancelRow}
+      onRowSave={saveRow}
+      onSelectionChange={setSelectedRowKeys}
+      rowKey={(row) => row.id}
+      rowLabel={(row) => `Line ${row.id.replace("line-", "")}`}
+      rowState={rowState}
+      rows={rows}
+      selectable
+      selectedRowKeys={selectedRowKeys}
+    />
   );
 }
 
@@ -1162,6 +1289,8 @@ export function ComponentPreview({
           ]}
         />,
       );
+    if (component.displayName === "Advanced Data Grid")
+      return frame(<AdvancedDataGridPreview />);
     if (
       component.displayName === "Data Table" ||
       component.displayName === "Data Table Column Picker"
