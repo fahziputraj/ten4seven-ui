@@ -152,7 +152,10 @@ export function Popover({
   const [isOpen, setOpen] = useOpenState(open, defaultOpen, onOpenChange);
   const rootRef = useRef<HTMLDivElement>(null);
   const contentId = useId();
-  const floating = useFloatingPosition(rootRef, isOpen, { side });
+  const floating = useFloatingPosition(rootRef, isOpen, {
+    side,
+    widthStrategy: "content",
+  });
   const popoverLabel =
     props["aria-label"] ?? (props["aria-labelledby"] ? undefined : "Popover");
 
@@ -235,7 +238,10 @@ export function Tooltip({
   const [open, setOpen] = useState(false);
   const id = useId();
   const rootRef = useRef<HTMLSpanElement>(null);
-  const floating = useFloatingPosition(rootRef, open, { side });
+  const floating = useFloatingPosition(rootRef, open, {
+    side,
+    widthStrategy: "content",
+  });
   return (
     <span
       {...props}
@@ -492,6 +498,7 @@ export function DropdownMenu({
   const floating = useFloatingPosition(rootRef, isOpen, {
     align: "end",
     side: "bottom",
+    widthStrategy: "content",
   });
   function focusTrigger() {
     window.requestAnimationFrame(() => {

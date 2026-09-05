@@ -1,5 +1,10 @@
-import { forwardRef, memo, type SVGProps } from "react";
+import { forwardRef, memo, type CSSProperties, type SVGProps } from "react";
 
+import {
+  solarIconAliases,
+  solarIconBodies,
+  solarIconNames,
+} from "./solar-catalog";
 import { solarBodies } from "./solar-data";
 
 export const IconRegistry = Object.freeze({
@@ -328,21 +333,164 @@ export const IconRegistry = Object.freeze({
 export type IconName = keyof typeof IconRegistry;
 export const IconNames = Object.keys(IconRegistry) as IconName[];
 
+/**
+ * The locally bundled Iconify collection. Consumers use the unprefixed Solar
+ * name here; provider strings stay an internal implementation detail.
+ */
+export type SolarIconName = (typeof solarIconNames)[number];
+export const IconifyIconNames = solarIconNames;
+export const IconifyIconCount = IconifyIconNames.length;
+/**
+ * The curated Solar family used by the icon workbench. Keeping this as a
+ * named export makes the visual-family boundary explicit without removing
+ * the complete local catalog from the package API.
+ */
+export type SolarBoldDuotoneIconName = `${string}-bold-duotone`;
+export const IconifyBoldDuotoneIconNames = Object.freeze(
+  IconifyIconNames.filter((name): name is SolarBoldDuotoneIconName =>
+    name.endsWith("-bold-duotone"),
+  ),
+);
+export const IconifyBoldDuotoneIconCount = IconifyBoldDuotoneIconNames.length;
+export const IconifyCollections = Object.freeze({
+  solar: Object.freeze({
+    name: "Solar",
+    prefix: "solar",
+    iconCount: IconifyIconCount,
+    duotoneCount: IconifyIconNames.filter((name) => name.includes("-duotone"))
+      .length,
+    boldDuotoneCount: IconifyBoldDuotoneIconCount,
+  }),
+});
+
+const solarIconBodyCache = new Map<string, string>();
+
+/** Return a bundled Solar SVG body, resolving local aliases when necessary. */
+export function getSolarIconBody(name: string): string | undefined {
+  const directBody = solarIconBodies[name];
+  if (directBody) return directBody;
+  const parentName = solarIconAliases[name];
+  return parentName ? solarIconBodies[parentName] : undefined;
+}
+
+export function isSolarIconName(name: string): name is SolarIconName {
+  return Boolean(getSolarIconBody(name));
+}
+
+const THEME_PRIMARY = "hsl(var(--t7-primary-hsl, 0 0% 20%))";
+const THEME_ACCENT = "hsl(var(--t7-accent-hsl, 0 0% 50%))";
+const PRIMARY_PAINT = "var(--t7-icon-primary, currentColor)";
+const THEME_PRIMARY_PAINT = `var(--t7-icon-primary, ${THEME_PRIMARY})`;
+const ACCENT_PAINT = `var(--t7-icon-accent, ${THEME_ACCENT})`;
+const SEMANTIC_ACCENT_PAINT =
+  "var(--t7-icon-accent, var(--t7-icon-primary, currentColor))";
+
+function isPartialOpacity(value: string) {
+  const numericValue = Number(value);
+  return Number.isFinite(numericValue) && numericValue < 1;
+}
+
+/**
+ * Convert a local Solar body to CSS-variable paints. Solar's duotone
+ * convention marks the secondary layer with opacity, so that layer can either
+ * follow the semantic icon color or use the active theme accent for the full
+ * Iconify catalog.
+ */
+function colorizeBody(
+  body: string,
+  duotone: boolean,
+  primaryPaint: string,
+  accentPaint: string,
+): string {
+  const cacheKey = `${duotone ? "duotone" : "single"}:${primaryPaint}:${accentPaint}:${body}`;
+  const cachedBody = solarIconBodyCache.get(cacheKey);
+  if (cachedBody) return cachedBody;
+
+  const baseBody = body.replaceAll("currentColor", primaryPaint);
+  if (!duotone) {
+    solarIconBodyCache.set(cacheKey, baseBody);
+    return baseBody;
+  }
+
+  const usesStroke = /stroke="(?:currentColor|var\(--t7-icon-primary)/.test(
+    body,
+  );
+  const fallbackPaintAttribute = usesStroke ? "stroke" : "fill";
+  const transformedBody = baseBody.replace(
+    /<([a-z][\w:-]*)([^>]*?)opacity="([^"]+)"([^>]*?)(\/?)>/gi,
+    (match, tag, before, opacity, after, close) => {
+      if (!isPartialOpacity(opacity)) return match;
+
+      const attributes = `${before}opacity="${opacity}"${after}`;
+      const paintAttribute =
+        /\sstroke="(?:var\(--t7-icon-primary|currentColor)/i.test(attributes)
+          ? "stroke"
+          : /\sfill="(?:var\(--t7-icon-primary|currentColor)/i.test(attributes)
+            ? "fill"
+            : fallbackPaintAttribute;
+      const accentAttribute = `${paintAttribute}="${accentPaint}"`;
+      const paintPattern = new RegExp(`\\s${paintAttribute}="[^"]*"`, "i");
+      const nextAttributes = paintPattern.test(attributes)
+        ? attributes.replace(paintPattern, ` ${accentAttribute}`)
+        : `${attributes} ${accentAttribute}`;
+      return `<${tag}${nextAttributes}${close}>`;
+    },
+  );
+
+  solarIconBodyCache.set(cacheKey, transformedBody);
+  return transformedBody;
+}
+
+type IconPaintStyle = CSSProperties & {
+  "--t7-icon-primary"?: string;
+  "--t7-icon-accent"?: string;
+};
+
+function mergeIconPaintStyle(
+  style: SVGProps<SVGSVGElement>["style"],
+  primaryColor?: string,
+  accentColor?: string,
+): IconPaintStyle | undefined {
+  if (!primaryColor && !accentColor) return style as IconPaintStyle | undefined;
+  return {
+    ...style,
+    ...(primaryColor ? { "--t7-icon-primary": primaryColor } : {}),
+    ...(accentColor ? { "--t7-icon-accent": accentColor } : {}),
+  };
+}
+
 export interface T7IconProps extends Omit<
   SVGProps<SVGSVGElement>,
   "name" | "title"
 > {
   name: IconName;
+  /** Override the solid layer; defaults to the consumer's inherited color. */
+  primaryColor?: string;
+  /** Override the secondary duotone layer; defaults to the semantic icon color. */
+  accentColor?: string;
+  /** Force or disable duotone treatment for a semantic Solar glyph. */
+  duotone?: boolean;
   size?: number | string;
   label?: string;
 }
 
 export const T7Icon = memo(
   forwardRef<SVGSVGElement, T7IconProps>(function T7Icon(
-    { name, size = 18, label, className, ...props },
+    {
+      accentColor,
+      duotone,
+      label,
+      className,
+      name,
+      primaryColor,
+      size = 18,
+      style,
+      ...props
+    },
     ref,
   ) {
     const entry = IconRegistry[name];
+    const isDuotone = duotone ?? entry.provider.endsWith("-duotone");
 
     return (
       <svg
@@ -353,13 +501,87 @@ export const T7Icon = memo(
         fill="none"
         height={size}
         role={label ? "img" : undefined}
+        style={mergeIconPaintStyle(style, primaryColor, accentColor)}
         viewBox="0 0 24 24"
         width={size}
         {...props}
-        dangerouslySetInnerHTML={{ __html: entry.body }}
+        dangerouslySetInnerHTML={{
+          __html: colorizeBody(
+            entry.body,
+            isDuotone,
+            PRIMARY_PAINT,
+            SEMANTIC_ACCENT_PAINT,
+          ),
+        }}
       />
     );
   }),
 );
 
 T7Icon.displayName = "T7Icon";
+
+export interface IconifyIconProps extends Omit<
+  SVGProps<SVGSVGElement>,
+  "name" | "title"
+> {
+  /** Unprefixed name from the bundled Solar Iconify collection. */
+  name: SolarIconName;
+  /** Override the solid layer; defaults to the active theme primary token. */
+  primaryColor?: string;
+  /** Override the secondary duotone layer; defaults to the active theme accent. */
+  accentColor?: string;
+  /** Force or disable duotone treatment; names ending in -duotone opt in by default. */
+  duotone?: boolean;
+  size?: number | string;
+  label?: string;
+}
+
+/** Render any one of the locally bundled Solar Iconify glyphs. */
+export const IconifyIcon = memo(
+  forwardRef<SVGSVGElement, IconifyIconProps>(function IconifyIcon(
+    {
+      accentColor,
+      duotone,
+      label,
+      className,
+      name,
+      primaryColor,
+      size = 20,
+      style,
+      ...props
+    },
+    ref,
+  ) {
+    const body = getSolarIconBody(name);
+    if (!body) return null;
+    const isDuotone = duotone ?? name.includes("-duotone");
+
+    return (
+      <svg
+        ref={ref}
+        aria-hidden={label ? undefined : true}
+        aria-label={label}
+        className={className}
+        data-icon-set="solar"
+        data-icon-name={name}
+        fill="none"
+        height={size}
+        role={label ? "img" : undefined}
+        style={mergeIconPaintStyle(style, primaryColor, accentColor)}
+        viewBox="0 0 24 24"
+        width={size}
+        {...props}
+        dangerouslySetInnerHTML={{
+          __html: colorizeBody(
+            body,
+            isDuotone,
+            THEME_PRIMARY_PAINT,
+            ACCENT_PAINT,
+          ),
+        }}
+      />
+    );
+  }),
+);
+
+IconifyIcon.displayName = "IconifyIcon";

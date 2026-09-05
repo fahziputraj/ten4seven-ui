@@ -19,7 +19,7 @@ CSS custom properties consumed by `@ten4seven/ui`.
 ## Start with a recipe
 
 Use a named recipe for normal product work. A recipe coordinates palette,
-action color, accent/focus color, canvas, chart treatment, radius, density,
+action color, supporting accent, independent focus color, canvas, chart treatment, radius, density,
 typography, elevation, expression, and composition rather than asking each
 consumer to assemble those axes independently.
 
@@ -101,6 +101,22 @@ const customBrand: ThemeConfig = {
 ```
 
 The current public API accepts either a recipe name or a `ThemeConfig` object.
+`chartPalette` feeds both chart series and the opt-in `colorway={1..5}` contract
+on solid `Card`, `MetricCard`, bounded `Surface`, and `KPICluster` items. The
+theme engine derives accessible white-foreground surface fills without
+recolouring the canvas or changing semantic `tone`. See
+[ACHROMATIC_CANVAS_SURFACE_EXPRESSION.md](integration/ACHROMATIC_CANVAS_SURFACE_EXPRESSION.md)
+for selection guidance.
+
+The KPI family consumes density-aware global geometry rather than route-local
+dashboard measurements: `--t7-kpi-padding`, `--t7-kpi-gap`,
+`--t7-kpi-content-gap`, `--t7-kpi-icon-container`, `--t7-kpi-icon-size`,
+`--t7-kpi-chart-height`, and the two `--t7-kpi-trend-padding-*` roles. These
+variables are emitted by the provider,
+the generated recipe CSS, and the DTCG token artifact. Solid colorway cards
+keep text, icons, trends, progress fills, and sparklines on the shared white
+foreground contract.
+
 For the smaller case where a product starts from a recipe but must make an
 explicit expert adjustment, use the bounded `ThemeOverrides` escape hatch:
 
@@ -122,7 +138,10 @@ recipe and before persisted local Theme Studio edits. They are an expert-only,
 product-root seam, not a routine feature-level styling API. The provider
 context still exposes `setTheme` and `resetTheme` for an intentional local
 theme editor. `persistenceKey` only controls whether those local overrides are
-stored in `localStorage`.
+stored in `localStorage`. Persistence is hydrated in a client effect after the
+first render, so an existing browser value does not change the server/client
+markup during App Router hydration; storage failures are treated as unavailable
+storage rather than a render error.
 
 ## Scope an intentional contextual surface
 

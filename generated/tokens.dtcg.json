@@ -917,6 +917,263 @@
   },
   "semantic": {
     "color": {
+      "foundation": {
+        "surface-emphasis-plain": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              1,
+              1,
+              1
+            ],
+            "alpha": 1
+          },
+          "$extensions": {
+            "org.ten4seven": {
+              "compatibilityHsl": "0 0% 100%"
+            }
+          }
+        },
+        "surface-emphasis-solid": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.1176,
+              0.4424,
+              0.269173
+            ],
+            "alpha": 1
+          },
+          "$extensions": {
+            "org.ten4seven": {
+              "compatibilityHsl": "148 58% 28%"
+            }
+          }
+        },
+        "surface-emphasis-solid-foreground": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              1,
+              1,
+              1
+            ],
+            "alpha": 1
+          },
+          "$extensions": {
+            "org.ten4seven": {
+              "compatibilityHsl": "0 0% 100%"
+            }
+          }
+        },
+        "surface-emphasis-solid-success": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.174,
+              0.426,
+              0.2076
+            ],
+            "alpha": 1
+          },
+          "$extensions": {
+            "org.ten4seven": {
+              "compatibilityHsl": "128 42% 30%"
+            }
+          }
+        },
+        "surface-emphasis-solid-warning": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.5376,
+              0.348693,
+              0.0224
+            ],
+            "alpha": 1
+          },
+          "$extensions": {
+            "org.ten4seven": {
+              "compatibilityHsl": "38 92% 28%"
+            }
+          }
+        },
+        "surface-emphasis-solid-danger": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.7568,
+              0.1232,
+              0.1232
+            ],
+            "alpha": 1
+          },
+          "$extensions": {
+            "org.ten4seven": {
+              "compatibilityHsl": "0 72% 44%"
+            }
+          }
+        },
+        "surface-emphasis-solid-info": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.0341,
+              0.411163,
+              0.5859
+            ],
+            "alpha": 1
+          },
+          "$extensions": {
+            "org.ten4seven": {
+              "compatibilityHsl": "199 89% 31%"
+            }
+          }
+        },
+        "surface-emphasis-inverse": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.13,
+              0.13,
+              0.13
+            ],
+            "alpha": 1
+          },
+          "$extensions": {
+            "org.ten4seven": {
+              "compatibilityHsl": "0 0% 13%"
+            }
+          }
+        },
+        "surface-emphasis-inverse-foreground": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.98,
+              0.98,
+              0.98
+            ],
+            "alpha": 1
+          },
+          "$extensions": {
+            "org.ten4seven": {
+              "compatibilityHsl": "0 0% 98%"
+            }
+          }
+        },
+        "focus": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.1064,
+              0.32528,
+              0.6536
+            ],
+            "alpha": 1
+          },
+          "$extensions": {
+            "org.ten4seven": {
+              "compatibilityHsl": "216 72% 38%"
+            }
+          }
+        },
+        "chart-1": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.1218,
+              0.4582,
+              0.278787
+            ],
+            "alpha": 1
+          },
+          "$extensions": {
+            "org.ten4seven": {
+              "compatibilityHsl": "148 58% 29%"
+            }
+          }
+        },
+        "chart-2": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.0936,
+              0.51096,
+              0.6264
+            ],
+            "alpha": 1
+          },
+          "$extensions": {
+            "org.ten4seven": {
+              "compatibilityHsl": "193 74% 36%"
+            }
+          }
+        },
+        "chart-3": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.798,
+              0.42,
+              0.042
+            ],
+            "alpha": 1
+          },
+          "$extensions": {
+            "org.ten4seven": {
+              "compatibilityHsl": "30 90% 42%"
+            }
+          }
+        },
+        "chart-4": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.414667,
+              0.18,
+              0.82
+            ],
+            "alpha": 1
+          },
+          "$extensions": {
+            "org.ten4seven": {
+              "compatibilityHsl": "262 64% 50%"
+            }
+          }
+        },
+        "chart-5": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.759,
+              0.161,
+              0.330433
+            ],
+            "alpha": 1
+          },
+          "$extensions": {
+            "org.ten4seven": {
+              "compatibilityHsl": "343 65% 46%"
+            }
+          }
+        }
+      },
       "action": {
         "primary": {
           "$type": "color",
@@ -933,6 +1190,110 @@
       }
     },
     "geometry": {
+      "layout": {
+        "gutter": {
+          "mobile": {
+            "$type": "dimension",
+            "$value": {
+              "value": 16,
+              "unit": "px"
+            }
+          },
+          "tablet": {
+            "$type": "dimension",
+            "$value": {
+              "value": 24,
+              "unit": "px"
+            }
+          },
+          "desktop": {
+            "$type": "dimension",
+            "$value": {
+              "value": 32,
+              "unit": "px"
+            }
+          },
+          "wide": {
+            "$type": "dimension",
+            "$value": {
+              "value": 40,
+              "unit": "px"
+            }
+          }
+        },
+        "formMax": {
+          "$type": "dimension",
+          "$value": {
+            "value": 640,
+            "unit": "px"
+          }
+        },
+        "dataMax": {
+          "$type": "dimension",
+          "$value": {
+            "value": 1480,
+            "unit": "px"
+          }
+        },
+        "sidebarWidth": {
+          "$type": "dimension",
+          "$value": {
+            "value": 232,
+            "unit": "px"
+          }
+        },
+        "asideWidth": {
+          "$type": "dimension",
+          "$value": {
+            "value": 320,
+            "unit": "px"
+          }
+        },
+        "focusClearance": {
+          "$type": "dimension",
+          "$value": {
+            "value": 4,
+            "unit": "px"
+          }
+        }
+      },
+      "icon": {
+        "compact": {
+          "$type": "dimension",
+          "$value": {
+            "value": 14,
+            "unit": "px"
+          }
+        },
+        "control": {
+          "$type": "dimension",
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          }
+        },
+        "navigation": {
+          "$type": "dimension",
+          "$value": {
+            "value": 18,
+            "unit": "px"
+          }
+        },
+        "status": {
+          "$type": "dimension",
+          "$value": {
+            "value": 13,
+            "unit": "px"
+          }
+        },
+        "feature": {
+          "$type": "dimension",
+          "$value": {
+            "value": 24,
+            "unit": "px"
+          }
+        }
+      },
       "control": {
         "height": {
           "$type": "dimension",
@@ -977,6 +1338,200 @@
           "$type": "dimension",
           "$value": {
             "value": 16,
+            "unit": "px"
+          }
+        }
+      },
+      "kpi": {
+        "padding": {
+          "$type": "dimension",
+          "$value": {
+            "value": 20,
+            "unit": "px"
+          }
+        },
+        "gap": {
+          "$type": "dimension",
+          "$value": {
+            "value": 10,
+            "unit": "px"
+          }
+        },
+        "contentGap": {
+          "$type": "dimension",
+          "$value": {
+            "value": 10,
+            "unit": "px"
+          }
+        },
+        "iconContainer": {
+          "$type": "dimension",
+          "$value": {
+            "value": 24,
+            "unit": "px"
+          }
+        },
+        "iconSize": {
+          "$type": "dimension",
+          "$value": {
+            "value": 22,
+            "unit": "px"
+          }
+        },
+        "chartHeight": {
+          "$type": "dimension",
+          "$value": {
+            "value": 52,
+            "unit": "px"
+          }
+        },
+        "trendPaddingBlock": {
+          "$type": "dimension",
+          "$value": {
+            "value": 3,
+            "unit": "px"
+          }
+        },
+        "trendPaddingInline": {
+          "$type": "dimension",
+          "$value": {
+            "value": 8,
+            "unit": "px"
+          }
+        }
+      },
+      "overlay": {
+        "menu": {
+          "sm": {
+            "$type": "dimension",
+            "$value": {
+              "value": 200,
+              "unit": "px"
+            }
+          },
+          "md": {
+            "$type": "dimension",
+            "$value": {
+              "value": 240,
+              "unit": "px"
+            }
+          },
+          "lg": {
+            "$type": "dimension",
+            "$value": {
+              "value": 280,
+              "unit": "px"
+            }
+          }
+        },
+        "select": {
+          "min": {
+            "$type": "dimension",
+            "$value": {
+              "value": 220,
+              "unit": "px"
+            }
+          },
+          "max": {
+            "$type": "dimension",
+            "$value": {
+              "value": 360,
+              "unit": "px"
+            }
+          }
+        },
+        "combobox": {
+          "$type": "dimension",
+          "$value": {
+            "value": 280,
+            "unit": "px"
+          }
+        },
+        "datePicker": {
+          "$type": "dimension",
+          "$value": {
+            "value": 336,
+            "unit": "px"
+          }
+        },
+        "dateRangePicker": {
+          "$type": "dimension",
+          "$value": {
+            "value": 672,
+            "unit": "px"
+          }
+        },
+        "timePicker": {
+          "$type": "dimension",
+          "$value": {
+            "value": 360,
+            "unit": "px"
+          }
+        },
+        "colorPicker": {
+          "$type": "dimension",
+          "$value": {
+            "value": 304,
+            "unit": "px"
+          }
+        },
+        "popover": {
+          "min": {
+            "$type": "dimension",
+            "$value": {
+              "value": 220,
+              "unit": "px"
+            }
+          },
+          "max": {
+            "$type": "dimension",
+            "$value": {
+              "value": 360,
+              "unit": "px"
+            }
+          }
+        },
+        "tooltipMax": {
+          "$type": "dimension",
+          "$value": {
+            "value": 260,
+            "unit": "px"
+          }
+        },
+        "command": {
+          "$type": "dimension",
+          "$value": {
+            "value": 640,
+            "unit": "px"
+          }
+        },
+        "dialog": {
+          "sm": {
+            "$type": "dimension",
+            "$value": {
+              "value": 400,
+              "unit": "px"
+            }
+          },
+          "md": {
+            "$type": "dimension",
+            "$value": {
+              "value": 520,
+              "unit": "px"
+            }
+          },
+          "lg": {
+            "$type": "dimension",
+            "$value": {
+              "value": 720,
+              "unit": "px"
+            }
+          }
+        },
+        "drawerMax": {
+          "$type": "dimension",
+          "$value": {
+            "value": 460,
             "unit": "px"
           }
         }

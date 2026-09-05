@@ -1,0 +1,31 @@
+{
+  "name": "ten4seven-next-app-router-consumer-proof",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.22.0",
+  "engines": {
+    "node": ">=24.0.0",
+    "pnpm": ">=11.17.0 <12"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "test": "playwright test"
+  },
+  "dependencies": {
+    "@ten4seven/ui": "file:../../artifacts/consumer-proof/ten4seven-ui-1.0.0.tgz",
+    "next": "16.3.4",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1",
+    "@types/node": "24.0.12",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.5",
+    "axe-core": "4.13.0",
+    "typescript": "5.9.3"
+  }
+}

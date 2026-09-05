@@ -1,26 +1,22 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
-import { IconNames, T7Icon, type IconName } from "@ten4seven/icons";
 import {
-  buildRadiusProfile,
-  densityProfiles,
-  paletteProfiles,
-  radiusProfiles,
-  typographyProfiles,
-} from "@ten4seven/tokens";
+  IconifyIcon,
+  IconifyBoldDuotoneIconCount,
+  IconifyBoldDuotoneIconNames,
+  IconNames,
+  T7Icon,
+  type IconName,
+} from "@ten4seven/icons";
+import { paletteProfiles } from "@ten4seven/tokens";
 import {
   AnnouncementBar,
-  BarChart,
   Button,
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-  CartLineItem,
-  CartPanel,
-  CartTrigger,
-  DataTable,
   CtaBlock,
   Carousel,
   ChartPanel,
@@ -32,16 +28,10 @@ import {
   LineChart,
   LogoCloud,
   MediaFrame,
-  Modal,
-  NativeSelect,
-  OrderSummary,
   PricingSection,
   ProductCard,
-  QuantityControl,
-  Price,
   ProductShowcase,
   PublicFooter,
-  Select,
   StatsSection,
   Testimonials,
   Typography,
@@ -49,6 +39,7 @@ import {
   useTen4SevenTheme,
 } from "@ten4seven/ui";
 import { ComponentProofs } from "./component-proofs";
+import { ContentSafetyProof } from "./content-safety-proof";
 import { ComponentPreview } from "./component-preview-fixtures";
 import {
   blockCatalog,
@@ -206,21 +197,6 @@ const iconGroups: Array<{ label: string; names: IconName[] }> = [
   },
 ];
 
-const tokenSwatches = [
-  ["Background", "background"],
-  ["Surface", "surface"],
-  ["Raised surface", "surface-raised"],
-  ["Subtle surface", "surface-subtle"],
-  ["Foreground", "foreground"],
-  ["Muted text", "muted-foreground"],
-  ["Border", "border"],
-  ["Primary", "primary"],
-  ["Success", "success"],
-  ["Warning", "warning"],
-  ["Danger", "danger"],
-  ["Info", "info"],
-] as const;
-
 function LibraryIntro({
   count,
   description,
@@ -252,462 +228,7 @@ function LibraryIntro({
   );
 }
 
-function TokenCopyButton({
-  token,
-  variable,
-}: {
-  token?: string;
-  variable?: string;
-}) {
-  const { toast } = useToast();
-  const cssVariable = variable ?? `--t7-${token}-hsl`;
-  return (
-    <button
-      aria-label={`Copy CSS variable ${cssVariable}`}
-      className="library-token-copy"
-      onClick={async () => {
-        try {
-          await navigator.clipboard.writeText(cssVariable);
-        } catch {
-          // Clipboard permissions can be unavailable in a local preview.
-        }
-        toast({
-          description: `Copied ${cssVariable}`,
-          duration: 2200,
-          title: "Token copied",
-          tone: "success",
-        });
-      }}
-      type="button"
-    >
-      <T7Icon aria-hidden="true" name="export" size={14} />
-    </button>
-  );
-}
-
-export function TokensExplorer() {
-  const { theme } = useTen4SevenTheme();
-  const typography = typographyProfiles[theme.typography];
-  const radius =
-    theme.radiusValue === undefined
-      ? radiusProfiles[theme.radius]
-      : buildRadiusProfile(theme.radiusValue);
-  const density = densityProfiles[theme.density];
-  const palette = paletteProfiles[theme.palette];
-
-  return (
-    <div className="library-page">
-      <LibraryIntro
-        count="Semantic, resolved tokens"
-        description="Intent-first token groups resolved from the active semantic theme profile."
-        icon="tokens"
-        title="Tokens"
-      />
-
-      <nav aria-label="Token families" className="token-family-nav">
-        {[
-          ["color", "Color"],
-          ["typography", "Typography"],
-          ["radius", "Radius"],
-          ["geometry", "Spacing & control geometry"],
-          ["density", "Density"],
-          ["elevation", "Elevation & layering"],
-          ["viewport", "Viewport & scroll"],
-          ["motion", "Motion"],
-          ["interaction", "Interaction semantics"],
-          ["charts", "Charts"],
-        ].map(([id, label]) => (
-          <a href={`#token-${id}`} key={id}>
-            {label}
-          </a>
-        ))}
-      </nav>
-
-      <section className="library-grid library-token-summary">
-        <Card>
-          <CardHeader>
-            <div>
-              <CardTitle as="h2">Active profile</CardTitle>
-              <CardDescription>
-                Root values driving this render.
-              </CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <dl className="library-key-value-list">
-              {Object.entries(theme).map(([key, value]) =>
-                key === "typographyFamilies" || value === undefined ? null : (
-                  <div key={key}>
-                    <dt>{key}</dt>
-                    <dd>{String(value)}</dd>
-                  </div>
-                ),
-              )}
-            </dl>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <div>
-              <CardTitle as="h2">How this profile applies</CardTitle>
-              <CardDescription>
-                Theme Studio owns these values; this page shows the semantic
-                roles they resolve into.
-              </CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent className="library-axis-list">
-            <div>
-              <strong>Color roles</strong>
-              <span>
-                {theme.palette} base · {theme.primary} action · {theme.accent}{" "}
-                focus
-              </span>
-            </div>
-            <div>
-              <strong>Canvas</strong>
-              <span>{theme.canvas} neutral surfaces</span>
-            </div>
-            <div>
-              <strong>Geometry</strong>
-              <span>
-                {radius.base} base radius · {density.control} controls
-              </span>
-            </div>
-            <div>
-              <strong>Motion</strong>
-              <span>{theme.motionDuration}s shared duration</span>
-            </div>
-            <div>
-              <strong>Typography</strong>
-              <span>{theme.typography} role hierarchy</span>
-            </div>
-          </CardContent>
-        </Card>
-      </section>
-
-      <section className="library-section" id="token-color">
-        <div className="library-section-heading">
-          <div>
-            <Typography as="h2" typeRole="heading-lg">
-              Semantic color
-            </Typography>
-            <Typography typeRole="body-sm">
-              Components target meaning—not palette literals.
-            </Typography>
-          </div>
-        </div>
-        <div className="library-swatch-grid">
-          {tokenSwatches.map(([label, token]) => (
-            <article className="library-swatch" key={token}>
-              <span data-token={token} />
-              <div className="library-swatch-label">
-                <Typography typeRole="label">{label}</Typography>
-                <TokenCopyButton token={token} />
-              </div>
-              <Typography typeRole="caption">--t7-{token}-hsl</Typography>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="library-grid library-token-grid">
-        <Card id="token-radius">
-          <CardHeader>
-            <div>
-              <CardTitle>Radius</CardTitle>
-              <CardDescription>Hierarchical, never ad hoc.</CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent className="library-token-list">
-            {Object.entries(radius).map(([name, value]) => (
-              <div key={name}>
-                <span className="library-radius-sample" data-radius={name} />
-                <Typography typeRole="label">{name}</Typography>
-                <Typography typeRole="caption">{value}</Typography>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-        <Card id="token-density">
-          <CardHeader>
-            <div>
-              <CardTitle>Density</CardTitle>
-              <CardDescription>
-                Space changes without shrinking type.
-              </CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent className="library-key-value-list">
-            {Object.entries(density).map(([name, value]) => (
-              <div key={name}>
-                <dt>{name}</dt>
-                <dd>{value}</dd>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-        <Card id="token-charts">
-          <CardHeader>
-            <div>
-              <CardTitle>Chart palette</CardTitle>
-              <CardDescription>Ordered categorical tokens.</CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent className="library-chart-token-list">
-            {palette.chart.map((_, index) => (
-              <span data-chart-index={index + 1} key={index}>
-                chart-{index + 1}
-              </span>
-            ))}
-          </CardContent>
-        </Card>
-        <Card id="token-motion">
-          <CardHeader>
-            <div>
-              <CardTitle>Motion</CardTitle>
-              <CardDescription>
-                Shared timing, easing, and reduced-motion behavior.
-              </CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <dl className="library-key-value-list">
-              <div>
-                <dt>duration</dt>
-                <dd>--t7-motion-duration</dd>
-              </div>
-              <div>
-                <dt>fast</dt>
-                <dd>--t7-duration-fast</dd>
-              </div>
-              <div>
-                <dt>standard</dt>
-                <dd>--t7-duration-normal</dd>
-              </div>
-              <div>
-                <dt>loop</dt>
-                <dd>--t7-duration-loop</dd>
-              </div>
-              <div>
-                <dt>loop eased</dt>
-                <dd>--t7-motion-loop-eased</dd>
-              </div>
-              <div>
-                <dt>interactive</dt>
-                <dd>--t7-motion-interactive</dd>
-              </div>
-              <div>
-                <dt>enter</dt>
-                <dd>--t7-motion-enter</dd>
-              </div>
-              <div>
-                <dt>exit</dt>
-                <dd>--t7-motion-exit</dd>
-              </div>
-              <div>
-                <dt>enter easing</dt>
-                <dd>--t7-ease-enter</dd>
-              </div>
-              <div>
-                <dt>exit easing</dt>
-                <dd>--t7-ease-exit</dd>
-              </div>
-            </dl>
-          </CardContent>
-        </Card>
-        <Card id="token-elevation">
-          <CardHeader>
-            <div>
-              <CardTitle>Elevation and layering</CardTitle>
-              <CardDescription>
-                Surfaces rise by role, not arbitrary shadow values.
-              </CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <dl className="library-key-value-list">
-              <div>
-                <dt>surface</dt>
-                <dd>--t7-shadow-surface</dd>
-              </div>
-              <div>
-                <dt>raised</dt>
-                <dd>--t7-shadow-raised</dd>
-              </div>
-              <div>
-                <dt>modal</dt>
-                <dd>--t7-shadow-modal</dd>
-              </div>
-              <div>
-                <dt>dropdown</dt>
-                <dd>--t7-z-dropdown</dd>
-              </div>
-              <div>
-                <dt>popover</dt>
-                <dd>--t7-z-popover</dd>
-              </div>
-              <div>
-                <dt>tooltip</dt>
-                <dd>--t7-z-tooltip</dd>
-              </div>
-              <div>
-                <dt>drawer / modal</dt>
-                <dd>--t7-z-drawer · --t7-z-modal</dd>
-              </div>
-              <div>
-                <dt>toast / command</dt>
-                <dd>--t7-z-toast · --t7-z-command</dd>
-              </div>
-            </dl>
-          </CardContent>
-        </Card>
-        <Card id="token-viewport">
-          <CardHeader>
-            <div>
-              <CardTitle>Viewport and scroll ownership</CardTitle>
-              <CardDescription>
-                One document scroll, explicit bounded regions, and a shared
-                floating root.
-              </CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <dl className="library-key-value-list">
-              <div>
-                <dt>workbench document</dt>
-                <dd>browser scroll</dd>
-              </div>
-              <div>
-                <dt>bounded content</dt>
-                <dd>.t7-scroll-area</dd>
-              </div>
-              <div>
-                <dt>non-modal popup</dt>
-                <dd>#t7-overlay-root</dd>
-              </div>
-              <div>
-                <dt>modal / drawer</dt>
-                <dd>native dialog + body lock</dd>
-              </div>
-              <div>
-                <dt>doc offset</dt>
-                <dd>--t7-doc-sticky-offset</dd>
-              </div>
-            </dl>
-          </CardContent>
-        </Card>
-        <Card id="token-geometry">
-          <CardHeader>
-            <div>
-              <CardTitle>Control geometry</CardTitle>
-              <CardDescription>
-                Density changes rhythm while preserving readable type.
-              </CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <dl className="library-key-value-list">
-              <div>
-                <dt>control height</dt>
-                <dd>{density.control}</dd>
-              </div>
-              <div>
-                <dt>row height</dt>
-                <dd>{density.row}</dd>
-              </div>
-              <div>
-                <dt>card padding</dt>
-                <dd>{density.cardPadding}</dd>
-              </div>
-              <div>
-                <dt>section gap</dt>
-                <dd>{density.sectionGap}</dd>
-              </div>
-              <div>
-                <dt>indicator radius</dt>
-                <dd>{radius.indicator}</dd>
-              </div>
-            </dl>
-          </CardContent>
-        </Card>
-      </section>
-
-      <section className="library-section" id="token-interaction">
-        <div className="library-section-heading">
-          <div>
-            <Typography as="h2" typeRole="heading-lg">
-              Semantic interaction
-            </Typography>
-            <Typography typeRole="body-sm">
-              Shared roles keep hover, focus, selection, disabled, popup, and
-              motion feedback consistent across component families.
-            </Typography>
-          </div>
-        </div>
-        <div className="library-grid library-token-reference-grid">
-          {[
-            ["Accent", "--t7-accent-hsl"],
-            ["Accent hover", "--t7-accent-hover-hsl"],
-            ["Accent pressed", "--t7-accent-pressed-hsl"],
-            ["Accent subtle", "--t7-accent-subtle-hsl"],
-            ["Selected", "--t7-selected-hsl"],
-            ["Selected hover", "--t7-selected-hover-hsl"],
-            ["Focus ring", "--t7-focus-ring"],
-            ["Input background", "--t7-input-background-hsl"],
-            ["Input border", "--t7-input-border-hsl"],
-            ["Input hover border", "--t7-input-hover-border-hsl"],
-            ["Input focus border", "--t7-input-focus-border-hsl"],
-            ["Disabled background", "--t7-disabled-background-hsl"],
-            ["Disabled foreground", "--t7-disabled-foreground-hsl"],
-            ["Overlay surface", "--t7-surface-overlay-hsl"],
-            ["Popup elevation", "--t7-shadow-popover"],
-            ["Scrim", "--t7-scrim-hsl"],
-            ["Interactive motion", "--t7-motion-interactive"],
-            ["State motion", "--t7-motion-state"],
-            ["Enter motion", "--t7-motion-enter"],
-            ["Slow entrance", "--t7-motion-enter-slow"],
-            ["Exit motion", "--t7-motion-exit"],
-          ].map(([label, variable]) => (
-            <div className="library-token-reference" key={variable}>
-              <div>
-                <Typography typeRole="label">{label}</Typography>
-                <Typography typeRole="caption">{variable}</Typography>
-              </div>
-              <TokenCopyButton variable={variable} />
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="library-section" id="token-typography">
-        <div className="library-section-heading">
-          <div>
-            <Typography as="h2" typeRole="heading-lg">
-              Typography roles
-            </Typography>
-            <Typography typeRole="body-sm">
-              Inter Variable uses optical sizing; each role controls size,
-              weight, leading, and tracking together.
-            </Typography>
-          </div>
-        </div>
-        <div className="library-type-role-list">
-          {Object.entries(typography.roles).map(([role, spec]) => (
-            <div key={role}>
-              <Typography typeRole={role as keyof typeof typography.roles}>
-                {role}
-              </Typography>
-              <Typography typeRole="caption">
-                {spec.size} · {spec.weight} · {spec.lineHeight}
-              </Typography>
-            </div>
-          ))}
-        </div>
-      </section>
-    </div>
-  );
-}
+export { TokensExplorer } from "./token-foundations";
 
 function CatalogLink({
   children,
@@ -1595,15 +1116,17 @@ export function ComponentDetailExplorer({
 }
 
 export function ComponentLabExplorer() {
+  const contentStress =
+    new URLSearchParams(window.location.search).get("stress") === "content";
   return (
     <div className="library-page component-lab-page">
       <LibraryIntro
-        count="Interactive QA surface"
-        description="Stress-test canonical action, form, overlay, navigation, data, media, commerce, feedback, progress, and chart contracts in one QA surface."
+        count="QA workbench"
+        description="Explore canonical components in a calm, interactive workspace."
         icon="components"
         title="Component Lab"
       />
-      <ComponentProofs />
+      {contentStress ? <ContentSafetyProof /> : <ComponentProofs />}
     </div>
   );
 }
@@ -1637,10 +1160,89 @@ function IconCopyButton({ name }: { name: IconName }) {
   );
 }
 
+function hslToHex(value: string, fallback: string) {
+  const match = value.match(/(-?[\d.]+)\s+([\d.]+)%\s+([\d.]+)%/);
+  if (!match) return fallback;
+
+  const hue = ((Number(match[1]) % 360) + 360) % 360;
+  const saturation = Math.max(0, Math.min(100, Number(match[2]))) / 100;
+  const lightness = Math.max(0, Math.min(100, Number(match[3]))) / 100;
+  const chroma = (1 - Math.abs(2 * lightness - 1)) * saturation;
+  const normalizedHue = hue / 60;
+  const second = chroma * (1 - Math.abs((normalizedHue % 2) - 1));
+  const matchValue = lightness - chroma / 2;
+  const [red, green, blue] =
+    normalizedHue < 1
+      ? [chroma, second, 0]
+      : normalizedHue < 2
+        ? [second, chroma, 0]
+        : normalizedHue < 3
+          ? [0, chroma, second]
+          : normalizedHue < 4
+            ? [0, second, chroma]
+            : normalizedHue < 5
+              ? [second, 0, chroma]
+              : [chroma, 0, second];
+  const toHex = (channel: number) =>
+    Math.round((channel + matchValue) * 255)
+      .toString(16)
+      .padStart(2, "0");
+  return `#${toHex(red)}${toHex(green)}${toHex(blue)}`;
+}
+
+function IconifyCopyButton({
+  accentColor,
+  name,
+  primaryColor,
+}: {
+  accentColor?: string;
+  name: string;
+  primaryColor?: string;
+}) {
+  const { toast } = useToast();
+  return (
+    <button
+      aria-label={`Copy Solar icon ${name}`}
+      className="library-icon-tile iconify-icon-tile"
+      onClick={async () => {
+        try {
+          await navigator.clipboard.writeText(name);
+        } catch {
+          // Clipboard permissions can be unavailable in a local preview.
+        }
+        toast({
+          description: `Copied ${name}`,
+          duration: 2200,
+          title: "Solar icon copied",
+          tone: "success",
+        });
+      }}
+      title={`Copy ${name}`}
+      type="button"
+    >
+      <span aria-hidden="true">
+        <IconifyIcon
+          accentColor={accentColor}
+          name={name}
+          primaryColor={primaryColor}
+          size={24}
+        />
+      </span>
+      <Typography typeRole="label">{name}</Typography>
+    </button>
+  );
+}
+
 export function IconsExplorer() {
-  const [query, setQuery] = useState("");
+  const [iconifyQuery, setIconifyQuery] = useState("");
+  const [semanticQuery, setSemanticQuery] = useState("");
   const [activeGroup, setActiveGroup] = useState("All");
-  const normalizedQuery = query.trim().toLowerCase();
+  const [customAccent, setCustomAccent] = useState<string>();
+  const [customPrimary, setCustomPrimary] = useState<string>();
+  const [visibleIconifyCount, setVisibleIconifyCount] = useState(96);
+  const { theme } = useTen4SevenTheme();
+  const normalizedIconifyQuery = iconifyQuery.trim().toLowerCase();
+  const normalizedSemanticQuery = semanticQuery.trim().toLowerCase();
   const groupNames = new Set(
     activeGroup === "All"
       ? IconNames
@@ -1650,19 +1252,50 @@ export function IconsExplorer() {
     const contract = iconCatalog[name];
     return (
       groupNames.has(name) &&
-      (!normalizedQuery ||
+      (!normalizedSemanticQuery ||
         [name, ...(contract?.useWhen ?? [])]
           .join(" ")
           .toLowerCase()
-          .includes(normalizedQuery))
+          .includes(normalizedSemanticQuery))
     );
   });
+  const defaultPrimaryHex = hslToHex(
+    paletteProfiles[theme.primary].primary,
+    "#17663f",
+  );
+  const defaultAccentHex = hslToHex(
+    paletteProfiles[theme.accent].accent,
+    "#8bbf27",
+  );
+  const filteredIconifyNames = useMemo(() => {
+    return IconifyBoldDuotoneIconNames.filter((name) => {
+      return (
+        !normalizedIconifyQuery ||
+        name.toLowerCase().includes(normalizedIconifyQuery)
+      );
+    });
+  }, [normalizedIconifyQuery]);
+  useEffect(() => {
+    setVisibleIconifyCount(96);
+  }, [normalizedIconifyQuery]);
+  const visibleIconifyNames = filteredIconifyNames.slice(
+    0,
+    visibleIconifyCount,
+  );
+  const remainingIconifyCount =
+    filteredIconifyNames.length - visibleIconifyNames.length;
+  const featuredIconifyNames = [
+    "home-angle-bold-duotone",
+    "palette-bold-duotone",
+    "chart-square-bold-duotone",
+    "box-bold-duotone",
+  ];
 
   return (
     <div className="library-page">
       <LibraryIntro
-        count={`${IconNames.length} semantic icons`}
-        description="A compact semantic icon registry. Search by intent, then copy the name used by ten4seven contracts."
+        count={`${IconifyBoldDuotoneIconCount.toLocaleString()} Solar Bold Duotone icons`}
+        description="A focused local Iconify family with one cohesive filled-and-layered visual language. No CDN request is needed at runtime."
         icon="components"
         title="Icons"
       />
@@ -1671,9 +1304,9 @@ export function IconsExplorer() {
         className="library-search"
         label="Search icons"
         leadingIcon="search"
-        onChange={(event) => setQuery(event.target.value)}
+        onChange={(event) => setSemanticQuery(event.target.value)}
         placeholder="warehouse, export, cart…"
-        value={query}
+        value={semanticQuery}
       />
       <div className="catalog-filter-tabs" aria-label="Icon categories">
         {["All", ...iconGroups.map((group) => group.label)].map((label) => (
@@ -1691,6 +1324,69 @@ export function IconsExplorer() {
       <Typography className="icon-registry-proof" typeRole="caption">
         {IconNames.length} semantic icons · {iconGroups.length} intent families
       </Typography>
+      <section className="library-section iconify-theme-section">
+        <div className="library-section-heading">
+          <div>
+            <Typography as="h2" typeRole="heading-lg">
+              Theme-aware duotone
+            </Typography>
+            <Typography typeRole="body-sm">
+              The logo palette is the default: duotone layers use the active
+              primary and accent theme tokens. Pick custom colors to preview an
+              asset-specific variant without changing the shell.
+            </Typography>
+          </div>
+          <span className="iconify-family-count">
+            {IconifyBoldDuotoneIconCount.toLocaleString()} family glyphs
+          </span>
+        </div>
+        <div className="iconify-theme-layout">
+          <div className="iconify-theme-preview" data-iconify-preview>
+            {featuredIconifyNames.map((name) => (
+              <span aria-hidden="true" key={name}>
+                <IconifyIcon
+                  accentColor={customAccent}
+                  name={name}
+                  primaryColor={customPrimary}
+                  size={38}
+                />
+              </span>
+            ))}
+          </div>
+          <div className="iconify-theme-controls">
+            <Input
+              aria-label="Duotone main color"
+              className="iconify-color-input"
+              label="Main / primary"
+              onChange={(event) => setCustomPrimary(event.target.value)}
+              type="color"
+              value={customPrimary ?? defaultPrimaryHex}
+            />
+            <Input
+              aria-label="Duotone accent color"
+              className="iconify-color-input"
+              label="Accent / secondary"
+              onChange={(event) => setCustomAccent(event.target.value)}
+              type="color"
+              value={customAccent ?? defaultAccentHex}
+            />
+            <Button
+              intent="quiet"
+              onClick={() => {
+                setCustomAccent(undefined);
+                setCustomPrimary(undefined);
+              }}
+              size="sm"
+            >
+              Use theme colors
+            </Button>
+          </div>
+        </div>
+        <Typography className="iconify-theme-note" typeRole="caption">
+          Logo palette: {theme.primary} main · {theme.accent} accent · custom
+          values stay local to this preview.
+        </Typography>
+      </section>
       <section className="library-section">
         <div className="library-section-heading">
           <div>
@@ -1708,6 +1404,71 @@ export function IconsExplorer() {
             <IconCopyButton key={name} name={name} />
           ))}
         </div>
+      </section>
+      <section
+        className="library-section iconify-catalog-section"
+        data-iconify-count={IconifyBoldDuotoneIconCount}
+        data-iconify-family="bold-duotone"
+      >
+        <div className="library-section-heading">
+          <div>
+            <Typography as="h2" typeRole="heading-lg">
+              Solar Bold Duotone library
+            </Typography>
+            <Typography typeRole="body-sm">
+              Browse one cohesive 24px glyph family. Copy a local Solar name for
+              use with <code>IconifyIcon</code>.
+            </Typography>
+          </div>
+          <Typography className="icon-registry-proof" typeRole="caption">
+            {filteredIconifyNames.length.toLocaleString()} matches
+          </Typography>
+        </div>
+        <Input
+          aria-label="Search Solar Bold Duotone icons"
+          className="library-search"
+          label="Search Solar Bold Duotone icons"
+          leadingIcon="search"
+          onChange={(event) => setIconifyQuery(event.target.value)}
+          placeholder="home, arrow, calendar…"
+          value={iconifyQuery}
+        />
+        <div aria-label="Solar icon family" className="iconify-family-badge">
+          <span>Family</span>
+          <strong>Bold Duotone</strong>
+          <span>{IconifyBoldDuotoneIconCount.toLocaleString()} glyphs</span>
+        </div>
+        {visibleIconifyNames.length > 0 ? (
+          <div className="library-icon-grid iconify-icon-grid">
+            {visibleIconifyNames.map((name) => (
+              <IconifyCopyButton
+                accentColor={customAccent}
+                key={name}
+                name={name}
+                primaryColor={customPrimary}
+              />
+            ))}
+          </div>
+        ) : (
+          <Typography typeRole="body-sm">
+            No Solar Bold Duotone icons match “{iconifyQuery}”.
+          </Typography>
+        )}
+        {remainingIconifyCount > 0 ? (
+          <div className="iconify-load-more">
+            <Button
+              intent="secondary"
+              onClick={() =>
+                setVisibleIconifyCount((count) =>
+                  Math.min(count + 96, filteredIconifyNames.length),
+                )
+              }
+              size="sm"
+            >
+              Show 96 more · {remainingIconifyCount.toLocaleString()} left
+            </Button>
+          </div>
+        ) : null}
       </section>
     </div>
   );
@@ -1760,6 +1521,14 @@ export function RecipesExplorer({
   );
 }
 
+function recipeRelationshipPath(relationship: string) {
+  const target = relationship.split("→").at(-1)?.trim();
+  const entry = Object.entries(recipeCatalog).find(
+    ([id, recipe]) => id === target || recipe.displayName === target,
+  );
+  return entry ? recipePath(entry[0]) : "#";
+}
+
 export function RecipeDetailExplorer({
   name,
   onNavigatePath,
@@ -1770,6 +1539,7 @@ export function RecipeDetailExplorer({
   const recipe = recipeCatalog[name];
   if (!recipe) return null;
   const blockRoles = recipe.blockRoles;
+  const operational = recipe.operational;
   return (
     <div className="library-page recipe-detail-page">
       <LibraryIntro
@@ -1895,6 +1665,147 @@ export function RecipeDetailExplorer({
               )}
             </div>
           </section>
+          {operational ? (
+            <>
+              <section
+                className="catalog-doc-section"
+                id="recipe-operational-guidance"
+              >
+                <Typography as="h2" typeRole="heading-lg">
+                  Use and avoid
+                </Typography>
+                <div className="catalog-guidance-grid">
+                  <div>
+                    <Typography typeRole="overline">Use when</Typography>
+                    <ul>
+                      {operational.useWhen.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <Typography typeRole="overline">Avoid when</Typography>
+                    <ul>
+                      {operational.avoidWhen.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </section>
+
+              <section
+                className="catalog-doc-section"
+                id="recipe-operational-semantics"
+              >
+                <Typography as="h2" typeRole="heading-lg">
+                  Operational semantics
+                </Typography>
+                <Typography as="p" typeRole="body-sm">
+                  The pattern is mature only when its object, state, movement,
+                  exception, owner, next action, and trace remain explicit.
+                </Typography>
+                <div className="catalog-guidance-grid">
+                  <div>
+                    <Typography typeRole="overline">Anatomy</Typography>
+                    <ul>
+                      {operational.anatomy.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <Typography typeRole="overline">
+                      Required semantics
+                    </Typography>
+                    <ul>
+                      {operational.requiredSemantics.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+                {operational.optionalSemantics?.length ? (
+                  <div>
+                    <Typography typeRole="overline">
+                      Optional semantics
+                    </Typography>
+                    <ul className="catalog-doc-list">
+                      {operational.optionalSemantics.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+              </section>
+
+              <section
+                className="catalog-doc-section"
+                id="recipe-operational-responsive"
+              >
+                <Typography as="h2" typeRole="heading-lg">
+                  Responsive behavior
+                </Typography>
+                <dl className="catalog-operational-responsive">
+                  {Object.entries(operational.responsive).map(
+                    ([viewport, guidance]) => (
+                      <div key={viewport}>
+                        <dt>{viewport}</dt>
+                        <dd>{guidance}</dd>
+                      </div>
+                    ),
+                  )}
+                </dl>
+              </section>
+
+              <section
+                className="catalog-doc-section"
+                id="recipe-operational-ai"
+              >
+                <Typography as="h2" typeRole="heading-lg">
+                  Accessibility and AI guidance
+                </Typography>
+                <p className="catalog-doc-copy">{operational.aiGuidance}</p>
+                <div className="catalog-guidance-grid">
+                  <div>
+                    <Typography typeRole="overline">Accessibility</Typography>
+                    <ul>
+                      {operational.accessibility.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <Typography typeRole="overline">Anti-patterns</Typography>
+                    <ul>
+                      {operational.antiPatterns.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+                {operational.relationships?.length ? (
+                  <div>
+                    <Typography typeRole="overline">
+                      Related operational patterns
+                    </Typography>
+                    <div className="catalog-related-list">
+                      {operational.relationships.map((relationship) => (
+                        <CatalogLink
+                          href={recipeRelationshipPath(relationship)}
+                          key={relationship}
+                          onNavigatePath={onNavigatePath}
+                        >
+                          {recipeCatalog[relationship]?.displayName ??
+                            relationship}
+                        </CatalogLink>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+              </section>
+            </>
+          ) : null}
         </div>
         <aside className="catalog-detail-aside">
           <nav aria-label="On this page" className="catalog-on-this-page">
@@ -1907,6 +1818,14 @@ export function RecipeDetailExplorer({
             <a href="#recipe-optional">
               {recipe.blocks?.length ? "Optional components" : "Optional"}
             </a>
+            {operational ? (
+              <>
+                <a href="#recipe-operational-guidance">Use and avoid</a>
+                <a href="#recipe-operational-semantics">Semantics</a>
+                <a href="#recipe-operational-responsive">Responsive</a>
+                <a href="#recipe-operational-ai">Accessibility and AI</a>
+              </>
+            ) : null}
           </nav>
           <section className="catalog-doc-section">
             <Typography as="h2" typeRole="heading-lg">
@@ -1926,7 +1845,9 @@ export function RecipeDetailExplorer({
                         ? "/operations-tracker"
                         : reference === "Publishing Store"
                           ? "/ebook-store"
-                          : "#"
+                          : reference === "AAPM Operational Reference"
+                            ? "/operational-patterns"
+                            : "#"
                     }
                     key={reference}
                     onNavigatePath={onNavigatePath}
@@ -2026,13 +1947,13 @@ function BlockPreview({ slug }: { slug: string }) {
               detail: "shared contracts",
               id: "one",
               label: "Components",
-              value: "126",
+              value: String(catalogCounts.canonicalComponents),
             },
             {
               detail: "known structures",
               id: "two",
               label: "Recipes",
-              value: "17",
+              value: String(catalogCounts.recipes),
             },
             {
               detail: "semantic names",

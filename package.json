@@ -10,7 +10,7 @@
   },
   "scripts": {
     "inventory": "node scripts/collect-inventory.mjs",
-    "icons:generate": "node scripts/generate-solar-subset.mjs",
+    "icons:generate": "node scripts/generate-solar-subset.mjs && node scripts/generate-solar-catalog.mjs",
     "dev": "pnpm --filter @ten4seven/playground dev",
     "t7ui": "node packages/ai/bin/t7ui.mjs",
     "contracts:generate": "node --experimental-strip-types scripts/generate-contract-projections.mjs && node --experimental-strip-types scripts/generate-theme-recipes-css.mjs && node --experimental-strip-types scripts/generate-dtcg-token-export.mjs",
@@ -21,6 +21,7 @@
     "package:build": "pnpm --filter @ten4seven/ui build",
     "package:verify": "pnpm --filter @ten4seven/ui verify",
     "package:release": "pnpm --filter @ten4seven/ui pack:release",
+    "test:next-consumer": "node scripts/test-next-app-router-consumer.mjs",
     "typecheck": "pnpm --filter @ten4seven/contracts typecheck && pnpm --filter @ten4seven/agent typecheck && pnpm --filter @ten4seven/playground typecheck",
     "test": "pnpm test:contracts && pnpm test:dtcg && pnpm test:contrast && pnpm test:token-governance && pnpm test:component-coverage && pnpm test:slice-a && pnpm test:brand-expression && pnpm test:recipe-family && pnpm --filter @ten4seven/tokens test && pnpm test:ai && pnpm test:component-system && pnpm test:tailwind-bridge",
     "test:contracts": "node --experimental-strip-types scripts/verify-contracts.mjs",

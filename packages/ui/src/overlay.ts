@@ -13,9 +13,16 @@ import {
 
 export type FloatingSide = "bottom" | "left" | "right" | "top";
 export type FloatingAlign = "start" | "center" | "end";
+export type OverlayWidthStrategy =
+  "content" | "trigger" | "min-trigger" | "fixed" | "viewport";
 
 export interface FloatingPositionOptions {
   align?: FloatingAlign;
+  /** Preferred component-owned width in pixels for the fixed strategy. */
+  preferredWidth?: number;
+  /** Explicitly describe whether the surface owns or follows trigger width. */
+  widthStrategy?: OverlayWidthStrategy;
+  /** @deprecated Use widthStrategy="min-trigger" for legacy callers. */
   minWidth?: boolean;
   offset?: number;
   padding?: number;
@@ -38,7 +45,9 @@ export function useFloatingPosition(
     minWidth = false,
     offset = 6,
     padding = 8,
+    preferredWidth,
     side = "bottom",
+    widthStrategy,
   }: FloatingPositionOptions = {},
 ): FloatingPositionResult {
   const contentRef = useRef<HTMLElement | null>(null);
@@ -62,10 +71,20 @@ export function useFloatingPosition(
     const viewportWidth = document.documentElement.clientWidth;
     const viewportHeight = document.documentElement.clientHeight;
     const measuredWidth = contentRect?.width ?? 0;
-    const width = minWidth
-      ? Math.max(anchorRect.width, measuredWidth)
-      : measuredWidth || 240;
-    const safeWidth = Math.min(width, viewportWidth - padding * 2);
+    const availableWidth = Math.max(0, viewportWidth - padding * 2);
+    const strategy = widthStrategy ?? (minWidth ? "min-trigger" : "content");
+    const intrinsicWidth = measuredWidth || preferredWidth || 240;
+    const width =
+      strategy === "trigger"
+        ? anchorRect.width
+        : strategy === "min-trigger"
+          ? Math.max(anchorRect.width, intrinsicWidth)
+          : strategy === "fixed"
+            ? (preferredWidth ?? intrinsicWidth)
+            : strategy === "viewport"
+              ? availableWidth
+              : intrinsicWidth;
+    const safeWidth = Math.max(0, Math.min(width, availableWidth));
     const height = contentRect?.height || 160;
     let nextSide = side;
     let left = anchorRect.left;
@@ -137,13 +156,26 @@ export function useFloatingPosition(
       left: Math.round(left),
       boxSizing: "border-box",
       maxHeight: `${Math.max(96, Math.round(availableHeight))}px`,
-      maxWidth: `calc(100vw - ${padding * 2}px)`,
       position: "fixed",
       top: Math.round(top),
       visibility: "visible",
-      width: minWidth ? Math.round(safeWidth) : undefined,
+      width:
+        strategy === "trigger" ||
+        strategy === "min-trigger" ||
+        strategy === "viewport"
+          ? Math.round(safeWidth)
+          : undefined,
     });
-  }, [align, anchorRef, minWidth, offset, padding, side]);
+  }, [
+    align,
+    anchorRef,
+    minWidth,
+    offset,
+    padding,
+    preferredWidth,
+    side,
+    widthStrategy,
+  ]);
 
   useLayoutEffect(() => {
     if (!open) {
@@ -346,14 +378,43 @@ export function useNativeDialog(
 ) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
+  // The visual viewport shrinks when a mobile keyboard opens; dvh alone does
+  // not reflect that in every browser. Keep the native top layer in that space.
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    const viewport = window.visualViewport;
+    if (!open || !dialog || !viewport) return;
+    const update = () => {
+      dialog.style.setProperty(
+        "--t7-dialog-viewport-height",
+        `${viewport.height}px`,
+      );
+      dialog.style.setProperty(
+        "--t7-dialog-viewport-top",
+        `${viewport.offsetTop}px`,
+      );
+    };
+    update();
+    viewport.addEventListener("resize", update);
+    viewport.addEventListener("scroll", update);
+    return () => {
+      viewport.removeEventListener("resize", update);
+      viewport.removeEventListener("scroll", update);
+      dialog.style.removeProperty("--t7-dialog-viewport-height");
+      dialog.style.removeProperty("--t7-dialog-viewport-top");
+    };
+  }, [open]);
+
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
 
     if (open && !dialog.open) {
       dialog.showModal();
-      requestAnimationFrame(() => initialFocus?.current?.focus());
-      return;
+      const frame = requestAnimationFrame(() =>
+        initialFocus?.current?.focus({ preventScroll: true }),
+      );
+      return () => cancelAnimationFrame(frame);
     }
 
     if (!open && dialog.open) dialog.close();
@@ -367,9 +428,46 @@ export function useNativeDialog(
       event.preventDefault();
       onClose();
     };
+    // Native modality makes the page inert, but browsers may send Tab from an
+    // edge control into browser chrome. Cycle explicitly within the top dialog.
+    const handleTab = (event: KeyboardEvent) => {
+      if (event.key !== "Tab" || event.defaultPrevented || !dialog.open) return;
+      if ((event.target as Element).closest("dialog") !== dialog) return;
+      const controls = Array.from(
+        dialog.querySelectorAll<HTMLElement>(
+          'a[href], button, input, select, textarea, [tabindex], [contenteditable="true"]',
+        ),
+      ).filter(
+        (node) =>
+          node.tabIndex >= 0 &&
+          !node.matches(":disabled") &&
+          !node.closest("[inert]") &&
+          node.getClientRects().length > 0 &&
+          getComputedStyle(node).visibility !== "hidden",
+      );
+      const first = controls[0];
+      const last = controls.at(-1);
+      if (!first) {
+        event.preventDefault();
+        dialog.focus();
+      } else if (
+        event.shiftKey &&
+        (document.activeElement === first || document.activeElement === dialog)
+      ) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
 
     dialog.addEventListener("cancel", handleCancel);
-    return () => dialog.removeEventListener("cancel", handleCancel);
+    dialog.addEventListener("keydown", handleTab);
+    return () => {
+      dialog.removeEventListener("cancel", handleCancel);
+      dialog.removeEventListener("keydown", handleTab);
+    };
   }, [onClose]);
 
   useEffect(() => {

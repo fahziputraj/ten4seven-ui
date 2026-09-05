@@ -22,6 +22,7 @@ const routeIcons: Record<PlaygroundRoute, IconName> = {
   Icons: "category",
   Recipes: "table",
   "Operations Tracker": "analytics",
+  "Operational Patterns": "logistics",
   "Publishing Store": "book",
   "Public Showcase": "dashboard",
 };
@@ -49,24 +50,27 @@ export function ReferenceHarness({
 
   return (
     <>
-      <div className="reference-harness-trigger">
+      <div
+        className="reference-harness-trigger"
+        data-testid="reference-harness-trigger"
+      >
         <Button
           aria-expanded={open}
-          aria-label="Open ten4seven reference harness"
+          aria-label="Open ten4seven reference QA controls"
           intent="secondary"
           leadingIcon="components"
           onClick={() => setOpen(true)}
           size="sm"
         >
-          Reference
+          QA
         </Button>
       </div>
 
       <Modal
-        description="Playground-only controls are kept outside the product shells."
+        description="QA-only controls remain outside consumer preview routes."
         onClose={() => setOpen(false)}
         open={open}
-        title="Reference harness"
+        title="Reference QA"
       >
         <div className="reference-harness-content">
           <div className="reference-harness-status">

@@ -70,6 +70,26 @@ function flatten(value) {
 function findRecipe(query) {
   const normalized = query.toLowerCase();
   const directHints = [
+    ["control tower", "control-tower"],
+    ["process workspace", "process-workspace"],
+    ["process tracker", "process-workspace"],
+    ["operational kanban", "operational-kanban"],
+    ["load planner", "load-planning"],
+    ["load planning", "load-planning"],
+    ["receiving console", "receiving-console"],
+    ["receiving", "receiving-console"],
+    ["unload", "receiving-console"],
+    ["route planner", "route-planning"],
+    ["route planning", "route-planning"],
+    ["entity 360", "entity-360"],
+    ["business partner", "entity-360"],
+    ["decision workspace", "decision-workspace"],
+    ["exception queue", "exception-queue"],
+    ["activity audit", "activity-audit"],
+    ["audit stream", "activity-audit"],
+    ["resource forecast", "resource-forecast"],
+    ["time to empty", "resource-forecast"],
+    ["days of cover", "resource-forecast"],
     ["registration", "auth"],
     ["employee", "entity-form"],
     ["filter drawer", "entity-list"],
@@ -263,7 +283,10 @@ function printFind(query) {
     }
   }
   console.log("Icons:");
-  for (const name of findIcons(query)) console.log(`- ${name}`);
+  const semanticIcons = [
+    ...new Set([...findIcons(query), ...(recipe?.icons ?? [])]),
+  ].slice(0, 8);
+  for (const name of semanticIcons) console.log(`- ${name}`);
 }
 
 function printComponent(name) {
@@ -286,6 +309,10 @@ function printRecipeInspect(name) {
   }
   if (name === "entity-detail") {
     console.log(JSON.stringify(inspectEntityDetail(), null, 2));
+    return;
+  }
+  if (recipes[name]?.operational) {
+    console.log(JSON.stringify(recipes[name], null, 2));
     return;
   }
   {

@@ -110,7 +110,12 @@ test.describe("catalog information architecture", () => {
   test("recipe routes, global search, and icon intent search resolve", async ({
     page,
   }) => {
-    test.setTimeout(60_000);
+    // A cold Vite server transforms every published recipe route in this loop.
+    // Keep the check bounded, but allow it to complete under serial full-suite load.
+    test.setTimeout(90_000);
+    await page.context().grantPermissions(["clipboard-write"], {
+      origin: "http://127.0.0.1:4173",
+    });
     for (const name of Object.keys(recipeCatalog)) {
       const displayName = recipeCatalog[name].displayName ?? name;
       await page.goto(`/recipes/${slugify(name)}`);
@@ -182,14 +187,14 @@ test.describe("catalog information architecture", () => {
     await expect(tokenFamilies).toBeVisible();
     await expect(
       tokenFamilies.getByRole("link", {
-        name: "Spacing & control geometry",
+        name: "Geometry & Density",
       }),
     ).toHaveAttribute("href", "#token-geometry");
     await tokenFamilies
-      .getByRole("link", { name: "Spacing & control geometry" })
+      .getByRole("link", { name: "Geometry & Density" })
       .click();
     await expect(
-      page.getByRole("heading", { name: "Control geometry", exact: true }),
+      page.getByRole("heading", { name: "Geometry & Density", exact: true }),
     ).toBeVisible();
     await page
       .getByRole("button", {
@@ -200,7 +205,7 @@ test.describe("catalog information architecture", () => {
       page.getByRole("status").filter({ hasText: "Token copied" }),
     ).toBeVisible();
     await expect(
-      page.getByRole("link", { name: "Interaction semantics" }),
+      page.getByRole("link", { name: "Interaction", exact: true }),
     ).toHaveAttribute("href", "#token-interaction");
   });
 

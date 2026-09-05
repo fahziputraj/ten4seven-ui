@@ -19,11 +19,11 @@ has already been removed; those explicit boundaries remain tracked below.
 | ThemeScope            | PASS   | Nested and inverse scopes re-resolve semantic variables and expose scoped metadata.                                                                    | Narrow-viewport focus/containment proof passed. An editorial scoped Select proves its portal retains semantic token and typography parity in the provider overlay root, stays in the viewport, closes with Escape, and restores focus.                                   |
 | CSS-first delivery    | PASS   | `theme.css`/`themes.css` assemble generated resolved light/dark selectors without React runtime calculation.                                           | CSS-first proof passed both inside the Universal v2 browser suite and in the isolated adoption consumer. CSS-first `system` remains correctly documented as requiring an application/media-query adapter that writes a resolved mode.                                    |
 | Tailwind bridge       | PASS   | The published bridge uses semantic Tailwind v4 `@theme inline` mappings, including semantic foreground roles.                                          | An isolated external-consumer verifier rebuilt the package, resolved only published `theme.css` and `tailwind.css`, and compiled six semantic utilities, including `text-t7-primary-foreground`.                                                                         |
-| Component maturity    | PASS   | The canonical catalog defines 139 components and shared semantic styles.                                                                               | Governance and coverage checks passed; keyboard, overlay, focus, a11y, responsive, and stateful component flows passed in the final 134-test browser suite. Coverage is deliberately reported by high-impact family rather than claiming all raw geometry is eliminated. |
-| Aesthetic consistency | PASS   | Recipes, composition, shell grammar, expression guidance, and reference surfaces are defined in the system contracts.                                  | Theme Studio desktop/narrow, Operations mobile, reference-product, public-showcase, and system-baseline captures were reviewed; final visual and interaction suites passed.                                                                                              |
+| Component maturity    | PASS   | The canonical catalog defines 139 components and shared semantic styles.                                                                               | Governance and coverage checks passed; keyboard, overlay, focus, a11y, responsive, and stateful component flows passed in the final 139-test browser suite. Coverage is deliberately reported by high-impact family rather than claiming all raw geometry is eliminated. |
+| Aesthetic consistency | PASS   | Recipes, composition, shell grammar, expression guidance, and reference surfaces are defined in the system contracts.                                  | The follow-up recomposed Theme Studio, Component Lab, Operations, Publishing, and Public Showcase; exact rendered reviews and final visual/interaction suites passed.                                                                                                    |
 | Accessibility         | PASS   | Focus, dialog/overlay, semantic controls, and reduced-motion contracts remain in canonical source.                                                     | Representative axe, keyboard traversal, Escape, focus restoration, native dialog/drawer, Select, and scoped-portal tests passed.                                                                                                                                         |
 | Responsive QA         | PASS   | Responsive shell and component contracts cover private and public surfaces.                                                                            | Desktop, wide, tablet, mobile, and narrow browser matrices passed with no asserted overflow across Theme Studio, catalog, Operations, Ebook Store, and public surfaces.                                                                                                  |
-| Visual regression     | PASS   | Visual-test infrastructure covers system, reference, and expressive routes.                                                                            | The final serial suite passed all visual baseline assertions. Affected baseline updates were reviewed as rendered actual/diff images before acceptance.                                                                                                                  |
+| Visual regression     | PASS   | Visual-test infrastructure covers system, reference, and expressive routes.                                                                            | The final 139-test serial suite passed all visual baseline assertions. Affected baseline updates were reviewed as rendered actual/diff images before acceptance.                                                                                                         |
 | Package verification  | PASS   | The build produces JS/types, CSS slices, `tokens.dtcg.json`, and self-hosted fonts.                                                                    | Fresh `pnpm package:build` passed; `pnpm package:verify` confirmed eight root exports, bundled tokens/icons/motion, and self-contained styles.                                                                                                                           |
 | Consumer adoption     | PASS   | Operational code uses the recipe/preference path; public code preserves legacy configuration and a CSS-first fixture.                                  | Static adoption proof passed for two isolated consumers, and the package-artifact Playwright adoption suite passed 4/4.                                                                                                                                                  |
 | AI-native guidance    | PASS   | Generated agent projections, recipe guidance, DTCG guidance, and compact catalogs are present.                                                         | Generated projections were rebuilt; AI catalog and cold-start retrieval checks passed with 17 recipes, 145 components, 12 blocks, and 98 semantic icons.                                                                                                                 |
@@ -45,20 +45,25 @@ All commands below were run against the final local source state on 2026-09-02.
 | `pnpm test:adoption:static` | PASS   | Verified legacy, recipe-first, and CSS-first isolated consumer boundaries.                                                |
 | `pnpm test:adoption`        | PASS   | 4/4 package-artifact adoption Playwright tests passed.                                                                    |
 | `pnpm test:consistency`     | PASS   | Canonical consistency verified across 21 UI source files.                                                                 |
-| `pnpm test:e2e`             | PASS   | 134/134 serial Chromium tests passed in 4.8 minutes.                                                                      |
+| `pnpm test:e2e`             | PASS   | 139/139 serial Chromium tests passed in 3.8 minutes after the visual-grammar follow-up.                                   |
 
 ## Rendered and visual record
 
-- Direct in-app browser review covered Theme Studio at 1440 x 900 and 390 x
-  844, plus the Operations Tracker at 390 x 844. The reviewed Theme Studio
-  console was free of errors.
+- Direct in-app browser review covered Theme Studio, Component Lab, Operations
+  Tracker, Ebook Store, and Public Showcase at 1440 x 900, 1187 x 800, 391 x
+  844, and 360 x 800. All reviewed routes had zero horizontal overflow. The
+  default Operations and Ebook routes were consumer-clean, and the Public
+  Showcase had no fixture copy at both mobile widths.
 - Visual-regression coverage exercised desktop, wide, tablet, mobile, and
   narrow system baselines. Reference and expressive screens also covered 1440
   x 900, 1280 x 800, 1024 x 900, 768 x 900, 390 x 844, and 360 x 800 where
   applicable.
-- Theme Studio, public showcase, Operations Tracker, Ebook Store, cart, and
-  component/reference captures were reviewed before affected baselines were
-  updated. The final 134-test run then revalidated the accepted baselines.
+- Theme Studio, Component Lab, Public Showcase, Operations Tracker, Ebook
+  Store, cart, and component/reference captures were reviewed before affected
+  baselines were updated. The final 139-test run then revalidated the accepted
+  baselines. See
+  [`GATE_VISUAL_GRAMMAR.md`](../17-visual-grammar-follow-up/GATE_VISUAL_GRAMMAR.md)
+  for the follow-up-specific record.
 
 ## Explicit boundaries and follow-up risks
 

@@ -16,6 +16,7 @@ import {
 } from "react";
 
 import { T7Icon, type IconName } from "@ten4seven/icons";
+import { overlayGeometry } from "@ten4seven/tokens";
 
 import {
   Input,
@@ -601,8 +602,9 @@ export function Combobox({
     [inputValue, options],
   );
   const floating = useFloatingPosition(inputRef, open, {
-    minWidth: true,
+    preferredWidth: Number.parseFloat(overlayGeometry.combobox),
     side: "bottom",
+    widthStrategy: "min-trigger",
   });
   function closeListbox() {
     setOpen(false);
@@ -798,8 +800,9 @@ export function MultiSelect({
     values.includes(option.value),
   );
   const floating = useFloatingPosition(triggerRef, open, {
-    minWidth: true,
+    preferredWidth: Number.parseFloat(overlayGeometry.select.min),
     side: "bottom",
+    widthStrategy: "min-trigger",
   });
   function closeListbox() {
     setOpen(false);

@@ -19,10 +19,15 @@ import {
   Badge,
   Card,
   CardContent,
+  CardFooter,
   Checkbox,
   Typography,
   type BadgeProps,
   type DataTableColumn,
+  type KPIChartPlacement,
+  type SurfaceColorway,
+  type SurfaceEmphasis,
+  type SurfaceTone,
 } from "./components";
 import { cx } from "./utils";
 
@@ -162,47 +167,113 @@ export interface MetricCardProps extends Omit<
   HTMLAttributes<HTMLElement>,
   "title"
 > {
+  /** Optional action aligned with the label and icon. */
+  action?: ReactNode;
+  /** Full-width compact chart or other historical visual. */
+  chart?: ReactNode;
+  /** Keep the historical cue at the base, or compose it beside the value. */
+  chartPlacement?: KPIChartPlacement;
+  /** Backwards-compatible comparison slot; prefer `trend` for new work. */
   change?: ReactNode;
+  /** Optional chart-series hue for a solid, categorical metric surface. */
+  colorway?: SurfaceColorway;
   description?: ReactNode;
+  emphasis?: SurfaceEmphasis;
+  /** Optional separated supporting content or link. */
+  footer?: ReactNode;
   icon?: IconName;
+  /** Goal or capacity cue composed with the canonical Progress component. */
+  progress?: ReactNode;
   title: ReactNode;
-  tone?: "default" | "success" | "warning" | "danger";
+  tone?: "default" | Exclude<SurfaceTone, "neutral">;
+  /** Directional comparison composed with TrendIndicator. */
+  trend?: ReactNode;
   value: ReactNode;
 }
 
 export function MetricCard({
+  action,
+  chart,
+  chartPlacement = "bottom",
   change,
   className,
+  colorway,
   description,
+  emphasis,
+  footer,
   icon,
+  progress,
   title,
   tone = "default",
+  trend,
   value,
   ...props
 }: MetricCardProps) {
+  const titleId = useId();
+  const comparison = trend ?? change;
   return (
     <Card
       {...props}
+      aria-labelledby={
+        props["aria-label"]
+          ? props["aria-labelledby"]
+          : (props["aria-labelledby"] ?? titleId)
+      }
       className={cx("t7-metric-card", className)}
+      colorway={colorway}
+      data-chart-placement={chart ? chartPlacement : undefined}
+      data-has-chart={chart ? "true" : undefined}
+      data-has-footer={footer ? "true" : undefined}
+      data-has-progress={progress ? "true" : undefined}
       data-metric-tone={tone}
+      emphasis={emphasis}
+      tone={emphasis ? tone : "default"}
     >
       <CardContent>
-        <div className="t7-metric-card-head">
-          <Typography typeRole="label">{title}</Typography>
-          {icon ? <T7Icon aria-hidden="true" name={icon} size={18} /> : null}
-        </div>
-        <Typography as="strong" typeRole="metric-lg">
-          {value}
-        </Typography>
-        {description || change ? (
-          <div className="t7-metric-card-meta">
+        <dl className="t7-metric-card-definition">
+          <div className="t7-metric-card-definition-group">
+            <dt className="t7-metric-card-head" id={titleId}>
+              <Typography typeRole="label">{title}</Typography>
+              {icon || action ? (
+                <div className="t7-metric-card-head-rail">
+                  {icon ? (
+                    <span className="t7-metric-card-icon">
+                      <T7Icon aria-hidden="true" name={icon} size={24} />
+                    </span>
+                  ) : null}
+                  {action ? (
+                    <span className="t7-metric-card-action">{action}</span>
+                  ) : null}
+                </div>
+              ) : null}
+            </dt>
+            <dd className="t7-metric-card-primary">
+              <div className="t7-metric-card-value">
+                <Typography as="strong" data-numeric typeRole="metric-lg">
+                  {value}
+                </Typography>
+              </div>
+              {comparison ? (
+                <div className="t7-metric-card-trend">{comparison}</div>
+              ) : null}
+            </dd>
             {description ? (
-              <Typography typeRole="caption">{description}</Typography>
+              <dd className="t7-metric-card-description">
+                <Typography as="span" typeRole="caption">
+                  {description}
+                </Typography>
+              </dd>
             ) : null}
-            {change ? <span>{change}</span> : null}
+            {progress ? (
+              <dd className="t7-metric-card-progress">{progress}</dd>
+            ) : null}
+            {chart ? <dd className="t7-metric-card-chart">{chart}</dd> : null}
           </div>
-        ) : null}
+        </dl>
       </CardContent>
+      {footer ? (
+        <CardFooter className="t7-metric-card-footer">{footer}</CardFooter>
+      ) : null}
     </Card>
   );
 }
@@ -289,7 +360,20 @@ function milestonePercentage(value: number) {
   return Math.round(Math.min(100, Math.max(0, value)));
 }
 
-/** Show a bounded operational journey with selectable circular progress nodes and contextual detail. */
+function milestoneStateLabel(status: MilestoneStatus) {
+  switch (status) {
+    case "complete":
+      return "Complete";
+    case "current":
+      return "In progress";
+    case "blocked":
+      return "Needs attention";
+    default:
+      return "Planned";
+  }
+}
+
+/** Show a bounded operational workflow with selectable stages and contextual detail. */
 export function MilestoneTracker({
   className,
   defaultSelectedId,
@@ -358,6 +442,7 @@ export function MilestoneTracker({
                 milestonePercentage(previous.percentage) >= 100
               : false;
             const isSelected = selectedItem?.id === item.id;
+            const stateLabel = milestoneStateLabel(status);
 
             return (
               <li
@@ -376,39 +461,13 @@ export function MilestoneTracker({
                   type="button"
                 >
                   <span
-                    aria-label={`${percentage}% complete`}
-                    aria-valuemax={100}
-                    aria-valuemin={0}
-                    aria-valuenow={percentage}
-                    className="t7-milestone-node"
-                    role="progressbar"
+                    aria-hidden="true"
+                    className="t7-milestone-stage-header"
                   >
-                    <svg
-                      aria-hidden="true"
-                      className="t7-milestone-ring"
-                      viewBox="0 0 84 84"
-                    >
-                      <circle
-                        className="t7-milestone-ring-track"
-                        cx="42"
-                        cy="42"
-                        pathLength="100"
-                        r="34"
-                      />
-                      <circle
-                        className="t7-milestone-ring-value"
-                        cx="42"
-                        cy="42"
-                        pathLength="100"
-                        r="34"
-                        style={{ strokeDashoffset: 100 - percentage }}
-                      />
-                    </svg>
-                    <span className="t7-milestone-node-content">
-                      <span className="t7-milestone-percent">
-                        {percentage}%
-                      </span>
+                    <span className="t7-milestone-step-number">
+                      {String(index + 1).padStart(2, "0")}
                     </span>
+                    <span className="t7-milestone-state">{stateLabel}</span>
                   </span>
                   <span className="t7-milestone-copy">
                     <span className="t7-milestone-label-row">
@@ -422,7 +481,29 @@ export function MilestoneTracker({
                       ) : null}
                       <strong>{item.label}</strong>
                     </span>
-                    {item.meta ? <small>{item.meta}</small> : null}
+                    <span className="t7-milestone-progress-row">
+                      {item.meta ? <small>{item.meta}</small> : <span />}
+                      <span className="t7-milestone-percent">
+                        {percentage}%
+                      </span>
+                    </span>
+                    <span
+                      aria-label={`${String(item.label)}: ${percentage}% complete`}
+                      aria-valuemax={100}
+                      aria-valuemin={0}
+                      aria-valuenow={percentage}
+                      className="t7-milestone-meter"
+                      role="progressbar"
+                    >
+                      <span
+                        className="t7-milestone-meter-value"
+                        style={
+                          {
+                            "--t7-milestone-progress": `${percentage}%`,
+                          } as CSSProperties
+                        }
+                      />
+                    </span>
                   </span>
                 </button>
               </li>
@@ -435,11 +516,14 @@ export function MilestoneTracker({
           aria-live="polite"
           aria-label={`${String(selectedItem.label)} milestone details`}
           className="t7-milestone-detail"
+          data-state={milestoneStatus(selectedItem)}
           id={detailId}
         >
           <div className="t7-milestone-detail-heading">
             <div>
-              <Typography typeRole="caption">Selected milestone</Typography>
+              <Typography typeRole="caption">
+                Selected workflow stage
+              </Typography>
               <Typography as="h3" typeRole="heading-sm">
                 {selectedItem.label}
               </Typography>

@@ -1,5 +1,6 @@
 export * from "./types.ts";
 export * from "./theme-profile.ts";
+export * from "./foundation.ts";
 export * from "./theme-recipe.ts";
 export * from "./brand-profile.ts";
 export * from "./authentication.ts";

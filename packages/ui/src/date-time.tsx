@@ -11,6 +11,7 @@ import {
 } from "react";
 
 import { T7Icon } from "@ten4seven/icons";
+import { overlayGeometry } from "@ten4seven/tokens";
 
 import { Button, Input } from "./components";
 import {
@@ -329,8 +330,9 @@ export function DatePicker({
   const helpId = `${inputId}-hint`;
   const calendarId = `${inputId}-calendar`;
   const floating = useFloatingPosition(pickerRef, open, {
-    minWidth: true,
+    preferredWidth: Number.parseFloat(overlayGeometry.datePicker),
     side: "bottom",
+    widthStrategy: "fixed",
   });
   useExclusiveFloatingLayer(open, () => setOpen(false));
 
@@ -480,8 +482,9 @@ export function DateRangePicker({
       ? `${value.start} to ${value.end}`
       : (value.start ?? "Select dates");
   const floating = useFloatingPosition(pickerRef, open, {
-    minWidth: true,
+    preferredWidth: Number.parseFloat(overlayGeometry.datePicker),
     side: "bottom",
+    widthStrategy: "fixed",
   });
   useExclusiveFloatingLayer(open, () => setOpen(false));
 
@@ -691,8 +694,9 @@ export function TimePicker({
     return { hours, minutes, periods };
   }, [options]);
   const floating = useFloatingPosition(pickerRef, open, {
-    minWidth: true,
+    preferredWidth: Number.parseFloat(overlayGeometry.timePicker),
     side: "bottom",
+    widthStrategy: "fixed",
   });
   useExclusiveFloatingLayer(open, () => setOpen(false));
 

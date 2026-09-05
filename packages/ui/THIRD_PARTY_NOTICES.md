@@ -28,18 +28,23 @@ The bundled IBM Plex Mono 400, 500, 600, and 700 WOFF2 files are part of IBM
 Plex by IBM and contributors, distributed under the SIL Open Font License 1.1.
 The complete license text is shipped at `dist/fonts/IBM-Plex-Mono-OFL.txt`.
 
-## Solar semantic icon subset
+## Solar Iconify icon library
 
-The generated semantic SVG paths in the bundle are derived from the Solar icon
-set by 480 Design. Solar is licensed under Creative Commons Attribution 4.0
-International (CC BY 4.0).
+The generated SVG paths in the bundle are derived from the complete local Solar
+Iconify collection by 480 Design. The bundle contains 7,759 canonical glyphs
+and 203 local aliases (7,962 names in total), including the authored bold,
+linear, outline, broken, and duotone variants. Solar is licensed under Creative
+Commons Attribution 4.0 International (CC BY 4.0).
 
 - Source attribution: https://www.figma.com/community/file/1166831539721848736
 - License: https://creativecommons.org/licenses/by/4.0/
-- Local generated source: `packages/icons/src/solar-data.ts`
+- Local generated sources: `packages/icons/src/solar-data.ts` (semantic names)
+  and `packages/icons/src/solar-catalog.ts` (complete Iconify collection)
 
-The runtime does not depend on Iconify or load an icon CDN. The bundle contains
-only the generated local semantic subset used by ten4seven contracts.
+The runtime does not load Iconify or an icon CDN. The complete collection is
+generated from the pinned `@iconify-json/solar` development package and shipped
+inside the self-contained UI bundle; consumer applications use the semantic
+`T7Icon` API or the local `IconifyIcon` catalog API.
 
 ## anime.js
 

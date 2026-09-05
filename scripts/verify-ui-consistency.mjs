@@ -34,6 +34,38 @@ assert.deepEqual(
   [],
   `canonical consistency violations:\n${violations.join("\n")}`,
 );
+// Guard a few stable high-impact slot contracts, not arbitrary application CSS.
+const canonicalStyles = files.find((file) => file.name === "styles.css").source;
+for (const selector of [
+  ".t7-button-label",
+  ".t7-nav-label",
+  ".t7-card",
+  ".t7-table-wrap",
+  ".t7-menu-item-copy",
+  ".t7-activity-feed li > div",
+]) {
+  const start = canonicalStyles.indexOf(`${selector} {`);
+  const body = canonicalStyles.slice(
+    start,
+    canonicalStyles.indexOf("}", start),
+  );
+  assert.ok(
+    start >= 0 && body.includes("min-width: 0"),
+    `${selector} lost its flexible content boundary`,
+  );
+}
+for (const role of [
+  "--t7-gutter-mobile",
+  "--t7-card-safe-inset",
+  "--t7-overlay-safe-inset",
+  "--t7-field-safe-inset",
+  "--t7-rail-reading",
+]) {
+  assert.ok(
+    canonicalStyles.includes(role),
+    `content-safety role is unused: ${role}`,
+  );
+}
 console.log(
   `Canonical consistency verified across ${files.length} UI source files.`,
 );

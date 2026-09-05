@@ -68,7 +68,7 @@
         "type": "PaletteName",
         "defaultValue": "—",
         "required": false,
-        "description": "Selects the base semantic color family for UI and chart defaults; Theme Studio swatches reset primary and accent to this family."
+        "description": "Selects the base action and accent family; categorical chart colors remain independent."
       },
       {
         "name": "primary",
@@ -82,7 +82,7 @@
         "type": "PaletteName",
         "defaultValue": "palette",
         "required": false,
-        "description": "Selects the independent palette source for accent and focus emphasis; defaults to the base palette."
+        "description": "Selects supporting color expression; keyboard and field focus use an independent contrast-tested role."
       },
       {
         "name": "canvas",
@@ -124,7 +124,7 @@
         "type": "number",
         "defaultValue": "1.5s",
         "required": false,
-        "description": "Sets the shared 0.25–2.5 second reveal and interaction duration in 0.25 second steps; semantic motion roles derive from it."
+        "description": "Authored anchor for motion profiles. Short interaction roles are bounded; reveal, chart and choreography roles scale independently."
       },
       {
         "name": "typography",
@@ -196,11 +196,18 @@
   "T7Icon": {
     "status": "implemented",
     "category": "foundation",
-    "purpose": "Render a local, semantic Solar icon without exposing provider identifiers to consumers.",
+    "purpose": "Render a semantic icon from the local Solar registry or the complete bundled Iconify catalog without exposing provider identifiers to product code.",
     "useWhen": ["a known action, state, or object benefits from an icon"],
     "avoidWhen": ["unlabelled icon-only controls", "raw provider names"],
     "recipes": ["all"],
-    "importantProps": ["name", "size", "label"],
+    "importantProps": [
+      "name",
+      "size",
+      "label",
+      "primaryColor",
+      "accentColor",
+      "duotone"
+    ],
     "relatedComponents": ["Button", "IconButton", "NavItem"],
     "source": "packages/icons/src/index.tsx",
     "displayName": "T7 Icon",
@@ -247,6 +254,27 @@
         "defaultValue": "—",
         "required": false,
         "description": "Visible or accessible name for the control."
+      },
+      {
+        "name": "primaryColor",
+        "type": "string",
+        "defaultValue": "inherited color or theme primary",
+        "required": false,
+        "description": "Overrides the solid icon layer with a CSS color value."
+      },
+      {
+        "name": "accentColor",
+        "type": "string",
+        "defaultValue": "theme accent",
+        "required": false,
+        "description": "Overrides the secondary duotone layer with a CSS color value."
+      },
+      {
+        "name": "duotone",
+        "type": "boolean",
+        "defaultValue": "provider style",
+        "required": false,
+        "description": "Forces or disables duotone layer routing for the selected glyph."
       }
     ],
     "example": "<T7Icon />",
@@ -267,7 +295,8 @@
       "leadingIcon",
       "trailingIcon",
       "loading",
-      "disabled"
+      "disabled",
+      "wrap"
     ],
     "relatedComponents": ["IconButton", "ButtonGroup", "ActionFooter"],
     "source": "packages/ui/src/components.tsx",
@@ -316,6 +345,13 @@
         "defaultValue": "\"md\"",
         "required": false,
         "description": "Configures size for Button."
+      },
+      {
+        "name": "wrap",
+        "type": "boolean",
+        "defaultValue": "false",
+        "required": false,
+        "description": "Opt into natural CTA wrapping. Ordinary actions use a bounded single-line label with ellipsis; the full accessible name remains available."
       },
       {
         "name": "leadingIcon",
@@ -3730,7 +3766,7 @@
         "type": "ReactNode",
         "defaultValue": "—",
         "required": false,
-        "description": "Configures sidebar for App Shell."
+        "description": "Persistent navigation on desktop; presented in the canonical left Drawer at widths up to 860px, with destination dismissal and desktop restoration."
       },
       {
         "name": "topbar",
@@ -4080,11 +4116,11 @@
   "TopNavigation": {
     "status": "implemented",
     "category": "navigation",
-    "purpose": "Render compact horizontal navigation for public or commerce shells.",
+    "purpose": "Render horizontal navigation or a safe-area-aware bottom bar with reserved content space.",
     "useWhen": ["catalog, content, or lightweight application headers"],
     "avoidWhen": ["a dense operational sidebar is the primary navigation"],
     "recipes": ["catalog", "ebook-reader"],
-    "importantProps": ["items", "leading", "trailing", "label"],
+    "importantProps": ["items", "leading", "trailing", "label", "placement"],
     "relatedComponents": ["AppShell", "MobileSidebar"],
     "source": "packages/ui/src/navigation.tsx",
     "displayName": "Top Navigation",
@@ -4140,6 +4176,13 @@
         "description": "Configures trailing for Top Navigation."
       },
       {
+        "name": "placement",
+        "type": "top | bottom",
+        "defaultValue": "top",
+        "required": false,
+        "description": "Bottom reserves its measured height, respects device safe areas and supports three to five short primary destinations. Item controls/expanded connect a menu trigger to its dialog."
+      },
+      {
         "name": "label",
         "type": "string",
         "defaultValue": "—",
@@ -4147,7 +4190,7 @@
         "description": "Visible or accessible name for the control."
       }
     ],
-    "example": "<TopNavigation />",
+    "example": "<TopNavigation placement=\"bottom\" label=\"Mobile shortcuts\" items={items} />",
     "alternativeTo": [],
     "composesWith": ["AppShell", "MobileSidebar"],
     "usedByPatterns": ["catalog", "ebook-reader", "cart"]
@@ -4597,7 +4640,7 @@
   "MilestoneTracker": {
     "status": "implemented",
     "category": "data",
-    "purpose": "Show a bounded operational journey with selectable circular progress nodes and contextual detail.",
+    "purpose": "Show a bounded operational workflow with selectable stages, integrated progress, and contextual detail.",
     "useWhen": [
       "a tracker needs visible milestones, progress percentages, and detail on selection",
       "customer, delivery, service, or approval work moves through a short shared flow"
@@ -4615,13 +4658,7 @@
       "selectedId",
       "onSelectedIdChange"
     ],
-    "relatedComponents": [
-      "Progress",
-      "CircularProgress",
-      "Stepper",
-      "StatusChip",
-      "KeyValueList"
-    ],
+    "relatedComponents": ["Progress", "Stepper", "StatusChip", "KeyValueList"],
     "source": "packages/ui/src/data-display.tsx",
     "displayName": "Milestone Tracker",
     "level": "component",
@@ -4638,15 +4675,15 @@
     ],
     "accessibility": [
       "Expose the journey as a labelled navigation region with an ordered list of keyboard-reachable buttons.",
-      "Expose each percentage through visible text and progress-ring semantics, with the selected milestone detail linked from its control.",
+      "Expose each percentage through visible text and progressbar semantics, with the selected stage detail linked from its control.",
       "Keep selection feedback in a labelled live detail region and preserve visible focus."
     ],
     "responsive": [
       "Keep the milestone sequence inside a bounded horizontal scroll region when the available width is narrow.",
-      "Preserve the circular node, connector, label, and detail contracts without introducing a mobile-only component."
+      "Preserve the ordered stage, state, progress, and detail contracts without introducing a mobile-only component."
     ],
     "motion": [
-      "Animate ring progress and selected detail changes with shared transition variables.",
+      "Animate workflow-stage entry and selected detail changes with shared transition variables.",
       "Respect prefers-reduced-motion."
     ],
     "tokens": [
@@ -4871,11 +4908,11 @@
   "Card": {
     "status": "implemented",
     "category": "surface",
-    "purpose": "Contain one visual record or concise grouped summary with semantic surface tones.",
+    "purpose": "Contain one visual record or concise grouped summary with bounded semantic surface emphasis.",
     "useWhen": ["small summary blocks and visual browse items"],
     "avoidWhen": ["large comparable record sets"],
     "recipes": ["dashboard", "catalog", "marketing-home"],
-    "importantProps": ["tone", "children"],
+    "importantProps": ["emphasis", "tone", "colorway", "children"],
     "relatedComponents": ["CardHeader", "CardContent", "CardFooter"],
     "source": "packages/ui/src/components.tsx",
     "displayName": "Card",
@@ -4903,17 +4940,32 @@
     "tokens": [
       "surface",
       "surface-raised",
+      "surface-emphasis",
       "border",
       "radius-card",
       "shadow-card"
     ],
     "api": [
       {
+        "name": "emphasis",
+        "type": "plain | soft | expressive | solid | inverse",
+        "defaultValue": "plain",
+        "required": false,
+        "description": "Applies bounded emphasis while preserving the neutral page canvas."
+      },
+      {
         "name": "tone",
-        "type": "string",
+        "type": "CardTone",
         "defaultValue": "—",
         "required": false,
-        "description": "Configures tone for Card."
+        "description": "Selects the semantic object colour when emphasis requires it; legacy tones remain supported."
+      },
+      {
+        "name": "colorway",
+        "type": "1 | 2 | 3 | 4 | 5",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Selects a categorical series for soft, expressive or solid emphasis. Solid uses a centrally paired foreground; tone retains semantic meaning."
       },
       {
         "name": "children",
@@ -5094,7 +5146,7 @@
     "useWhen": ["a route section needs a named surface role"],
     "avoidWhen": ["a contained visual record should use Card"],
     "recipes": ["auth", "marketing-home", "content-detail"],
-    "importantProps": ["as", "tone", "children"],
+    "importantProps": ["as", "emphasis", "tone", "colorway", "children"],
     "relatedComponents": ["Panel", "Card", "Section"],
     "source": "packages/ui/src/layout.tsx",
     "displayName": "Surface",
@@ -5122,6 +5174,7 @@
     "tokens": [
       "surface",
       "surface-raised",
+      "surface-emphasis",
       "border",
       "radius-card",
       "shadow-card"
@@ -5135,11 +5188,25 @@
         "description": "Configures as for Surface."
       },
       {
+        "name": "emphasis",
+        "type": "plain | soft | expressive | solid | inverse",
+        "defaultValue": "plain",
+        "required": false,
+        "description": "Applies a bounded surface treatment without tinting the surrounding canvas."
+      },
+      {
         "name": "tone",
         "type": "string",
         "defaultValue": "—",
         "required": false,
-        "description": "Configures tone for Surface."
+        "description": "Selects the semantic colour used by a non-plain emphasis treatment."
+      },
+      {
+        "name": "colorway",
+        "type": "1 | 2 | 3 | 4 | 5",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Selects a categorical series for soft, expressive or solid emphasis. Solid uses a centrally paired foreground; tone retains semantic meaning."
       },
       {
         "name": "children",
@@ -6084,7 +6151,7 @@
         "type": "Column[]",
         "defaultValue": "—",
         "required": true,
-        "description": "Column definitions used to render structured data."
+        "description": "Column definitions used to render structured data; overflow optionally selects wrap, nowrap, ellipsis, or a two-line clamp. Use nowrap for numeric/action columns, and provide a detail disclosure for clipped text. Stacked records expose the full value."
       },
       {
         "name": "rows",
@@ -6557,17 +6624,30 @@
   "MetricCard": {
     "status": "implemented",
     "category": "data",
-    "purpose": "Show one truthful decision signal with optional change and context.",
-    "useWhen": ["one metric leads to a next action"],
-    "avoidWhen": ["decorative dashboard filling"],
+    "purpose": "Show one truthful decision signal with structured comparison, progress, chart, action, and footer slots.",
+    "useWhen": [
+      "one metric leads to a next action and may need compact historical or target context"
+    ],
+    "avoidWhen": [
+      "decorative dashboard filling",
+      "the chart needs axes, inspection, or multi-series comparison"
+    ],
     "recipes": ["dashboard", "report"],
     "importantProps": [
       "title",
       "value",
       "description",
+      "trend",
+      "chart",
+      "chartPlacement",
+      "progress",
+      "action",
+      "footer",
       "change",
       "icon",
-      "tone"
+      "emphasis",
+      "tone",
+      "colorway"
     ],
     "relatedComponents": ["KPICluster", "TrendIndicator", "Sparkline"],
     "source": "packages/ui/src/data-display.tsx",
@@ -6582,12 +6662,13 @@
       "empty or unavailable when applicable"
     ],
     "accessibility": [
-      "Expose a stable accessible name and use the semantic element for the interaction.",
-      "Preserve visible focus, keyboard reachability, and disabled or pending state semantics."
+      "Associates the metric label and value through dt and dd semantics.",
+      "Give every chart a concise accessible label and every icon-only action its own name.",
+      "Do not rely on trend colour alone; TrendIndicator exposes direction text to assistive technology."
     ],
     "responsive": [
-      "Reflows within constrained containers without changing the content contract.",
-      "Retains shared control geometry and touch-target minimums."
+      "Value and trend wrap without clipping while bottom and inline charts retain bounded geometry.",
+      "Chart height, padding, direct icon sizing, and trend geometry follow density-aware KPI tokens."
     ],
     "motion": [
       "Uses shared duration and easing variables for state transitions.",
@@ -6595,11 +6676,16 @@
     ],
     "tokens": [
       "surface",
+      "surface-emphasis",
       "border",
-      "selected",
-      "selected-hover",
       "muted-foreground",
-      "radius-control"
+      "radius-control",
+      "kpi-padding",
+      "kpi-gap",
+      "kpi-content-gap",
+      "kpi-icon-container",
+      "kpi-icon-size",
+      "kpi-chart-height"
     ],
     "api": [
       {
@@ -6624,11 +6710,53 @@
         "description": "Supporting context announced with the primary content."
       },
       {
+        "name": "trend",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Dedicated directional comparison slot, normally a TrendIndicator."
+      },
+      {
+        "name": "chart",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Compact historical cue, normally a Sparkline."
+      },
+      {
+        "name": "chartPlacement",
+        "type": "bottom | inline",
+        "defaultValue": "bottom",
+        "required": false,
+        "description": "Places the chart at the card base or beside the value and supporting context."
+      },
+      {
+        "name": "progress",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Goal or capacity cue, normally the canonical Progress component."
+      },
+      {
+        "name": "action",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Optional action aligned with the metric label and icon."
+      },
+      {
+        "name": "footer",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Separated supporting detail or link below the metric anatomy."
+      },
+      {
         "name": "change",
         "type": "ReactNode",
         "defaultValue": "—",
         "required": false,
-        "description": "Configures change for Metric Card."
+        "description": "Backwards-compatible comparison slot; prefer trend for new work."
       },
       {
         "name": "icon",
@@ -6638,11 +6766,25 @@
         "description": "Semantic local icon name."
       },
       {
+        "name": "emphasis",
+        "type": "plain | soft | expressive | solid | inverse",
+        "defaultValue": "plain",
+        "required": false,
+        "description": "Applies the shared bounded surface treatment to this metric."
+      },
+      {
         "name": "tone",
         "type": "string",
         "defaultValue": "—",
         "required": false,
-        "description": "Configures tone for Metric Card."
+        "description": "Selects the semantic colour when emphasis is explicit."
+      },
+      {
+        "name": "colorway",
+        "type": "1 | 2 | 3 | 4 | 5",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Selects a categorical series for soft, expressive or solid emphasis. Solid uses a centrally paired foreground; tone retains semantic meaning."
       }
     ],
     "example": "<MetricCard />",
@@ -6653,12 +6795,32 @@
   "KPICluster": {
     "status": "implemented",
     "category": "data",
-    "purpose": "Present a small related set of truthful operational metrics.",
-    "useWhen": ["a route needs several decision-relevant signals"],
+    "purpose": "Present a small related set of truthful metrics with consistent value, trend, progress, chart, action, and footer anatomy.",
+    "useWhen": [
+      "a route needs several decision-relevant signals that must scan as one group"
+    ],
     "avoidWhen": ["no actual data is available"],
     "recipes": ["dashboard", "entity-list", "report"],
-    "importantProps": ["items", "label"],
-    "relatedComponents": ["MetricCard", "TrendIndicator"],
+    "importantProps": [
+      "items",
+      "items[].emphasis",
+      "items[].tone",
+      "items[].colorway",
+      "items[].trend",
+      "items[].chart",
+      "items[].chartPlacement",
+      "items[].progress",
+      "label",
+      "variant",
+      "orientation",
+      "columns"
+    ],
+    "relatedComponents": [
+      "MetricCard",
+      "TrendIndicator",
+      "Sparkline",
+      "Progress"
+    ],
     "source": "packages/ui/src/components.tsx",
     "displayName": "KPI Cluster",
     "level": "component",
@@ -6671,12 +6833,12 @@
       "empty or unavailable when applicable"
     ],
     "accessibility": [
-      "Expose a stable accessible name and use the semantic element for the interaction.",
-      "Preserve visible focus, keyboard reachability, and disabled or pending state semantics."
+      "Expose a stable group label and preserve dt and dd semantics inside every KPI item.",
+      "Give charts and icon-only actions explicit accessible names; never encode status in colour alone."
     ],
     "responsive": [
-      "Reflows within constrained containers without changing the content contract.",
-      "Retains shared control geometry and touch-target minimums."
+      "Horizontal groups collapse to two columns and visual-heavy KPI groups collapse to one column on narrow screens.",
+      "Vertical orientation retains separators and reading order without duplicating the component family."
     ],
     "motion": [
       "Uses shared duration and easing variables for state transitions.",
@@ -6684,11 +6846,16 @@
     ],
     "tokens": [
       "surface",
+      "surface-emphasis",
       "border",
-      "selected",
-      "selected-hover",
       "muted-foreground",
-      "radius-control"
+      "radius-control",
+      "kpi-padding",
+      "kpi-gap",
+      "kpi-content-gap",
+      "kpi-icon-container",
+      "kpi-icon-size",
+      "kpi-chart-height"
     ],
     "api": [
       {
@@ -6699,16 +6866,86 @@
         "description": "Structured items rendered by the contract."
       },
       {
+        "name": "items[].emphasis",
+        "type": "plain | soft | expressive | solid | inverse",
+        "defaultValue": "plain",
+        "required": false,
+        "description": "Applies the bounded surface treatment to one KPI item."
+      },
+      {
+        "name": "items[].tone",
+        "type": "neutral | primary | accent | success | warning | danger | info",
+        "defaultValue": "neutral",
+        "required": false,
+        "description": "Selects the semantic status or non-status accent for an explicitly emphasized item."
+      },
+      {
+        "name": "items[].colorway",
+        "type": "1 | 2 | 3 | 4 | 5",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Selects a categorical series for soft, expressive or solid emphasis. Solid uses a centrally paired foreground; tone retains semantic meaning."
+      },
+      {
+        "name": "items[].trend",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Directional comparison slot for one KPI item."
+      },
+      {
+        "name": "items[].chart",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Compact historical cue for one KPI item."
+      },
+      {
+        "name": "items[].chartPlacement",
+        "type": "bottom | inline",
+        "defaultValue": "bottom",
+        "required": false,
+        "description": "Places one chart at the item base or beside its value and supporting context."
+      },
+      {
+        "name": "items[].progress",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Goal or capacity cue for one KPI item."
+      },
+      {
         "name": "label",
         "type": "string",
         "defaultValue": "—",
         "required": false,
         "description": "Visible or accessible name for the control."
+      },
+      {
+        "name": "variant",
+        "type": "segmented | cards",
+        "defaultValue": "segmented",
+        "required": false,
+        "description": "Keeps related metrics joined or presents them as individually bounded KPI cards."
+      },
+      {
+        "name": "orientation",
+        "type": "horizontal | vertical",
+        "defaultValue": "horizontal",
+        "required": false,
+        "description": "Chooses a horizontal responsive group or an explicit vertical stack."
+      },
+      {
+        "name": "columns",
+        "type": "1 | 2 | 3 | 4 | 5",
+        "defaultValue": "derived from item count, capped at 4",
+        "required": false,
+        "description": "Sets the maximum wide-layout column count while package breakpoints retain responsive ownership."
       }
     ],
     "example": "<KPICluster />",
     "alternativeTo": [],
-    "composesWith": ["MetricCard", "TrendIndicator"],
+    "composesWith": ["MetricCard", "TrendIndicator", "Sparkline", "Progress"],
     "usedByPatterns": ["dashboard", "entity-list", "approval-queue", "report"]
   },
   "ActivityFeed": {
@@ -7544,7 +7781,13 @@
       "irreversible action lacks confirmation"
     ],
     "recipes": ["entity-list", "approval-queue"],
-    "importantProps": ["selectedCount", "actions", "onClear", "noun"],
+    "importantProps": [
+      "selectedCount",
+      "actions",
+      "onClear",
+      "noun",
+      "reserveSpace"
+    ],
     "relatedComponents": ["DataTable", "AlertDialog"],
     "source": "packages/ui/src/components.tsx",
     "displayName": "Bulk Action Bar",
@@ -7605,6 +7848,13 @@
         "defaultValue": "—",
         "required": false,
         "description": "Configures noun for Bulk Action Bar."
+      },
+      {
+        "name": "reserveSpace",
+        "type": "boolean",
+        "defaultValue": "false",
+        "required": false,
+        "description": "Keeps the bar's layout slot stable when the selection is empty."
       }
     ],
     "example": "<BulkActionBar />",
@@ -8354,11 +8604,18 @@
   "Alert": {
     "status": "implemented",
     "category": "feedback",
-    "purpose": "Show persistent in-context information, success, warning, or danger feedback.",
+    "purpose": "Show persistent in-context feedback as a semantic callout with bounded emphasis.",
     "useWhen": ["a message should remain visible until resolved or dismissed"],
     "avoidWhen": ["transient confirmation"],
     "recipes": ["entity-form", "settings", "checkout"],
-    "importantProps": ["tone", "title", "description", "action", "onDismiss"],
+    "importantProps": [
+      "emphasis",
+      "tone",
+      "title",
+      "description",
+      "action",
+      "onDismiss"
+    ],
     "relatedComponents": ["Toast", "StateView"],
     "source": "packages/ui/src/feedback.tsx",
     "displayName": "Alert",
@@ -8388,10 +8645,18 @@
       "warning",
       "danger",
       "info",
+      "surface-emphasis",
       "surface-subtle",
       "motion"
     ],
     "api": [
+      {
+        "name": "emphasis",
+        "type": "plain | soft | expressive | solid | inverse",
+        "defaultValue": "soft",
+        "required": false,
+        "description": "Chooses the canonical callout surface treatment; soft is the normal feedback state."
+      },
       {
         "name": "tone",
         "type": "string",
@@ -9061,11 +9326,21 @@
   "TrendIndicator": {
     "status": "implemented",
     "category": "chart",
-    "purpose": "Show compact up, down, or flat directional change.",
+    "purpose": "Show compact directional change while keeping movement separate from business sentiment.",
     "useWhen": ["a metric has a truthful comparative direction"],
-    "avoidWhen": ["a full chart is needed to explain a trend"],
+    "avoidWhen": [
+      "a full chart is needed to explain a trend",
+      "the comparison direction or period is not supported by data"
+    ],
     "recipes": ["dashboard", "report"],
-    "importantProps": ["direction", "value", "label"],
+    "importantProps": [
+      "direction",
+      "sentiment",
+      "value",
+      "context",
+      "variant",
+      "label"
+    ],
     "relatedComponents": ["MetricCard", "Sparkline"],
     "source": "packages/ui/src/charts.tsx",
     "displayName": "Trend Indicator",
@@ -9079,8 +9354,8 @@
       "empty or unavailable when applicable"
     ],
     "accessibility": [
-      "Expose a stable accessible name and use the semantic element for the interaction.",
-      "Preserve visible focus, keyboard reachability, and disabled or pending state semantics."
+      "Announces increased, decreased, or unchanged direction even when no explicit label is supplied.",
+      "Use label to explain domain meaning when direction and sentiment differ."
     ],
     "responsive": [
       "Reflows within constrained containers without changing the content contract.",
@@ -9096,8 +9371,14 @@
       "chart-3",
       "chart-4",
       "chart-5",
+      "success",
+      "warning",
+      "danger",
+      "muted-foreground",
       "surface",
-      "border"
+      "border",
+      "kpi-trend-padding-block",
+      "kpi-trend-padding-inline"
     ],
     "api": [
       {
@@ -9108,11 +9389,32 @@
         "description": "Configures direction for Trend Indicator."
       },
       {
+        "name": "sentiment",
+        "type": "positive | negative | neutral | warning",
+        "defaultValue": "derived from direction",
+        "required": false,
+        "description": "Controls semantic colour independently from the direction glyph."
+      },
+      {
         "name": "value",
         "type": "string | number | boolean",
         "defaultValue": "—",
         "required": false,
         "description": "Current controlled value."
+      },
+      {
+        "name": "context",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Compact comparison window or qualifier such as vs 30d."
+      },
+      {
+        "name": "variant",
+        "type": "plain | soft",
+        "defaultValue": "plain",
+        "required": false,
+        "description": "Chooses inline text or a restrained chip treatment."
       },
       {
         "name": "label",
@@ -9134,7 +9436,7 @@
     "useWhen": ["a metric needs a small historical pattern"],
     "avoidWhen": ["axes, labels, and detailed comparison matter"],
     "recipes": ["dashboard", "report"],
-    "importantProps": ["values", "label"],
+    "importantProps": ["values", "label", "colorway", "tone"],
     "relatedComponents": ["TrendIndicator", "LineChart"],
     "source": "packages/ui/src/charts.tsx",
     "displayName": "Sparkline",
@@ -9148,16 +9450,16 @@
       "empty or unavailable when applicable"
     ],
     "accessibility": [
-      "Expose a stable accessible name and use the semantic element for the interaction.",
-      "Preserve visible focus, keyboard reachability, and disabled or pending state semantics."
+      "Requires a concise accessible label that describes the historical series.",
+      "Remains a non-interactive summary cue; use a full chart when point inspection matters."
     ],
     "responsive": [
-      "Reflows within constrained containers without changing the content contract.",
-      "Retains shared control geometry and touch-target minimums."
+      "Fills its bounded chart slot while preserving the parent card inset.",
+      "Uses non-scaling strokes so the compact line remains optically stable across widths."
     ],
     "motion": [
-      "Uses shared duration and easing variables for state transitions.",
-      "Respects prefers-reduced-motion."
+      "Reveals the complete line, fill, and endpoint through one left-to-right clip so the path never appears fragmented.",
+      "Respects prefers-reduced-motion and renders the complete series immediately."
     ],
     "tokens": [
       "chart-1",
@@ -9165,16 +9467,21 @@
       "chart-3",
       "chart-4",
       "chart-5",
+      "success",
+      "warning",
+      "danger",
+      "info",
       "surface",
-      "border"
+      "border",
+      "kpi-chart-height"
     ],
     "api": [
       {
         "name": "values",
-        "type": "string[]",
+        "type": "number[]",
         "defaultValue": "—",
-        "required": false,
-        "description": "Current set of selected values."
+        "required": true,
+        "description": "Ordered finite values used to calculate the compact historical path."
       },
       {
         "name": "label",
@@ -9182,6 +9489,20 @@
         "defaultValue": "—",
         "required": false,
         "description": "Visible or accessible name for the control."
+      },
+      {
+        "name": "colorway",
+        "type": "1 | 2 | 3 | 4 | 5",
+        "defaultValue": "1",
+        "required": false,
+        "description": "Selects a categorical series for soft, expressive or solid emphasis. Solid uses a centrally paired foreground; tone retains semantic meaning."
+      },
+      {
+        "name": "tone",
+        "type": "chart | current | success | warning | danger | info",
+        "defaultValue": "chart",
+        "required": false,
+        "description": "Selects a semantic colour or inherits currentColor on an emphasized surface."
       }
     ],
     "example": "<Sparkline />",

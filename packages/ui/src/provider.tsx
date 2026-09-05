@@ -3,6 +3,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type CSSProperties,
   type HTMLAttributes,
@@ -160,12 +161,20 @@ export function Ten4SevenProvider({
   const recipeConfig = recipe ? themeRecipeToLegacyConfig(recipe) : undefined;
   const themeConfig =
     themeInput && typeof themeInput === "object" ? themeInput : undefined;
-  const [systemAppearance, setSystemAppearance] = useState(() =>
-    resolveAppearance("system"),
-  );
+  // Keep the server render and the first client render deterministic. The
+  // system media query is resolved in the effect below after hydration.
+  const [systemAppearance, setSystemAppearance] =
+    useState<Exclude<Appearance, "system">>("light");
+  // Persisted preferences are deliberately hydrated after the first render.
+  // Reading localStorage in the state initializer would make the server
+  // render `{}` while a browser with an existing key rendered user values,
+  // which is an avoidable App Router hydration mismatch.
   const [persistedOverrides, setPersistedOverrides] = useState<
     Partial<ThemeConfig>
-  >(() => readThemeOverrides(persistenceKey));
+  >({});
+  const hydratedPersistenceKey = useRef<string | undefined>(
+    persistenceKey ? undefined : "",
+  );
 
   const mergedConfig = useMemo<ThemeConfig>(() => {
     const baseConfig: ThemeConfig = {
@@ -229,14 +238,30 @@ export function Ten4SevenProvider({
   );
 
   useEffect(() => {
-    if (!persistenceKey) return;
-    if (Object.keys(persistedOverrides).length === 0)
-      window.localStorage.removeItem(persistenceKey);
-    else
-      window.localStorage.setItem(
-        persistenceKey,
-        JSON.stringify(persistedOverrides),
-      );
+    if (!persistenceKey) {
+      hydratedPersistenceKey.current = "";
+      return;
+    }
+
+    // The first effect for a key reads before any write effect can run. This
+    // preserves the stored value and applies it only after hydration.
+    if (hydratedPersistenceKey.current !== persistenceKey) {
+      hydratedPersistenceKey.current = persistenceKey;
+      setPersistedOverrides(readThemeOverrides(persistenceKey));
+      return;
+    }
+
+    try {
+      if (Object.keys(persistedOverrides).length === 0)
+        window.localStorage.removeItem(persistenceKey);
+      else
+        window.localStorage.setItem(
+          persistenceKey,
+          JSON.stringify(persistedOverrides),
+        );
+    } catch {
+      // Storage can be unavailable in privacy-restricted browser contexts.
+    }
   }, [persistedOverrides, persistenceKey]);
 
   useEffect(() => {
@@ -273,6 +298,7 @@ export function Ten4SevenProvider({
       buildThemeVariables(theme, {
         contrast: runtimePreferences.contrast,
         motion: runtimePreferences.motion,
+        motionProfile: recipe?.profile.motion.profile,
         recipe: recipe?.id,
         expression: recipe?.expression,
         composition: recipe?.composition,
@@ -414,6 +440,8 @@ export function ThemeScope({
       buildThemeVariables(theme, {
         contrast: resolvedPreferences.contrast,
         motion: resolvedPreferences.motion,
+        motionProfile: (recipe ?? getThemeRecipe(parent.recipe))?.profile.motion
+          .profile,
         recipe: recipe?.id ?? parent.recipe,
         expression: recipe?.expression,
         composition: recipe?.composition ?? parent.composition,

@@ -36,6 +36,13 @@ const densityVariables = [
   "--t7-menu-padding-block",
   "--t7-overlay-padding",
   "--t7-table-cell-padding-inline",
+  "--t7-header-height",
+  "--t7-grid-gap",
+  "--t7-section-tight",
+  "--t7-cluster-default",
+  "--t7-cluster-loose",
+  "--t7-kpi-icon-size",
+  "--t7-kpi-chart-height",
 ];
 
 function declarationBlock(selector, variables) {
@@ -52,6 +59,7 @@ function recipeBlock(recipe, mode) {
     recipe: recipe.id,
     expression: recipe.expression,
     composition: recipe.composition,
+    motionProfile: recipe.profile.motion.profile,
   });
   return declarationBlock(
     `:where([data-t7-theme="${recipe.id}"][data-t7-mode="${mode}"])`,
@@ -61,10 +69,17 @@ function recipeBlock(recipe, mode) {
 
 function densityBlock(density) {
   const variables = buildThemeVariables(resolveTheme({ density }));
-  return declarationBlock(
-    `:where([data-t7-density="${density}"])`,
-    Object.fromEntries(densityVariables.map((name) => [name, variables[name]])),
-  );
+  return declarationBlock(`:where([data-t7-density="${density}"])`, {
+    ...Object.fromEntries(
+      densityVariables.map((name) => [name, variables[name]]),
+    ),
+    // Radius stays authored by the recipe; density only selects its data ceiling.
+    "--t7-radius-data": `min(var(--t7-radius-panel), ${density === "compact" || density === "dense" ? 10 : 16}px)`,
+    "--t7-card-safe-inset":
+      "max(var(--t7-card-padding), var(--t7-card-corner-clearance))",
+    "--t7-overlay-safe-inset":
+      "max(var(--t7-overlay-padding), var(--t7-panel-corner-clearance))",
+  });
 }
 
 function reducedMotionBlock() {
@@ -96,7 +111,9 @@ export function renderThemeRecipeCss() {
       "--t7-contrast": "more",
       "--t7-border-hsl": "var(--t7-border-strong-hsl)",
       "--t7-muted-foreground-hsl": "var(--t7-muted-foreground-strong-hsl)",
-      "--t7-focus-ring": "0 0 0 4px hsl(var(--t7-focus-hsl) / 0.42)",
+      "--t7-focus-width": "3px",
+      "--t7-chart-label-hsl": "var(--t7-muted-foreground-strong-hsl)",
+      "--t7-chart-grid-hsl": "var(--t7-border-strong-hsl)",
     }),
     "/* An explicit reduced preference complements the operating-system media query. */",
     reducedMotionBlock(),

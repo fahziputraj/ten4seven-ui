@@ -11,7 +11,6 @@ import {
   AppliedFilters,
   ApprovalPanel,
   AspectRatio,
-  Avatar,
   AvatarGroup,
   BarChart,
   Badge,
@@ -35,7 +34,6 @@ import {
   CommandMenu,
   ContextMenu,
   DataTable,
-  DataTableColumnPicker,
   DatePicker,
   DateRangePicker,
   DateTimeInput,
@@ -58,6 +56,7 @@ import {
   Image,
   Input,
   KeyValueList,
+  KPICluster,
   LineChart,
   MediaFrame,
   MetricCard,
@@ -1074,10 +1073,7 @@ export function ComponentPreview({
           </TableBody>
         </Table>,
       );
-    if (
-      component.displayName === "Metric Card" ||
-      component.displayName === "KPI Cluster"
-    )
+    if (component.displayName === "Metric Card")
       return frame(
         <div className="catalog-preview-metrics">
           <MetricCard
@@ -1088,11 +1084,50 @@ export function ComponentPreview({
           />
           <MetricCard
             change={<TrendIndicator direction="up" value="8.4%" />}
+            colorway={2}
+            emphasis="solid"
             icon="analytics"
             title="Available units"
+            tone="success"
             value="48,920"
           />
         </div>,
+      );
+    if (component.displayName === "KPI Cluster")
+      return frame(
+        <KPICluster
+          items={[
+            {
+              colorway: 1,
+              emphasis: "solid",
+              icon: "analytics",
+              label: "Active signals",
+              note: "Across the current window",
+              tone: "info",
+              value: "24",
+            },
+            {
+              colorway: 2,
+              emphasis: "solid",
+              icon: "calendar",
+              label: "Due soon",
+              note: "Next accountable action",
+              tone: "info",
+              value: "7",
+            },
+            {
+              colorway: 4,
+              emphasis: "solid",
+              icon: "check",
+              label: "Healthy",
+              note: "Within target",
+              tone: "success",
+              value: "91%",
+            },
+          ]}
+          label="KPI card treatment preview"
+          variant="cards"
+        />,
       );
     if (
       component.displayName === "Avatar" ||

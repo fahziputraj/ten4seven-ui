@@ -46,8 +46,8 @@ function hslToRgb(value) {
   ];
 }
 
-function relativeLuminance(hsl) {
-  return hslToRgb(hsl)
+function relativeLuminanceFromRgb(rgb) {
+  return rgb
     .map((channel) =>
       channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4,
     )
@@ -56,6 +56,10 @@ function relativeLuminance(hsl) {
         luminance + channel * [0.2126, 0.7152, 0.0722][index],
       0,
     );
+}
+
+function relativeLuminance(hsl) {
+  return relativeLuminanceFromRgb(hslToRgb(hsl));
 }
 
 function contrastRatio(background, foreground) {
@@ -71,6 +75,19 @@ function assertContrast(label, variables, background, foreground) {
   assert.ok(
     ratio >= requiredRatio,
     `${label}: ${background} / ${foreground} is ${ratio.toFixed(2)}:1; expected at least ${requiredRatio}:1`,
+  );
+  return ratio;
+}
+
+function assertWhiteHighlightContrast(label, variables, background) {
+  const highlightAlpha = 0.08;
+  const highlightedRgb = hslToRgb(variables[background]).map(
+    (channel) => channel * (1 - highlightAlpha) + highlightAlpha,
+  );
+  const ratio = 1.05 / (relativeLuminanceFromRgb(highlightedRgb) + 0.05);
+  assert.ok(
+    ratio >= requiredRatio,
+    `${label}: ${background} under the ${highlightAlpha} white highlight is ${ratio.toFixed(2)}:1; expected at least ${requiredRatio}:1`,
   );
   return ratio;
 }
@@ -91,6 +108,36 @@ const pairs = [
   ],
   ["field text", "--t7-field-background-hsl", "--t7-field-foreground-hsl"],
   ["selected foreground", "--t7-selected-hsl", "--t7-selected-foreground-hsl"],
+  [
+    "solid surface foreground",
+    "--t7-surface-emphasis-solid-hsl",
+    "--t7-surface-emphasis-solid-foreground-hsl",
+  ],
+  [
+    "solid success foreground",
+    "--t7-surface-emphasis-solid-success-hsl",
+    "--t7-surface-emphasis-solid-success-foreground-hsl",
+  ],
+  [
+    "solid warning foreground",
+    "--t7-surface-emphasis-solid-warning-hsl",
+    "--t7-surface-emphasis-solid-warning-foreground-hsl",
+  ],
+  [
+    "solid danger foreground",
+    "--t7-surface-emphasis-solid-danger-hsl",
+    "--t7-surface-emphasis-solid-danger-foreground-hsl",
+  ],
+  [
+    "solid info foreground",
+    "--t7-surface-emphasis-solid-info-hsl",
+    "--t7-surface-emphasis-solid-info-foreground-hsl",
+  ],
+  ...[1, 2, 3, 4, 5].map((index) => [
+    `solid chart ${index} foreground`,
+    `--t7-surface-emphasis-solid-chart-${index}-hsl`,
+    "--t7-surface-emphasis-solid-chart-foreground-hsl",
+  ]),
 ];
 
 const results = [];
@@ -111,6 +158,17 @@ for (const recipeName of THEME_RECIPE_NAMES) {
           variables,
           background,
           foreground,
+        ),
+        recipe: recipeName,
+      });
+    for (const index of [1, 2, 3, 4, 5])
+      results.push({
+        appearance,
+        pair: `solid chart ${index} highlighted foreground`,
+        ratio: assertWhiteHighlightContrast(
+          `${recipeName} ${appearance} solid chart ${index} highlighted foreground`,
+          variables,
+          `--t7-surface-emphasis-solid-chart-${index}-hsl`,
         ),
         recipe: recipeName,
       });

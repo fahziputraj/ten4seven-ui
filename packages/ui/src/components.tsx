@@ -13,9 +13,10 @@ import {
   type SelectHTMLAttributes,
 } from "react";
 import type * as React from "react";
+import type { SurfaceExpression } from "@ten4seven/contracts";
 
 import { T7Icon, type IconName } from "@ten4seven/icons";
-import type { TypographyRole } from "@ten4seven/tokens";
+import { overlayGeometry, type TypographyRole } from "@ten4seven/tokens";
 
 import {
   FloatingPortal,
@@ -24,6 +25,7 @@ import {
   useNativeDialog,
 } from "./overlay";
 import { updatePointerPosition } from "./utils";
+import { IconButton } from "./actions";
 
 function cx(...values: Array<string | false | null | undefined>) {
   return values.filter(Boolean).join(" ");
@@ -100,6 +102,8 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   leadingIcon?: IconName;
   trailingIcon?: IconName;
   loading?: boolean;
+  /** Intentionally wrap a long CTA; ordinary actions stay bounded single-line. */
+  wrap?: boolean;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -114,6 +118,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       onPointerMove,
       trailingIcon,
       type = "button",
+      wrap = false,
       ...props
     },
     ref,
@@ -126,6 +131,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         data-intent={intent}
         data-loading={loading || undefined}
         data-size={size}
+        data-wrap={wrap || undefined}
         aria-busy={loading || undefined}
         disabled={props.disabled || loading}
         onPointerMove={(event) => {
@@ -143,7 +149,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ) : leadingIcon ? (
           <T7Icon name={leadingIcon} size={16} />
         ) : null}
-        <span>{children}</span>
+        <span className="t7-button-label">{children}</span>
         {!loading && trailingIcon ? (
           <T7Icon name={trailingIcon} size={16} />
         ) : null}
@@ -217,6 +223,22 @@ export function Typography({
   );
 }
 
+/**
+ * Bounded visual emphasis for a contained surface. It intentionally leaves the
+ * application canvas neutral: colour is reserved for the object that needs
+ * attention, confirmation, or inversion.
+ */
+export type SurfaceEmphasis = SurfaceExpression;
+
+/** Semantic object colour used only when a surface opts into emphasis. */
+export type SurfaceTone =
+  "neutral" | "primary" | "accent" | "success" | "warning" | "danger" | "info";
+
+/** Opt-in series hue shared with the active Theme Studio chart colorway. */
+export type SurfaceColorway = 1 | 2 | 3 | 4 | 5;
+
+export type CardTone = "default" | "subtle" | SurfaceTone;
+
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * Opt in to elevated pointer feedback for cards that are actual actions.
@@ -226,13 +248,23 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
    * that descendant usable and disables its own button semantics instead of
    * creating an invalid nested-interactive tree.
    */
+  /** Select an active Theme Studio chart-series hue for solid categorical emphasis. */
+  colorway?: SurfaceColorway;
+  /** Opt in to a bounded surface treatment; the default remains plain. */
+  emphasis?: SurfaceEmphasis;
   interactive?: boolean;
-  tone?: "default" | "subtle" | "accent" | "success";
+  /**
+   * Backwards-compatible legacy tones remain available. New semantic tones
+   * take visual effect with an explicit `emphasis` treatment.
+   */
+  tone?: CardTone;
 }
 
 export function Card({
   children,
   className,
+  colorway,
+  emphasis,
   interactive,
   onClick,
   onKeyDown,
@@ -284,10 +316,12 @@ export function Card({
       {...props}
       ref={cardRef}
       className={cx("t7-card", className)}
+      data-colorway={colorway}
       data-interactive={isInteractive ? "true" : undefined}
       data-actionable={
         isActionable ? (canActivate ? "true" : "blocked") : undefined
       }
+      data-emphasis={emphasis}
       data-tone={tone}
       onClick={
         canActivate
@@ -574,8 +608,9 @@ export function Select({
     ),
   );
   const floating = useFloatingPosition(triggerRef, open, {
-    minWidth: true,
+    preferredWidth: Number.parseFloat(overlayGeometry.select.min),
     side: "bottom",
+    widthStrategy: "min-trigger",
   });
   useExclusiveFloatingLayer(open, () => setOpen(false));
   const selectedValue = controlledValue ?? internalValue;
@@ -722,7 +757,13 @@ export function Badge({
 }: BadgeProps) {
   return (
     <span {...props} className={cx("t7-badge", className)} data-tone={tone}>
-      {children}
+      {Children.map(children, (child) =>
+        typeof child === "string" || typeof child === "number" ? (
+          <span className="t7-badge-label">{child}</span>
+        ) : (
+          child
+        ),
+      )}
     </span>
   );
 }
@@ -757,7 +798,7 @@ export function NavItem({
       type="button"
     >
       <T7Icon name={icon} size={18} />
-      <span>{label}</span>
+      <span className="t7-nav-label">{label}</span>
     </button>
   );
 }
@@ -770,6 +811,8 @@ export interface DataTableColumn<Row> {
   required?: boolean;
   sortable?: boolean;
   sticky?: "left" | "right";
+  /** Explicit text policy; interactive/action columns should use nowrap. */
+  overflow?: "wrap" | "nowrap" | "ellipsis" | "clamp";
   render?: (row: Row) => ReactNode;
 }
 
@@ -1004,20 +1047,28 @@ export function DataTable<Row>({
                       />
                     </td>
                   ) : null}
-                  {visibleColumns.map((column) => (
-                    <td
-                      key={column.key}
-                      data-align={column.align ?? "left"}
-                      data-column-key={column.key}
-                      data-sticky={column.sticky}
-                    >
-                      {column.render
-                        ? column.render(row)
-                        : String(
-                            (row as Record<string, unknown>)[column.key] ?? "",
-                          )}
-                    </td>
-                  ))}
+                  {visibleColumns.map((column) => {
+                    const content = column.render
+                      ? column.render(row)
+                      : String(
+                          (row as Record<string, unknown>)[column.key] ?? "",
+                        );
+                    return (
+                      <td
+                        key={column.key}
+                        data-align={column.align ?? "left"}
+                        data-column-key={column.key}
+                        data-sticky={column.sticky}
+                        data-overflow={column.overflow}
+                      >
+                        {column.overflow ? (
+                          <div className="t7-table-cell-content">{content}</div>
+                        ) : (
+                          content
+                        )}
+                      </td>
+                    );
+                  })}
                 </tr>
               );
             })
@@ -1122,7 +1173,10 @@ export function DataTable<Row>({
                         <span className="t7-table-stacked-label">
                           {column.header}
                         </span>
-                        <div className="t7-table-stacked-value">
+                        <div
+                          className="t7-table-stacked-value"
+                          data-overflow={column.overflow}
+                        >
                           {column.render
                             ? column.render(row)
                             : String(
@@ -1150,6 +1204,8 @@ export interface ModalProps {
   children: ReactNode;
   onClose: () => void;
   initialFocus?: React.RefObject<HTMLElement | null>;
+  /** Component-owned modal geometry; the default preserves the standard dialog. */
+  size?: "sm" | "md" | "lg" | "command";
 }
 
 export function Modal({
@@ -1158,6 +1214,7 @@ export function Modal({
   initialFocus,
   onClose,
   open,
+  size = "md",
   title,
 }: ModalProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -1181,7 +1238,7 @@ export function Modal({
         }
       }}
     >
-      <section className="t7-modal">
+      <section className="t7-modal" data-size={size}>
         <div className="t7-modal-header">
           <div>
             <h2 className="t7-modal-title" id={titleId}>
@@ -1227,6 +1284,16 @@ export function AppShell({
   topbar,
   ...props
 }: AppShellProps) {
+  const [navigationOpen, setNavigationOpen] = useState(false);
+  const navigationId = useId();
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 861px)");
+    const closeOnDesktop = () => {
+      if (desktop.matches) setNavigationOpen(false);
+    };
+    desktop.addEventListener("change", closeOnDesktop);
+    return () => desktop.removeEventListener("change", closeOnDesktop);
+  }, []);
   return (
     <div
       {...props}
@@ -1235,9 +1302,45 @@ export function AppShell({
     >
       {sidebar ? <aside className="t7-app-sidebar">{sidebar}</aside> : null}
       <div className="t7-app-main">
-        {topbar ? <header className="t7-app-topbar">{topbar}</header> : null}
+        {sidebar || topbar ? (
+          <header className="t7-app-topbar">
+            {sidebar ? (
+              <IconButton
+                className="t7-app-mobile-menu"
+                icon="menu"
+                label="Open application navigation"
+                aria-expanded={navigationOpen}
+                aria-controls={navigationId}
+                aria-haspopup="dialog"
+                onClick={() => setNavigationOpen(true)}
+              />
+            ) : null}
+            {topbar}
+          </header>
+        ) : null}
         <Content className="t7-app-content">{children}</Content>
       </div>
+      {sidebar ? (
+        <Drawer
+          id={navigationId}
+          className="t7-mobile-sidebar"
+          title="Application navigation"
+          open={navigationOpen}
+          onClose={() => setNavigationOpen(false)}
+          side="left"
+        >
+          <div
+            onClick={(event) => {
+              if (
+                (event.target as Element).closest("a[href], button.t7-nav-item")
+              )
+                setNavigationOpen(false);
+            }}
+          >
+            {sidebar}
+          </div>
+        </Drawer>
+      ) : null}
     </div>
   );
 }
@@ -1406,48 +1509,143 @@ export function PageHeader({
 }
 
 export interface KPIItem {
+  /** Optional action aligned with the label and icon. */
+  action?: ReactNode;
+  /** Compact historical visual, normally a canonical Sparkline. */
+  chart?: ReactNode;
+  /** Keep the historical cue at the base, or compose it beside the value. */
+  chartPlacement?: KPIChartPlacement;
+  /** Optional chart-series hue for a solid, categorical KPI surface. */
+  colorway?: SurfaceColorway;
+  emphasis?: SurfaceEmphasis;
+  /** Optional separated supporting content or link. */
+  footer?: ReactNode;
   label: string;
   value: ReactNode;
   note?: ReactNode;
   icon?: IconName;
-  tone?: BadgeProps["tone"];
+  /** Goal or capacity cue, normally a canonical Progress component. */
+  progress?: ReactNode;
+  tone?: SurfaceTone;
+  /** Direction and comparison context, normally a TrendIndicator. */
+  trend?: ReactNode;
 }
 
+export type KPIClusterVariant = "segmented" | "cards";
+export type KPIClusterOrientation = "horizontal" | "vertical";
+export type KPIClusterColumns = 1 | 2 | 3 | 4 | 5;
+export type KPIChartPlacement = "bottom" | "inline";
+
 export interface KPIClusterProps extends React.HTMLAttributes<HTMLElement> {
+  /** Maximum wide-layout columns. Responsive collapse remains package-owned. */
+  columns?: KPIClusterColumns;
   items: KPIItem[];
   label?: string;
+  orientation?: KPIClusterOrientation;
+  /** Keep related metrics joined, or present them as individually bounded cards. */
+  variant?: KPIClusterVariant;
 }
 
 export function KPICluster({
   className,
+  columns,
   items,
   label = "Key metrics",
+  orientation = "horizontal",
+  style,
+  variant = "segmented",
   ...props
 }: KPIClusterProps) {
+  const clusterId = useId();
+  const resolvedColumns =
+    orientation === "vertical"
+      ? 1
+      : (columns ??
+        (Math.min(Math.max(items.length, 1), 4) as KPIClusterColumns));
+  const hasVisual = items.some((item) => item.chart || item.progress);
+  const hasTrend = items.some((item) => item.trend);
   return (
     <section
       {...props}
       aria-label={label}
       className={cx("t7-kpi-cluster", className)}
+      data-has-trend={hasTrend ? "true" : undefined}
+      data-has-visual={hasVisual ? "true" : undefined}
+      data-orientation={orientation}
+      data-variant={variant}
+      style={
+        {
+          "--t7-kpi-cluster-columns": resolvedColumns,
+          ...style,
+        } as React.CSSProperties
+      }
     >
-      {items.map((item) => (
-        <article className="t7-kpi-item" data-tone={item.tone} key={item.label}>
-          <div className="t7-kpi-item-heading">
-            <Typography typeRole="label">{item.label}</Typography>
-            {item.icon ? <T7Icon name={item.icon} size={17} /> : null}
-          </div>
-          <Typography as="strong" data-numeric typeRole="metric-md">
-            {item.value}
-          </Typography>
-          {item.note ? (
-            <Typography
-              as="span"
-              className="t7-kpi-item-note"
-              typeRole="caption"
-            >
-              {item.note}
-            </Typography>
-          ) : null}
+      {items.map((item, index) => (
+        <article
+          aria-labelledby={`${clusterId}-${index}-label ${clusterId}-${index}-value`}
+          className="t7-kpi-item"
+          data-chart-placement={
+            item.chart ? (item.chartPlacement ?? "bottom") : undefined
+          }
+          data-colorway={item.colorway}
+          data-emphasis={item.emphasis}
+          data-has-chart={item.chart ? "true" : undefined}
+          data-has-footer={item.footer ? "true" : undefined}
+          data-has-progress={item.progress ? "true" : undefined}
+          data-tone={item.tone}
+          key={`${item.label}-${index}`}
+        >
+          <dl className="t7-kpi-item-definition">
+            <div className="t7-kpi-item-definition-group">
+              <dt
+                className="t7-kpi-item-heading"
+                id={`${clusterId}-${index}-label`}
+              >
+                <Typography typeRole="label">{item.label}</Typography>
+                {item.icon || item.action ? (
+                  <div className="t7-kpi-item-heading-rail">
+                    {item.icon ? (
+                      <span className="t7-kpi-item-icon">
+                        <T7Icon aria-hidden="true" name={item.icon} size={24} />
+                      </span>
+                    ) : null}
+                    {item.action ? (
+                      <span className="t7-kpi-item-action">{item.action}</span>
+                    ) : null}
+                  </div>
+                ) : null}
+              </dt>
+              <dd className="t7-kpi-item-primary">
+                <div
+                  className="t7-kpi-item-value"
+                  id={`${clusterId}-${index}-value`}
+                >
+                  <Typography as="strong" data-numeric typeRole="metric-lg">
+                    {item.value}
+                  </Typography>
+                </div>
+                {hasTrend ? (
+                  <div className="t7-kpi-item-trend">{item.trend}</div>
+                ) : null}
+              </dd>
+              {item.note ? (
+                <dd className="t7-kpi-item-note">
+                  <Typography as="span" typeRole="caption">
+                    {item.note}
+                  </Typography>
+                </dd>
+              ) : null}
+              {item.progress ? (
+                <dd className="t7-kpi-item-progress">{item.progress}</dd>
+              ) : null}
+              {item.chart ? (
+                <dd className="t7-kpi-item-chart">{item.chart}</dd>
+              ) : null}
+              {item.footer ? (
+                <dd className="t7-kpi-item-footer">{item.footer}</dd>
+              ) : null}
+            </div>
+          </dl>
         </article>
       ))}
     </section>
@@ -1560,6 +1758,8 @@ export interface BulkActionBarProps extends React.HTMLAttributes<HTMLDivElement>
   noun?: string;
   onClear: () => void;
   actions?: ReactNode;
+  /** Keep the bar's layout slot stable while no records are selected. */
+  reserveSpace?: boolean;
 }
 
 export function BulkActionBar({
@@ -1568,13 +1768,19 @@ export function BulkActionBar({
   className,
   noun = "records",
   onClear,
+  reserveSpace = false,
   selectedCount,
   ...props
 }: BulkActionBarProps) {
+  const active = selectedCount > 0;
   return (
     <div
       {...props}
+      aria-hidden={reserveSpace && !active ? true : undefined}
       className={cx("t7-bulk-action-bar", className)}
+      data-active={active || undefined}
+      data-empty={reserveSpace && !active ? true : undefined}
+      data-selected-count={selectedCount}
       role="status"
     >
       <div className="t7-bulk-action-summary">
@@ -1594,6 +1800,7 @@ export function BulkActionBar({
 }
 
 export interface DrawerProps {
+  id?: string;
   className?: string;
   closeLabel?: string;
   open: boolean;
@@ -1607,6 +1814,7 @@ export interface DrawerProps {
 
 /** Generic modal side surface; specialized drawers should compose this contract. */
 export function Drawer({
+  id,
   className,
   children,
   closeLabel = "Close drawer",
@@ -1628,6 +1836,8 @@ export function Drawer({
       aria-describedby={description ? descriptionId : undefined}
       aria-labelledby={titleId}
       className="t7-drawer-backdrop"
+      id={id}
+      data-side={side}
       onClick={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}

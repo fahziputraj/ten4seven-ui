@@ -16,6 +16,7 @@ export type PlaygroundRoute =
   | "Icons"
   | "Recipes"
   | "Operations Tracker"
+  | "Operational Patterns"
   | "Publishing Store"
   | "Public Showcase";
 
@@ -28,6 +29,7 @@ export const playgroundRoutePaths: Record<PlaygroundRoute, string> = {
   Icons: "/icons",
   Recipes: "/recipes",
   "Operations Tracker": "/operations-tracker",
+  "Operational Patterns": "/operational-patterns",
   "Publishing Store": "/ebook-store",
   "Public Showcase": "/public-showcase",
 };
@@ -41,6 +43,7 @@ export const playgroundRouteTitles: Record<PlaygroundRoute, string> = {
   Icons: "ten4seven UI — Icons",
   Recipes: "ten4seven UI — Recipes",
   "Operations Tracker": "ten4seven UI — Operations Tracker",
+  "Operational Patterns": "ten4seven UI — Operational Patterns",
   "Publishing Store": "ten4seven UI — Publishing Store",
   "Public Showcase": "ten4seven UI — Public Showcase",
 };
@@ -56,11 +59,13 @@ export const playgroundRouteDescriptions: Record<PlaygroundRoute, string> = {
     "Canonical ten4seven UI component contracts and implementation status.",
   Blocks:
     "Reusable expressive ten4seven UI blocks for public and content-led compositions.",
-  Icons: "Semantic local Solar icons curated for ten4seven UI consumers.",
+  Icons: "The curated Solar Bold Duotone icon family with theme-aware paint.",
   Recipes:
     "Composable ten4seven UI screen recipes for agents and product teams.",
   "Operations Tracker":
     "Reference operations tracker for customer, supply, delivery, finance, and fleet work composed from ten4seven UI.",
+  "Operational Patterns":
+    "AAPM reference adoption for mature control tower, process, planning, receiving, entity, decision, exception, forecast, and audit patterns.",
   "Publishing Store":
     "Reference Indonesian publishing catalog composed from ten4seven UI.",
   "Public Showcase":
@@ -159,6 +164,7 @@ export const libraryNavigation: PlaygroundRoute[] = [
 ];
 export const referenceNavigation: PlaygroundRoute[] = [
   "Operations Tracker",
+  "Operational Patterns",
   "Publishing Store",
   "Public Showcase",
 ];

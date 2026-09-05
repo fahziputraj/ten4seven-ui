@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { FOUNDATION_CONTRACT } from "../packages/contracts/src/foundation.ts";
 
 const repoRoot = path.resolve(import.meta.dirname, "..");
 const generatedRoot = path.join(repoRoot, "generated");
@@ -65,6 +66,12 @@ function projectRecipe(name, recipe) {
     ...(sourceRecipe.shell ? { shell: sourceRecipe.shell } : {}),
     ...(recipe.blocks?.length ? { blocks: recipe.blocks } : {}),
     ...(recipe.blockRoles ? { blockRoles: recipe.blockRoles } : {}),
+    ...(recipe.icons?.length ? { icons: recipe.icons } : {}),
+    ...(sourceRecipe.operational
+      ? { operational: sourceRecipe.operational }
+      : recipe.operational
+        ? { operational: recipe.operational }
+        : {}),
     ...(sourceRecipe.references?.length
       ? { references: sourceRecipe.references }
       : {}),
@@ -162,6 +169,7 @@ export async function buildProjections() {
       sourceOfTruth: {
         typedContracts: "packages/contracts/src",
         themeProfile: "packages/contracts/src/theme-profile.ts",
+        foundation: "packages/contracts/src/foundation.ts",
         themeRecipes: "packages/contracts/src/theme-recipe.ts",
         dtcgTokenExport: "packages/tokens/generated/tokens.dtcg.json",
         brandProfiles: "packages/contracts/src/brand-profile.ts",
@@ -181,6 +189,11 @@ export async function buildProjections() {
         "packages/ai/catalog/icons.json",
       ],
       entryPoints: {
+        foundation: {
+          source: "generated/foundation.json",
+          guidance: "docs/TOKENS.md",
+          reference: "/tokens",
+        },
         "entity-list": {
           inspect: "t7ui recipe inspect entity-list",
           compose: "t7ui compose entity-list",
@@ -192,6 +205,17 @@ export async function buildProjections() {
         auth: {
           resolve: "t7ui brand resolve auth",
           compose: "t7ui brand compose auth",
+        },
+        "operational-patterns": {
+          find: 't7ui find "control tower exception next action"',
+          inspect: "t7ui recipe inspect control-tower",
+          guidance: "docs/ai/OPERATIONAL_PATTERNS.md",
+          reference: "/operational-patterns",
+        },
+        "content-safety": {
+          guidance: "docs/ai/VISUAL_PROPORTION_AND_CONTENT_SAFETY.md",
+          source: "packages/tokens/src/theme.ts",
+          reference: "/component-lab?stress=content",
         },
         themes: {
           source: "generated/theme-recipes.json",
@@ -236,6 +260,7 @@ export async function buildProjections() {
     "components.compact.json": components,
     "brand-profiles.json": CANONICAL_CONTRACTS.brandProfiles,
     "theme-recipes.json": CANONICAL_CONTRACTS.themeRecipes,
+    "foundation.json": FOUNDATION_CONTRACT,
     "recipes.compact.json": recipes,
     "aliases.json": aliases,
     "ownership-rules.json": ownership,

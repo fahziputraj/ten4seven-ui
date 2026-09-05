@@ -13,8 +13,11 @@ The repository currently contains:
   reduced-motion policy.
 - A semantic typography system with local Inter variable WOFF2, optical sizing, and a live Theme Studio specimen.
 - A React + Vite playground that proves the same axes across Button, Input, Card, DataTable, Modal, Sidebar item, and typography surfaces.
-- Two production reference surfaces in the playground: Operations Tracker (`enterprise/entity-list`) and Ebook Store Catalog (`commerce/catalog`).
-- Deterministic refresh-safe reference URLs: `/theme-studio`, `/operations-tracker`, and `/ebook-store`.
+- Three production-looking reference surfaces in the playground: Operations
+  Tracker (`enterprise/entity-list`), the bounded AAPM Operational Patterns
+  adoption fixture, and Ebook Store Catalog (`commerce/catalog`).
+- Deterministic refresh-safe reference URLs: `/theme-studio`,
+  `/operations-tracker`, `/operational-patterns`, and `/ebook-store`.
 - Production QA and Gate C evidence under `research/04-production/`.
 - A local semantic icon package with no runtime Iconify CDN.
 - An AI application kit under `docs/ai/`, `packages/ai/`, and `skills/ten4seven-ui/`.
@@ -44,7 +47,8 @@ The generated artifact and its licensing boundary are documented in
 [packages/ui/LICENSE.md](packages/ui/LICENSE.md), and
 [packages/ui/THIRD_PARTY_NOTICES.md](packages/ui/THIRD_PARTY_NOTICES.md).
 React and React DOM remain peer dependencies so consuming applications keep
-one React runtime.
+one React runtime. For the standalone Next.js 16 / React 19 App Router proof,
+see [NEXTJS_APP_ROUTER_COMPATIBILITY.md](docs/integration/NEXTJS_APP_ROUTER_COMPATIBILITY.md).
 
 Provider forms supported by the proof package:
 

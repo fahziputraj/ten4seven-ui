@@ -1,3 +1,5 @@
+"use client";
+
 export * from "./actions";
 export * from "./blocks";
 export * from "./charts";

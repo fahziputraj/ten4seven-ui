@@ -11,7 +11,7 @@ import {
 
 import { T7Icon, type IconName } from "@ten4seven/icons";
 
-import { Button } from "./components";
+import { Button, type SurfaceEmphasis } from "./components";
 import { IconButton } from "./actions";
 import { FloatingPortal } from "./overlay";
 import { cx, clamp } from "./utils";
@@ -33,6 +33,8 @@ export interface AlertProps extends Omit<
 > {
   action?: ReactNode;
   description?: ReactNode;
+  /** Defaults to a soft semantic callout; reserve solid and inverse for rare focal moments. */
+  emphasis?: SurfaceEmphasis;
   onDismiss?: () => void;
   title: ReactNode;
   tone?: FeedbackTone;
@@ -44,6 +46,7 @@ export function Alert({
   children,
   className,
   description,
+  emphasis = "soft",
   onDismiss,
   title,
   tone = "info",
@@ -53,6 +56,7 @@ export function Alert({
     <div
       {...props}
       className={cx("t7-alert", className)}
+      data-emphasis={emphasis}
       data-tone={tone}
       role={tone === "danger" ? "alert" : "status"}
     >

@@ -11,6 +11,7 @@ import {
   ContentShowcase,
   FeatureShowcase,
   Hero,
+  IconButton,
   LineChart,
   LogoCloud,
   MediaFrame,
@@ -70,7 +71,7 @@ function ShowcasePreview() {
           <div className="public-showcase-preview-content">
             <div className="public-showcase-preview-heading">
               <div>
-                <Typography typeRole="overline">System proof</Typography>
+                <Typography typeRole="overline">Product overview</Typography>
                 <Typography as="h2" typeRole="heading-md">
                   One shared language.
                 </Typography>
@@ -79,7 +80,7 @@ function ShowcasePreview() {
             </div>
             <div className="public-showcase-preview-metric-row">
               <div>
-                <Typography typeRole="caption">Contracts</Typography>
+                <Typography typeRole="caption">Components</Typography>
                 <strong>{catalogCounts.canonicalComponents}</strong>
               </div>
               <div>
@@ -87,17 +88,17 @@ function ShowcasePreview() {
                 <strong>11</strong>
               </div>
               <div>
-                <Typography typeRole="caption">Catalog sync errors</Typography>
-                <strong>0</strong>
+                <Typography typeRole="caption">System health</Typography>
+                <strong>Ready</strong>
               </div>
             </div>
             <ChartPanel
               className="public-showcase-preview-chart"
-              description="Illustrative local fixture"
-              title="Local proof by surface"
+              description="Product, web, docs, and learning in one view"
+              title="Connected surfaces"
               chart={
                 <BarChart
-                  ariaLabel="Illustrative local proof by surface chart"
+                  ariaLabel="Connected product surfaces chart"
                   data={[
                     { label: "App", value: 82 },
                     { label: "Web", value: 64 },
@@ -105,7 +106,7 @@ function ShowcasePreview() {
                     { label: "Labs", value: 36 },
                   ]}
                   height={112}
-                  summary="Illustrative reference values show how a shared chart surface can carry comparison without implying product telemetry."
+                  summary="A comparative view of product, web, documentation, and learning surfaces."
                 />
               }
             />
@@ -253,8 +254,10 @@ function ShowcaseSectionMap({ activeSection }: { activeSection: string }) {
 }
 
 export function PublicShowcase({
+  onOpenSettings,
   onNavigatePath,
 }: {
+  onOpenSettings?: () => void;
   onNavigatePath?: (path: string) => void;
 } = {}) {
   const [notice, setNotice] = useState<string | null>(null);
@@ -318,13 +321,21 @@ export function PublicShowcase({
   return (
     <PublicShell
       actions={
-        <Button
-          leadingIcon="components"
-          onClick={() => navigateToPath("/components")}
-          size="sm"
-        >
-          View components
-        </Button>
+        <>
+          <Button
+            leadingIcon="components"
+            onClick={() => navigateToPath("/components")}
+            size="sm"
+          >
+            View components
+          </Button>
+          <IconButton
+            icon="settings"
+            label="Open settings"
+            onClick={onOpenSettings}
+            size="md"
+          />
+        </>
       }
       brand={<ShowcaseBrand />}
       className="public-showcase-shell"
@@ -365,7 +376,7 @@ export function PublicShowcase({
             },
           ]}
           id="showcase-footer"
-          legal="© 2026 ten4seven UI · Local reference fixture"
+          legal="© 2026 ten4seven UI"
           social={
             <Button
               intent="quiet"
@@ -564,7 +575,7 @@ export function PublicShowcase({
               title="Signals remain readable"
               chart={
                 <LineChart
-                  ariaLabel="Illustrative local coverage trend chart"
+                  ariaLabel="Coverage trend chart"
                   labels={["May", "Jun", "Jul", "Aug", "Sep", "Oct"]}
                   series={[
                     {
@@ -583,7 +594,7 @@ export function PublicShowcase({
                       values: [8, 12, 19, 25, 33, 45],
                     },
                   ]}
-                  summary="Illustrative local values show a readable multi-series signal; this fixture is not production usage telemetry."
+                  summary="Coverage signals across app, public, and docs remain readable at a glance."
                 />
               }
             />

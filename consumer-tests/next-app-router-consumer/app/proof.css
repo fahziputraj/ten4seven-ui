@@ -1,0 +1,138 @@
+.proof-shell {
+  min-height: 100vh;
+  padding: clamp(24px, 6vw, 72px) var(--t7-page-gutter, 24px);
+  background: hsl(var(--t7-background-hsl));
+}
+
+.proof-wrap {
+  display: grid;
+  width: min(100%, 880px);
+  margin: 0 auto;
+  gap: clamp(20px, 4vw, 36px);
+}
+
+.proof-intro {
+  display: grid;
+  gap: 12px;
+}
+
+.proof-intro h1,
+.proof-card h2,
+.proof-intro p {
+  margin: 0;
+}
+
+.proof-intro h1 {
+  max-width: 16ch;
+  color: hsl(var(--t7-foreground-hsl));
+  font-family: var(--t7-font-display, var(--t7-font-ui));
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+}
+
+.proof-intro > p:not(.proof-kicker):not(.proof-server-marker) {
+  max-width: 62ch;
+  color: hsl(var(--t7-muted-foreground-hsl));
+}
+
+.proof-kicker {
+  color: hsl(var(--t7-primary-hsl));
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.proof-server-marker,
+.proof-success {
+  color: hsl(var(--t7-success-foreground-hsl));
+  font-weight: 600;
+}
+
+.proof-card {
+  display: grid;
+  gap: 20px;
+  padding: clamp(20px, 4vw, 36px);
+  border: 1px solid hsl(var(--t7-border-hsl));
+  border-radius: var(--t7-radius-card);
+  background: hsl(var(--t7-surface-hsl));
+  box-shadow: var(--t7-shadow-card);
+}
+
+.proof-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.proof-card h2 {
+  color: hsl(var(--t7-foreground-hsl));
+  font-size: clamp(1.25rem, 3vw, 1.65rem);
+}
+
+.proof-icon {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: var(--t7-radius-control);
+  background: hsl(var(--t7-primary-hsl) / 0.12);
+  color: hsl(var(--t7-primary-hsl));
+}
+
+.proof-copy {
+  max-width: 70ch;
+  margin: 0;
+  color: hsl(var(--t7-muted-foreground-hsl));
+}
+
+.proof-state {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid hsl(var(--t7-border-hsl));
+  border-radius: var(--t7-radius-control);
+  background: hsl(var(--t7-border-hsl));
+}
+
+.proof-state > div {
+  display: grid;
+  gap: 4px;
+  padding: 14px;
+  background: hsl(var(--t7-surface-subtle-hsl));
+}
+
+.proof-state dt {
+  color: hsl(var(--t7-muted-foreground-hsl));
+  font-size: 0.75rem;
+}
+
+.proof-state dd {
+  margin: 0;
+  color: hsl(var(--t7-foreground-hsl));
+  font-weight: 700;
+}
+
+.proof-controls,
+.proof-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.proof-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 640px) {
+  .proof-state,
+  .proof-grid {
+    grid-template-columns: 1fr;
+  }
+}

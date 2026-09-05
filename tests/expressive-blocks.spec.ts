@@ -13,6 +13,7 @@ for (const viewport of expressiveViewports) {
   test(`public showcase expressive render ${viewport.name}`, async ({
     page,
   }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
     await page.setViewportSize(viewport);
     await page.goto("/public-showcase");
     await expect(

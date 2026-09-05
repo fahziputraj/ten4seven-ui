@@ -18,18 +18,37 @@ import {
 import { cx } from "./utils";
 
 export interface TrendIndicatorProps extends HTMLAttributes<HTMLSpanElement> {
+  /**
+   * Direction controls the glyph only. Use `sentiment` when an increase or
+   * decrease does not map to the usual good/bad meaning (for example, a lower
+   * bounce rate is positive).
+   */
   direction: "down" | "flat" | "up";
+  /** Optional comparison window or other compact qualifier. */
+  context?: ReactNode;
   label?: string;
+  sentiment?: "negative" | "neutral" | "positive" | "warning";
   value: ReactNode;
+  variant?: "plain" | "soft";
 }
 
 export function TrendIndicator({
   className,
+  context,
   direction,
   label,
+  sentiment,
   value,
+  variant = "plain",
   ...props
 }: TrendIndicatorProps) {
+  const resolvedSentiment =
+    sentiment ??
+    (direction === "up"
+      ? "positive"
+      : direction === "down"
+        ? "negative"
+        : "neutral");
   const icon =
     direction === "up"
       ? "trendUp"
@@ -42,21 +61,38 @@ export function TrendIndicator({
       aria-label={label}
       className={cx("t7-trend-indicator", className)}
       data-direction={direction}
+      data-sentiment={resolvedSentiment}
+      data-variant={variant}
     >
+      {!label ? (
+        <span className="t7-visually-hidden">
+          {direction === "up"
+            ? "Increased: "
+            : direction === "down"
+              ? "Decreased: "
+              : "Unchanged: "}
+        </span>
+      ) : null}
       {icon ? (
         <T7Icon aria-hidden="true" name={icon} size={15} />
       ) : (
         <span aria-hidden="true" className="t7-trend-flat" />
       )}
-      <span>{value}</span>
+      <span className="t7-trend-value">{value}</span>
+      {context ? <span className="t7-trend-context">{context}</span> : null}
     </span>
   );
 }
 
 function valueRange(values: number[]) {
-  const minimum = Math.min(...values, 0);
-  const maximum = Math.max(...values, 0);
-  const padding = maximum === minimum ? 1 : (maximum - minimum) * 0.1;
+  const finiteValues = values.filter(Number.isFinite);
+  if (finiteValues.length === 0) return { max: 1, min: 0 };
+  const minimum = Math.min(...finiteValues);
+  const maximum = Math.max(...finiteValues);
+  const padding =
+    maximum === minimum
+      ? Math.max(Math.abs(maximum) * 0.05, 1)
+      : (maximum - minimum) * 0.1;
   return { max: maximum + padding, min: minimum - padding };
 }
 
@@ -110,12 +146,13 @@ function pointsFor(
   paddingX = 3,
   paddingY = paddingX,
 ) {
-  if (values.length === 0) return [];
-  const { min, max } = valueRange(values);
-  return values.map((value, index) => {
+  const finiteValues = values.filter(Number.isFinite);
+  if (finiteValues.length === 0) return [];
+  const { min, max } = valueRange(finiteValues);
+  return finiteValues.map((value, index) => {
     const x =
       paddingX +
-      (index / Math.max(values.length - 1, 1)) * (width - paddingX * 2);
+      (index / Math.max(finiteValues.length - 1, 1)) * (width - paddingX * 2);
     const y =
       height -
       paddingY -
@@ -184,21 +221,29 @@ export interface SparklineProps extends Omit<
   HTMLAttributes<SVGSVGElement>,
   "children"
 > {
+  /** Select one series hue from the active Theme Studio chart family. */
+  colorway?: 1 | 2 | 3 | 4 | 5;
   label: string;
+  /** Semantic colour, or `current` to inherit from an emphasized surface. */
+  tone?: "chart" | "current" | "danger" | "info" | "success" | "warning";
   values: number[];
 }
 
 /** A compact SVG signal. The parent component must supply the business context. */
 export function Sparkline({
   className,
+  colorway,
   label,
+  tone = "chart",
   values,
   ...props
 }: SparklineProps) {
   const width = 96;
   const height = 28;
   const gradientId = useId().replace(/:/g, "");
+  const revealId = `${gradientId}-sparkline-reveal`;
   const points = pointsFor(values, width, height, 4);
+  const lastPoint = points[points.length - 1];
   const chartVisibility = useChartVisibility<SVGSVGElement>();
   useChartMotion(chartVisibility, "sparkline");
   return (
@@ -206,7 +251,10 @@ export function Sparkline({
       {...props}
       aria-label={label}
       className={cx("t7-sparkline", className)}
+      data-colorway={colorway}
       data-chart-visible={chartVisibility.visible ? "true" : "false"}
+      data-tone={tone}
+      preserveAspectRatio="none"
       role="img"
       ref={chartVisibility.ref}
       viewBox={`0 0 ${width} ${height}`}
@@ -221,40 +269,51 @@ export function Sparkline({
         >
           <stop
             offset="0%"
-            stopColor="hsl(var(--t7-chart-1-hsl))"
+            stopColor="var(--t7-sparkline-color)"
             stopOpacity="0.24"
           />
           <stop
             offset="100%"
-            stopColor="hsl(var(--t7-chart-1-hsl))"
+            stopColor="var(--t7-sparkline-color)"
             stopOpacity="0"
           />
         </linearGradient>
+        <clipPath id={revealId} clipPathUnits="userSpaceOnUse">
+          <rect
+            className="t7-sparkline-reveal"
+            height={height}
+            width={width}
+            x="0"
+            y="0"
+          />
+        </clipPath>
       </defs>
       {points.length ? (
-        <path
-          aria-hidden="true"
-          className="t7-sparkline-area"
-          d={areaPathFor(points, height - 4)}
-          fill={`url(#${gradientId}-sparkline-fill)`}
-        />
-      ) : null}
-      {points.length ? (
-        <path
-          aria-hidden="true"
-          className="t7-sparkline-line"
-          d={smoothPathFor(points)}
-          pathLength={1}
-        />
-      ) : null}
-      {points.length ? (
-        <circle
-          aria-hidden="true"
-          className="t7-sparkline-point"
-          cx={points[points.length - 1].x}
-          cy={points[points.length - 1].y}
-          r="2.5"
-        />
+        <g clipPath={`url(#${revealId})`}>
+          <path
+            aria-hidden="true"
+            className="t7-sparkline-area"
+            d={areaPathFor(points, height - 4)}
+            fill={`url(#${gradientId}-sparkline-fill)`}
+          />
+          <path
+            aria-hidden="true"
+            className="t7-sparkline-line"
+            d={smoothPathFor(points)}
+          />
+          {/*
+            A near-zero line with a round, non-scaling stroke stays circular
+            when the responsive SVG stretches horizontally.
+          */}
+          <line
+            aria-hidden="true"
+            className="t7-sparkline-point"
+            x1={lastPoint.x}
+            x2={lastPoint.x + 0.001}
+            y1={lastPoint.y}
+            y2={lastPoint.y}
+          />
+        </g>
       ) : null}
     </svg>
   );

@@ -20,7 +20,10 @@ It satisfies the consumer contract and makes the Gate B proof observable: palett
 
 ## Tradeoffs
 
-Theme changes cause a short global style recalculation. SSR integration will need a hydration-safe initial appearance adapter when a framework package is added.
+Theme changes cause a short global style recalculation. System appearance is
+temporarily `light` on the server and first client render, then resolves in an
+effect; this keeps the App Router boundary hydration-safe while allowing the
+browser preference to take effect immediately after hydration.
 
 ## Consequences
 

@@ -37,13 +37,13 @@
         "profile": "balanced",
         "anchorSeconds": 1.25,
         "roles": {
-          "fast": 0.13,
-          "interaction": 0.23,
-          "state": 0.35,
-          "enter": 0.5,
-          "exit": 0.35,
-          "reveal": 0.79,
-          "chart": 1.25,
+          "fast": 0.1,
+          "interaction": 0.13,
+          "state": 0.18,
+          "enter": 0.23,
+          "exit": 0.15,
+          "reveal": 0.67,
+          "chart": 1.04,
           "loop": 2
         }
       },
@@ -96,13 +96,13 @@
         "profile": "balanced",
         "anchorSeconds": 1.25,
         "roles": {
-          "fast": 0.13,
-          "interaction": 0.23,
-          "state": 0.35,
-          "enter": 0.5,
-          "exit": 0.35,
-          "reveal": 0.79,
-          "chart": 1.25,
+          "fast": 0.1,
+          "interaction": 0.13,
+          "state": 0.18,
+          "enter": 0.23,
+          "exit": 0.15,
+          "reveal": 0.67,
+          "chart": 1.04,
           "loop": 2
         }
       },
@@ -155,13 +155,13 @@
         "profile": "balanced",
         "anchorSeconds": 1.5,
         "roles": {
-          "fast": 0.16,
-          "interaction": 0.28,
-          "state": 0.42,
-          "enter": 0.6,
-          "exit": 0.42,
-          "reveal": 0.95,
-          "chart": 1.5,
+          "fast": 0.12,
+          "interaction": 0.16,
+          "state": 0.22,
+          "enter": 0.28,
+          "exit": 0.18,
+          "reveal": 0.8,
+          "chart": 1.25,
           "loop": 2.4
         }
       },
@@ -214,13 +214,13 @@
         "profile": "balanced",
         "anchorSeconds": 1.25,
         "roles": {
-          "fast": 0.13,
-          "interaction": 0.23,
-          "state": 0.35,
-          "enter": 0.5,
-          "exit": 0.35,
-          "reveal": 0.79,
-          "chart": 1.25,
+          "fast": 0.1,
+          "interaction": 0.13,
+          "state": 0.18,
+          "enter": 0.23,
+          "exit": 0.15,
+          "reveal": 0.67,
+          "chart": 1.04,
           "loop": 2
         }
       },
