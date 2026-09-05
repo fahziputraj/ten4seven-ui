@@ -144,6 +144,14 @@ the consumer still owns permission meaning, authorization, scope persistence,
 and server-side validation. Use `Select` or `Combobox` for a flat choice and
 `Sidebar` when the hierarchy is navigation rather than selection.
 
+For an action that must remain visible while unavailable, keep the canonical
+`Button` natively disabled and place a focusable `IconButton` reason trigger
+beside it inside `Tooltip`, with visible helper text linked by
+`aria-describedby`. The trigger keeps the explanation reachable when the
+disabled button cannot receive focus; the consumer owns the reason and policy.
+Use the same composition to show loading and completed/no-longer-available
+states without hiding the action or moving permission logic into `Button`.
+
 For KPI work, use `MetricCard` for one decision signal and `KPICluster` for a
 small related set. Compose `TrendIndicator`, `Sparkline`, and `Progress` through
 their dedicated `trend`, `chart`, and `progress` slots. Direction and business

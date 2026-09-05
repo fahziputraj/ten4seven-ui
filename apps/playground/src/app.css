@@ -5117,6 +5117,18 @@
   flex-wrap: wrap;
   gap: 9px;
 }
+.catalog-preview-action-pair {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(--t7-ref-space-1);
+}
+.catalog-preview-action-pair > .t7-button {
+  min-width: 0;
+}
+.catalog-preview-action-pair > .t7-tooltip-root {
+  flex: none;
+}
 .catalog-preview-note,
 .catalog-doc-copy {
   color: hsl(var(--t7-muted-foreground-hsl));

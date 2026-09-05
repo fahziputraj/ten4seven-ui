@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useId, useState, type ReactNode } from "react";
 
 import { IconNames, T7Icon, type IconName } from "@ten4seven/icons";
 import {
@@ -256,6 +256,61 @@ function PreviewFallback({
   );
 }
 
+function ActionAvailabilityPreview() {
+  const reasonId = useId();
+  const reason = "Awaiting warehouse QA sign-off.";
+
+  return (
+    <div className="catalog-preview-profile-grid">
+      <div>
+        <Typography typeRole="overline">Available</Typography>
+        <Button leadingIcon="approve">Approve batch</Button>
+        <Typography typeRole="caption">
+          The operator can activate this action now.
+        </Typography>
+      </div>
+      <div>
+        <Typography typeRole="overline">Disabled + explanation</Typography>
+        <div className="catalog-preview-action-pair">
+          <Button aria-describedby={reasonId} disabled intent="secondary">
+            Release batch
+          </Button>
+          <Tooltip content={reason}>
+            <IconButton
+              icon="info"
+              label={`Why release batch is unavailable: ${reason}`}
+              size="sm"
+            />
+          </Tooltip>
+        </div>
+        <Typography id={reasonId} typeRole="caption">
+          {reason}
+        </Typography>
+      </div>
+      <div>
+        <Typography typeRole="overline">Loading</Typography>
+        <Button intent="secondary" loading>
+          Sync batch
+        </Button>
+        <Typography typeRole="caption">
+          Pending work prevents duplicate activation.
+        </Typography>
+      </div>
+      <div>
+        <Typography typeRole="overline">
+          Completed / no longer available
+        </Typography>
+        <Button disabled intent="quiet" leadingIcon="check">
+          Batch released
+        </Button>
+        <Typography typeRole="caption">
+          The action remains visible after completion.
+        </Typography>
+      </div>
+    </div>
+  );
+}
+
 export function ComponentPreview({
   component,
 }: {
@@ -365,6 +420,8 @@ export function ComponentPreview({
   }
 
   if (component.category === "action") {
+    if (component.displayName === "Button")
+      return frame(<ActionAvailabilityPreview />);
     if (component.displayName === "Icon Button") {
       return frame(
         <div className="catalog-preview-actions">

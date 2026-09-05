@@ -103,9 +103,13 @@ smallest pattern that answers the user's operating question.
     partial selection, disabled nodes, optional local search, and keyboard tree
     navigation. Supply opaque IDs and labels; permission meaning, scope
     persistence, and authorization remain consumer-owned.
-12. Use semantic `T7Icon` names. Do not introduce raw provider strings or a
+12. Keep visible-but-unavailable actions discoverable. Render a native-disabled
+    `Button`, expose the consumer-supplied reason as linked helper text, and
+    place a focusable `IconButton` reason trigger inside `Tooltip`; do not wrap
+    the disabled control directly or put permission rules into `Button`.
+13. Use semantic `T7Icon` names. Do not introduce raw provider strings or a
     runtime icon CDN.
-13. Apply a theme recipe before local layout. Product-specific CSS may arrange
+14. Apply a theme recipe before local layout. Product-specific CSS may arrange
     canonical parts but must use semantic tokens.
 
 ## Consumer ownership boundary

@@ -20,7 +20,10 @@ opaque AAPM Mobile cage deep-link value; its scanner and resource authorization
 remain outside ten4seven. It also includes a `HierarchyPicker` reference with
 Tenant → Farm → Location → Cage ancestry, a partially selected cage, a disabled
 sibling, local search, and keyboard-tree semantics; resource authorization
-remains a consumer concern.
+remains a consumer concern. The Button reference now proves the visible action
+availability states (available, disabled with reason, loading, and completed /
+no longer available) using a native-disabled `Button`, a focusable Tooltip
+reason trigger, and linked helper text.
 
 ## What the route is not
 
