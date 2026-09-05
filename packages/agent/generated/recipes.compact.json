@@ -1086,7 +1086,7 @@
     "references": [
       "AAPM Operational Reference"
     ],
-    "source": "legacy-catalog-adapter"
+    "source": "canonical-contract"
   },
   "receiving-console": {
     "id": "receiving-console",
@@ -1177,7 +1177,7 @@
     "references": [
       "AAPM Operational Reference"
     ],
-    "source": "legacy-catalog-adapter"
+    "source": "canonical-contract"
   },
   "route-planning": {
     "id": "route-planning",
@@ -1262,7 +1262,7 @@
     "references": [
       "AAPM Operational Reference"
     ],
-    "source": "legacy-catalog-adapter"
+    "source": "canonical-contract"
   },
   "entity-360": {
     "id": "entity-360",
@@ -1862,6 +1862,6 @@
     "references": [
       "AAPM Operational Reference"
     ],
-    "source": "legacy-catalog-adapter"
+    "source": "canonical-contract"
   }
 }

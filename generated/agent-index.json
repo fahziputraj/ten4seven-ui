@@ -60,8 +60,8 @@
   },
   "metrics": {
     "fullCatalogBytes": 329597,
-    "compactProjectionBytes": 100771,
-    "selectiveRecipeShardBytes": 43740,
+    "compactProjectionBytes": 100755,
+    "selectiveRecipeShardBytes": 43724,
     "selectiveComponentShardBytes": 41865
   }
 }

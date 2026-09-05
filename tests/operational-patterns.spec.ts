@@ -578,6 +578,54 @@ for (const recipe of batchTwoRecipeProofs) {
   });
 }
 
+const batchThreeRecipeProofs = [
+  {
+    id: "load-planning",
+    title: "Load Planning",
+    semantic: "Capacity",
+    guidance: /Choose Load Planning when capacity drives work/,
+  },
+  {
+    id: "route-planning",
+    title: "Route Planning",
+    semantic: "Sequence number",
+    guidance: /Choose Route Planning when sequence matters/,
+  },
+  {
+    id: "receiving-console",
+    title: "Receiving Console",
+    semantic: "ARRIVED is not RECEIVED",
+    guidance: /Choose Receiving Console when physical handling/,
+  },
+  {
+    id: "resource-forecast",
+    title: "Resource Forecast",
+    semantic: "Absolute current quantity",
+    guidance: /Choose Resource Forecast when sufficiency matters/,
+  },
+] as const;
+
+for (const recipe of batchThreeRecipeProofs) {
+  test(`${recipe.id} recipe exposes its canonical operational contract`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ height: 900, width: 1186 });
+    await page.goto(`/recipes/${recipe.id}`);
+
+    await expect(
+      page.getByRole("heading", { level: 1, name: recipe.title }),
+    ).toBeVisible();
+    await expect(
+      page.getByText(recipe.semantic, { exact: true }),
+    ).toBeVisible();
+    await expect(page.getByText(recipe.guidance)).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: "AAPM Operational Reference" }),
+    ).toHaveAttribute("href", "/operational-patterns");
+    await expectNoDocumentOverflow(page);
+  });
+}
+
 const visualViews = [
   { button: "Control tower", name: "control-tower" },
   { button: "Process workspace", name: "process-workspace" },

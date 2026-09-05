@@ -122,6 +122,10 @@ const operationalRecipeNames = [
   "operational-kanban",
   "exception-queue",
   "control-tower",
+  "load-planning",
+  "route-planning",
+  "receiving-console",
+  "resource-forecast",
 ];
 const operationalParity = (name, recipe) => ({
   id: name,

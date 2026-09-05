@@ -615,6 +615,323 @@ export const CONTROL_TOWER_CONTRACT = {
   references: ["AAPM Operational Reference"],
 } satisfies RecipeContract;
 
+/**
+ * Typed canonical source for the third operational recipe batch. These
+ * contracts preserve the existing selection and semantic payload while
+ * keeping route, receiving, allocation, and forecast truth consumer-owned.
+ */
+export const LOAD_PLANNING_CONTRACT = {
+  id: "load-planning",
+  displayName: "Load Planning",
+  purpose:
+    "Compose vehicle capacity, allocation, remaining space, utilization, manifest, sequence, and readiness without owning business thresholds.",
+  profiles: ["enterprise", "dashboard"],
+  components: [
+    "AppShell",
+    "Sidebar",
+    "PageHeader",
+    "RecordSummary",
+    "KeyValueList",
+    "Progress",
+    "Table",
+  ],
+  optional: ["StatusChip", "ActivityFeed", "Button"],
+  icons: ["fleet", "package", "delivery", "timeline", "warning"],
+  operational: {
+    maturity: "mature",
+    useWhen: [
+      "capacity constrains assignment or dispatch",
+      "users need to compare allocated and remaining quantity with a manifest",
+    ],
+    avoidWhen: [
+      "the application has no capacity concept",
+      "a percentage alone is sufficient and no manifest or sequence exists",
+    ],
+    anatomy: [
+      "Vehicle identity",
+      "Capacity summary",
+      "Allocated and remaining quantity",
+      "Utilization",
+      "Load manifest",
+      "Route or sequence",
+      "Readiness",
+    ],
+    requiredSemantics: [
+      "Capacity",
+      "Allocated quantity",
+      "Remaining quantity",
+      "Utilization",
+      "Manifest destination and quantity",
+      "Readiness",
+    ],
+    optionalSemantics: [
+      "Consumer-supplied target",
+      "Exception",
+      "Sequence checkpoint",
+    ],
+    responsive: {
+      desktop: "Place capacity summary beside manifest and route context.",
+      tablet:
+        "Stack summary above the manifest while retaining table comparison.",
+      mobile:
+        "Order content as summary, manifest, then route sequence; never shrink a planning canvas into unreadability.",
+    },
+    accessibility: [
+      "Give utilization a text label and numeric progress value.",
+      "Use table or list semantics for the manifest.",
+      "State readiness and exceptions in text, not only color.",
+    ],
+    aiGuidance:
+      "Choose Load Planning when capacity drives work; let the consumer supply operational targets and threshold meaning.",
+    antiPatterns: [
+      "Treating 80 percent utilization as universal success",
+      "Hiding absolute quantities behind a gauge",
+      "Creating domain-specific load-card primitives",
+    ],
+    relationships: [
+      "Load Planning → Route Planning",
+      "Load Planning → Process Workspace",
+    ],
+    referencePath: "/operational-patterns",
+  },
+  references: ["AAPM Operational Reference"],
+} satisfies RecipeContract;
+
+export const ROUTE_PLANNING_CONTRACT = {
+  id: "route-planning",
+  displayName: "Route Planning",
+  purpose:
+    "Present ordered stops, capacity, current state, ETA, completion, and exceptions while keeping map visualization optional.",
+  profiles: ["enterprise", "dashboard"],
+  components: [
+    "AppShell",
+    "Sidebar",
+    "PageHeader",
+    "RecordSummary",
+    "DataTable",
+    "Progress",
+  ],
+  optional: ["StatusChip", "ActivityFeed", "Button"],
+  icons: ["delivery", "timeline", "fleet", "clock", "warning"],
+  operational: {
+    maturity: "mature",
+    useWhen: [
+      "the order of operational stops matters",
+      "users need a route sequence even when map services are unavailable",
+    ],
+    avoidWhen: [
+      "location order has no operational meaning",
+      "the request is for a routing optimization algorithm",
+    ],
+    anatomy: [
+      "Trip identity",
+      "Vehicle and capacity",
+      "Ordered stop sequence",
+      "Current checkpoint",
+      "ETA and quantity",
+      "Completion and exception",
+    ],
+    requiredSemantics: [
+      "Sequence number",
+      "Completed, current, and future stop",
+      "ETA",
+      "Quantity",
+      "Capacity context",
+    ],
+    optionalSemantics: [
+      "Supporting map",
+      "Proof of completion",
+      "Checkpoint exception",
+    ],
+    responsive: {
+      desktop:
+        "Show route sequence beside or below capacity context; a map may support but not replace it.",
+      tablet:
+        "Keep the ordered sequence readable before reducing supporting visualization.",
+      mobile:
+        "Stack trip summary and ordered stops; keep sequence, ETA, quantity, and state visible.",
+    },
+    accessibility: [
+      "Use an ordered list or semantically ordered table for stops.",
+      "State current and completed checkpoints in text.",
+      "Do not require a visual map to understand the route.",
+    ],
+    aiGuidance:
+      "Choose Route Planning when sequence matters; treat maps as optional supporting visualization and never invent routing logic in the design system.",
+    antiPatterns: [
+      "Making a map the only representation of route order",
+      "Hiding ETA or quantity behind a hover interaction",
+      "Implementing route optimization inside Ten4Seven",
+    ],
+    relationships: [
+      "Load Planning → Route Planning",
+      "Route Planning → Process Workspace",
+    ],
+    referencePath: "/operational-patterns",
+  },
+  references: ["AAPM Operational Reference"],
+} satisfies RecipeContract;
+
+export const RECEIVING_CONSOLE_CONTRACT = {
+  id: "receiving-console",
+  displayName: "Receiving Console",
+  purpose:
+    "Represent arrival, unloading, QC, receipt, and inventory as distinct states with explicit quantity discrepancies and decisions.",
+  profiles: ["enterprise", "dashboard"],
+  components: [
+    "AppShell",
+    "Sidebar",
+    "PageHeader",
+    "Alert",
+    "MilestoneTracker",
+    "KeyValueList",
+    "Progress",
+  ],
+  optional: [
+    "Table",
+    "StatusChip",
+    "RadioGroup",
+    "Radio",
+    "Textarea",
+    "ActionFooter",
+  ],
+  icons: ["warehouse", "stockIn", "package", "warning", "approve"],
+  operational: {
+    maturity: "mature",
+    useWhen: [
+      "physical arrival must remain distinct from accepted receipt and inventory posting",
+      "ordered, delivered, physical, accepted, rejected, or damaged quantities can diverge",
+    ],
+    avoidWhen: [
+      "arrival and receipt are genuinely atomic in the consumer domain",
+      "the surface only needs a historical receipt record",
+    ],
+    anatomy: [
+      "Arrival identity and timestamp",
+      "Receiving lifecycle",
+      "Unloading progress",
+      "Quantity reconciliation",
+      "Exception",
+      "QC decision",
+      "Next accountable action",
+    ],
+    requiredSemantics: [
+      "ARRIVED is not RECEIVED",
+      "Ordered quantity",
+      "Delivered quantity",
+      "Physical received quantity",
+      "Accepted quantity",
+      "Rejected, damaged, short, over, or mismatch state when present",
+    ],
+    optionalSemantics: [
+      "Inventory posting",
+      "Evidence attachment",
+      "Conditional acceptance",
+    ],
+    responsive: {
+      desktop:
+        "Keep lifecycle and reconciliation visible beside the decision context.",
+      tablet: "Stack the lifecycle before quantities and decision controls.",
+      mobile:
+        "Preserve arrival, current unloading, quantities, decision, and action in one vertical sequence.",
+    },
+    accessibility: [
+      "Announce receiving progress numerically.",
+      "Use explicit row labels for every quantity type.",
+      "Provide a labelled decision fieldset and descriptive action wording.",
+    ],
+    aiGuidance:
+      "Choose Receiving Console when physical handling, reconciliation, and QC separate arrival from receipt.",
+    antiPatterns: [
+      "Equating vehicle arrival with received inventory",
+      "Collapsing all quantities into one Quantity field",
+      "Using a generic confirmation dialog where evidence is required",
+    ],
+    relationships: [
+      "Receiving Console → Decision Workspace",
+      "Receiving Console → Activity & Audit Stream",
+    ],
+    referencePath: "/operational-patterns",
+  },
+  references: ["AAPM Operational Reference"],
+} satisfies RecipeContract;
+
+export const RESOURCE_FORECAST_CONTRACT = {
+  id: "resource-forecast",
+  displayName: "Resource Forecast",
+  purpose:
+    "Communicate resource sufficiency through current quantity, consumption, days of cover, incoming supply, target context, and trend without implementing forecasting logic.",
+  profiles: ["enterprise", "dashboard"],
+  components: [
+    "AppShell",
+    "PageHeader",
+    "MetricCard",
+    "Progress",
+    "TrendIndicator",
+    "Sparkline",
+  ],
+  optional: ["Alert", "KPICluster", "KeyValueList"],
+  icons: ["package", "analytics", "clock", "delivery", "warning"],
+  operational: {
+    maturity: "mature",
+    useWhen: [
+      "an absolute stock quantity matters mainly through operational sufficiency",
+      "users need days of cover and incoming supply beside current consumption",
+    ],
+    avoidWhen: [
+      "the consumer has no reliable consumption or incoming-supply calculation",
+      "the request is to implement a forecasting algorithm",
+    ],
+    anatomy: [
+      "Resource identity",
+      "Current quantity",
+      "Daily consumption",
+      "Days of cover",
+      "Incoming quantity and ETA",
+      "Target or safety reference",
+      "Trend",
+    ],
+    requiredSemantics: [
+      "Absolute current quantity",
+      "Time-to-empty or days of cover",
+      "Daily consumption basis",
+      "Incoming quantity",
+      "Incoming ETA",
+    ],
+    optionalSemantics: [
+      "Safety reference",
+      "Consumer-calculated risk",
+      "Compact trend",
+    ],
+    responsive: {
+      desktop:
+        "Compose sufficiency as a compact decision signal within a Control Tower or resource view.",
+      tablet:
+        "Keep quantity, days of cover, and incoming supply together before secondary trend detail.",
+      mobile:
+        "Stack absolute quantity, time-to-empty, incoming supply, then trend without hiding units.",
+    },
+    accessibility: [
+      "Name quantity, unit, days of cover, and incoming ETA in text.",
+      "Give compact trends an accessible summary.",
+      "Do not rely on chart color to communicate sufficiency.",
+    ],
+    aiGuidance:
+      "Choose Resource Forecast when sufficiency matters; Ten4Seven presents consumer-calculated values and does not predict them.",
+    antiPatterns: [
+      "Showing stock quantity without time-to-empty when sufficiency is the decision",
+      "Hiding incoming supply",
+      "Implementing forecasting or safety-stock algorithms in Ten4Seven",
+    ],
+    relationships: [
+      "Resource Forecast → Control Tower",
+      "Resource Forecast → Load Planning",
+    ],
+    referencePath: "/operational-patterns",
+  },
+  references: ["AAPM Operational Reference"],
+} satisfies RecipeContract;
+
 export const OPERATIONAL_PATTERN_CONTRACTS = {
   "readiness-review": READINESS_REVIEW_CONTRACT,
   "process-workspace": PROCESS_WORKSPACE_CONTRACT,
@@ -623,4 +940,8 @@ export const OPERATIONAL_PATTERN_CONTRACTS = {
   "operational-kanban": OPERATIONAL_KANBAN_CONTRACT,
   "exception-queue": EXCEPTION_QUEUE_CONTRACT,
   "control-tower": CONTROL_TOWER_CONTRACT,
+  "load-planning": LOAD_PLANNING_CONTRACT,
+  "route-planning": ROUTE_PLANNING_CONTRACT,
+  "receiving-console": RECEIVING_CONSOLE_CONTRACT,
+  "resource-forecast": RESOURCE_FORECAST_CONTRACT,
 } as const;
