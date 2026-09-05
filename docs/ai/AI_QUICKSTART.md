@@ -65,6 +65,20 @@ For recipes that are not migrated yet, search the full
 pnpm t7ui find "operations tracker work queue"
 ```
 
+For operational work, select by the operating question and required semantics,
+then inspect the bounded recipe shard:
+
+```bash
+pnpm t7ui find "control tower exception next action"
+pnpm t7ui recipe inspect control-tower
+```
+
+Read [OPERATIONAL_PATTERNS.md](OPERATIONAL_PATTERNS.md) before composing a
+Control Tower, Process Workspace, Operational Kanban, Load Planner, Receiving
+Console, Route Planner, Entity 360, Decision Workspace, Exception Queue,
+Activity & Audit Stream, or Resource Forecast. These are recipes built from
+canonical components, not product-specific mega-components.
+
 Start from the closest recipe. Do not invent a new information architecture before checking the catalog.
 
 When a page needs expressive presentation, read the recipe's `blocks` list and
@@ -75,6 +89,11 @@ behavior, motion, accessibility, and performance; keep interaction primitives
 in `@ten4seven/ui`.
 
 ## 5. Find implemented components
+
+Before composing layout or handling long content, apply
+[Visual Proportion and Content Safety](VISUAL_PROPORTION_AND_CONTENT_SAFETY.md).
+Use the shell gutter and content rail first, preserve non-shrinking action
+slots, choose an explicit overflow policy, and coordinate control size roles.
 
 Search `generated/components.compact.json` first, or run `pnpm t7ui show DataTable` when the full contract is needed. Only catalog status `implemented` is a feature API. `experimental` needs an explicit product decision; `planned` is not permission to recreate a library locally.
 
@@ -98,6 +117,17 @@ Use the capability family—not the visual mood—to narrow selection:
   `ProductShowcase`, `Carousel`, `PublicFooter`.
 
 Read [COMPONENT_SELECTION.md](COMPONENT_SELECTION.md) for the compact decision matrix and the machine-readable catalog for exact props.
+
+For KPI work, use `MetricCard` for one decision signal and `KPICluster` for a
+small related set. Compose `TrendIndicator`, `Sparkline`, and `Progress` through
+their dedicated `trend`, `chart`, and `progress` slots. Direction and business
+meaning are separate: use `direction="down"` with `sentiment="positive"` when a
+decrease is beneficial. Do not fabricate a delta, comparison window, target,
+or historical series just to make a dashboard look richer. KPI geometry is
+owned globally by the `--t7-kpi-*` token family and remains density-responsive.
+Use the default bottom chart placement for dense KPI groups and
+`chartPlacement="inline"` only on a sufficiently wide card. KPI icons are
+direct token-sized glyphs; do not wrap them in feature-local icon tiles.
 
 ## 6. Compose the shell first
 
@@ -131,6 +161,53 @@ import `t7Motion` from `@ten4seven/ui`; do not add local keyframes, durations,
 or a second animation runtime. Respect both the shared reduced-motion policy
 and `preferences.motion: "reduced"`.
 
+### Achromatic canvas and bounded surface emphasis
+
+The light canvas is paper-neutral by contract. Do not tint a page, app shell,
+or broad route region with the chosen brand palette. Palette, chart, and status
+colours belong to an object that has deliberately opted into emphasis.
+
+Use the canonical treatment on `Card`, `MetricCard`, `Surface`, `KPICluster`
+items, or the persistent `Alert` callout:
+
+```tsx
+<Card emphasis="plain">Normal reading surface</Card>
+<MetricCard emphasis="soft" tone="accent" title="Customer signals" value="3" />
+<MetricCard emphasis="expressive" colorway={2} title="Active lanes" value="12" />
+<Card colorway={4} emphasis="solid">Categorical summary</Card>
+<Surface colorway={5} emphasis="solid">Bounded spotlight</Surface>
+<Card emphasis="inverse">One focal decision</Card>
+```
+
+- `plain` is the default for most records and comparisons.
+- `soft` is the restrained choice for one supporting signal; use a semantic
+  status tone only when the object actually represents that status.
+- `solid` is deliberate for a strong KPI/summary, confirmation, spotlight, or
+  critical state; do not apply it to every repeated card.
+- `expressive` gives bounded data emphasis a stronger tint while retaining
+  readable neutral text. `tone` selects meaning; emphasis selects intensity.
+- `inverse` is a neutral high-contrast focal surface, not a Button-only color
+  shortcut.
+
+Do not create feature-local pale fills for KPI rows, callouts, or cards. The
+provider emits the `surface-emphasis` variables and canonical components own
+their contrast in light and dark modes. For categorical presentation,
+`Card`, `MetricCard`, bounded `Surface`, and `KPICluster` items can combine
+`emphasis="soft"`, `"expressive"`, or `"solid"` with `colorway={1..5}`.
+For solid emphasis, these colorways follow the active
+Theme Studio chart family, use accessible derived lightness plus white
+text/icons, and are globally reusable; they are not Operations-only styles.
+Keep `tone` independent so semantic meaning is not inferred from a series hue.
+For status-first cards, omit `colorway` and use semantic `tone`; if both are
+intentional, choose a compatible series hue. `Alert` remains semantic-only.
+Forms, tables, shells, and ordinary repeated records stay neutral.
+
+For shared headers, compose `AppShell`, `TopNavigation`, or `NavigationMenu`
+first and keep actions as canonical `Button`/`IconButton` children in the
+header action region. The shared header geometry preserves usable action
+controls across density modes and narrow widths; do not introduce a separate
+local header button family.
+
 ## 8. Use icons
 
 Search `packages/ai/catalog/icons.json` by meaning: `invoice`, `warehouse`, `filter`, `search`, `export`, `add`. Render `T7Icon name="search"`; provider-specific names are implementation details.
@@ -160,4 +237,4 @@ pnpm build
 
 Then test the real route in a browser: meaningful content, no runtime overlay, no console errors, keyboard/focus behavior, responsive layout, and the primary interaction.
 
-For the local proof application, open deterministic URLs directly: `/theme-studio`, `/component-lab`, `/tokens`, `/components`, `/blocks`, `/blocks/hero-split`, `/components/patterns`, `/components/tables`, `/components/filtering-bulk-actions`, `/icons`, `/recipes`, `/recipes/cart`, `/operations-tracker`, `/ebook-store`, and `/public-showcase`. Theme Studio, Component Lab, Library, and block routes may expose harness controls; Operations Tracker, Ebook, and Public Showcase product shells must remain production-looking. The legacy `/warehouse-inventory` alias remains accepted for existing links.
+For the local proof application, open deterministic URLs directly: `/theme-studio`, `/component-lab`, `/tokens`, `/components`, `/blocks`, `/blocks/hero-split`, `/components/patterns`, `/components/tables`, `/components/filtering-bulk-actions`, `/icons`, `/recipes`, `/recipes/cart`, `/operations-tracker`, `/operational-patterns`, `/ebook-store`, and `/public-showcase`. Theme Studio, Component Lab, Library, and block routes may expose harness controls; Operations Tracker, Operational Patterns, Ebook, and Public Showcase product shells must remain production-looking. The legacy `/warehouse-inventory` alias remains accepted for existing links.

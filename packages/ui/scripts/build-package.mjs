@@ -143,6 +143,7 @@ await writeFile(
     {
       name: packageManifest.name,
       version: packageManifest.version,
+      clientBoundary: "root",
       entry: "index.js",
       commonjsEntry: "index.cjs",
       declarations: "index.d.ts",
@@ -159,6 +160,7 @@ await writeFile(
         "tokens-and-theme-recipes",
         "dtcg-compatible-token-export",
         "semantic-icons",
+        "bundled-iconify-solar-library",
         "react-components",
         "motion",
         "self-hosted-fonts",

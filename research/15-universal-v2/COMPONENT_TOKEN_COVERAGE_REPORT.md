@@ -18,7 +18,7 @@ replacement for browser state or visual QA.
 ## Scope and residual debt
 
 All listed selector families expose the expected semantic token vocabulary.
-The stylesheet still contains **795** literal pixel measurements. That
+The stylesheet still contains **817** literal pixel measurements. That
 count includes legitimate intrinsic geometry (hairlines, icon/media boxes,
 and browser normalization) as well as unmigrated component-internal spacing.
 It is tracked as migration debt rather than treated as proof that every

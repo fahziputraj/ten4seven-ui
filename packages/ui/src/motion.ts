@@ -15,6 +15,16 @@ import type {
  * chart drawing, SVG sequences, viewport reveals, and grouped progress motion.
  */
 export const t7Motion = Object.freeze({
+  duration: Object.freeze({
+    micro: "var(--t7-duration-instant)",
+    interaction: "var(--t7-duration-standard)",
+    popup: "var(--t7-duration-popup)",
+    overlay: "var(--t7-duration-overlay)",
+    layout: "var(--t7-duration-layout)",
+    reveal: "var(--t7-duration-reveal)",
+    chart: "var(--t7-duration-chart)",
+    choreography: "var(--t7-duration-slow)",
+  }),
   transition: Object.freeze({
     interactive: "var(--t7-transition-fast)",
     state: "var(--t7-transition-standard)",
@@ -45,6 +55,7 @@ export type T7MotionRole =
   | "enter"
   | "enterSlow"
   | "exit"
+  | "chart"
   | "loop";
 
 export type T7ChartMotionKind = "sparkline" | "line" | "bar" | "donut";
@@ -63,10 +74,11 @@ export interface T7MotionHandle {
 const durationTokens: Record<T7MotionRole, string> = {
   interactive: "--t7-duration-instant",
   state: "--t7-duration-standard",
-  enterFast: "--t7-duration-fast",
-  enter: "--t7-duration-standard",
-  enterSlow: "--t7-duration-slow",
-  exit: "--t7-duration-fast",
+  enterFast: "--t7-duration-popup",
+  enter: "--t7-duration-overlay",
+  enterSlow: "--t7-duration-reveal",
+  exit: "--t7-duration-exit",
+  chart: "--t7-duration-chart",
   loop: "--t7-duration-loop",
 };
 
@@ -77,17 +89,19 @@ const easingTokens: Record<T7MotionRole, string> = {
   enter: "--t7-ease-enter",
   enterSlow: "--t7-ease-enter",
   exit: "--t7-ease-exit",
+  chart: "--t7-ease-enter",
   loop: "--t7-ease-standard",
 };
 
 const fallbackDurations: Record<T7MotionRole, number> = {
-  interactive: 150,
-  state: 525,
-  enterFast: 300,
-  enter: 525,
-  enterSlow: 1500,
-  exit: 300,
-  loop: 1200,
+  interactive: 120,
+  state: 220,
+  enterFast: 160,
+  enter: 280,
+  enterSlow: 800,
+  exit: 180,
+  chart: 1250,
+  loop: 2400,
 };
 
 const fallbackEasings: Record<T7MotionRole, string> = {
@@ -97,6 +111,7 @@ const fallbackEasings: Record<T7MotionRole, string> = {
   enter: "cubic-bezier(.16, 1, .3, 1)",
   enterSlow: "cubic-bezier(.16, 1, .3, 1)",
   exit: "cubic-bezier(.4, 0, 1, 1)",
+  chart: "cubic-bezier(.16, 1, .3, 1)",
   loop: "cubic-bezier(.2, 0, 0, 1)",
 };
 
@@ -156,7 +171,7 @@ export function resolveT7Motion(
   target: Element | null,
   role: T7MotionRole = "enter",
 ): T7MotionProfile {
-  const reduced = prefersReducedMotion();
+  const systemReduced = prefersReducedMotion();
   if (typeof window === "undefined") {
     return {
       duration: fallbackDurations[role],
@@ -166,6 +181,9 @@ export function resolveT7Motion(
   }
 
   const styles = window.getComputedStyle(target ?? document.documentElement);
+  const reduced =
+    systemReduced ||
+    styles.getPropertyValue("--t7-motion-preference").trim() === "reduced";
   const duration = parseDuration(
     styles.getPropertyValue(durationTokens[role]),
     fallbackDurations[role],
@@ -204,8 +222,8 @@ export function t7Animate(
     targets as AnimeTargetsParam,
     {
       ...parameters,
-      duration: options.duration ?? profile.duration,
-      ease: options.ease ?? profile.ease,
+      duration: profile.reduced ? 0 : (options.duration ?? profile.duration),
+      ease: profile.reduced ? "linear" : (options.ease ?? profile.ease),
     } as AnimeAnimationParams,
   );
 
@@ -299,28 +317,39 @@ function addChartReveal(
   root: Element,
   kind: T7ChartMotionKind,
 ) {
-  const profile = resolveT7Motion(root, "enterSlow");
+  // A sparkline is a compact supporting cue; it should resolve before a
+  // visitor perceives it as an incomplete chart. Larger charts retain the
+  // slower global reveal role.
+  const motionRole = kind === "sparkline" ? "enter" : "chart";
+  const profile = resolveT7Motion(root, motionRole);
   const duration = profile.duration;
   const stagger = animeStagger(Math.min(96, Math.max(28, duration * 0.06)));
 
   if (kind === "sparkline") {
     const area = elements(root, ".t7-sparkline-area");
-    const line = elements(root, ".t7-sparkline-line");
     const point = elements(root, ".t7-sparkline-point");
+    const reveal = elements(root, ".t7-sparkline-reveal");
+    if (reveal.length) timeline.add(reveal, { scaleX: [0, 1], duration }, 0);
     if (area.length)
       timeline.add(area, { opacity: [0, 1], duration: duration * 0.72 }, 0);
-    if (line.length)
-      timeline.add(
-        line,
-        { strokeDashoffset: [1, 0], duration },
-        Math.min(90, duration * 0.08),
-      );
-    if (point.length)
+    if (point.length) {
+      const endpointStart = duration * 0.76;
+      const endpointSettle = duration * 0.16;
       timeline.add(
         point,
-        { opacity: [0, 0.9], scale: [0.45, 1], duration: duration * 0.45 },
-        Math.min(180, duration * 0.2),
+        {
+          opacity: [0, 1],
+          scale: [0.48, 1.14],
+          duration: endpointSettle,
+        },
+        endpointStart,
       );
+      timeline.add(
+        point,
+        { scale: [1.14, 1], duration: duration * 0.14 },
+        endpointStart + endpointSettle,
+      );
+    }
     return;
   }
 
@@ -387,8 +416,21 @@ export function t7AnimateChart(
   root: Element,
   kind: T7ChartMotionKind,
 ): T7MotionHandle {
-  if (resolveT7Motion(root, "enterSlow").reduced) return noOpMotion;
-  const timeline = createAnimeTimeline(root, { role: "enterSlow" });
+  // Keep the reduced-motion decision on the same role that drives the normal
+  // timeline so the two paths always share a single token contract.
+  const motionRole = kind === "sparkline" ? "enter" : "chart";
+  if (resolveT7Motion(root, motionRole).reduced) {
+    if (kind === "sparkline") {
+      for (const reveal of elements(root, ".t7-sparkline-reveal"))
+        (reveal as SVGElement).style.transform = "scaleX(1)";
+      for (const area of elements(root, ".t7-sparkline-area"))
+        (area as SVGElement).style.opacity = "1";
+      for (const point of elements(root, ".t7-sparkline-point"))
+        (point as SVGElement).style.opacity = "1";
+    }
+    return noOpMotion;
+  }
+  const timeline = createAnimeTimeline(root, { role: motionRole });
   addChartReveal(timeline, root, kind);
   return {
     cancel: () => timeline.cancel(),
@@ -396,15 +438,14 @@ export function t7AnimateChart(
   };
 }
 
-/** Animate the milestone sequence once while preserving CSS state motion. */
+/** Animate the workflow sequence once while preserving CSS state motion. */
 export function t7AnimateMilestone(root: Element): T7MotionHandle {
   if (resolveT7Motion(root, "enter").reduced) return noOpMotion;
   const timeline = createAnimeTimeline(root, { role: "enter" });
   const profile = resolveT7Motion(root, "enter");
   const duration = profile.duration;
   const items = elements(root, ".t7-milestone-item");
-  const nodes = elements(root, ".t7-milestone-node");
-  const rings = elements(root, ".t7-milestone-ring-value");
+  const stageHeaders = elements(root, ".t7-milestone-stage-header");
 
   if (items.length)
     timeline.add(
@@ -417,26 +458,12 @@ export function t7AnimateMilestone(root: Element): T7MotionHandle {
       },
       0,
     );
-  if (nodes.length)
+  if (stageHeaders.length)
     timeline.add(
-      nodes,
-      { scale: [0.94, 1], duration: duration * 0.42 },
+      stageHeaders,
+      { opacity: [0.45, 1], translateX: [-3, 0], duration: duration * 0.42 },
       Math.min(80, duration * 0.12),
     );
-
-  rings.forEach((ring, index) => {
-    const finalOffset = Number.parseFloat(
-      (ring as SVGCircleElement).style.strokeDashoffset,
-    );
-    timeline.add(
-      ring,
-      {
-        strokeDashoffset: [100, Number.isFinite(finalOffset) ? finalOffset : 0],
-        duration: duration * 0.72,
-      },
-      Math.min(100, duration * 0.15) + index * 30,
-    );
-  });
 
   return {
     cancel: () => timeline.cancel(),

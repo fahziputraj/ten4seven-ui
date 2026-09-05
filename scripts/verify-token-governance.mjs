@@ -87,6 +87,11 @@ const requiredSemanticVariables = [
   "--t7-card-header-gap",
   "--t7-overlay-padding",
   "--t7-table-cell-padding-inline",
+  "--t7-kpi-padding",
+  "--t7-kpi-content-gap",
+  "--t7-kpi-chart-height",
+  "--t7-surface-emphasis-solid-chart-1-hsl",
+  "--t7-surface-emphasis-solid-chart-foreground-hsl",
 ];
 for (const variable of requiredSemanticVariables)
   assert.ok(

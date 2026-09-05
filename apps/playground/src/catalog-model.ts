@@ -69,6 +69,24 @@ export type RecipeContract = {
   icons?: string[];
   displayName?: string;
   references?: string[];
+  operational?: {
+    maturity: "mature";
+    useWhen: string[];
+    avoidWhen: string[];
+    anatomy: string[];
+    requiredSemantics: string[];
+    optionalSemantics?: string[];
+    responsive: {
+      desktop: string;
+      tablet: string;
+      mobile: string;
+    };
+    accessibility: string[];
+    aiGuidance: string;
+    antiPatterns: string[];
+    relationships?: string[];
+    referencePath: string;
+  };
 };
 
 export type BlockContract = {

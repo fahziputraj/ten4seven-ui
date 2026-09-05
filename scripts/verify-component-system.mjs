@@ -55,8 +55,15 @@ assert.equal(
 );
 assert.equal(
   Object.keys(recipes).length,
-  17,
+  28,
   "recipe count changed; update evidence intentionally",
+);
+assert.equal(
+  Object.values(recipes).filter(
+    (recipe) => recipe.operational?.maturity === "mature",
+  ).length,
+  11,
+  "mature operational recipe count changed; update evidence intentionally",
 );
 
 assert.equal(
@@ -162,9 +169,12 @@ for (const [name, recipe] of Object.entries(recipes)) {
     );
   for (const reference of recipe.references ?? [])
     assert.ok(
-      ["Operations Tracker", "Publishing Store", "Public Showcase"].includes(
-        reference,
-      ),
+      [
+        "Operations Tracker",
+        "Publishing Store",
+        "Public Showcase",
+        "AAPM Operational Reference",
+      ].includes(reference),
       `${name}: reference is not evidence-backed`,
     );
   for (const blockName of recipe.blocks ?? [])

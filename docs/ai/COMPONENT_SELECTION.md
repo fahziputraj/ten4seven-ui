@@ -20,7 +20,7 @@ Only `implemented` catalog entries are available to product work. `experimental`
 | Public/content/commerce navigation                               | `PublicShell` + `NavigationMenu` (or `TopNavigation` for flat links)                                     | an ERP-like sidebar by default                                     |
 | Comparable, sortable, selectable records                         | `DataTable`, `DataTableColumnPicker`, `BulkActionBar`                                                    | cards posing as a table                                            |
 | One record summary or facts                                      | `RecordSummary`, `KeyValueList` / `DescriptionList`, `ActivityFeed` / `Timeline`                         | an ad hoc metric wall                                              |
-| Milestone or journey progress with selectable detail             | `MilestoneTracker`; use `Progress` for a scalar or `Stepper` for a sequential form                       | a feature-local circular progress/card cluster                     |
+| Milestone or journey progress with selectable detail             | `MilestoneTracker`; use `Progress` for a scalar or `Stepper` for a sequential form                       | a feature-local workflow/progress-card cluster                     |
 | Compact status or category                                       | `StatusChip` for meaning; `Badge` for neutral category                                                   | colored text spans                                                 |
 | Filtered list/report                                             | `FilterToolbar`, `AppliedFilters`, `FilterChip`, and `FilterDrawer` on narrow screens                    | scattered unlabelled controls                                      |
 | Contextual inspection or editing                                 | `Drawer` or `DetailDrawer`                                                                               | a locally implemented drawer                                       |
@@ -35,6 +35,14 @@ Only `implemented` catalog entries are available to product work. `experimental`
 ## Shell and recipe decisions
 
 Use `entity-list` for comparable operational records, `catalog` for content-first visual products, `cart` for cart review, `checkout` for order confirmation, `entity-detail` and `entity-form` for focused record work, `approval-queue` for review/decision flow, and `report` for time-bounded result analysis. For expressive recipes, use `blockRoles` to separate required, recommended, and optional blocks instead of rendering the full available block list. Recipes define the public composition; components own interaction, focus, density, typography, and tokens.
+
+For operational work, select from `control-tower`, `process-workspace`,
+`operational-kanban`, `load-planning`, `receiving-console`, `route-planning`,
+`entity-360`, `decision-workspace`, `exception-queue`, `activity-audit`, and
+`resource-forecast`. Start with the user's operating question, not the desired
+shape. Read [OPERATIONAL_PATTERNS.md](OPERATIONAL_PATTERNS.md) for the decision
+matrix, semantic minimums, relationships, responsive contract, accessibility,
+and consumer ownership boundary.
 
 The canonical family taxonomy is Foundations, Actions, Forms, Navigation,
 Layout, Patterns, Surfaces, Data Display, Tables, Filtering & Bulk Actions,

@@ -3,6 +3,9 @@ import { expect, test, type Locator, type Page } from "@playwright/test";
 async function clearPersistedPlaygroundTheme(page: Page) {
   await page.addInitScript(() => {
     window.localStorage.removeItem("ten4seven.playground.theme.v1");
+    window.localStorage.removeItem(
+      "ten4seven.playground.runtime-preferences.v1",
+    );
   });
 }
 
@@ -23,12 +26,31 @@ async function chooseRuntimePreference(
   await group.getByRole("button", { name: option, exact: true }).click();
 }
 
+async function openDeveloperDelivery(page: Page) {
+  const trigger = page
+    .locator(".studio-developer-delivery")
+    .getByRole("button", { name: /Developer delivery/i });
+  if ((await trigger.getAttribute("aria-expanded")) !== "true")
+    await trigger.click();
+  await expect(trigger).toHaveAttribute("aria-expanded", "true");
+}
+
 async function semanticTokens(locator: Locator) {
   return locator.evaluate((element) => {
     const style = getComputedStyle(element);
+    const probe = document.createElement("span");
+    probe.style.cssText =
+      "position:absolute;visibility:hidden;width:var(--t7-radius-data)";
+    element.append(probe);
+    const dataRadius = getComputedStyle(probe).width;
+    probe.remove();
     return {
+      dataRadius,
+      headerHeight: style.getPropertyValue("--t7-header-height").trim(),
+      gridGap: style.getPropertyValue("--t7-grid-gap").trim(),
       background: style.getPropertyValue("--t7-background-hsl").trim(),
       controlHeight: style.getPropertyValue("--t7-control-height").trim(),
+      focusWidth: style.getPropertyValue("--t7-focus-width").trim(),
       focusRing: style.getPropertyValue("--t7-focus-ring").trim(),
       foreground: style.getPropertyValue("--t7-foreground-hsl").trim(),
       fontDisplay: style.getPropertyValue("--t7-font-display").trim(),
@@ -100,7 +122,8 @@ test.describe("Universal Design System v2 Theme Studio", () => {
 
     const providerTokens = await semanticTokens(provider);
     expect(providerTokens.controlHeight).toBe("36px");
-    expect(providerTokens.focusRing).toContain("4px");
+    expect(providerTokens.focusWidth).toBe("3px");
+    expect(providerTokens.focusRing).toContain("3px");
     expect(providerTokens.motionDuration).toBe("0.01ms");
 
     const inverseScope = page.locator(
@@ -124,7 +147,9 @@ test.describe("Universal Design System v2 Theme Studio", () => {
     expect(inverseTokens.background).not.toBe(providerTokens.background);
     expect(inverseTokens.foreground).not.toBe(providerTokens.foreground);
     expect(inverseTokens.controlHeight).toBe(providerTokens.controlHeight);
-    expect(inverseTokens.focusRing).toBe(providerTokens.focusRing);
+    expect(inverseTokens.focusWidth).toBe("3px");
+    expect(inverseTokens.focusRing).toContain("3px");
+    expect(inverseTokens.focusRing).not.toBe(providerTokens.focusRing);
     expect(inverseTokens.motionDuration).toBe(providerTokens.motionDuration);
 
     const nestedScope = page.locator(
@@ -155,6 +180,7 @@ test.describe("Universal Design System v2 Theme Studio", () => {
     expect(editorialTokens.fontDisplay).toContain("Source Serif 4");
     expect(editorialTokens.controlHeight).toBe("44px");
 
+    await openDeveloperDelivery(page);
     const cssFirstProof = page.getByTestId("css-first-theme-proof");
     await expect(cssFirstProof).toBeVisible();
     await expect(cssFirstProof).toHaveAttribute("data-t7-theme", "editorial");
@@ -163,9 +189,14 @@ test.describe("Universal Design System v2 Theme Studio", () => {
     const cssFirstTokens = await semanticTokens(cssFirstProof);
     expect(cssFirstTokens.recipe).toBe("editorial");
     expect(cssFirstTokens.controlHeight).toBe("36px");
-    expect(cssFirstTokens.focusRing).toContain("4px");
+    expect(cssFirstTokens.focusWidth).toBe("3px");
+    expect(cssFirstTokens.focusRing).toContain("3px");
     expect(cssFirstTokens.motionDuration).toBe("0.01ms");
     expect(cssFirstTokens.fontDisplay).toContain("Source Serif 4");
+    expect(cssFirstTokens.dataRadius).toBe("10px");
+    expect(cssFirstTokens.dataRadius).toBe(providerTokens.dataRadius);
+    expect(cssFirstTokens.headerHeight).toBe(providerTokens.headerHeight);
+    expect(cssFirstTokens.gridGap).toBe(providerTokens.gridGap);
   });
 
   test("an inverse ThemeScope keeps its action focusable and bounded on a narrow viewport", async ({
@@ -195,7 +226,9 @@ test.describe("Universal Design System v2 Theme Studio", () => {
     });
     await action.scrollIntoViewIfNeeded();
     await expect(inverseScope).toHaveAttribute("data-t7-mode", "light");
-    await expect(inverseScope).toHaveCSS("--t7-focus-ring", /4px/);
+    const inverseTokens = await semanticTokens(inverseScope);
+    expect(inverseTokens.focusWidth).toBe("3px");
+    expect(inverseTokens.focusRing).toContain("3px");
     await expect(action).toBeVisible();
 
     // Move away from and back to the scoped control through the keyboard so
@@ -224,7 +257,6 @@ test.describe("Universal Design System v2 Theme Studio", () => {
         scopeClientWidth: scope.clientWidth,
       };
     });
-
     expect(focusAndLayout.actionFocusVisible).toBe(true);
     expect(focusAndLayout.actionBoxShadow).not.toBe("none");
     expect(focusAndLayout.scopeScrollWidth).toBeLessThanOrEqual(

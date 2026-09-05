@@ -57,26 +57,34 @@
 :root {
   color-scheme: light;
   --t7-motion-duration: 1.5s;
-  --t7-duration-loop: 1200ms;
-  --t7-motion-interactive: var(--t7-duration-instant, 150ms)
+  --t7-duration-loop: 2400ms;
+  --t7-motion-interactive: var(--t7-duration-instant, 120ms)
     var(--t7-ease-standard, cubic-bezier(0.2, 0, 0, 1));
-  --t7-motion-state: var(--t7-duration-standard, 525ms)
+  --t7-motion-state: var(--t7-duration-standard, 220ms)
     var(--t7-ease-standard, cubic-bezier(0.2, 0, 0, 1));
-  --t7-motion-enter-fast: var(--t7-duration-fast, 300ms)
+  --t7-motion-enter-fast: var(--t7-duration-popup, 160ms)
     var(--t7-ease-enter, cubic-bezier(0.16, 1, 0.3, 1));
-  --t7-motion-enter: var(--t7-duration-standard, 525ms)
+  --t7-motion-enter: var(--t7-duration-overlay, 280ms)
     var(--t7-ease-enter, cubic-bezier(0.16, 1, 0.3, 1));
-  --t7-motion-enter-slow: var(--t7-duration-slow, 1500ms)
+  --t7-motion-enter-slow: var(--t7-duration-reveal, 800ms)
     var(--t7-ease-enter, cubic-bezier(0.16, 1, 0.3, 1));
-  --t7-motion-exit: var(--t7-duration-fast, 300ms)
+  --t7-motion-exit: var(--t7-duration-exit, 180ms)
     var(--t7-ease-exit, cubic-bezier(0.4, 0, 1, 1));
   --t7-motion-loop: var(--t7-duration-loop, 1200ms) linear;
   --t7-motion-loop-eased: var(--t7-duration-loop, 1200ms) ease-in-out;
   --t7-transition-fast: var(--t7-motion-interactive);
   --t7-transition-standard: var(--t7-motion-state);
-  --t7-transition-large: var(--t7-motion-enter-slow);
-  --t7-focus-hsl: var(--t7-accent-hsl);
-  --t7-focus-ring: 0 0 0 3px hsl(var(--t7-focus-hsl) / 0.28);
+  --t7-transition-large: var(--t7-motion-state);
+  --t7-focus-hsl: 216 72% 38%;
+  --t7-focus-width: 2px;
+  --t7-focus-offset: 2px;
+  --t7-focus-halo: 0 0 0 var(--t7-focus-offset) hsl(var(--t7-surface-hsl));
+  --t7-focus-ring-inset: inset 0 0 0 var(--t7-focus-width)
+    hsl(var(--t7-focus-hsl));
+  --t7-focus-ring:
+    var(--t7-focus-halo),
+    0 0 0 calc(var(--t7-focus-offset) + var(--t7-focus-width))
+      hsl(var(--t7-focus-hsl));
   --t7-z-base: 0;
   --t7-z-sticky: 10;
   --t7-z-focus: 20;
@@ -88,6 +96,24 @@
   --t7-z-modal: 80;
   --t7-z-toast: 90;
   --t7-z-command: 100;
+  --t7-overlay-menu-sm: 200px;
+  --t7-overlay-menu-md: 240px;
+  --t7-overlay-menu-lg: 280px;
+  --t7-overlay-select-min: 220px;
+  --t7-overlay-select-max: 360px;
+  --t7-overlay-combobox: 280px;
+  --t7-overlay-date: 336px;
+  --t7-overlay-date-range: 672px;
+  --t7-overlay-time: 360px;
+  --t7-overlay-color: 304px;
+  --t7-overlay-popover-min: 220px;
+  --t7-overlay-popover-max: 360px;
+  --t7-overlay-tooltip-max: 260px;
+  --t7-overlay-command: 640px;
+  --t7-overlay-dialog-sm: 400px;
+  --t7-overlay-dialog-md: 520px;
+  --t7-overlay-dialog-lg: 720px;
+  --t7-overlay-drawer-max: 460px;
   --t7-scrollbar-size: 4px;
   --t7-scrollbar-thumb-alpha: 0.3;
   --t7-scrollbar-thumb-hover-alpha: 0.5;
@@ -205,6 +231,23 @@ textarea:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  :root,
+  [data-t7-theme] {
+    --t7-motion-preference: reduced !important;
+    --t7-motion-duration: 0.01ms !important;
+    --t7-duration-instant: 0.01ms !important;
+    --t7-duration-fast: 0.01ms !important;
+    --t7-duration-standard: 0.01ms !important;
+    --t7-duration-normal: 0.01ms !important;
+    --t7-duration-slow: 0.01ms !important;
+    --t7-duration-popup: 0.01ms !important;
+    --t7-duration-overlay: 0.01ms !important;
+    --t7-duration-layout: 0.01ms !important;
+    --t7-duration-reveal: 0.01ms !important;
+    --t7-duration-chart: 0.01ms !important;
+    --t7-duration-exit: 0.01ms !important;
+    --t7-duration-loop: 0.01ms !important;
+  }
   *,
   *::before,
   *::after {
@@ -212,5 +255,12 @@ textarea:focus-visible {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+  }
+}
+
+@media (forced-colors: active) {
+  :focus-visible {
+    outline: var(--t7-focus-width, 2px) solid Highlight !important;
+    outline-offset: var(--t7-focus-offset, 2px);
   }
 }

@@ -1,1 +1,1 @@
-{"id":"Alert","displayName":"Alert","status":"implemented","category":"feedback","purpose":"Show persistent in-context information, success, warning, or danger feedback.","source":"packages/ui/src/feedback.tsx","importantProps":["tone","title","description","action","onDismiss"]}
+{"id":"Alert","displayName":"Alert","status":"implemented","category":"feedback","purpose":"Show persistent in-context feedback as a semantic callout with bounded emphasis.","source":"packages/ui/src/feedback.tsx","importantProps":["emphasis","tone","title","description","action","onDismiss"]}

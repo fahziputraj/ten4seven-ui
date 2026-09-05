@@ -25,40 +25,40 @@ export const THEME_RADIUS_RANGE = Object.freeze({ min: 0, max: 24, step: 1 });
 const motionRoleDefaults: Record<MotionProfileName, MotionRoleScale> = {
   minimal: {
     fast: 0.1,
-    interaction: 0.16,
-    state: 0.22,
-    enter: 0.3,
-    exit: 0.22,
+    interaction: 0.14,
+    state: 0.18,
+    enter: 0.24,
+    exit: 0.16,
     reveal: 0.45,
     chart: 0.7,
     loop: 1.2,
   },
   calm: {
-    fast: 0.14,
-    interaction: 0.24,
-    state: 0.35,
-    enter: 0.5,
-    exit: 0.35,
+    fast: 0.12,
+    interaction: 0.18,
+    state: 0.24,
+    enter: 0.32,
+    exit: 0.2,
     reveal: 0.8,
     chart: 1.25,
     loop: 2,
   },
   balanced: {
-    fast: 0.16,
-    interaction: 0.28,
-    state: 0.42,
-    enter: 0.6,
-    exit: 0.42,
-    reveal: 0.95,
-    chart: 1.5,
+    fast: 0.12,
+    interaction: 0.16,
+    state: 0.22,
+    enter: 0.28,
+    exit: 0.18,
+    reveal: 0.8,
+    chart: 1.25,
     loop: 2.4,
   },
   lively: {
-    fast: 0.12,
-    interaction: 0.22,
-    state: 0.34,
-    enter: 0.48,
-    exit: 0.34,
+    fast: 0.1,
+    interaction: 0.16,
+    state: 0.2,
+    enter: 0.26,
+    exit: 0.16,
     reveal: 0.75,
     chart: 1.1,
     loop: 1.8,
@@ -146,7 +146,11 @@ function roundSeconds(value: number): number {
   return Number(value.toFixed(2));
 }
 
-/** Resolve semantic motion roles from one compatibility anchor value. */
+/**
+ * One semantic timing source for typed profiles, CSS and JS motion. The
+ * compatibility anchor can vary choreography; short interactions stay within
+ * a 0.75–1.25 multiplier so even a 2.5s anchor cannot slow a popup or field.
+ */
 export function resolveMotionRoles(
   profile: MotionProfileName = "balanced",
   anchorSeconds = 1.5,
@@ -157,7 +161,12 @@ export function resolveMotionRoles(
   return Object.fromEntries(
     Object.entries(selected).map(([role, seconds]) => [
       role,
-      roundSeconds(seconds * scale),
+      roundSeconds(
+        seconds *
+          (role === "reveal" || role === "chart" || role === "loop"
+            ? scale
+            : Math.min(1.25, Math.max(0.75, scale))),
+      ),
     ]),
   ) as unknown as MotionRoleScale;
 }

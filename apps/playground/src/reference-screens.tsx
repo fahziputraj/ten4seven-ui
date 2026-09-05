@@ -22,6 +22,7 @@ import {
   EmptyState,
   FilterToolbar,
   Input,
+  IconButton,
   KeyValueList,
   KPICluster,
   MilestoneTracker,
@@ -39,7 +40,9 @@ import {
   SearchInput,
   Select,
   Sidebar,
+  Sparkline,
   StatusChip,
+  TrendIndicator,
   Typography,
   OrderSummary,
   RecordSummary,
@@ -441,13 +444,17 @@ function OperationalTopbar({
   return (
     <div className="reference-topbar">
       <div className="reference-topbar-context">
-        <T7Icon name={icon} size={18} />
+        <span aria-hidden="true" className="reference-topbar-context-icon">
+          <T7Icon name={icon} size={17} />
+        </span>
         <div>
           <Typography typeRole="label">{context}</Typography>
           <Typography typeRole="caption">Operations workspace</Typography>
         </div>
       </div>
-      <div className="reference-topbar-actions">{children}</div>
+      <div className="reference-topbar-actions t7-header-actions">
+        {children}
+      </div>
     </div>
   );
 }
@@ -2265,9 +2272,11 @@ function OperationsDomainSurface({
 export interface OperationsTrackerProps {
   viewState: OperationsViewState;
   onViewStateChange: (viewState: OperationsViewState) => void;
+  onOpenSettings?: () => void;
 }
 
 export function OperationsTracker({
+  onOpenSettings,
   onViewStateChange,
   viewState,
 }: OperationsTrackerProps) {
@@ -2288,6 +2297,19 @@ export function OperationsTracker({
     key: "lastActivity",
   });
   const pageSize = 5;
+  const attentionCount = operationsRecords.filter(
+    (record) =>
+      record.status === "Needs attention" || record.status === "Blocked",
+  ).length;
+  const customerSignalCount = operationsRecords.filter(
+    (record) => record.workType === "Customer" || record.workType === "Finance",
+  ).length;
+  const dueSoonCount = operationsRecords.filter(
+    (record) => record.dueRank <= 6,
+  ).length;
+  const dueSoonShare = Math.round(
+    (dueSoonCount / Math.max(operationsRecords.length, 1)) * 100,
+  );
 
   const filteredRecords = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -2528,11 +2550,11 @@ export function OperationsTracker({
           }
           icon={activeNavigation.icon}
         >
-          <Button
-            aria-label="Open operations settings"
-            intent="quiet"
-            leadingIcon="settings"
-            size="sm"
+          <IconButton
+            icon="settings"
+            label="Open operations settings"
+            onClick={onOpenSettings}
+            size="md"
           />
         </OperationalTopbar>
       }
@@ -2599,45 +2621,109 @@ export function OperationsTracker({
             <KPICluster
               id="operations-health-summary"
               label="Workstream health"
+              variant="cards"
               items={[
                 {
+                  chart: (
+                    <Sparkline
+                      colorway={1}
+                      label="Open workstreams across the last seven review periods"
+                      values={[5, 5, 6, 7, 6, 8, 8]}
+                    />
+                  ),
+                  colorway: 1,
+                  emphasis: "solid",
                   icon: "dashboard",
                   label: "Open workstreams",
                   note: "Across 5 operational domains",
+                  tone: "primary",
+                  trend: (
+                    <TrendIndicator
+                      context="vs 7d"
+                      direction="up"
+                      label="Open workstreams increased by 2 versus the prior seven days"
+                      sentiment="neutral"
+                      value="+2"
+                      variant="soft"
+                    />
+                  ),
                   value: operationsRecords.length.toString(),
                 },
                 {
+                  chart: (
+                    <Sparkline
+                      colorway={3}
+                      label="Workstreams needing attention across the last seven review periods"
+                      values={[6, 5, 5, 4, 4, 3, 3]}
+                    />
+                  ),
+                  colorway: 3,
+                  emphasis: "solid",
                   icon: "warning",
                   label: "Needs attention",
                   note: "2 attention · 1 blocked",
                   tone: "warning",
-                  value: operationsRecords
-                    .filter(
-                      (record) =>
-                        record.status === "Needs attention" ||
-                        record.status === "Blocked",
-                    )
-                    .length.toString(),
+                  trend: (
+                    <TrendIndicator
+                      context="vs yesterday"
+                      direction="down"
+                      label="Workstreams needing attention decreased by 2 versus yesterday"
+                      sentiment="positive"
+                      value="-2"
+                      variant="soft"
+                    />
+                  ),
+                  value: attentionCount.toString(),
                 },
                 {
+                  colorway: 2,
+                  emphasis: "solid",
                   icon: "calendar",
                   label: "Due in 7 days",
-                  note: "Next accountable action",
-                  value: operationsRecords
-                    .filter((record) => record.dueRank <= 6)
-                    .length.toString(),
+                  note: `${dueSoonCount} of ${operationsRecords.length} next actions`,
+                  progress: (
+                    <Progress
+                      label="Share of open queue"
+                      showValue
+                      value={dueSoonShare}
+                    />
+                  ),
+                  tone: "info",
+                  trend: (
+                    <TrendIndicator
+                      context="vs prior week"
+                      direction="up"
+                      label="Workstreams due within seven days increased by 1 versus the prior week"
+                      sentiment="warning"
+                      value="+1"
+                      variant="soft"
+                    />
+                  ),
+                  value: dueSoonCount.toString(),
                 },
                 {
+                  footer: (
+                    <Typography typeRole="caption">
+                      Relationship and payment review
+                    </Typography>
+                  ),
+                  colorway: 4,
+                  emphasis: "solid",
                   icon: "users",
                   label: "Customer signals",
                   note: "2 relationship · 1 payment",
-                  value: operationsRecords
-                    .filter(
-                      (record) =>
-                        record.workType === "Customer" ||
-                        record.workType === "Finance",
-                    )
-                    .length.toString(),
+                  tone: "accent",
+                  trend: (
+                    <TrendIndicator
+                      context="vs prior week"
+                      direction="up"
+                      label="Customer signals increased by 1 versus the prior week"
+                      sentiment="neutral"
+                      value="+1"
+                      variant="soft"
+                    />
+                  ),
+                  value: customerSignalCount.toString(),
                 },
               ]}
             />
@@ -2653,17 +2739,13 @@ export function OperationsTracker({
                     id="operations-milestone-title"
                     typeRole="heading-lg"
                   >
-                    Milestone progress
+                    Workflow progress
                   </Typography>
                   <Typography typeRole="body-sm">
-                    Click a milestone to inspect what is moving the shared work
-                    queue forward.
+                    Select a workflow stage to inspect the work that is moving
+                    the shared queue forward.
                   </Typography>
                 </div>
-                <Badge tone="neutral">
-                  <T7Icon name="timeline" size={13} />
-                  Illustrative fixture flow
-                </Badge>
               </div>
               <MilestoneTracker
                 items={operationsMilestones}
@@ -2741,43 +2823,42 @@ export function OperationsTracker({
                 </Badge>
               </div>
 
-              {selectedRowKeys.length > 0 ? (
-                <BulkActionBar
-                  actions={
-                    <>
-                      <Button
-                        intent="secondary"
-                        leadingIcon="transfer"
-                        onClick={() =>
-                          setNotice(
-                            `${selectedRowKeys.length} workstreams queued for review.`,
-                          )
-                        }
-                        size="sm"
-                      >
-                        Assign
-                      </Button>
-                      <Button
-                        intent="quiet"
-                        leadingIcon="export"
-                        onClick={() =>
-                          setNotice(
-                            `${selectedRowKeys.length} workstreams added to export.`,
-                          )
-                        }
-                        size="sm"
-                      >
-                        Export
-                      </Button>
-                    </>
-                  }
-                  noun={
-                    selectedRowKeys.length === 1 ? "workstream" : "workstreams"
-                  }
-                  onClear={() => setSelectedRowKeys([])}
-                  selectedCount={selectedRowKeys.length}
-                />
-              ) : null}
+              <BulkActionBar
+                actions={
+                  <>
+                    <Button
+                      intent="secondary"
+                      leadingIcon="transfer"
+                      onClick={() =>
+                        setNotice(
+                          `${selectedRowKeys.length} workstreams queued for review.`,
+                        )
+                      }
+                      size="sm"
+                    >
+                      Assign
+                    </Button>
+                    <Button
+                      intent="quiet"
+                      leadingIcon="export"
+                      onClick={() =>
+                        setNotice(
+                          `${selectedRowKeys.length} workstreams added to export.`,
+                        )
+                      }
+                      size="sm"
+                    >
+                      Export
+                    </Button>
+                  </>
+                }
+                noun={
+                  selectedRowKeys.length === 1 ? "workstream" : "workstreams"
+                }
+                onClear={() => setSelectedRowKeys([])}
+                reserveSpace
+                selectedCount={selectedRowKeys.length}
+              />
 
               <DataTable
                 caption="Operations work queue"
@@ -3177,7 +3258,11 @@ function EbookCover({
   );
 }
 
-export function EbookStoreCatalog() {
+export function EbookStoreCatalog({
+  onOpenSettings,
+}: {
+  onOpenSettings?: () => void;
+} = {}) {
   const [query, setQuery] = useState("");
   const [authorQuery, setAuthorQuery] = useState("");
   const [category, setCategory] = useState<EbookCategoryFilter>("all");
@@ -3379,12 +3464,6 @@ export function EbookStoreCatalog() {
     );
   }
 
-  function scrollTo(id: string) {
-    document
-      .getElementById(id)
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
   const filterProps: EbookCatalogFiltersProps = {
     authorQuery,
     availability,
@@ -3400,7 +3479,7 @@ export function EbookStoreCatalog() {
   return (
     <PublicShell
       actions={
-        <div className="ebook-store-actions">
+        <div className="ebook-store-actions t7-header-actions">
           <Button
             className="ebook-publish-button"
             intent="primary"
@@ -3437,6 +3516,12 @@ export function EbookStoreCatalog() {
           >
             Akun
           </Button>
+          <IconButton
+            icon="settings"
+            label="Open settings"
+            onClick={onOpenSettings}
+            size="md"
+          />
         </div>
       }
       brand={
@@ -3490,20 +3575,6 @@ export function EbookStoreCatalog() {
     >
       <div className="reference-page ebook-reference" data-profile="commerce">
         <PageHeader
-          actions={
-            <Button
-              aria-expanded={isNarrowViewport ? filterDrawerOpen : undefined}
-              intent="secondary"
-              leadingIcon="category"
-              onClick={() =>
-                isNarrowViewport
-                  ? setFilterDrawerOpen(true)
-                  : scrollTo("ebook-categories")
-              }
-            >
-              Jelajahi kategori
-            </Button>
-          }
           description="Buku pilihan untuk manajemen, ilmu terapan, dan gagasan yang membantu pekerjaan sehari-hari bergerak maju."
           meta={
             <>

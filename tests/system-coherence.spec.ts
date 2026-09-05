@@ -42,14 +42,28 @@ async function chooseSelect(
     .click();
 }
 
+async function openAdvancedAuthoring(page: import("@playwright/test").Page) {
+  const advanced = page.locator(".studio-advanced-authoring");
+  const trigger = advanced.getByRole("button", {
+    name: /Advanced theme authoring/i,
+  });
+  if ((await trigger.getAttribute("aria-expanded")) !== "true")
+    await trigger.click();
+  await expect(trigger).toHaveAttribute("aria-expanded", "true");
+  return advanced;
+}
+
 async function chooseAppearance(
   page: import("@playwright/test").Page,
   value: Profile["appearance"],
 ) {
-  await page
-    .locator(".studio-appearance-picker")
-    .getByRole("button", { name: new RegExp(`^${value}\\b`, "i") })
-    .click();
+  const label = value === "light" ? "Light" : "Dark";
+  const button = page
+    .getByTestId("theme-recipe-workbench")
+    .getByRole("group", { name: "Appearance", exact: true })
+    .getByRole("button", { name: label, exact: true });
+  await button.click();
+  await expect(button).toHaveAttribute("aria-pressed", "true");
 }
 
 async function chooseRadius(
@@ -57,7 +71,7 @@ async function chooseRadius(
   value: Profile["radius"],
 ) {
   const radiusValue = { sharp: 8, soft: 12, rounded: 16 }[value];
-  const slider = page.getByRole("slider", { name: "Radius" });
+  const slider = page.getByRole("slider", { name: "Base radius" });
   await slider.focus();
   await slider.press("Home");
   for (let index = 0; index < radiusValue; index += 1)
@@ -76,18 +90,18 @@ async function chooseDensity(
   page: import("@playwright/test").Page,
   value: Profile["density"],
 ) {
-  const densityIndex = { dense: 0, compact: 1, default: 2, comfortable: 3 }[
-    value
-  ];
-  const slider = page.getByRole("slider", { name: "Density" });
-  await slider.focus();
-  await slider.press("Home");
-  for (let index = 0; index < densityIndex; index += 1)
-    await slider.press("ArrowRight");
-  await expect(slider).toHaveAttribute(
-    "aria-valuetext",
-    new RegExp(`${32 + densityIndex * 4} px`),
-  );
+  const labels: Record<string, string> = {
+    compact: "Compact",
+    comfortable: "Comfortable",
+    default: "Regular",
+    dense: "Dense",
+  };
+  const button = page
+    .getByTestId("theme-recipe-workbench")
+    .getByRole("group", { name: "Density", exact: true })
+    .getByRole("button", { name: labels[value], exact: true });
+  await button.click();
+  await expect(button).toHaveAttribute("aria-pressed", "true");
 }
 
 async function applyProfile(
@@ -95,6 +109,7 @@ async function applyProfile(
   profile: Profile,
 ) {
   await page.goto("/theme-studio");
+  await openAdvancedAuthoring(page);
   await page
     .getByRole("button", { name: `Use ${profile.palette} palette` })
     .click();
@@ -102,6 +117,39 @@ async function applyProfile(
   await chooseRadius(page, profile.radius);
   await chooseDensity(page, profile.density);
 }
+
+test("Theme Studio keeps appearance and density authoritative in the runtime rail", async ({
+  page,
+}) => {
+  await page.goto("/theme-studio");
+
+  const workbench = page.getByTestId("theme-recipe-workbench");
+  const appearance = workbench.getByRole("group", {
+    name: "Appearance",
+    exact: true,
+  });
+  const density = workbench.getByRole("group", {
+    name: "Density",
+    exact: true,
+  });
+
+  await expect(appearance).toHaveCount(1);
+  await expect(density).toHaveCount(1);
+  await expect(page.locator(".studio-appearance-picker")).toHaveCount(0);
+  await expect(page.locator(".studio-density-control")).toHaveCount(0);
+
+  await appearance.getByRole("button", { name: "Dark", exact: true }).click();
+  await density.getByRole("button", { name: "Dense", exact: true }).click();
+
+  await expect(page.locator(".t7-provider")).toHaveAttribute(
+    "data-t7-mode",
+    "dark",
+  );
+  await expect(page.locator(".t7-provider")).toHaveAttribute(
+    "data-t7-density",
+    "dense",
+  );
+});
 
 for (const profile of profiles) {
   test(`global profile ${profile.appearance} ${profile.palette} ${profile.radius} ${profile.density}`, async ({
@@ -138,6 +186,7 @@ test("canonical Select supports arrows, Enter, Escape, and disabled options", as
   page,
 }) => {
   await page.goto("/theme-studio");
+  await openAdvancedAuthoring(page);
   const mainAction = page.getByRole("button", { name: "Main action color" });
   await mainAction.focus();
   await mainAction.press("ArrowDown");
@@ -162,6 +211,7 @@ test("bounded Select popups stay anchored to their trigger", async ({
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/theme-studio");
+  await openAdvancedAuthoring(page);
 
   const trigger = page.getByRole("button", { name: "Main action color" });
   await trigger.click();
@@ -187,6 +237,7 @@ test("long select values stay inside their Theme Studio fields", async ({
 }) => {
   await page.setViewportSize({ width: 1186, height: 698 });
   await page.goto("/theme-studio");
+  await openAdvancedAuthoring(page);
 
   const fieldGeometry = await page
     .locator(".studio-controls-grid .t7-select-field")
@@ -216,27 +267,12 @@ test("long select values stay inside their Theme Studio fields", async ({
         sliderRight: sliderRect?.right,
       };
     });
-  const densityGeometry = await page
-    .locator(".studio-density-control")
-    .evaluate((control) => {
-      const controlRect = control.getBoundingClientRect();
-      const slider = control.querySelector("input[type='range']");
-      const sliderRect = slider?.getBoundingClientRect();
-      return {
-        controlRight: controlRect.right,
-        sliderRight: sliderRect?.right,
-      };
-    });
   const controlGridGeometry = await page
     .locator(".studio-controls-grid")
     .evaluate((grid) => {
       const style = getComputedStyle(grid);
-      const widths = Array.from(grid.children).map((child) =>
-        Math.round(child.getBoundingClientRect().width),
-      );
       return {
         columns: style.gridTemplateColumns.split(" ").filter(Boolean).length,
-        pairedWidths: widths.slice(0, 2),
       };
     });
   const profileGeometry = await page
@@ -264,14 +300,7 @@ test("long select values stay inside their Theme Studio fields", async ({
   expect(radiusGeometry.sliderRight).toBeLessThanOrEqual(
     radiusGeometry.controlRight + 0.5,
   );
-  expect(densityGeometry.sliderRight).toBeLessThanOrEqual(
-    densityGeometry.controlRight + 0.5,
-  );
   expect(controlGridGeometry.columns).toBe(2);
-  expect(
-    Math.max(...controlGridGeometry.pairedWidths) -
-      Math.min(...controlGridGeometry.pairedWidths),
-  ).toBeLessThanOrEqual(1);
   expect(profileGeometry).toHaveLength(10);
   const densityProfile = profileGeometry.find(
     (field) => field.label === "Density",
@@ -324,6 +353,7 @@ test("global controls collapse to one column on narrow screens", async ({
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/theme-studio");
+  await openAdvancedAuthoring(page);
 
   const geometry = await page
     .locator(".studio-controls-grid")
@@ -350,6 +380,7 @@ test("Theme Studio keeps mobile token metadata readable and aligned", async ({
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/theme-studio");
+  await openAdvancedAuthoring(page);
 
   const geometry = await page
     .locator(".studio-live-preview-meta, .studio-axis-slider-detail")
@@ -420,6 +451,7 @@ test("independent color and canvas axes propagate through the provider", async (
 }) => {
   await page.setViewportSize({ width: 1186, height: 698 });
   await page.goto("/theme-studio");
+  await openAdvancedAuthoring(page);
 
   await page.getByRole("button", { name: "Use indigo palette" }).click();
   const palettePropagation = await page.evaluate(() => {
@@ -446,7 +478,7 @@ test("independent color and canvas axes propagate through the provider", async (
   await chooseSelect(page, "Accent color", "amber");
   await page
     .locator(".studio-canvas-picker")
-    .getByRole("button", { name: /Pure white/i })
+    .getByRole("button", { name: /^Paper\b/i })
     .click();
   await page
     .locator(".studio-chart-picker")
@@ -462,30 +494,130 @@ test("independent color and canvas axes propagate through the provider", async (
   await expect(provider).toHaveCSS("--t7-chart-palette-count", "4");
 });
 
-test("Theme Studio explains semantic color roles and applies accent to focus", async ({
+test("Theme Studio keeps the paper canvas achromatic across palette changes", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1186, height: 698 });
   await page.goto("/theme-studio");
+  await openAdvancedAuthoring(page);
+
+  await page
+    .locator(".studio-canvas-picker")
+    .getByRole("button", { name: /^Paper\b/i })
+    .click();
+
+  const provider = page.locator(".t7-provider");
+  const baseline = await provider.evaluate((element) => ({
+    background: getComputedStyle(element)
+      .getPropertyValue("--t7-background-hsl")
+      .trim(),
+    border: getComputedStyle(element)
+      .getPropertyValue("--t7-border-hsl")
+      .trim(),
+    surface: getComputedStyle(element)
+      .getPropertyValue("--t7-surface-hsl")
+      .trim(),
+  }));
+  for (const value of Object.values(baseline)) {
+    const [hue, saturation] = value.split(" ");
+    expect(hue).toBe("0");
+    expect(saturation).toBe("0%");
+  }
+
+  for (const palette of ["emerald", "blue", "indigo", "violet", "orange"]) {
+    await page.getByRole("button", { name: `Use ${palette} palette` }).click();
+    await expect(provider).toHaveCSS(
+      "--t7-background-hsl",
+      baseline.background,
+    );
+    await expect(provider).toHaveCSS("--t7-surface-hsl", baseline.surface);
+    await expect(provider).toHaveCSS("--t7-border-hsl", baseline.border);
+  }
+});
+
+test("light application canvases stay white and structural surfaces stay achromatic", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+
+  for (const route of [
+    "/theme-studio",
+    "/component-lab",
+    "/operations-tracker",
+    "/operational-patterns",
+    "/ebook-store",
+    "/public-showcase",
+  ]) {
+    await page.goto(route);
+
+    const result = await page.locator(".t7-provider").evaluate((provider) => {
+      const providerStyle = getComputedStyle(provider);
+      const selectors = [
+        ".t7-provider",
+        ".t7-app-shell",
+        ".t7-app-main",
+        ".t7-app-content",
+        "main",
+      ];
+      const structuralBackgrounds = selectors.flatMap((selector) => {
+        const element = document.querySelector<HTMLElement>(selector);
+        if (!element) return [];
+
+        return [{ selector, value: getComputedStyle(element).backgroundColor }];
+      });
+
+      return {
+        canvas: providerStyle.getPropertyValue("--t7-background-hsl").trim(),
+        providerBackground: providerStyle.backgroundColor,
+        structuralBackgrounds,
+      };
+    });
+
+    expect(result.canvas, route).toBe("0 0% 100%");
+    expect(result.providerBackground, route).toBe("rgb(255, 255, 255)");
+
+    for (const background of result.structuralBackgrounds) {
+      if (background.value === "rgba(0, 0, 0, 0)") continue;
+      const channels = background.value.match(/[\d.]+/g)?.slice(0, 3);
+      expect(channels?.length, `${route} ${background.selector}`).toBe(3);
+      expect(channels?.[0], `${route} ${background.selector}`).toBe(
+        channels?.[1],
+      );
+      expect(channels?.[1], `${route} ${background.selector}`).toBe(
+        channels?.[2],
+      );
+    }
+  }
+});
+
+test("Theme Studio explains semantic color roles and keeps focus independent of accent", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1186, height: 698 });
+  await page.goto("/theme-studio");
+  await openAdvancedAuthoring(page);
 
   const roleMap = page.getByTestId("studio-color-role-map");
   await expect(roleMap).toContainText("Main action");
   await expect(roleMap).toContainText("Buttons · links · selected");
   await expect(roleMap).toContainText("Accent color");
-  await expect(roleMap).toContainText("Focus ring · focused fields");
+  await expect(roleMap).toContainText("Supporting emphasis · expression");
   await expect(roleMap).toContainText("Chart");
-  await expect(roleMap).toContainText("Data series only");
+  await expect(roleMap).toContainText("Data series · opted-in solid surfaces");
 
   await chooseSelect(page, "Accent color", "amber");
   const provider = page.locator(".t7-provider");
   await expect(provider).toHaveAttribute("data-accent", "amber");
-  await expect(provider).toHaveCSS("--t7-focus-hsl", "48 92% 49%");
-  await expect(provider).toHaveCSS("--t7-input-focus-border-hsl", "48 92% 49%");
+  await expect(provider).toHaveCSS("--t7-focus-hsl", "216 72% 38%");
+  await expect(provider).toHaveCSS(
+    "--t7-input-focus-border-hsl",
+    "216 72% 38%",
+  );
   await expect(
     page
       .getByTestId("studio-live-preview")
       .locator('[data-live-value="accent"]'),
-  ).toHaveText("amber · shared focus role");
+  ).toHaveText("amber · supporting emphasis");
 });
 
 test("Typography Studio exposes distinct preset characters and roles", async ({
@@ -493,6 +625,7 @@ test("Typography Studio exposes distinct preset characters and roles", async ({
 }) => {
   await page.setViewportSize({ width: 1186, height: 698 });
   await page.goto("/theme-studio");
+  await openAdvancedAuthoring(page);
 
   const typographyPicker = page.locator(".studio-typography-picker");
   await expect(typographyPicker.getByRole("button")).toHaveCount(5);
@@ -540,6 +673,7 @@ test("Global Controls expose an immediate canonical preview", async ({
   const before = await previewAction.evaluate(
     (element) => getComputedStyle(element).backgroundColor,
   );
+  await openAdvancedAuthoring(page);
   await page.getByRole("button", { name: "Use blue palette" }).click();
   await expect(liveState).toContainText("Updated live");
   await expect(liveState).toContainText("Base palette");
@@ -567,8 +701,9 @@ test("radius slider applies exact zero and one-pixel steps", async ({
 }) => {
   await page.setViewportSize({ width: 1186, height: 698 });
   await page.goto("/theme-studio");
+  await openAdvancedAuthoring(page);
 
-  const slider = page.getByRole("slider", { name: "Radius" });
+  const slider = page.getByRole("slider", { name: "Base radius" });
   await slider.focus();
   await slider.press("Home");
   await expect(slider).toHaveValue("0");
@@ -596,11 +731,12 @@ test("radius slider applies exact zero and one-pixel steps", async ({
   );
 });
 
-test("motion duration slider controls shared reveal timing", async ({
+test("motion duration slider scales reveals while bounding interaction timing", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1186, height: 698 });
   await page.goto("/theme-studio");
+  await openAdvancedAuthoring(page);
 
   const slider = page.getByRole("slider", { name: "Motion duration" });
   await slider.focus();
@@ -620,7 +756,7 @@ test("motion duration slider controls shared reveal timing", async ({
   await expect(slider).toHaveValue("0.75");
   await expect(page.locator(".t7-provider")).toHaveCSS(
     "--t7-duration-standard",
-    "263ms",
+    "170ms",
   );
 });
 
@@ -634,11 +770,21 @@ test("operations milestone tracker reveals selected detail", async ({
     name: "Operations milestone progress",
   });
   await expect(tracker.getByRole("progressbar")).toHaveCount(5);
+  const triage = tracker.getByRole("button", { name: /Triage/ });
+  const followUp = tracker.getByRole("button", { name: /Follow-up/ });
+  await expect(triage).toHaveAttribute("aria-current", "step");
+  await expect(triage).toHaveAttribute("aria-pressed", "true");
+  await expect(followUp).not.toHaveAttribute("aria-current", "step");
+  await expect(followUp).toHaveAttribute("aria-pressed", "false");
   await expect(
     tracker.getByRole("region", { name: "Triage milestone details" }),
   ).toContainText("Health and ownership");
 
   await tracker.getByRole("button", { name: /Execution/ }).click();
+  await expect(
+    tracker.getByRole("button", { name: /Execution/ }),
+  ).toHaveAttribute("aria-current", "step");
+  await expect(triage).toHaveAttribute("aria-pressed", "false");
   await expect(
     tracker.getByRole("region", { name: "Execution milestone details" }),
   ).toContainText("Corn lot JG-882");
@@ -744,7 +890,7 @@ test("shared motion tokens drive smooth scroll and chart reveals", async ({
     motion.chartVisibility.every((visibility) => visibility === "true"),
   ).toBe(true);
   expect(motion.scrollBehavior).toBe("smooth");
-  expect(motion.standardDuration).toBe("525ms");
+  expect(motion.standardDuration).toBe("220ms");
   expect(motion.animatedNodes).toEqual(
     expect.arrayContaining([
       expect.objectContaining({
@@ -821,12 +967,14 @@ test("canonical actions use cursor-origin feedback and static cards retain neutr
     opacity: getComputedStyle(element, "::after").opacity,
     pointerX: element.style.getPropertyValue("--t7-pointer-x"),
     pointerY: element.style.getPropertyValue("--t7-pointer-y"),
+    backgroundImage: getComputedStyle(element, "::after").backgroundImage,
     transform: getComputedStyle(element, "::after").transform,
   }));
   expect(buttonFeedback.pointerX).not.toBe("");
   expect(buttonFeedback.pointerY).not.toBe("");
   expect(Number(buttonFeedback.opacity)).toBeGreaterThan(0);
-  expect(buttonFeedback.transform).not.toBe("none");
+  expect(buttonFeedback.backgroundImage).toContain("radial-gradient");
+  expect(buttonFeedback.transform).toBe("none");
 
   const card = page
     .locator(".t7-card")
@@ -917,6 +1065,9 @@ test("operations navigation stays visible and usable on mobile", async ({
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/operations-tracker");
 
+  await page
+    .getByRole("button", { name: "Open application navigation", exact: true })
+    .click();
   const navigation = page.getByRole("navigation", {
     name: "Application navigation",
   });
@@ -935,7 +1086,7 @@ test("operations navigation stays visible and usable on mobile", async ({
 
   await expect(
     page.locator(".operations-milestone-section .t7-milestone-scroll"),
-  ).toHaveCSS("overflow-x", "visible");
+  ).toHaveCSS("overflow-x", "auto");
   expect(
     await page.evaluate(
       () =>

@@ -85,10 +85,28 @@ const tailwindSource = await readFile(resolve(distDir, "tailwind.css"), "utf8");
 const dtcgTokens = JSON.parse(
   await readFile(resolve(distDir, "tokens.dtcg.json"), "utf8"),
 );
+const packageBuild = JSON.parse(
+  await readFile(resolve(distDir, "package-build.json"), "utf8"),
+);
 const styleCode = styleSource.replace(/\/\*[\s\S]*?\*\//g, "");
 
 const runtimeImportPattern =
   /(?:from\s*["']|require\(["'])[^"']*(?:@ten4seven\/(?:contracts|tokens|icons)|animejs)/;
+if (
+  !/^\s*["']use client["'];/.test(esmSource) ||
+  !/^\s*["']use client["'];/.test(cjsSource)
+)
+  throw new Error(
+    "the root runtime entries must preserve the Next.js Client Component directive",
+  );
+if (
+  packageBuild.clientBoundary !== "root" ||
+  packageBuild.entry !== "index.js" ||
+  packageBuild.commonjsEntry !== "index.cjs"
+)
+  throw new Error(
+    "package-build metadata does not describe the root client boundary",
+  );
 if (
   runtimeImportPattern.test(esmSource) ||
   runtimeImportPattern.test(cjsSource)
@@ -139,6 +157,11 @@ const requiredExports = [
   "THEME_RECIPES",
   "getThemeRecipe",
   "T7Icon",
+  "IconifyIcon",
+  "IconifyIconCount",
+  "IconifyIconNames",
+  "IconifyBoldDuotoneIconCount",
+  "IconifyBoldDuotoneIconNames",
   "paletteProfiles",
   "t7Motion",
 ];
@@ -146,6 +169,25 @@ const requiredExports = [
 for (const exportName of requiredExports) {
   if (!(exportName in esm) || !(exportName in cjs))
     throw new Error(`missing bundled export: ${exportName}`);
+}
+
+if (
+  typeof esm.IconifyIconCount !== "number" ||
+  esm.IconifyIconCount < 3000 ||
+  !Array.isArray(esm.IconifyIconNames) ||
+  esm.IconifyIconNames.length !== esm.IconifyIconCount ||
+  esm.IconifyIconNames.length !== cjs.IconifyIconNames.length ||
+  typeof esm.IconifyBoldDuotoneIconCount !== "number" ||
+  esm.IconifyBoldDuotoneIconCount < 1000 ||
+  !Array.isArray(esm.IconifyBoldDuotoneIconNames) ||
+  esm.IconifyBoldDuotoneIconNames.length !== esm.IconifyBoldDuotoneIconCount ||
+  !esm.IconifyBoldDuotoneIconNames.every((name) =>
+    name.endsWith("-bold-duotone"),
+  )
+) {
+  throw new Error(
+    "the bundled Iconify Solar catalog or 1,000-name Bold Duotone family is incomplete",
+  );
 }
 
 console.log(

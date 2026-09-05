@@ -38,6 +38,7 @@ import {
   FormSection,
   IconButton,
   KeyValueList,
+  KPICluster,
   LineChart,
   MetricCard,
   MultiSelect,
@@ -55,7 +56,6 @@ import {
   Skeleton,
   Sparkline,
   Spinner,
-  SplitButton,
   Stepper,
   Switch,
   Tabs,
@@ -328,6 +328,211 @@ function OverlayStressFixture() {
   );
 }
 
+function SurfaceExpressionFixture() {
+  return (
+    <section
+      aria-label="Canonical surface expression"
+      className="surface-expression-fixture"
+    >
+      <SectionHeader
+        description="The page remains paper-neutral. Colour scales from soft context to a solid decision signal only on the bounded surface that needs it."
+        eyebrow="Surface contract"
+        title="Plain, soft, solid, and inverse emphasis"
+      />
+      <div className="surface-expression-grid">
+        <Card data-surface-treatment="plain" emphasis="plain">
+          <CardHeader>
+            <div>
+              <CardTitle>Plain baseline</CardTitle>
+              <CardDescription>
+                Default reading and comparison stay quiet on paper.
+              </CardDescription>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <Typography typeRole="body-sm">
+              Use for the majority of work. Separation comes from neutral
+              border, elevation, and type hierarchy—not a tinted canvas.
+            </Typography>
+          </CardContent>
+        </Card>
+        <MetricCard
+          data-surface-treatment="soft"
+          description="A non-status customer signal"
+          emphasis="soft"
+          icon="users"
+          title="Soft data accent"
+          tone="accent"
+          value="3"
+        />
+        <MetricCard
+          chart={
+            <Sparkline
+              colorway={2}
+              label="Review coverage over the last eight periods"
+              values={[62, 66, 65, 71, 75, 73, 82, 87]}
+            />
+          }
+          chartPlacement="inline"
+          colorway={2}
+          data-surface-treatment="solid"
+          description="Rolling 30-day review window"
+          emphasis="solid"
+          icon="analytics"
+          title="Solid KPI signal"
+          tone="info"
+          trend={
+            <TrendIndicator
+              context="vs prior"
+              direction="up"
+              label="Increased 5.2 percent compared with the prior period"
+              sentiment="positive"
+              value="+5.2%"
+              variant="soft"
+            />
+          }
+          value="87%"
+        />
+        <Card data-surface-treatment="inverse" emphasis="inverse">
+          <CardHeader>
+            <div>
+              <CardTitle>Inverse focal surface</CardTitle>
+              <CardDescription>
+                Reserve this treatment for one deliberate decision or finish.
+              </CardDescription>
+            </div>
+          </CardHeader>
+          <CardContent className="surface-expression-inverse-content">
+            <Typography typeRole="body-sm">
+              Inverse is a shared surface treatment, not a Button-only color
+              shortcut.
+            </Typography>
+            <Button intent="secondary" size="sm">
+              Review decision
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+      <KPICluster
+        aria-label="Chart-linked surface colorways"
+        className="surface-colorway-proof"
+        columns={5}
+        items={[
+          {
+            chart: (
+              <Sparkline
+                colorway={1}
+                label="Coverage trend across eight review periods"
+                values={[72, 76, 74, 81, 83, 86, 88, 91]}
+              />
+            ),
+            colorway: 1,
+            emphasis: "solid",
+            icon: "dashboard",
+            label: "Coverage",
+            note: "Rolling 30 days",
+            trend: (
+              <TrendIndicator
+                context="vs prior"
+                direction="up"
+                label="Coverage increased 6.2 percent compared with the prior period"
+                sentiment="positive"
+                value="+6.2%"
+                variant="soft"
+              />
+            ),
+            value: "91%",
+          },
+          {
+            colorway: 2,
+            emphasis: "solid",
+            icon: "analytics",
+            label: "Throughput",
+            note: "Weekly delivery target",
+            progress: <Progress label="Target progress" showValue value={72} />,
+            value: "72%",
+          },
+          {
+            chart: (
+              <Sparkline
+                colorway={3}
+                label="Attention queue across eight daily periods"
+                values={[22, 24, 21, 19, 20, 17, 16, 14]}
+              />
+            ),
+            colorway: 3,
+            emphasis: "solid",
+            icon: "rating",
+            label: "Attention queue",
+            note: "Fewer unresolved signals",
+            trend: (
+              <TrendIndicator
+                context="vs 7d"
+                direction="down"
+                label="Attention queue decreased 18 percent, which is positive"
+                sentiment="positive"
+                value="-18%"
+                variant="soft"
+              />
+            ),
+            value: "14",
+          },
+          {
+            chart: (
+              <Sparkline
+                colorway={4}
+                label="Cycle time across eight delivery periods"
+                values={[2.6, 2.5, 2.7, 2.3, 2.2, 2.1, 2, 1.8]}
+              />
+            ),
+            colorway: 4,
+            emphasis: "solid",
+            icon: "progress",
+            label: "Cycle time",
+            note: "Median decision latency",
+            trend: (
+              <TrendIndicator
+                context="vs 30d"
+                direction="down"
+                label="Cycle time decreased 0.4 days, which is positive"
+                sentiment="positive"
+                value="-0.4d"
+                variant="soft"
+              />
+            ),
+            value: "1.8d",
+          },
+          {
+            colorway: 5,
+            emphasis: "solid",
+            footer: (
+              <Typography typeRole="caption">
+                Trend only · 184 qualified leads
+              </Typography>
+            ),
+            icon: "category",
+            label: "Conversion",
+            note: "Qualified next actions",
+            trend: (
+              <TrendIndicator
+                context="vs 30d"
+                direction="up"
+                label="Conversion increased 3.1 percent compared with the prior period"
+                sentiment="positive"
+                value="+3.1%"
+                variant="soft"
+              />
+            ),
+            value: "42%",
+          },
+        ]}
+        label="Chart-linked surface colorways"
+        variant="cards"
+      />
+    </section>
+  );
+}
+
 export function ComponentProofs() {
   const [modalOpen, setModalOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
@@ -366,99 +571,91 @@ export function ComponentProofs() {
   );
 
   return (
-    <section className="component-proofs" aria-label="Live component proofs">
-      <SectionHeader
-        description="Interactive fixtures for the exported contracts. They are intentionally neutral examples, not a third application domain."
-        title="Live component proofs"
-      />
-
+    <section
+      aria-label="Component interaction checks"
+      className="component-proofs"
+    >
       <div className="component-proof-grid component-proof-grid-form">
-        <Card>
-          <CardHeader>
-            <CardTitle>Form anatomy and date entry</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <FormSection
-              description="Labels, helper text, error space, selection, and numeric controls share token-led density."
-              title="Editable sample"
-            >
-              <FormGrid>
-                <Combobox
-                  label="Owner"
-                  onValueChange={setTeam}
-                  options={[
-                    {
-                      description: "Product design",
-                      label: "Maya Chen",
-                      value: "maya",
-                    },
-                    {
-                      description: "Operations",
-                      label: "Jordan Park",
-                      value: "jordan",
-                    },
-                    {
-                      description: "Engineering",
-                      label: "Lin Wu",
-                      value: "lin",
-                    },
-                  ]}
-                  value={team}
-                />
-                <MultiSelect
-                  label="Workstreams"
-                  onValueChange={setTags}
-                  options={[
-                    { label: "Design", value: "design" },
-                    { label: "Research", value: "research" },
-                    { label: "Engineering", value: "engineering" },
-                  ]}
-                  values={tags}
-                />
-                <DatePicker
-                  label="Review date"
-                  onValueChange={setDate}
-                  value={date}
-                />
-                <TimePicker
-                  label="Review time"
-                  onValueChange={(next) => setTime(next ?? "")}
-                  value={time}
-                />
-                <DateRangePicker
-                  label="Planning range"
-                  onValueChange={setRange}
-                  value={range}
-                />
-                <Switch
-                  checked={switchOn}
-                  description="Controls whether collaborators receive updates."
-                  label="Notify collaborators"
-                  onChange={(event) => setSwitchOn(event.target.checked)}
-                />
-              </FormGrid>
-              <Textarea
-                label="Notes"
-                onChange={(event) => setNote(event.target.value)}
-                placeholder="A short component QA note…"
-                value={note}
-              />
-              <RangeSlider
-                label="Confidence range"
-                max={100}
-                maxValue={rangeValue.max}
-                min={0}
-                minValue={rangeValue.min}
-                onValueChange={setRangeValue}
-              />
-              <OtpInput
-                label="Verification sample"
-                onValueChange={setOtp}
-                value={otp}
-              />
-            </FormSection>
-          </CardContent>
-        </Card>
+        <FormSection
+          className="component-proof-form-section"
+          description="Labels, helper text, error space, selection, and numeric controls share token-led density."
+          title="Form anatomy and date entry"
+        >
+          <FormGrid>
+            <Combobox
+              label="Owner"
+              onValueChange={setTeam}
+              options={[
+                {
+                  description: "Product design",
+                  label: "Maya Chen",
+                  value: "maya",
+                },
+                {
+                  description: "Operations",
+                  label: "Jordan Park",
+                  value: "jordan",
+                },
+                {
+                  description: "Engineering",
+                  label: "Lin Wu",
+                  value: "lin",
+                },
+              ]}
+              value={team}
+            />
+            <MultiSelect
+              label="Workstreams"
+              onValueChange={setTags}
+              options={[
+                { label: "Design", value: "design" },
+                { label: "Research", value: "research" },
+                { label: "Engineering", value: "engineering" },
+              ]}
+              values={tags}
+            />
+            <DatePicker
+              label="Review date"
+              onValueChange={setDate}
+              value={date}
+            />
+            <TimePicker
+              label="Review time"
+              onValueChange={(next) => setTime(next ?? "")}
+              value={time}
+            />
+            <DateRangePicker
+              label="Planning range"
+              onValueChange={setRange}
+              value={range}
+            />
+            <Switch
+              checked={switchOn}
+              description="Controls whether collaborators receive updates."
+              label="Notify collaborators"
+              onChange={(event) => setSwitchOn(event.target.checked)}
+            />
+          </FormGrid>
+          <Textarea
+            label="Notes"
+            onChange={(event) => setNote(event.target.value)}
+            placeholder="A short component QA note…"
+            value={note}
+          />
+          <RangeSlider
+            label="Confidence range"
+            max={100}
+            maxValue={rangeValue.max}
+            min={0}
+            minValue={rangeValue.min}
+            onValueChange={setRangeValue}
+          />
+          <OtpInput
+            label="Verification sample"
+            onValueChange={setOtp}
+            value={otp}
+          />
+        </FormSection>
 
         <ToastProvider>
           <Card className="component-proof-feedback-card">
@@ -792,14 +989,22 @@ export function ComponentProofs() {
             <div className="component-proof-signals-primary">
               <div className="component-proof-metrics">
                 <MetricCard
-                  change={<TrendIndicator direction="up" value="8.4%" />}
                   description="Compared with last period"
                   icon="analytics"
                   title="Review coverage"
+                  trend={
+                    <TrendIndicator
+                      context="vs prior"
+                      direction="up"
+                      sentiment="positive"
+                      value="8.4%"
+                      variant="soft"
+                    />
+                  }
                   value="87%"
                 />
                 <MetricCard
-                  change={
+                  chart={
                     <Sparkline
                       label="Sample delivery trend"
                       values={[4, 6, 5, 9, 8, 12]}
@@ -808,6 +1013,14 @@ export function ComponentProofs() {
                   description="A compact embedded signal"
                   icon="progress"
                   title="Delivery trend"
+                  trend={
+                    <TrendIndicator
+                      context="vs 7d"
+                      direction="up"
+                      sentiment="positive"
+                      value="+3"
+                    />
+                  }
                   value="12"
                 />
               </div>
@@ -955,6 +1168,8 @@ export function ComponentProofs() {
       </div>
 
       <OverlayStressFixture />
+
+      <SurfaceExpressionFixture />
 
       <div className="component-proof-grid component-proof-grid-charts">
         <Card>

@@ -1,11 +1,26 @@
 import { type HTMLAttributes, type ReactNode } from "react";
 
-import { Typography } from "./components";
+import {
+  type SurfaceColorway,
+  type SurfaceEmphasis,
+  Typography,
+} from "./components";
 import { cx } from "./utils";
 
 export interface SurfaceProps extends HTMLAttributes<HTMLElement> {
   as?: "article" | "div" | "section";
-  tone?: "base" | "raised" | "subtle" | "accent";
+  /** Select an active Theme Studio chart-series hue for solid categorical emphasis. */
+  colorway?: SurfaceColorway;
+  emphasis?: SurfaceEmphasis;
+  tone?:
+    | "base"
+    | "raised"
+    | "subtle"
+    | "accent"
+    | "success"
+    | "warning"
+    | "danger"
+    | "info";
 }
 
 /** A broad page-region surface. Prefer Card for one contained visual record. */
@@ -13,6 +28,8 @@ export function Surface({
   as = "section",
   children,
   className,
+  colorway,
+  emphasis,
   tone = "base",
   ...props
 }: SurfaceProps) {
@@ -21,6 +38,8 @@ export function Surface({
     <Element
       {...props}
       className={cx("t7-surface", className)}
+      data-colorway={colorway}
+      data-emphasis={emphasis}
       data-tone={tone}
     >
       {children}

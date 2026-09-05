@@ -3,6 +3,7 @@
   "sourceOfTruth": {
     "typedContracts": "packages/contracts/src",
     "themeProfile": "packages/contracts/src/theme-profile.ts",
+    "foundation": "packages/contracts/src/foundation.ts",
     "themeRecipes": "packages/contracts/src/theme-recipe.ts",
     "dtcgTokenExport": "packages/tokens/generated/tokens.dtcg.json",
     "brandProfiles": "packages/contracts/src/brand-profile.ts",
@@ -22,6 +23,11 @@
     "packages/ai/catalog/icons.json"
   ],
   "entryPoints": {
+    "foundation": {
+      "source": "generated/foundation.json",
+      "guidance": "docs/TOKENS.md",
+      "reference": "/tokens"
+    },
     "entity-list": {
       "inspect": "t7ui recipe inspect entity-list",
       "compose": "t7ui compose entity-list"
@@ -34,6 +40,17 @@
       "resolve": "t7ui brand resolve auth",
       "compose": "t7ui brand compose auth"
     },
+    "operational-patterns": {
+      "find": "t7ui find \"control tower exception next action\"",
+      "inspect": "t7ui recipe inspect control-tower",
+      "guidance": "docs/ai/OPERATIONAL_PATTERNS.md",
+      "reference": "/operational-patterns"
+    },
+    "content-safety": {
+      "guidance": "docs/ai/VISUAL_PROPORTION_AND_CONTENT_SAFETY.md",
+      "source": "packages/tokens/src/theme.ts",
+      "reference": "/component-lab?stress=content"
+    },
     "themes": {
       "source": "generated/theme-recipes.json",
       "tokenExport": "generated/tokens.dtcg.json",
@@ -41,9 +58,9 @@
     }
   },
   "metrics": {
-    "fullCatalogBytes": 275790,
-    "compactProjectionBytes": 67306,
-    "selectiveRecipeShardBytes": 13430,
-    "selectiveComponentShardBytes": 39299
+    "fullCatalogBytes": 308449,
+    "compactProjectionBytes": 93014,
+    "selectiveRecipeShardBytes": 38275,
+    "selectiveComponentShardBytes": 39963
   }
 }

@@ -90,6 +90,17 @@ const requiredRecipes = [
   "ebook-reader",
   "auth",
   "marketing-home",
+  "control-tower",
+  "process-workspace",
+  "operational-kanban",
+  "load-planning",
+  "receiving-console",
+  "route-planning",
+  "entity-360",
+  "decision-workspace",
+  "exception-queue",
+  "activity-audit",
+  "resource-forecast",
 ];
 const requiredComponents = [
   "AppShell",
@@ -432,11 +443,48 @@ for (const [name, recipe] of Object.entries(recipes)) {
     assert.ok(icons[iconName], `${name}: unknown semantic icon ${iconName}`);
   for (const reference of recipe.references ?? [])
     assert.ok(
-      ["Operations Tracker", "Publishing Store", "Public Showcase"].includes(
-        reference,
-      ),
+      [
+        "Operations Tracker",
+        "Publishing Store",
+        "Public Showcase",
+        "AAPM Operational Reference",
+      ].includes(reference),
       `${name}: unknown product reference ${reference}`,
     );
+  if (recipe.operational) {
+    assert.equal(
+      recipe.operational.maturity,
+      "mature",
+      `${name}: operational maturity must be mature`,
+    );
+    for (const field of [
+      "useWhen",
+      "avoidWhen",
+      "anatomy",
+      "requiredSemantics",
+      "accessibility",
+      "antiPatterns",
+    ])
+      assert.ok(
+        Array.isArray(recipe.operational[field]) &&
+          recipe.operational[field].length > 0,
+        `${name}: operational ${field} missing`,
+      );
+    assert.ok(
+      recipe.operational.aiGuidance,
+      `${name}: operational AI guidance missing`,
+    );
+    assert.deepEqual(
+      Object.keys(recipe.operational.responsive).sort(),
+      ["desktop", "mobile", "tablet"],
+      `${name}: operational responsive matrix incomplete`,
+    );
+    assert.equal(
+      recipe.operational.referencePath,
+      "/operational-patterns",
+      `${name}: operational reference path must stay bounded`,
+    );
+  }
 }
 
 const registryNames = [
@@ -509,6 +557,34 @@ const operationsCliResult = find("operations tracker work queue");
 assert.match(operationsCliResult, /Recipe: entity-list/);
 assert.match(operationsCliResult, /MilestoneTracker/);
 assert.match(operationsCliResult, /ActivityFeed/);
+
+const controlTowerCliResult = find("control tower exception next action");
+assert.match(controlTowerCliResult, /Recipe: control-tower/);
+assert.match(controlTowerCliResult, /KPICluster/);
+assert.match(controlTowerCliResult, /Alert/);
+
+const receivingCliResult = find("receiving console unload discrepancy");
+assert.match(receivingCliResult, /Recipe: receiving-console/);
+assert.match(receivingCliResult, /MilestoneTracker/);
+
+const receivingIntentCliResult = find(
+  "receiving arrival receipt difference decision evidence",
+);
+assert.match(receivingIntentCliResult, /Recipe: receiving-console/);
+assert.match(receivingIntentCliResult, /warehouse/);
+assert.match(receivingIntentCliResult, /warning/);
+
+const forecastCliResult = find("days of cover incoming supply");
+assert.match(forecastCliResult, /Recipe: resource-forecast/);
+assert.match(forecastCliResult, /Sparkline/);
+
+const operationalInspectResult = execFileSync(
+  process.execPath,
+  [cliPath, "recipe", "inspect", "decision-workspace"],
+  { cwd: repoRoot, encoding: "utf8" },
+);
+assert.match(operationalInspectResult, /"maturity": "mature"/);
+assert.match(operationalInspectResult, /"requiredSemantics"/);
 
 const catalogCliResult = find("ebook store catalog");
 assert.match(catalogCliResult, /Recipe: catalog/);

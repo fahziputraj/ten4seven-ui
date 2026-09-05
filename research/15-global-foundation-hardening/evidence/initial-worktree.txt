@@ -1,0 +1,208 @@
+ M .gitignore
+ M README.md
+ D apps/playground/public/ebook-covers/a-map-of-small-decisions.svg
+ D apps/playground/public/ebook-covers/building-calm-products.svg
+ D apps/playground/public/ebook-covers/letters-from-the-margin.svg
+ D apps/playground/public/ebook-covers/practical-type.svg
+ D apps/playground/public/ebook-covers/reliable-by-design.svg
+ D apps/playground/public/ebook-covers/systems-at-work.svg
+ D apps/playground/public/ebook-covers/the-long-view-of-work.svg
+ D apps/playground/public/ebook-covers/the-quiet-interface.svg
+ M apps/playground/src/App.tsx
+ M apps/playground/src/app.css
+ M apps/playground/src/catalog-model.ts
+ M apps/playground/src/component-preview-fixtures.tsx
+ M apps/playground/src/component-proofs.tsx
+ M apps/playground/src/library-explorers.tsx
+ M apps/playground/src/playground-routes.ts
+ M apps/playground/src/public-showcase.tsx
+ M apps/playground/src/reference-harness.tsx
+ M apps/playground/src/reference-screens.tsx
+ M docs/THEMING.md
+ M docs/adr/ADR-004-theme-runtime.md
+ M docs/ai/AI_QUICKSTART.md
+ M docs/ai/COMPONENT_SELECTION.md
+ M generated/agent-index.json
+ M generated/components.compact.json
+ M generated/components/Alert.json
+ M generated/components/BulkActionBar.json
+ M generated/components/Button.json
+ M generated/components/Card.json
+ M generated/components/KPICluster.json
+ M generated/components/MetricCard.json
+ M generated/components/MilestoneTracker.json
+ M generated/components/Sparkline.json
+ M generated/components/Surface.json
+ M generated/components/T7Icon.json
+ M generated/components/TrendIndicator.json
+ M generated/index.json
+ M generated/recipes.compact.json
+ M generated/recipes/approval-queue.json
+ M generated/recipes/cart.json
+ M generated/recipes/catalog.json
+ M generated/recipes/entity-list.json
+ M generated/tokens.dtcg.json
+ M package.json
+ M packages/agent/generated/agent-index.json
+ M packages/agent/generated/components.compact.json
+ M packages/agent/generated/components/Alert.json
+ M packages/agent/generated/components/BulkActionBar.json
+ M packages/agent/generated/components/Button.json
+ M packages/agent/generated/components/Card.json
+ M packages/agent/generated/components/KPICluster.json
+ M packages/agent/generated/components/MetricCard.json
+ M packages/agent/generated/components/MilestoneTracker.json
+ M packages/agent/generated/components/Sparkline.json
+ M packages/agent/generated/components/Surface.json
+ M packages/agent/generated/components/T7Icon.json
+ M packages/agent/generated/components/TrendIndicator.json
+ M packages/agent/generated/index.json
+ M packages/agent/generated/recipes.compact.json
+ M packages/agent/generated/recipes/approval-queue.json
+ M packages/agent/generated/recipes/cart.json
+ M packages/agent/generated/recipes/catalog.json
+ M packages/agent/generated/recipes/entity-list.json
+ M packages/agent/generated/tokens.dtcg.json
+ M packages/ai/bin/t7ui.mjs
+ M packages/ai/catalog/components.json
+ M packages/ai/catalog/recipes.json
+ M packages/icons/src/index.tsx
+ M packages/tokens/generated/tokens.dtcg.json
+ M packages/tokens/src/theme-recipes.css
+ M packages/tokens/src/theme.css
+ M packages/tokens/src/theme.test.ts
+ M packages/tokens/src/theme.ts
+ M packages/ui/README.md
+ M packages/ui/THIRD_PARTY_NOTICES.md
+ M packages/ui/scripts/build-package.mjs
+ M packages/ui/scripts/verify-package.mjs
+ M packages/ui/src/charts.tsx
+ M packages/ui/src/components.tsx
+ M packages/ui/src/data-display.tsx
+ M packages/ui/src/date-time.tsx
+ M packages/ui/src/feedback.tsx
+ M packages/ui/src/forms.tsx
+ M packages/ui/src/index.ts
+ M packages/ui/src/layout.tsx
+ M packages/ui/src/motion.ts
+ M packages/ui/src/navigation.tsx
+ M packages/ui/src/overlay.ts
+ M packages/ui/src/overlays.tsx
+ M packages/ui/src/provider.tsx
+ M packages/ui/src/styles.css
+ M research/13-recipe-families/evidence/retrieval-results.json
+ M research/15-universal-v2/COMPONENT_TOKEN_COVERAGE_REPORT.md
+ M research/15-universal-v2/GATE_UNIVERSAL_V2.md
+ M scripts/generate-contract-projections.mjs
+ M scripts/generate-dtcg-token-export.mjs
+ M scripts/verify-ai-catalog.mjs
+ M scripts/verify-component-system.mjs
+ M scripts/verify-semantic-contrast.mjs
+ M scripts/verify-ui-consistency.mjs
+ M tests/catalog-integrity.spec.ts
+ M tests/end-to-end-hardening.spec.ts
+ M tests/expressive-blocks.spec.ts
+ M tests/expressive-blocks.spec.ts-snapshots/public-showcase-desktop-1440x900-chromium-win32.png
+ M tests/expressive-blocks.spec.ts-snapshots/public-showcase-mobile-390x844-chromium-win32.png
+ M tests/expressive-blocks.spec.ts-snapshots/public-showcase-narrow-360x800-chromium-win32.png
+ M tests/expressive-blocks.spec.ts-snapshots/public-showcase-tablet-1024x900-chromium-win32.png
+ M tests/expressive-blocks.spec.ts-snapshots/public-showcase-tablet-768x900-chromium-win32.png
+ M tests/expressive-blocks.spec.ts-snapshots/public-showcase-wide-1280x800-chromium-win32.png
+ M tests/reference-screen-renders.spec.ts-snapshots/ebook-store-desktop-1440x900-chromium-win32.png
+ M tests/reference-screen-renders.spec.ts-snapshots/ebook-store-mobile-390x844-chromium-win32.png
+ M tests/reference-screen-renders.spec.ts-snapshots/ebook-store-narrow-360x800-chromium-win32.png
+ M tests/reference-screen-renders.spec.ts-snapshots/operations-tracker-desktop-1440x900-chromium-win32.png
+ M tests/reference-screen-renders.spec.ts-snapshots/operations-tracker-mobile-390x844-chromium-win32.png
+ M tests/reference-screen-renders.spec.ts-snapshots/operations-tracker-narrow-360x800-chromium-win32.png
+ M tests/system-coherence.spec.ts
+ M tests/system-coherence.spec.ts-snapshots/publishing-cart-desktop-chromium-win32.png
+ M tests/system-coherence.spec.ts-snapshots/publishing-cart-mobile-chromium-win32.png
+ M tests/universal-v2-theme.spec.ts
+ M tests/visual-regression.spec.ts-snapshots/component-lab-desktop-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/component-lab-mobile-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/component-lab-modal-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/component-lab-narrow-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/component-lab-tablet-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/component-lab-wide-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/components-desktop-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/components-mobile-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/components-narrow-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/components-tablet-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/components-wide-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/ebook-store-desktop-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/ebook-store-mobile-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/ebook-store-narrow-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/ebook-store-tablet-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/ebook-store-wide-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/icons-desktop-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/icons-mobile-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/icons-narrow-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/icons-tablet-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/icons-wide-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/operations-tracker-desktop-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/operations-tracker-mobile-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/operations-tracker-narrow-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/operations-tracker-tablet-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/operations-tracker-wide-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/recipes-desktop-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/recipes-mobile-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/recipes-narrow-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/recipes-tablet-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/recipes-wide-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/theme-studio-desktop-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/theme-studio-mobile-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/theme-studio-narrow-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/theme-studio-tablet-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/theme-studio-wide-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/tokens-desktop-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/tokens-mobile-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/tokens-narrow-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/tokens-tablet-chromium-win32.png
+ M tests/visual-regression.spec.ts-snapshots/tokens-wide-chromium-win32.png
+ M tests/workbench-interaction.spec.ts
+?? apps/playground/src/content-safety-proof.tsx
+?? apps/playground/src/operational-reference.tsx
+?? consumer-tests/next-app-router-consumer/
+?? docs/adr/ADR-012-next-app-router-client-boundary.md
+?? docs/ai/OPERATIONAL_PATTERNS.md
+?? docs/ai/VISUAL_PROPORTION_AND_CONTENT_SAFETY.md
+?? docs/integration/
+?? generated/recipes/activity-audit.json
+?? generated/recipes/control-tower.json
+?? generated/recipes/decision-workspace.json
+?? generated/recipes/entity-360.json
+?? generated/recipes/exception-queue.json
+?? generated/recipes/load-planning.json
+?? generated/recipes/operational-kanban.json
+?? generated/recipes/process-workspace.json
+?? generated/recipes/receiving-console.json
+?? generated/recipes/resource-forecast.json
+?? generated/recipes/route-planning.json
+?? packages/agent/generated/recipes/activity-audit.json
+?? packages/agent/generated/recipes/control-tower.json
+?? packages/agent/generated/recipes/decision-workspace.json
+?? packages/agent/generated/recipes/entity-360.json
+?? packages/agent/generated/recipes/exception-queue.json
+?? packages/agent/generated/recipes/load-planning.json
+?? packages/agent/generated/recipes/operational-kanban.json
+?? packages/agent/generated/recipes/process-workspace.json
+?? packages/agent/generated/recipes/receiving-console.json
+?? packages/agent/generated/recipes/resource-forecast.json
+?? packages/agent/generated/recipes/route-planning.json
+?? packages/icons/src/solar-catalog.ts
+?? research/15-global-foundation-hardening/
+?? research/17-visual-grammar-follow-up/
+?? research/18-operational-ux/
+?? research/19-proportion-content-safety/
+?? research/20-final-system-quality/
+?? scripts/generate-solar-catalog.mjs
+?? scripts/test-next-app-router-consumer.mjs
+?? tests/content-safety.spec.ts
+?? tests/content-safety.spec.ts-snapshots/
+?? tests/final-stabilization.spec.ts
+?? tests/icon-library.spec.ts
+?? tests/operational-patterns.spec.ts
+?? tests/operational-patterns.spec.ts-snapshots/
+?? tests/public-showcase-expression.spec.ts
+?? tests/public-showcase-expression.spec.ts-snapshots/
+?? tests/reference-preview-mode.spec.ts

@@ -9,6 +9,7 @@ import {
 } from "react";
 
 import { T7Icon, type IconName } from "@ten4seven/icons";
+import { overlayGeometry } from "@ten4seven/tokens";
 
 import { Drawer, Input, Modal } from "./components";
 import {
@@ -404,6 +405,8 @@ export function Stepper({
 }
 
 export interface TopNavigationItem {
+  controls?: string;
+  expanded?: boolean;
   active?: boolean;
   href?: string;
   icon?: IconName;
@@ -434,8 +437,9 @@ function NavigationMenuBranch({
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuId = useId();
   const floating = useFloatingPosition(triggerRef, open, {
-    minWidth: true,
+    preferredWidth: Number.parseFloat(overlayGeometry.menu.sm),
     side: "bottom",
+    widthStrategy: "min-trigger",
   });
   const children = item.children ?? [];
 
@@ -656,6 +660,8 @@ export interface TopNavigationProps extends Omit<
   "children"
 > {
   items: TopNavigationItem[];
+  /** Bottom placement reserves its measured height and includes device safe areas. */
+  placement?: "top" | "bottom";
   label?: string;
   leading?: ReactNode;
   trailing?: ReactNode;
@@ -666,12 +672,26 @@ export function TopNavigation({
   items,
   label = "Primary navigation",
   leading,
+  placement = "top",
   trailing,
   ...props
 }: TopNavigationProps) {
-  return (
+  const navRef = useRef<HTMLElement>(null);
+  const [height, setHeight] = useState(0);
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav || placement !== "bottom") return;
+    const measure = () => setHeight(nav.getBoundingClientRect().height);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(nav);
+    return () => observer.disconnect();
+  }, [placement]);
+  const navigation = (
     <nav
       {...props}
+      ref={navRef}
+      data-placement={placement}
       aria-label={label}
       className={cx("t7-top-navigation", className)}
     >
@@ -696,6 +716,9 @@ export function TopNavigation({
           ) : (
             <button
               aria-current={item.active ? "page" : undefined}
+              aria-controls={item.controls}
+              aria-expanded={item.expanded}
+              aria-haspopup={item.controls ? "dialog" : undefined}
               data-active={item.active || undefined}
               key={item.key}
               onClick={() => item.onSelect?.()}
@@ -714,9 +737,20 @@ export function TopNavigation({
       ) : null}
     </nav>
   );
+  return placement === "bottom" ? (
+    <div
+      className={cx("t7-bottom-navigation-slot", className)}
+      style={{ height }}
+    >
+      {navigation}
+    </div>
+  ) : (
+    navigation
+  );
 }
 
 export interface MobileSidebarProps {
+  id?: string;
   children: ReactNode;
   onClose: () => void;
   open: boolean;
@@ -725,13 +759,21 @@ export interface MobileSidebarProps {
 
 /** A compact-screen shell composition over the canonical Drawer. */
 export function MobileSidebar({
+  id,
   children,
   onClose,
   open,
   title = "Navigation",
 }: MobileSidebarProps) {
   return (
-    <Drawer onClose={onClose} open={open} side="left" title={title}>
+    <Drawer
+      id={id}
+      className="t7-mobile-sidebar"
+      onClose={onClose}
+      open={open}
+      side="left"
+      title={title}
+    >
       {children}
     </Drawer>
   );
@@ -828,6 +870,7 @@ export function CommandMenu({
       initialFocus={inputRef}
       onClose={() => setOpen(false)}
       open={isOpen}
+      size="command"
       title="Command menu"
     >
       <div className="t7-command-menu">

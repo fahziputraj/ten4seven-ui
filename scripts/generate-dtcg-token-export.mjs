@@ -5,7 +5,13 @@ import { fileURLToPath } from "node:url";
 import { THEME_RECIPES } from "../packages/contracts/src/theme-recipe.ts";
 import {
   densityProfiles,
+  buildThemeVariables,
+  resolveTheme,
+  iconGeometry,
+  kpiGeometry,
+  layoutGeometry,
   motionDurationRange,
+  overlayGeometry,
   paletteProfiles,
   radiusProfiles,
   referenceSpace,
@@ -105,6 +111,7 @@ function semanticActionTokens(palette) {
 }
 
 export function buildDtcgTokenExport() {
+  const baseline = buildThemeVariables(resolveTheme());
   const referencePalettes = Object.fromEntries(
     Object.entries(paletteProfiles).map(([name, profile]) => [
       name,
@@ -150,6 +157,25 @@ export function buildDtcgTokenExport() {
     },
     semantic: {
       color: {
+        foundation: Object.fromEntries(
+          [
+            "surface-emphasis-plain",
+            "surface-emphasis-solid",
+            "surface-emphasis-solid-foreground",
+            "surface-emphasis-solid-success",
+            "surface-emphasis-solid-warning",
+            "surface-emphasis-solid-danger",
+            "surface-emphasis-solid-info",
+            "surface-emphasis-inverse",
+            "surface-emphasis-inverse-foreground",
+            "focus",
+            "chart-1",
+            "chart-2",
+            "chart-3",
+            "chart-4",
+            "chart-5",
+          ].map((role) => [role, color(baseline[`--t7-${role}-hsl`])]),
+        ),
         action: {
           // Baseline tokens describe the default palette. Consumers selecting a
           // named recipe should use its theme.recipes.<name>.semantic group.
@@ -157,6 +183,25 @@ export function buildDtcgTokenExport() {
         },
       },
       geometry: {
+        layout: {
+          gutter: Object.fromEntries(
+            Object.entries(layoutGeometry.gutter).map(([role, value]) => [
+              role,
+              dimension(value),
+            ]),
+          ),
+          formMax: dimension(layoutGeometry.formMax),
+          dataMax: dimension(layoutGeometry.dataMax),
+          sidebarWidth: dimension(layoutGeometry.sidebarWidth),
+          asideWidth: dimension(layoutGeometry.asideWidth),
+          focusClearance: dimension(layoutGeometry.focusClearance),
+        },
+        icon: Object.fromEntries(
+          Object.entries(iconGeometry).map(([role, value]) => [
+            role,
+            dimension(value),
+          ]),
+        ),
         control: {
           height: dimension(densityProfiles.default.control),
           paddingInline: dimension(
@@ -170,6 +215,44 @@ export function buildDtcgTokenExport() {
         card: {
           padding: dimension(densityProfiles.default.cardPadding),
           headerGap: dimension(densityProfiles.default.cardHeaderGap),
+        },
+        kpi: {
+          padding: dimension(densityProfiles.default.cardPadding),
+          gap: dimension(densityProfiles.default.controlGap),
+          contentGap: dimension(densityProfiles.default.controlGap),
+          iconContainer: dimension(kpiGeometry.iconContainer),
+          iconSize: dimension(kpiGeometry.iconSize),
+          chartHeight: dimension(kpiGeometry.chartHeight),
+          trendPaddingBlock: dimension(kpiGeometry.trendPaddingBlock),
+          trendPaddingInline: dimension(kpiGeometry.trendPaddingInline),
+        },
+        overlay: {
+          menu: {
+            sm: dimension(overlayGeometry.menu.sm),
+            md: dimension(overlayGeometry.menu.md),
+            lg: dimension(overlayGeometry.menu.lg),
+          },
+          select: {
+            min: dimension(overlayGeometry.select.min),
+            max: dimension(overlayGeometry.select.max),
+          },
+          combobox: dimension(overlayGeometry.combobox),
+          datePicker: dimension(overlayGeometry.datePicker),
+          dateRangePicker: dimension(overlayGeometry.dateRangePicker),
+          timePicker: dimension(overlayGeometry.timePicker),
+          colorPicker: dimension(overlayGeometry.colorPicker),
+          popover: {
+            min: dimension(overlayGeometry.popover.min),
+            max: dimension(overlayGeometry.popover.max),
+          },
+          tooltipMax: dimension(overlayGeometry.tooltipMax),
+          command: dimension(overlayGeometry.command),
+          dialog: {
+            sm: dimension(overlayGeometry.dialog.sm),
+            md: dimension(overlayGeometry.dialog.md),
+            lg: dimension(overlayGeometry.dialog.lg),
+          },
+          drawerMax: dimension(overlayGeometry.drawerMax),
         },
       },
     },

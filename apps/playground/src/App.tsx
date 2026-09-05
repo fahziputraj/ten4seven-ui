@@ -1,5 +1,7 @@
+import { CANVAS_LABELS } from "@ten4seven/contracts";
 import {
   useEffect,
+  useId,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -22,10 +24,14 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  Collapsible,
   DataTable,
+  Drawer,
   Input,
+  IconButton,
   CommandMenu,
   MobileSidebar,
+  TopNavigation,
   Modal,
   NavItem,
   Popover,
@@ -52,7 +58,6 @@ import type {
 import {
   buildRadiusProfile,
   canvasProfiles,
-  densityProfiles,
   motionDurationRange,
   paletteProfiles,
   radiusProfiles,
@@ -77,6 +82,7 @@ import {
   TokensExplorer,
 } from "./library-explorers";
 import { PublicShowcase } from "./public-showcase";
+import { OperationalReference } from "./operational-reference";
 import { BrandExpressionProof } from "./brand-expression";
 import {
   blockCatalog,
@@ -120,6 +126,46 @@ type StudioThemeChange = {
   label: string;
   value: string;
 };
+
+const runtimePreferencesStorageKey =
+  "ten4seven.playground.runtime-preferences.v1";
+
+function readRuntimePreferences(): RuntimePreferences {
+  if (typeof window === "undefined") return {};
+  try {
+    const stored: unknown = JSON.parse(
+      window.localStorage.getItem(runtimePreferencesStorageKey) ?? "{}",
+    );
+    if (!stored || typeof stored !== "object" || Array.isArray(stored))
+      return {};
+    const candidate = stored as Record<string, unknown>;
+    return {
+      appearance:
+        candidate.appearance === "light" ||
+        candidate.appearance === "dark" ||
+        candidate.appearance === "system"
+          ? candidate.appearance
+          : undefined,
+      contrast:
+        candidate.contrast === "standard" || candidate.contrast === "more"
+          ? candidate.contrast
+          : undefined,
+      density:
+        candidate.density === "dense" ||
+        candidate.density === "compact" ||
+        candidate.density === "default" ||
+        candidate.density === "comfortable"
+          ? candidate.density
+          : undefined,
+      motion:
+        candidate.motion === "full" || candidate.motion === "reduced"
+          ? candidate.motion
+          : undefined,
+    };
+  } catch {
+    return {};
+  }
+}
 
 function formatRadiusSetting(
   theme: Pick<ResolvedTheme, "radius" | "radiusValue">,
@@ -201,6 +247,7 @@ const routeIcons: Record<PlaygroundRoute, IconName> = {
   Icons: "category",
   Recipes: "table",
   "Operations Tracker": "analytics",
+  "Operational Patterns": "logistics",
   "Publishing Store": "book",
   "Public Showcase": "dashboard",
 };
@@ -589,6 +636,7 @@ function Studio({
   contentOverride,
   onNavigate,
   onNavigatePath,
+  onOpenSettings,
   onThemePreferencesChange,
   onThemeRecipeChange,
   themePreferences,
@@ -596,13 +644,17 @@ function Studio({
 }: {
   activeRoute: Exclude<
     PlaygroundRoute,
-    "Operations Tracker" | "Publishing Store" | "Public Showcase"
+    | "Operations Tracker"
+    | "Operational Patterns"
+    | "Publishing Store"
+    | "Public Showcase"
   >;
   activePath: string;
   breadcrumbItems?: Array<{ label: string; path?: string }>;
   contentOverride?: ReactNode;
   onNavigate: (route: PlaygroundRoute) => void;
   onNavigatePath: (path: string) => void;
+  onOpenSettings: () => void;
   onThemePreferencesChange: (preferences: RuntimePreferences) => void;
   onThemeRecipeChange: (recipe: ThemeRecipeName | undefined) => void;
   themePreferences: RuntimePreferences;
@@ -611,6 +663,16 @@ function Studio({
   const { appearanceSetting, resetTheme, theme } = useTen4SevenTheme();
   const [isModalOpen, setModalOpen] = useState(false);
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
+  const mobileNavigationId = useId();
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 821px)");
+    const closeOnDesktop = () => {
+      if (desktop.matches) setMobileNavOpen(false);
+    };
+    desktop.addEventListener("change", closeOnDesktop);
+    return () => desktop.removeEventListener("change", closeOnDesktop);
+  }, []);
+  useEffect(() => setMobileNavOpen(false), [activePath]);
   const [saved, setSaved] = useState(false);
   const previousThemeRef = useRef(theme);
   const didMountThemeRef = useRef(false);
@@ -673,22 +735,24 @@ function Studio({
         </nav>
 
         <div className="studio-sidebar-note">
-          <span className="studio-nav-label">Proof scope</span>
-          <p>One catalog source. Deep links for every canonical contract.</p>
-          <span className="studio-sidebar-version">v1 workbench</span>
+          <span className="studio-nav-label">Explore</span>
+          <p>Canonical foundations, recipes, and practical previews.</p>
+          <span className="studio-sidebar-version">Theme workbench</span>
         </div>
       </aside>
 
       <main className="studio-main">
         <header className="studio-topbar">
           <div className="studio-topbar-leading">
-            <Button
-              aria-label="Open design system navigation"
+            <IconButton
               className="studio-mobile-menu"
-              intent="quiet"
-              leadingIcon="menu"
+              icon="menu"
+              label="Open design system navigation"
+              aria-expanded={isMobileNavOpen}
+              aria-controls={mobileNavigationId}
+              aria-haspopup="dialog"
               onClick={() => setMobileNavOpen(true)}
-              size="sm"
+              size="md"
             />
             <div className="studio-breadcrumb">
               <span>ten4seven UI</span>
@@ -731,23 +795,24 @@ function Studio({
               )}
             </div>
           </div>
-          <div className="studio-top-actions">
+          <div className="studio-top-actions t7-header-actions">
             <WorkbenchSearch onNavigatePath={onNavigatePath} />
-            <span className="studio-live-dot">
-              <i /> Local proof
+            <span aria-label="Live preview active" className="studio-live-dot">
+              <i /> Live
             </span>
-            <button
-              aria-label="Open settings"
+            <IconButton
               className="studio-top-icon"
-              type="button"
-            >
-              <T7Icon name="settings" size={17} />
-            </button>
+              icon="settings"
+              label="Open settings"
+              onClick={onOpenSettings}
+              size="md"
+            />
             <span className="studio-avatar">T7</span>
           </div>
         </header>
 
         <MobileSidebar
+          id={mobileNavigationId}
           onClose={() => setMobileNavOpen(false)}
           open={isMobileNavOpen}
           title="Design system navigation"
@@ -782,306 +847,299 @@ function Studio({
                   </p>
                 </div>
                 <div className="studio-intro-actions">
-                  <Badge tone="primary">
-                    <T7Icon name="check" size={13} /> System coherence
-                  </Badge>
                   <span className="studio-last-updated">
-                    Theme Studio controls the active ten4seven theme
+                    Preview changes as you adjust the workbench.
                   </span>
                 </div>
               </section>
 
-              <ThemeRecipePicker
-                onPreferencesChange={onThemePreferencesChange}
-                onSelect={onThemeRecipeChange}
-                preferences={themePreferences}
-                value={themeRecipe}
-              />
+              <section
+                aria-label="Theme recipe, runtime preferences, and live preview"
+                className="studio-workbench-layout"
+              >
+                <div className="studio-control-rail">
+                  <ThemeRecipePicker
+                    onPreferencesChange={onThemePreferencesChange}
+                    onSelect={onThemeRecipeChange}
+                    preferences={themePreferences}
+                    value={themeRecipe}
+                  />
+                </div>
 
-              <CssFirstThemeProof />
+                <aside className="studio-preview-rail">
+                  <StudioLivePreview lastChange={lastChange} />
+                </aside>
+              </section>
 
-              <section className="studio-control-row">
-                <Card className="studio-controls-card">
-                  <CardHeader>
-                    <div className="studio-controls-header-copy">
-                      <CardTitle as="h2">Global controls</CardTitle>
-                      <CardDescription>
-                        Choose the base system, then tune the roles that travel
-                        with it. Every change writes the same provider tokens
-                        used by previews and reference routes.
-                      </CardDescription>
-                    </div>
-                    <div className="studio-controls-header-side">
-                      <div
-                        aria-atomic="true"
-                        aria-label={
-                          lastChange
-                            ? `Updated live. ${lastChange.label}: ${lastChange.value}`
-                            : "Live. Ready to preview"
-                        }
-                        aria-live="polite"
-                        className="studio-controls-live-state"
-                        data-testid="studio-controls-live-state"
-                      >
-                        <span className="studio-controls-live-badge">
-                          <i aria-hidden="true" />
-                          {lastChange ? "Updated live" : "Live"}
-                        </span>
-                        <span className="studio-controls-live-copy">
-                          {lastChange
-                            ? `${lastChange.label} · ${lastChange.value}`
-                            : "Ready to preview"}
-                        </span>
+              <Collapsible
+                className="studio-advanced-authoring"
+                defaultOpen
+                title={
+                  <span className="studio-advanced-authoring-title">
+                    <span>Advanced theme authoring</span>
+                    <small>
+                      Fine-tune authored tokens when a recipe needs it
+                    </small>
+                  </span>
+                }
+              >
+                <div className="studio-advanced-authoring-content">
+                  <Card className="studio-controls-card">
+                    <CardHeader>
+                      <div className="studio-controls-header-copy">
+                        <CardTitle as="h2">Authoring tokens</CardTitle>
+                        <CardDescription>
+                          Fine-tune authored tokens after choosing a recipe and
+                          runtime preference. These settings travel with the
+                          provider without replacing user preferences.
+                        </CardDescription>
                       </div>
                       <T7Icon
                         className="studio-card-icon"
                         name="palette"
                         size={24}
                       />
-                    </div>
-                  </CardHeader>
-                  <CardContent className="studio-controls-content">
-                    <div
-                      aria-label="How global controls relate"
-                      className="studio-control-guide"
-                      data-testid="studio-control-guide"
-                      role="note"
-                    >
-                      <div className="studio-control-guide-copy">
-                        <Typography
-                          as="h3"
-                          className="studio-control-guide-title"
-                          typeRole="label"
-                        >
-                          How the controls relate
-                        </Typography>
-                        <p>
-                          <strong>Base palette</strong> sets the default hue.{" "}
-                          <strong>Main action</strong> colors buttons, links,
-                          and selected states. <strong>Accent color</strong>{" "}
-                          drives focus rings, focused fields, and emphasis.{" "}
-                          <strong>Canvas</strong> controls neutral surfaces;{" "}
-                          <strong>Chart</strong> controls data series only.
-                        </p>
-                      </div>
-                      <div className="studio-control-guide-roles">
-                        <span data-role="base">Base</span>
-                        <span data-role="role">UI roles</span>
-                        <span data-role="surface">Surfaces</span>
-                        <span data-role="motion">Motion</span>
-                      </div>
-                    </div>
-                    <div className="studio-controls-grid">
-                      <section
-                        aria-labelledby="studio-environment-heading"
-                        className="studio-control-group studio-control-group-environment"
+                    </CardHeader>
+                    <CardContent className="studio-controls-content">
+                      <div
+                        aria-label="How global controls relate"
+                        className="studio-control-guide"
+                        data-testid="studio-control-guide"
+                        role="note"
                       >
-                        <div className="studio-control-group-heading">
+                        <div className="studio-control-guide-copy">
                           <Typography
                             as="h3"
-                            className="studio-control-group-title"
-                            id="studio-environment-heading"
+                            className="studio-control-guide-title"
                             typeRole="label"
                           >
-                            Environment
+                            How the controls relate
                           </Typography>
                           <p>
-                            Set the overall appearance mode for the provider.
+                            <strong>Base palette</strong> sets the default hue.{" "}
+                            <strong>Main action</strong> colors buttons, links,
+                            and selected states. <strong>Accent color</strong>{" "}
+                            drives supporting emphasis. Focus uses a dedicated
+                            accessible role. <strong>Canvas</strong> controls
+                            neutral surfaces; <strong>Chart</strong> controls
+                            data series and explicitly colorway-linked Card,
+                            KPI, or bounded Surface regions.
                           </p>
                         </div>
-                        <AppearancePicker value={appearanceSetting} />
-                      </section>
-
-                      <section
-                        aria-labelledby="studio-type-heading"
-                        className="studio-control-group studio-control-group-type"
-                      >
-                        <div className="studio-control-group-heading">
-                          <Typography
-                            as="h3"
-                            className="studio-control-group-title"
-                            id="studio-type-heading"
-                            typeRole="label"
-                          >
-                            Typography
-                          </Typography>
-                          <p>Choose the shared family and role hierarchy.</p>
+                        <div className="studio-control-guide-roles">
+                          <span data-role="base">Base</span>
+                          <span data-role="role">UI roles</span>
+                          <span data-role="surface">Surfaces</span>
+                          <span data-role="motion">Motion</span>
                         </div>
-                        <TypographyPicker value={theme.typography} />
-                      </section>
-
-                      <section
-                        aria-labelledby="studio-color-heading"
-                        className="studio-control-group studio-control-group-color"
-                      >
-                        <div className="studio-control-group-heading">
-                          <Typography
-                            as="h3"
-                            className="studio-control-group-title"
-                            id="studio-color-heading"
-                            typeRole="label"
-                          >
-                            Color roles
-                          </Typography>
-                          <p>
-                            Set the base hue, then tune each semantic role. The
-                            labels below tell you exactly where each value
-                            appears.
-                          </p>
-                        </div>
-                        <PalettePicker value={theme.palette} />
-                        <div
-                          aria-label="Color role map"
-                          className="studio-color-role-map"
-                          data-testid="studio-color-role-map"
+                      </div>
+                      <div className="studio-controls-grid">
+                        <section
+                          aria-labelledby="studio-type-heading"
+                          className="studio-control-group studio-control-group-type"
                         >
-                          <div data-role="main">
-                            <span aria-hidden="true" />
-                            <div>
-                              <strong>Main action</strong>
-                              <small>Buttons · links · selected</small>
-                            </div>
+                          <div className="studio-control-group-heading">
+                            <Typography
+                              as="h3"
+                              className="studio-control-group-title"
+                              id="studio-type-heading"
+                              typeRole="label"
+                            >
+                              Typography
+                            </Typography>
+                            <p>Choose the shared family and role hierarchy.</p>
                           </div>
-                          <div data-role="accent">
-                            <span aria-hidden="true" />
-                            <div>
-                              <strong>Accent color</strong>
-                              <small>Focus ring · focused fields</small>
-                            </div>
-                          </div>
-                          <div data-role="surface">
-                            <span aria-hidden="true" />
-                            <div>
-                              <strong>Canvas</strong>
-                              <small>Neutral page surfaces</small>
-                            </div>
-                          </div>
-                          <div data-role="data">
-                            <span aria-hidden="true" />
-                            <div>
-                              <strong>Chart</strong>
-                              <small>Data series only</small>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="studio-control-subgrid">
-                          <PaletteRoleSelect
-                            hint="Primary actions, links, and selected states."
-                            label="Main action color"
-                            settingKey="primary"
-                            value={theme.primary}
-                          />
-                          <PaletteRoleSelect
-                            hint="Focus rings, focused inputs, and supporting emphasis use this accent."
-                            label="Accent color"
-                            settingKey="accent"
-                            value={theme.accent}
-                          />
-                          <CanvasPicker
-                            appearance={theme.appearance}
-                            value={theme.canvas}
-                          />
-                          <ChartPalettePicker
-                            accent={theme.accent}
-                            palette={theme.palette}
-                            primary={theme.primary}
-                            value={theme.chartPalette}
-                          />
-                        </div>
-                      </section>
+                          <TypographyPicker value={theme.typography} />
+                        </section>
 
-                      <section
-                        aria-labelledby="studio-rhythm-heading"
-                        className="studio-control-group studio-control-group-rhythm"
-                      >
-                        <div className="studio-control-group-heading">
-                          <Typography
-                            as="h3"
-                            className="studio-control-group-title"
-                            id="studio-rhythm-heading"
-                            typeRole="label"
+                        <section
+                          aria-labelledby="studio-color-heading"
+                          className="studio-control-group studio-control-group-color"
+                        >
+                          <div className="studio-control-group-heading">
+                            <Typography
+                              as="h3"
+                              className="studio-control-group-title"
+                              id="studio-color-heading"
+                              typeRole="label"
+                            >
+                              Color roles
+                            </Typography>
+                            <p>
+                              Set the base hue, then tune each semantic role.
+                              The labels below tell you exactly where each value
+                              appears.
+                            </p>
+                          </div>
+                          <PalettePicker value={theme.palette} />
+                          <div
+                            aria-label="Color role map"
+                            className="studio-color-role-map"
+                            data-testid="studio-color-role-map"
                           >
-                            Shape &amp; density
-                          </Typography>
-                          <p>Adjust shared geometry and vertical rhythm.</p>
-                        </div>
-                        <div className="studio-control-subgrid">
+                            <div data-role="main">
+                              <span aria-hidden="true" />
+                              <div>
+                                <strong>Main action</strong>
+                                <small>Buttons · links · selected</small>
+                              </div>
+                            </div>
+                            <div data-role="accent">
+                              <span aria-hidden="true" />
+                              <div>
+                                <strong>Accent color</strong>
+                                <small>Supporting emphasis · expression</small>
+                              </div>
+                            </div>
+                            <div data-role="surface">
+                              <span aria-hidden="true" />
+                              <div>
+                                <strong>Canvas</strong>
+                                <small>Neutral page surfaces</small>
+                              </div>
+                            </div>
+                            <div data-role="data">
+                              <span aria-hidden="true" />
+                              <div>
+                                <strong>Chart</strong>
+                                <small>
+                                  Data series · opted-in solid surfaces
+                                </small>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="studio-control-subgrid">
+                            <PaletteRoleSelect
+                              hint="Primary actions, links, and selected states."
+                              label="Main action color"
+                              settingKey="primary"
+                              value={theme.primary}
+                            />
+                            <PaletteRoleSelect
+                              hint="Supporting emphasis uses this accent. Focus color is independently resolved for visibility."
+                              label="Accent color"
+                              settingKey="accent"
+                              value={theme.accent}
+                            />
+                            <CanvasPicker
+                              appearance={theme.appearance}
+                              value={theme.canvas}
+                            />
+                            <ChartPalettePicker
+                              accent={theme.accent}
+                              palette={theme.palette}
+                              primary={theme.primary}
+                              value={theme.chartPalette}
+                            />
+                          </div>
+                        </section>
+
+                        <section
+                          aria-labelledby="studio-rhythm-heading"
+                          className="studio-control-group studio-control-group-rhythm"
+                        >
+                          <div className="studio-control-group-heading">
+                            <Typography
+                              as="h3"
+                              className="studio-control-group-title"
+                              id="studio-rhythm-heading"
+                              typeRole="label"
+                            >
+                              Shape
+                            </Typography>
+                            <p>
+                              Adjust shared geometry. Density remains a runtime
+                              preference in the recipe rail above.
+                            </p>
+                          </div>
                           <RadiusSlider value={theme.radius} />
-                          <DensitySlider value={theme.density} />
-                        </div>
-                      </section>
+                        </section>
 
-                      <section
-                        aria-labelledby="studio-motion-heading"
-                        className="studio-control-group studio-control-group-motion"
+                        <section
+                          aria-labelledby="studio-motion-heading"
+                          className="studio-control-group studio-control-group-motion"
+                        >
+                          <div className="studio-control-group-heading">
+                            <Typography
+                              as="h3"
+                              className="studio-control-group-title"
+                              id="studio-motion-heading"
+                              typeRole="label"
+                            >
+                              Motion timing
+                            </Typography>
+                            <p>
+                              Tune authored reveal and interaction timing. The
+                              runtime motion preference remains above.
+                            </p>
+                          </div>
+                          <MotionSlider value={theme.motionDuration} />
+                        </section>
+                      </div>
+                    </CardContent>
+                    <CardFooter>
+                      <Button
+                        intent="quiet"
+                        leadingIcon="refresh"
+                        onClick={resetTheme}
                       >
-                        <div className="studio-control-group-heading">
-                          <Typography
-                            as="h3"
-                            className="studio-control-group-title"
-                            id="studio-motion-heading"
-                            typeRole="label"
-                          >
-                            Motion
-                          </Typography>
-                          <p>
-                            One shared duration for viewport reveals, hover,
-                            expand, and chart animation. Steps are 0.25 seconds.
-                          </p>
-                        </div>
-                        <MotionSlider value={theme.motionDuration} />
-                      </section>
-                    </div>
-                    <StudioLivePreview />
-                  </CardContent>
-                  <CardFooter>
-                    <Button
-                      intent="quiet"
-                      leadingIcon="refresh"
-                      onClick={resetTheme}
-                    >
-                      Reset to defaults
-                    </Button>
-                  </CardFooter>
-                </Card>
+                        Reset authored changes
+                      </Button>
+                    </CardFooter>
+                  </Card>
 
-                <Card className="studio-axis-card" tone="accent">
-                  <CardHeader>
-                    <div>
-                      <CardTitle as="h2">Active profile</CardTitle>
-                      <CardDescription>
-                        Current values written to the provider root.
-                      </CardDescription>
-                    </div>
-                    <span
-                      aria-label={`Base palette: ${theme.palette}`}
-                      className="studio-axis-value"
-                    >
-                      {theme.palette}
-                    </span>
-                  </CardHeader>
-                  <CardContent>
-                    <dl className="studio-axis-list">
-                      {axisRows.map(([label, value]) => (
-                        <div key={label}>
-                          <dt>{label}</dt>
-                          <dd
-                            data-numeric={
-                              label === "Density" ? undefined : true
-                            }
-                          >
-                            {value}
-                          </dd>
-                        </div>
-                      ))}
-                    </dl>
-                  </CardContent>
-                  <CardFooter>
-                    <span className="studio-axis-line" />
-                    <span>Root variables active</span>
-                  </CardFooter>
-                </Card>
-              </section>
+                  <Card className="studio-axis-card" tone="accent">
+                    <CardHeader>
+                      <div>
+                        <CardTitle as="h2">Active profile</CardTitle>
+                        <CardDescription>
+                          Current values written to the provider root.
+                        </CardDescription>
+                      </div>
+                      <span
+                        aria-label={`Base palette: ${theme.palette}`}
+                        className="studio-axis-value"
+                      >
+                        {theme.palette}
+                      </span>
+                    </CardHeader>
+                    <CardContent>
+                      <dl className="studio-axis-list">
+                        {axisRows.map(([label, value]) => (
+                          <div key={label}>
+                            <dt>{label}</dt>
+                            <dd
+                              data-numeric={
+                                label === "Density" ? undefined : true
+                              }
+                            >
+                              {value}
+                            </dd>
+                          </div>
+                        ))}
+                      </dl>
+                    </CardContent>
+                    <CardFooter>
+                      <span className="studio-axis-line" />
+                      <span>Root variables active</span>
+                    </CardFooter>
+                  </Card>
+                </div>
+              </Collapsible>
+
+              <Collapsible
+                className="studio-developer-delivery"
+                title={
+                  <span className="studio-developer-delivery-title">
+                    <span>Developer delivery</span>
+                    <small>
+                      CSS-first selector proof and implementation reference
+                    </small>
+                  </span>
+                }
+              >
+                <CssFirstThemeProof />
+              </Collapsible>
 
               <TypographySpecimen />
 
@@ -1295,93 +1353,49 @@ function Studio({
             )}
           </div>
         )}
+        <TopNavigation
+          className="studio-bottom-navigation"
+          placement="bottom"
+          label="Mobile shortcuts"
+          items={[
+            {
+              key: "studio",
+              label: "Studio",
+              icon: "theme",
+              active: activeRoute === "Theme Studio",
+              onSelect: () => onNavigatePath("/theme-studio"),
+            },
+            {
+              key: "tokens",
+              label: "Tokens",
+              icon: "tokens",
+              active: activeRoute === "Tokens",
+              onSelect: () => onNavigatePath("/tokens"),
+            },
+            {
+              key: "components",
+              label: "Components",
+              icon: "components",
+              active: activePath.startsWith("/components"),
+              onSelect: () => onNavigatePath("/components"),
+            },
+            {
+              key: "menu",
+              label: "Menu",
+              icon: "menu",
+              controls: mobileNavigationId,
+              expanded: isMobileNavOpen,
+              onSelect: () => setMobileNavOpen(true),
+            },
+          ]}
+        />
       </main>
     </div>
   );
 }
 
-type StudioAxisStop<Name extends string> = {
-  detail: string;
-  label: string;
-  name: Name;
-  value: number;
-};
-
-const densityStops = [
-  {
-    detail: `${densityProfiles.dense.control} control · ${densityProfiles.dense.row} row`,
-    label: "32 px",
-    name: "dense",
-    value: 32,
-  },
-  {
-    detail: `${densityProfiles.compact.control} control · ${densityProfiles.compact.row} row`,
-    label: "36 px",
-    name: "compact",
-    value: 36,
-  },
-  {
-    detail: `${densityProfiles.default.control} control · ${densityProfiles.default.row} row`,
-    label: "40 px",
-    name: "default",
-    value: 40,
-  },
-  {
-    detail: `${densityProfiles.comfortable.control} control · ${densityProfiles.comfortable.row} row`,
-    label: "44 px",
-    name: "comfortable",
-    value: 44,
-  },
-] as const satisfies readonly StudioAxisStop<DensityName>[];
-
-function StudioAxisSlider<Name extends string>({
-  axisClassName,
-  label,
-  onChange,
-  stops,
-  value,
-}: {
-  axisClassName: string;
-  label: string;
-  onChange: (name: Name) => void;
-  stops: readonly StudioAxisStop<Name>[];
-  value: Name;
-}) {
-  const activeIndex = Math.max(
-    0,
-    stops.findIndex((stop) => stop.name === value),
-  );
-  const active = stops[activeIndex] ?? stops[0];
-
-  return (
-    <div className={`studio-axis-slider ${axisClassName}`}>
-      <Slider
-        aria-label={label}
-        aria-valuetext={`${active.name}, ${active.label}; ${active.detail}`}
-        label={label}
-        max={stops.length - 1}
-        min={0}
-        onChange={(event) => {
-          const next = stops[Number(event.currentTarget.value)];
-          if (next) onChange(next.name);
-        }}
-        value={activeIndex}
-        valueLabel={active.label}
-      />
-      <span className="studio-axis-slider-detail">{active.detail}</span>
-      <div aria-hidden="true" className="studio-axis-slider-scale">
-        {stops.map((stop) => (
-          <span data-active={stop.name === value} key={stop.name}>
-            {stop.label}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 function RadiusSlider({ value }: { value: RadiusName }) {
-  const { setTheme, theme } = useTen4SevenTheme();
+  const { recipe, setTheme, theme } = useTen4SevenTheme();
   const namedProfile = radiusProfiles[value];
   const currentValue =
     theme.radiusValue ?? Number.parseFloat(namedProfile.base);
@@ -1389,58 +1403,194 @@ function RadiusSlider({ value }: { value: RadiusName }) {
     theme.radiusValue === undefined
       ? namedProfile
       : buildRadiusProfile(currentValue);
+  const activePreset = theme.radiusValue === undefined ? theme.radius : null;
+  const authoredRadius = recipe
+    ? THEME_RECIPES[recipe].profile.radius
+    : { preset: "soft" as RadiusName };
+
+  function choosePreset(next: RadiusName) {
+    // A named preset is an authored decision. Clearing radiusValue here is
+    // important: the provider must resolve the preset scale instead of
+    // retaining an earlier exact-value override.
+    setTheme({ radius: next, radiusValue: undefined });
+  }
+
+  function resetShape() {
+    // Keep every other authored axis and all runtime preferences intact. The
+    // recipe profile is the source of truth for a named shape; custom Studio
+    // configuration falls back to the playground's authored default.
+    setTheme({
+      radius: authoredRadius.preset,
+      radiusValue: authoredRadius.basePx,
+    });
+  }
+
+  function radiusPresetForValue(next: number): RadiusName {
+    const sharpBase = Number.parseFloat(radiusProfiles.sharp.base);
+    const softBase = Number.parseFloat(radiusProfiles.soft.base);
+    const roundedBase = Number.parseFloat(radiusProfiles.rounded.base);
+    const softRoundedBoundary = Math.round((softBase + roundedBase) / 2);
+    return next <= sharpBase
+      ? "sharp"
+      : next <= softRoundedBoundary
+        ? "soft"
+        : "rounded";
+  }
 
   return (
-    <div className="studio-axis-slider studio-radius-control">
-      <Slider
-        aria-label="Radius"
-        aria-valuetext={[
-          currentValue,
-          "px base radius; exact 1 px step;",
-          activeProfile.control,
-          "control ·",
-          activeProfile.panel,
-          "panel",
-        ].join(" ")}
-        label="Radius"
-        max={radiusValueRange.max}
-        min={radiusValueRange.min}
-        onChange={(event) => {
-          const next = Math.min(
-            radiusValueRange.max,
-            Math.max(radiusValueRange.min, Number(event.currentTarget.value)),
-          );
-          const radius: RadiusName =
-            next <= 8 ? "sharp" : next <= 14 ? "soft" : "rounded";
-          setTheme({ radius, radiusValue: next });
-        }}
-        step={1}
-        value={currentValue}
-        valueLabel={String(currentValue) + " px"}
-      />
-      <span className="studio-axis-slider-detail">
-        {activeProfile.base} base · {activeProfile.control} control ·{" "}
-        {activeProfile.panel} panel
-      </span>
-      <div aria-hidden="true" className="studio-axis-slider-scale">
-        {["0 px", "12 px", "24 px"].map((stop, index) => (
-          <span
-            data-active={
-              (index === 0 && currentValue === 0) ||
-              (index === 1 && currentValue === 12) ||
-              (index === 2 && currentValue === 24)
-            }
-            key={stop}
+    <div
+      className="studio-shape-editor"
+      data-radius-mode={activePreset ?? "custom"}
+      data-testid="studio-shape-editor"
+    >
+      <fieldset
+        aria-describedby="studio-shape-preset-description"
+        className="studio-choice-picker studio-radius-presets"
+      >
+        <legend className="t7-field-label">Preset</legend>
+        <p className="studio-choice-help" id="studio-shape-preset-description">
+          Start from a named radius profile, or use Base radius for an exact
+          custom geometry.
+        </p>
+        <div className="studio-radius-preset-options">
+          {radiusNames.map((option) => {
+            const profile = radiusProfiles[option];
+            return (
+              <Button
+                aria-describedby={`studio-radius-${option}-description`}
+                aria-label={radiusPresetLabels[option]}
+                aria-pressed={activePreset === option}
+                className="studio-choice-option studio-radius-preset"
+                data-radius-preset={option}
+                intent={activePreset === option ? "secondary" : "quiet"}
+                key={option}
+                onClick={() => choosePreset(option)}
+                size="sm"
+                trailingIcon={activePreset === option ? "check" : undefined}
+              >
+                <span
+                  aria-hidden="true"
+                  className="studio-radius-preset-shape"
+                  style={
+                    { "--studio-radius-preview": profile.base } as CSSProperties
+                  }
+                />
+                <span className="studio-choice-option-copy">
+                  <strong>{radiusPresetLabels[option]}</strong>
+                  <small id={`studio-radius-${option}-description`}>
+                    {profile.base} base · {radiusPresetDescriptors[option]}
+                  </small>
+                </span>
+              </Button>
+            );
+          })}
+        </div>
+      </fieldset>
+
+      <div className="studio-radius-editor-row">
+        <div className="studio-axis-slider studio-radius-control">
+          <Slider
+            aria-describedby="studio-base-radius-description"
+            aria-label="Base radius"
+            aria-valuetext={[
+              currentValue,
+              "px base radius; exact 1 px step;",
+              activeProfile.control,
+              "control ·",
+              activeProfile.panel,
+              "panel",
+            ].join(" ")}
+            label="Base radius"
+            max={radiusValueRange.max}
+            min={radiusValueRange.min}
+            onChange={(event) => {
+              const next = Math.min(
+                radiusValueRange.max,
+                Math.max(
+                  radiusValueRange.min,
+                  Number(event.currentTarget.value),
+                ),
+              );
+              setTheme({
+                radius: radiusPresetForValue(next),
+                radiusValue: next,
+              });
+            }}
+            step={1}
+            value={currentValue}
+            valueLabel={String(currentValue) + " px"}
+          />
+          <p
+            className="studio-radius-description"
+            id="studio-base-radius-description"
           >
-            {stop}
+            Exact 0–24 px control. Moving this slider creates a Custom shape
+            override while preserving the selected recipe.
+          </p>
+          <div aria-hidden="true" className="studio-axis-slider-scale">
+            {["0 px", "12 px", "24 px"].map((stop, index) => (
+              <span
+                data-active={
+                  (index === 0 && currentValue === 0) ||
+                  (index === 1 && currentValue === 12) ||
+                  (index === 2 && currentValue === 24)
+                }
+                key={stop}
+              >
+                {stop}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="studio-radius-status" aria-live="polite">
+          <strong>
+            {activePreset
+              ? `${radiusPresetLabels[activePreset]} shape`
+              : "Custom shape"}
+          </strong>
+          <span>
+            {theme.radiusValue === undefined
+              ? "Recipe-authored geometry"
+              : "Exact override · recipe preserved"}
           </span>
-        ))}
+        </div>
       </div>
+
+      <dl
+        aria-label="Derived geometry preview"
+        className="studio-radius-derived"
+        data-testid="studio-radius-derived"
+      >
+        {(["control", "panel", "card", "shell"] as const).map((role) => (
+          <div data-radius-role={role} key={role}>
+            <dt>{role}</dt>
+            <dd>{activeProfile[role]}</dd>
+          </div>
+        ))}
+      </dl>
+      <p className="studio-radius-supporting-roles">
+        Indicator {activeProfile.indicator} · Base {activeProfile.base} · Full
+        9999px
+      </p>
+      <Button
+        className="studio-radius-reset"
+        intent="quiet"
+        leadingIcon="refresh"
+        onClick={resetShape}
+        size="sm"
+      >
+        Reset recipe shape
+      </Button>
     </div>
   );
 }
 
-function StudioLivePreview() {
+function StudioLivePreview({
+  lastChange,
+}: {
+  lastChange: StudioThemeChange | null;
+}) {
   const { theme } = useTen4SevenTheme();
 
   return (
@@ -1452,101 +1602,149 @@ function StudioLivePreview() {
       <div className="studio-live-preview-heading">
         <div>
           <Typography
-            as="h3"
+            as="h2"
             className="studio-live-preview-title"
             id="studio-live-preview-title"
-            typeRole="label"
+            typeRole="heading-sm"
           >
-            See the roles update in place
+            Live visual preview
           </Typography>
-          <Typography as="p" typeRole="caption">
-            Change a setting below and watch the same root tokens reach the
-            controls, surfaces, focus treatment, and data colorways here.
+          <Typography as="p" typeRole="body-sm">
+            Recipe, runtime preferences, and authored tokens resolve into one
+            small product surface.
           </Typography>
         </div>
-        <span className="studio-live-preview-source">root tokens · live</span>
+        <div
+          aria-atomic="true"
+          aria-label={
+            lastChange
+              ? `Updated live. ${lastChange.label}: ${lastChange.value}`
+              : "Live. Ready to preview"
+          }
+          aria-live="polite"
+          className="studio-controls-live-state"
+          data-testid="studio-controls-live-state"
+        >
+          <span className="studio-controls-live-badge">
+            <i aria-hidden="true" />
+            {lastChange ? "Updated live" : "Live"}
+          </span>
+          <span className="studio-controls-live-copy">
+            {lastChange
+              ? `${lastChange.label} · ${lastChange.value}`
+              : "Ready to preview"}
+          </span>
+        </div>
       </div>
-      <div className="studio-live-preview-grid">
-        <div className="studio-live-preview-sample" data-role="primary">
-          <div className="studio-live-preview-role-heading">
-            <span className="studio-live-preview-label">Primary action</span>
-            <span className="studio-live-preview-role-note">
-              Buttons · links · selected states
-            </span>
+      <Card className="studio-live-preview-product">
+        <CardContent className="studio-live-preview-product-content">
+          <div className="studio-live-preview-product-header">
+            <div>
+              <Typography as="span" typeRole="overline">
+                Customer workspace
+              </Typography>
+              <Typography as="h3" typeRole="heading-md">
+                Release readiness
+              </Typography>
+              <Typography as="p" typeRole="body-sm">
+                Keep customer work moving with focused actions, status, form,
+                data, and scoped context.
+              </Typography>
+            </div>
+            <Badge tone="success">Healthy</Badge>
           </div>
-          <Button leadingIcon="check" size="sm">
-            Apply
-          </Button>
+
+          <div className="studio-live-preview-action-row">
+            <Button leadingIcon="check" size="sm">
+              Apply
+            </Button>
+            <Button intent="secondary" size="sm">
+              Review
+            </Button>
+          </div>
+
+          <div className="studio-live-preview-field">
+            <Input
+              aria-label="Live theme preview field"
+              className="studio-live-preview-focus-input"
+              defaultValue="Ready"
+              label="Release note"
+            />
+          </div>
+
+          <div className="studio-live-preview-product-grid">
+            <div
+              className="studio-live-preview-surface"
+              data-live-value="surface"
+            >
+              <div>
+                <span className="studio-live-preview-label">
+                  Canvas surface
+                </span>
+                <strong>{theme.canvas}</strong>
+              </div>
+              <Badge tone="primary">{formatRadiusSetting(theme)} radius</Badge>
+            </div>
+            <div className="studio-live-preview-chart-region">
+              <span className="studio-live-preview-label">Chart colorway</span>
+              <div
+                aria-label={`Chart preview: ${theme.chartPalette} colorway`}
+                className="studio-live-preview-chart"
+                data-live-value="chart"
+                role="img"
+              >
+                <span />
+                <span />
+                <span />
+                <span />
+                <span />
+              </div>
+            </div>
+          </div>
+
+          <DataTable
+            caption="Previewed component health"
+            className="studio-live-preview-table"
+            columns={columns}
+            density={theme.density}
+            responsive="scroll"
+            rowKey={(row) => row.id}
+            rows={inventoryRows.slice(0, 2)}
+          />
+        </CardContent>
+      </Card>
+
+      <details className="studio-live-preview-diagnostics">
+        <summary>Semantic diagnostics</summary>
+        <div className="studio-live-preview-diagnostic-grid">
           <span className="studio-live-preview-meta" data-live-value="primary">
             {theme.primary} · primary role
           </span>
-        </div>
-        <div className="studio-live-preview-sample" data-role="accent">
-          <div className="studio-live-preview-role-heading">
-            <span className="studio-live-preview-label">Accent color</span>
-            <span className="studio-live-preview-role-note">
-              Focus ring · focused fields
-            </span>
-          </div>
-          <Input
-            aria-label="Live theme preview field"
-            className="studio-live-preview-focus-input"
-            defaultValue="Ready"
-          />
           <span className="studio-live-preview-meta" data-live-value="accent">
-            {theme.accent} · shared focus role
+            {theme.accent} · supporting emphasis
           </span>
-        </div>
-        <div className="studio-live-preview-sample" data-role="surface">
-          <div className="studio-live-preview-role-heading">
-            <span className="studio-live-preview-label">Canvas surface</span>
-            <span className="studio-live-preview-role-note">
-              Neutral page surfaces
-            </span>
-          </div>
-          <div
-            className="studio-live-preview-surface"
-            data-live-value="surface"
-          >
-            <span>
-              Canvas <strong>{theme.canvas}</strong>
-            </span>
-            <Badge tone="primary">{formatRadiusSetting(theme)} radius</Badge>
-          </div>
           <span className="studio-live-preview-meta" data-live-value="density">
             {theme.density} density · shared surface scale
           </span>
-        </div>
-        <div className="studio-live-preview-sample" data-role="data">
-          <div className="studio-live-preview-role-heading">
-            <span className="studio-live-preview-label">Chart colorway</span>
-            <span className="studio-live-preview-role-note">
-              Data series only
-            </span>
-          </div>
-          <div
-            aria-label={`Chart preview: ${theme.chartPalette} colorway`}
-            className="studio-live-preview-chart"
-            data-live-value="chart"
-            role="img"
+          <span
+            className="studio-live-preview-meta"
+            data-live-value="chart-palette"
           >
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-          </div>
-          <span className="studio-live-preview-meta">
             {theme.chartPalette} · {theme.palette} base hue
           </span>
         </div>
+      </details>
+
+      <div className="studio-live-preview-scopes">
         <ThemeScope
           aria-label="Inverse theme scope proof"
-          className="studio-live-preview-sample studio-live-preview-inverse"
+          className="studio-live-preview-scope studio-live-preview-inverse"
           tone="inverse"
         >
           <div className="studio-live-preview-role-heading">
-            <span className="studio-live-preview-label">Inverse scope</span>
+            <span className="studio-live-preview-label">
+              Inverse ThemeScope
+            </span>
             <span className="studio-live-preview-role-note">
               Nested semantic contrast · same component contract
             </span>
@@ -1567,7 +1765,7 @@ function StudioLivePreview() {
         </ThemeScope>
         <ThemeScope
           aria-label="Editorial recipe scope proof"
-          className="studio-live-preview-sample"
+          className="studio-live-preview-scope"
           theme="editorial"
         >
           <div className="studio-live-preview-role-heading">
@@ -1631,19 +1829,6 @@ function CssFirstThemeProof() {
   );
 }
 
-function DensitySlider({ value }: { value: DensityName }) {
-  const { setTheme } = useTen4SevenTheme();
-  return (
-    <StudioAxisSlider
-      axisClassName="studio-density-control"
-      label="Density"
-      onChange={(density) => setTheme({ density })}
-      stops={densityStops}
-      value={value}
-    />
-  );
-}
-
 function formatMotionDuration(value: number) {
   return `${Number(value.toFixed(2))}s`;
 }
@@ -1679,7 +1864,7 @@ function MotionSlider({ value }: { value: number }) {
         valueLabel={valueLabel}
       />
       <span className="studio-axis-slider-detail">
-        0.25s steps · shared reveal · interaction timing
+        0.25s anchor steps · bounded interactions · scaled reveals
       </span>
       <div
         aria-hidden="true"
@@ -1744,29 +1929,12 @@ function PaletteRoleSelect({
 
 const paletteNames = Object.keys(paletteProfiles) as PaletteName[];
 const typographyNames = Object.keys(typographyProfiles) as TypographyName[];
-const appearanceOptions: Array<{
-  detail: string;
-  label: string;
-  value: Appearance;
-}> = [
-  {
-    value: "system",
-    label: "System",
-    detail: "Follow the device setting",
-  },
-  { value: "light", label: "Light", detail: "Always use light surfaces" },
-  { value: "dark", label: "Dark", detail: "Always use dark surfaces" },
-];
 const canvasNames: CanvasName[] = ["balanced", "paper", "monochrome"];
-const canvasLabels: Record<CanvasName, string> = {
-  balanced: "Balanced",
-  paper: "Pure white",
-  monochrome: "Monochrome",
-};
+const canvasLabels: Record<CanvasName, string> = CANVAS_LABELS;
 const canvasDetails: Record<CanvasName, string> = {
-  balanced: "Soft neutral separation",
-  paper: "White canvas, restrained gray",
-  monochrome: "Color-free surfaces",
+  balanced: "White canvas, soft neutral separation",
+  paper: "White canvas, neutral contrast",
+  monochrome: "Hue-free grayscale",
 };
 const chartPaletteNames: ChartPaletteName[] = [
   "spectrum",
@@ -1797,40 +1965,28 @@ const typographyPresetDetails: Record<TypographyName, string> = {
   technical: "Mono UI · precise operator tone",
   mono: "IBM Plex Mono · fully technical",
 };
+const themeRecipeIntents: Record<ThemeRecipeName, string> = {
+  enterprise: "Quiet operational surfaces",
+  product: "Balanced application rhythm",
+  editorial: "Reading-led hierarchy",
+  commerce: "Discovery and buying clarity",
+};
 
-function AppearancePicker({ value }: { value: Appearance }) {
-  const { setTheme } = useTen4SevenTheme();
-
-  return (
-    <fieldset className="studio-choice-picker studio-appearance-picker">
-      <legend className="t7-field-label">Appearance</legend>
-      <p className="studio-choice-help">
-        System follows the device automatically; Light and Dark stay fixed.
-      </p>
-      <div className="studio-choice-options">
-        {appearanceOptions.map((option) => (
-          <button
-            aria-pressed={value === option.value}
-            className="studio-choice-option studio-appearance-option"
-            key={option.value}
-            onClick={() => setTheme({ appearance: option.value })}
-            type="button"
-          >
-            <span
-              aria-hidden="true"
-              className="studio-choice-swatch studio-appearance-swatch"
-              data-appearance={option.value}
-            />
-            <span className="studio-choice-option-copy">
-              <strong>{option.label}</strong>
-              <small>{option.detail}</small>
-            </span>
-          </button>
-        ))}
-      </div>
-    </fieldset>
-  );
-}
+const radiusNames = [
+  "sharp",
+  "soft",
+  "rounded",
+] as const satisfies readonly RadiusName[];
+const radiusPresetLabels: Record<RadiusName, string> = {
+  sharp: "Sharp",
+  soft: "Soft",
+  rounded: "Rounded",
+};
+const radiusPresetDescriptors: Record<RadiusName, string> = {
+  sharp: "restrained corners",
+  soft: "balanced corners",
+  rounded: "generous corners",
+};
 
 function ThemeRecipePicker({
   onPreferencesChange,
@@ -1870,26 +2026,46 @@ function ThemeRecipePicker({
         </Typography>
       </div>
       <div aria-label="Theme recipes" className="studio-recipe-options">
-        <Button
-          aria-pressed={value === undefined}
-          intent={value === undefined ? "secondary" : "quiet"}
-          onClick={() => selectRecipe(undefined)}
-          size="sm"
+        <div
+          aria-label="Curated theme recipes"
+          className="studio-curated-recipe-options"
         >
-          Custom
-        </Button>
-        {Object.values(THEME_RECIPES).map((recipe) => (
+          {Object.values(THEME_RECIPES).map((recipe) => (
+            <Button
+              aria-describedby={`theme-recipe-${recipe.id}-intent`}
+              aria-label={recipe.label}
+              aria-pressed={value === recipe.id}
+              className="studio-recipe-option"
+              data-recipe={recipe.id}
+              intent={value === recipe.id ? "secondary" : "quiet"}
+              key={recipe.id}
+              onClick={() => selectRecipe(recipe.id)}
+              size="sm"
+              title={recipe.description}
+              trailingIcon={value === recipe.id ? "check" : undefined}
+            >
+              <span className="studio-recipe-option-copy">
+                <strong>{recipe.label}</strong>
+                <small id={`theme-recipe-${recipe.id}-intent`}>
+                  {themeRecipeIntents[recipe.id]}
+                </small>
+              </span>
+            </Button>
+          ))}
+        </div>
+        <div className="studio-custom-recipe">
+          <Typography as="span" typeRole="caption">
+            Advanced / custom
+          </Typography>
           <Button
-            aria-pressed={value === recipe.id}
-            intent={value === recipe.id ? "secondary" : "quiet"}
-            key={recipe.id}
-            onClick={() => selectRecipe(recipe.id)}
+            aria-pressed={value === undefined}
+            intent={value === undefined ? "secondary" : "quiet"}
+            onClick={() => selectRecipe(undefined)}
             size="sm"
-            title={recipe.description}
           >
-            {recipe.label}
+            Custom
           </Button>
-        ))}
+        </div>
       </div>
       <div
         aria-label="Runtime preferences"
@@ -1919,6 +2095,7 @@ function ThemeRecipePicker({
             })
           }
           options={[
+            ["dense", "Dense"],
             ["compact", "Compact"],
             ["default", "Regular"],
             ["comfortable", "Comfortable"],
@@ -1991,6 +2168,240 @@ function RuntimePreferenceOptions({
         ))}
       </div>
     </fieldset>
+  );
+}
+
+function ThemeSettingsSheet({
+  onClose,
+  onNavigatePath,
+  onPreferencesChange,
+  onRecipeChange,
+  open,
+  preferences,
+  recipe,
+}: {
+  onClose: () => void;
+  onNavigatePath: (path: string) => void;
+  onPreferencesChange: (preferences: RuntimePreferences) => void;
+  onRecipeChange: (recipe: ThemeRecipeName | undefined) => void;
+  open: boolean;
+  preferences: RuntimePreferences;
+  recipe: ThemeRecipeName | undefined;
+}) {
+  const { resetTheme, setTheme, theme } = useTen4SevenTheme();
+  const activeRadius =
+    theme.radiusValue === undefined ? theme.radius : undefined;
+
+  function updatePreference(key: keyof RuntimePreferences, value: string) {
+    onPreferencesChange({ ...preferences, [key]: value });
+  }
+
+  function selectRecipe(nextRecipe: ThemeRecipeName | undefined) {
+    resetTheme();
+    onRecipeChange(nextRecipe);
+  }
+
+  function resetSettings() {
+    resetTheme();
+    onRecipeChange(undefined);
+    onPreferencesChange({});
+  }
+
+  return (
+    <Drawer
+      className="theme-settings-drawer"
+      closeLabel="Close theme settings"
+      description="Tune the shared environment without leaving the current surface."
+      onClose={onClose}
+      open={open}
+      side="right"
+      title="Theme settings"
+    >
+      <div
+        aria-label="Global theme settings"
+        className="theme-settings-panel"
+        data-testid="theme-settings-panel"
+      >
+        <div className="theme-settings-summary">
+          <Typography as="p" typeRole="body-sm">
+            Everyday choices apply live to this route and every surface in the
+            playground. Advanced token authoring stays in Theme Studio.
+          </Typography>
+        </div>
+
+        <section
+          aria-labelledby="theme-settings-recipe-heading"
+          className="theme-settings-section"
+        >
+          <div className="theme-settings-section-heading">
+            <Typography
+              as="h3"
+              id="theme-settings-recipe-heading"
+              typeRole="label"
+            >
+              Recipe
+            </Typography>
+            <span>{recipe ? THEME_RECIPES[recipe].label : "Custom"}</span>
+          </div>
+          <div
+            aria-label="Theme recipes"
+            className="theme-settings-recipe-options"
+          >
+            {Object.values(THEME_RECIPES).map((option) => (
+              <Button
+                aria-pressed={recipe === option.id}
+                className="theme-settings-choice"
+                intent={recipe === option.id ? "secondary" : "quiet"}
+                key={option.id}
+                onClick={() => selectRecipe(option.id)}
+                size="sm"
+              >
+                {option.label}
+              </Button>
+            ))}
+            <Button
+              aria-pressed={recipe === undefined}
+              className="theme-settings-choice"
+              intent={recipe === undefined ? "secondary" : "quiet"}
+              onClick={() => selectRecipe(undefined)}
+              size="sm"
+            >
+              Custom
+            </Button>
+          </div>
+        </section>
+
+        <section
+          aria-label="Runtime preferences"
+          className="theme-settings-section theme-settings-runtime"
+        >
+          <RuntimePreferenceOptions
+            label="Appearance"
+            onChange={(value) => updatePreference("appearance", value)}
+            options={[
+              ["system", "System"],
+              ["light", "Light"],
+              ["dark", "Dark"],
+            ]}
+            value={preferences.appearance ?? "system"}
+          />
+          <RuntimePreferenceOptions
+            label="Density"
+            onChange={(value) => updatePreference("density", value)}
+            options={[
+              ["dense", "Dense"],
+              ["compact", "Compact"],
+              ["default", "Regular"],
+              ["comfortable", "Comfortable"],
+            ]}
+            value={preferences.density ?? "default"}
+          />
+          <RuntimePreferenceOptions
+            label="Contrast"
+            onChange={(value) => updatePreference("contrast", value)}
+            options={[
+              ["standard", "Standard"],
+              ["more", "More"],
+            ]}
+            value={preferences.contrast ?? "standard"}
+          />
+          <RuntimePreferenceOptions
+            label="Motion"
+            onChange={(value) => updatePreference("motion", value)}
+            options={[
+              ["full", "Full"],
+              ["reduced", "Reduced"],
+            ]}
+            value={preferences.motion ?? "full"}
+          />
+        </section>
+
+        <section
+          aria-labelledby="theme-settings-basics-heading"
+          className="theme-settings-section theme-settings-authored"
+        >
+          <div className="theme-settings-section-heading">
+            <Typography
+              as="h3"
+              id="theme-settings-basics-heading"
+              typeRole="label"
+            >
+              Authored basics
+            </Typography>
+            <span>Keep the detailed axes in Studio</span>
+          </div>
+          <fieldset className="theme-settings-shape">
+            <legend>Shape</legend>
+            <div className="theme-settings-shape-options">
+              {radiusNames.map((option) => (
+                <Button
+                  aria-label={radiusPresetLabels[option]}
+                  aria-pressed={activeRadius === option}
+                  intent={activeRadius === option ? "secondary" : "quiet"}
+                  key={option}
+                  onClick={() =>
+                    setTheme({ radius: option, radiusValue: undefined })
+                  }
+                  size="sm"
+                >
+                  {radiusPresetLabels[option]}
+                </Button>
+              ))}
+            </div>
+          </fieldset>
+          <Select
+            label="Typography"
+            value={theme.typography}
+            onChange={(event) =>
+              setTheme({ typography: event.target.value as TypographyName })
+            }
+          >
+            {typographyNames.map((option) => (
+              <option key={option} value={option}>
+                {typographyPresetLabels[option]}
+              </option>
+            ))}
+          </Select>
+          <Select
+            label="Brand color"
+            value={theme.palette}
+            onChange={(event) => {
+              const nextPalette = event.target.value as PaletteName;
+              setTheme({
+                accent: nextPalette,
+                palette: nextPalette,
+                primary: nextPalette,
+              });
+            }}
+          >
+            {paletteNames.map((option) => (
+              <option key={option} value={option}>
+                {option[0].toUpperCase() + option.slice(1)}
+              </option>
+            ))}
+          </Select>
+        </section>
+
+        <div className="theme-settings-actions">
+          <Button
+            leadingIcon="theme"
+            onClick={() => {
+              onClose();
+              onNavigatePath("/theme-studio");
+            }}
+          >
+            Open Theme Studio
+          </Button>
+          <Button intent="quiet" leadingIcon="refresh" onClick={resetSettings}>
+            Reset settings
+          </Button>
+        </div>
+        <Typography className="theme-settings-footnote" typeRole="caption">
+          Advanced scopes, semantic overrides, diagnostics, and export remain in
+          the Theme Studio workbench.
+        </Typography>
+      </div>
+    </Drawer>
   );
 }
 
@@ -2120,7 +2531,8 @@ function ChartPalettePicker({
     <fieldset className="studio-choice-picker studio-chart-picker">
       <legend className="t7-field-label">Chart colorway</legend>
       <p className="studio-choice-help">
-        Affects data series only; application surfaces keep their UI roles.
+        Affects data series and explicitly colorway-linked Card, KPI, or bounded
+        Surface regions; semantic UI roles remain independent.
       </p>
       <div className="studio-choice-options">
         {chartPaletteNames.map((option) => (
@@ -2228,6 +2640,19 @@ function NotFoundSurface({
   );
 }
 
+function isConsumerReferenceRoute(route: PlaygroundRoute | undefined) {
+  return (
+    route === "Operations Tracker" ||
+    route === "Operational Patterns" ||
+    route === "Publishing Store"
+  );
+}
+
+function isReferenceQaMode() {
+  if (typeof window === "undefined") return false;
+  return new URLSearchParams(window.location.search).get("mode") === "qa";
+}
+
 export default function App() {
   const [settings] = useState<StudioSettings>({
     appearance: "system",
@@ -2243,8 +2668,9 @@ export default function App() {
   });
   const [themeRecipe, setThemeRecipe] = useState<ThemeRecipeName>();
   const [themePreferences, setThemePreferences] = useState<RuntimePreferences>(
-    {},
+    readRuntimePreferences,
   );
+  const [themeSettingsOpen, setThemeSettingsOpen] = useState(false);
   const [routeMatch, setRouteMatch] = useState<RouteMatch>(() =>
     typeof window === "undefined"
       ? { kind: "known", route: "Theme Studio" }
@@ -2323,8 +2749,44 @@ export default function App() {
     navigateToPath(playgroundRoutePaths[route]);
   }
 
+  function updateThemePreferences(preferences: RuntimePreferences) {
+    setThemePreferences(preferences);
+    try {
+      window.localStorage.setItem(
+        runtimePreferencesStorageKey,
+        JSON.stringify(preferences),
+      );
+    } catch {
+      // Runtime preferences still apply for the active session if storage is unavailable.
+    }
+  }
+
+  function openThemeSettings() {
+    setThemeSettingsOpen(true);
+  }
+
+  function closeThemeSettings() {
+    setThemeSettingsOpen(false);
+  }
+
   function navigateToPath(nextPath: string) {
     const nextLocation = new URL(nextPath, window.location.origin);
+    const nextRoute = routeFromPath(nextLocation.pathname);
+    const currentRoute =
+      routeMatch.kind === "known" ? routeMatch.route : undefined;
+
+    // Reference routes render consumer-clean by default. Keep the explicit QA
+    // context while moving between those routes so fixture controls do not
+    // unexpectedly disappear during an internal inspection.
+    if (
+      isReferenceQaMode() &&
+      isConsumerReferenceRoute(currentRoute) &&
+      nextRoute.kind === "known" &&
+      isConsumerReferenceRoute(nextRoute.route)
+    ) {
+      nextLocation.searchParams.set("mode", "qa");
+    }
+
     const currentLocation = `${window.location.pathname}${window.location.search}${window.location.hash}`;
     const nextLocationString = `${nextLocation.pathname}${nextLocation.search}${nextLocation.hash}`;
     if (currentLocation !== nextLocationString) {
@@ -2332,6 +2794,14 @@ export default function App() {
     }
     setRouteMatch(routeFromPath(nextLocation.pathname));
   }
+
+  const activeKnownRoute =
+    routeMatch.kind === "known" ? routeMatch.route : undefined;
+  const showReferenceHarness =
+    activeKnownRoute !== undefined &&
+    (isConsumerReferenceRoute(activeKnownRoute)
+      ? isReferenceQaMode()
+      : activeKnownRoute !== "Public Showcase");
 
   let routeContent: ReactNode;
   if (routeMatch.kind === "not-found") {
@@ -2344,6 +2814,7 @@ export default function App() {
   ) {
     routeContent = (
       <OperationsTracker
+        onOpenSettings={openThemeSettings}
         onViewStateChange={setOperationsViewState}
         viewState={operationsViewState as OperationsViewState}
       />
@@ -2352,12 +2823,22 @@ export default function App() {
     routeMatch.kind === "known" &&
     routeMatch.route === "Publishing Store"
   ) {
-    routeContent = <EbookStoreCatalog />;
+    routeContent = <EbookStoreCatalog onOpenSettings={openThemeSettings} />;
+  } else if (
+    routeMatch.kind === "known" &&
+    routeMatch.route === "Operational Patterns"
+  ) {
+    routeContent = <OperationalReference onOpenSettings={openThemeSettings} />;
   } else if (
     routeMatch.kind === "known" &&
     routeMatch.route === "Public Showcase"
   ) {
-    routeContent = <PublicShowcase onNavigatePath={navigateToPath} />;
+    routeContent = (
+      <PublicShowcase
+        onNavigatePath={navigateToPath}
+        onOpenSettings={openThemeSettings}
+      />
+    );
   } else if (routeMatch.kind === "brand-proof") {
     routeContent = (
       <BrandExpressionProof
@@ -2368,10 +2849,14 @@ export default function App() {
   } else {
     const activeRoute: Exclude<
       PlaygroundRoute,
-      "Operations Tracker" | "Publishing Store" | "Public Showcase"
+      | "Operations Tracker"
+      | "Operational Patterns"
+      | "Publishing Store"
+      | "Public Showcase"
     > =
       routeMatch.kind === "known" &&
       routeMatch.route !== "Operations Tracker" &&
+      routeMatch.route !== "Operational Patterns" &&
       routeMatch.route !== "Publishing Store" &&
       routeMatch.route !== "Public Showcase"
         ? routeMatch.route
@@ -2455,7 +2940,8 @@ export default function App() {
         contentOverride={contentOverride}
         onNavigate={navigateTo}
         onNavigatePath={navigateToPath}
-        onThemePreferencesChange={setThemePreferences}
+        onOpenSettings={openThemeSettings}
+        onThemePreferencesChange={updateThemePreferences}
         onThemeRecipeChange={setThemeRecipe}
         themePreferences={themePreferences}
         themeRecipe={themeRecipe}
@@ -2472,13 +2958,23 @@ export default function App() {
     >
       <ToastProvider>
         {routeContent}
-        {routeMatch.kind === "known" &&
-        routeMatch.route !== "Public Showcase" ? (
+        {showReferenceHarness && activeKnownRoute ? (
           <ReferenceHarness
-            activeRoute={routeMatch.route}
+            activeRoute={activeKnownRoute}
             onNavigate={navigateTo}
             onOperationsViewStateChange={setOperationsViewState}
             operationsViewState={operationsViewState}
+          />
+        ) : null}
+        {themeSettingsOpen ? (
+          <ThemeSettingsSheet
+            onClose={closeThemeSettings}
+            onNavigatePath={navigateToPath}
+            onPreferencesChange={updateThemePreferences}
+            onRecipeChange={setThemeRecipe}
+            open
+            preferences={themePreferences}
+            recipe={themeRecipe}
           />
         ) : null}
       </ToastProvider>

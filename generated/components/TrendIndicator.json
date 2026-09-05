@@ -1,1 +1,1 @@
-{"id":"TrendIndicator","displayName":"Trend Indicator","status":"implemented","category":"chart","purpose":"Show compact up, down, or flat directional change.","source":"packages/ui/src/charts.tsx","importantProps":["direction","value","label"]}
+{"id":"TrendIndicator","displayName":"Trend Indicator","status":"implemented","category":"chart","purpose":"Show compact directional change while keeping movement separate from business sentiment.","source":"packages/ui/src/charts.tsx","importantProps":["direction","sentiment","value","context","variant","label"]}
