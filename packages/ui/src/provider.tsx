@@ -115,8 +115,8 @@ function resolvedThemeToConfig(theme: ResolvedTheme): ThemeConfig {
   return {
     appearance: theme.appearance,
     palette: theme.palette,
-    primary: theme.primary,
-    accent: theme.accent,
+    primary: theme.primarySource,
+    accent: theme.accentSource,
     canvas: theme.canvas,
     chartPalette: theme.chartPalette,
     radius: theme.radius,
@@ -340,6 +340,26 @@ export function Ten4SevenProvider({
         data-palette={theme.palette}
         data-primary={theme.primary}
         data-accent={theme.accent}
+        data-t7-primary-source={
+          typeof theme.primarySource === "string"
+            ? "palette"
+            : theme.primarySource.kind
+        }
+        data-t7-primary-source-value={
+          typeof theme.primarySource === "string"
+            ? theme.primarySource
+            : theme.primarySource.value
+        }
+        data-t7-accent-source={
+          typeof theme.accentSource === "string"
+            ? "palette"
+            : theme.accentSource.kind
+        }
+        data-t7-accent-source-value={
+          typeof theme.accentSource === "string"
+            ? theme.accentSource
+            : theme.accentSource.value
+        }
         data-canvas={theme.canvas}
         data-chart-palette={theme.chartPalette}
         data-radius={theme.radius}
@@ -491,6 +511,26 @@ export function ThemeScope({
         data-t7-expression={recipe?.expression ?? parent.expression}
         data-t7-mode={theme.appearance}
         data-t7-motion-preference={resolvedPreferences.motion}
+        data-t7-primary-source={
+          typeof theme.primarySource === "string"
+            ? "palette"
+            : theme.primarySource.kind
+        }
+        data-t7-primary-source-value={
+          typeof theme.primarySource === "string"
+            ? theme.primarySource
+            : theme.primarySource.value
+        }
+        data-t7-accent-source={
+          typeof theme.accentSource === "string"
+            ? "palette"
+            : theme.accentSource.kind
+        }
+        data-t7-accent-source-value={
+          typeof theme.accentSource === "string"
+            ? theme.accentSource
+            : theme.accentSource.value
+        }
         data-t7-theme={recipe?.id ?? parent.recipe ?? "custom"}
         data-t7-tone={tone}
         style={

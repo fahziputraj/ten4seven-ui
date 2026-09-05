@@ -134,6 +134,8 @@ export function buildDtcgTokenExport() {
           "The runtime retains HSL custom properties for visual stability while this export exposes DTCG-shaped typed sRGB reference values and semantic aliases. Recipe selection remains runtime-aware.",
         dtcgDirection:
           "2025.10-compatible groups, typed $value objects, and aliases.",
+        exactColorSource:
+          "Arbitrary exact consumer color sources resolve through buildDtcgThemeSnapshot at runtime; this static reference export remains deterministic and deliberately does not embed consumer brand values.",
       },
     },
     ref: {

@@ -313,7 +313,15 @@ export function TokensExplorer() {
     ["Appearance", theme.appearance],
     [
       "Palette / primary / accent",
-      `${theme.palette} / ${theme.primary} / ${theme.accent}`,
+      `${theme.palette} / ${
+        typeof theme.primarySource === "string"
+          ? theme.primarySource
+          : theme.primarySource.value
+      } / ${
+        typeof theme.accentSource === "string"
+          ? theme.accentSource
+          : theme.accentSource.value
+      }`,
     ],
     ["Canvas", `${CANVAS_LABELS[theme.canvas]} (${theme.canvas})`],
     ["Chart palette", theme.chartPalette],

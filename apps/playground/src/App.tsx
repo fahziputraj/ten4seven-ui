@@ -27,6 +27,7 @@ import {
   Collapsible,
   DataTable,
   Drawer,
+  exactColor,
   Input,
   IconButton,
   CommandMenu,
@@ -53,9 +54,11 @@ import type {
   PaletteName,
   RadiusName,
   ResolvedTheme,
+  ThemeColorSource,
   TypographyName,
 } from "@ten4seven/tokens";
 import {
+  buildThemeVariables,
   buildRadiusProfile,
   canvasProfiles,
   motionDurationRange,
@@ -112,8 +115,8 @@ import { ReferenceHarness, type ReferenceViewState } from "./reference-harness";
 type StudioSettings = {
   appearance: Appearance;
   palette: PaletteName;
-  primary: PaletteName;
-  accent: PaletteName;
+  primary: ThemeColorSource;
+  accent: ThemeColorSource;
   canvas: CanvasName;
   chartPalette: ChartPaletteName;
   radius: RadiusName;
@@ -175,6 +178,42 @@ function formatRadiusSetting(
     : `${theme.radiusValue}px`;
 }
 
+function describeColorSource(source: ThemeColorSource) {
+  return typeof source === "string"
+    ? `${source} · preset`
+    : `${source.value} · exact source`;
+}
+
+function hslToHex(value: string, fallback: string) {
+  const match = value.match(/(-?[\d.]+)\s+([\d.]+)%\s+([\d.]+)%/);
+  if (!match) return fallback;
+
+  const hue = ((Number(match[1]) % 360) + 360) % 360;
+  const saturation = Math.max(0, Math.min(100, Number(match[2]))) / 100;
+  const lightness = Math.max(0, Math.min(100, Number(match[3]))) / 100;
+  const chroma = (1 - Math.abs(2 * lightness - 1)) * saturation;
+  const normalizedHue = hue / 60;
+  const second = chroma * (1 - Math.abs((normalizedHue % 2) - 1));
+  const matchValue = lightness - chroma / 2;
+  const [red, green, blue] =
+    normalizedHue < 1
+      ? [chroma, second, 0]
+      : normalizedHue < 2
+        ? [second, chroma, 0]
+        : normalizedHue < 3
+          ? [0, chroma, second]
+          : normalizedHue < 4
+            ? [0, second, chroma]
+            : normalizedHue < 5
+              ? [second, 0, chroma]
+              : [chroma, 0, second];
+  const toHex = (channel: number) =>
+    Math.round((channel + matchValue) * 255)
+      .toString(16)
+      .padStart(2, "0");
+  return `#${toHex(red)}${toHex(green)}${toHex(blue)}`;
+}
+
 function getThemeChange(
   previous: ResolvedTheme,
   next: ResolvedTheme,
@@ -182,8 +221,16 @@ function getThemeChange(
   const axes: Array<[string, string, string]> = [
     ["Appearance", previous.appearance, next.appearance],
     ["Base palette", previous.palette, next.palette],
-    ["Main action color", previous.primary, next.primary],
-    ["Accent color", previous.accent, next.accent],
+    [
+      "Main action color",
+      describeColorSource(previous.primarySource),
+      describeColorSource(next.primarySource),
+    ],
+    [
+      "Accent color",
+      describeColorSource(previous.accentSource),
+      describeColorSource(next.accentSource),
+    ],
     ["Canvas", previous.canvas, next.canvas],
     ["Chart colorway", previous.chartPalette, next.chartPalette],
     ["Radius", formatRadiusSetting(previous), formatRadiusSetting(next)],
@@ -698,8 +745,8 @@ function Studio({
           : theme.appearance,
       ],
       ["Base palette", theme.palette],
-      ["Main action", theme.primary],
-      ["Accent color", theme.accent],
+      ["Main action", describeColorSource(theme.primarySource)],
+      ["Accent color", describeColorSource(theme.accentSource)],
       ["Canvas", theme.canvas],
       ["Chart colorway", theme.chartPalette],
       [
@@ -1009,28 +1056,23 @@ function Studio({
                             </div>
                           </div>
                           <div className="studio-control-subgrid">
-                            <PaletteRoleSelect
+                            <ColorSourceControl
                               hint="Primary actions, links, and selected states."
                               label="Main action color"
                               settingKey="primary"
-                              value={theme.primary}
+                              source={theme.primarySource}
                             />
-                            <PaletteRoleSelect
+                            <ColorSourceControl
                               hint="Supporting emphasis uses this accent. Focus color is independently resolved for visibility."
                               label="Accent color"
                               settingKey="accent"
-                              value={theme.accent}
+                              source={theme.accentSource}
                             />
                             <CanvasPicker
                               appearance={theme.appearance}
                               value={theme.canvas}
                             />
-                            <ChartPalettePicker
-                              accent={theme.accent}
-                              palette={theme.palette}
-                              primary={theme.primary}
-                              value={theme.chartPalette}
-                            />
+                            <ChartPalettePicker value={theme.chartPalette} />
                           </div>
                         </section>
 
@@ -1718,10 +1760,10 @@ function StudioLivePreview({
         <summary>Semantic diagnostics</summary>
         <div className="studio-live-preview-diagnostic-grid">
           <span className="studio-live-preview-meta" data-live-value="primary">
-            {theme.primary} · primary role
+            {describeColorSource(theme.primarySource)} · primary role
           </span>
           <span className="studio-live-preview-meta" data-live-value="accent">
-            {theme.accent} · supporting emphasis
+            {describeColorSource(theme.accentSource)} · supporting emphasis
           </span>
           <span className="studio-live-preview-meta" data-live-value="density">
             {theme.density} density · shared surface scale
@@ -1880,24 +1922,30 @@ function MotionSlider({ value }: { value: number }) {
   );
 }
 
-function PaletteRoleSelect({
+function ColorSourceControl({
   label,
   hint,
   settingKey,
-  value,
+  source,
 }: {
   label: string;
   hint: string;
   settingKey: "primary" | "accent";
-  value: PaletteName;
+  source: ThemeColorSource;
 }) {
-  const { setTheme } = useTen4SevenTheme();
+  const { setTheme, theme } = useTen4SevenTheme();
+  const variables = buildThemeVariables(theme);
   const swatch =
     settingKey === "primary"
-      ? paletteProfiles[value].primary
-      : paletteProfiles[value].accent;
+      ? variables["--t7-primary-hsl"]
+      : variables["--t7-accent-hsl"];
+  const sourcePalette = settingKey === "primary" ? theme.primary : theme.accent;
+  const inputValue =
+    typeof source === "string"
+      ? hslToHex(swatch, "#000000")
+      : source.value.toLowerCase();
 
-  function updateProfile(next: PaletteName) {
+  function updateSource(next: ThemeColorSource) {
     if (settingKey === "primary") setTheme({ primary: next });
     else setTheme({ accent: next });
   }
@@ -1914,15 +1962,38 @@ function PaletteRoleSelect({
       <Select
         hint={hint}
         label={label}
-        value={value}
-        onChange={(event) => updateProfile(event.target.value as PaletteName)}
+        value={typeof source === "string" ? source : ""}
+        onChange={(event) => {
+          const next = event.target.value as PaletteName;
+          if (paletteNames.includes(next)) updateSource(next);
+        }}
       >
+        {typeof source === "string" ? null : (
+          <option disabled value="">
+            Exact custom source
+          </option>
+        )}
         {paletteNames.map((option) => (
           <option key={option} value={option}>
             {option}
           </option>
         ))}
       </Select>
+      <Input
+        data-testid={`exact-${settingKey}-source`}
+        hint={`Sets an exact sRGB source for ${
+          settingKey === "primary" ? "action roles" : "supporting emphasis"
+        }; choosing a preset above returns to its curated family.`}
+        label={`Exact ${label.toLowerCase()} source`}
+        onChange={(event) => updateSource(exactColor(event.currentTarget.value))}
+        type="color"
+        value={inputValue}
+      />
+      <Typography typeRole="caption">
+        {typeof source === "string"
+          ? `Using ${sourcePalette} preset.`
+          : `Using exact source ${source.value}.`}
+      </Typography>
     </div>
   );
 }
@@ -2496,34 +2567,23 @@ function CanvasPicker({
   );
 }
 
-function ChartPalettePicker({
-  accent,
-  palette,
-  primary,
-  value,
-}: {
-  accent: PaletteName;
-  palette: PaletteName;
-  primary: PaletteName;
-  value: ChartPaletteName;
-}) {
-  const { setTheme } = useTen4SevenTheme();
-  const baseProfile = paletteProfiles[palette];
-  const primaryProfile = paletteProfiles[primary];
-  const accentProfile = paletteProfiles[accent];
+function ChartPalettePicker({ value }: { value: ChartPaletteName }) {
+  const { setTheme, theme } = useTen4SevenTheme();
+  const variables = buildThemeVariables(theme);
+  const baseProfile = paletteProfiles[theme.palette];
 
   const optionColors: Record<ChartPaletteName, string[]> = {
     spectrum: baseProfile.chart.map((color) => `hsl(${color})`),
     four: [
-      `hsl(${primaryProfile.primary})`,
-      `hsl(${accentProfile.accent})`,
+      `hsl(${variables["--t7-primary-hsl"]})`,
+      `hsl(${variables["--t7-accent-hsl"]})`,
       `hsl(${baseProfile.chart[2]})`,
       `hsl(${baseProfile.chart[3]})`,
     ],
     monochrome: [
-      `hsl(${primaryProfile.primary})`,
-      `hsl(${primaryProfile.primaryHover})`,
-      `hsl(${primaryProfile.primaryActive})`,
+      `hsl(${variables["--t7-primary-hsl"]})`,
+      `hsl(${variables["--t7-primary-hover-hsl"]})`,
+      `hsl(${variables["--t7-primary-active-hsl"]})`,
     ],
   };
 

@@ -6,6 +6,7 @@ import {
   DEFAULT_THEME_PROFILE,
   ENTITY_LIST_CONTRACT,
   ENTITY_LIST_STATES,
+  exactColor,
   THEME_RECIPES,
   THEME_RECIPE_NAMES,
   RESPONSIVE_MODES,
@@ -113,6 +114,25 @@ assert.deepEqual(
   normalizeThemeProfile(themeProfileToLegacyConfig(DEFAULT_THEME_PROFILE)),
   DEFAULT_THEME_PROFILE,
   "ThemeProfile: legacy adapter does not round-trip the default profile",
+);
+
+const exactSourceProfile = normalizeThemeProfile({
+  accent: exactColor("#d4451a"),
+  palette: "slate",
+  primary: exactColor("#318139"),
+});
+assert.deepEqual(exactSourceProfile.action.primary, {
+  kind: "exact",
+  value: "#318139",
+});
+assert.deepEqual(exactSourceProfile.accent.source, {
+  kind: "exact",
+  value: "#D4451A",
+});
+assert.deepEqual(
+  normalizeThemeProfile(themeProfileToLegacyConfig(exactSourceProfile)),
+  exactSourceProfile,
+  "ThemeProfile: exact action and accent sources do not round-trip",
 );
 
 assert.deepEqual(

@@ -40,6 +40,30 @@ test.describe("Next.js 16 App Router package consumer", () => {
     const provider = page.locator(".t7-provider");
     await expect(provider).toHaveAttribute("data-t7-mode", "dark");
     await expect(provider).toHaveAttribute("data-t7-theme", "custom");
+    await expect(provider).toHaveAttribute("data-t7-primary-source", "exact");
+    await expect(provider).toHaveAttribute(
+      "data-t7-primary-source-value",
+      "#318139",
+    );
+    await expect(provider).toHaveAttribute("data-t7-accent-source", "exact");
+    await expect(provider).toHaveAttribute(
+      "data-t7-accent-source-value",
+      "#D4451A",
+    );
+
+    const colorSources = await provider.evaluate((element) => {
+      const style = getComputedStyle(element);
+      return {
+        accent: style.getPropertyValue("--t7-accent-hsl").trim(),
+        focus: style.getPropertyValue("--t7-focus-hsl").trim(),
+        primary: style.getPropertyValue("--t7-primary-hsl").trim(),
+        statusSuccess: style.getPropertyValue("--t7-success-hsl").trim(),
+      };
+    });
+    expect(colorSources.primary).toBe("126 44.94% 34.9%");
+    expect(colorSources.accent).toBe("13.87 78.15% 46.67%");
+    expect(colorSources.focus).toBe("216 70% 72%");
+    expect(colorSources.statusSuccess).toBe("128 42% 30%");
 
     const fontState = await provider.evaluate((element) => {
       const style = getComputedStyle(element);

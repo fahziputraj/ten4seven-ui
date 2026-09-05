@@ -13,6 +13,60 @@ export type PaletteName =
   | "red"
   | "orange"
   | "amber";
+
+/**
+ * An authored sRGB color source for a product that needs a brand value outside
+ * the curated palette families. Use {@link exactColor} instead of constructing
+ * this shape by hand so persisted values stay canonical.
+ */
+export interface ExactColorSource {
+  readonly kind: "exact";
+  readonly value: `#${string}`;
+}
+
+/** A named system palette or an intentionally exact authored color source. */
+export type ThemeColorSource = PaletteName | ExactColorSource;
+
+const exactColorPattern = /^#(?:[\dA-Fa-f]{3}|[\dA-Fa-f]{6})$/;
+
+function normalizeExactColorValue(value: string): `#${string}` | undefined {
+  const candidate = value.trim();
+  if (!exactColorPattern.test(candidate)) return undefined;
+  const expanded =
+    candidate.length === 4
+      ? `#${[...candidate.slice(1)]
+          .map((channel) => `${channel}${channel}`)
+          .join("")}`
+      : candidate;
+  return expanded.toUpperCase() as `#${string}`;
+}
+
+/**
+ * Create a canonical exact brand source for the runtime theme resolver.
+ * Only opaque sRGB hex is accepted because it maps deterministically to the
+ * existing HSL compatibility variables and has one portable JSON shape.
+ */
+export function exactColor(value: string): ExactColorSource {
+  const normalized = normalizeExactColorValue(value);
+  if (!normalized)
+    throw new Error(
+      `Expected an exact color in #RGB or #RRGGBB format, received: ${value}`,
+    );
+  return { kind: "exact", value: normalized };
+}
+
+/** Validate a deserialized exact source before it enters the resolver. */
+export function isExactColorSource(value: unknown): value is ExactColorSource {
+  return (
+    !!value &&
+    typeof value === "object" &&
+    (value as { readonly kind?: unknown }).kind === "exact" &&
+    typeof (value as { readonly value?: unknown }).value === "string" &&
+    normalizeExactColorValue(
+      (value as { readonly value: string }).value,
+    ) !== undefined
+  );
+}
 export type CanvasName = "balanced" | "paper" | "monochrome";
 export type ChartPaletteName = "spectrum" | "four" | "monochrome";
 export type RadiusName = "sharp" | "soft" | "rounded";
@@ -62,10 +116,10 @@ export interface ThemeProfile {
     readonly base: PaletteName;
   };
   readonly action: {
-    readonly primary: PaletteName;
+    readonly primary: ThemeColorSource;
   };
   readonly accent: {
-    readonly source: PaletteName;
+    readonly source: ThemeColorSource;
   };
   readonly canvas: {
     readonly mode: CanvasName;
@@ -206,8 +260,8 @@ export interface RecipeExpressionContract {
 export interface LegacyThemeConfigLike {
   readonly appearance?: Appearance;
   readonly palette?: PaletteName;
-  readonly primary?: PaletteName;
-  readonly accent?: PaletteName;
+  readonly primary?: ThemeColorSource;
+  readonly accent?: ThemeColorSource;
   readonly canvas?: CanvasName;
   readonly chartPalette?: ChartPaletteName;
   readonly radius?: RadiusName;

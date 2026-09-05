@@ -7,6 +7,7 @@ import {
 } from "../packages/contracts/src/theme-recipe.ts";
 import {
   buildThemeVariables,
+  exactColor,
   resolveTheme,
 } from "../packages/tokens/src/theme.ts";
 
@@ -102,6 +103,11 @@ const pairs = [
     "--t7-action-primary-foreground-hsl",
   ],
   [
+    "accent foreground",
+    "--t7-accent-hsl",
+    "--t7-accent-foreground-hsl",
+  ],
+  [
     "danger foreground",
     "--t7-action-danger-hsl",
     "--t7-action-danger-foreground-hsl",
@@ -191,6 +197,45 @@ for (const recipeName of THEME_RECIPE_NAMES) {
       ),
       recipe: recipeName,
     });
+  }
+}
+
+const exactSourceConfig = {
+  accent: exactColor("#d4451a"),
+  canvas: "balanced",
+  chartPalette: "monochrome",
+  palette: "slate",
+  primary: exactColor("#318139"),
+};
+for (const appearance of ["light", "dark"]) {
+  for (const contrast of ["standard", "more"]) {
+    const variables = buildThemeVariables(
+      resolveTheme({ ...exactSourceConfig, appearance }),
+      { contrast },
+    );
+    for (const [pair, background, foreground] of pairs)
+      results.push({
+        appearance: `${appearance} ${contrast}`,
+        pair,
+        ratio: assertContrast(
+          `exact source ${appearance} ${contrast} ${pair}`,
+          variables,
+          background,
+          foreground,
+        ),
+        recipe: "exact-source",
+      });
+    for (const index of [1, 2, 3, 4, 5])
+      results.push({
+        appearance: `${appearance} ${contrast}`,
+        pair: `solid chart ${index} highlighted foreground`,
+        ratio: assertWhiteHighlightContrast(
+          `exact source ${appearance} ${contrast} solid chart ${index} highlighted foreground`,
+          variables,
+          `--t7-surface-emphasis-solid-chart-${index}-hsl`,
+        ),
+        recipe: "exact-source",
+      });
   }
 }
 

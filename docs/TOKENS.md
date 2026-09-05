@@ -26,7 +26,10 @@ foundation values
 
 The canonical typed profile is intentionally structured. For example, an
 action primary color is represented by `action.primary`, while the CSS output
-remains the compatibility-friendly `--t7-primary-hsl` property.
+remains the compatibility-friendly `--t7-primary-hsl` property. A primary or
+accent source can be either a curated palette name or `exactColor("#RRGGBB")`.
+The latter is a product-root brand decision that the resolver normalizes before
+it reaches component CSS; it is not a component-level custom-property override.
 
 ## Semantic CSS vocabulary
 
@@ -82,11 +85,14 @@ names remain available for copying. This is a debugger, not a second theme engin
 
 Brand/action (`primary`), supporting expression (`accent`), fixed status
 (`success`, `warning`, `danger`, `info`) and categorical data are independent
-decisions. Emerald remains a supported primary. Success uses its own green;
-the categorical spectrum begins with blue and does not change when primary
-or accent changes. The intentional `monochrome` chart option follows primary
-and therefore always needs labels, shapes or another non-color distinction.
-The `four` option has four distinct slots; slot five repeats slot four.
+decisions. Emerald remains a supported primary. A product may supply an exact
+sRGB primary or accent source; the resolver preserves the source hue, derives
+hover and pressed action roles, selects a readable black-or-white foreground,
+and carries the result through selected state. Success uses its own green; the
+categorical spectrum begins with blue and does not change when primary or
+accent changes. The intentional `monochrome` chart option follows primary and
+therefore always needs labels, shapes or another non-color distinction. The
+`four` option has four distinct slots; slot five repeats slot four.
 
 Solid action and status surfaces use centrally derived foreground pairs:
 `colorToSolidSurface` adjusts lightness until white text meets at least 4.5:1.
@@ -184,6 +190,13 @@ semantic aliases, and recipe metadata derived from the current runtime.
 needs a named recipe's selected action aliases reads
 `theme.recipes.<recipe>.semantic.color.action`. The distributable package also
 exports this artifact as `@ten4seven/ui/tokens.dtcg.json`.
+
+The static artifact intentionally never embeds a consumer's exact brand value.
+For an application-owned token compilation or handoff, use the public
+`buildDtcgThemeSnapshot(themeConfig)` helper. It emits deterministic,
+DTCG-shaped resolved semantic colors together with source metadata such as
+`{ kind: "exact", value: "#RRGGBB" }`. This keeps a generic static artifact
+stable while still making an exact runtime source interoperable.
 
 The export is a compatibility/interoperability surface, not a replacement
 canonical source of truth. The typed profile and HSL-oriented runtime in

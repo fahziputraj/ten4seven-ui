@@ -78,12 +78,16 @@ application genuinely owns a custom brand or a controlled Theme Studio-like
 editor.
 
 ```tsx
-import type { ThemeConfig } from "@ten4seven/ui";
+import {
+  exactColor,
+  Ten4SevenProvider,
+  type ThemeConfig,
+} from "@ten4seven/ui";
 
 const customBrand: ThemeConfig = {
   palette: "blue",
-  primary: "indigo",
-  accent: "cyan",
+  primary: exactColor("#2F6B45"),
+  accent: exactColor("#C9502A"),
   canvas: "balanced",
   chartPalette: "spectrum",
   radius: "soft",
@@ -99,6 +103,14 @@ const customBrand: ThemeConfig = {
   <App />
 </Ten4SevenProvider>;
 ```
+
+`exactColor` accepts opaque sRGB `#RGB` or `#RRGGBB` input, normalizes it to
+an uppercase six-digit source, and rejects malformed values. It is the
+canonical route for a deliberate exact action or accent brand value. The
+resolver derives primary hover, pressed, selected, and readable foreground
+roles while retaining independent focus and status semantics. Select a named
+palette when a curated family is intended; selecting one in Theme Studio
+replaces the exact source for that role.
 
 The current public API accepts either a recipe name or a `ThemeConfig` object.
 `chartPalette` feeds both chart series and the opt-in `colorway={1..5}` contract
@@ -218,6 +230,11 @@ match. A non-React application that follows the operating-system preference
 needs an application or media-query adapter that writes the resolved `light` or
 `dark` value to the root and updates it when that preference changes.
 
+Exact sources also require the runtime resolver (or an application-owned token
+compilation using `buildDtcgThemeSnapshot`). A static CSS-first root cannot
+discover an arbitrary product value from an HTML attribute, by design; it can
+still use the curated named recipes unchanged.
+
 ## Observable runtime contract
 
 The provider writes the full runtime vocabulary:
@@ -229,6 +246,10 @@ data-t7-density
 data-t7-contrast
 data-t7-motion-preference
 data-t7-expression
+data-t7-primary-source
+data-t7-primary-source-value
+data-t7-accent-source
+data-t7-accent-source-value
 ```
 
 Static recipe CSS selects on `data-t7-theme`, the resolved
