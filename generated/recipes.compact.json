@@ -822,7 +822,7 @@
     "references": [
       "AAPM Operational Reference"
     ],
-    "source": "legacy-catalog-adapter"
+    "source": "canonical-contract"
   },
   "process-workspace": {
     "id": "process-workspace",
@@ -998,7 +998,7 @@
     "references": [
       "AAPM Operational Reference"
     ],
-    "source": "legacy-catalog-adapter"
+    "source": "canonical-contract"
   },
   "load-planning": {
     "id": "load-planning",
@@ -1690,7 +1690,7 @@
       "AAPM Operational Reference",
       "Operations Tracker"
     ],
-    "source": "legacy-catalog-adapter"
+    "source": "canonical-contract"
   },
   "activity-audit": {
     "id": "activity-audit",

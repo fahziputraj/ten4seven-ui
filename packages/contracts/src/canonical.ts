@@ -6,7 +6,10 @@ import { ENTITY_DETAIL_CONTRACT } from "./entity-detail.ts";
 import { ENTITY_LIST_CONTRACT } from "./entity-list.ts";
 import {
   ACTIVITY_AUDIT_CONTRACT,
+  CONTROL_TOWER_CONTRACT,
   DECISION_WORKSPACE_CONTRACT,
+  EXCEPTION_QUEUE_CONTRACT,
+  OPERATIONAL_KANBAN_CONTRACT,
   PROCESS_WORKSPACE_CONTRACT,
   READINESS_REVIEW_CONTRACT,
 } from "./operational-patterns.ts";
@@ -79,6 +82,9 @@ export const CANONICAL_CONTRACTS = {
     "process-workspace": PROCESS_WORKSPACE_CONTRACT,
     "decision-workspace": DECISION_WORKSPACE_CONTRACT,
     "activity-audit": ACTIVITY_AUDIT_CONTRACT,
+    "operational-kanban": OPERATIONAL_KANBAN_CONTRACT,
+    "exception-queue": EXCEPTION_QUEUE_CONTRACT,
+    "control-tower": CONTROL_TOWER_CONTRACT,
   },
   aliases: ALIAS_MAP,
   ownership: OWNERSHIP_RULES,

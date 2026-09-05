@@ -119,6 +119,9 @@ const operationalRecipeNames = [
   "process-workspace",
   "decision-workspace",
   "activity-audit",
+  "operational-kanban",
+  "exception-queue",
+  "control-tower",
 ];
 const operationalParity = (name, recipe) => ({
   id: name,

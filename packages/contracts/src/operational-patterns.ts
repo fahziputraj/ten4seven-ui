@@ -377,9 +377,250 @@ export const ACTIVITY_AUDIT_CONTRACT = {
   references: ["AAPM Operational Reference", "Operations Tracker"],
 } satisfies RecipeContract;
 
+/**
+ * Typed canonical source for the second operational recipe batch. These
+ * contracts preserve the legacy selection and semantic payload while making
+ * the generic pattern decisions available through the canonical registry.
+ * Consumers still own domain data, policy, calculations, and persistence.
+ */
+export const OPERATIONAL_KANBAN_CONTRACT = {
+  id: "operational-kanban",
+  displayName: "Operational Kanban",
+  purpose:
+    "Organize a portfolio of operational objects by work stage while preserving owner, age, next action, and exception visibility.",
+  profiles: ["enterprise", "dashboard"],
+  components: [
+    "AppShell",
+    "Sidebar",
+    "PageHeader",
+    "Card",
+    "StatusChip",
+    "Button",
+  ],
+  optional: ["Avatar", "Alert", "DetailDrawer", "FilterToolbar"],
+  icons: ["table", "users", "clock", "warning", "view"],
+  operational: {
+    maturity: "mature",
+    useWhen: [
+      "people manage many work items waiting in human-action stages",
+      "stage balance, age, ownership, and WIP visibility drive daily coordination",
+    ],
+    avoidWhen: [
+      "the surface follows one object's ordered lifecycle",
+      "stable cross-record comparison is better served by a DataTable",
+    ],
+    anatomy: [
+      "Board",
+      "Stage heading and count",
+      "WIP or attention signal",
+      "Scan-first work cards",
+      "Contextual detail action",
+    ],
+    requiredSemantics: [
+      "Object identity",
+      "Owner",
+      "Age or due time",
+      "Stage",
+      "Next action",
+      "Exception when present",
+    ],
+    optionalSemantics: [
+      "WIP reference",
+      "Priority",
+      "Contextual detail drawer",
+    ],
+    responsive: {
+      desktop:
+        "Use bounded stage columns with scan-first cards and visible column headings.",
+      tablet:
+        "Allow horizontal board scrolling only when columns retain readable width.",
+      mobile:
+        "Prefer a stage-by-stage stacked sequence or explicit stage switcher over miniature columns.",
+    },
+    accessibility: [
+      "Expose every column with a heading and count.",
+      "Preserve a logical DOM order independent of visual placement.",
+      "Do not make drag-and-drop the only way to change or inspect work.",
+    ],
+    aiGuidance:
+      "Choose Operational Kanban for many work items awaiting people; do not use it for the lifecycle of one object.",
+    antiPatterns: [
+      "Oversized decorative cards",
+      "Mouse-only drag behavior",
+      "Using color alone for stage or exception state",
+    ],
+    relationships: ["Operational Kanban → Process Workspace"],
+    referencePath: "/operational-patterns",
+  },
+  references: ["AAPM Operational Reference"],
+} satisfies RecipeContract;
+
+export const EXCEPTION_QUEUE_CONTRACT = {
+  id: "exception-queue",
+  displayName: "Exception Queue",
+  purpose:
+    "Isolate work that requires attention and preserve its reason, severity, owner, age, and next action for fast operational triage.",
+  profiles: ["enterprise", "dashboard"],
+  components: [
+    "AppShell",
+    "Sidebar",
+    "PageHeader",
+    "FilterToolbar",
+    "DataTable",
+    "DetailDrawer",
+  ],
+  optional: ["Alert", "StatusChip", "Button", "KPICluster"],
+  icons: ["warning", "danger", "clock", "users", "filter", "view"],
+  operational: {
+    maturity: "mature",
+    useWhen: [
+      "the primary question is which work requires attention",
+      "operators need comparable exception reason, age, owner, and next action",
+    ],
+    avoidWhen: [
+      "normal and exceptional work should be browsed together",
+      "the task is a generic KPI dashboard",
+    ],
+    anatomy: [
+      "Queue context",
+      "Search or bounded filters",
+      "Exception reason and severity",
+      "Object identity",
+      "Owner and age",
+      "Next action",
+      "Contextual review",
+    ],
+    requiredSemantics: [
+      "Exception category",
+      "Plain-language reason",
+      "Object",
+      "Owner",
+      "Age or due time",
+      "Next action",
+    ],
+    optionalSemantics: [
+      "Bulk operation",
+      "Priority",
+      "Dependency",
+      "Contextual detail drawer",
+    ],
+    responsive: {
+      desktop: "Use a comparable table or dense list with the action visible.",
+      tablet:
+        "Retain columns that explain reason, owner, and next action; scroll or stack secondary context.",
+      mobile:
+        "Use stacked record anatomy or controlled table scrolling without hiding the exception reason.",
+    },
+    accessibility: [
+      "Give the queue and table an accessible name.",
+      "State severity and reason in text.",
+      "Make row inspection keyboard operable and restore focus after the drawer closes.",
+    ],
+    aiGuidance:
+      "Choose Exception Queue when attention work is the primary collection; start from the canonical Entity List scaffold and omit irrelevant KPI or bulk controls.",
+    antiPatterns: [
+      "Mixing healthy records with exceptions at equal visual weight",
+      "Rendering giant red cards for every issue",
+      "Removing owner or next action from the queue",
+    ],
+    relationships: [
+      "Control Tower → Exception Queue",
+      "Exception Queue → Process Workspace",
+      "Exception Queue → Decision Workspace",
+    ],
+    referencePath: "/operational-patterns",
+  },
+  references: ["AAPM Operational Reference", "Operations Tracker"],
+} satisfies RecipeContract;
+
+export const CONTROL_TOWER_CONTRACT = {
+  id: "control-tower",
+  displayName: "Control Tower",
+  purpose:
+    "Prioritize operational exceptions, accountable actions, current movement, and near-term sufficiency without turning the surface into a vanity KPI dashboard.",
+  profiles: ["enterprise", "dashboard"],
+  components: [
+    "AppShell",
+    "Sidebar",
+    "PageHeader",
+    "Alert",
+    "KPICluster",
+    "DataTable",
+  ],
+  optional: [
+    "MetricCard",
+    "Progress",
+    "Sparkline",
+    "ActivityFeed",
+    "DetailDrawer",
+  ],
+  icons: ["analytics", "warning", "clock", "delivery", "package", "view"],
+  operational: {
+    maturity: "mature",
+    useWhen: [
+      "the first question is what needs attention across several operational flows",
+      "owners need one place to see current movement, near-term risk, and next accountable actions",
+    ],
+    avoidWhen: [
+      "the task is a historical analytics report",
+      "a single object's lifecycle is the primary subject",
+    ],
+    anatomy: [
+      "Page header and operating context",
+      "Critical exception",
+      "Required human action",
+      "Current operational signals",
+      "Near-term forecast",
+      "Supporting metrics and trace",
+    ],
+    requiredSemantics: [
+      "Exception severity and plain-language reason",
+      "Current state",
+      "Owner",
+      "Next action and due time",
+      "Forecast or capacity context when decision-relevant",
+    ],
+    optionalSemantics: [
+      "Historical comparison",
+      "Trend visualization",
+      "Contextual detail drawer",
+    ],
+    responsive: {
+      desktop:
+        "Use an attention-first grid with signals and supporting context beside the queue.",
+      tablet:
+        "Reduce supporting metrics before compressing the exception and action columns.",
+      mobile:
+        "Stack critical exception, next action, current state, forecast, then supporting history.",
+    },
+    accessibility: [
+      "Expose one main heading and named regions for attention, forecast, and queue content.",
+      "State severity in text and iconography; never rely on color alone.",
+      "Keep exception actions keyboard reachable and restore focus after contextual inspection.",
+    ],
+    aiGuidance:
+      "Choose Control Tower when the user needs an operational overview whose hierarchy begins with exceptions and accountable actions, not generic totals.",
+    antiPatterns: [
+      "Leading with total orders, customers, or revenue when they do not change the next decision",
+      "Making every healthy signal bright green",
+      "Using a chart collection as a substitute for an exception queue",
+    ],
+    relationships: [
+      "Control Tower → Exception Queue",
+      "Control Tower → Process Workspace",
+      "Control Tower → Resource Forecast",
+    ],
+    referencePath: "/operational-patterns",
+  },
+  references: ["AAPM Operational Reference"],
+} satisfies RecipeContract;
+
 export const OPERATIONAL_PATTERN_CONTRACTS = {
   "readiness-review": READINESS_REVIEW_CONTRACT,
   "process-workspace": PROCESS_WORKSPACE_CONTRACT,
   "decision-workspace": DECISION_WORKSPACE_CONTRACT,
   "activity-audit": ACTIVITY_AUDIT_CONTRACT,
+  "operational-kanban": OPERATIONAL_KANBAN_CONTRACT,
+  "exception-queue": EXCEPTION_QUEUE_CONTRACT,
+  "control-tower": CONTROL_TOWER_CONTRACT,
 } as const;

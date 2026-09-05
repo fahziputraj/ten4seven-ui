@@ -534,6 +534,50 @@ test("readiness recipe exposes the evaluated-result boundary", async ({
   await expectNoDocumentOverflow(page);
 });
 
+const batchTwoRecipeProofs = [
+  {
+    id: "operational-kanban",
+    title: "Operational Kanban",
+    semantic: "Object identity",
+    guidance: /Choose Operational Kanban for many work items awaiting people/,
+  },
+  {
+    id: "exception-queue",
+    title: "Exception Queue",
+    semantic: "Exception category",
+    guidance:
+      /Choose Exception Queue when attention work is the primary collection/,
+  },
+  {
+    id: "control-tower",
+    title: "Control Tower",
+    semantic: "Exception severity and plain-language reason",
+    guidance:
+      /Choose Control Tower when the user needs an operational overview whose hierarchy begins with exceptions/,
+  },
+] as const;
+
+for (const recipe of batchTwoRecipeProofs) {
+  test(`${recipe.id} recipe exposes its canonical operational contract`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ height: 900, width: 1186 });
+    await page.goto(`/recipes/${recipe.id}`);
+
+    await expect(
+      page.getByRole("heading", { level: 1, name: recipe.title }),
+    ).toBeVisible();
+    await expect(
+      page.getByText(recipe.semantic, { exact: true }),
+    ).toBeVisible();
+    await expect(page.getByText(recipe.guidance)).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: "AAPM Operational Reference" }),
+    ).toHaveAttribute("href", "/operational-patterns");
+    await expectNoDocumentOverflow(page);
+  });
+}
+
 const visualViews = [
   { button: "Control tower", name: "control-tower" },
   { button: "Process workspace", name: "process-workspace" },
