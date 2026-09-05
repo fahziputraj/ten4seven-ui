@@ -10,6 +10,7 @@ export * from "./data-display";
 export * from "./feedback";
 export * from "./files";
 export * from "./forms";
+export * from "./hierarchy";
 export * from "./layout";
 export * from "./media";
 export * from "./motion";

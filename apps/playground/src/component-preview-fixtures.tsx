@@ -54,6 +54,7 @@ import {
   FormSection,
   IconButton,
   Image,
+  HierarchyPicker,
   Input,
   KeyValueList,
   KPICluster,
@@ -279,6 +280,7 @@ export function ComponentPreview({
     end: "2026-08-30",
   });
   const [rangeValue, setRangeValue] = useState({ max: 84, min: 22 });
+  const [scopeSelection, setScopeSelection] = useState(["cage-a14"]);
   const [files, setFiles] = useState<File[]>([]);
   const [filters, setFilters] = useState([
     { id: "status", label: "Status: active" },
@@ -523,6 +525,68 @@ export function ComponentPreview({
             { label: "Engineering", value: "engineering" },
           ]}
           values={tags}
+        />,
+      );
+    if (component.displayName === "Hierarchy Picker")
+      return frame(
+        <HierarchyPicker
+          defaultExpandedIds={[
+            "tenant-wisman",
+            "farm-north",
+            "location-pilubang",
+            "location-east",
+          ]}
+          description="Scope selection stays generic; the consumer owns permission meaning."
+          items={[
+            {
+              children: [
+                {
+                  children: [
+                    {
+                      children: [
+                        {
+                          description: "Production · active",
+                          id: "cage-a14",
+                          label: "Cage A-14",
+                        },
+                        {
+                          description: "Managed by another scope",
+                          disabled: true,
+                          id: "cage-a15",
+                          label: "Cage A-15",
+                        },
+                        {
+                          description: "Production · review",
+                          id: "cage-a16",
+                          label: "Cage A-16",
+                        },
+                      ],
+                      id: "location-pilubang",
+                      label: "Location Pilubang",
+                    },
+                    {
+                      children: [
+                        {
+                          id: "cage-b02",
+                          label: "Cage B-02",
+                        },
+                      ],
+                      id: "location-east",
+                      label: "Location East",
+                    },
+                  ],
+                  id: "farm-north",
+                  label: "Farm North",
+                },
+              ],
+              id: "tenant-wisman",
+              label: "Tenant Wisman",
+            },
+          ]}
+          label="Resource scope"
+          onSelectionChange={setScopeSelection}
+          searchable
+          selectedIds={scopeSelection}
         />,
       );
     if (component.displayName === "Checkbox")

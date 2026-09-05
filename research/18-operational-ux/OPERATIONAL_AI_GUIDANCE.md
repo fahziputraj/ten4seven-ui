@@ -77,6 +77,11 @@ audit guarantees.
   resource value. Supply the label and accessible description; payload
   generation, resource resolution, authorization, and camera/scanning remain
   consumer or native responsibilities.
+- Choose `HierarchyPicker` when nested tenant/Farm/location/cage or delegated
+  resource selection needs visible ancestry, partial selection, disabled
+  nodes, search, and keyboard tree navigation. Supply opaque IDs and labels;
+  permission meaning, scope persistence, and authorization remain consumer
+  responsibilities.
 - Use `DetailDrawer` for record inspection, `Drawer` for generic contextual
   work, `Modal` for a focused task, and `AlertDialog` for final irreversible
   confirmation.

@@ -1777,6 +1777,158 @@
     "composesWith": ["CheckboxGroup", "Combobox"],
     "usedByPatterns": []
   },
+  "HierarchyPicker": {
+    "status": "implemented",
+    "category": "form",
+    "purpose": "Select nested hierarchy nodes with expansion, mixed ancestor state, optional local search, and keyboard tree navigation while leaving resource meaning to the consumer.",
+    "useWhen": [
+      "delegated resource scope needs nested selection",
+      "tenant, Farm, location, or cage structures need visible ancestor context"
+    ],
+    "avoidWhen": [
+      "choices are flat and bounded",
+      "navigation is the only concern",
+      "the component would need to decide permission or authorization meaning"
+    ],
+    "recipes": [],
+    "importantProps": [
+      "items",
+      "selectedIds",
+      "onSelectionChange",
+      "expandedIds",
+      "searchable",
+      "label"
+    ],
+    "relatedComponents": [
+      "Select",
+      "Combobox",
+      "Checkbox",
+      "Collapsible",
+      "Input"
+    ],
+    "source": "packages/ui/src/hierarchy.tsx",
+    "displayName": "Hierarchy Picker",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "collapsed branches",
+      "expanded branches",
+      "none selected",
+      "partially selected",
+      "fully selected",
+      "disabled nodes",
+      "searching",
+      "empty results",
+      "disabled"
+    ],
+    "accessibility": [
+      "Uses tree and treeitem semantics with aria-level, aria-posinset, aria-setsize, aria-expanded, aria-selected, and linked helper text.",
+      "Roving focus supports Arrow, Home, End, Space, and Enter without adding a second keyboard model.",
+      "Partial selection has a visible mixed marker and an explicit screen-reader announcement."
+    ],
+    "responsive": [
+      "Keeps the tree inside a bounded scroll owner so long hierarchies do not expand the page indefinitely.",
+      "Rows wrap long labels and retain shared touch-target geometry on narrow Web layouts."
+    ],
+    "motion": [
+      "Uses shared transition variables for focus, selection, and expansion affordances.",
+      "Respects prefers-reduced-motion through the global motion contract."
+    ],
+    "tokens": [
+      "surface-raised",
+      "border-strong",
+      "selected",
+      "focus-ring",
+      "control-height",
+      "touch-target-min",
+      "control-radius",
+      "indicator-radius",
+      "muted-foreground"
+    ],
+    "api": [
+      {
+        "name": "items",
+        "type": "HierarchyItem[]",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Opaque-ID hierarchy nodes with labels, optional descriptions, disabled state, and children."
+      },
+      {
+        "name": "selectedIds",
+        "type": "string[]",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Controlled selected node IDs; selected branches expand to selectable descendants."
+      },
+      {
+        "name": "defaultSelectedIds",
+        "type": "string[]",
+        "defaultValue": "[]",
+        "required": false,
+        "description": "Initial selected node IDs for uncontrolled usage."
+      },
+      {
+        "name": "onSelectionChange",
+        "type": "(ids) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Callback with canonical selected IDs after a node is toggled."
+      },
+      {
+        "name": "expandedIds",
+        "type": "string[]",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Controlled expanded branch IDs."
+      },
+      {
+        "name": "defaultExpandedIds",
+        "type": "string[]",
+        "defaultValue": "root branches",
+        "required": false,
+        "description": "Initial expanded branch IDs for uncontrolled usage."
+      },
+      {
+        "name": "onExpandedIdsChange",
+        "type": "(ids) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Callback after a branch expansion state changes."
+      },
+      {
+        "name": "searchable",
+        "type": "boolean",
+        "defaultValue": "false",
+        "required": false,
+        "description": "Shows a local label filter that keeps matching ancestors visible."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "defaultValue": "Resource scope",
+        "required": false,
+        "description": "Visible and accessible name for the hierarchy."
+      },
+      {
+        "name": "description",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Helper copy linked to the tree."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "defaultValue": "false",
+        "required": false,
+        "description": "Retains the hierarchy while preventing selection and expansion changes."
+      }
+    ],
+    "example": "<HierarchyPicker items={items} selectedIds={selectedIds} onSelectionChange={setSelectedIds} searchable />",
+    "alternativeTo": ["Select", "Combobox", "Sidebar"],
+    "composesWith": ["Input", "Checkbox", "Collapsible"],
+    "usedByPatterns": []
+  },
   "Checkbox": {
     "status": "implemented",
     "category": "form",

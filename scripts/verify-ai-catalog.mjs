@@ -154,6 +154,7 @@ const requiredComponents = [
   "ChartPanel",
   "SectionNavigation",
   "QrCode",
+  "HierarchyPicker",
 ];
 const requiredBlocks = [
   "hero-split",

@@ -34,9 +34,9 @@
       "omitted": [],
       "conditionalComponentCount": 6,
       "retrieval": {
-        "actualRetrievalBytes": 7926,
+        "actualRetrievalBytes": 7927,
         "taskSpecificBytes": 5743,
-        "indexBytes": 2183,
+        "indexBytes": 2184,
         "recipeBytes": 2865,
         "componentContractBytes": 2878,
         "fullCatalogFallback": 0,
@@ -44,7 +44,7 @@
           {
             "kind": "index",
             "path": "generated/index.json",
-            "bytes": 2183
+            "bytes": 2184
           },
           {
             "kind": "recipe",
@@ -139,9 +139,9 @@
       ],
       "conditionalComponentCount": 1,
       "retrieval": {
-        "actualRetrievalBytes": 6303,
+        "actualRetrievalBytes": 6304,
         "taskSpecificBytes": 4120,
-        "indexBytes": 2183,
+        "indexBytes": 2184,
         "recipeBytes": 2865,
         "componentContractBytes": 1255,
         "fullCatalogFallback": 0,
@@ -149,7 +149,7 @@
           {
             "kind": "index",
             "path": "generated/index.json",
-            "bytes": 2183
+            "bytes": 2184
           },
           {
             "kind": "recipe",
@@ -214,9 +214,9 @@
       ],
       "conditionalComponentCount": 5,
       "retrieval": {
-        "actualRetrievalBytes": 7462,
+        "actualRetrievalBytes": 7463,
         "taskSpecificBytes": 5279,
-        "indexBytes": 2183,
+        "indexBytes": 2184,
         "recipeBytes": 2865,
         "componentContractBytes": 2414,
         "fullCatalogFallback": 0,
@@ -224,7 +224,7 @@
           {
             "kind": "index",
             "path": "generated/index.json",
-            "bytes": 2183
+            "bytes": 2184
           },
           {
             "kind": "recipe",
@@ -318,9 +318,9 @@
       ],
       "conditionalComponentCount": 7,
       "retrieval": {
-        "actualRetrievalBytes": 7885,
+        "actualRetrievalBytes": 7886,
         "taskSpecificBytes": 5702,
-        "indexBytes": 2183,
+        "indexBytes": 2184,
         "recipeBytes": 2877,
         "componentContractBytes": 2825,
         "fullCatalogFallback": 0,
@@ -328,7 +328,7 @@
           {
             "kind": "index",
             "path": "generated/index.json",
-            "bytes": 2183
+            "bytes": 2184
           },
           {
             "kind": "recipe",
@@ -431,9 +431,9 @@
       ],
       "conditionalComponentCount": 2,
       "retrieval": {
-        "actualRetrievalBytes": 6377,
+        "actualRetrievalBytes": 6378,
         "taskSpecificBytes": 4194,
-        "indexBytes": 2183,
+        "indexBytes": 2184,
         "recipeBytes": 2877,
         "componentContractBytes": 1317,
         "fullCatalogFallback": 0,
@@ -441,7 +441,7 @@
           {
             "kind": "index",
             "path": "generated/index.json",
-            "bytes": 2183
+            "bytes": 2184
           },
           {
             "kind": "recipe",
@@ -514,9 +514,9 @@
       ],
       "conditionalComponentCount": 6,
       "retrieval": {
-        "actualRetrievalBytes": 7600,
+        "actualRetrievalBytes": 7601,
         "taskSpecificBytes": 5417,
-        "indexBytes": 2183,
+        "indexBytes": 2184,
         "recipeBytes": 2877,
         "componentContractBytes": 2540,
         "fullCatalogFallback": 0,
@@ -524,7 +524,7 @@
           {
             "kind": "index",
             "path": "generated/index.json",
-            "bytes": 2183
+            "bytes": 2184
           },
           {
             "kind": "recipe",

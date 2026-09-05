@@ -425,6 +425,25 @@
       "error"
     ]
   },
+  "HierarchyPicker": {
+    "id": "HierarchyPicker",
+    "displayName": "Hierarchy Picker",
+    "status": "implemented",
+    "category": "form",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Select nested hierarchy nodes with expansion, mixed ancestor state, optional local search, and keyboard tree navigation while leaving resource meaning to the consumer.",
+    "source": "packages/ui/src/hierarchy.tsx",
+    "recipes": [],
+    "importantProps": [
+      "items",
+      "selectedIds",
+      "onSelectionChange",
+      "expandedIds",
+      "searchable",
+      "label"
+    ]
+  },
   "Checkbox": {
     "id": "Checkbox",
     "displayName": "Checkbox",

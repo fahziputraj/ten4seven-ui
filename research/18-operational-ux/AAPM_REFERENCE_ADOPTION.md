@@ -17,7 +17,10 @@ SectionNavigation anchors for the long detail surface. These records exist only
 to make state and workflow semantics inspectable.
 The component catalog also includes a `QrCode` Web display reference for the
 opaque AAPM Mobile cage deep-link value; its scanner and resource authorization
-remain outside ten4seven.
+remain outside ten4seven. It also includes a `HierarchyPicker` reference with
+Tenant → Farm → Location → Cage ancestry, a partially selected cage, a disabled
+sibling, local search, and keyboard-tree semantics; resource authorization
+remains a consumer concern.
 
 ## What the route is not
 

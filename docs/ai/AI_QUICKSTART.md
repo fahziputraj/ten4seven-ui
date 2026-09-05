@@ -106,7 +106,7 @@ signal by itself.
 Use the capability family—not the visual mood—to narrow selection:
 
 - actions: `Button`, `IconButton`, `ButtonGroup`, `ToggleButtonGroup`, `SplitButton`;
-- forms: `Field`, native labelled controls, `Combobox`, `MultiSelect`, date/time controls;
+- forms: `Field`, native labelled controls, `Combobox`, `MultiSelect`, `HierarchyPicker`, date/time controls;
 - shell/navigation: `AppShell`, `Sidebar`, `TopNavigation`, `NavigationMenu`, `PublicShell`, `Breadcrumb`, `Tabs`, `SectionNavigation`, `CommandMenu`;
 - data/workflow: `DataTable`, `RecordSummary`, `MetricCard`, `FilterToolbar`, `ApprovalPanel`, `RevisionDiff`;
 - overlays/feedback: `Drawer`, `DetailDrawer`, `Modal`, `AlertDialog`, `Popover`, `Toast`, `StateView`;
@@ -136,6 +136,13 @@ context needs more than the derived announcement. Copy and print actions are
 included by default; scanning and camera permissions remain native/mobile
 responsibilities. The component does not create payloads, resolve resources,
 or enforce authorization.
+
+For nested resource selection, use `HierarchyPicker` with opaque node IDs and
+consumer-supplied labels. It owns expansion, ancestor/descendant selection,
+partial-selection state, optional local search, and keyboard tree navigation;
+the consumer still owns permission meaning, authorization, scope persistence,
+and server-side validation. Use `Select` or `Combobox` for a flat choice and
+`Sidebar` when the hierarchy is navigation rather than selection.
 
 For KPI work, use `MetricCard` for one decision signal and `KPICluster` for a
 small related set. Compose `TrendIndicator`, `Sparkline`, and `Progress` through

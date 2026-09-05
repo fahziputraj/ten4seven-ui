@@ -99,9 +99,13 @@ smallest pattern that answers the user's operating question.
     value. Supply the resource label and accessible description; keep payload
     generation, resolution, authorization, camera access, and scanning native
     or product-owned.
-11. Use semantic `T7Icon` names. Do not introduce raw provider strings or a
+11. Use `HierarchyPicker` for nested resource selection with visible ancestry,
+    partial selection, disabled nodes, optional local search, and keyboard tree
+    navigation. Supply opaque IDs and labels; permission meaning, scope
+    persistence, and authorization remain consumer-owned.
+12. Use semantic `T7Icon` names. Do not introduce raw provider strings or a
     runtime icon CDN.
-12. Apply a theme recipe before local layout. Product-specific CSS may arrange
+13. Apply a theme recipe before local layout. Product-specific CSS may arrange
     canonical parts but must use semantic tokens.
 
 ## Consumer ownership boundary

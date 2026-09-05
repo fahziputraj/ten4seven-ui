@@ -45,12 +45,12 @@ const relationFields = ["alternativeTo", "composesWith"];
 
 assert.equal(
   canonical.length,
-  142,
+  143,
   "canonical component count changed; update evidence intentionally",
 );
 assert.equal(
   Object.keys(components).length,
-  148,
+  149,
   "component catalog count changed; update evidence intentionally",
 );
 assert.equal(
@@ -155,6 +155,12 @@ assert.equal(
 assert.equal(components.QrCode.status, "implemented");
 assert.equal(components.QrCode.category, "media");
 assert.equal(components.QrCode.source, "packages/ui/src/qr.tsx");
+assert.equal(components.HierarchyPicker.status, "implemented");
+assert.equal(components.HierarchyPicker.category, "form");
+assert.equal(
+  components.HierarchyPicker.source,
+  "packages/ui/src/hierarchy.tsx",
+);
 assert.equal(components.AppShell.category, "pattern");
 assert.equal(components.ApprovalPanel.category, "pattern");
 assert.equal(components.ActionFooter.category, "pattern");
