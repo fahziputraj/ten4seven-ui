@@ -15,6 +15,9 @@ owners, decision evidence, consumer-evaluated readiness examples, an
 Entity 360 RevisionDiff with explicit correction provenance, and page-local
 SectionNavigation anchors for the long detail surface. These records exist only
 to make state and workflow semantics inspectable.
+The component catalog also includes a `QrCode` Web display reference for the
+opaque AAPM Mobile cage deep-link value; its scanner and resource authorization
+remain outside ten4seven.
 
 ## What the route is not
 

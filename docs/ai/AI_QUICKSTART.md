@@ -110,7 +110,7 @@ Use the capability family—not the visual mood—to narrow selection:
 - shell/navigation: `AppShell`, `Sidebar`, `TopNavigation`, `NavigationMenu`, `PublicShell`, `Breadcrumb`, `Tabs`, `SectionNavigation`, `CommandMenu`;
 - data/workflow: `DataTable`, `RecordSummary`, `MetricCard`, `FilterToolbar`, `ApprovalPanel`, `RevisionDiff`;
 - overlays/feedback: `Drawer`, `DetailDrawer`, `Modal`, `AlertDialog`, `Popover`, `Toast`, `StateView`;
-- commerce/media: `ProductGrid`, `ProductCard`, `Price`, `Rating`, `QuantityControl`, `CartTrigger`, `CartLineItem`, `CartPanel`, `OrderSummary`, `MediaFrame`;
+- commerce/media: `ProductGrid`, `ProductCard`, `Price`, `Rating`, `QuantityControl`, `CartTrigger`, `CartLineItem`, `CartPanel`, `OrderSummary`, `MediaFrame`, `QrCode`;
 - charts/files: SVG chart components, `Progress`, `FileUpload`.
 - expressive blocks: `Hero`, `CtaBlock`, `FeatureShowcase`, `StatsSection`,
   `LogoCloud`, `Testimonials`, `PricingSection`, `ContentShowcase`,
@@ -129,6 +129,13 @@ For long forms or bounded workspaces that need page-local anchors, use
 use `activeId` when a consumer owns scroll-spy state; the component keeps
 native anchor semantics and does not own form validation, business state, or
 scroll observation. It collapses to a compact native menu on narrow layouts.
+
+For Web QR display, use `QrCode` with a consumer-owned opaque `value`, a
+human-readable `label`, and an explicit `description` when the resource
+context needs more than the derived announcement. Copy and print actions are
+included by default; scanning and camera permissions remain native/mobile
+responsibilities. The component does not create payloads, resolve resources,
+or enforce authorization.
 
 For KPI work, use `MetricCard` for one decision signal and `KPICluster` for a
 small related set. Compose `TrendIndicator`, `Sparkline`, and `Progress` through

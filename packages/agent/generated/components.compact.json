@@ -2617,6 +2617,27 @@
       "fallbackLabel"
     ]
   },
+  "QrCode": {
+    "id": "QrCode",
+    "displayName": "QR Code",
+    "status": "implemented",
+    "category": "media",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Render an accessible, print-friendly QR mark for an opaque consumer-owned value.",
+    "source": "packages/ui/src/qr.tsx",
+    "recipes": [],
+    "importantProps": [
+      "value",
+      "label",
+      "description",
+      "size",
+      "displayValue",
+      "copyable",
+      "printable",
+      "onCopy"
+    ]
+  },
   "ApprovalPanel": {
     "id": "ApprovalPanel",
     "displayName": "Approval Panel",

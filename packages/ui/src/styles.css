@@ -6312,6 +6312,91 @@
   color: hsl(var(--t7-muted-foreground-hsl));
   font-size: var(--t7-type-caption-size);
 }
+.t7-qr-code {
+  --t7-qr-mark-size: 220px;
+  display: grid;
+  width: min(100%, 360px);
+  min-width: 0;
+  margin: 0;
+  gap: var(--t7-control-gap);
+  border: 1px solid hsl(var(--t7-border-hsl));
+  border-radius: var(--t7-radius-panel);
+  background: hsl(var(--t7-surface-subtle-hsl));
+  padding: var(--t7-control-gap-lg);
+  color: hsl(var(--t7-foreground-hsl));
+}
+.t7-qr-code[data-size="sm"] {
+  --t7-qr-mark-size: 168px;
+}
+.t7-qr-code[data-size="lg"] {
+  --t7-qr-mark-size: 280px;
+}
+.t7-qr-code-caption {
+  display: grid;
+  min-width: 0;
+  gap: var(--t7-control-gap-sm);
+}
+.t7-qr-code-caption code {
+  overflow-wrap: anywhere;
+  color: hsl(var(--t7-muted-foreground-strong-hsl));
+  font-family: var(--t7-font-mono);
+  font-size: var(--t7-type-caption-size);
+  line-height: var(--t7-type-caption-line-height);
+}
+.t7-qr-code-mark {
+  display: block;
+  width: min(100%, var(--t7-qr-mark-size));
+  height: auto;
+  aspect-ratio: 1;
+  border: 1px solid hsl(var(--t7-border-subtle-hsl));
+  border-radius: var(--t7-radius-data);
+  background: hsl(var(--t7-surface-hsl));
+}
+.t7-qr-code-background {
+  fill: hsl(var(--t7-surface-hsl));
+}
+.t7-qr-code-modules {
+  fill: hsl(var(--t7-foreground-hsl));
+}
+.t7-qr-code-actions {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--t7-control-gap-sm);
+}
+.t7-qr-code-status {
+  color: hsl(var(--t7-muted-foreground-strong-hsl));
+  font-size: var(--t7-type-caption-size);
+  line-height: var(--t7-type-caption-line-height);
+}
+.t7-qr-code-error {
+  border: 1px solid hsl(var(--t7-danger-hsl) / 0.35);
+  border-radius: var(--t7-radius-data);
+  background: hsl(var(--t7-danger-hsl) / 0.08);
+  padding: var(--t7-control-gap);
+  color: hsl(var(--t7-danger-hsl));
+  font-size: var(--t7-type-caption-size);
+}
+@media print {
+  .t7-qr-code {
+    break-inside: avoid;
+    border-color: transparent;
+    box-shadow: none;
+  }
+  .t7-qr-code-actions {
+    display: none;
+  }
+}
+@media (max-width: 540px) {
+  .t7-qr-code {
+    width: 100%;
+    padding: var(--t7-control-gap);
+  }
+  .t7-qr-code-actions .t7-button {
+    flex: 1 1 140px;
+  }
+}
 .t7-file-upload {
   min-width: 0;
 }

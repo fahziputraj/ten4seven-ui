@@ -45,12 +45,12 @@ const relationFields = ["alternativeTo", "composesWith"];
 
 assert.equal(
   canonical.length,
-  141,
+  142,
   "canonical component count changed; update evidence intentionally",
 );
 assert.equal(
   Object.keys(components).length,
-  147,
+  148,
   "component catalog count changed; update evidence intentionally",
 );
 assert.equal(
@@ -152,6 +152,9 @@ assert.equal(
   components.SectionNavigation.source,
   "packages/ui/src/navigation.tsx",
 );
+assert.equal(components.QrCode.status, "implemented");
+assert.equal(components.QrCode.category, "media");
+assert.equal(components.QrCode.source, "packages/ui/src/qr.tsx");
 assert.equal(components.AppShell.category, "pattern");
 assert.equal(components.ApprovalPanel.category, "pattern");
 assert.equal(components.ActionFooter.category, "pattern");

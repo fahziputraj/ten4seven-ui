@@ -95,9 +95,13 @@ smallest pattern that answers the user's operating question.
    consumer owns scroll-spy state, and keep validation, business state, and
    scroll observation outside the component. Its narrow layout is a compact
    native menu, not a second navigation system.
-10. Use semantic `T7Icon` names. Do not introduce raw provider strings or a
+10. Use `QrCode` for Web display, copy, and print of an opaque consumer-owned
+    value. Supply the resource label and accessible description; keep payload
+    generation, resolution, authorization, camera access, and scanning native
+    or product-owned.
+11. Use semantic `T7Icon` names. Do not introduce raw provider strings or a
     runtime icon CDN.
-11. Apply a theme recipe before local layout. Product-specific CSS may arrange
+12. Apply a theme recipe before local layout. Product-specific CSS may arrange
     canonical parts but must use semantic tokens.
 
 ## Consumer ownership boundary
@@ -114,6 +118,9 @@ Ten4Seven owns:
 - page-local anchor rendering and responsive disclosure through
   `SectionNavigation`; the consumer owns section IDs, scroll observation, and
   form/workflow state.
+- QR matrix rendering plus copy/print presentation through `QrCode`; the
+  consumer owns payload meaning, resource resolution, authorization, and
+  scanner/native camera behavior.
 
 The consumer owns:
 
@@ -218,6 +225,9 @@ six bounded workspace views:
 - Entity 360: a RevisionDiff reference with six synthetic field changes and
   provenance metadata, plus a SectionNavigation reference with five stable
   page-local anchors; both demonstrate presentation-only context.
+- Component Lab: a `QrCode` reference with an AAPM Mobile deep-link fixture,
+  accessible SVG description, copy status, print action, and narrow-layout
+  proof; the deep-link meaning remains a consumer concern.
 
 The fixture does not create an AAPM ERP, connect APIs, implement policies, or
 embed AAPM colors into generic primitives. A future AAPM product should apply

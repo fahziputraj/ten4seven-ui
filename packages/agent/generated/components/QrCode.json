@@ -1,0 +1,1 @@
+{"id":"QrCode","displayName":"QR Code","status":"implemented","category":"media","purpose":"Render an accessible, print-friendly QR mark for an opaque consumer-owned value.","source":"packages/ui/src/qr.tsx","importantProps":["value","label","description","size","displayValue","copyable","printable","onCopy"]}

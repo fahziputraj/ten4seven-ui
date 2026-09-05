@@ -10166,6 +10166,126 @@
     "composesWith": ["MediaFrame", "AspectRatio"],
     "usedByPatterns": []
   },
+  "QrCode": {
+    "status": "implemented",
+    "category": "media",
+    "purpose": "Render an accessible, print-friendly QR mark for an opaque consumer-owned value.",
+    "useWhen": [
+      "a Web surface needs to display or print a resource deep link",
+      "the encoded value needs a human-readable label and copy affordance"
+    ],
+    "avoidWhen": [
+      "camera access or QR scanning is required; keep that native",
+      "the component would decide payload, permission, or resource authorization"
+    ],
+    "recipes": [],
+    "importantProps": [
+      "value",
+      "label",
+      "description",
+      "size",
+      "displayValue",
+      "copyable",
+      "printable",
+      "onCopy"
+    ],
+    "relatedComponents": ["Image", "MediaFrame", "Button"],
+    "source": "packages/ui/src/qr.tsx",
+    "displayName": "QR Code",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "default",
+      "copied",
+      "copy unavailable",
+      "printing",
+      "value too long or invalid"
+    ],
+    "accessibility": [
+      "Expose an SVG image name and description, keep the encoded value visible for human verification, and provide focused native actions.",
+      "Keep copy and print status announcements polite; scanning and camera permissions remain outside the Web component."
+    ],
+    "responsive": [
+      "Scale the mark within a bounded surface and let opaque values wrap without horizontal overflow.",
+      "Wrap copy and print actions at narrow widths while retaining shared touch-target geometry."
+    ],
+    "motion": [
+      "Uses canonical Button transitions for copy and print actions.",
+      "Does not animate the QR mark and respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-subtle",
+      "foreground",
+      "muted-foreground",
+      "border",
+      "radius-panel",
+      "control-gap",
+      "focus-ring"
+    ],
+    "api": [
+      {
+        "name": "value",
+        "type": "string",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Opaque value encoded into the QR mark; payload meaning stays with the consumer."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "defaultValue": "QR code",
+        "required": false,
+        "description": "Human-readable resource label shown beside the mark and used as its accessible title."
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "defaultValue": "derived from label and value",
+        "required": false,
+        "description": "Accessible description for the encoded resource."
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\" | \"lg\"",
+        "defaultValue": "md",
+        "required": false,
+        "description": "Responsive mark size preset."
+      },
+      {
+        "name": "displayValue",
+        "type": "boolean",
+        "defaultValue": "true",
+        "required": false,
+        "description": "Show the encoded value below the mark for human verification."
+      },
+      {
+        "name": "copyable",
+        "type": "boolean",
+        "defaultValue": "true",
+        "required": false,
+        "description": "Show the canonical copy-value action."
+      },
+      {
+        "name": "printable",
+        "type": "boolean",
+        "defaultValue": "true",
+        "required": false,
+        "description": "Show the browser print action for the QR surface."
+      },
+      {
+        "name": "onCopy",
+        "type": "(copied: boolean) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Optional notification after the copy attempt completes."
+      }
+    ],
+    "example": "<QrCode label=\"Cage production entry\" value=\"aapmmobile://kandang/KDG11F378DFCFC/produksi\" />",
+    "alternativeTo": [],
+    "composesWith": ["MediaFrame", "Button"],
+    "usedByPatterns": []
+  },
   "ApprovalPanel": {
     "status": "implemented",
     "category": "pattern",

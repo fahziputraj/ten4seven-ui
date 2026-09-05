@@ -73,6 +73,10 @@ audit guarantees.
   consumer-controlled `activeId`; the component provides native anchor and
   responsive disclosure semantics but does not observe scrolling or own form
   validation/business state.
+- Choose `QrCode` when a Web surface must display, copy, or print an opaque
+  resource value. Supply the label and accessible description; payload
+  generation, resource resolution, authorization, and camera/scanning remain
+  consumer or native responsibilities.
 - Use `DetailDrawer` for record inspection, `Drawer` for generic contextual
   work, `Modal` for a focused task, and `AlertDialog` for final irreversible
   confirmation.

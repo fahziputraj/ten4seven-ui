@@ -79,6 +79,7 @@ import {
   ProductMeta,
   ProductGrid,
   Progress,
+  QrCode,
   QuantityControl,
   Radio,
   RadioGroup,
@@ -1640,6 +1641,14 @@ export function ComponentPreview({
           alt="Editorial sample"
           fallbackLabel="Image unavailable"
           src="/publishing-covers/manajemen-strategis.svg"
+        />,
+      );
+    if (component.displayName === "QR Code")
+      return frame(
+        <QrCode
+          description="Scan to open the assigned cage production entry in AAPM Mobile."
+          label="Cage production entry"
+          value="aapmmobile://kandang/KDG11F378DFCFC/produksi"
         />,
       );
     return frame(

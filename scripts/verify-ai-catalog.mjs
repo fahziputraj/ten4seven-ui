@@ -153,6 +153,7 @@ const requiredComponents = [
   "PublicShell",
   "ChartPanel",
   "SectionNavigation",
+  "QrCode",
 ];
 const requiredBlocks = [
   "hero-split",
