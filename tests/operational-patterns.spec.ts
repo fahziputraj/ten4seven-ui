@@ -626,6 +626,29 @@ for (const recipe of batchThreeRecipeProofs) {
   });
 }
 
+test("entity-360 recipe exposes its canonical relationship-context contract", async ({
+  page,
+}) => {
+  await page.setViewportSize({ height: 900, width: 1186 });
+  await page.goto("/recipes/entity-360");
+
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Entity 360" }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("Entity identity and relationship type", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      /Choose Entity 360 for shared customer, supplier, or farmer context/,
+    ),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "AAPM Operational Reference" }),
+  ).toHaveAttribute("href", "/operational-patterns");
+  await expectNoDocumentOverflow(page);
+});
+
 const visualViews = [
   { button: "Control tower", name: "control-tower" },
   { button: "Process workspace", name: "process-workspace" },

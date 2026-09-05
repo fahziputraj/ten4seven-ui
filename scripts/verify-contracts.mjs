@@ -126,6 +126,7 @@ const operationalRecipeNames = [
   "route-planning",
   "receiving-console",
   "resource-forecast",
+  "entity-360",
 ];
 const operationalParity = (name, recipe) => ({
   id: name,

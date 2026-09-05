@@ -1354,7 +1354,7 @@
       "AAPM Operational Reference",
       "Operations Tracker"
     ],
-    "source": "legacy-catalog-adapter"
+    "source": "canonical-contract"
   },
   "decision-workspace": {
     "id": "decision-workspace",

@@ -932,6 +932,88 @@ export const RESOURCE_FORECAST_CONTRACT = {
   references: ["AAPM Operational Reference"],
 } satisfies RecipeContract;
 
+/**
+ * Typed canonical source for the fourth operational recipe batch. Entity 360
+ * is a reusable relationship-context composition; the consumer supplies
+ * entity identity, scoring, permissions, and all business truth.
+ */
+export const ENTITY_360_CONTRACT = {
+  id: "entity-360",
+  displayName: "Entity 360",
+  purpose:
+    "Compose one reusable business-partner workspace for customer, supplier, or farmer context without embedding domain scoring logic.",
+  profiles: ["enterprise", "dashboard"],
+  components: [
+    "AppShell",
+    "Sidebar",
+    "PageHeader",
+    "RecordSummary",
+    "KeyValueList",
+    "ActivityFeed",
+  ],
+  optional: ["DataTable", "StatusChip", "DetailDrawer", "Button", "Avatar"],
+  icons: ["users", "user", "timeline", "payment", "warning", "view"],
+  operational: {
+    maturity: "mature",
+    useWhen: [
+      "users need one relationship view across current work, signals, activity, and history",
+      "customer, supplier, or farmer data shares the same structural anatomy",
+    ],
+    avoidWhen: [
+      "the task is only a small contact card",
+      "the consumer expects Ten4Seven to calculate business reliability or scoring",
+    ],
+    anatomy: [
+      "Entity header",
+      "Relationship or reliability summary",
+      "Current work",
+      "Signals and intelligence",
+      "Activity timeline",
+      "History",
+    ],
+    requiredSemantics: [
+      "Entity identity and relationship type",
+      "Current work",
+      "Current owner or relationship contact",
+      "Relevant signal",
+      "Recent activity",
+      "Historical context",
+    ],
+    optionalSemantics: [
+      "Payment behavior",
+      "Price history",
+      "QC acceptance",
+      "Field visit",
+      "Decision workspace",
+    ],
+    responsive: {
+      desktop:
+        "Use summary, current work, and activity or detail in a clear multi-region composition.",
+      tablet:
+        "Keep the entity summary first and collapse secondary history below current work.",
+      mobile: "Order summary, current work, signals, activity, then history.",
+    },
+    accessibility: [
+      "Use one entity heading and named sections for current work, signals, activity, and history.",
+      "Keep tables and timelines in logical reading order.",
+      "Provide text for relationship health and exceptions.",
+    ],
+    aiGuidance:
+      "Choose Entity 360 for shared customer, supplier, or farmer context; keep scoring and business rules consumer-owned.",
+    antiPatterns: [
+      "Creating structurally unrelated customer, supplier, and farmer shells",
+      "Embedding opaque business scores in the design system",
+      "Replacing current work with a profile-only card",
+    ],
+    relationships: [
+      "Entity 360 → Decision Workspace",
+      "Entity 360 → Activity & Audit Stream",
+    ],
+    referencePath: "/operational-patterns",
+  },
+  references: ["AAPM Operational Reference", "Operations Tracker"],
+} satisfies RecipeContract;
+
 export const OPERATIONAL_PATTERN_CONTRACTS = {
   "readiness-review": READINESS_REVIEW_CONTRACT,
   "process-workspace": PROCESS_WORKSPACE_CONTRACT,
@@ -944,4 +1026,5 @@ export const OPERATIONAL_PATTERN_CONTRACTS = {
   "route-planning": ROUTE_PLANNING_CONTRACT,
   "receiving-console": RECEIVING_CONSOLE_CONTRACT,
   "resource-forecast": RESOURCE_FORECAST_CONTRACT,
+  "entity-360": ENTITY_360_CONTRACT,
 } as const;
