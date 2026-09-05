@@ -311,6 +311,9 @@ export interface RecipeIntent {
 export type RecipeState =
   | "loading"
   | "ready"
+  | "blocked"
+  | "incomplete"
+  | "unknown"
   | "empty"
   | "search-empty"
   | "filter-empty"
@@ -335,6 +338,16 @@ export const ENTITY_LIST_STATES = [
   "bulk-partial-failure",
   "bulk-success",
   "detail-open",
+] as const satisfies readonly RecipeState[];
+
+export const READINESS_REVIEW_STATES = [
+  "loading",
+  "ready",
+  "blocked",
+  "incomplete",
+  "unknown",
+  "stale",
+  "api-error",
 ] as const satisfies readonly RecipeState[];
 
 export type ResponsiveMode =

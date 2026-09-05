@@ -31,6 +31,7 @@ Arrival, unloading, QC, receipt?             → Receiving Console
 Ordered stops and ETA sequence?              → Route Planning
 Shared partner/customer/farmer context?      → Entity 360
 Evidence-led judgment and rationale?         → Decision Workspace
+Can this object proceed, and why blocked?     → Readiness Review
 Exceptions are the primary work collection? → Exception Queue
 Why/how did state change?                    → Activity & Audit Stream
 How long will a resource remain sufficient? → Resource Forecast
@@ -71,7 +72,7 @@ audit guarantees.
 
 ## CLI evidence
 
-The catalog verifier now checks 28 recipes, including all eleven operational
+The catalog verifier now checks 29 recipes, including all twelve operational
 recipes at maturity `mature`, complete use/avoid/anatomy/semantic/responsive/
 accessibility/AI/anti-pattern/relationship fields, and the bounded reference
 path.
@@ -83,14 +84,16 @@ pnpm t7ui find "control tower exception next action"
 pnpm t7ui find "receiving arrival receipt difference decision evidence"
 pnpm t7ui find "days of cover incoming supply"
 pnpm t7ui recipe inspect decision-workspace
+pnpm t7ui find "can this object proceed why blocked"
+pnpm t7ui recipe inspect readiness-review
 ```
 
 **OBSERVED:** the natural receiving intent resolves `receiving-console` and
 returns semantic icons including `warehouse`, `stockIn`, `package`, `warning`,
 and `approve`. The existing `inventory list` query still resolves
 `entity-list` and prioritizes inventory-domain icons. `pnpm test:ai` reports
-28 recipes, 145 components, 12 expressive blocks, 98 semantic icons, and a
-cold-start proof of 11 tasks / 12 contract reads / 0 donor reads.
+29 recipes, 145 components, 12 expressive blocks, 98 semantic icons, and a
+cold-start proof of 15 tasks / 12 contract reads / 0 donor reads.
 
 ## Output boundary
 

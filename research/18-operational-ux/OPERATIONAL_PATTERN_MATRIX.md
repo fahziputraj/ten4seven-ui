@@ -1,6 +1,6 @@
 # Operational Pattern Matrix
 
-Status: **authoritative selection summary for the eleven mature operational recipes**
+Status: **authoritative selection summary for the twelve mature operational recipes**
 
 Use this matrix after `generated/agent-index.json` and the compact recipe
 projection. Use `pnpm t7ui recipe inspect <id>` when the pattern is selected and
@@ -16,6 +16,7 @@ the full anatomy is needed.
 | `route-planning`     | stop sequence and movement order are operationally meaningful                   | a map is decorative or route order is irrelevant                                | route identity, ordered stops, current/next/future, ETA/status, exception                           | Load Planning + Process Workspace                       | Load & route                               |
 | `entity-360`         | users need shared customer/supplier/farmer context before acting                | a single transaction or simple profile is sufficient                            | identity, relationship owner, health/status, current work, signals, history                         | Decision Workspace + Activity & Audit Stream            | Entity 360                                 |
 | `decision-workspace` | judgment must be made from evidence with rationale and ownership                | the action is already understood and needs only final irreversible confirmation | decision object, evidence, options, reason, owner, consequence/outcome, trace                       | Process Workspace + Activity & Audit Stream             | Receiving / Entity 360                     |
+| `readiness-review`   | a consumer has already evaluated whether an object can proceed                  | a human must decide, or the UI would calculate eligibility or permissions       | target/subject, result, ordered blockers, resolution hints, freshness, next context                 | Decision Workspace + Activity & Audit Stream + Process  | Readiness review                           |
 | `exception-queue`    | exception handling is the primary work collection                               | users are browsing ordinary records                                             | exception identity/severity, affected object, owner, age/SLA, next action, detail                   | Control Tower + Process Workspace + Decision Workspace  | Control tower                              |
 | `activity-audit`     | chronology and evidence must explain how state changed                          | a decorative recent-activity list is enough                                     | actor/source, action, object, timestamp, resulting state, evidence/reason when relevant             | Process Workspace + Decision Workspace                  | Process workspace / Receiving / Entity 360 |
 | `resource-forecast`  | sufficiency over time matters and values are already calculated by the consumer | the design system would need to invent forecasting logic                        | resource, current amount, consumption rate, incoming supply, threshold, time-to-empty, owner/action | Control Tower + Load Planning                           | Control tower                              |
@@ -33,6 +34,10 @@ Receiving Console ────────────────────�
 Entity 360 ─────────────────────────────────────────┘
                                                     │
                                                     └──→ Activity & Audit Stream
+
+Readiness Review ──→ Decision Workspace (when a consequential human disposition is needed)
+        ├──────────→ Process Workspace (next checkpoint context)
+        └──────────→ Activity & Audit Stream (prior evaluation trace when supplied)
 ```
 
 Arrows express a useful drill-in/composition direction, not a mandatory route

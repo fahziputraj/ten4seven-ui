@@ -11,8 +11,8 @@ without creating Farm application code.
 
 Its fixture language includes Warehouse 02, an order, vehicle capacity,
 delivery stops, receiving reconciliation, a supplier relationship, accountable
-owners, and decision evidence. These records exist only to make state and
-workflow semantics inspectable.
+owners, decision evidence, and consumer-evaluated readiness examples. These
+records exist only to make state and workflow semantics inspectable.
 
 ## What the route is not
 
@@ -48,9 +48,9 @@ operational recipe catalog. No such hardcoded mapping was added in this work.
 
 ## Farm integration decision
 
-**INFERRED:** the eleven mature operational recipes are sufficient design-system
-building blocks for Farm discovery and architecture work. Farm should select a
-small subset per route and retain the shared semantic model:
+**INFERRED:** the twelve mature operational recipes are sufficient
+design-system building blocks for Farm discovery and architecture work. Farm
+should select a small subset per route and retain the shared semantic model:
 
 ```text
 OBJECT + STATE + MOVEMENT + EXCEPTION + OWNER + NEXT ACTION + TRACE

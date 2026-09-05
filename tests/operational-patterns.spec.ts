@@ -4,6 +4,7 @@ import axe from "axe-core";
 const viewButtons = [
   "Control tower",
   "Process workspace",
+  "Readiness review",
   "Load & route",
   "Receiving",
   "Entity 360",
@@ -51,7 +52,7 @@ async function expectNoDocumentOverflow(page: Page) {
   expect(overflow).toBeLessThanOrEqual(1);
 }
 
-test("operational reference exposes all eleven mature pattern proofs", async ({
+test("operational reference exposes all mature pattern and readiness proofs", async ({
   page,
 }) => {
   await page.setViewportSize({ height: 900, width: 1440 });
@@ -88,6 +89,22 @@ test("operational reference exposes all eleven mature pattern proofs", async ({
   ).toBeVisible();
   await expect(
     page.getByText("Activity and audit stream", { exact: true }),
+  ).toBeVisible();
+
+  await selectOperationalView(page, "Readiness review");
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Can this object proceed?" }),
+  ).toBeVisible();
+  for (const state of ["ready", "blocked", "incomplete"]) {
+    await expect(
+      page.locator(`[data-readiness-state="${state}"]`),
+    ).toBeVisible();
+  }
+  await expect(
+    page.getByRole("list", { name: "Blocked blockers" }),
+  ).toContainText("PAYMENT-TERM");
+  await expect(
+    page.getByText("Readiness is not a human decision", { exact: true }),
   ).toBeVisible();
 
   await selectOperationalView(page, "Load & route");
@@ -217,7 +234,12 @@ test("operational proof has no serious or critical axe violations in key states"
   await openOperationalReference(page);
   await page.addScriptTag({ content: axe.source });
 
-  for (const view of ["Control tower", "Receiving", "Entity 360"] as const) {
+  for (const view of [
+    "Control tower",
+    "Readiness review",
+    "Receiving",
+    "Entity 360",
+  ] as const) {
     await selectOperationalView(page, view);
     const result = await page.evaluate(async () =>
       // @ts-expect-error injected by axe-core for this isolated audit
@@ -309,9 +331,35 @@ test("receiving recipe exposes bounded selection guidance and its reference", as
   await expectNoDocumentOverflow(page);
 });
 
+test("readiness recipe exposes the evaluated-result boundary", async ({
+  page,
+}) => {
+  await page.setViewportSize({ height: 900, width: 1186 });
+  await page.goto("/recipes/readiness-review");
+
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Readiness Review" }),
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      "Explicit consumer-supplied result such as READY, BLOCKED, INCOMPLETE, or UNKNOWN",
+      { exact: true },
+    ),
+  ).toBeVisible();
+  await expect(
+    page.getByText(/choose Decision Workspace when a human must decide/),
+  ).toBeVisible();
+  const reference = page.getByRole("link", {
+    name: "AAPM Operational Reference",
+  });
+  await expect(reference).toHaveAttribute("href", "/operational-patterns");
+  await expectNoDocumentOverflow(page);
+});
+
 const visualViews = [
   { button: "Control tower", name: "control-tower" },
   { button: "Process workspace", name: "process-workspace" },
+  { button: "Readiness review", name: "readiness-review" },
   { button: "Load & route", name: "load-route" },
   { button: "Receiving", name: "receiving" },
   { button: "Entity 360", name: "entity-360" },
@@ -336,6 +384,7 @@ for (const view of visualViews) {
 
 for (const view of [
   { button: "Control tower", name: "control-tower" },
+  { button: "Readiness review", name: "readiness-review" },
   { button: "Load & route", name: "load-route" },
   { button: "Receiving", name: "receiving" },
 ] as const) {

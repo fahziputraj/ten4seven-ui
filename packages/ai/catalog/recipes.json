@@ -912,6 +912,83 @@
       "referencePath": "/operational-patterns"
     }
   },
+  "readiness-review": {
+    "purpose": "Explain a consumer-evaluated readiness result, factual blockers, resolution hints, freshness context, and next action without owning business rules.",
+    "profiles": ["enterprise", "dashboard"],
+    "components": [
+      "AppShell",
+      "PageHeader",
+      "RecordSummary",
+      "StatusChip",
+      "Alert",
+      "KeyValueList"
+    ],
+    "optional": ["Sidebar", "Button", "DetailDrawer", "ActivityFeed"],
+    "icons": ["check", "warning", "danger", "clock", "view"],
+    "references": ["AAPM Operational Reference"],
+    "displayName": "Readiness Review",
+    "operational": {
+      "maturity": "mature",
+      "useWhen": [
+        "rules have already evaluated whether an object can proceed to a target action",
+        "the primary user question is why the result is ready, blocked, incomplete, or unknown"
+      ],
+      "avoidWhen": [
+        "a human must choose a consequential disposition from evidence; use Decision Workspace",
+        "a compact status label is sufficient; use StatusChip or existing feedback primitives",
+        "the UI would need to calculate eligibility, thresholds, permissions, or reevaluation"
+      ],
+      "anatomy": [
+        "Readiness subject and target action",
+        "Consumer-supplied current result",
+        "Evaluation and freshness context",
+        "Ordered blocker list",
+        "Optional satisfied conditions",
+        "Resolution hint or next required evidence",
+        "Contextual next action or source"
+      ],
+      "requiredSemantics": [
+        "Target action or readiness subject",
+        "Explicit consumer-supplied result such as READY, BLOCKED, INCOMPLETE, or UNKNOWN",
+        "Factual blocker reason when the result is BLOCKED or INCOMPLETE",
+        "Resolution hint or next required condition when supplied",
+        "Evaluation timestamp, version, or freshness context when materially relevant",
+        "Meaningful text independent of color or icon",
+        "Next contextual action or source when available"
+      ],
+      "optionalSemantics": [
+        "Satisfied-condition summary",
+        "Blocker category or severity supplied by the consumer",
+        "Responsible owner",
+        "Related evidence or source action",
+        "Re-evaluation context"
+      ],
+      "responsive": {
+        "desktop": "Keep target context and result visible beside ordered blockers and next action when width allows.",
+        "tablet": "Stack target and result before blockers while keeping each resolution hint adjacent to its reason.",
+        "mobile": "Use one vertical reading order: subject and result, freshness, blockers, satisfied conditions, next action or source."
+      },
+      "accessibility": [
+        "State the readiness result in text and supplement it with a semantic StatusChip or icon; never rely on color alone.",
+        "Render multiple blockers in consumer-supplied order with each reason and resolution hint readable as one item.",
+        "Associate target action and evaluation context labels with their values.",
+        "Make contextual next actions keyboard reachable and do not auto-trigger reevaluation."
+      ],
+      "aiGuidance": "Choose Readiness Review when rules already evaluated whether an object can proceed and the user needs factual blockers or resolution; choose Decision Workspace when a human must decide from evidence.",
+      "antiPatterns": [
+        "Calculating eligibility, thresholds, freshness, or permissions in Ten4Seven",
+        "Using Decision Workspace to present a result that needs no human disposition",
+        "Communicating READY, BLOCKED, INCOMPLETE, or UNKNOWN only through color or icon",
+        "Automatically mutating or reevaluating state from a resolution hint"
+      ],
+      "relationships": [
+        "Readiness Review → Decision Workspace",
+        "Readiness Review → Activity & Audit Stream",
+        "Readiness Review → Process Workspace"
+      ],
+      "referencePath": "/operational-patterns"
+    }
+  },
   "exception-queue": {
     "purpose": "Isolate work that requires attention and preserve its reason, severity, owner, age, and next action for fast operational triage.",
     "profiles": ["enterprise", "dashboard"],

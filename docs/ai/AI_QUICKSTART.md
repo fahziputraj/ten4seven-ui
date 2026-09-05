@@ -75,9 +75,9 @@ pnpm t7ui recipe inspect control-tower
 
 Read [OPERATIONAL_PATTERNS.md](OPERATIONAL_PATTERNS.md) before composing a
 Control Tower, Process Workspace, Operational Kanban, Load Planner, Receiving
-Console, Route Planner, Entity 360, Decision Workspace, Exception Queue,
-Activity & Audit Stream, or Resource Forecast. These are recipes built from
-canonical components, not product-specific mega-components.
+Console, Route Planner, Entity 360, Decision Workspace, Readiness Review,
+Exception Queue, Activity & Audit Stream, or Resource Forecast. These are
+recipes built from canonical components, not product-specific mega-components.
 
 Start from the closest recipe. Do not invent a new information architecture before checking the catalog.
 

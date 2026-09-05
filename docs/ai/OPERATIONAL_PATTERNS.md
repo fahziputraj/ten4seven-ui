@@ -22,19 +22,20 @@ replace state, ownership, or next action with decorative metrics or color.
 
 ## Selection matrix
 
-| Pattern                 | Choose when the primary question is                                  | Required proof                                                                                                | Do not use as                                     |
-| ----------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| Control Tower           | What needs attention now across several flows?                       | prioritized exception, current state, owner, next action, due time, relevant forecast/capacity                | a vanity KPI dashboard or historical report       |
-| Process Workspace       | Where is one object now and what moves it forward?                   | object identity, lifecycle, current state, owner, next action, history                                        | a multi-object board or generic form wizard       |
-| Operational Kanban      | Which of many work objects occupy each bounded state?                | explicit columns, object identity, owner or next action, exception visibility                                 | an unbounded sticky-note canvas                   |
-| Load Planner            | Can assigned objects fit a bounded resource?                         | capacity, allocated, remaining, utilization, assignment/manifest                                              | a routing engine or optimization algorithm        |
-| Receiving Console       | What physically arrived, what was counted, and what can be received? | ARRIVED distinct from RECEIVED, lifecycle, ordered/delivered/physical/accepted quantities, variance, decision | a one-click receipt confirmation                  |
-| Route Planner           | What is the ordered movement and which stop is current/next?         | ordered stops, current and next stop, ETA, assigned quantity/resource                                         | a map renderer or route optimization engine       |
-| Entity 360              | What is the complete actionable context for one business entity?     | identity, relationship status, current work, exceptions, decisions, owner, trace                              | an unrelated dashboard collection                 |
-| Decision Workspace      | What evidence supports the bounded decision?                         | evidence, options, selected outcome, reason, owner, resulting next action, trace                              | a generic confirmation dialog                     |
-| Exception Queue         | Which deviations require accountable action first?                   | affected object, severity/reason, age, owner, next action, due/escalation                                     | a generic inbox without consequence               |
-| Activity & Audit Stream | Who did what, when, to which object, and from what source?           | ordered events, actor/system, timestamp, action, object, source/evidence                                      | prose-only activity or an editable log            |
-| Resource Forecast       | How long will a resource remain sufficient?                          | current quantity, consumption basis, days of cover/time-to-empty, incoming quantity and ETA                   | a forecasting implementation inside the UI system |
+| Pattern                 | Choose when the primary question is                                  | Required proof                                                                                                | Do not use as                                          |
+| ----------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| Control Tower           | What needs attention now across several flows?                       | prioritized exception, current state, owner, next action, due time, relevant forecast/capacity                | a vanity KPI dashboard or historical report            |
+| Process Workspace       | Where is one object now and what moves it forward?                   | object identity, lifecycle, current state, owner, next action, history                                        | a multi-object board or generic form wizard            |
+| Operational Kanban      | Which of many work objects occupy each bounded state?                | explicit columns, object identity, owner or next action, exception visibility                                 | an unbounded sticky-note canvas                        |
+| Load Planner            | Can assigned objects fit a bounded resource?                         | capacity, allocated, remaining, utilization, assignment/manifest                                              | a routing engine or optimization algorithm             |
+| Receiving Console       | What physically arrived, what was counted, and what can be received? | ARRIVED distinct from RECEIVED, lifecycle, ordered/delivered/physical/accepted quantities, variance, decision | a one-click receipt confirmation                       |
+| Route Planner           | What is the ordered movement and which stop is current/next?         | ordered stops, current and next stop, ETA, assigned quantity/resource                                         | a map renderer or route optimization engine            |
+| Entity 360              | What is the complete actionable context for one business entity?     | identity, relationship status, current work, exceptions, decisions, owner, trace                              | an unrelated dashboard collection                      |
+| Decision Workspace      | What evidence supports the bounded decision?                         | evidence, options, selected outcome, reason, owner, resulting next action, trace                              | a generic confirmation dialog                          |
+| Readiness Review        | Can this object proceed now, and what factual conditions block it?   | target/subject, consumer-supplied result, ordered blockers, resolution hints, freshness, next context         | a human decision flow or a UI-owned eligibility engine |
+| Exception Queue         | Which deviations require accountable action first?                   | affected object, severity/reason, age, owner, next action, due/escalation                                     | a generic inbox without consequence                    |
+| Activity & Audit Stream | Who did what, when, to which object, and from what source?           | ordered events, actor/system, timestamp, action, object, source/evidence                                      | prose-only activity or an editable log                 |
+| Resource Forecast       | How long will a resource remain sufficient?                          | current quantity, consumption basis, days of cover/time-to-empty, incoming quantity and ETA                   | a forecasting implementation inside the UI system      |
 
 ## Relationship map
 
@@ -54,6 +55,11 @@ Entity 360
   ├─ relevant Exceptions
   ├─ bounded Decisions
   └─ Activity & Audit Stream
+
+Readiness Review
+  ├─ Process Workspace → next checkpoint context
+  ├─ Decision Workspace → consequential human disposition when needed
+  └─ Activity & Audit Stream → prior evaluation trace when supplied
 ```
 
 Relationships describe composition, not mandatory nesting. Start with the
@@ -72,13 +78,16 @@ smallest pattern that answers the user's operating question.
    decorative roadmap or disconnected progress indicators.
 4. Use `Alert` for an important persistent condition and `StatusChip` for a
    compact state whose meaning is also written in text.
-5. Use `DetailDrawer` for contextual inspection, `Modal` for a focused task,
+5. Use Readiness Review when the consumer has already evaluated whether an
+   object can proceed. Keep the result, blocker reasons, resolution hints, and
+   freshness context in text; the recipe never calculates or reevaluates them.
+6. Use `DetailDrawer` for contextual inspection, `Modal` for a focused task,
    and `AlertDialog` only for irreversible confirmation.
-6. Use `RadioGroup`, `Radio`, `Textarea`, and `ActionFooter` to compose a
+7. Use `RadioGroup`, `Radio`, `Textarea`, and `ActionFooter` to compose a
    bounded decision. The consumer owns the decision policy and persistence.
-7. Use semantic `T7Icon` names. Do not introduce raw provider strings or a
+8. Use semantic `T7Icon` names. Do not introduce raw provider strings or a
    runtime icon CDN.
-8. Apply a theme recipe before local layout. Product-specific CSS may arrange
+9. Apply a theme recipe before local layout. Product-specific CSS may arrange
    canonical parts but must use semantic tokens.
 
 ## Consumer ownership boundary
@@ -157,6 +166,9 @@ pnpm t7ui recipe inspect load-planning
 
 pnpm t7ui find "days of cover incoming supply"
 pnpm t7ui recipe inspect resource-forecast
+
+pnpm t7ui find "can this object proceed why blocked"
+pnpm t7ui recipe inspect readiness-review
 ```
 
 Read the selected recipe's `operational.useWhen`, `avoidWhen`, `anatomy`,
@@ -169,17 +181,25 @@ Select it by the operating question and required semantics. A request for
 “cards showing supplier stats” may actually require `Entity 360`; a request
 for “a dashboard” may be a `Control Tower`, `Report`, or neither.
 
+Use Readiness Review when the consumer has already evaluated whether an object
+can proceed and the user needs factual blockers or resolution. Use Decision
+Workspace only when a person must choose a consequential outcome from
+evidence. Readiness Review never owns eligibility rules, thresholds,
+permissions, or reevaluation.
+
 ## AAPM reference adoption
 
 `/operational-patterns` is a deterministic, non-production adoption fixture.
-It demonstrates all eleven patterns through five bounded workspace views:
+It demonstrates the mature operational patterns and Readiness Review through
+six bounded workspace views:
 
 - Control Tower: Control Tower, Exception Queue, Resource Forecast;
 - Process Workspace: Process Workspace, Operational Kanban, Activity & Audit
   Stream;
 - Load & Route: Load Planner and Route Planner;
 - Receiving: Receiving Console and Decision Workspace;
-- Entity 360: Entity 360, Decision Workspace, and Activity & Audit Stream.
+- Entity 360: Entity 360, Decision Workspace, and Activity & Audit Stream;
+- Readiness Review: consumer-supplied ready, blocked, and incomplete states.
 
 The fixture does not create an AAPM ERP, connect APIs, implement policies, or
 embed AAPM colors into generic primitives. A future AAPM product should apply
@@ -188,7 +208,8 @@ engine canonical.
 
 ## Maturity and freeze rule
 
-These eleven recipes are marked `mature` at the composition-contract layer.
+These operational recipes are marked `mature` at the composition-contract
+layer.
 That means their selection rules, anatomy, semantic minimums, responsive
 behavior, accessibility guidance, AI hints, and bounded reference adoption are
 available. It does not certify a future consumer's business logic.

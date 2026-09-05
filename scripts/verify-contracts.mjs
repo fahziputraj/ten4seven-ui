@@ -9,6 +9,7 @@ import {
   ENTITY_LIST_STATES,
   exactColor,
   OPERATIONAL_PATTERN_CONTRACTS,
+  READINESS_REVIEW_STATES,
   THEME_RECIPES,
   THEME_RECIPE_NAMES,
   RESPONSIVE_MODES,
@@ -114,6 +115,7 @@ assert.deepEqual(
 );
 
 const operationalRecipeNames = [
+  "readiness-review",
   "process-workspace",
   "decision-workspace",
   "activity-audit",
@@ -187,6 +189,28 @@ for (const recipeName of operationalRecipeNames) {
     ["desktop", "mobile", "tablet"],
     `${recipeName}: operational responsive contract incomplete`,
   );
+  if (recipeName === "readiness-review") {
+    assert.deepEqual(
+      canonical.states,
+      READINESS_REVIEW_STATES,
+      "readiness-review: typed state contract drifted",
+    );
+    for (const state of ["ready", "blocked", "incomplete"])
+      assert.ok(
+        canonical.states.includes(state),
+        `readiness-review: required state missing: ${state}`,
+      );
+    assert.match(
+      canonical.operational.aiGuidance,
+      /Decision Workspace/,
+      "readiness-review: decision differentiation guidance missing",
+    );
+    assert.match(
+      canonical.operational.antiPatterns.join(" "),
+      /calculating eligibility/i,
+      "readiness-review: business-rule ownership boundary missing",
+    );
+  }
 }
 assert.deepEqual(
   normalizeThemeProfile(themeProfileToLegacyConfig(DEFAULT_THEME_PROFILE)),

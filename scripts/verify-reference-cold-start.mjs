@@ -120,6 +120,13 @@ const tasks = [
     icons: ["approve", "warning", "danger", "check", "edit"],
   },
   {
+    name: "Readiness Review",
+    query: "can this object proceed why blocked",
+    recipe: "readiness-review",
+    profile: "enterprise",
+    icons: ["check", "warning", "danger", "clock", "view"],
+  },
+  {
     name: "Activity and Audit Stream",
     query: "activity audit actor timestamp object source",
     recipe: "activity-audit",

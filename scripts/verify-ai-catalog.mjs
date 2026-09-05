@@ -99,6 +99,7 @@ const requiredRecipes = [
   "route-planning",
   "entity-360",
   "decision-workspace",
+  "readiness-review",
   "exception-queue",
   "activity-audit",
   "resource-forecast",
@@ -586,6 +587,11 @@ assert.match(receivingIntentCliResult, /Recipe: receiving-console/);
 assert.match(receivingIntentCliResult, /warehouse/);
 assert.match(receivingIntentCliResult, /warning/);
 
+const readinessCliResult = find("can this object proceed why blocked");
+assert.match(readinessCliResult, /Recipe: readiness-review/);
+assert.match(readinessCliResult, /StatusChip/);
+assert.match(readinessCliResult, /Alert/);
+
 const forecastCliResult = find("days of cover incoming supply");
 assert.match(forecastCliResult, /Recipe: resource-forecast/);
 assert.match(forecastCliResult, /Sparkline/);
@@ -594,6 +600,7 @@ for (const [recipeName, requiredPhrase] of [
   ["process-workspace", "Current stage distinct from percentage progress"],
   ["decision-workspace", "Evidence before action"],
   ["activity-audit", "Activity is user-oriented operational narrative"],
+  ["readiness-review", "Factual blocker reason when the result is BLOCKED"],
 ]) {
   const operationalInspectResult = execFileSync(
     process.execPath,

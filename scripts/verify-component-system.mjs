@@ -55,14 +55,14 @@ assert.equal(
 );
 assert.equal(
   Object.keys(recipes).length,
-  28,
+  29,
   "recipe count changed; update evidence intentionally",
 );
 assert.equal(
   Object.values(recipes).filter(
     (recipe) => recipe.operational?.maturity === "mature",
   ).length,
-  11,
+  12,
   "mature operational recipe count changed; update evidence intentionally",
 );
 
