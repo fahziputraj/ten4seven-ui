@@ -3,10 +3,12 @@ import fs from "node:fs";
 import path from "node:path";
 
 import {
+  CANONICAL_CONTRACTS,
   DEFAULT_THEME_PROFILE,
   ENTITY_LIST_CONTRACT,
   ENTITY_LIST_STATES,
   exactColor,
+  OPERATIONAL_PATTERN_CONTRACTS,
   THEME_RECIPES,
   THEME_RECIPE_NAMES,
   RESPONSIVE_MODES,
@@ -110,6 +112,82 @@ assert.deepEqual(
   ENTITY_LIST_CONTRACT.components,
   "entity-list: compact component composition drifted from the typed contract",
 );
+
+const operationalRecipeNames = [
+  "process-workspace",
+  "decision-workspace",
+  "activity-audit",
+];
+const operationalParity = (name, recipe) => ({
+  id: name,
+  displayName: recipe.displayName,
+  purpose: recipe.purpose,
+  profiles: [...recipe.profiles],
+  components: [...recipe.components],
+  optional: [...(recipe.optional ?? [])],
+  icons: [...(recipe.icons ?? [])],
+  operational: recipe.operational,
+  references: [...(recipe.references ?? [])],
+});
+
+for (const recipeName of operationalRecipeNames) {
+  const canonical = OPERATIONAL_PATTERN_CONTRACTS[recipeName];
+  const registered = CANONICAL_CONTRACTS.recipes[recipeName];
+  const legacy = legacyRecipes[recipeName];
+  const projected = outputs["recipes.compact.json"][recipeName];
+
+  assert.ok(canonical, `${recipeName}: typed operational contract missing`);
+  assert.equal(
+    registered,
+    canonical,
+    `${recipeName}: canonical registry does not point to typed source`,
+  );
+  assert.ok(legacy, `${recipeName}: legacy parity source missing`);
+  assert.ok(projected, `${recipeName}: generated projection missing`);
+  assert.equal(
+    projected.source,
+    "canonical-contract",
+    `${recipeName}: generated projection did not switch to canonical source`,
+  );
+  assert.deepEqual(
+    operationalParity(recipeName, canonical),
+    operationalParity(recipeName, legacy),
+    `${recipeName}: typed contract changed the legacy semantic payload`,
+  );
+  assert.deepEqual(
+    operationalParity(recipeName, projected),
+    operationalParity(recipeName, canonical),
+    `${recipeName}: generated projection drifted from typed source`,
+  );
+
+  const operational = canonical.operational;
+  assert.ok(operational, `${recipeName}: operational metadata missing`);
+  assert.equal(operational.maturity, "mature");
+  for (const field of [
+    "useWhen",
+    "avoidWhen",
+    "anatomy",
+    "requiredSemantics",
+    "optionalSemantics",
+    "accessibility",
+    "antiPatterns",
+    "relationships",
+  ])
+    assert.ok(
+      Array.isArray(operational[field]) && operational[field].length > 0,
+      `${recipeName}: operational ${field} missing`,
+    );
+  assert.equal(
+    operational.referencePath,
+    "/operational-patterns",
+    `${recipeName}: operational reference path drifted`,
+  );
+  assert.deepEqual(
+    Object.keys(operational.responsive).sort(),
+    ["desktop", "mobile", "tablet"],
+    `${recipeName}: operational responsive contract incomplete`,
+  );
+}
 assert.deepEqual(
   normalizeThemeProfile(themeProfileToLegacyConfig(DEFAULT_THEME_PROFILE)),
   DEFAULT_THEME_PROFILE,
@@ -189,5 +267,5 @@ assert.ok(
 );
 
 console.log(
-  `Contract gate verified: ${Object.keys(aliases).length} aliases, ${Object.keys(legacyRecipes).length} recipes, entity-list decision metadata, ThemeProfile round-trip, and compact retrieval at ${compactBytes}/${fullBytes} bytes.`,
+  `Contract gate verified: ${Object.keys(aliases).length} aliases, ${Object.keys(legacyRecipes).length} recipes, entity-list decision metadata, ${operationalRecipeNames.length} typed operational recipes with semantic parity, ThemeProfile round-trip, and compact retrieval at ${compactBytes}/${fullBytes} bytes.`,
 );

@@ -4,6 +4,11 @@ import { AUTHENTICATION_CONTRACT } from "./authentication.ts";
 import { BRAND_PROFILES } from "./brand-profile.ts";
 import { ENTITY_DETAIL_CONTRACT } from "./entity-detail.ts";
 import { ENTITY_LIST_CONTRACT } from "./entity-list.ts";
+import {
+  ACTIVITY_AUDIT_CONTRACT,
+  DECISION_WORKSPACE_CONTRACT,
+  PROCESS_WORKSPACE_CONTRACT,
+} from "./operational-patterns.ts";
 import { DEFAULT_THEME_PROFILE, MOTION_PROFILES } from "./theme-profile.ts";
 import { THEME_RECIPES } from "./theme-recipe.ts";
 
@@ -69,6 +74,9 @@ export const CANONICAL_CONTRACTS = {
     "entity-list": ENTITY_LIST_CONTRACT,
     "entity-detail": ENTITY_DETAIL_CONTRACT,
     auth: AUTHENTICATION_CONTRACT,
+    "process-workspace": PROCESS_WORKSPACE_CONTRACT,
+    "decision-workspace": DECISION_WORKSPACE_CONTRACT,
+    "activity-audit": ACTIVITY_AUDIT_CONTRACT,
   },
   aliases: ALIAS_MAP,
   ownership: OWNERSHIP_RULES,

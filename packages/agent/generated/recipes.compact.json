@@ -913,7 +913,7 @@
       "AAPM Operational Reference",
       "Operations Tracker"
     ],
-    "source": "legacy-catalog-adapter"
+    "source": "canonical-contract"
   },
   "operational-kanban": {
     "id": "operational-kanban",
@@ -1443,7 +1443,7 @@
     "references": [
       "AAPM Operational Reference"
     ],
-    "source": "legacy-catalog-adapter"
+    "source": "canonical-contract"
   },
   "exception-queue": {
     "id": "exception-queue",
@@ -1621,7 +1621,7 @@
       "AAPM Operational Reference",
       "Operations Tracker"
     ],
-    "source": "legacy-catalog-adapter"
+    "source": "canonical-contract"
   },
   "resource-forecast": {
     "id": "resource-forecast",

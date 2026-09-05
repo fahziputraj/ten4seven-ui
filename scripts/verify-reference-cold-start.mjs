@@ -106,6 +106,27 @@ const tasks = [
     ],
   },
   {
+    name: "Process Workspace",
+    query: "process workspace lifecycle owner next action",
+    recipe: "process-workspace",
+    profile: "enterprise",
+    icons: ["timeline", "clock", "users", "warning", "check"],
+  },
+  {
+    name: "Decision Workspace",
+    query: "decision workspace evidence consequence reason authority",
+    recipe: "decision-workspace",
+    profile: "enterprise",
+    icons: ["approve", "warning", "danger", "check", "edit"],
+  },
+  {
+    name: "Activity and Audit Stream",
+    query: "activity audit actor timestamp object source",
+    recipe: "activity-audit",
+    profile: "enterprise",
+    icons: ["timeline", "clock", "users", "check", "warning"],
+  },
+  {
     name: "Modal Confirmation",
     query: "modal confirmation",
     recipe: "entity-detail",

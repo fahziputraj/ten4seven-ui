@@ -363,6 +363,38 @@ export interface RecipeShell {
   readonly selectionRule: string;
 }
 
+/**
+ * Human-facing responsive guidance for an operational recipe. This is kept
+ * separate from the component-level responsive mode vocabulary because an
+ * operational pattern describes information order, not a component layout
+ * primitive.
+ */
+export interface OperationalResponsiveContract {
+  readonly desktop: string;
+  readonly tablet: string;
+  readonly mobile: string;
+}
+
+/**
+ * Typed selection and semantic contract for an operational recipe family.
+ * Consumers supply domain values and policy; Ten4Seven owns only the
+ * composition guidance and presentation grammar.
+ */
+export interface OperationalPatternContract {
+  readonly maturity: "mature";
+  readonly useWhen: readonly string[];
+  readonly avoidWhen: readonly string[];
+  readonly anatomy: readonly string[];
+  readonly requiredSemantics: readonly string[];
+  readonly optionalSemantics: readonly string[];
+  readonly responsive: OperationalResponsiveContract;
+  readonly accessibility: readonly string[];
+  readonly aiGuidance: string;
+  readonly antiPatterns: readonly string[];
+  readonly relationships: readonly string[];
+  readonly referencePath: "/operational-patterns";
+}
+
 export interface ComponentContract {
   readonly id: string;
   readonly displayName: string;
@@ -385,6 +417,8 @@ export interface RecipeContract {
   readonly profiles: readonly string[];
   readonly components: readonly string[];
   readonly optional?: readonly string[];
+  readonly icons?: readonly string[];
+  readonly operational?: OperationalPatternContract;
   readonly shell?: RecipeShell;
   readonly intent?: RecipeIntent;
   readonly required?: readonly string[];

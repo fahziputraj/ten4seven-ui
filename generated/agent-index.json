@@ -9,7 +9,8 @@
     "brandProfiles": "packages/contracts/src/brand-profile.ts",
     "entityList": "packages/contracts/src/entity-list.ts",
     "entityDetail": "packages/contracts/src/entity-detail.ts",
-    "authentication": "packages/contracts/src/authentication.ts"
+    "authentication": "packages/contracts/src/authentication.ts",
+    "operationalPatterns": "packages/contracts/src/operational-patterns.ts"
   },
   "defaultRetrieval": [
     "generated/index.json",
@@ -59,8 +60,8 @@
   },
   "metrics": {
     "fullCatalogBytes": 308449,
-    "compactProjectionBytes": 93014,
-    "selectiveRecipeShardBytes": 38275,
+    "compactProjectionBytes": 93002,
+    "selectiveRecipeShardBytes": 38263,
     "selectiveComponentShardBytes": 39963
   }
 }

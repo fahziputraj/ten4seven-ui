@@ -3,9 +3,11 @@
 ## Scope
 
 This guide is the authoritative human-readable selection contract for the
-Ten4Seven operational pattern layer. The machine-readable source remains
-`packages/ai/catalog/recipes.json`; generated shards under `generated/recipes/`
-are the preferred bounded retrieval surface.
+Ten4Seven operational pattern layer. The typed canonical source for migrated
+recipes is `packages/contracts/src/operational-patterns.ts`; generated shards
+under `generated/recipes/` are the preferred bounded retrieval surface. The
+legacy `packages/ai/catalog/recipes.json` remains a compatibility surface until
+the remaining operational recipes are migrated.
 
 The pattern layer composes canonical components. It does not add eleven
 domain-specific mega-components, business rules, APIs, forecasting algorithms,

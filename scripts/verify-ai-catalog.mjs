@@ -13,6 +13,7 @@ const exists = (relativePath) =>
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 const recipes = readJson("packages/ai/catalog/recipes.json");
+const generatedRecipes = readJson("generated/recipes.compact.json");
 const components = readJson("packages/ai/catalog/components.json");
 const blocks = readJson("packages/ai/catalog/blocks.json");
 const icons = readJson("packages/ai/catalog/icons.json");
@@ -487,6 +488,17 @@ for (const [name, recipe] of Object.entries(recipes)) {
   }
 }
 
+for (const name of [
+  "process-workspace",
+  "decision-workspace",
+  "activity-audit",
+])
+  assert.equal(
+    generatedRecipes[name]?.source,
+    "canonical-contract",
+    `${name}: generated AI projection must come from the typed canonical contract`,
+  );
+
 const registryNames = [
   ...iconSource.matchAll(/^  ([A-Za-z][A-Za-z0-9]*):\s*\{/gm),
 ]
@@ -578,13 +590,24 @@ const forecastCliResult = find("days of cover incoming supply");
 assert.match(forecastCliResult, /Recipe: resource-forecast/);
 assert.match(forecastCliResult, /Sparkline/);
 
-const operationalInspectResult = execFileSync(
-  process.execPath,
-  [cliPath, "recipe", "inspect", "decision-workspace"],
-  { cwd: repoRoot, encoding: "utf8" },
-);
-assert.match(operationalInspectResult, /"maturity": "mature"/);
-assert.match(operationalInspectResult, /"requiredSemantics"/);
+for (const [recipeName, requiredPhrase] of [
+  ["process-workspace", "Current stage distinct from percentage progress"],
+  ["decision-workspace", "Evidence before action"],
+  ["activity-audit", "Activity is user-oriented operational narrative"],
+]) {
+  const operationalInspectResult = execFileSync(
+    process.execPath,
+    [cliPath, "recipe", "inspect", recipeName],
+    { cwd: repoRoot, encoding: "utf8" },
+  );
+  assert.match(operationalInspectResult, /"maturity": "mature"/);
+  assert.match(operationalInspectResult, /"requiredSemantics"/);
+  assert.match(
+    operationalInspectResult,
+    new RegExp(requiredPhrase),
+    `${recipeName}: CLI inspect omitted the canonical semantic minimum`,
+  );
+}
 
 const catalogCliResult = find("ebook store catalog");
 assert.match(catalogCliResult, /Recipe: catalog/);
