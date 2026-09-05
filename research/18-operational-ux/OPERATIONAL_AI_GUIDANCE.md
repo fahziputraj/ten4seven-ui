@@ -68,6 +68,11 @@ audit guarantees.
   explicit before/after comparison. Supply an explicit change kind and keep
   reason, actor, occurred-at, and evidence/source adjacent; the component does
   not calculate, mutate, or persist a revision.
+- Choose `SectionNavigation` when a long form or bounded workspace needs
+  labelled page-local anchors. Supply stable IDs and optionally a
+  consumer-controlled `activeId`; the component provides native anchor and
+  responsive disclosure semantics but does not observe scrolling or own form
+  validation/business state.
 - Use `DetailDrawer` for record inspection, `Drawer` for generic contextual
   work, `Modal` for a focused task, and `AlertDialog` for final irreversible
   confirmation.
@@ -96,7 +101,7 @@ pnpm t7ui recipe inspect readiness-review
 returns semantic icons including `warehouse`, `stockIn`, `package`, `warning`,
 and `approve`. The existing `inventory list` query still resolves
 `entity-list` and prioritizes inventory-domain icons. `pnpm test:ai` reports
-29 recipes, 146 components, 12 expressive blocks, 98 semantic icons, and a
+29 recipes, 147 components, 12 expressive blocks, 98 semantic icons, and a
 cold-start proof of 15 tasks / 12 contract reads / 0 donor reads.
 
 ## Output boundary

@@ -26,6 +26,7 @@ import {
   RadioGroup,
   RecordSummary,
   RevisionDiff,
+  SectionNavigation,
   Sidebar,
   Sparkline,
   StatusChip,
@@ -1118,9 +1119,12 @@ function ReceivingConsole() {
 }
 
 function EntityWorkspace({ onOpenDecision }: { onOpenDecision: () => void }) {
+  const [activeSection, setActiveSection] = useState("entity-summary");
+
   return (
     <div className="operational-workspace" data-testid="entity-view">
       <RecordSummary
+        id="entity-summary"
         actions={
           <Button leadingIcon="approve" onClick={onOpenDecision}>
             Review decision
@@ -1139,6 +1143,20 @@ function EntityWorkspace({ onOpenDecision }: { onOpenDecision: () => void }) {
           </>
         }
         title="PT Tani Makmur"
+      />
+
+      <SectionNavigation
+        activeId={activeSection}
+        items={[
+          { id: "entity-summary", label: "Summary" },
+          { id: "entity-current-work", label: "Current work" },
+          { id: "entity-relationship-signals", label: "Relationship signals" },
+          { id: "entity-revision-context", label: "Revision context" },
+          { id: "entity-activity", label: "Activity & audit" },
+        ]}
+        label="Entity sections"
+        onSectionChange={setActiveSection}
+        sticky
       />
 
       <KPICluster
@@ -1174,7 +1192,7 @@ function EntityWorkspace({ onOpenDecision }: { onOpenDecision: () => void }) {
       />
 
       <div className="operational-entity-grid">
-        <Card>
+        <Card id="entity-current-work">
           <CardHeader>
             <div>
               <CardTitle>Current work</CardTitle>
@@ -1202,7 +1220,7 @@ function EntityWorkspace({ onOpenDecision }: { onOpenDecision: () => void }) {
             />
           </CardContent>
         </Card>
-        <Card>
+        <Card id="entity-relationship-signals">
           <CardHeader>
             <div>
               <CardTitle>Relationship signals</CardTitle>
@@ -1229,7 +1247,7 @@ function EntityWorkspace({ onOpenDecision }: { onOpenDecision: () => void }) {
         </Card>
       </div>
 
-      <Card className="operational-revision-card">
+      <Card className="operational-revision-card" id="entity-revision-context">
         <CardHeader>
           <div>
             <CardTitle>Latest revision context</CardTitle>
@@ -1289,7 +1307,7 @@ function EntityWorkspace({ onOpenDecision }: { onOpenDecision: () => void }) {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card id="entity-activity">
         <CardHeader>
           <div>
             <CardTitle>Entity activity and audit trail</CardTitle>

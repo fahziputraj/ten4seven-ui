@@ -107,7 +107,7 @@ Use the capability family—not the visual mood—to narrow selection:
 
 - actions: `Button`, `IconButton`, `ButtonGroup`, `ToggleButtonGroup`, `SplitButton`;
 - forms: `Field`, native labelled controls, `Combobox`, `MultiSelect`, date/time controls;
-- shell/navigation: `AppShell`, `Sidebar`, `TopNavigation`, `NavigationMenu`, `PublicShell`, `Breadcrumb`, `Tabs`, `CommandMenu`;
+- shell/navigation: `AppShell`, `Sidebar`, `TopNavigation`, `NavigationMenu`, `PublicShell`, `Breadcrumb`, `Tabs`, `SectionNavigation`, `CommandMenu`;
 - data/workflow: `DataTable`, `RecordSummary`, `MetricCard`, `FilterToolbar`, `ApprovalPanel`, `RevisionDiff`;
 - overlays/feedback: `Drawer`, `DetailDrawer`, `Modal`, `AlertDialog`, `Popover`, `Toast`, `StateView`;
 - commerce/media: `ProductGrid`, `ProductCard`, `Price`, `Rating`, `QuantityControl`, `CartTrigger`, `CartLineItem`, `CartPanel`, `OrderSummary`, `MediaFrame`;
@@ -123,6 +123,12 @@ When a consumer must explain several field changes, use the canonical
 and any available reason, actor, occurred-at, or evidence/source metadata. The
 component presents those facts; the consumer still owns diff calculation,
 correction policy, persistence, and audit storage.
+
+For long forms or bounded workspaces that need page-local anchors, use
+`SectionNavigation` inside the route content. Supply stable section IDs and
+use `activeId` when a consumer owns scroll-spy state; the component keeps
+native anchor semantics and does not own form validation, business state, or
+scroll observation. It collapses to a compact native menu on narrow layouts.
 
 For KPI work, use `MetricCard` for one decision signal and `KPICluster` for a
 small related set. Compose `TrendIndicator`, `Sparkline`, and `Progress` through
@@ -144,7 +150,9 @@ Use one shared grammar:
 - Use `Sidebar` / `SidebarGroup` for private, information-dense applications.
 - Use `PublicShell` with `NavigationMenu` for public, content, and commerce composition; use `TopNavigation` for flat links.
 - Keep one route-level `PageHeader`; do not nest competing page headings.
-- Relocate secondary navigation and filters through `MobileSidebar` or `FilterDrawer` at narrow widths.
+- Keep page-local long-form anchors in `SectionNavigation`; relocate global
+  secondary navigation and filters through `MobileSidebar` or `FilterDrawer` at
+  narrow widths.
 - Use `Drawer` or `DetailDrawer` for contextual inspection, `Modal` for a focused task, and `AlertDialog` for irreversible confirmation.
 
 ## 7. Use theme tokens

@@ -4331,6 +4331,109 @@
     "composesWith": ["PageHeader", "TopNavigation"],
     "usedByPatterns": []
   },
+  "SectionNavigation": {
+    "status": "implemented",
+    "category": "navigation",
+    "purpose": "Navigate between labelled anchors within a long form or bounded workspace without owning section state.",
+    "useWhen": [
+      "long forms or workspaces need page-local anchor navigation",
+      "a global shell already owns route navigation"
+    ],
+    "avoidWhen": [
+      "switching between peer content panels; use Tabs",
+      "route-level navigation; use Sidebar, TopNavigation, or NavigationMenu"
+    ],
+    "recipes": [],
+    "importantProps": [
+      "items",
+      "activeId",
+      "defaultActiveId",
+      "onSectionChange",
+      "label",
+      "sticky"
+    ],
+    "relatedComponents": ["Tabs", "Sidebar", "MobileSidebar", "PageHeader"],
+    "source": "packages/ui/src/navigation.tsx",
+    "displayName": "Section Navigation",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "default",
+      "active anchor",
+      "focused",
+      "mobile menu expanded",
+      "sticky when enabled"
+    ],
+    "accessibility": [
+      "Expose a named nav landmark and aria-current=location for the active anchor.",
+      "Keep native anchor and summary keyboard behavior; the consumer may supply scroll-spy state through activeId."
+    ],
+    "responsive": [
+      "Render the labelled anchor list on wide layouts.",
+      "Collapse to a native details summary and compact anchor menu on narrow layouts without changing item semantics."
+    ],
+    "motion": [
+      "Uses the shared transition and easing variables for mobile disclosure.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "selected",
+      "control-height",
+      "touch-target-min",
+      "sticky-offset",
+      "focus-ring"
+    ],
+    "api": [
+      {
+        "name": "items",
+        "type": "SectionNavigationItem[]",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Labelled section IDs rendered as page-local anchors."
+      },
+      {
+        "name": "activeId",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Consumer-controlled active section, such as a scroll-spy result."
+      },
+      {
+        "name": "defaultActiveId",
+        "type": "string",
+        "defaultValue": "first item",
+        "required": false,
+        "description": "Initial active section for uncontrolled navigation."
+      },
+      {
+        "name": "onSectionChange",
+        "type": "(id: string) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Callback after an anchor is selected; section observation remains consumer-owned."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "defaultValue": "Section navigation",
+        "required": false,
+        "description": "Accessible name for the page-local nav landmark."
+      },
+      {
+        "name": "sticky",
+        "type": "boolean",
+        "defaultValue": "false",
+        "required": false,
+        "description": "Keep the navigation below the shared document sticky offset."
+      }
+    ],
+    "example": "<SectionNavigation items={[{ id: \"profile\", label: \"Profile\" }]} />",
+    "alternativeTo": [],
+    "composesWith": ["AppShell", "PageHeader", "Tabs"],
+    "usedByPatterns": []
+  },
   "Tabs": {
     "status": "implemented",
     "category": "navigation",

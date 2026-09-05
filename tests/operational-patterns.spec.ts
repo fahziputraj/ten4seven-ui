@@ -172,6 +172,32 @@ test("operational reference exposes all mature pattern and readiness proofs", as
     "RC-3841 receiving memo · evidence-2026-09-03-1428",
   ])
     await expect(revision.getByText(value, { exact: true })).toBeVisible();
+  const sectionNavigation = page.getByRole("navigation", {
+    name: "Entity sections",
+  });
+  await expect(sectionNavigation).toBeVisible();
+  for (const [label, id] of [
+    ["Summary", "entity-summary"],
+    ["Current work", "entity-current-work"],
+    ["Relationship signals", "entity-relationship-signals"],
+    ["Revision context", "entity-revision-context"],
+    ["Activity & audit", "entity-activity"],
+  ] as const) {
+    await expect(
+      sectionNavigation.getByRole("link", { name: label }).first(),
+    ).toHaveAttribute("href", `#${id}`);
+  }
+  await expect(
+    sectionNavigation.getByRole("link", { name: "Summary" }).first(),
+  ).toHaveAttribute("aria-current", "location");
+  await sectionNavigation
+    .getByRole("link", { name: "Revision context" })
+    .first()
+    .click();
+  await expect(page).toHaveURL(/#entity-revision-context$/);
+  await expect(
+    sectionNavigation.getByRole("link", { name: "Revision context" }).first(),
+  ).toHaveAttribute("aria-current", "location");
   await expectNoDocumentOverflow(page);
 });
 
@@ -234,6 +260,73 @@ test("revision diff mobile visual stacks every field", async ({ page }) => {
     animations: "disabled",
     caret: "hide",
   });
+});
+
+test("section navigation collapses to a keyboard-accessible mobile menu", async ({
+  page,
+}) => {
+  await page.setViewportSize({ height: 844, width: 390 });
+  await openOperationalReference(page);
+  await selectOperationalView(page, "Entity 360");
+
+  const sectionNavigation = page.getByRole("navigation", {
+    name: "Entity sections",
+  });
+  const desktop = sectionNavigation.locator(".t7-section-navigation-desktop");
+  const mobile = sectionNavigation.locator(".t7-section-navigation-mobile");
+  await expect(desktop).toBeHidden();
+  await expect(mobile).toBeVisible();
+  await expect(mobile.locator("summary")).toContainText("Current section");
+  await mobile.locator("summary").click();
+  await expect
+    .poll(() =>
+      mobile.evaluate((element) => (element as HTMLDetailsElement).open),
+    )
+    .toBe(true);
+  await mobile.getByRole("link", { name: "Revision context" }).click();
+  await expect(page).toHaveURL(/#entity-revision-context$/);
+  await expect(mobile.locator("summary")).toContainText("Revision context");
+  await expect
+    .poll(() =>
+      mobile.evaluate((element) => (element as HTMLDetailsElement).open),
+    )
+    .toBe(false);
+  await expectNoDocumentOverflow(page);
+});
+
+test("section navigation desktop visual keeps active anchor context", async ({
+  page,
+}) => {
+  await page.setViewportSize({ height: 900, width: 1440 });
+  await openOperationalReference(page);
+  await selectOperationalView(page, "Entity 360");
+
+  await expect(
+    page.getByRole("navigation", { name: "Entity sections" }),
+  ).toHaveScreenshot("section-navigation-desktop.png", {
+    animations: "disabled",
+    caret: "hide",
+  });
+});
+
+test("section navigation mobile visual exposes the compact menu", async ({
+  page,
+}) => {
+  await page.setViewportSize({ height: 844, width: 390 });
+  await openOperationalReference(page);
+  await selectOperationalView(page, "Entity 360");
+
+  const sectionNavigation = page.getByRole("navigation", {
+    name: "Entity sections",
+  });
+  await sectionNavigation.locator("summary").click();
+  await expect(sectionNavigation).toHaveScreenshot(
+    "section-navigation-mobile.png",
+    {
+      animations: "disabled",
+      caret: "hide",
+    },
+  );
 });
 
 test("exception and entity decision drawers dismiss with Escape and restore focus", async ({

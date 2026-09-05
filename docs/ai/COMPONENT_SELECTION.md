@@ -18,6 +18,7 @@ Only `implemented` catalog entries are available to product work. `experimental`
 | Route framing                                                    | `AppShell → [Sidebar                                                                                     | TopNavigation                                                      | NavigationMenu] → [PageHeader]` | repeated local shell/heading markup |
 | Private information-dense navigation                             | `Sidebar` with optional `SidebarGroup`                                                                   | a public storefront navbar                                         |
 | Public/content/commerce navigation                               | `PublicShell` + `NavigationMenu` (or `TopNavigation` for flat links)                                     | an ERP-like sidebar by default                                     |
+| Page-local anchors in long forms/workspaces                      | `SectionNavigation` with stable section IDs and optional consumer `activeId`                             | `Tabs` for anchor navigation or a feature-local scroll-spy system  |
 | Comparable, sortable, selectable records                         | `DataTable`, `DataTableColumnPicker`, `BulkActionBar`                                                    | cards posing as a table                                            |
 | One record summary or facts                                      | `RecordSummary`, `KeyValueList` / `DescriptionList`, `ActivityFeed` / `Timeline`                         | an ad hoc metric wall                                              |
 | Milestone or journey progress with selectable detail             | `MilestoneTracker`; use `Progress` for a scalar or `Stepper` for a sequential form                       | a feature-local workflow/progress-card cluster                     |
@@ -51,7 +52,7 @@ Visualization, Media, and Commerce. `DataTable` belongs to Tables; reusable
 composition contracts such as `AppShell`, `CartPanel`, and `OrderSummary`
 belong to Patterns.
 
-`AppShell → [Sidebar | TopNavigation | NavigationMenu] → [PageHeader]` is the default shell grammar. Use `PublicShell` when the route is public or content-first. Keep PageHeader as the only route-level title. Use `MobileSidebar` or `FilterDrawer` to move secondary controls on narrow screens instead of duplicating a mobile component system.
+`AppShell → [Sidebar | TopNavigation | NavigationMenu] → [PageHeader]` is the default shell grammar. Use `PublicShell` when the route is public or content-first. Keep PageHeader as the only route-level title. Use `SectionNavigation` for page-local long-form anchors, and `MobileSidebar` or `FilterDrawer` to move global secondary controls on narrow screens instead of duplicating a mobile component system.
 
 ## A real component gap
 

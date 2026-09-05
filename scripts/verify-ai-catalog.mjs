@@ -152,6 +152,7 @@ const requiredComponents = [
   "Carousel",
   "PublicShell",
   "ChartPanel",
+  "SectionNavigation",
 ];
 const requiredBlocks = [
   "hero-split",

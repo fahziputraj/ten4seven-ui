@@ -45,12 +45,12 @@ const relationFields = ["alternativeTo", "composesWith"];
 
 assert.equal(
   canonical.length,
-  140,
+  141,
   "canonical component count changed; update evidence intentionally",
 );
 assert.equal(
   Object.keys(components).length,
-  146,
+  147,
   "component catalog count changed; update evidence intentionally",
 );
 assert.equal(
@@ -145,6 +145,12 @@ assert.equal(components.RevisionDiff.category, "data");
 assert.equal(
   components.RevisionDiff.source,
   "packages/ui/src/data-display.tsx",
+);
+assert.equal(components.SectionNavigation.status, "implemented");
+assert.equal(components.SectionNavigation.category, "navigation");
+assert.equal(
+  components.SectionNavigation.source,
+  "packages/ui/src/navigation.tsx",
 );
 assert.equal(components.AppShell.category, "pattern");
 assert.equal(components.ApprovalPanel.category, "pattern");

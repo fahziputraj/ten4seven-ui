@@ -1,0 +1,1 @@
+{"id":"SectionNavigation","displayName":"Section Navigation","status":"implemented","category":"navigation","purpose":"Navigate between labelled anchors within a long form or bounded workspace without owning section state.","source":"packages/ui/src/navigation.tsx","importantProps":["items","activeId","defaultActiveId","onSectionChange","label","sticky"]}

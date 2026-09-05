@@ -90,9 +90,14 @@ smallest pattern that answers the user's operating question.
    evidence/source context. Keep the component presentation-only: the
    consumer owns diff calculation, correction policy, persistence, and audit
    storage.
-9. Use semantic `T7Icon` names. Do not introduce raw provider strings or a
-   runtime icon CDN.
-10. Apply a theme recipe before local layout. Product-specific CSS may arrange
+9. Use `SectionNavigation` for labelled anchors inside a long form or bounded
+   workspace. Give each item a stable section ID, pass `activeId` only when a
+   consumer owns scroll-spy state, and keep validation, business state, and
+   scroll observation outside the component. Its narrow layout is a compact
+   native menu, not a second navigation system.
+10. Use semantic `T7Icon` names. Do not introduce raw provider strings or a
+    runtime icon CDN.
+11. Apply a theme recipe before local layout. Product-specific CSS may arrange
     canonical parts but must use semantic tokens.
 
 ## Consumer ownership boundary
@@ -106,6 +111,9 @@ Ten4Seven owns:
 - presentation of values supplied by a consumer.
 - presentation of before/after values and explicit change labels supplied by a
   consumer; `RevisionDiff` does not calculate or persist revisions.
+- page-local anchor rendering and responsive disclosure through
+  `SectionNavigation`; the consumer owns section IDs, scroll observation, and
+  form/workflow state.
 
 The consumer owns:
 
@@ -208,7 +216,8 @@ six bounded workspace views:
 - Entity 360: Entity 360, Decision Workspace, and Activity & Audit Stream;
 - Readiness Review: consumer-supplied ready, blocked, and incomplete states.
 - Entity 360: a RevisionDiff reference with six synthetic field changes and
-  provenance metadata; it demonstrates presentation-only correction context.
+  provenance metadata, plus a SectionNavigation reference with five stable
+  page-local anchors; both demonstrate presentation-only context.
 
 The fixture does not create an AAPM ERP, connect APIs, implement policies, or
 embed AAPM colors into generic primitives. A future AAPM product should apply

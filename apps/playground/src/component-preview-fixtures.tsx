@@ -88,6 +88,7 @@ import {
   ScrollArea,
   Section,
   SectionHeader,
+  SectionNavigation,
   Select,
   Separator,
   Sidebar,
@@ -808,6 +809,19 @@ export function ComponentPreview({
             { href: "#", key: "inventory", label: "Inventory" },
             { current: true, key: "detail", label: "Item detail" },
           ]}
+        />,
+      );
+    if (component.displayName === "Section Navigation")
+      return frame(
+        <SectionNavigation
+          items={[
+            { id: "profile", label: "Profile" },
+            { id: "employment", label: "Employment" },
+            { id: "compliance", label: "Compliance" },
+            { id: "review", label: "Review & save" },
+          ]}
+          label="Long form sections"
+          sticky
         />,
       );
     if (
