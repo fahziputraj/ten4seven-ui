@@ -1,10 +1,11 @@
 # T7-AAPM-FINAL-COMPLETE-001 — AAPM Component Completeness Final
 
-Date: 2026-09-06  
-Repository: `D:\\SA\\ten4seven-ui`  
-Completeness branch: `architecture/T7-AAPM-COMPLETE-001`  
-Engineering baseline: `f9a2271902e7cf450789ecc80e2934c377b33200`  
+Date: 2026-09-06
+Repository: `D:\\SA\\ten4seven-ui`
+Completeness branch: `architecture/T7-AAPM-COMPLETE-001`
+Engineering baseline: `f9a2271902e7cf450789ecc80e2934c377b33200`
 Remote/main baseline: `df95c8a2f39a1023e47f3f6a155d2d0dabfb7031`
+Final RC branch: `release/T7-AAPM-FINAL-RC1`
 
 ## Final verdict
 
@@ -141,9 +142,14 @@ No item below is an unexplained generic gap:
 | Consumer adoption               | Intentionally not claimed; production AAPM applications remain `UNVERIFIED`.                                                                                          |
 | Merge/release                   | Not performed; this work only prepares a later single Release Candidate acceptance unit.                                                                              |
 
-## Completeness branch verification
+## Completeness and final RC verification
 
-The branch was verified in its own checkout before RC consolidation:
+The completeness branch was verified in its own checkout and then
+consolidated into `release/T7-AAPM-FINAL-RC1`, created from the fresh
+`origin/main` baseline above. The RC was checked out separately with LF
+working-tree normalization so the validation used the exact committed tree;
+the push worktree's Windows CRLF presentation is not a source-tree change.
+The final RC gate was rerun on that exact RC checkout:
 
 | Gate                                         | Result                                                                                                     |
 | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
@@ -156,7 +162,7 @@ The branch was verified in its own checkout before RC consolidation:
 | `pnpm test:next-consumer`                    | PASS; Next 16.3.4 / React 19.2.8 production consumer, strict typecheck, 3 Playwright/axe tests.            |
 | `pnpm test:adoption`                         | PASS; 4/4 operational/public/theme consumer tests.                                                         |
 | `pnpm test:adoption:static`                  | PASS; 2 isolated consumers, zero parallel primitives/design systems/raw icon imports/local color literals. |
-| Isolated browser matrix                      | PASS; `233/233` Playwright tests on the completeness checkout at `http://127.0.0.1:4179`.                  |
+| Isolated browser matrix                      | PASS; `233/233` Playwright tests on the exact RC checkout at `http://127.0.0.1:4183`.                      |
 
 The first isolated browser attempt was `232/233` because the existing
 clipboard test granted permission to hard-coded port 4173 while the isolated
@@ -165,11 +171,16 @@ server used 4179. The test now grants permission to
 rerun passed 233/233. This is a test-portability hardening change, not a
 library behavior change.
 
-## Required validation on the final RC
+The local browser server at port 4173 was left untouched for the user's live
+theme/library view. The final RC browser proof used a separate port and an
+isolated server from the RC checkout.
 
-The completeness branch is documentation plus the already-proven f9 generic
-implementation. Before publishing the final RC, run the complete Node 24 gate
-on the RC branch itself, in this order where package declarations are needed:
+## RC consolidation evidence
+
+The RC branch contains the completeness evidence and the already-proven f9
+generic implementation on top of fresh `origin/main`. The complete Node 24
+gate was executed on the RC branch itself in this order where package
+declarations are needed:
 
 ```text
 pnpm contracts:generate
@@ -185,15 +196,15 @@ pnpm test:adoption:static
 pnpm test:e2e
 ```
 
-Also verify:
+The RC acceptance unit also records:
 
-- tree parity between completeness head and final RC head;
-- remote RC branch and Draft PR target `main`;
+- tree parity between the completeness head and final RC source tree;
+- remote RC branch and the single Draft PR target `main`;
 - `/theme-studio`, `/component-lab`, `/operational-patterns`,
   `/farm-synthetic-proof`, `/public-showcase`, and affected component routes;
 - no production `D:\\SA\\aapm_prod` access or mutation;
-- old Draft PRs are only marked superseded/closed after the new RC remote
-  parity, suite, and browser proof are visible.
+- historical Draft PRs are marked superseded/closed only after the new RC
+  remote parity, suite, and browser proof are visible.
 
 ## Governance endpoint
 

@@ -1,9 +1,10 @@
 # AAPM UI Component Completeness Matrix
 
-Date: 2026-09-06  
-Repository: `D:\\SA\\ten4seven-ui`  
-Completeness branch: `architecture/T7-AAPM-COMPLETE-001`  
+Date: 2026-09-06
+Repository: `D:\\SA\\ten4seven-ui`
+Completeness branch: `architecture/T7-AAPM-COMPLETE-001`
 Engineering baseline: `f9a2271902e7cf450789ecc80e2934c377b33200`
+Final RC branch: `release/T7-AAPM-FINAL-RC1` (single acceptance unit)
 
 ## Reading rule
 
