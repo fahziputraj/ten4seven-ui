@@ -8,7 +8,7 @@ import {
   T7Icon,
   type IconName,
 } from "@ten4seven/icons";
-import { paletteProfiles } from "@ten4seven/tokens";
+import { buildThemeVariables } from "@ten4seven/tokens";
 import {
   AnnouncementBar,
   Button,
@@ -1259,12 +1259,13 @@ export function IconsExplorer() {
           .includes(normalizedSemanticQuery))
     );
   });
+  const themeVariables = buildThemeVariables(theme);
   const defaultPrimaryHex = hslToHex(
-    paletteProfiles[theme.primary].primary,
+    themeVariables["--t7-primary-hsl"],
     "#17663f",
   );
   const defaultAccentHex = hslToHex(
-    paletteProfiles[theme.accent].accent,
+    themeVariables["--t7-accent-hsl"],
     "#8bbf27",
   );
   const filteredIconifyNames = useMemo(() => {
@@ -1383,8 +1384,15 @@ export function IconsExplorer() {
           </div>
         </div>
         <Typography className="iconify-theme-note" typeRole="caption">
-          Logo palette: {theme.primary} main · {theme.accent} accent · custom
-          values stay local to this preview.
+          Logo palette:{" "}
+          {typeof theme.primarySource === "string"
+            ? theme.primarySource
+            : theme.primarySource.value}{" "}
+          main ·{" "}
+          {typeof theme.accentSource === "string"
+            ? theme.accentSource
+            : theme.accentSource.value}{" "}
+          accent · custom values stay local to this preview.
         </Typography>
       </section>
       <section className="library-section">

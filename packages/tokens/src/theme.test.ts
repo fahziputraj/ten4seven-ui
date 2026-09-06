@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   buildRadiusProfile,
   buildThemeVariables,
+  exactColor,
   iconGeometry,
   kpiGeometry,
   layoutGeometry,
@@ -189,6 +190,95 @@ describe("theme engine", () => {
     expect(variables["--t7-chart-2-hsl"]).toBe("193 74% 36%");
   });
 
+  it("resolves normalized exact action and accent sources without changing independent roles", () => {
+    const source = {
+      accent: exactColor("#d4451a"),
+      appearance: "light" as const,
+      chartPalette: "monochrome" as const,
+      density: "dense" as const,
+      palette: "slate" as const,
+      primary: exactColor("#318139"),
+    };
+    const theme = resolveTheme(source);
+    const variables = buildThemeVariables(theme);
+    const namedBaseline = buildThemeVariables(
+      resolveTheme({
+        appearance: "light",
+        chartPalette: "spectrum",
+        palette: "slate",
+      }),
+    );
+
+    expect(theme.primary).toBe("slate");
+    expect(theme.accent).toBe("slate");
+    expect(theme.primarySource).toEqual({ kind: "exact", value: "#318139" });
+    expect(theme.accentSource).toEqual({ kind: "exact", value: "#D4451A" });
+    expect(variables["--t7-primary-source-kind"]).toBe("exact");
+    expect(variables["--t7-primary-source"]).toBe("#318139");
+    expect(variables["--t7-accent-source-kind"]).toBe("exact");
+    expect(variables["--t7-accent-source"]).toBe("#D4451A");
+    expect(variables["--t7-primary-hsl"]).toBe("126 44.94% 34.9%");
+    expect(variables["--t7-primary-hover-hsl"]).toBe("126 44.94% 28.9%");
+    expect(variables["--t7-primary-active-hsl"]).toBe("126 44.94% 22.9%");
+    expect(variables["--t7-primary-foreground-hsl"]).toBe("0 0% 100%");
+    expect(variables["--t7-accent-hsl"]).toBe("13.87 78.15% 46.67%");
+    expect(variables["--t7-accent-hover-hsl"]).toBe("13.87 78.15% 40.67%");
+    expect(variables["--t7-accent-pressed-hsl"]).toBe("13.87 78.15% 34.67%");
+    expect(variables["--t7-accent-foreground-hsl"]).toBe("0 0% 0%");
+    expect(variables["--t7-selected-hsl"]).toBe(variables["--t7-primary-hsl"]);
+    expect(variables["--t7-selected-foreground-hsl"]).toBe(
+      variables["--t7-primary-foreground-hsl"],
+    );
+    expect(variables["--t7-focus-hsl"]).toBe(namedBaseline["--t7-focus-hsl"]);
+    for (const role of ["success", "warning", "danger", "info"])
+      expect(variables[`--t7-${role}-hsl`]).toBe(
+        namedBaseline[`--t7-${role}-hsl`],
+      );
+    expect(variables["--t7-chart-1-hsl"]).toBe(variables["--t7-primary-hsl"]);
+    expect(variables["--t7-chart-2-hsl"]).toBe(
+      variables["--t7-primary-hover-hsl"],
+    );
+    expect(variables["--t7-chart-3-hsl"]).toBe(
+      variables["--t7-primary-active-hsl"],
+    );
+    expect(variables["--t7-control-height"]).toBe("32px");
+  });
+
+  it("keeps exact sources stable across light, dark, contrast, and motion preferences", () => {
+    const config = {
+      accent: exactColor("#d4451a"),
+      chartPalette: "monochrome" as const,
+      primary: exactColor("#318139"),
+    };
+    const light = buildThemeVariables(
+      resolveTheme({ ...config, appearance: "light" }),
+      { contrast: "more", motion: "reduced" },
+    );
+    const dark = buildThemeVariables(
+      resolveTheme({ ...config, appearance: "dark" }),
+      { contrast: "more", motion: "reduced" },
+    );
+
+    expect(light["--t7-primary-hsl"]).toBe(dark["--t7-primary-hsl"]);
+    expect(light["--t7-accent-hsl"]).toBe(dark["--t7-accent-hsl"]);
+    expect(light["--t7-focus-hsl"]).not.toBe(dark["--t7-focus-hsl"]);
+    expect(light["--t7-focus-width"]).toBe("3px");
+    expect(dark["--t7-focus-width"]).toBe("3px");
+    expect(light["--t7-motion-duration"]).toBe("0.01ms");
+    expect(dark["--t7-motion-duration"]).toBe("0.01ms");
+    expect(light["--t7-background-hsl"]).not.toBe(dark["--t7-background-hsl"]);
+  });
+
+  it("normalizes exact source input and rejects malformed values", () => {
+    expect(exactColor("#319")).toEqual({ kind: "exact", value: "#331199" });
+    expect(exactColor(" #318139 ")).toEqual({
+      kind: "exact",
+      value: "#318139",
+    });
+    expect(() => exactColor("318139")).toThrow(/#RGB or #RRGGBB/);
+    expect(() => exactColor("#12345")).toThrow(/#RGB or #RRGGBB/);
+  });
+
   it("derives white-text solid surfaces from the active chart colorway", () => {
     const variables = buildThemeVariables(
       resolveTheme({
@@ -314,7 +404,9 @@ describe("theme engine", () => {
     expect(theme.appearance).toBe("light");
     expect(theme.palette).toBe("emerald");
     expect(theme.primary).toBe("emerald");
+    expect(theme.primarySource).toBe("emerald");
     expect(theme.accent).toBe("emerald");
+    expect(theme.accentSource).toBe("emerald");
     expect(theme.canvas).toBe("balanced");
     expect(theme.chartPalette).toBe("spectrum");
     expect(theme.radius).toBe("soft");

@@ -113,8 +113,9 @@ test.describe("catalog information architecture", () => {
     // A cold Vite server transforms every published recipe route in this loop.
     // Keep the check bounded, but allow it to complete under serial full-suite load.
     test.setTimeout(90_000);
+    await page.goto("/recipes/marketing-home");
     await page.context().grantPermissions(["clipboard-write"], {
-      origin: "http://127.0.0.1:4173",
+      origin: new URL(page.url()).origin,
     });
     for (const name of Object.keys(recipeCatalog)) {
       const displayName = recipeCatalog[name].displayName ?? name;

@@ -408,7 +408,7 @@ test.describe("workbench documentation and overlay integrity", () => {
     await expect(page.locator(".studio-sidebar")).toContainText("Library");
     await page
       .locator(".studio-sidebar")
-      .getByRole("button", { name: "Library", exact: true })
+      .getByRole("button", { name: "Browse library…", exact: true })
       .click();
     const libraryMenu = page.locator(
       "#t7-overlay-root .studio-library-popover",

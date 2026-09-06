@@ -425,6 +425,25 @@
       "error"
     ]
   },
+  "HierarchyPicker": {
+    "id": "HierarchyPicker",
+    "displayName": "Hierarchy Picker",
+    "status": "implemented",
+    "category": "form",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Select nested hierarchy nodes with expansion, mixed ancestor state, optional local search, and keyboard tree navigation while leaving resource meaning to the consumer.",
+    "source": "packages/ui/src/hierarchy.tsx",
+    "recipes": [],
+    "importantProps": [
+      "items",
+      "selectedIds",
+      "onSelectionChange",
+      "expandedIds",
+      "searchable",
+      "label"
+    ]
+  },
   "Checkbox": {
     "id": "Checkbox",
     "displayName": "Checkbox",
@@ -1078,6 +1097,25 @@
       "label"
     ]
   },
+  "SectionNavigation": {
+    "id": "SectionNavigation",
+    "displayName": "Section Navigation",
+    "status": "implemented",
+    "category": "navigation",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Navigate between labelled anchors within a long form or bounded workspace without owning section state.",
+    "source": "packages/ui/src/navigation.tsx",
+    "recipes": [],
+    "importantProps": [
+      "items",
+      "activeId",
+      "defaultActiveId",
+      "onSectionChange",
+      "label",
+      "sticky"
+    ]
+  },
   "Tabs": {
     "id": "Tabs",
     "displayName": "Tabs",
@@ -1619,6 +1657,30 @@
       "error"
     ]
   },
+  "AdvancedDataGrid": {
+    "id": "AdvancedDataGrid",
+    "displayName": "Advanced Data Grid",
+    "status": "implemented",
+    "category": "table",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Edit bounded structured records in a semantic table with typed cell editors, row state, validation feedback, and keyboard traversal while leaving business rules to the consumer.",
+    "source": "packages/ui/src/data-grid.tsx",
+    "recipes": [],
+    "importantProps": [
+      "caption",
+      "columns",
+      "rows",
+      "rowKey",
+      "onCellChange",
+      "rowState",
+      "cellErrors",
+      "onRowSave",
+      "onRowCancel",
+      "selectable",
+      "footer"
+    ]
+  },
   "DataTableColumnPicker": {
     "id": "DataTableColumnPicker",
     "displayName": "Data Table Column Picker",
@@ -1828,6 +1890,25 @@
       "media",
       "metadata",
       "actions"
+    ]
+  },
+  "RevisionDiff": {
+    "id": "RevisionDiff",
+    "displayName": "Revision Diff",
+    "status": "implemented",
+    "category": "data",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Compare consumer-supplied before and after values with explicit change semantics and adjacent revision provenance.",
+    "source": "packages/ui/src/data-display.tsx",
+    "recipes": [],
+    "importantProps": [
+      "items",
+      "reason",
+      "actor",
+      "occurredAt",
+      "evidence",
+      "title"
     ]
   },
   "ProductCard": {
@@ -2577,6 +2658,27 @@
       "alt",
       "fallbackIcon",
       "fallbackLabel"
+    ]
+  },
+  "QrCode": {
+    "id": "QrCode",
+    "displayName": "QR Code",
+    "status": "implemented",
+    "category": "media",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Render an accessible, print-friendly QR mark for an opaque consumer-owned value.",
+    "source": "packages/ui/src/qr.tsx",
+    "recipes": [],
+    "importantProps": [
+      "value",
+      "label",
+      "description",
+      "size",
+      "displayValue",
+      "copyable",
+      "printable",
+      "onCopy"
     ]
   },
   "ApprovalPanel": {

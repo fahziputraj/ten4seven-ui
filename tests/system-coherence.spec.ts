@@ -617,7 +617,7 @@ test("Theme Studio explains semantic color roles and keeps focus independent of 
     page
       .getByTestId("studio-live-preview")
       .locator('[data-live-value="accent"]'),
-  ).toHaveText("amber · supporting emphasis");
+  ).toHaveText("amber · preset · supporting emphasis");
 });
 
 test("Typography Studio exposes distinct preset characters and roles", async ({
@@ -663,7 +663,7 @@ test("Global Controls expose an immediate canonical preview", async ({
     "Live. Ready to preview",
   );
   await expect(preview.locator('[data-live-value="primary"]')).toHaveText(
-    /emerald · primary role/,
+    /emerald · preset · primary role/,
   );
 
   const previewAction = preview.getByRole("button", {
@@ -679,7 +679,7 @@ test("Global Controls expose an immediate canonical preview", async ({
   await expect(liveState).toContainText("Base palette");
   await expect(liveState).toContainText("blue");
   await expect(preview.locator('[data-live-value="primary"]')).toHaveText(
-    "blue · primary role",
+    "blue · preset · primary role",
   );
 
   const after = await previewAction.evaluate(

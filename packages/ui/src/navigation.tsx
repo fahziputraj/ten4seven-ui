@@ -74,6 +74,108 @@ export function Breadcrumb({
   );
 }
 
+export interface SectionNavigationItem {
+  id: string;
+  label: ReactNode;
+}
+
+export interface SectionNavigationProps extends Omit<
+  HTMLAttributes<HTMLElement>,
+  "children" | "onChange" | "title"
+> {
+  /** Consumer-controlled active anchor, for example from a scroll spy. */
+  activeId?: string;
+  /** Initial active anchor for uncontrolled navigation. */
+  defaultActiveId?: string;
+  items: SectionNavigationItem[];
+  label?: string;
+  /** Called after an anchor is selected; it does not own scroll-spy state. */
+  onSectionChange?: (id: string) => void;
+  /** Keep the page-local navigation below the shared document sticky offset. */
+  sticky?: boolean;
+}
+
+/** Page-local anchor navigation for long forms and bounded workspaces. */
+export function SectionNavigation({
+  activeId,
+  className,
+  defaultActiveId,
+  items,
+  label = "Section navigation",
+  onSectionChange,
+  sticky = false,
+  ...props
+}: SectionNavigationProps) {
+  const [uncontrolledActiveId, setUncontrolledActiveId] = useState(
+    defaultActiveId ?? items[0]?.id ?? "",
+  );
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const selectedId = activeId ?? uncontrolledActiveId;
+  const activeItem = items.find((item) => item.id === selectedId) ?? items[0];
+
+  function select(id: string) {
+    if (activeId === undefined) setUncontrolledActiveId(id);
+    onSectionChange?.(id);
+    setMobileOpen(false);
+  }
+
+  return (
+    <nav
+      {...props}
+      aria-label={label}
+      className={cx("t7-section-navigation", className)}
+      data-sticky={sticky || undefined}
+    >
+      <div className="t7-section-navigation-desktop">
+        <ol>
+          {items.map((item) => (
+            <li key={item.id}>
+              <a
+                aria-current={selectedId === item.id ? "location" : undefined}
+                data-active={selectedId === item.id || undefined}
+                href={`#${item.id}`}
+                onClick={() => select(item.id)}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <details
+        className="t7-section-navigation-mobile"
+        onToggle={(event) => setMobileOpen(event.currentTarget.open)}
+        open={mobileOpen}
+      >
+        <summary>
+          <span className="t7-section-navigation-summary-label">
+            Current section
+          </span>
+          <span className="t7-section-navigation-summary-value">
+            {activeItem?.label ?? "Select a section"}
+          </span>
+          <T7Icon aria-hidden="true" name="chevronDown" size={16} />
+        </summary>
+        <ol>
+          {items.map((item) => (
+            <li key={item.id}>
+              <a
+                aria-current={selectedId === item.id ? "location" : undefined}
+                data-active={selectedId === item.id || undefined}
+                href={`#${item.id}`}
+                onClick={() => select(item.id)}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </details>
+    </nav>
+  );
+}
+
 export interface TabItem {
   content: ReactNode;
   disabled?: boolean;

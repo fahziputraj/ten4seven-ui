@@ -27,6 +27,7 @@ import {
   Collapsible,
   DataTable,
   Drawer,
+  exactColor,
   Input,
   IconButton,
   CommandMenu,
@@ -53,9 +54,11 @@ import type {
   PaletteName,
   RadiusName,
   ResolvedTheme,
+  ThemeColorSource,
   TypographyName,
 } from "@ten4seven/tokens";
 import {
+  buildThemeVariables,
   buildRadiusProfile,
   canvasProfiles,
   motionDurationRange,
@@ -84,6 +87,7 @@ import {
 import { PublicShowcase } from "./public-showcase";
 import { OperationalReference } from "./operational-reference";
 import { BrandExpressionProof } from "./brand-expression";
+import { FarmSyntheticProof } from "./farm-synthetic-proof";
 import {
   blockCatalog,
   categoryLabels,
@@ -96,8 +100,13 @@ import {
   recipePath,
 } from "./catalog-model";
 import {
+  adoptionProofNavigation,
+  adoptionProofNavigationLabels,
+  adoptionProofRoutePaths,
   libraryNavigation,
   brandProofRouteTitles,
+  farmSyntheticProofDescription,
+  farmSyntheticProofTitle,
   playgroundRoutePaths,
   playgroundRouteDescriptions,
   playgroundRouteTitles,
@@ -105,6 +114,7 @@ import {
   routeFromPath,
   studioNavigation,
   type PlaygroundRoute,
+  type AdoptionProofRoute,
   type RouteMatch,
 } from "./playground-routes";
 import { ReferenceHarness, type ReferenceViewState } from "./reference-harness";
@@ -112,8 +122,8 @@ import { ReferenceHarness, type ReferenceViewState } from "./reference-harness";
 type StudioSettings = {
   appearance: Appearance;
   palette: PaletteName;
-  primary: PaletteName;
-  accent: PaletteName;
+  primary: ThemeColorSource;
+  accent: ThemeColorSource;
   canvas: CanvasName;
   chartPalette: ChartPaletteName;
   radius: RadiusName;
@@ -175,6 +185,42 @@ function formatRadiusSetting(
     : `${theme.radiusValue}px`;
 }
 
+function describeColorSource(source: ThemeColorSource) {
+  return typeof source === "string"
+    ? `${source} · preset`
+    : `${source.value} · exact source`;
+}
+
+function hslToHex(value: string, fallback: string) {
+  const match = value.match(/(-?[\d.]+)\s+([\d.]+)%\s+([\d.]+)%/);
+  if (!match) return fallback;
+
+  const hue = ((Number(match[1]) % 360) + 360) % 360;
+  const saturation = Math.max(0, Math.min(100, Number(match[2]))) / 100;
+  const lightness = Math.max(0, Math.min(100, Number(match[3]))) / 100;
+  const chroma = (1 - Math.abs(2 * lightness - 1)) * saturation;
+  const normalizedHue = hue / 60;
+  const second = chroma * (1 - Math.abs((normalizedHue % 2) - 1));
+  const matchValue = lightness - chroma / 2;
+  const [red, green, blue] =
+    normalizedHue < 1
+      ? [chroma, second, 0]
+      : normalizedHue < 2
+        ? [second, chroma, 0]
+        : normalizedHue < 3
+          ? [0, chroma, second]
+          : normalizedHue < 4
+            ? [0, second, chroma]
+            : normalizedHue < 5
+              ? [second, 0, chroma]
+              : [chroma, 0, second];
+  const toHex = (channel: number) =>
+    Math.round((channel + matchValue) * 255)
+      .toString(16)
+      .padStart(2, "0");
+  return `#${toHex(red)}${toHex(green)}${toHex(blue)}`;
+}
+
 function getThemeChange(
   previous: ResolvedTheme,
   next: ResolvedTheme,
@@ -182,8 +228,16 @@ function getThemeChange(
   const axes: Array<[string, string, string]> = [
     ["Appearance", previous.appearance, next.appearance],
     ["Base palette", previous.palette, next.palette],
-    ["Main action color", previous.primary, next.primary],
-    ["Accent color", previous.accent, next.accent],
+    [
+      "Main action color",
+      describeColorSource(previous.primarySource),
+      describeColorSource(next.primarySource),
+    ],
+    [
+      "Accent color",
+      describeColorSource(previous.accentSource),
+      describeColorSource(next.accentSource),
+    ],
     ["Canvas", previous.canvas, next.canvas],
     ["Chart colorway", previous.chartPalette, next.chartPalette],
     ["Radius", formatRadiusSetting(previous), formatRadiusSetting(next)],
@@ -252,6 +306,12 @@ const routeIcons: Record<PlaygroundRoute, IconName> = {
   "Public Showcase": "dashboard",
 };
 
+const adoptionProofIcons: Record<AdoptionProofRoute, IconName> = {
+  "Farm Synthetic": "farm",
+  "Auth · Neutral": "user",
+  "Auth · AAPM Academy": "book",
+};
+
 const studioNavGroups: Array<{
   label: string;
   routes: PlaygroundRoute[];
@@ -260,6 +320,18 @@ const studioNavGroups: Array<{
   { label: "Library", routes: libraryNavigation },
   { label: "References", routes: referenceNavigation },
 ];
+
+function isPlaygroundNavigationActive(
+  route: PlaygroundRoute,
+  activePath: string,
+) {
+  const routePath = playgroundRoutePaths[route];
+  return (
+    activePath === routePath ||
+    ((route === "Components" || route === "Blocks" || route === "Recipes") &&
+      activePath.startsWith(`${routePath}/`))
+  );
+}
 
 function LibraryMenu({
   activePath,
@@ -271,11 +343,6 @@ function LibraryMenu({
   onNavigatePath: (path: string) => void;
 }) {
   const [open, setOpen] = useState(false);
-  const isLibraryActive = libraryNavigation.some(
-    (route) =>
-      activePath === playgroundRoutePaths[route] ||
-      (route === "Components" && activePath.startsWith("/components")),
-  );
 
   const goRoute = (route: PlaygroundRoute) => {
     setOpen(false);
@@ -293,9 +360,7 @@ function LibraryMenu({
       onOpenChange={setOpen}
       open={open}
       side="right"
-      trigger={
-        <NavItem active={isLibraryActive} icon="components" label="Library" />
-      }
+      trigger={<NavItem icon="components" label="Browse library…" />}
     >
       <div className="studio-library-menu">
         <div className="studio-library-menu-heading">
@@ -370,8 +435,49 @@ function WorkbenchNavigation({
   onNavigate: (route: PlaygroundRoute) => void;
   onNavigatePath: (path: string) => void;
 }) {
+  const academyIdentityId = useId();
+  const navigationRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    if (mode !== "sidebar") return;
+
+    const navigation = navigationRef.current;
+    const scrollContainer =
+      navigation?.closest<HTMLElement>(".studio-nav-groups");
+    if (!scrollContainer) return;
+
+    let cancelled = false;
+    const alignActiveItem = () => {
+      const activeItem = navigation?.querySelector<HTMLElement>(
+        '[data-active="true"]',
+      );
+      if (cancelled || !activeItem) return;
+
+      const containerRect = scrollContainer.getBoundingClientRect();
+      const itemRect = activeItem.getBoundingClientRect();
+      const topOverflow = itemRect.top - containerRect.top;
+      const bottomOverflow = itemRect.bottom - containerRect.bottom;
+
+      // Keep route visibility bounded to the sidebar's own scroll owner. The
+      // direct scroll adjustment avoids moving the document or stealing focus.
+      if (topOverflow < 0) {
+        scrollContainer.scrollTop += topOverflow;
+      } else if (bottomOverflow > 0) {
+        scrollContainer.scrollTop += bottomOverflow;
+      }
+    };
+
+    alignActiveItem();
+    const frame = window.requestAnimationFrame(alignActiveItem);
+    document.fonts?.ready.then(alignActiveItem);
+    return () => {
+      cancelled = true;
+      window.cancelAnimationFrame(frame);
+    };
+  }, [activePath, mode]);
+
   return (
-    <div className="studio-navigation-tree">
+    <div className="studio-navigation-tree" ref={navigationRef}>
       {studioNavGroups.map((group) => (
         <div
           aria-label={group.label}
@@ -379,35 +485,56 @@ function WorkbenchNavigation({
           key={group.label}
           role="group"
         >
-          {group.label === "Library" && mode === "sidebar" ? (
-            <>
-              <span className="studio-nav-label">{group.label}</span>
-              <LibraryMenu
-                activePath={activePath}
-                onNavigate={onNavigate}
-                onNavigatePath={onNavigatePath}
+          <span className="studio-nav-label">{group.label}</span>
+          {group.routes.map((route) => {
+            const isActive = isPlaygroundNavigationActive(route, activePath);
+            return (
+              <NavItem
+                active={isActive}
+                aria-current={isActive ? "page" : undefined}
+                icon={routeIcons[route]}
+                key={route}
+                label={route}
+                onClick={() => onNavigate(route)}
               />
-            </>
-          ) : (
-            <>
-              <span className="studio-nav-label">{group.label}</span>
-              {group.routes.map((route) => {
-                const isActive = activePath === playgroundRoutePaths[route];
-                return (
-                  <NavItem
-                    active={isActive}
-                    aria-current={isActive ? "page" : undefined}
-                    icon={routeIcons[route]}
-                    key={route}
-                    label={route}
-                    onClick={() => onNavigate(route)}
-                  />
-                );
-              })}
-            </>
-          )}
+            );
+          })}
+          {group.label === "Library" && mode === "sidebar" ? (
+            <LibraryMenu
+              activePath={activePath}
+              onNavigate={onNavigate}
+              onNavigatePath={onNavigatePath}
+            />
+          ) : null}
         </div>
       ))}
+      <div
+        aria-label="Adoption Proofs"
+        className="studio-nav-group adoption-proof-nav-group"
+        role="group"
+      >
+        <span className="studio-nav-label">Adoption Proofs</span>
+        {adoptionProofNavigation.map((route) => {
+          const isActive = activePath === adoptionProofRoutePaths[route];
+          const isAcademy = route === "Auth · AAPM Academy";
+          return (
+            <NavItem
+              active={isActive}
+              aria-describedby={isAcademy ? academyIdentityId : undefined}
+              aria-current={isActive ? "page" : undefined}
+              aria-label={isAcademy ? route : undefined}
+              icon={adoptionProofIcons[route]}
+              key={route}
+              label={adoptionProofNavigationLabels[route]}
+              onClick={() => onNavigatePath(adoptionProofRoutePaths[route])}
+              title={isAcademy ? route : undefined}
+            />
+          );
+        })}
+        <span className="sr-only" id={academyIdentityId}>
+          Canonical identity: AAPM Academy.
+        </span>
+      </div>
     </div>
   );
 }
@@ -698,8 +825,8 @@ function Studio({
           : theme.appearance,
       ],
       ["Base palette", theme.palette],
-      ["Main action", theme.primary],
-      ["Accent color", theme.accent],
+      ["Main action", describeColorSource(theme.primarySource)],
+      ["Accent color", describeColorSource(theme.accentSource)],
       ["Canvas", theme.canvas],
       ["Chart colorway", theme.chartPalette],
       [
@@ -1009,28 +1136,23 @@ function Studio({
                             </div>
                           </div>
                           <div className="studio-control-subgrid">
-                            <PaletteRoleSelect
+                            <ColorSourceControl
                               hint="Primary actions, links, and selected states."
                               label="Main action color"
                               settingKey="primary"
-                              value={theme.primary}
+                              source={theme.primarySource}
                             />
-                            <PaletteRoleSelect
+                            <ColorSourceControl
                               hint="Supporting emphasis uses this accent. Focus color is independently resolved for visibility."
                               label="Accent color"
                               settingKey="accent"
-                              value={theme.accent}
+                              source={theme.accentSource}
                             />
                             <CanvasPicker
                               appearance={theme.appearance}
                               value={theme.canvas}
                             />
-                            <ChartPalettePicker
-                              accent={theme.accent}
-                              palette={theme.palette}
-                              primary={theme.primary}
-                              value={theme.chartPalette}
-                            />
+                            <ChartPalettePicker value={theme.chartPalette} />
                           </div>
                         </section>
 
@@ -1718,10 +1840,10 @@ function StudioLivePreview({
         <summary>Semantic diagnostics</summary>
         <div className="studio-live-preview-diagnostic-grid">
           <span className="studio-live-preview-meta" data-live-value="primary">
-            {theme.primary} · primary role
+            {describeColorSource(theme.primarySource)} · primary role
           </span>
           <span className="studio-live-preview-meta" data-live-value="accent">
-            {theme.accent} · supporting emphasis
+            {describeColorSource(theme.accentSource)} · supporting emphasis
           </span>
           <span className="studio-live-preview-meta" data-live-value="density">
             {theme.density} density · shared surface scale
@@ -1880,24 +2002,30 @@ function MotionSlider({ value }: { value: number }) {
   );
 }
 
-function PaletteRoleSelect({
+function ColorSourceControl({
   label,
   hint,
   settingKey,
-  value,
+  source,
 }: {
   label: string;
   hint: string;
   settingKey: "primary" | "accent";
-  value: PaletteName;
+  source: ThemeColorSource;
 }) {
-  const { setTheme } = useTen4SevenTheme();
+  const { setTheme, theme } = useTen4SevenTheme();
+  const variables = buildThemeVariables(theme);
   const swatch =
     settingKey === "primary"
-      ? paletteProfiles[value].primary
-      : paletteProfiles[value].accent;
+      ? variables["--t7-primary-hsl"]
+      : variables["--t7-accent-hsl"];
+  const sourcePalette = settingKey === "primary" ? theme.primary : theme.accent;
+  const inputValue =
+    typeof source === "string"
+      ? hslToHex(swatch, "#000000")
+      : source.value.toLowerCase();
 
-  function updateProfile(next: PaletteName) {
+  function updateSource(next: ThemeColorSource) {
     if (settingKey === "primary") setTheme({ primary: next });
     else setTheme({ accent: next });
   }
@@ -1914,15 +2042,40 @@ function PaletteRoleSelect({
       <Select
         hint={hint}
         label={label}
-        value={value}
-        onChange={(event) => updateProfile(event.target.value as PaletteName)}
+        value={typeof source === "string" ? source : ""}
+        onChange={(event) => {
+          const next = event.target.value as PaletteName;
+          if (paletteNames.includes(next)) updateSource(next);
+        }}
       >
+        {typeof source === "string" ? null : (
+          <option disabled value="">
+            Exact custom source
+          </option>
+        )}
         {paletteNames.map((option) => (
           <option key={option} value={option}>
             {option}
           </option>
         ))}
       </Select>
+      <Input
+        data-testid={`exact-${settingKey}-source`}
+        hint={`Sets an exact sRGB source for ${
+          settingKey === "primary" ? "action roles" : "supporting emphasis"
+        }; choosing a preset above returns to its curated family.`}
+        label={`Exact ${label.toLowerCase()} source`}
+        onChange={(event) =>
+          updateSource(exactColor(event.currentTarget.value))
+        }
+        type="color"
+        value={inputValue}
+      />
+      <Typography typeRole="caption">
+        {typeof source === "string"
+          ? `Using ${sourcePalette} preset.`
+          : `Using exact source ${source.value}.`}
+      </Typography>
     </div>
   );
 }
@@ -2496,34 +2649,23 @@ function CanvasPicker({
   );
 }
 
-function ChartPalettePicker({
-  accent,
-  palette,
-  primary,
-  value,
-}: {
-  accent: PaletteName;
-  palette: PaletteName;
-  primary: PaletteName;
-  value: ChartPaletteName;
-}) {
-  const { setTheme } = useTen4SevenTheme();
-  const baseProfile = paletteProfiles[palette];
-  const primaryProfile = paletteProfiles[primary];
-  const accentProfile = paletteProfiles[accent];
+function ChartPalettePicker({ value }: { value: ChartPaletteName }) {
+  const { setTheme, theme } = useTen4SevenTheme();
+  const variables = buildThemeVariables(theme);
+  const baseProfile = paletteProfiles[theme.palette];
 
   const optionColors: Record<ChartPaletteName, string[]> = {
     spectrum: baseProfile.chart.map((color) => `hsl(${color})`),
     four: [
-      `hsl(${primaryProfile.primary})`,
-      `hsl(${accentProfile.accent})`,
+      `hsl(${variables["--t7-primary-hsl"]})`,
+      `hsl(${variables["--t7-accent-hsl"]})`,
       `hsl(${baseProfile.chart[2]})`,
       `hsl(${baseProfile.chart[3]})`,
     ],
     monochrome: [
-      `hsl(${primaryProfile.primary})`,
-      `hsl(${primaryProfile.primaryHover})`,
-      `hsl(${primaryProfile.primaryActive})`,
+      `hsl(${variables["--t7-primary-hsl"]})`,
+      `hsl(${variables["--t7-primary-hover-hsl"]})`,
+      `hsl(${variables["--t7-primary-active-hsl"]})`,
     ],
   };
 
@@ -2714,34 +2856,38 @@ export default function App() {
     const routeTitle =
       routeMatch.kind === "known"
         ? playgroundRouteTitles[routeMatch.route]
-        : routeMatch.kind === "brand-proof"
-          ? brandProofRouteTitles[routeMatch.profileId]
-          : routeMatch.kind === "component-family"
-            ? `ten4seven UI — ${categoryLabels[routeMatch.category] ?? routeMatch.category}`
-            : routeMatch.kind === "component-detail"
-              ? `ten4seven UI — ${componentCatalog[routeMatch.name].displayName ?? routeMatch.name}`
-              : routeMatch.kind === "recipe-detail"
-                ? `ten4seven UI — ${recipeCatalog[routeMatch.name].displayName ?? routeMatch.name}`
-                : routeMatch.kind === "block-detail"
-                  ? `ten4seven UI — ${blockCatalog[routeMatch.name].displayName ?? routeMatch.name}`
-                  : "ten4seven UI — Route not found";
+        : routeMatch.kind === "farm-synthetic"
+          ? farmSyntheticProofTitle
+          : routeMatch.kind === "brand-proof"
+            ? brandProofRouteTitles[routeMatch.profileId]
+            : routeMatch.kind === "component-family"
+              ? `ten4seven UI — ${categoryLabels[routeMatch.category] ?? routeMatch.category}`
+              : routeMatch.kind === "component-detail"
+                ? `ten4seven UI — ${componentCatalog[routeMatch.name].displayName ?? routeMatch.name}`
+                : routeMatch.kind === "recipe-detail"
+                  ? `ten4seven UI — ${recipeCatalog[routeMatch.name].displayName ?? routeMatch.name}`
+                  : routeMatch.kind === "block-detail"
+                    ? `ten4seven UI — ${blockCatalog[routeMatch.name].displayName ?? routeMatch.name}`
+                    : "ten4seven UI — Route not found";
     document.title = routeTitle;
     const description = document.querySelector('meta[name="description"]');
     description?.setAttribute(
       "content",
       routeMatch.kind === "known"
         ? playgroundRouteDescriptions[routeMatch.route]
-        : routeMatch.kind === "brand-proof"
-          ? "Brand expression proof for the canonical Authentication recipe in ten4seven UI."
-          : routeMatch.kind === "component-family"
-            ? `Canonical ${categoryLabels[routeMatch.category] ?? routeMatch.category} components in the ten4seven UI catalog.`
-            : routeMatch.kind === "component-detail"
-              ? componentCatalog[routeMatch.name].purpose
-              : routeMatch.kind === "recipe-detail"
-                ? recipeCatalog[routeMatch.name].purpose
-                : routeMatch.kind === "block-detail"
-                  ? blockCatalog[routeMatch.name].purpose
-                  : "The requested ten4seven UI playground route does not exist.",
+        : routeMatch.kind === "farm-synthetic"
+          ? farmSyntheticProofDescription
+          : routeMatch.kind === "brand-proof"
+            ? "Brand expression proof for the canonical Authentication recipe in ten4seven UI."
+            : routeMatch.kind === "component-family"
+              ? `Canonical ${categoryLabels[routeMatch.category] ?? routeMatch.category} components in the ten4seven UI catalog.`
+              : routeMatch.kind === "component-detail"
+                ? componentCatalog[routeMatch.name].purpose
+                : routeMatch.kind === "recipe-detail"
+                  ? recipeCatalog[routeMatch.name].purpose
+                  : routeMatch.kind === "block-detail"
+                    ? blockCatalog[routeMatch.name].purpose
+                    : "The requested ten4seven UI playground route does not exist.",
     );
   }, [routeMatch]);
 
@@ -2828,13 +2974,25 @@ export default function App() {
     routeMatch.kind === "known" &&
     routeMatch.route === "Operational Patterns"
   ) {
-    routeContent = <OperationalReference onOpenSettings={openThemeSettings} />;
+    routeContent = (
+      <OperationalReference
+        onNavigatePath={navigateToPath}
+        onOpenSettings={openThemeSettings}
+      />
+    );
   } else if (
     routeMatch.kind === "known" &&
     routeMatch.route === "Public Showcase"
   ) {
     routeContent = (
       <PublicShowcase
+        onNavigatePath={navigateToPath}
+        onOpenSettings={openThemeSettings}
+      />
+    );
+  } else if (routeMatch.kind === "farm-synthetic") {
+    routeContent = (
+      <FarmSyntheticProof
         onNavigatePath={navigateToPath}
         onOpenSettings={openThemeSettings}
       />

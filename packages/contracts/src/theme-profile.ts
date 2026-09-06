@@ -9,10 +9,15 @@ import type {
   MotionRoleScale,
   PaletteName,
   RadiusName,
+  ThemeColorSource,
   ThemeProfile,
   TypographyName,
 } from "./types.ts";
-import { CONTRACT_SCHEMA_VERSION } from "./types.ts";
+import {
+  CONTRACT_SCHEMA_VERSION,
+  exactColor,
+  isExactColorSource,
+} from "./types.ts";
 
 export const THEME_PROFILE_ID = "default" as const;
 export const THEME_MOTION_ANCHOR_RANGE = Object.freeze({
@@ -116,6 +121,16 @@ function pick<T extends string>(
     : fallback;
 }
 
+function pickColorSource(
+  value: unknown,
+  fallback: ThemeColorSource,
+): ThemeColorSource {
+  if (isExactColorSource(value)) return exactColor(value.value);
+  return typeof value === "string" && palettes.includes(value as PaletteName)
+    ? (value as PaletteName)
+    : fallback;
+}
+
 function normalizeAnchor(value: unknown, fallback: number): number {
   const candidate =
     typeof value === "number" && Number.isFinite(value) ? value : fallback;
@@ -207,9 +222,13 @@ export function normalizeThemeProfile(
     readonly id?: string;
     readonly appearance?: Appearance;
     readonly palette?: PaletteName | { readonly base?: PaletteName };
-    readonly primary?: PaletteName;
-    readonly action?: { readonly primary?: PaletteName };
-    readonly accent?: PaletteName | { readonly source?: PaletteName };
+    readonly primary?: ThemeColorSource;
+    readonly action?: { readonly primary?: ThemeColorSource };
+    readonly accent?:
+      | ThemeColorSource
+      | {
+          readonly source?: ThemeColorSource;
+        };
     readonly canvas?: CanvasName | { readonly mode?: CanvasName };
     readonly chartPalette?: ChartPaletteName;
     readonly chart?: { readonly palette?: ChartPaletteName };
@@ -237,7 +256,9 @@ export function normalizeThemeProfile(
       ? source.action?.primary
       : (source.primary ?? basePalette);
   const accentPalette =
-    typeof source.accent === "object" ? source.accent?.source : source.accent;
+    typeof source.accent === "object" && !isExactColorSource(source.accent)
+      ? source.accent?.source
+      : source.accent;
   const canvas =
     typeof source.canvas === "object" ? source.canvas?.mode : source.canvas;
   const chartPalette = source.chart?.palette ?? source.chartPalette;
@@ -285,16 +306,14 @@ export function normalizeThemeProfile(
       base: pick(basePalette, palettes, DEFAULT_THEME_PROFILE.palette.base),
     },
     action: {
-      primary: pick(
+      primary: pickColorSource(
         primaryPalette,
-        palettes,
         DEFAULT_THEME_PROFILE.action.primary,
       ),
     },
     accent: {
-      source: pick(
+      source: pickColorSource(
         accentPalette ?? primaryPalette ?? basePalette,
-        palettes,
         DEFAULT_THEME_PROFILE.accent.source,
       ),
     },
@@ -366,8 +385,14 @@ export function themeProfileToLegacyConfig(
 export interface ResolvedThemeLike {
   readonly appearance: Exclude<Appearance, "system">;
   readonly palette: PaletteName;
+  /** Legacy named fallback retained for consumers that have not read source metadata. */
   readonly primary: PaletteName;
+  /** The canonical runtime action source when available. */
+  readonly primarySource?: ThemeColorSource;
+  /** Legacy named fallback retained for consumers that have not read source metadata. */
   readonly accent: PaletteName;
+  /** The canonical runtime accent source when available. */
+  readonly accentSource?: ThemeColorSource;
   readonly canvas: CanvasName;
   readonly chartPalette: ChartPaletteName;
   readonly radius: RadiusName;
@@ -385,6 +410,8 @@ export function themeProfileFromResolvedTheme(
 ): ThemeProfile {
   return normalizeThemeProfile({
     ...theme,
+    primary: theme.primarySource ?? theme.primary,
+    accent: theme.accentSource ?? theme.accent,
     motionProfile,
   });
 }

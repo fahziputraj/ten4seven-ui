@@ -66,7 +66,9 @@ function projectRecipe(name, recipe) {
     ...(sourceRecipe.shell ? { shell: sourceRecipe.shell } : {}),
     ...(recipe.blocks?.length ? { blocks: recipe.blocks } : {}),
     ...(recipe.blockRoles ? { blockRoles: recipe.blockRoles } : {}),
-    ...(recipe.icons?.length ? { icons: recipe.icons } : {}),
+    ...((sourceRecipe.icons ?? recipe.icons)?.length
+      ? { icons: sourceRecipe.icons ?? recipe.icons }
+      : {}),
     ...(sourceRecipe.operational
       ? { operational: sourceRecipe.operational }
       : recipe.operational
@@ -176,6 +178,7 @@ export async function buildProjections() {
         entityList: "packages/contracts/src/entity-list.ts",
         entityDetail: "packages/contracts/src/entity-detail.ts",
         authentication: "packages/contracts/src/authentication.ts",
+        operationalPatterns: "packages/contracts/src/operational-patterns.ts",
       },
       defaultRetrieval: [
         "generated/index.json",

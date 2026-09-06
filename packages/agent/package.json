@@ -4,29 +4,29 @@
   "private": true,
   "type": "module",
   "files": [
-    "src",
+    "dist",
     "generated"
   ],
   "exports": {
     ".": {
-      "types": "./src/index.ts",
-      "import": "./src/node.mjs",
-      "default": "./src/node.mjs"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/node.mjs",
+      "default": "./dist/node.mjs"
     },
     "./core": {
-      "types": "./src/core.d.mts",
-      "import": "./src/core.mjs",
-      "default": "./src/core.mjs"
+      "types": "./dist/core.d.ts",
+      "import": "./dist/core.mjs",
+      "default": "./dist/core.mjs"
     },
     "./retrieval": {
-      "types": "./src/retrieval.d.mts",
-      "import": "./src/retrieval.mjs",
-      "default": "./src/retrieval.mjs"
+      "types": "./dist/retrieval.d.ts",
+      "import": "./dist/retrieval.mjs",
+      "default": "./dist/retrieval.mjs"
     },
     "./node": {
-      "types": "./src/node.d.mts",
-      "import": "./src/node.mjs",
-      "default": "./src/node.mjs"
+      "types": "./dist/node.d.ts",
+      "import": "./dist/node.mjs",
+      "default": "./dist/node.mjs"
     },
     "./generated": {
       "types": "./generated/index.d.mts",
@@ -34,15 +34,17 @@
       "default": "./generated/index.mjs"
     },
     "./runtime": {
-      "types": "./src/runtime.d.mts",
-      "import": "./src/runtime.mjs",
-      "default": "./src/runtime.mjs"
+      "types": "./dist/runtime.d.ts",
+      "import": "./dist/runtime.mjs",
+      "default": "./dist/runtime.mjs"
     }
   },
-  "dependencies": {
-    "@ten4seven/contracts": "workspace:*"
+  "devDependencies": {
+    "rollup": "^4.62.5",
+    "rollup-plugin-dts": "^6.2.1"
   },
   "scripts": {
+    "build": "node ./scripts/build-package.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   }
 }

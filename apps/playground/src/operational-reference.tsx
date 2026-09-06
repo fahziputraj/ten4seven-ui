@@ -25,6 +25,8 @@ import {
   Radio,
   RadioGroup,
   RecordSummary,
+  RevisionDiff,
+  SectionNavigation,
   Sidebar,
   Sparkline,
   StatusChip,
@@ -41,7 +43,7 @@ import {
 } from "@ten4seven/ui";
 
 type OperationalView =
-  "tower" | "process" | "load-route" | "receiving" | "entity";
+  "tower" | "process" | "readiness" | "load-route" | "receiving" | "entity";
 
 type ExceptionRecord = {
   age: string;
@@ -51,6 +53,29 @@ type ExceptionRecord = {
   owner: string;
   severity: "Critical" | "High" | "Medium";
   state: string;
+};
+
+type ReadinessState = "ready" | "blocked" | "incomplete";
+
+type ReadinessFixture = {
+  blockers: Array<{
+    code: string;
+    reason: string;
+    resolution: string;
+  }>;
+  description: string;
+  evaluation: string;
+  freshness: string;
+  icon: IconName;
+  id: string;
+  nextAction: string;
+  resultLabel: string;
+  satisfiedConditions: string[];
+  source: string;
+  state: ReadinessState;
+  subject: string;
+  target: string;
+  tone: StatusTone;
 };
 
 const operationalViews: Array<{
@@ -78,6 +103,15 @@ const operationalViews: Array<{
     label: "Process workspace",
     overline: "Process Workspace · Operational Kanban · Activity Stream",
     title: "Order execution workspace",
+  },
+  {
+    description:
+      "Explain a consumer-evaluated readiness result, ordered blockers, resolution hints, and freshness without turning the review into a human decision.",
+    icon: "check",
+    key: "readiness",
+    label: "Readiness review",
+    overline: "Readiness Review · Eligibility · Blockers",
+    title: "Can this object proceed?",
   },
   {
     description:
@@ -284,6 +318,85 @@ const routeStops = [
     label: "UD Kencana",
     meta: "Future · unload 1,000 kg",
     state: "upcoming" as const,
+  },
+] as const;
+
+const readinessFixtures: ReadinessFixture[] = [
+  {
+    blockers: [],
+    description:
+      "All consumer-supplied conditions are currently satisfied for the target action.",
+    evaluation: "Sep 6, 2026 · 08:42",
+    freshness: "Fresh · evaluation v4",
+    icon: "check",
+    id: "readiness-ready",
+    nextAction: "Dispatch workspace can consume this result.",
+    resultLabel: "Ready",
+    satisfiedConditions: [
+      "Inventory allocation confirmed",
+      "Dispatch documents present",
+    ],
+    source:
+      "Synthetic readiness service · source detail remains consumer-owned",
+    state: "ready",
+    subject: "Order SO-260903-022",
+    target: "Release dispatch",
+    tone: "success",
+  },
+  {
+    blockers: [
+      {
+        code: "PAYMENT-TERM",
+        reason: "Required payment-term approval is not recorded.",
+        resolution: "Record the accountable approval in the payment workflow.",
+      },
+      {
+        code: "CREDIT-CHECK",
+        reason:
+          "The latest credit review is outside the consumer's freshness window.",
+        resolution: "Request a current credit review before release.",
+      },
+    ],
+    description:
+      "The consumer has evaluated the request but two factual conditions block the target action.",
+    evaluation: "Sep 6, 2026 · 08:31",
+    freshness: "Fresh · evaluation v9",
+    icon: "danger",
+    id: "readiness-blocked",
+    nextAction:
+      "Resolve the listed conditions before requesting payment release.",
+    resultLabel: "Blocked",
+    satisfiedConditions: ["Invoice is posted"],
+    source:
+      "Synthetic payment eligibility result · no payment policy is implemented here",
+    state: "blocked",
+    subject: "Invoice INV-260903-114",
+    target: "Release payment",
+    tone: "danger",
+  },
+  {
+    blockers: [
+      {
+        code: "RECEIVING-COUNT",
+        reason: "Physical receiving count is still in progress.",
+        resolution: "Complete the count and submit the supporting evidence.",
+      },
+    ],
+    description:
+      "The consumer cannot yet confirm every condition needed for the target action.",
+    evaluation: "Sep 6, 2026 · 08:18",
+    freshness: "In progress · evaluation v3",
+    icon: "warning",
+    id: "readiness-incomplete",
+    nextAction: "Finish receiving evidence, then let the consumer reevaluate.",
+    resultLabel: "Incomplete",
+    satisfiedConditions: ["Vehicle arrival recorded"],
+    source:
+      "Synthetic receiving readiness result · reevaluation stays consumer-owned",
+    state: "incomplete",
+    subject: "Receipt RC-3841",
+    target: "Post accepted inventory",
+    tone: "warning",
   },
 ] as const;
 
@@ -1006,9 +1119,12 @@ function ReceivingConsole() {
 }
 
 function EntityWorkspace({ onOpenDecision }: { onOpenDecision: () => void }) {
+  const [activeSection, setActiveSection] = useState("entity-summary");
+
   return (
     <div className="operational-workspace" data-testid="entity-view">
       <RecordSummary
+        id="entity-summary"
         actions={
           <Button leadingIcon="approve" onClick={onOpenDecision}>
             Review decision
@@ -1027,6 +1143,20 @@ function EntityWorkspace({ onOpenDecision }: { onOpenDecision: () => void }) {
           </>
         }
         title="PT Tani Makmur"
+      />
+
+      <SectionNavigation
+        activeId={activeSection}
+        items={[
+          { id: "entity-summary", label: "Summary" },
+          { id: "entity-current-work", label: "Current work" },
+          { id: "entity-relationship-signals", label: "Relationship signals" },
+          { id: "entity-revision-context", label: "Revision context" },
+          { id: "entity-activity", label: "Activity & audit" },
+        ]}
+        label="Entity sections"
+        onSectionChange={setActiveSection}
+        sticky
       />
 
       <KPICluster
@@ -1062,7 +1192,7 @@ function EntityWorkspace({ onOpenDecision }: { onOpenDecision: () => void }) {
       />
 
       <div className="operational-entity-grid">
-        <Card>
+        <Card id="entity-current-work">
           <CardHeader>
             <div>
               <CardTitle>Current work</CardTitle>
@@ -1090,7 +1220,7 @@ function EntityWorkspace({ onOpenDecision }: { onOpenDecision: () => void }) {
             />
           </CardContent>
         </Card>
-        <Card>
+        <Card id="entity-relationship-signals">
           <CardHeader>
             <div>
               <CardTitle>Relationship signals</CardTitle>
@@ -1117,7 +1247,67 @@ function EntityWorkspace({ onOpenDecision }: { onOpenDecision: () => void }) {
         </Card>
       </div>
 
-      <Card>
+      <Card className="operational-revision-card" id="entity-revision-context">
+        <CardHeader>
+          <div>
+            <CardTitle>Latest revision context</CardTitle>
+            <CardDescription>
+              Compare the receiving correction while keeping its reason, actor,
+              timestamp, and evidence in the same reading order.
+            </CardDescription>
+          </div>
+          <T7Icon aria-hidden="true" name="edit" size={20} />
+        </CardHeader>
+        <CardContent>
+          <RevisionDiff
+            actor="Nadia Putri · Warehouse QA"
+            evidence="RC-3841 receiving memo · evidence-2026-09-03-1428"
+            items={[
+              {
+                after: 376,
+                before: 400,
+                change: "changed",
+                context: "units received",
+                label: "Received quantity",
+              },
+              {
+                after: 3,
+                change: "added",
+                context: "units isolated",
+                label: "Damaged units",
+              },
+              {
+                after: "Needs QA review",
+                before: "Pending count",
+                change: "changed",
+                label: "Receipt status",
+              },
+              {
+                after: "Sep 6, 2026",
+                before: "Sep 5, 2026",
+                change: "changed",
+                label: "Expected delivery",
+              },
+              {
+                after: "PO-260827-044",
+                before: "PO-260827-044",
+                change: "unchanged",
+                label: "Supplier reference",
+              },
+              {
+                before: "Manual recount requested",
+                change: "removed",
+                label: "Temporary note",
+              },
+            ]}
+            occurredAt="Sep 3, 2026 · 14:28"
+            reason="Three damaged units were isolated during receiving; retain the receipt for QA review."
+            title="RC-3841 field changes"
+          />
+        </CardContent>
+      </Card>
+
+      <Card id="entity-activity">
         <CardHeader>
           <div>
             <CardTitle>Entity activity and audit trail</CardTitle>
@@ -1162,6 +1352,113 @@ function EntityWorkspace({ onOpenDecision }: { onOpenDecision: () => void }) {
   );
 }
 
+function ReadinessReview() {
+  return (
+    <div className="operational-workspace" data-testid="readiness-review-view">
+      <Alert
+        description="This reference presents values already evaluated by a consumer. Ten4Seven renders the result and resolution context; it does not calculate eligibility, thresholds, permissions, or reevaluate state."
+        title="Readiness is not a human decision"
+        tone="info"
+      />
+
+      <div className="operational-readiness-grid">
+        {readinessFixtures.map((fixture) => (
+          <section
+            aria-label={`${fixture.resultLabel} readiness example`}
+            className="operational-readiness-state"
+            data-readiness-state={fixture.state}
+            key={fixture.id}
+          >
+            <Card className="operational-readiness-card">
+              <CardHeader className="operational-readiness-header">
+                <div>
+                  <Typography typeRole="overline">Evaluated result</Typography>
+                  <Typography as="p" typeRole="body-sm">
+                    {fixture.description}
+                  </Typography>
+                </div>
+                <StatusChip icon={fixture.icon} tone={fixture.tone}>
+                  {fixture.resultLabel}
+                </StatusChip>
+              </CardHeader>
+              <CardContent>
+                <RecordSummary
+                  description={`Target action: ${fixture.target}`}
+                  eyebrow="Readiness subject"
+                  title={fixture.subject}
+                />
+                <KeyValueList
+                  items={[
+                    { label: "Target action", value: fixture.target },
+                    { label: "Evaluated at", value: fixture.evaluation },
+                    { label: "Freshness", value: fixture.freshness },
+                  ]}
+                />
+                <Alert
+                  description={
+                    fixture.state === "ready"
+                      ? "The consumer supplied no current blockers for this target action."
+                      : `${fixture.blockers.length} consumer-supplied condition${fixture.blockers.length === 1 ? "" : "s"} require attention.`
+                  }
+                  title={`${fixture.resultLabel}: consumer result`}
+                  tone={fixture.tone}
+                />
+
+                {fixture.blockers.length > 0 ? (
+                  <div className="operational-readiness-blocker-group">
+                    <Typography as="h3" typeRole="heading-sm">
+                      Blockers
+                    </Typography>
+                    <ol
+                      aria-label={`${fixture.resultLabel} blockers`}
+                      className="operational-readiness-blockers"
+                    >
+                      {fixture.blockers.map((blocker) => (
+                        <li key={blocker.code}>
+                          <Typography as="strong" typeRole="label">
+                            {blocker.code}
+                          </Typography>
+                          <Typography as="p" typeRole="body-sm">
+                            {blocker.reason}
+                          </Typography>
+                          <Typography as="p" typeRole="caption">
+                            Resolution hint: {blocker.resolution}
+                          </Typography>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                ) : null}
+
+                {fixture.satisfiedConditions.length > 0 ? (
+                  <div className="operational-readiness-satisfied">
+                    <Typography as="h3" typeRole="heading-sm">
+                      Satisfied conditions
+                    </Typography>
+                    <ul>
+                      {fixture.satisfiedConditions.map((condition) => (
+                        <li key={condition}>{condition}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+
+                <div className="operational-readiness-next">
+                  <Typography typeRole="overline">Next context</Typography>
+                  <Typography as="p" typeRole="body-sm">
+                    {fixture.nextAction}
+                  </Typography>
+                  <Typography typeRole="caption">{fixture.source}</Typography>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function DecisionDrawerContent() {
   return (
     <div className="operational-drawer-stack">
@@ -1194,10 +1491,12 @@ function DecisionDrawerContent() {
 }
 
 export interface OperationalReferenceProps {
+  onNavigatePath?: (path: string) => void;
   onOpenSettings?: () => void;
 }
 
 export function OperationalReference({
+  onNavigatePath,
   onOpenSettings,
 }: OperationalReferenceProps) {
   const [activeView, setActiveView] = useState<OperationalView>("tower");
@@ -1236,6 +1535,15 @@ export function OperationalReference({
           context={`AAPM fixture / ${active.label}`}
           icon={active.icon}
         >
+          {onNavigatePath ? (
+            <IconButton
+              className="reference-topbar-back"
+              icon="arrowLeft"
+              label="Back to Studio"
+              onClick={() => onNavigatePath("/theme-studio")}
+              size="md"
+            />
+          ) : null}
           <IconButton
             icon="settings"
             label="Open operational reference settings"
@@ -1281,6 +1589,8 @@ export function OperationalReference({
           <ControlTower onSelectException={setSelectedException} />
         ) : activeView === "process" ? (
           <ProcessWorkspace />
+        ) : activeView === "readiness" ? (
+          <ReadinessReview />
         ) : activeView === "load-route" ? (
           <LoadAndRoutePlanner />
         ) : activeView === "receiving" ? (

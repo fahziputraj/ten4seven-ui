@@ -10,6 +10,10 @@
   --t7-palette-name: slate;
   --t7-primary-palette: indigo;
   --t7-accent-palette: cyan;
+  --t7-primary-source-kind: palette;
+  --t7-primary-source: indigo;
+  --t7-accent-source-kind: palette;
+  --t7-accent-source: cyan;
   --t7-canvas-mode: balanced;
   --t7-chart-palette: spectrum;
   --t7-chart-palette-count: 5;
@@ -434,6 +438,10 @@
   --t7-palette-name: slate;
   --t7-primary-palette: indigo;
   --t7-accent-palette: cyan;
+  --t7-primary-source-kind: palette;
+  --t7-primary-source: indigo;
+  --t7-accent-source-kind: palette;
+  --t7-accent-source: cyan;
   --t7-canvas-mode: balanced;
   --t7-chart-palette: spectrum;
   --t7-chart-palette-count: 5;
@@ -858,6 +866,10 @@
   --t7-palette-name: blue;
   --t7-primary-palette: indigo;
   --t7-accent-palette: cyan;
+  --t7-primary-source-kind: palette;
+  --t7-primary-source: indigo;
+  --t7-accent-source-kind: palette;
+  --t7-accent-source: cyan;
   --t7-canvas-mode: balanced;
   --t7-chart-palette: spectrum;
   --t7-chart-palette-count: 5;
@@ -1282,6 +1294,10 @@
   --t7-palette-name: blue;
   --t7-primary-palette: indigo;
   --t7-accent-palette: cyan;
+  --t7-primary-source-kind: palette;
+  --t7-primary-source: indigo;
+  --t7-accent-source-kind: palette;
+  --t7-accent-source: cyan;
   --t7-canvas-mode: balanced;
   --t7-chart-palette: spectrum;
   --t7-chart-palette-count: 5;
@@ -1706,6 +1722,10 @@
   --t7-palette-name: slate;
   --t7-primary-palette: slate;
   --t7-accent-palette: amber;
+  --t7-primary-source-kind: palette;
+  --t7-primary-source: slate;
+  --t7-accent-source-kind: palette;
+  --t7-accent-source: amber;
   --t7-canvas-mode: paper;
   --t7-chart-palette: four;
   --t7-chart-palette-count: 4;
@@ -2128,6 +2148,10 @@
   --t7-palette-name: slate;
   --t7-primary-palette: slate;
   --t7-accent-palette: amber;
+  --t7-primary-source-kind: palette;
+  --t7-primary-source: slate;
+  --t7-accent-source-kind: palette;
+  --t7-accent-source: amber;
   --t7-canvas-mode: paper;
   --t7-chart-palette: four;
   --t7-chart-palette-count: 4;
@@ -2550,6 +2574,10 @@
   --t7-palette-name: emerald;
   --t7-primary-palette: emerald;
   --t7-accent-palette: orange;
+  --t7-primary-source-kind: palette;
+  --t7-primary-source: emerald;
+  --t7-accent-source-kind: palette;
+  --t7-accent-source: orange;
   --t7-canvas-mode: paper;
   --t7-chart-palette: spectrum;
   --t7-chart-palette-count: 5;
@@ -2972,6 +3000,10 @@
   --t7-palette-name: emerald;
   --t7-primary-palette: emerald;
   --t7-accent-palette: orange;
+  --t7-primary-source-kind: palette;
+  --t7-primary-source: emerald;
+  --t7-accent-source-kind: palette;
+  --t7-accent-source: orange;
   --t7-canvas-mode: paper;
   --t7-chart-palette: spectrum;
   --t7-chart-palette-count: 5;

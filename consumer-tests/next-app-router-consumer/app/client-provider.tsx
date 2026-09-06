@@ -1,6 +1,6 @@
 "use client";
 
-import { Ten4SevenProvider } from "@ten4seven/ui";
+import { exactColor, Ten4SevenProvider } from "@ten4seven/ui";
 import type { ReactNode } from "react";
 
 /**
@@ -11,11 +11,11 @@ import type { ReactNode } from "react";
 export default function ClientProvider({ children }: { children: ReactNode }) {
   return (
     <Ten4SevenProvider
-      accent="orange"
+      accent={exactColor("#D4451A")}
       appearance="system"
       palette="emerald"
       preferences={{ motion: "reduced" }}
-      primary="emerald"
+      primary={exactColor("#318139")}
       typography="modern"
     >
       {children}

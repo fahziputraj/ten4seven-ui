@@ -11,8 +11,25 @@ without creating Farm application code.
 
 Its fixture language includes Warehouse 02, an order, vehicle capacity,
 delivery stops, receiving reconciliation, a supplier relationship, accountable
-owners, and decision evidence. These records exist only to make state and
-workflow semantics inspectable.
+owners, decision evidence, consumer-evaluated readiness examples, an
+Entity 360 RevisionDiff with explicit correction provenance, and page-local
+SectionNavigation anchors for the long detail surface. These records exist only
+to make state and workflow semantics inspectable.
+The component catalog also includes a `QrCode` Web display reference for the
+opaque AAPM Mobile cage deep-link value; its scanner and resource authorization
+remain outside ten4seven. It also includes a `HierarchyPicker` reference with
+Tenant → Farm → Location → Cage ancestry, a partially selected cage, a disabled
+sibling, local search, and keyboard-tree semantics; resource authorization
+remains a consumer concern. The Button reference now proves the visible action
+availability states (available, disabled with reason, loading, and completed /
+no longer available) using a native-disabled `Button`, a focusable Tooltip
+reason trigger, and linked helper text.
+The catalog also includes an `AdvancedDataGrid` reference that demonstrates
+Cash Verification / General Journal-like typed editors, row state, inline cell
+feedback, keyboard traversal, and consumer-owned save/cancel intent. Its
+virtualization, grouping/tree, pivot, arbitrary resize/pinning, remote editor,
+totals, and authorization concerns remain explicit architecture or product
+decisions rather than hidden fixture behavior.
 
 ## What the route is not
 
@@ -48,9 +65,9 @@ operational recipe catalog. No such hardcoded mapping was added in this work.
 
 ## Farm integration decision
 
-**INFERRED:** the eleven mature operational recipes are sufficient design-system
-building blocks for Farm discovery and architecture work. Farm should select a
-small subset per route and retain the shared semantic model:
+**INFERRED:** the twelve mature operational recipes are sufficient
+design-system building blocks for Farm discovery and architecture work. Farm
+should select a small subset per route and retain the shared semantic model:
 
 ```text
 OBJECT + STATE + MOVEMENT + EXCEPTION + OWNER + NEXT ACTION + TRACE

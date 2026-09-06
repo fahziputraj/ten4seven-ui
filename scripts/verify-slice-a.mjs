@@ -10,8 +10,26 @@ import {
 } from "../packages/agent/src/node.mjs";
 
 const repoRoot = path.resolve(import.meta.dirname, "..");
+const artifactDir = path.join(repoRoot, "artifacts", "consumer-proof");
+const uiArtifact = path.join(artifactDir, "ten4seven-ui-1.0.0.tgz");
+const agentArtifact = path.join(artifactDir, "ten4seven-agent-0.1.0.tgz");
+const pnpmCommand = process.platform === "win32" ? "pnpm.cmd" : "pnpm";
+const pnpmExecutable =
+  process.platform === "win32" ? process.env.ComSpec : pnpmCommand;
 const read = (relativePath) =>
   fs.readFileSync(path.join(repoRoot, relativePath), "utf8");
+
+function runPnpm(args, cwd = repoRoot) {
+  const commandArgs =
+    process.platform === "win32"
+      ? ["/d", "/s", "/c", pnpmCommand, ...args]
+      : args;
+  execFileSync(pnpmExecutable, commandArgs, {
+    cwd,
+    encoding: "utf8",
+    stdio: "inherit",
+  });
+}
 
 const defaultResolution = resolveEntityListIntent();
 assert.equal(defaultResolution.source, "generated/recipes/entity-list.json");
@@ -96,6 +114,74 @@ assert.doesNotMatch(
 );
 
 const consumerRoot = path.join(repoRoot, "consumer-tests/entity-list-consumer");
+runPnpm(["package:build"]);
+runPnpm(["package:verify"]);
+runPnpm([
+  "--filter",
+  "@ten4seven/ui",
+  "pack",
+  "--pack-destination",
+  artifactDir,
+]);
+runPnpm(["--filter", "@ten4seven/agent", "build"]);
+runPnpm([
+  "--filter",
+  "@ten4seven/agent",
+  "pack",
+  "--pack-destination",
+  artifactDir,
+]);
+
+for (const artifact of [uiArtifact, agentArtifact]) {
+  if (!fs.existsSync(artifact) || fs.statSync(artifact).size === 0)
+    throw new Error(`missing release artifact: ${artifact}`);
+}
+
+const agentManifest = JSON.parse(
+  fs.readFileSync(path.join(repoRoot, "packages/agent/package.json"), "utf8"),
+);
+if (JSON.stringify(agentManifest).includes("workspace:"))
+  throw new Error("agent release manifest leaks a workspace dependency");
+
+const uiManifest = JSON.parse(
+  fs.readFileSync(path.join(repoRoot, "packages/ui/package.json"), "utf8"),
+);
+if (JSON.stringify(uiManifest).includes("workspace:"))
+  throw new Error("UI release manifest leaks a workspace dependency");
+
+runPnpm(
+  ["install", "--ignore-workspace", "--force", "--no-frozen-lockfile"],
+  consumerRoot,
+);
+
+const installedAgentManifest = JSON.parse(
+  fs.readFileSync(
+    path.join(
+      consumerRoot,
+      "node_modules",
+      "@ten4seven",
+      "agent",
+      "package.json",
+    ),
+    "utf8",
+  ),
+);
+const installedUiManifest = JSON.parse(
+  fs.readFileSync(
+    path.join(consumerRoot, "node_modules", "@ten4seven", "ui", "package.json"),
+    "utf8",
+  ),
+);
+if (
+  JSON.stringify(installedAgentManifest).includes("workspace:") ||
+  JSON.stringify(installedUiManifest).includes("workspace:")
+)
+  throw new Error(
+    "installed consumer package manifests leak a workspace dependency",
+  );
+
+runPnpm(["run", "typecheck"], consumerRoot);
+runPnpm(["run", "build"], consumerRoot);
 const installedConsumerOutput = execFileSync(
   process.execPath,
   ["src/run.mjs"],

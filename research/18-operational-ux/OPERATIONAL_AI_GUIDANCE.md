@@ -31,6 +31,7 @@ Arrival, unloading, QC, receipt?             → Receiving Console
 Ordered stops and ETA sequence?              → Route Planning
 Shared partner/customer/farmer context?      → Entity 360
 Evidence-led judgment and rationale?         → Decision Workspace
+Can this object proceed, and why blocked?     → Readiness Review
 Exceptions are the primary work collection? → Exception Queue
 Why/how did state change?                    → Activity & Audit Stream
 How long will a resource remain sufficient? → Resource Forecast
@@ -63,6 +64,35 @@ audit guarantees.
 - Choose `DataTable` only when selection/sorting/pagination/column behavior is
   part of the contract; use the lightweight `Table` family for readable static
   comparisons.
+- Choose `AdvancedDataGrid` only for a proven repeated editable-cell gap. Its
+  bounded first slice covers typed text/number/currency/select editors,
+  consumer-supplied row state/errors, and keyboard traversal; keep validation,
+  totals, persistence, authorization, and advanced large-data behavior outside
+  the component. Use `DataTable` for read-oriented records and compose
+  `BulkActionBar` or `Pagination` around either table.
+- Choose `RevisionDiff` when multiple consumer-supplied fields need an
+  explicit before/after comparison. Supply an explicit change kind and keep
+  reason, actor, occurred-at, and evidence/source adjacent; the component does
+  not calculate, mutate, or persist a revision.
+- Choose `SectionNavigation` when a long form or bounded workspace needs
+  labelled page-local anchors. Supply stable IDs and optionally a
+  consumer-controlled `activeId`; the component provides native anchor and
+  responsive disclosure semantics but does not observe scrolling or own form
+  validation/business state.
+- Choose `QrCode` when a Web surface must display, copy, or print an opaque
+  resource value. Supply the label and accessible description; payload
+  generation, resource resolution, authorization, and camera/scanning remain
+  consumer or native responsibilities.
+- Choose `HierarchyPicker` when nested tenant/Farm/location/cage or delegated
+  resource selection needs visible ancestry, partial selection, disabled
+  nodes, search, and keyboard tree navigation. Supply opaque IDs and labels;
+  permission meaning, scope persistence, and authorization remain consumer
+  responsibilities.
+- Keep an action visible when it is unavailable: use a native-disabled
+  `Button`, a focusable `IconButton` reason trigger inside `Tooltip`, and
+  visible helper text linked with `aria-describedby`. The focusable trigger
+  carries the explanation because a disabled HTML button cannot receive focus;
+  consumers supply the reason, status, and permission policy.
 - Use `DetailDrawer` for record inspection, `Drawer` for generic contextual
   work, `Modal` for a focused task, and `AlertDialog` for final irreversible
   confirmation.
@@ -71,7 +101,7 @@ audit guarantees.
 
 ## CLI evidence
 
-The catalog verifier now checks 28 recipes, including all eleven operational
+The catalog verifier now checks 29 recipes, including all twelve operational
 recipes at maturity `mature`, complete use/avoid/anatomy/semantic/responsive/
 accessibility/AI/anti-pattern/relationship fields, and the bounded reference
 path.
@@ -83,14 +113,16 @@ pnpm t7ui find "control tower exception next action"
 pnpm t7ui find "receiving arrival receipt difference decision evidence"
 pnpm t7ui find "days of cover incoming supply"
 pnpm t7ui recipe inspect decision-workspace
+pnpm t7ui find "can this object proceed why blocked"
+pnpm t7ui recipe inspect readiness-review
 ```
 
 **OBSERVED:** the natural receiving intent resolves `receiving-console` and
 returns semantic icons including `warehouse`, `stockIn`, `package`, `warning`,
 and `approve`. The existing `inventory list` query still resolves
 `entity-list` and prioritizes inventory-domain icons. `pnpm test:ai` reports
-28 recipes, 145 components, 12 expressive blocks, 98 semantic icons, and a
-cold-start proof of 11 tasks / 12 contract reads / 0 donor reads.
+29 recipes, 150 components, 12 expressive blocks, 98 semantic icons, and a
+cold-start proof of 15 tasks / 12 contract reads / 0 donor reads.
 
 ## Output boundary
 

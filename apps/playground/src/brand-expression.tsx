@@ -94,7 +94,11 @@ export function BrandExpressionProof({
       data-canonical-components={resolved.canonicalComponents.join(",")}
     >
       <header className="brand-proof-header">
-        <a className="brand-proof-mark" href="/theme-studio">
+        <a
+          aria-label="Back to Theme Studio"
+          className="brand-proof-mark"
+          href="/theme-studio"
+        >
           <span aria-hidden="true" className="brand-proof-mark-icon">
             <T7Icon name="book" size={18} />
           </span>

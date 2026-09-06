@@ -4,6 +4,7 @@ import axe from "axe-core";
 const viewButtons = [
   "Control tower",
   "Process workspace",
+  "Readiness review",
   "Load & route",
   "Receiving",
   "Entity 360",
@@ -51,7 +52,7 @@ async function expectNoDocumentOverflow(page: Page) {
   expect(overflow).toBeLessThanOrEqual(1);
 }
 
-test("operational reference exposes all eleven mature pattern proofs", async ({
+test("operational reference exposes all mature pattern and readiness proofs", async ({
   page,
 }) => {
   await page.setViewportSize({ height: 900, width: 1440 });
@@ -88,6 +89,22 @@ test("operational reference exposes all eleven mature pattern proofs", async ({
   ).toBeVisible();
   await expect(
     page.getByText("Activity and audit stream", { exact: true }),
+  ).toBeVisible();
+
+  await selectOperationalView(page, "Readiness review");
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Can this object proceed?" }),
+  ).toBeVisible();
+  for (const state of ["ready", "blocked", "incomplete"]) {
+    await expect(
+      page.locator(`[data-readiness-state="${state}"]`),
+    ).toBeVisible();
+  }
+  await expect(
+    page.getByRole("list", { name: "Blocked blockers" }),
+  ).toContainText("PAYMENT-TERM");
+  await expect(
+    page.getByText("Readiness is not a human decision", { exact: true }),
   ).toBeVisible();
 
   await selectOperationalView(page, "Load & route");
@@ -131,7 +148,185 @@ test("operational reference exposes all eleven mature pattern proofs", async ({
   await expect(
     page.getByText("Entity activity and audit trail", { exact: true }),
   ).toBeVisible();
+  const revision = page.getByRole("region", { name: "RC-3841 field changes" });
+  await expect(revision).toBeVisible();
+  await expect(
+    revision.getByRole("table", { name: "Revision field changes" }),
+  ).toBeVisible();
+  const revisionTable = revision.getByRole("table", {
+    name: "Revision field changes",
+  });
+  for (const value of [
+    "400",
+    "376",
+    "Needs QA review",
+    "Sep 6, 2026",
+    "Added",
+    "Removed",
+  ]) {
+    await expect(revisionTable.getByText(value, { exact: true })).toBeVisible();
+  }
+  for (const value of [
+    "Nadia Putri · Warehouse QA",
+    "Sep 3, 2026 · 14:28",
+    "RC-3841 receiving memo · evidence-2026-09-03-1428",
+  ])
+    await expect(revision.getByText(value, { exact: true })).toBeVisible();
+  const sectionNavigation = page.getByRole("navigation", {
+    name: "Entity sections",
+  });
+  await expect(sectionNavigation).toBeVisible();
+  for (const [label, id] of [
+    ["Summary", "entity-summary"],
+    ["Current work", "entity-current-work"],
+    ["Relationship signals", "entity-relationship-signals"],
+    ["Revision context", "entity-revision-context"],
+    ["Activity & audit", "entity-activity"],
+  ] as const) {
+    await expect(
+      sectionNavigation.getByRole("link", { name: label }).first(),
+    ).toHaveAttribute("href", `#${id}`);
+  }
+  await expect(
+    sectionNavigation.getByRole("link", { name: "Summary" }).first(),
+  ).toHaveAttribute("aria-current", "location");
+  await sectionNavigation
+    .getByRole("link", { name: "Revision context" })
+    .first()
+    .click();
+  await expect(page).toHaveURL(/#entity-revision-context$/);
+  await expect(
+    sectionNavigation.getByRole("link", { name: "Revision context" }).first(),
+  ).toHaveAttribute("aria-current", "location");
   await expectNoDocumentOverflow(page);
+});
+
+test("revision diff stacks changed facts and keeps provenance readable on mobile", async ({
+  page,
+}) => {
+  await page.setViewportSize({ height: 844, width: 390 });
+  await openOperationalReference(page);
+  await selectOperationalView(page, "Entity 360");
+
+  const revision = page.getByRole("region", { name: "RC-3841 field changes" });
+  await expect(revision).toBeVisible();
+  const stacked = revision.locator(".t7-revision-diff-stacked");
+  await expect(stacked).toBeVisible();
+  await expect(
+    stacked
+      .locator(".t7-revision-diff-stacked-row")
+      .first()
+      .locator(".t7-revision-diff-stacked-label"),
+  ).toHaveCount(4);
+  await expect(
+    stacked
+      .locator(".t7-revision-diff-stacked-row")
+      .first()
+      .locator(".t7-revision-diff-stacked-label")
+      .nth(1),
+  ).toHaveText("Before");
+  await expect(
+    revision.getByText(
+      "Three damaged units were isolated during receiving; retain the receipt for QA review.",
+      { exact: true },
+    ),
+  ).toBeVisible();
+  await expectNoDocumentOverflow(page);
+});
+
+test("revision diff desktop visual keeps changes and provenance together", async ({
+  page,
+}) => {
+  await page.setViewportSize({ height: 900, width: 1440 });
+  await openOperationalReference(page);
+  await selectOperationalView(page, "Entity 360");
+
+  await expect(
+    page.getByRole("region", { name: "RC-3841 field changes" }),
+  ).toHaveScreenshot("revision-diff-desktop.png", {
+    animations: "disabled",
+    caret: "hide",
+  });
+});
+
+test("revision diff mobile visual stacks every field", async ({ page }) => {
+  await page.setViewportSize({ height: 844, width: 390 });
+  await openOperationalReference(page);
+  await selectOperationalView(page, "Entity 360");
+
+  await expect(
+    page.getByRole("region", { name: "RC-3841 field changes" }),
+  ).toHaveScreenshot("revision-diff-mobile.png", {
+    animations: "disabled",
+    caret: "hide",
+  });
+});
+
+test("section navigation collapses to a keyboard-accessible mobile menu", async ({
+  page,
+}) => {
+  await page.setViewportSize({ height: 844, width: 390 });
+  await openOperationalReference(page);
+  await selectOperationalView(page, "Entity 360");
+
+  const sectionNavigation = page.getByRole("navigation", {
+    name: "Entity sections",
+  });
+  const desktop = sectionNavigation.locator(".t7-section-navigation-desktop");
+  const mobile = sectionNavigation.locator(".t7-section-navigation-mobile");
+  await expect(desktop).toBeHidden();
+  await expect(mobile).toBeVisible();
+  await expect(mobile.locator("summary")).toContainText("Current section");
+  await mobile.locator("summary").click();
+  await expect
+    .poll(() =>
+      mobile.evaluate((element) => (element as HTMLDetailsElement).open),
+    )
+    .toBe(true);
+  await mobile.getByRole("link", { name: "Revision context" }).click();
+  await expect(page).toHaveURL(/#entity-revision-context$/);
+  await expect(mobile.locator("summary")).toContainText("Revision context");
+  await expect
+    .poll(() =>
+      mobile.evaluate((element) => (element as HTMLDetailsElement).open),
+    )
+    .toBe(false);
+  await expectNoDocumentOverflow(page);
+});
+
+test("section navigation desktop visual keeps active anchor context", async ({
+  page,
+}) => {
+  await page.setViewportSize({ height: 900, width: 1440 });
+  await openOperationalReference(page);
+  await selectOperationalView(page, "Entity 360");
+
+  await expect(
+    page.getByRole("navigation", { name: "Entity sections" }),
+  ).toHaveScreenshot("section-navigation-desktop.png", {
+    animations: "disabled",
+    caret: "hide",
+  });
+});
+
+test("section navigation mobile visual exposes the compact menu", async ({
+  page,
+}) => {
+  await page.setViewportSize({ height: 844, width: 390 });
+  await openOperationalReference(page);
+  await selectOperationalView(page, "Entity 360");
+
+  const sectionNavigation = page.getByRole("navigation", {
+    name: "Entity sections",
+  });
+  await sectionNavigation.locator("summary").click();
+  await expect(sectionNavigation).toHaveScreenshot(
+    "section-navigation-mobile.png",
+    {
+      animations: "disabled",
+      caret: "hide",
+    },
+  );
 });
 
 test("exception and entity decision drawers dismiss with Escape and restore focus", async ({
@@ -217,7 +412,12 @@ test("operational proof has no serious or critical axe violations in key states"
   await openOperationalReference(page);
   await page.addScriptTag({ content: axe.source });
 
-  for (const view of ["Control tower", "Receiving", "Entity 360"] as const) {
+  for (const view of [
+    "Control tower",
+    "Readiness review",
+    "Receiving",
+    "Entity 360",
+  ] as const) {
     await selectOperationalView(page, view);
     const result = await page.evaluate(async () =>
       // @ts-expect-error injected by axe-core for this isolated audit
@@ -309,9 +509,150 @@ test("receiving recipe exposes bounded selection guidance and its reference", as
   await expectNoDocumentOverflow(page);
 });
 
+test("readiness recipe exposes the evaluated-result boundary", async ({
+  page,
+}) => {
+  await page.setViewportSize({ height: 900, width: 1186 });
+  await page.goto("/recipes/readiness-review");
+
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Readiness Review" }),
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      "Explicit consumer-supplied result such as READY, BLOCKED, INCOMPLETE, or UNKNOWN",
+      { exact: true },
+    ),
+  ).toBeVisible();
+  await expect(
+    page.getByText(/choose Decision Workspace when a human must decide/),
+  ).toBeVisible();
+  const reference = page.getByRole("link", {
+    name: "AAPM Operational Reference",
+  });
+  await expect(reference).toHaveAttribute("href", "/operational-patterns");
+  await expectNoDocumentOverflow(page);
+});
+
+const batchTwoRecipeProofs = [
+  {
+    id: "operational-kanban",
+    title: "Operational Kanban",
+    semantic: "Object identity",
+    guidance: /Choose Operational Kanban for many work items awaiting people/,
+  },
+  {
+    id: "exception-queue",
+    title: "Exception Queue",
+    semantic: "Exception category",
+    guidance:
+      /Choose Exception Queue when attention work is the primary collection/,
+  },
+  {
+    id: "control-tower",
+    title: "Control Tower",
+    semantic: "Exception severity and plain-language reason",
+    guidance:
+      /Choose Control Tower when the user needs an operational overview whose hierarchy begins with exceptions/,
+  },
+] as const;
+
+for (const recipe of batchTwoRecipeProofs) {
+  test(`${recipe.id} recipe exposes its canonical operational contract`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ height: 900, width: 1186 });
+    await page.goto(`/recipes/${recipe.id}`);
+
+    await expect(
+      page.getByRole("heading", { level: 1, name: recipe.title }),
+    ).toBeVisible();
+    await expect(
+      page.getByText(recipe.semantic, { exact: true }),
+    ).toBeVisible();
+    await expect(page.getByText(recipe.guidance)).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: "AAPM Operational Reference" }),
+    ).toHaveAttribute("href", "/operational-patterns");
+    await expectNoDocumentOverflow(page);
+  });
+}
+
+const batchThreeRecipeProofs = [
+  {
+    id: "load-planning",
+    title: "Load Planning",
+    semantic: "Capacity",
+    guidance: /Choose Load Planning when capacity drives work/,
+  },
+  {
+    id: "route-planning",
+    title: "Route Planning",
+    semantic: "Sequence number",
+    guidance: /Choose Route Planning when sequence matters/,
+  },
+  {
+    id: "receiving-console",
+    title: "Receiving Console",
+    semantic: "ARRIVED is not RECEIVED",
+    guidance: /Choose Receiving Console when physical handling/,
+  },
+  {
+    id: "resource-forecast",
+    title: "Resource Forecast",
+    semantic: "Absolute current quantity",
+    guidance: /Choose Resource Forecast when sufficiency matters/,
+  },
+] as const;
+
+for (const recipe of batchThreeRecipeProofs) {
+  test(`${recipe.id} recipe exposes its canonical operational contract`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ height: 900, width: 1186 });
+    await page.goto(`/recipes/${recipe.id}`);
+
+    await expect(
+      page.getByRole("heading", { level: 1, name: recipe.title }),
+    ).toBeVisible();
+    await expect(
+      page.getByText(recipe.semantic, { exact: true }),
+    ).toBeVisible();
+    await expect(page.getByText(recipe.guidance)).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: "AAPM Operational Reference" }),
+    ).toHaveAttribute("href", "/operational-patterns");
+    await expectNoDocumentOverflow(page);
+  });
+}
+
+test("entity-360 recipe exposes its canonical relationship-context contract", async ({
+  page,
+}) => {
+  await page.setViewportSize({ height: 900, width: 1186 });
+  await page.goto("/recipes/entity-360");
+
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Entity 360" }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("Entity identity and relationship type", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      /Choose Entity 360 for shared customer, supplier, or farmer context/,
+    ),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "AAPM Operational Reference" }),
+  ).toHaveAttribute("href", "/operational-patterns");
+  await expectNoDocumentOverflow(page);
+});
+
 const visualViews = [
   { button: "Control tower", name: "control-tower" },
   { button: "Process workspace", name: "process-workspace" },
+  { button: "Readiness review", name: "readiness-review" },
   { button: "Load & route", name: "load-route" },
   { button: "Receiving", name: "receiving" },
   { button: "Entity 360", name: "entity-360" },
@@ -336,6 +677,7 @@ for (const view of visualViews) {
 
 for (const view of [
   { button: "Control tower", name: "control-tower" },
+  { button: "Readiness review", name: "readiness-review" },
   { button: "Load & route", name: "load-route" },
   { button: "Receiving", name: "receiving" },
 ] as const) {

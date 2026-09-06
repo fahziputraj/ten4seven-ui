@@ -152,6 +152,8 @@ const esm = await import(pathToFileURL(resolve(distDir, "index.js")).href);
 const cjs = createRequire(import.meta.url)(resolve(distDir, "index.cjs"));
 const requiredExports = [
   "Button",
+  "buildDtcgThemeSnapshot",
+  "exactColor",
   "Ten4SevenProvider",
   "ThemeScope",
   "THEME_RECIPES",
@@ -169,6 +171,17 @@ const requiredExports = [
 for (const exportName of requiredExports) {
   if (!(exportName in esm) || !(exportName in cjs))
     throw new Error(`missing bundled export: ${exportName}`);
+}
+
+if (
+  typeof esm.exactColor !== "function" ||
+  typeof cjs.exactColor !== "function" ||
+  typeof esm.buildDtcgThemeSnapshot !== "function" ||
+  typeof cjs.buildDtcgThemeSnapshot !== "function"
+) {
+  throw new Error(
+    "the bundled package is missing the exact-color source or DTCG snapshot API",
+  );
 }
 
 if (

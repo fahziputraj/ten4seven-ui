@@ -75,9 +75,9 @@ pnpm t7ui recipe inspect control-tower
 
 Read [OPERATIONAL_PATTERNS.md](OPERATIONAL_PATTERNS.md) before composing a
 Control Tower, Process Workspace, Operational Kanban, Load Planner, Receiving
-Console, Route Planner, Entity 360, Decision Workspace, Exception Queue,
-Activity & Audit Stream, or Resource Forecast. These are recipes built from
-canonical components, not product-specific mega-components.
+Console, Route Planner, Entity 360, Decision Workspace, Readiness Review,
+Exception Queue, Activity & Audit Stream, or Resource Forecast. These are
+recipes built from canonical components, not product-specific mega-components.
 
 Start from the closest recipe. Do not invent a new information architecture before checking the catalog.
 
@@ -106,17 +106,60 @@ signal by itself.
 Use the capability family—not the visual mood—to narrow selection:
 
 - actions: `Button`, `IconButton`, `ButtonGroup`, `ToggleButtonGroup`, `SplitButton`;
-- forms: `Field`, native labelled controls, `Combobox`, `MultiSelect`, date/time controls;
-- shell/navigation: `AppShell`, `Sidebar`, `TopNavigation`, `NavigationMenu`, `PublicShell`, `Breadcrumb`, `Tabs`, `CommandMenu`;
-- data/workflow: `DataTable`, `RecordSummary`, `MetricCard`, `FilterToolbar`, `ApprovalPanel`;
+- forms: `Field`, native labelled controls, `Combobox`, `MultiSelect`, `HierarchyPicker`, date/time controls;
+- shell/navigation: `AppShell`, `Sidebar`, `TopNavigation`, `NavigationMenu`, `PublicShell`, `Breadcrumb`, `Tabs`, `SectionNavigation`, `CommandMenu`;
+- data/workflow: `DataTable`, `AdvancedDataGrid`, `RecordSummary`, `MetricCard`, `FilterToolbar`, `ApprovalPanel`, `RevisionDiff`;
 - overlays/feedback: `Drawer`, `DetailDrawer`, `Modal`, `AlertDialog`, `Popover`, `Toast`, `StateView`;
-- commerce/media: `ProductGrid`, `ProductCard`, `Price`, `Rating`, `QuantityControl`, `CartTrigger`, `CartLineItem`, `CartPanel`, `OrderSummary`, `MediaFrame`;
+- commerce/media: `ProductGrid`, `ProductCard`, `Price`, `Rating`, `QuantityControl`, `CartTrigger`, `CartLineItem`, `CartPanel`, `OrderSummary`, `MediaFrame`, `QrCode`;
 - charts/files: SVG chart components, `Progress`, `FileUpload`.
 - expressive blocks: `Hero`, `CtaBlock`, `FeatureShowcase`, `StatsSection`,
   `LogoCloud`, `Testimonials`, `PricingSection`, `ContentShowcase`,
   `ProductShowcase`, `Carousel`, `PublicFooter`.
 
 Read [COMPONENT_SELECTION.md](COMPONENT_SELECTION.md) for the compact decision matrix and the machine-readable catalog for exact props.
+
+When a consumer must explain several field changes, use the canonical
+`RevisionDiff` component. Supply before/after values, an explicit change kind,
+and any available reason, actor, occurred-at, or evidence/source metadata. The
+component presents those facts; the consumer still owns diff calculation,
+correction policy, persistence, and audit storage.
+
+For long forms or bounded workspaces that need page-local anchors, use
+`SectionNavigation` inside the route content. Supply stable section IDs and
+use `activeId` when a consumer owns scroll-spy state; the component keeps
+native anchor semantics and does not own form validation, business state, or
+scroll observation. It collapses to a compact native menu on narrow layouts.
+
+For Web QR display, use `QrCode` with a consumer-owned opaque `value`, a
+human-readable `label`, and an explicit `description` when the resource
+context needs more than the derived announcement. Copy and print actions are
+included by default; scanning and camera permissions remain native/mobile
+responsibilities. The component does not create payloads, resolve resources,
+or enforce authorization.
+
+For nested resource selection, use `HierarchyPicker` with opaque node IDs and
+consumer-supplied labels. It owns expansion, ancestor/descendant selection,
+partial-selection state, optional local search, and keyboard tree navigation;
+the consumer still owns permission meaning, authorization, scope persistence,
+and server-side validation. Use `Select` or `Combobox` for a flat choice and
+`Sidebar` when the hierarchy is navigation rather than selection.
+
+For an action that must remain visible while unavailable, keep the canonical
+`Button` natively disabled and place a focusable `IconButton` reason trigger
+beside it inside `Tooltip`, with visible helper text linked by
+`aria-describedby`. The trigger keeps the explanation reachable when the
+disabled button cannot receive focus; the consumer owns the reason and policy.
+Use the same composition to show loading and completed/no-longer-available
+states without hiding the action or moving permission logic into `Button`.
+
+For repeated editable line items, use `AdvancedDataGrid` only when the generic
+gap is proven across the bounded workflow. It provides controlled text, number,
+currency, and select editors, row-state/error presentation, selection/sort
+anatomy, and keyboard traversal; the consumer owns values, validation,
+persistence, permissions, totals, and reconciliation. Keep `DataTable` for
+read-oriented comparison, compose `BulkActionBar` or `Pagination` around either
+table, and defer virtualization, grouping/tree rows, pivots, arbitrary resize or
+pinning, and remote editor orchestration until a separate architecture decision.
 
 For KPI work, use `MetricCard` for one decision signal and `KPICluster` for a
 small related set. Compose `TrendIndicator`, `Sparkline`, and `Progress` through
@@ -138,7 +181,9 @@ Use one shared grammar:
 - Use `Sidebar` / `SidebarGroup` for private, information-dense applications.
 - Use `PublicShell` with `NavigationMenu` for public, content, and commerce composition; use `TopNavigation` for flat links.
 - Keep one route-level `PageHeader`; do not nest competing page headings.
-- Relocate secondary navigation and filters through `MobileSidebar` or `FilterDrawer` at narrow widths.
+- Keep page-local long-form anchors in `SectionNavigation`; relocate global
+  secondary navigation and filters through `MobileSidebar` or `FilterDrawer` at
+  narrow widths.
 - Use `Drawer` or `DetailDrawer` for contextual inspection, `Modal` for a focused task, and `AlertDialog` for irreversible confirmation.
 
 ## 7. Use theme tokens

@@ -1,10 +1,11 @@
-import { useState, type ReactNode } from "react";
+import { useId, useState, type ReactNode } from "react";
 
 import { IconNames, T7Icon, type IconName } from "@ten4seven/icons";
 import {
   ActivityFeed,
   Accordion,
   ActionFooter,
+  AdvancedDataGrid,
   AppShell,
   Alert,
   AlertDialog,
@@ -54,6 +55,7 @@ import {
   FormSection,
   IconButton,
   Image,
+  HierarchyPicker,
   Input,
   KeyValueList,
   KPICluster,
@@ -79,6 +81,7 @@ import {
   ProductMeta,
   ProductGrid,
   Progress,
+  QrCode,
   QuantityControl,
   Radio,
   RadioGroup,
@@ -88,6 +91,7 @@ import {
   ScrollArea,
   Section,
   SectionHeader,
+  SectionNavigation,
   Select,
   Separator,
   Sidebar,
@@ -253,6 +257,187 @@ function PreviewFallback({
   );
 }
 
+function ActionAvailabilityPreview() {
+  const reasonId = useId();
+  const reason = "Awaiting warehouse QA sign-off.";
+
+  return (
+    <div className="catalog-preview-profile-grid">
+      <div>
+        <Typography typeRole="overline">Available</Typography>
+        <Button leadingIcon="approve">Approve batch</Button>
+        <Typography typeRole="caption">
+          The operator can activate this action now.
+        </Typography>
+      </div>
+      <div>
+        <Typography typeRole="overline">Disabled + explanation</Typography>
+        <div className="catalog-preview-action-pair">
+          <Button aria-describedby={reasonId} disabled intent="secondary">
+            Release batch
+          </Button>
+          <Tooltip content={reason}>
+            <IconButton
+              icon="info"
+              label={`Why release batch is unavailable: ${reason}`}
+              size="sm"
+            />
+          </Tooltip>
+        </div>
+        <Typography id={reasonId} typeRole="caption">
+          {reason}
+        </Typography>
+      </div>
+      <div>
+        <Typography typeRole="overline">Loading</Typography>
+        <Button intent="secondary" loading>
+          Sync batch
+        </Button>
+        <Typography typeRole="caption">
+          Pending work prevents duplicate activation.
+        </Typography>
+      </div>
+      <div>
+        <Typography typeRole="overline">
+          Completed / no longer available
+        </Typography>
+        <Button disabled intent="quiet" leadingIcon="check">
+          Batch released
+        </Button>
+        <Typography typeRole="caption">
+          The action remains visible after completion.
+        </Typography>
+      </div>
+    </div>
+  );
+}
+
+type AdvancedDataGridPreviewRow = {
+  id: string;
+  account: string;
+  amount: string;
+  direction: string;
+  memo: string;
+};
+
+const advancedDataGridInitialRows: AdvancedDataGridPreviewRow[] = [
+  {
+    account: "4100 · Feed",
+    amount: "1250000",
+    direction: "debit",
+    id: "line-1",
+    memo: "Inbound feed",
+  },
+  {
+    account: "2100 · Payables",
+    amount: "1250000",
+    direction: "credit",
+    id: "line-2",
+    memo: "Supplier settlement",
+  },
+  {
+    account: "5100 · Variance",
+    amount: "",
+    direction: "debit",
+    id: "line-3",
+    memo: "Needs operator review",
+  },
+];
+
+function AdvancedDataGridPreview() {
+  const [rows, setRows] = useState(advancedDataGridInitialRows);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>(["line-1"]);
+  const [rowState, setRowState] = useState<
+    Record<string, "clean" | "dirty" | "saving" | "saved" | "error">
+  >({
+    "line-1": "dirty",
+    "line-2": "clean",
+    "line-3": "error",
+  });
+  const [cellErrors, setCellErrors] = useState<
+    Record<string, Record<string, string | undefined>>
+  >({
+    "line-3": { amount: "Enter an amount before saving." },
+  });
+
+  function updateCell(rowKey: string, columnKey: string, value: string) {
+    setRows((current) =>
+      current.map((row) =>
+        row.id === rowKey ? { ...row, [columnKey]: value } : row,
+      ),
+    );
+    setRowState((current) => ({ ...current, [rowKey]: "dirty" }));
+    setCellErrors((current) => {
+      const nextRowErrors = { ...current[rowKey] };
+      delete nextRowErrors[columnKey];
+      return { ...current, [rowKey]: nextRowErrors };
+    });
+  }
+
+  function saveRow(row: AdvancedDataGridPreviewRow) {
+    setRowState((current) => ({ ...current, [row.id]: "saved" }));
+  }
+
+  function cancelRow(row: AdvancedDataGridPreviewRow) {
+    setRowState((current) => ({ ...current, [row.id]: "clean" }));
+  }
+
+  return (
+    <AdvancedDataGrid
+      caption="Journal line editor"
+      cellErrors={cellErrors}
+      columns={[
+        {
+          editor: { placeholder: "Account name", type: "text" },
+          header: "Account",
+          key: "account",
+          required: true,
+          sticky: "left",
+        },
+        {
+          align: "right",
+          editor: { currency: "IDR", type: "currency" },
+          header: "Amount",
+          key: "amount",
+        },
+        {
+          editor: {
+            options: [
+              { label: "Debit", value: "debit" },
+              { label: "Credit", value: "credit" },
+            ],
+            type: "select",
+          },
+          header: "Direction",
+          key: "direction",
+        },
+        {
+          editor: { placeholder: "Memo", type: "text" },
+          header: "Memo",
+          key: "memo",
+        },
+      ]}
+      density="compact"
+      footer={
+        <Typography typeRole="caption">
+          Totals and reconciliation stay consumer-owned; this fixture only
+          demonstrates cell editing and row state.
+        </Typography>
+      }
+      onCellChange={updateCell}
+      onRowCancel={cancelRow}
+      onRowSave={saveRow}
+      onSelectionChange={setSelectedRowKeys}
+      rowKey={(row) => row.id}
+      rowLabel={(row) => `Line ${row.id.replace("line-", "")}`}
+      rowState={rowState}
+      rows={rows}
+      selectable
+      selectedRowKeys={selectedRowKeys}
+    />
+  );
+}
+
 export function ComponentPreview({
   component,
 }: {
@@ -277,6 +462,7 @@ export function ComponentPreview({
     end: "2026-08-30",
   });
   const [rangeValue, setRangeValue] = useState({ max: 84, min: 22 });
+  const [scopeSelection, setScopeSelection] = useState(["cage-a14"]);
   const [files, setFiles] = useState<File[]>([]);
   const [filters, setFilters] = useState([
     { id: "status", label: "Status: active" },
@@ -361,6 +547,8 @@ export function ComponentPreview({
   }
 
   if (component.category === "action") {
+    if (component.displayName === "Button")
+      return frame(<ActionAvailabilityPreview />);
     if (component.displayName === "Icon Button") {
       return frame(
         <div className="catalog-preview-actions">
@@ -521,6 +709,68 @@ export function ComponentPreview({
             { label: "Engineering", value: "engineering" },
           ]}
           values={tags}
+        />,
+      );
+    if (component.displayName === "Hierarchy Picker")
+      return frame(
+        <HierarchyPicker
+          defaultExpandedIds={[
+            "tenant-wisman",
+            "farm-north",
+            "location-pilubang",
+            "location-east",
+          ]}
+          description="Scope selection stays generic; the consumer owns permission meaning."
+          items={[
+            {
+              children: [
+                {
+                  children: [
+                    {
+                      children: [
+                        {
+                          description: "Production · active",
+                          id: "cage-a14",
+                          label: "Cage A-14",
+                        },
+                        {
+                          description: "Managed by another scope",
+                          disabled: true,
+                          id: "cage-a15",
+                          label: "Cage A-15",
+                        },
+                        {
+                          description: "Production · review",
+                          id: "cage-a16",
+                          label: "Cage A-16",
+                        },
+                      ],
+                      id: "location-pilubang",
+                      label: "Location Pilubang",
+                    },
+                    {
+                      children: [
+                        {
+                          id: "cage-b02",
+                          label: "Cage B-02",
+                        },
+                      ],
+                      id: "location-east",
+                      label: "Location East",
+                    },
+                  ],
+                  id: "farm-north",
+                  label: "Farm North",
+                },
+              ],
+              id: "tenant-wisman",
+              label: "Tenant Wisman",
+            },
+          ]}
+          label="Resource scope"
+          onSelectionChange={setScopeSelection}
+          searchable
+          selectedIds={scopeSelection}
         />,
       );
     if (component.displayName === "Checkbox")
@@ -810,6 +1060,19 @@ export function ComponentPreview({
           ]}
         />,
       );
+    if (component.displayName === "Section Navigation")
+      return frame(
+        <SectionNavigation
+          items={[
+            { id: "profile", label: "Profile" },
+            { id: "employment", label: "Employment" },
+            { id: "compliance", label: "Compliance" },
+            { id: "review", label: "Review & save" },
+          ]}
+          label="Long form sections"
+          sticky
+        />,
+      );
     if (
       component.displayName === "Tabs" ||
       component.displayName === "Tab Panel"
@@ -1026,6 +1289,8 @@ export function ComponentPreview({
           ]}
         />,
       );
+    if (component.displayName === "Advanced Data Grid")
+      return frame(<AdvancedDataGridPreview />);
     if (
       component.displayName === "Data Table" ||
       component.displayName === "Data Table Column Picker"
@@ -1626,6 +1891,14 @@ export function ComponentPreview({
           alt="Editorial sample"
           fallbackLabel="Image unavailable"
           src="/publishing-covers/manajemen-strategis.svg"
+        />,
+      );
+    if (component.displayName === "QR Code")
+      return frame(
+        <QrCode
+          description="Scan to open the assigned cage production entry in AAPM Mobile."
+          label="Cage production entry"
+          value="aapmmobile://kandang/KDG11F378DFCFC/produksi"
         />,
       );
     return frame(

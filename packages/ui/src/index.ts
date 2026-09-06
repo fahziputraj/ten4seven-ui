@@ -7,15 +7,18 @@ export * from "./commerce";
 export * from "./components";
 export * from "./date-time";
 export * from "./data-display";
+export * from "./data-grid";
 export * from "./feedback";
 export * from "./files";
 export * from "./forms";
+export * from "./hierarchy";
 export * from "./layout";
 export * from "./media";
 export * from "./motion";
 export * from "./navigation";
 export * from "./overlays";
 export * from "./provider";
+export * from "./qr";
 
 // The distributable @ten4seven/ui package is intentionally self-contained.
 // These exports keep tokens and semantic icons available from the same package

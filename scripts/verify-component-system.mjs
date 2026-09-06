@@ -45,24 +45,24 @@ const relationFields = ["alternativeTo", "composesWith"];
 
 assert.equal(
   canonical.length,
-  139,
+  144,
   "canonical component count changed; update evidence intentionally",
 );
 assert.equal(
   Object.keys(components).length,
-  145,
+  150,
   "component catalog count changed; update evidence intentionally",
 );
 assert.equal(
   Object.keys(recipes).length,
-  28,
+  29,
   "recipe count changed; update evidence intentionally",
 );
 assert.equal(
   Object.values(recipes).filter(
     (recipe) => recipe.operational?.maturity === "mature",
   ).length,
-  11,
+  12,
   "mature operational recipe count changed; update evidence intentionally",
 );
 
@@ -140,6 +140,33 @@ assert.equal(
 assert.equal(components.NativeSelect.alternativeTo.join(","), "Select");
 assert.equal(components.DataTable.category, "table");
 assert.equal(components.DataTableColumnPicker.category, "table");
+assert.equal(components.AdvancedDataGrid.status, "implemented");
+assert.equal(components.AdvancedDataGrid.category, "table");
+assert.equal(
+  components.AdvancedDataGrid.source,
+  "packages/ui/src/data-grid.tsx",
+);
+assert.equal(components.RevisionDiff.status, "implemented");
+assert.equal(components.RevisionDiff.category, "data");
+assert.equal(
+  components.RevisionDiff.source,
+  "packages/ui/src/data-display.tsx",
+);
+assert.equal(components.SectionNavigation.status, "implemented");
+assert.equal(components.SectionNavigation.category, "navigation");
+assert.equal(
+  components.SectionNavigation.source,
+  "packages/ui/src/navigation.tsx",
+);
+assert.equal(components.QrCode.status, "implemented");
+assert.equal(components.QrCode.category, "media");
+assert.equal(components.QrCode.source, "packages/ui/src/qr.tsx");
+assert.equal(components.HierarchyPicker.status, "implemented");
+assert.equal(components.HierarchyPicker.category, "form");
+assert.equal(
+  components.HierarchyPicker.source,
+  "packages/ui/src/hierarchy.tsx",
+);
 assert.equal(components.AppShell.category, "pattern");
 assert.equal(components.ApprovalPanel.category, "pattern");
 assert.equal(components.ActionFooter.category, "pattern");

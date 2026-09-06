@@ -6,7 +6,7 @@ import { expect, test } from "@playwright/test";
 const cardSource = readFileSync(
   resolve(process.cwd(), "packages/ui/src/components.tsx"),
   "utf8",
-);
+).replace(/\r\n/g, "\n");
 
 test.describe("Card actionability semantic contract", () => {
   test("withdraws its wrapper button semantics when nested controls are present", () => {

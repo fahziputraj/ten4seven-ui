@@ -1,5 +1,16 @@
 import { resolveMotionRoles } from "../../contracts/src/theme-profile.ts";
-import type { MotionProfileName } from "../../contracts/src/types.ts";
+import { exactColor, isExactColorSource } from "../../contracts/src/types.ts";
+import type {
+  ExactColorSource,
+  MotionProfileName,
+  ThemeColorSource,
+} from "../../contracts/src/types.ts";
+
+export { exactColor, isExactColorSource } from "../../contracts/src/types.ts";
+export type {
+  ExactColorSource,
+  ThemeColorSource,
+} from "../../contracts/src/types.ts";
 
 export type Appearance = "light" | "dark" | "system";
 export type PaletteName =
@@ -59,9 +70,9 @@ export interface ThemeConfig {
   appearance?: Appearance;
   palette?: PaletteName;
   /** Optional primary color source; defaults to the selected palette. */
-  primary?: PaletteName;
+  primary?: ThemeColorSource;
   /** Optional accent color source; defaults to the selected palette. */
-  accent?: PaletteName;
+  accent?: ThemeColorSource;
   /** Neutral canvas treatment shared by every surface. */
   canvas?: CanvasName;
   /** Chart colorway while retaining the five-slot chart contract. */
@@ -79,8 +90,14 @@ export interface ThemeConfig {
 export interface ResolvedTheme {
   appearance: Exclude<Appearance, "system">;
   palette: PaletteName;
+  /** Legacy named fallback retained for palette-oriented consumers. */
   primary: PaletteName;
+  /** Canonical action source, including a normalized exact sRGB color. */
+  primarySource: ThemeColorSource;
+  /** Legacy named fallback retained for palette-oriented consumers. */
   accent: PaletteName;
+  /** Canonical accent source, including a normalized exact sRGB color. */
+  accentSource: ThemeColorSource;
   canvas: CanvasName;
   chartPalette: ChartPaletteName;
   radius: RadiusName;
@@ -138,6 +155,35 @@ function parseHslChannels(value: string) {
   };
 }
 
+function formatHslChannels(hue: number, saturation: number, lightness: number) {
+  const round = (value: number) => Number(value.toFixed(2));
+  return `${round(hue)} ${round(saturation)}% ${round(lightness)}%`;
+}
+
+function exactHexToHsl(value: ExactColorSource["value"]) {
+  const channels = value.slice(1);
+  const red = Number.parseInt(channels.slice(0, 2), 16) / 255;
+  const green = Number.parseInt(channels.slice(2, 4), 16) / 255;
+  const blue = Number.parseInt(channels.slice(4, 6), 16) / 255;
+  const maximum = Math.max(red, green, blue);
+  const minimum = Math.min(red, green, blue);
+  const difference = maximum - minimum;
+  const lightness = (maximum + minimum) / 2;
+  const saturation =
+    difference === 0 ? 0 : difference / (1 - Math.abs(2 * lightness - 1));
+  let hue = 0;
+
+  if (difference !== 0) {
+    if (maximum === red) hue = ((green - blue) / difference) % 6;
+    else if (maximum === green) hue = (blue - red) / difference + 2;
+    else hue = (red - green) / difference + 4;
+    hue *= 60;
+    if (hue < 0) hue += 360;
+  }
+
+  return formatHslChannels(hue, saturation * 100, lightness * 100);
+}
+
 function hueToRgbChannel(p: number, q: number, hue: number) {
   let adjustedHue = hue;
   if (adjustedHue < 0) adjustedHue += 1;
@@ -183,6 +229,59 @@ function relativeLuminanceForHsl(
         luminance + channel * [0.2126, 0.7152, 0.0722][index],
       0,
     );
+}
+
+function contrastRatioForHsl(left: string, right: string) {
+  const leftChannels = parseHslChannels(left);
+  const rightChannels = parseHslChannels(right);
+  const leftLuminance = relativeLuminanceForHsl(
+    leftChannels.hue,
+    leftChannels.saturation,
+    leftChannels.lightness,
+  );
+  const rightLuminance = relativeLuminanceForHsl(
+    rightChannels.hue,
+    rightChannels.saturation,
+    rightChannels.lightness,
+  );
+  return (
+    (Math.max(leftLuminance, rightLuminance) + 0.05) /
+    (Math.min(leftLuminance, rightLuminance) + 0.05)
+  );
+}
+
+function exactColorForeground(value: string) {
+  const white = "0 0% 100%";
+  const black = "0 0% 0%";
+  return contrastRatioForHsl(value, white) >= contrastRatioForHsl(value, black)
+    ? white
+    : black;
+}
+
+function exactInteractionColor(value: string, distance: number) {
+  const { hue, lightness, saturation } = parseHslChannels(value);
+  const direction = lightness < 24 ? 1 : -1;
+  return formatHslChannels(
+    hue,
+    saturation,
+    Math.min(100, Math.max(0, lightness + direction * distance)),
+  );
+}
+
+function exactColorProfile(source: ExactColorSource): PaletteProfile {
+  const primary = exactHexToHsl(exactColor(source.value).value);
+  const primaryHover = exactInteractionColor(primary, 6);
+  const primaryActive = exactInteractionColor(primary, 12);
+  const foreground = exactColorForeground(primary);
+  return {
+    primary,
+    primaryHover,
+    primaryActive,
+    primaryForeground: foreground,
+    accent: primary,
+    accentForeground: foreground,
+    chart: [primary, primaryHover, primaryActive, primary, primaryHover],
+  };
 }
 
 /**
@@ -239,6 +338,47 @@ function colorToChartMark(
   return `${hue} ${saturation}% ${markLightness}%`;
 }
 
+function hslToSrgb(value: string) {
+  const { hue, lightness, saturation } = parseHslChannels(value);
+  const normalizedHue = hue / 360;
+  const normalizedSaturation = saturation / 100;
+  const normalizedLightness = lightness / 100;
+  if (normalizedSaturation === 0)
+    return [normalizedLightness, normalizedLightness, normalizedLightness];
+  const q =
+    normalizedLightness < 0.5
+      ? normalizedLightness * (1 + normalizedSaturation)
+      : normalizedLightness +
+        normalizedSaturation -
+        normalizedLightness * normalizedSaturation;
+  const p = 2 * normalizedLightness - q;
+  return [
+    hueToRgbChannel(p, q, normalizedHue + 1 / 3),
+    hueToRgbChannel(p, q, normalizedHue),
+    hueToRgbChannel(p, q, normalizedHue - 1 / 3),
+  ].map((channel) => Number(channel.toFixed(6)));
+}
+
+function dtcgColor(value: string) {
+  return {
+    $type: "color" as const,
+    $value: {
+      colorSpace: "srgb" as const,
+      components: hslToSrgb(value),
+      alpha: 1,
+    },
+    $extensions: {
+      "org.ten4seven": { compatibilityHsl: value },
+    },
+  };
+}
+
+function dtcgColorSource(source: ThemeColorSource) {
+  return typeof source === "string"
+    ? { kind: "palette" as const, value: source }
+    : { kind: "exact" as const, value: source.value };
+}
+
 type TypographyRoleProfile = {
   size: string;
   lineHeight: string;
@@ -260,7 +400,9 @@ export const defaultTheme: ResolvedTheme = {
   appearance: "light",
   palette: "emerald",
   primary: "emerald",
+  primarySource: "emerald",
   accent: "emerald",
+  accentSource: "emerald",
   canvas: "balanced",
   chartPalette: "spectrum",
   radius: "soft",
@@ -1093,6 +1235,23 @@ function resolveFamily(value: unknown, fallback: string): string {
   return typeof value === "string" && value.trim() ? value : fallback;
 }
 
+function resolveColorSource(
+  value: unknown,
+  fallback: PaletteName,
+): ThemeColorSource {
+  if (isExactColorSource(value)) return exactColor(value.value);
+  return resolveProfileName(value, paletteProfiles, fallback);
+}
+
+function resolveColorProfile(
+  source: ThemeColorSource,
+  fallback: PaletteName,
+): PaletteProfile {
+  return isExactColorSource(source)
+    ? exactColorProfile(source)
+    : paletteProfiles[resolveProfileName(source, paletteProfiles, fallback)];
+}
+
 export function resolveTheme(config: ThemeConfig = {}): ResolvedTheme {
   const typographySetting = config.typography;
   const typographyOverrides =
@@ -1111,8 +1270,10 @@ export function resolveTheme(config: ThemeConfig = {}): ResolvedTheme {
     paletteProfiles,
     defaultTheme.palette,
   );
-  const primary = resolveProfileName(config.primary, paletteProfiles, palette);
-  const accent = resolveProfileName(config.accent, paletteProfiles, palette);
+  const primarySource = resolveColorSource(config.primary, palette);
+  const accentSource = resolveColorSource(config.accent, palette);
+  const primary = isExactColorSource(primarySource) ? palette : primarySource;
+  const accent = isExactColorSource(accentSource) ? palette : accentSource;
   const canvas = resolveProfileName(
     config.canvas,
     canvasProfiles,
@@ -1151,7 +1312,9 @@ export function resolveTheme(config: ThemeConfig = {}): ResolvedTheme {
     appearance: resolveAppearance(config.appearance ?? defaultTheme.appearance),
     palette,
     primary,
+    primarySource,
     accent,
+    accentSource,
     canvas,
     chartPalette,
     radius,
@@ -1175,8 +1338,11 @@ export function buildThemeVariables(
   theme: ResolvedTheme,
   options: ThemeVariableOptions = {},
 ): Record<string, string> {
-  const primaryPalette = paletteProfiles[theme.primary];
-  const accentPalette = paletteProfiles[theme.accent];
+  const primaryPalette = resolveColorProfile(
+    theme.primarySource,
+    theme.primary,
+  );
+  const accentPalette = resolveColorProfile(theme.accentSource, theme.accent);
   const neutrals = canvasProfiles[theme.canvas][theme.appearance];
   const chartColors = (
     theme.chartPalette === "four"
@@ -1294,6 +1460,18 @@ export function buildThemeVariables(
     "--t7-palette-name": theme.palette,
     "--t7-primary-palette": theme.primary,
     "--t7-accent-palette": theme.accent,
+    "--t7-primary-source-kind": isExactColorSource(theme.primarySource)
+      ? "exact"
+      : "palette",
+    "--t7-primary-source": isExactColorSource(theme.primarySource)
+      ? theme.primarySource.value
+      : theme.primarySource,
+    "--t7-accent-source-kind": isExactColorSource(theme.accentSource)
+      ? "exact"
+      : "palette",
+    "--t7-accent-source": isExactColorSource(theme.accentSource)
+      ? theme.accentSource.value
+      : theme.accentSource,
     "--t7-canvas-mode": theme.canvas,
     "--t7-chart-palette": theme.chartPalette,
     "--t7-chart-palette-count":
@@ -1648,5 +1826,63 @@ export function buildThemeVariables(
       ]),
     ),
     ...typographyVariables,
+  };
+}
+
+/**
+ * Produce a deterministic DTCG-shaped semantic snapshot for one resolved
+ * runtime configuration. Static recipe exports intentionally remain free of
+ * consumer brand values; an application that owns an exact brand source can
+ * use this snapshot in its own token compilation or handoff workflow.
+ */
+export function buildDtcgThemeSnapshot(
+  config: ThemeConfig = {},
+  options: ThemeVariableOptions = {},
+) {
+  const theme = resolveTheme(config);
+  const variables = buildThemeVariables(theme, options);
+  const action = {
+    primary: dtcgColor(variables["--t7-action-primary-hsl"]),
+    primaryHover: dtcgColor(variables["--t7-action-primary-hover-hsl"]),
+    primaryPressed: dtcgColor(variables["--t7-action-primary-pressed-hsl"]),
+    primaryForeground: dtcgColor(
+      variables["--t7-action-primary-foreground-hsl"],
+    ),
+    accent: dtcgColor(variables["--t7-accent-hsl"]),
+    accentHover: dtcgColor(variables["--t7-accent-hover-hsl"]),
+    accentPressed: dtcgColor(variables["--t7-accent-pressed-hsl"]),
+    accentForeground: dtcgColor(variables["--t7-accent-foreground-hsl"]),
+  };
+
+  return {
+    $description:
+      "DTCG-compatible resolved semantic snapshot for one Ten4Seven runtime configuration.",
+    $extensions: {
+      "org.ten4seven": {
+        appearance: theme.appearance,
+        canvas: theme.canvas,
+        chartPalette: theme.chartPalette,
+        primarySource: dtcgColorSource(theme.primarySource),
+        accentSource: dtcgColorSource(theme.accentSource),
+      },
+    },
+    semantic: {
+      color: {
+        action,
+        focus: dtcgColor(variables["--t7-focus-hsl"]),
+        status: {
+          success: dtcgColor(variables["--t7-success-hsl"]),
+          warning: dtcgColor(variables["--t7-warning-hsl"]),
+          danger: dtcgColor(variables["--t7-danger-hsl"]),
+          info: dtcgColor(variables["--t7-info-hsl"]),
+        },
+        chart: Object.fromEntries(
+          [1, 2, 3, 4, 5].map((index) => [
+            index,
+            dtcgColor(variables[`--t7-chart-${index}-hsl`]),
+          ]),
+        ),
+      },
+    },
   };
 }

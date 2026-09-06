@@ -13,6 +13,59 @@ export type PaletteName =
   | "red"
   | "orange"
   | "amber";
+
+/**
+ * An authored sRGB color source for a product that needs a brand value outside
+ * the curated palette families. Use {@link exactColor} instead of constructing
+ * this shape by hand so persisted values stay canonical.
+ */
+export interface ExactColorSource {
+  readonly kind: "exact";
+  readonly value: `#${string}`;
+}
+
+/** A named system palette or an intentionally exact authored color source. */
+export type ThemeColorSource = PaletteName | ExactColorSource;
+
+const exactColorPattern = /^#(?:[\dA-Fa-f]{3}|[\dA-Fa-f]{6})$/;
+
+function normalizeExactColorValue(value: string): `#${string}` | undefined {
+  const candidate = value.trim();
+  if (!exactColorPattern.test(candidate)) return undefined;
+  const expanded =
+    candidate.length === 4
+      ? `#${[...candidate.slice(1)]
+          .map((channel) => `${channel}${channel}`)
+          .join("")}`
+      : candidate;
+  return expanded.toUpperCase() as `#${string}`;
+}
+
+/**
+ * Create a canonical exact brand source for the runtime theme resolver.
+ * Only opaque sRGB hex is accepted because it maps deterministically to the
+ * existing HSL compatibility variables and has one portable JSON shape.
+ */
+export function exactColor(value: string): ExactColorSource {
+  const normalized = normalizeExactColorValue(value);
+  if (!normalized)
+    throw new Error(
+      `Expected an exact color in #RGB or #RRGGBB format, received: ${value}`,
+    );
+  return { kind: "exact", value: normalized };
+}
+
+/** Validate a deserialized exact source before it enters the resolver. */
+export function isExactColorSource(value: unknown): value is ExactColorSource {
+  return (
+    !!value &&
+    typeof value === "object" &&
+    (value as { readonly kind?: unknown }).kind === "exact" &&
+    typeof (value as { readonly value?: unknown }).value === "string" &&
+    normalizeExactColorValue((value as { readonly value: string }).value) !==
+      undefined
+  );
+}
 export type CanvasName = "balanced" | "paper" | "monochrome";
 export type ChartPaletteName = "spectrum" | "four" | "monochrome";
 export type RadiusName = "sharp" | "soft" | "rounded";
@@ -62,10 +115,10 @@ export interface ThemeProfile {
     readonly base: PaletteName;
   };
   readonly action: {
-    readonly primary: PaletteName;
+    readonly primary: ThemeColorSource;
   };
   readonly accent: {
-    readonly source: PaletteName;
+    readonly source: ThemeColorSource;
   };
   readonly canvas: {
     readonly mode: CanvasName;
@@ -206,8 +259,8 @@ export interface RecipeExpressionContract {
 export interface LegacyThemeConfigLike {
   readonly appearance?: Appearance;
   readonly palette?: PaletteName;
-  readonly primary?: PaletteName;
-  readonly accent?: PaletteName;
+  readonly primary?: ThemeColorSource;
+  readonly accent?: ThemeColorSource;
   readonly canvas?: CanvasName;
   readonly chartPalette?: ChartPaletteName;
   readonly radius?: RadiusName;
@@ -257,6 +310,9 @@ export interface RecipeIntent {
 export type RecipeState =
   | "loading"
   | "ready"
+  | "blocked"
+  | "incomplete"
+  | "unknown"
   | "empty"
   | "search-empty"
   | "filter-empty"
@@ -281,6 +337,16 @@ export const ENTITY_LIST_STATES = [
   "bulk-partial-failure",
   "bulk-success",
   "detail-open",
+] as const satisfies readonly RecipeState[];
+
+export const READINESS_REVIEW_STATES = [
+  "loading",
+  "ready",
+  "blocked",
+  "incomplete",
+  "unknown",
+  "stale",
+  "api-error",
 ] as const satisfies readonly RecipeState[];
 
 export type ResponsiveMode =
@@ -309,6 +375,38 @@ export interface RecipeShell {
   readonly selectionRule: string;
 }
 
+/**
+ * Human-facing responsive guidance for an operational recipe. This is kept
+ * separate from the component-level responsive mode vocabulary because an
+ * operational pattern describes information order, not a component layout
+ * primitive.
+ */
+export interface OperationalResponsiveContract {
+  readonly desktop: string;
+  readonly tablet: string;
+  readonly mobile: string;
+}
+
+/**
+ * Typed selection and semantic contract for an operational recipe family.
+ * Consumers supply domain values and policy; Ten4Seven owns only the
+ * composition guidance and presentation grammar.
+ */
+export interface OperationalPatternContract {
+  readonly maturity: "mature";
+  readonly useWhen: readonly string[];
+  readonly avoidWhen: readonly string[];
+  readonly anatomy: readonly string[];
+  readonly requiredSemantics: readonly string[];
+  readonly optionalSemantics: readonly string[];
+  readonly responsive: OperationalResponsiveContract;
+  readonly accessibility: readonly string[];
+  readonly aiGuidance: string;
+  readonly antiPatterns: readonly string[];
+  readonly relationships: readonly string[];
+  readonly referencePath: "/operational-patterns";
+}
+
 export interface ComponentContract {
   readonly id: string;
   readonly displayName: string;
@@ -331,6 +429,8 @@ export interface RecipeContract {
   readonly profiles: readonly string[];
   readonly components: readonly string[];
   readonly optional?: readonly string[];
+  readonly icons?: readonly string[];
+  readonly operational?: OperationalPatternContract;
   readonly shell?: RecipeShell;
   readonly intent?: RecipeIntent;
   readonly required?: readonly string[];

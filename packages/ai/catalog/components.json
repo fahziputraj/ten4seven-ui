@@ -1777,6 +1777,158 @@
     "composesWith": ["CheckboxGroup", "Combobox"],
     "usedByPatterns": []
   },
+  "HierarchyPicker": {
+    "status": "implemented",
+    "category": "form",
+    "purpose": "Select nested hierarchy nodes with expansion, mixed ancestor state, optional local search, and keyboard tree navigation while leaving resource meaning to the consumer.",
+    "useWhen": [
+      "delegated resource scope needs nested selection",
+      "tenant, Farm, location, or cage structures need visible ancestor context"
+    ],
+    "avoidWhen": [
+      "choices are flat and bounded",
+      "navigation is the only concern",
+      "the component would need to decide permission or authorization meaning"
+    ],
+    "recipes": [],
+    "importantProps": [
+      "items",
+      "selectedIds",
+      "onSelectionChange",
+      "expandedIds",
+      "searchable",
+      "label"
+    ],
+    "relatedComponents": [
+      "Select",
+      "Combobox",
+      "Checkbox",
+      "Collapsible",
+      "Input"
+    ],
+    "source": "packages/ui/src/hierarchy.tsx",
+    "displayName": "Hierarchy Picker",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "collapsed branches",
+      "expanded branches",
+      "none selected",
+      "partially selected",
+      "fully selected",
+      "disabled nodes",
+      "searching",
+      "empty results",
+      "disabled"
+    ],
+    "accessibility": [
+      "Uses tree and treeitem semantics with aria-level, aria-posinset, aria-setsize, aria-expanded, aria-selected, and linked helper text.",
+      "Roving focus supports Arrow, Home, End, Space, and Enter without adding a second keyboard model.",
+      "Partial selection has a visible mixed marker and an explicit screen-reader announcement."
+    ],
+    "responsive": [
+      "Keeps the tree inside a bounded scroll owner so long hierarchies do not expand the page indefinitely.",
+      "Rows wrap long labels and retain shared touch-target geometry on narrow Web layouts."
+    ],
+    "motion": [
+      "Uses shared transition variables for focus, selection, and expansion affordances.",
+      "Respects prefers-reduced-motion through the global motion contract."
+    ],
+    "tokens": [
+      "surface-raised",
+      "border-strong",
+      "selected",
+      "focus-ring",
+      "control-height",
+      "touch-target-min",
+      "control-radius",
+      "indicator-radius",
+      "muted-foreground"
+    ],
+    "api": [
+      {
+        "name": "items",
+        "type": "HierarchyItem[]",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Opaque-ID hierarchy nodes with labels, optional descriptions, disabled state, and children."
+      },
+      {
+        "name": "selectedIds",
+        "type": "string[]",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Controlled selected node IDs; selected branches expand to selectable descendants."
+      },
+      {
+        "name": "defaultSelectedIds",
+        "type": "string[]",
+        "defaultValue": "[]",
+        "required": false,
+        "description": "Initial selected node IDs for uncontrolled usage."
+      },
+      {
+        "name": "onSelectionChange",
+        "type": "(ids) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Callback with canonical selected IDs after a node is toggled."
+      },
+      {
+        "name": "expandedIds",
+        "type": "string[]",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Controlled expanded branch IDs."
+      },
+      {
+        "name": "defaultExpandedIds",
+        "type": "string[]",
+        "defaultValue": "root branches",
+        "required": false,
+        "description": "Initial expanded branch IDs for uncontrolled usage."
+      },
+      {
+        "name": "onExpandedIdsChange",
+        "type": "(ids) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Callback after a branch expansion state changes."
+      },
+      {
+        "name": "searchable",
+        "type": "boolean",
+        "defaultValue": "false",
+        "required": false,
+        "description": "Shows a local label filter that keeps matching ancestors visible."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "defaultValue": "Resource scope",
+        "required": false,
+        "description": "Visible and accessible name for the hierarchy."
+      },
+      {
+        "name": "description",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Helper copy linked to the tree."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "defaultValue": "false",
+        "required": false,
+        "description": "Retains the hierarchy while preventing selection and expansion changes."
+      }
+    ],
+    "example": "<HierarchyPicker items={items} selectedIds={selectedIds} onSelectionChange={setSelectedIds} searchable />",
+    "alternativeTo": ["Select", "Combobox", "Sidebar"],
+    "composesWith": ["Input", "Checkbox", "Collapsible"],
+    "usedByPatterns": []
+  },
   "Checkbox": {
     "status": "implemented",
     "category": "form",
@@ -4331,6 +4483,109 @@
     "composesWith": ["PageHeader", "TopNavigation"],
     "usedByPatterns": []
   },
+  "SectionNavigation": {
+    "status": "implemented",
+    "category": "navigation",
+    "purpose": "Navigate between labelled anchors within a long form or bounded workspace without owning section state.",
+    "useWhen": [
+      "long forms or workspaces need page-local anchor navigation",
+      "a global shell already owns route navigation"
+    ],
+    "avoidWhen": [
+      "switching between peer content panels; use Tabs",
+      "route-level navigation; use Sidebar, TopNavigation, or NavigationMenu"
+    ],
+    "recipes": [],
+    "importantProps": [
+      "items",
+      "activeId",
+      "defaultActiveId",
+      "onSectionChange",
+      "label",
+      "sticky"
+    ],
+    "relatedComponents": ["Tabs", "Sidebar", "MobileSidebar", "PageHeader"],
+    "source": "packages/ui/src/navigation.tsx",
+    "displayName": "Section Navigation",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "default",
+      "active anchor",
+      "focused",
+      "mobile menu expanded",
+      "sticky when enabled"
+    ],
+    "accessibility": [
+      "Expose a named nav landmark and aria-current=location for the active anchor.",
+      "Keep native anchor and summary keyboard behavior; the consumer may supply scroll-spy state through activeId."
+    ],
+    "responsive": [
+      "Render the labelled anchor list on wide layouts.",
+      "Collapse to a native details summary and compact anchor menu on narrow layouts without changing item semantics."
+    ],
+    "motion": [
+      "Uses the shared transition and easing variables for mobile disclosure.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "selected",
+      "control-height",
+      "touch-target-min",
+      "sticky-offset",
+      "focus-ring"
+    ],
+    "api": [
+      {
+        "name": "items",
+        "type": "SectionNavigationItem[]",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Labelled section IDs rendered as page-local anchors."
+      },
+      {
+        "name": "activeId",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Consumer-controlled active section, such as a scroll-spy result."
+      },
+      {
+        "name": "defaultActiveId",
+        "type": "string",
+        "defaultValue": "first item",
+        "required": false,
+        "description": "Initial active section for uncontrolled navigation."
+      },
+      {
+        "name": "onSectionChange",
+        "type": "(id: string) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Callback after an anchor is selected; section observation remains consumer-owned."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "defaultValue": "Section navigation",
+        "required": false,
+        "description": "Accessible name for the page-local nav landmark."
+      },
+      {
+        "name": "sticky",
+        "type": "boolean",
+        "defaultValue": "false",
+        "required": false,
+        "description": "Keep the navigation below the shared document sticky offset."
+      }
+    ],
+    "example": "<SectionNavigation items={[{ id: \"profile\", label: \"Profile\" }]} />",
+    "alternativeTo": [],
+    "composesWith": ["AppShell", "PageHeader", "Tabs"],
+    "usedByPatterns": []
+  },
   "Tabs": {
     "status": "implemented",
     "category": "navigation",
@@ -6229,6 +6484,232 @@
       "report"
     ]
   },
+  "AdvancedDataGrid": {
+    "status": "implemented",
+    "category": "table",
+    "purpose": "Edit bounded structured records in a semantic table with typed cell editors, row state, validation feedback, and keyboard traversal while leaving business rules to the consumer.",
+    "useWhen": [
+      "repeated editable cells need table comparison",
+      "cash or journal-like line items share typed editors and row lifecycle presentation"
+    ],
+    "avoidWhen": [
+      "read-only comparable records (use DataTable)",
+      "very large, virtualized, grouped, tree, or pivot data without a separate architecture decision",
+      "the grid would own permission, totals, or business validation"
+    ],
+    "recipes": [],
+    "importantProps": [
+      "caption",
+      "columns",
+      "rows",
+      "rowKey",
+      "onCellChange",
+      "rowState",
+      "cellErrors",
+      "onRowSave",
+      "onRowCancel",
+      "selectable",
+      "footer"
+    ],
+    "relatedComponents": [
+      "DataTable",
+      "DataTableColumnPicker",
+      "BulkActionBar",
+      "Pagination",
+      "Input",
+      "NumberInput",
+      "CurrencyInput",
+      "Select",
+      "IconButton"
+    ],
+    "source": "packages/ui/src/data-grid.tsx",
+    "displayName": "Advanced Data Grid",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "loading",
+      "ready",
+      "empty",
+      "error",
+      "dirty rows",
+      "saving rows",
+      "saved rows",
+      "row validation error",
+      "selected rows"
+    ],
+    "accessibility": [
+      "Uses a native table with stable row and column context and labelled editors.",
+      "Arrow traversal, Escape cancel, and Ctrl or Meta plus Enter save keep keyboard editing bounded; row actions have explicit labels.",
+      "Cell errors and row status remain textual; native input and select semantics are preserved."
+    ],
+    "responsive": [
+      "Keeps editable columns inside a bounded horizontal scroll owner on narrow Web layouts.",
+      "Uses shared control geometry and lets consumers switch to a table plus form or drawer workflow when inline editing is too dense."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for focus and row-state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "selected",
+      "selected-hover",
+      "row-height",
+      "focus-ring",
+      "input-background",
+      "input-border",
+      "danger",
+      "muted-foreground"
+    ],
+    "api": [
+      {
+        "name": "caption",
+        "type": "string",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Stable accessible name for the native table."
+      },
+      {
+        "name": "columns",
+        "type": "AdvancedDataGridColumn[]",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Column definitions with optional typed editors and presentation metadata."
+      },
+      {
+        "name": "rows",
+        "type": "Row[]",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Structured records rendered by the contract."
+      },
+      {
+        "name": "rowKey",
+        "type": "(row) => string",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Returns the stable key for each data row."
+      },
+      {
+        "name": "columnVisibility",
+        "type": "Record<string, boolean>",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Controls optional column visibility without changing row data."
+      },
+      {
+        "name": "density",
+        "type": "DataTableDensity",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Selects the shared table row density."
+      },
+      {
+        "name": "selectable",
+        "type": "boolean",
+        "defaultValue": "false",
+        "required": false,
+        "description": "Adds canonical row and select-all controls."
+      },
+      {
+        "name": "selectedRowKeys",
+        "type": "string[]",
+        "defaultValue": "[]",
+        "required": false,
+        "description": "Controlled row selection keys."
+      },
+      {
+        "name": "onSelectionChange",
+        "type": "(keys) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Reports selection changes while leaving bulk action meaning to the consumer."
+      },
+      {
+        "name": "sort",
+        "type": "DataTableSort",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Controlled sort state for sortable columns."
+      },
+      {
+        "name": "onSort",
+        "type": "(key) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Reports a requested sort key without owning data ordering."
+      },
+      {
+        "name": "onCellChange",
+        "type": "(rowKey, columnKey, value) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Receives an opaque editor value; validation, calculation, and persistence remain consumer-owned."
+      },
+      {
+        "name": "rowState",
+        "type": "Record<string, AdvancedDataGridRowState>",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Presents consumer-supplied clean, dirty, saving, saved, or error state."
+      },
+      {
+        "name": "cellErrors",
+        "type": "Record<string, Record<string, string>>",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Presents consumer-supplied inline validation feedback."
+      },
+      {
+        "name": "onRowSave",
+        "type": "(row) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Reports an explicit row-save intent without persisting data in the grid."
+      },
+      {
+        "name": "onRowCancel",
+        "type": "(row) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Reports an explicit row-cancel intent without restoring consumer data."
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "defaultValue": "false",
+        "required": false,
+        "description": "Communicates pending work and prevents duplicate row interaction."
+      },
+      {
+        "name": "error",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Presents a consumer-supplied table-level error."
+      },
+      {
+        "name": "footer",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Renders consumer-owned summary, pagination, or batch-action content below the table."
+      }
+    ],
+    "example": "<AdvancedDataGrid caption=\"Journal lines\" columns={columns} rows={rows} rowKey={(row) => row.id} onCellChange={...} />",
+    "alternativeTo": ["DataTable"],
+    "composesWith": [
+      "Input",
+      "NumberInput",
+      "CurrencyInput",
+      "Select",
+      "IconButton",
+      "BulkActionBar",
+      "Pagination"
+    ],
+    "usedByPatterns": []
+  },
   "DataTableColumnPicker": {
     "status": "implemented",
     "category": "table",
@@ -7103,6 +7584,119 @@
       "checkout",
       "content-detail"
     ]
+  },
+  "RevisionDiff": {
+    "status": "implemented",
+    "category": "data",
+    "purpose": "Compare consumer-supplied before and after values with explicit change semantics and adjacent revision provenance.",
+    "useWhen": [
+      "multiple fields need a readable before and after comparison",
+      "a correction, amendment, or review must keep reason, actor, time, and evidence beside the changed facts"
+    ],
+    "avoidWhen": [
+      "one stable fact is enough; use KeyValueList",
+      "the consumer needs immutable audit storage, correction mutation, or policy evaluation"
+    ],
+    "recipes": [],
+    "importantProps": [
+      "items",
+      "reason",
+      "actor",
+      "occurredAt",
+      "evidence",
+      "title"
+    ],
+    "relatedComponents": [
+      "KeyValueList",
+      "ActivityFeed",
+      "StatusChip",
+      "Table"
+    ],
+    "source": "packages/ui/src/data-display.tsx",
+    "displayName": "Revision Diff",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "default",
+      "empty or unavailable when applicable",
+      "changed, added, removed, or unchanged field rows"
+    ],
+    "accessibility": [
+      "Expose field, before, after, and explicit change text through semantic table headers and cells; never rely on color alone.",
+      "Keep reason, actor, occurred-at, and evidence or source readable in the same tab order.",
+      "Use an explicit Not present value for added or removed fields so absence is understandable to every reader."
+    ],
+    "responsive": [
+      "Stack each field's label, before value, after value, and change state in narrow containers without changing meaning.",
+      "Retain shared table geometry, readable wrapping, and touch-safe spacing."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "muted-foreground",
+      "radius-panel",
+      "table-cell-padding",
+      "motion"
+    ],
+    "api": [
+      {
+        "name": "items",
+        "type": "RevisionDiffItem[]",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Consumer-supplied fields with before, after, optional context, and an explicit change kind."
+      },
+      {
+        "name": "reason",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Human-readable reason owned by the consumer."
+      },
+      {
+        "name": "actor",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Accountable actor associated with the revision."
+      },
+      {
+        "name": "occurredAt",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Consumer-supplied time at which the revision occurred."
+      },
+      {
+        "name": "evidence",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Evidence link, identifier, or source label for the revision."
+      },
+      {
+        "name": "title",
+        "type": "ReactNode",
+        "defaultValue": "Revision summary",
+        "required": false,
+        "description": "Accessible heading for the revision surface."
+      },
+      {
+        "name": "emptyMessage",
+        "type": "ReactNode",
+        "defaultValue": "No field changes recorded.",
+        "required": false,
+        "description": "Message shown when the consumer supplies no changed fields."
+      }
+    ],
+    "example": "<RevisionDiff items={changes} reason=\"Correction approved\" actor=\"QA lead\" occurredAt=\"Sep 3 · 14:28\" evidence=\"RC-3841\" />",
+    "alternativeTo": [],
+    "composesWith": ["KeyValueList", "ActivityFeed", "StatusChip", "Table"],
+    "usedByPatterns": []
   },
   "ProductCard": {
     "status": "implemented",
@@ -9948,6 +10542,126 @@
     "example": "<Image />",
     "alternativeTo": [],
     "composesWith": ["MediaFrame", "AspectRatio"],
+    "usedByPatterns": []
+  },
+  "QrCode": {
+    "status": "implemented",
+    "category": "media",
+    "purpose": "Render an accessible, print-friendly QR mark for an opaque consumer-owned value.",
+    "useWhen": [
+      "a Web surface needs to display or print a resource deep link",
+      "the encoded value needs a human-readable label and copy affordance"
+    ],
+    "avoidWhen": [
+      "camera access or QR scanning is required; keep that native",
+      "the component would decide payload, permission, or resource authorization"
+    ],
+    "recipes": [],
+    "importantProps": [
+      "value",
+      "label",
+      "description",
+      "size",
+      "displayValue",
+      "copyable",
+      "printable",
+      "onCopy"
+    ],
+    "relatedComponents": ["Image", "MediaFrame", "Button"],
+    "source": "packages/ui/src/qr.tsx",
+    "displayName": "QR Code",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "default",
+      "copied",
+      "copy unavailable",
+      "printing",
+      "value too long or invalid"
+    ],
+    "accessibility": [
+      "Expose an SVG image name and description, keep the encoded value visible for human verification, and provide focused native actions.",
+      "Keep copy and print status announcements polite; scanning and camera permissions remain outside the Web component."
+    ],
+    "responsive": [
+      "Scale the mark within a bounded surface and let opaque values wrap without horizontal overflow.",
+      "Wrap copy and print actions at narrow widths while retaining shared touch-target geometry."
+    ],
+    "motion": [
+      "Uses canonical Button transitions for copy and print actions.",
+      "Does not animate the QR mark and respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-subtle",
+      "foreground",
+      "muted-foreground",
+      "border",
+      "radius-panel",
+      "control-gap",
+      "focus-ring"
+    ],
+    "api": [
+      {
+        "name": "value",
+        "type": "string",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Opaque value encoded into the QR mark; payload meaning stays with the consumer."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "defaultValue": "QR code",
+        "required": false,
+        "description": "Human-readable resource label shown beside the mark and used as its accessible title."
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "defaultValue": "derived from label and value",
+        "required": false,
+        "description": "Accessible description for the encoded resource."
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\" | \"lg\"",
+        "defaultValue": "md",
+        "required": false,
+        "description": "Responsive mark size preset."
+      },
+      {
+        "name": "displayValue",
+        "type": "boolean",
+        "defaultValue": "true",
+        "required": false,
+        "description": "Show the encoded value below the mark for human verification."
+      },
+      {
+        "name": "copyable",
+        "type": "boolean",
+        "defaultValue": "true",
+        "required": false,
+        "description": "Show the canonical copy-value action."
+      },
+      {
+        "name": "printable",
+        "type": "boolean",
+        "defaultValue": "true",
+        "required": false,
+        "description": "Show the browser print action for the QR surface."
+      },
+      {
+        "name": "onCopy",
+        "type": "(copied: boolean) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Optional notification after the copy attempt completes."
+      }
+    ],
+    "example": "<QrCode label=\"Cage production entry\" value=\"aapmmobile://kandang/KDG11F378DFCFC/produksi\" />",
+    "alternativeTo": [],
+    "composesWith": ["MediaFrame", "Button"],
     "usedByPatterns": []
   },
   "ApprovalPanel": {

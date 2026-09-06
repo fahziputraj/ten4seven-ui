@@ -20,6 +20,9 @@ export type PlaygroundRoute =
   | "Publishing Store"
   | "Public Showcase";
 
+export type AdoptionProofRoute =
+  "Farm Synthetic" | "Auth · Neutral" | "Auth · AAPM Academy";
+
 export const playgroundRoutePaths: Record<PlaygroundRoute, string> = {
   "Theme Studio": "/theme-studio",
   "Component Lab": "/component-lab",
@@ -72,7 +75,14 @@ export const playgroundRouteDescriptions: Record<PlaygroundRoute, string> = {
     "Public composition showcase for ten4seven UI blocks and recipes.",
 };
 
-/** Bounded Slice B proof routes; these are intentionally not part of the main navigation. */
+/** Synthetic consumer proof; discoverable from the design-system navigation while retaining its consumer-shaped shell. */
+export const farmSyntheticProofPath = "/farm-synthetic-proof";
+export const farmSyntheticProofTitle =
+  "ten4seven UI — Farm Synthetic Consumer Proof";
+export const farmSyntheticProofDescription =
+  "Synthetic Farm consumer composition for authorized context, Farm Overview metrics, and safe recovery states.";
+
+/** Bounded brand-expression proof routes; discoverable from the design-system navigation while retaining their consumer-shaped shells. */
 export const brandProofRoutePaths: Record<BrandProfileId, string> = {
   "neutral-product": "/brand-proof/auth-neutral",
   "aapm-academy": "/brand-proof/auth-aapm-academy",
@@ -83,8 +93,46 @@ export const brandProofRouteTitles: Record<BrandProfileId, string> = {
   "aapm-academy": "ten4seven UI — Authentication · AAPM Academy",
 };
 
+export const adoptionProofNavigation: AdoptionProofRoute[] = [
+  "Farm Synthetic",
+  "Auth · Neutral",
+  "Auth · AAPM Academy",
+];
+
+/** Short visual labels keep the primary navigation readable without changing route identity. */
+export const adoptionProofNavigationLabels: Record<AdoptionProofRoute, string> =
+  {
+    "Farm Synthetic": "Farm Synthetic",
+    "Auth · Neutral": "Auth · Neutral",
+    "Auth · AAPM Academy": "Auth · Academy",
+  };
+
+export const adoptionProofRoutePaths: Record<AdoptionProofRoute, string> = {
+  "Farm Synthetic": farmSyntheticProofPath,
+  "Auth · Neutral": brandProofRoutePaths["neutral-product"],
+  "Auth · AAPM Academy": brandProofRoutePaths["aapm-academy"],
+};
+
+export const adoptionProofRouteTitles: Record<AdoptionProofRoute, string> = {
+  "Farm Synthetic": farmSyntheticProofTitle,
+  "Auth · Neutral": brandProofRouteTitles["neutral-product"],
+  "Auth · AAPM Academy": brandProofRouteTitles["aapm-academy"],
+};
+
+export const adoptionProofRouteDescriptions: Record<
+  AdoptionProofRoute,
+  string
+> = {
+  "Farm Synthetic": farmSyntheticProofDescription,
+  "Auth · Neutral":
+    "Authentication brand-expression proof for the neutral product profile.",
+  "Auth · AAPM Academy":
+    "Authentication brand-expression proof for the AAPM Academy profile.",
+};
+
 export type RouteMatch =
   | { kind: "known"; route: PlaygroundRoute }
+  | { kind: "farm-synthetic"; pathname: string }
   | { kind: "brand-proof"; profileId: BrandProfileId; pathname: string }
   | { kind: "component-family"; category: string; pathname: string }
   | { kind: "component-detail"; name: string; pathname: string }
@@ -100,6 +148,9 @@ export function routeFromPath(pathname: string): RouteMatch {
   const normalizedPath = pathname.replace(/\/+$/, "") || "/";
   if (normalizedPath === "/") {
     return { kind: "known", route: "Theme Studio" };
+  }
+  if (normalizedPath === farmSyntheticProofPath) {
+    return { kind: "farm-synthetic", pathname: normalizedPath };
   }
   const entry = Object.entries(playgroundRoutePaths).find(
     ([, path]) => path === normalizedPath,

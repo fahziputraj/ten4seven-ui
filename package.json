@@ -22,7 +22,7 @@
     "package:verify": "pnpm --filter @ten4seven/ui verify",
     "package:release": "pnpm --filter @ten4seven/ui pack:release",
     "test:next-consumer": "node scripts/test-next-app-router-consumer.mjs",
-    "typecheck": "pnpm --filter @ten4seven/contracts typecheck && pnpm --filter @ten4seven/agent typecheck && pnpm --filter @ten4seven/playground typecheck",
+    "typecheck": "pnpm --filter @ten4seven/contracts typecheck && pnpm --filter @ten4seven/agent typecheck && pnpm --filter @ten4seven/agent build && pnpm --filter @ten4seven/playground typecheck",
     "test": "pnpm test:contracts && pnpm test:dtcg && pnpm test:contrast && pnpm test:token-governance && pnpm test:component-coverage && pnpm test:slice-a && pnpm test:brand-expression && pnpm test:recipe-family && pnpm --filter @ten4seven/tokens test && pnpm test:ai && pnpm test:component-system && pnpm test:tailwind-bridge",
     "test:contracts": "node --experimental-strip-types scripts/verify-contracts.mjs",
     "test:dtcg": "node --experimental-strip-types scripts/verify-dtcg-token-export.mjs",
