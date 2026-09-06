@@ -1,10 +1,42 @@
 .adoption-public-cover {
+  position: relative;
+  isolation: isolate;
   display: grid;
+  align-content: space-between;
   min-height: 100%;
-  place-items: center;
-  padding: 18px;
+  gap: var(--t7-section-gap);
+  overflow: hidden;
+  padding: clamp(18px, 3vw, 32px);
   background: hsl(var(--t7-primary-hsl) / 0.84);
   color: hsl(var(--t7-primary-foreground-hsl));
+}
+
+.adoption-public-cover::before,
+.adoption-public-cover::after {
+  position: absolute;
+  z-index: -1;
+  content: "";
+}
+
+.adoption-public-cover::before {
+  top: -20%;
+  right: -18%;
+  width: 72%;
+  aspect-ratio: 1;
+  border: 1px solid hsl(var(--t7-foreground-hsl) / 0.22);
+  border-radius: var(--t7-radius-full);
+  opacity: 0.22;
+}
+
+.adoption-public-cover::after {
+  right: 10%;
+  bottom: -16%;
+  width: 42%;
+  aspect-ratio: 1;
+  border-radius: var(--t7-radius-panel);
+  background: hsl(var(--t7-foreground-hsl) / 0.1);
+  opacity: 0.1;
+  transform: rotate(-14deg);
 }
 
 .adoption-css-first-proof {
@@ -39,28 +71,80 @@
   background: hsl(var(--t7-warning-hsl) / 0.84);
 }
 
+.adoption-public-cover-topline,
+.adoption-public-cover-copy {
+  position: relative;
+  z-index: 1;
+}
+
+.adoption-public-cover-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--t7-control-gap);
+  font-family: var(--t7-font-mono);
+  font-size: var(--t7-type-overline-size);
+  font-weight: var(--t7-type-overline-weight);
+  letter-spacing: var(--t7-type-overline-tracking);
+  line-height: var(--t7-type-overline-line-height);
+  text-transform: uppercase;
+}
+
 .adoption-public-cover-mark {
   display: grid;
-  width: 54px;
-  height: 54px;
+  width: 34px;
+  height: 34px;
   place-items: center;
-  border: 1px solid currentColor;
-  border-radius: var(--t7-radius-full);
-  font-family: var(--t7-font-ui);
-  font-size: var(--t7-type-label-size);
-  font-weight: var(--t7-type-label-weight);
-  letter-spacing: 0.08em;
+  border: 1px solid hsl(var(--t7-foreground-hsl) / 0.22);
+  border-radius: var(--t7-radius-control);
+}
+
+.adoption-public-cover-copy {
+  display: grid;
+  gap: var(--t7-control-gap);
+  max-width: 16ch;
+}
+
+.adoption-public-cover-title {
+  font-family: var(--t7-font-display);
+  font-size: var(--t7-type-display-md-size);
+  font-weight: var(--t7-type-display-md-weight);
+  letter-spacing: var(--t7-type-display-md-tracking);
+  line-height: var(--t7-type-display-md-line-height);
+}
+
+.adoption-public-cover-title::before {
+  content: attr(data-cover-title);
+}
+
+.adoption-public-cover-author {
+  font-size: var(--t7-type-caption-size);
+  line-height: var(--t7-type-caption-line-height);
+  opacity: 0.86;
+}
+
+.adoption-public-cover-author::before {
+  content: attr(data-cover-author);
+}
+
+.adoption-public-cover-rule {
+  position: relative;
+  z-index: 1;
+  width: 42%;
+  height: 1px;
+  background: hsl(var(--t7-foreground-hsl) / 0.64);
+  opacity: 0.64;
 }
 
 .adoption-public-cover-large {
-  min-height: 260px;
+  min-height: 100%;
 }
 
 .adoption-public-filter-toolbar {
   display: grid;
   grid-template-columns: minmax(200px, 1fr) minmax(160px, 220px) auto;
   align-items: end;
-  gap: 12px;
+  gap: var(--t7-control-gap);
   margin-bottom: var(--t7-section-gap);
 }
 
@@ -72,37 +156,37 @@
 .adoption-public-card-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--t7-control-gap);
 }
 
 .adoption-public-detail-stack,
 .adoption-public-cart-stack {
   display: grid;
-  gap: 20px;
+  gap: var(--t7-section-gap);
 }
 
 .adoption-public-detail-meta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
+  gap: var(--t7-control-gap);
 }
 
 .adoption-public-cart-summary {
   display: grid;
-  gap: 12px;
+  gap: var(--t7-control-gap);
 }
 
 .adoption-public-notice {
   position: fixed;
-  right: 24px;
-  bottom: 24px;
+  right: var(--t7-page-gutter);
+  bottom: var(--t7-page-gutter);
   z-index: var(--t7-z-toast);
   border: 1px solid hsl(var(--t7-success-hsl) / 0.28);
   border-radius: var(--t7-radius-control);
   background: hsl(var(--t7-surface-raised-hsl));
   color: hsl(var(--t7-success-hsl));
-  padding: 12px 16px;
+  padding: var(--t7-card-padding);
   box-shadow: var(--t7-shadow-popover);
 }
 

@@ -222,29 +222,19 @@ describe("theme engine", () => {
     expect(variables["--t7-primary-active-hsl"]).toBe("126 44.94% 22.9%");
     expect(variables["--t7-primary-foreground-hsl"]).toBe("0 0% 100%");
     expect(variables["--t7-accent-hsl"]).toBe("13.87 78.15% 46.67%");
-    expect(variables["--t7-accent-hover-hsl"]).toBe(
-      "13.87 78.15% 40.67%",
-    );
-    expect(variables["--t7-accent-pressed-hsl"]).toBe(
-      "13.87 78.15% 34.67%",
-    );
+    expect(variables["--t7-accent-hover-hsl"]).toBe("13.87 78.15% 40.67%");
+    expect(variables["--t7-accent-pressed-hsl"]).toBe("13.87 78.15% 34.67%");
     expect(variables["--t7-accent-foreground-hsl"]).toBe("0 0% 0%");
-    expect(variables["--t7-selected-hsl"]).toBe(
-      variables["--t7-primary-hsl"],
-    );
+    expect(variables["--t7-selected-hsl"]).toBe(variables["--t7-primary-hsl"]);
     expect(variables["--t7-selected-foreground-hsl"]).toBe(
       variables["--t7-primary-foreground-hsl"],
     );
-    expect(variables["--t7-focus-hsl"]).toBe(
-      namedBaseline["--t7-focus-hsl"],
-    );
+    expect(variables["--t7-focus-hsl"]).toBe(namedBaseline["--t7-focus-hsl"]);
     for (const role of ["success", "warning", "danger", "info"])
       expect(variables[`--t7-${role}-hsl`]).toBe(
         namedBaseline[`--t7-${role}-hsl`],
       );
-    expect(variables["--t7-chart-1-hsl"]).toBe(
-      variables["--t7-primary-hsl"],
-    );
+    expect(variables["--t7-chart-1-hsl"]).toBe(variables["--t7-primary-hsl"]);
     expect(variables["--t7-chart-2-hsl"]).toBe(
       variables["--t7-primary-hover-hsl"],
     );

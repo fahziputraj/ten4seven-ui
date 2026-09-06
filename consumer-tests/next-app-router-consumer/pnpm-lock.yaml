@@ -271,7 +271,7 @@ packages:
     resolution: {integrity: sha512-5lSsMOTXURePglDfvuAQUqkGek9Hg2kksOYay2m0+XR++b2NWYL/4sWyuvVBIs8oKnJaxkdi9whaL/sqN13afw==}
 
   '@ten4seven/ui@file:../../artifacts/consumer-proof/ten4seven-ui-1.0.0.tgz':
-    resolution: {integrity: sha512-dXxcl5m5a4psijTZkx4AcU8yKiHGRU4o/unVHUgJHBxr0NVFv7PpdDkLeoNJJmEN7n9V46D9PKMMj1oWHBYMQQ==, tarball: file:../../artifacts/consumer-proof/ten4seven-ui-1.0.0.tgz}
+    resolution: {integrity: sha512-uuSswpAAimKKeRb1NqU8IjRojmETDIazifa+mPUo8aZKMliCICdHVpl70VKqbUAE+x70FSwP9F/21CZTwa2QfQ==, tarball: file:../../artifacts/consumer-proof/ten4seven-ui-1.0.0.tgz}
     version: 1.0.0
     peerDependencies:
       react: '>=18.2.0'

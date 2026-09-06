@@ -54,7 +54,7 @@ test("Theme Studio recipe choices expose authored intent and demoted diagnostics
   await diagnostics.getByText("Semantic diagnostics", { exact: true }).click();
   await expect(diagnostics).toHaveAttribute("open", "");
   await expect(diagnostics.locator('[data-live-value="primary"]')).toHaveText(
-    "indigo · primary role",
+    "indigo · preset · primary role",
   );
 });
 

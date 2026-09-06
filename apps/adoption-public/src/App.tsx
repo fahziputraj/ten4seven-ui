@@ -159,12 +159,10 @@ function navigate(pathname: string) {
   window.dispatchEvent(new PopStateEvent("popstate"));
 }
 
-function initials(title: string) {
-  return title
-    .split(" ")
-    .map((word) => word[0])
-    .slice(0, 2)
-    .join("");
+function productIcon(category: ProductCategory) {
+  if (category === "Systems") return "components" as const;
+  if (category === "Practice") return "type" as const;
+  return "book" as const;
 }
 
 function CoverArt({
@@ -181,9 +179,27 @@ function CoverArt({
       data-category={product.category}
       role="img"
     >
-      <span className="adoption-public-cover-mark">
-        {initials(product.title)}
+      <span aria-hidden="true" className="adoption-public-cover-topline">
+        <span className="adoption-public-cover-mark">
+          <T7Icon
+            aria-hidden="true"
+            name={productIcon(product.category)}
+            size={17}
+          />
+        </span>
+        <span>{product.category}</span>
       </span>
+      <span aria-hidden="true" className="adoption-public-cover-copy">
+        <span
+          className="adoption-public-cover-title"
+          data-cover-title={product.title}
+        />
+        <span
+          className="adoption-public-cover-author"
+          data-cover-author={product.author}
+        />
+      </span>
+      <span aria-hidden="true" className="adoption-public-cover-rule" />
     </div>
   );
 }
@@ -196,7 +212,7 @@ function ProductMedia({
   product: Product;
 }) {
   return (
-    <MediaFrame label={`${product.title} cover`} ratio={0.78}>
+    <MediaFrame label={`${product.title} cover`} ratio={large ? 1.1 : 0.78}>
       <CoverArt large={large} product={product} />
     </MediaFrame>
   );

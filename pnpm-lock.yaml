@@ -129,10 +129,13 @@ importers:
         version: 8.2.2(esbuild@0.28.2)
 
   packages/agent:
-    dependencies:
-      "@ten4seven/contracts":
-        specifier: workspace:*
-        version: link:../contracts
+    devDependencies:
+      rollup:
+        specifier: ^4.62.5
+        version: 4.62.5
+      rollup-plugin-dts:
+        specifier: ^6.2.1
+        version: 6.5.1(rollup@4.62.5)(typescript@5.9.3)
 
   packages/ai: {}
 

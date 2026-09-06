@@ -1384,14 +1384,14 @@ export function IconsExplorer() {
           </div>
         </div>
         <Typography className="iconify-theme-note" typeRole="caption">
-          Logo palette: {" "}
+          Logo palette:{" "}
           {typeof theme.primarySource === "string"
             ? theme.primarySource
-            : theme.primarySource.value} {" "}
-          main · {" "}
+            : theme.primarySource.value}{" "}
+          main ·{" "}
           {typeof theme.accentSource === "string"
             ? theme.accentSource
-            : theme.accentSource.value} {" "}
+            : theme.accentSource.value}{" "}
           accent · custom values stay local to this preview.
         </Typography>
       </section>

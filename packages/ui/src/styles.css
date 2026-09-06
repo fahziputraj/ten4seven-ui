@@ -4229,7 +4229,7 @@
 .t7-section-navigation a[data-active="true"] {
   background: hsl(var(--t7-selected-hsl));
   color: hsl(var(--t7-selected-foreground-hsl));
-  box-shadow: inset 2px 0 0 hsl(var(--t7-primary-hsl));
+  box-shadow: var(--t7-shadow-selection);
 }
 .t7-section-navigation-mobile {
   display: none;

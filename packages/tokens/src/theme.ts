@@ -1,8 +1,5 @@
 import { resolveMotionRoles } from "../../contracts/src/theme-profile.ts";
-import {
-  exactColor,
-  isExactColorSource,
-} from "../../contracts/src/types.ts";
+import { exactColor, isExactColorSource } from "../../contracts/src/types.ts";
 import type {
   ExactColorSource,
   MotionProfileName,
@@ -158,11 +155,7 @@ function parseHslChannels(value: string) {
   };
 }
 
-function formatHslChannels(
-  hue: number,
-  saturation: number,
-  lightness: number,
-) {
+function formatHslChannels(hue: number, saturation: number, lightness: number) {
   const round = (value: number) => Number(value.toFixed(2));
   return `${round(hue)} ${round(saturation)}% ${round(lightness)}%`;
 }
@@ -177,9 +170,7 @@ function exactHexToHsl(value: ExactColorSource["value"]) {
   const difference = maximum - minimum;
   const lightness = (maximum + minimum) / 2;
   const saturation =
-    difference === 0
-      ? 0
-      : difference / (1 - Math.abs(2 * lightness - 1));
+    difference === 0 ? 0 : difference / (1 - Math.abs(2 * lightness - 1));
   let hue = 0;
 
   if (difference !== 0) {
@@ -1281,9 +1272,7 @@ export function resolveTheme(config: ThemeConfig = {}): ResolvedTheme {
   );
   const primarySource = resolveColorSource(config.primary, palette);
   const accentSource = resolveColorSource(config.accent, palette);
-  const primary = isExactColorSource(primarySource)
-    ? palette
-    : primarySource;
+  const primary = isExactColorSource(primarySource) ? palette : primarySource;
   const accent = isExactColorSource(accentSource) ? palette : accentSource;
   const canvas = resolveProfileName(
     config.canvas,
@@ -1349,7 +1338,10 @@ export function buildThemeVariables(
   theme: ResolvedTheme,
   options: ThemeVariableOptions = {},
 ): Record<string, string> {
-  const primaryPalette = resolveColorProfile(theme.primarySource, theme.primary);
+  const primaryPalette = resolveColorProfile(
+    theme.primarySource,
+    theme.primary,
+  );
   const accentPalette = resolveColorProfile(theme.accentSource, theme.accent);
   const neutrals = canvasProfiles[theme.canvas][theme.appearance];
   const chartColors = (
@@ -1852,18 +1844,14 @@ export function buildDtcgThemeSnapshot(
   const action = {
     primary: dtcgColor(variables["--t7-action-primary-hsl"]),
     primaryHover: dtcgColor(variables["--t7-action-primary-hover-hsl"]),
-    primaryPressed: dtcgColor(
-      variables["--t7-action-primary-pressed-hsl"],
-    ),
+    primaryPressed: dtcgColor(variables["--t7-action-primary-pressed-hsl"]),
     primaryForeground: dtcgColor(
       variables["--t7-action-primary-foreground-hsl"],
     ),
     accent: dtcgColor(variables["--t7-accent-hsl"]),
     accentHover: dtcgColor(variables["--t7-accent-hover-hsl"]),
     accentPressed: dtcgColor(variables["--t7-accent-pressed-hsl"]),
-    accentForeground: dtcgColor(
-      variables["--t7-accent-foreground-hsl"],
-    ),
+    accentForeground: dtcgColor(variables["--t7-accent-foreground-hsl"]),
   };
 
   return {

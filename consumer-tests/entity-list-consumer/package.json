@@ -1,11 +1,27 @@
 {
   "name": "ten4seven-entity-list-consumer-proof",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@11.22.0",
+  "engines": {
+    "node": ">=22.12.0",
+    "pnpm": ">=11.17.0 <12"
+  },
+  "scripts": {
+    "build": "node src/build.mjs",
+    "test": "node src/run.mjs",
+    "typecheck": "tsc --noEmit"
+  },
   "dependencies": {
-    "@ten4seven/agent": "file:..\\..\\packages\\agent",
-    "@ten4seven/icons": "file:../../packages/icons",
-    "@ten4seven/tokens": "file:../../packages/tokens",
-    "@ten4seven/ui": "file:../../packages/ui"
+    "@ten4seven/agent": "file:../../artifacts/consumer-proof/ten4seven-agent-0.1.0.tgz",
+    "@ten4seven/ui": "file:../../artifacts/consumer-proof/ten4seven-ui-1.0.0.tgz",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.5",
+    "typescript": "5.9.3"
   }
 }

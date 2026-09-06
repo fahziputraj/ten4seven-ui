@@ -1988,7 +1988,9 @@ function ColorSourceControl({
           settingKey === "primary" ? "action roles" : "supporting emphasis"
         }; choosing a preset above returns to its curated family.`}
         label={`Exact ${label.toLowerCase()} source`}
-        onChange={(event) => updateSource(exactColor(event.currentTarget.value))}
+        onChange={(event) =>
+          updateSource(exactColor(event.currentTarget.value))
+        }
         type="color"
         value={inputValue}
       />

@@ -62,9 +62,8 @@ export function isExactColorSource(value: unknown): value is ExactColorSource {
     typeof value === "object" &&
     (value as { readonly kind?: unknown }).kind === "exact" &&
     typeof (value as { readonly value?: unknown }).value === "string" &&
-    normalizeExactColorValue(
-      (value as { readonly value: string }).value,
-    ) !== undefined
+    normalizeExactColorValue((value as { readonly value: string }).value) !==
+      undefined
   );
 }
 export type CanvasName = "balanced" | "paper" | "monochrome";

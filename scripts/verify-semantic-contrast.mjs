@@ -102,11 +102,7 @@ const pairs = [
     "--t7-action-primary-hsl",
     "--t7-action-primary-foreground-hsl",
   ],
-  [
-    "accent foreground",
-    "--t7-accent-hsl",
-    "--t7-accent-foreground-hsl",
-  ],
+  ["accent foreground", "--t7-accent-hsl", "--t7-accent-foreground-hsl"],
   [
     "danger foreground",
     "--t7-action-danger-hsl",

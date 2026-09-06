@@ -70,17 +70,20 @@ assert.deepEqual(
   exactSnapshot,
   "exact color DTCG snapshots must be deterministic",
 );
-assert.deepEqual(
-  exactSnapshot.$extensions["org.ten4seven"].primarySource,
-  { kind: "exact", value: "#318139" },
-);
-assert.deepEqual(
-  exactSnapshot.$extensions["org.ten4seven"].accentSource,
-  { kind: "exact", value: "#D4451A" },
-);
+assert.deepEqual(exactSnapshot.$extensions["org.ten4seven"].primarySource, {
+  kind: "exact",
+  value: "#318139",
+});
+assert.deepEqual(exactSnapshot.$extensions["org.ten4seven"].accentSource, {
+  kind: "exact",
+  value: "#D4451A",
+});
 assert.equal(exactSnapshot.semantic.color.action.primary.$type, "color");
 assert.equal(exactSnapshot.semantic.color.action.accent.$type, "color");
-assert.equal(exactSnapshot.semantic.color.action.primaryForeground.$type, "color");
+assert.equal(
+  exactSnapshot.semantic.color.action.primaryForeground.$type,
+  "color",
+);
 assert.deepEqual(
   exactSnapshot.semantic.color.status,
   buildDtcgThemeSnapshot().semantic.color.status,

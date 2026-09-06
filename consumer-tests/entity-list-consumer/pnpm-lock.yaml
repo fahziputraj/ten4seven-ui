@@ -1,84 +1,95 @@
-lockfileVersion: "9.0"
+lockfileVersion: '9.0'
 
 settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
 importers:
+
   .:
     dependencies:
-      "@ten4seven/agent":
-        specifier: file:../../packages/agent
-        version: file:../../packages/agent
-      "@ten4seven/icons":
-        specifier: file:../../packages/icons
-        version: file:../../packages/icons(react@19.2.8)
-      "@ten4seven/tokens":
-        specifier: file:../../packages/tokens
-        version: file:../../packages/tokens
-      "@ten4seven/ui":
-        specifier: file:../../packages/ui
-        version: file:../../packages/ui(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@ten4seven/agent':
+        specifier: file:../../artifacts/consumer-proof/ten4seven-agent-0.1.0.tgz
+        version: file:../../artifacts/consumer-proof/ten4seven-agent-0.1.0.tgz
+      '@ten4seven/ui':
+        specifier: file:../../artifacts/consumer-proof/ten4seven-ui-1.0.0.tgz
+        version: file:../../artifacts/consumer-proof/ten4seven-ui-1.0.0.tgz(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      react:
+        specifier: 19.2.8
+        version: 19.2.8
+      react-dom:
+        specifier: 19.2.8
+        version: 19.2.8(react@19.2.8)
+    devDependencies:
+      '@types/react':
+        specifier: 19.2.18
+        version: 19.2.18
+      '@types/react-dom':
+        specifier: 19.2.5
+        version: 19.2.5(@types/react@19.2.18)
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
 
 packages:
-  "@ten4seven/agent@file:../../packages/agent":
-    resolution: { directory: ../../packages/agent, type: directory }
 
-  "@ten4seven/contracts@file:../../packages/contracts":
-    resolution: { directory: ../../packages/contracts, type: directory }
+  '@ten4seven/agent@file:../../artifacts/consumer-proof/ten4seven-agent-0.1.0.tgz':
+    resolution: {integrity: sha512-xP4rNDc5Saqeh9WmvTWtzTj/+Hftzbrfu3hivxCMSHhxeE8wuIF6KxrxRDDwMZw27hX8SGnRJx+lgqwY8w33Eg==, tarball: file:../../artifacts/consumer-proof/ten4seven-agent-0.1.0.tgz}
+    version: 0.1.0
 
-  "@ten4seven/icons@file:../../packages/icons":
-    resolution: { directory: ../../packages/icons, type: directory }
+  '@ten4seven/ui@file:../../artifacts/consumer-proof/ten4seven-ui-1.0.0.tgz':
+    resolution: {integrity: sha512-uuSswpAAimKKeRb1NqU8IjRojmETDIazifa+mPUo8aZKMliCICdHVpl70VKqbUAE+x70FSwP9F/21CZTwa2QfQ==, tarball: file:../../artifacts/consumer-proof/ten4seven-ui-1.0.0.tgz}
+    version: 1.0.0
     peerDependencies:
-      react: ">=18"
+      react: '>=18.2.0'
+      react-dom: '>=18.2.0'
 
-  "@ten4seven/tokens@file:../../packages/tokens":
-    resolution: { directory: ../../packages/tokens, type: directory }
-
-  "@ten4seven/ui@file:../../packages/ui":
-    resolution: { directory: ../../packages/ui, type: directory }
+  '@types/react-dom@19.2.5':
+    resolution: {integrity: sha512-fMPwH9v7r/pp43yUd2/Mbiex5KouJwwR3dzHkhLREUC6764VyDsqxhAxv6OFEYR1RhjOyD1naqba8ECDBe7ZQg==}
     peerDependencies:
-      react: ">=18.2.0"
-      react-dom: ">=18.2.0"
+      '@types/react': ^19.2.0
+
+  '@types/react@19.2.18':
+    resolution: {integrity: sha512-AnzbBERsrLKtk2XSfTbYRLjQPdy116Sty4q+T+Bp3IC4l6jNBvreVPAHmpq9qhXQM7CXZPjLVmGMw9sy+hxQ3w==}
+
+  csstype@3.2.3:
+    resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
 
   react-dom@19.2.8:
-    resolution:
-      {
-        integrity: sha512-rVprimfGBG3DR+Tq0IQG2DT5PxKth1WIGDmj5yPmlzr4YBe7uyE+Du4oVqTDXZSHGGGXRtTJEGSSePyQCMBglQ==,
-      }
+    resolution: {integrity: sha512-rVprimfGBG3DR+Tq0IQG2DT5PxKth1WIGDmj5yPmlzr4YBe7uyE+Du4oVqTDXZSHGGGXRtTJEGSSePyQCMBglQ==}
     peerDependencies:
       react: ^19.2.8
 
   react@19.2.8:
-    resolution:
-      {
-        integrity: sha512-PWaYA1L/q9u2u7xYQi+Y3L3Yfnie7XyLeaJICV1MGD6LprsBxcAqGjYyr0eY3p+QdsA+x/Irkt4Qif8D63+Sbw==,
-      }
-    engines: { node: ">=0.10.0" }
+    resolution: {integrity: sha512-PWaYA1L/q9u2u7xYQi+Y3L3Yfnie7XyLeaJICV1MGD6LprsBxcAqGjYyr0eY3p+QdsA+x/Irkt4Qif8D63+Sbw==}
+    engines: {node: '>=0.10.0'}
 
   scheduler@0.27.0:
-    resolution:
-      {
-        integrity: sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q==,
-      }
+    resolution: {integrity: sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q==}
+
+  typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
 
 snapshots:
-  "@ten4seven/agent@file:../../packages/agent":
-    dependencies:
-      "@ten4seven/contracts": file:../../packages/contracts
 
-  "@ten4seven/contracts@file:../../packages/contracts": {}
+  '@ten4seven/agent@file:../../artifacts/consumer-proof/ten4seven-agent-0.1.0.tgz': {}
 
-  "@ten4seven/icons@file:../../packages/icons(react@19.2.8)":
-    dependencies:
-      react: 19.2.8
-
-  "@ten4seven/tokens@file:../../packages/tokens": {}
-
-  "@ten4seven/ui@file:../../packages/ui(react-dom@19.2.8(react@19.2.8))(react@19.2.8)":
+  '@ten4seven/ui@file:../../artifacts/consumer-proof/ten4seven-ui-1.0.0.tgz(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
+
+  '@types/react-dom@19.2.5(@types/react@19.2.18)':
+    dependencies:
+      '@types/react': 19.2.18
+
+  '@types/react@19.2.18':
+    dependencies:
+      csstype: 3.2.3
+
+  csstype@3.2.3: {}
 
   react-dom@19.2.8(react@19.2.8):
     dependencies:
@@ -88,3 +99,5 @@ snapshots:
   react@19.2.8: {}
 
   scheduler@0.27.0: {}
+
+  typescript@5.9.3: {}

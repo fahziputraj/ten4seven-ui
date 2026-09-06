@@ -224,9 +224,11 @@ export function normalizeThemeProfile(
     readonly palette?: PaletteName | { readonly base?: PaletteName };
     readonly primary?: ThemeColorSource;
     readonly action?: { readonly primary?: ThemeColorSource };
-    readonly accent?: ThemeColorSource | {
-      readonly source?: ThemeColorSource;
-    };
+    readonly accent?:
+      | ThemeColorSource
+      | {
+          readonly source?: ThemeColorSource;
+        };
     readonly canvas?: CanvasName | { readonly mode?: CanvasName };
     readonly chartPalette?: ChartPaletteName;
     readonly chart?: { readonly palette?: ChartPaletteName };

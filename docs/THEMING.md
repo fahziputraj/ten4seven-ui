@@ -78,11 +78,7 @@ application genuinely owns a custom brand or a controlled Theme Studio-like
 editor.
 
 ```tsx
-import {
-  exactColor,
-  Ten4SevenProvider,
-  type ThemeConfig,
-} from "@ten4seven/ui";
+import { exactColor, Ten4SevenProvider, type ThemeConfig } from "@ten4seven/ui";
 
 const customBrand: ThemeConfig = {
   palette: "blue",
