@@ -100,6 +100,9 @@ import {
   recipePath,
 } from "./catalog-model";
 import {
+  adoptionProofNavigation,
+  adoptionProofNavigationLabels,
+  adoptionProofRoutePaths,
   libraryNavigation,
   brandProofRouteTitles,
   farmSyntheticProofDescription,
@@ -111,6 +114,7 @@ import {
   routeFromPath,
   studioNavigation,
   type PlaygroundRoute,
+  type AdoptionProofRoute,
   type RouteMatch,
 } from "./playground-routes";
 import { ReferenceHarness, type ReferenceViewState } from "./reference-harness";
@@ -302,6 +306,12 @@ const routeIcons: Record<PlaygroundRoute, IconName> = {
   "Public Showcase": "dashboard",
 };
 
+const adoptionProofIcons: Record<AdoptionProofRoute, IconName> = {
+  "Farm Synthetic": "farm",
+  "Auth · Neutral": "user",
+  "Auth · AAPM Academy": "book",
+};
+
 const studioNavGroups: Array<{
   label: string;
   routes: PlaygroundRoute[];
@@ -310,6 +320,18 @@ const studioNavGroups: Array<{
   { label: "Library", routes: libraryNavigation },
   { label: "References", routes: referenceNavigation },
 ];
+
+function isPlaygroundNavigationActive(
+  route: PlaygroundRoute,
+  activePath: string,
+) {
+  const routePath = playgroundRoutePaths[route];
+  return (
+    activePath === routePath ||
+    ((route === "Components" || route === "Blocks" || route === "Recipes") &&
+      activePath.startsWith(`${routePath}/`))
+  );
+}
 
 function LibraryMenu({
   activePath,
@@ -321,11 +343,6 @@ function LibraryMenu({
   onNavigatePath: (path: string) => void;
 }) {
   const [open, setOpen] = useState(false);
-  const isLibraryActive = libraryNavigation.some(
-    (route) =>
-      activePath === playgroundRoutePaths[route] ||
-      (route === "Components" && activePath.startsWith("/components")),
-  );
 
   const goRoute = (route: PlaygroundRoute) => {
     setOpen(false);
@@ -343,9 +360,7 @@ function LibraryMenu({
       onOpenChange={setOpen}
       open={open}
       side="right"
-      trigger={
-        <NavItem active={isLibraryActive} icon="components" label="Library" />
-      }
+      trigger={<NavItem icon="components" label="Browse library…" />}
     >
       <div className="studio-library-menu">
         <div className="studio-library-menu-heading">
@@ -420,8 +435,49 @@ function WorkbenchNavigation({
   onNavigate: (route: PlaygroundRoute) => void;
   onNavigatePath: (path: string) => void;
 }) {
+  const academyIdentityId = useId();
+  const navigationRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    if (mode !== "sidebar") return;
+
+    const navigation = navigationRef.current;
+    const scrollContainer =
+      navigation?.closest<HTMLElement>(".studio-nav-groups");
+    if (!scrollContainer) return;
+
+    let cancelled = false;
+    const alignActiveItem = () => {
+      const activeItem = navigation?.querySelector<HTMLElement>(
+        '[data-active="true"]',
+      );
+      if (cancelled || !activeItem) return;
+
+      const containerRect = scrollContainer.getBoundingClientRect();
+      const itemRect = activeItem.getBoundingClientRect();
+      const topOverflow = itemRect.top - containerRect.top;
+      const bottomOverflow = itemRect.bottom - containerRect.bottom;
+
+      // Keep route visibility bounded to the sidebar's own scroll owner. The
+      // direct scroll adjustment avoids moving the document or stealing focus.
+      if (topOverflow < 0) {
+        scrollContainer.scrollTop += topOverflow;
+      } else if (bottomOverflow > 0) {
+        scrollContainer.scrollTop += bottomOverflow;
+      }
+    };
+
+    alignActiveItem();
+    const frame = window.requestAnimationFrame(alignActiveItem);
+    document.fonts?.ready.then(alignActiveItem);
+    return () => {
+      cancelled = true;
+      window.cancelAnimationFrame(frame);
+    };
+  }, [activePath, mode]);
+
   return (
-    <div className="studio-navigation-tree">
+    <div className="studio-navigation-tree" ref={navigationRef}>
       {studioNavGroups.map((group) => (
         <div
           aria-label={group.label}
@@ -429,35 +485,56 @@ function WorkbenchNavigation({
           key={group.label}
           role="group"
         >
-          {group.label === "Library" && mode === "sidebar" ? (
-            <>
-              <span className="studio-nav-label">{group.label}</span>
-              <LibraryMenu
-                activePath={activePath}
-                onNavigate={onNavigate}
-                onNavigatePath={onNavigatePath}
+          <span className="studio-nav-label">{group.label}</span>
+          {group.routes.map((route) => {
+            const isActive = isPlaygroundNavigationActive(route, activePath);
+            return (
+              <NavItem
+                active={isActive}
+                aria-current={isActive ? "page" : undefined}
+                icon={routeIcons[route]}
+                key={route}
+                label={route}
+                onClick={() => onNavigate(route)}
               />
-            </>
-          ) : (
-            <>
-              <span className="studio-nav-label">{group.label}</span>
-              {group.routes.map((route) => {
-                const isActive = activePath === playgroundRoutePaths[route];
-                return (
-                  <NavItem
-                    active={isActive}
-                    aria-current={isActive ? "page" : undefined}
-                    icon={routeIcons[route]}
-                    key={route}
-                    label={route}
-                    onClick={() => onNavigate(route)}
-                  />
-                );
-              })}
-            </>
-          )}
+            );
+          })}
+          {group.label === "Library" && mode === "sidebar" ? (
+            <LibraryMenu
+              activePath={activePath}
+              onNavigate={onNavigate}
+              onNavigatePath={onNavigatePath}
+            />
+          ) : null}
         </div>
       ))}
+      <div
+        aria-label="Adoption Proofs"
+        className="studio-nav-group adoption-proof-nav-group"
+        role="group"
+      >
+        <span className="studio-nav-label">Adoption Proofs</span>
+        {adoptionProofNavigation.map((route) => {
+          const isActive = activePath === adoptionProofRoutePaths[route];
+          const isAcademy = route === "Auth · AAPM Academy";
+          return (
+            <NavItem
+              active={isActive}
+              aria-describedby={isAcademy ? academyIdentityId : undefined}
+              aria-current={isActive ? "page" : undefined}
+              aria-label={isAcademy ? route : undefined}
+              icon={adoptionProofIcons[route]}
+              key={route}
+              label={adoptionProofNavigationLabels[route]}
+              onClick={() => onNavigatePath(adoptionProofRoutePaths[route])}
+              title={isAcademy ? route : undefined}
+            />
+          );
+        })}
+        <span className="sr-only" id={academyIdentityId}>
+          Canonical identity: AAPM Academy.
+        </span>
+      </div>
     </div>
   );
 }
@@ -2897,7 +2974,12 @@ export default function App() {
     routeMatch.kind === "known" &&
     routeMatch.route === "Operational Patterns"
   ) {
-    routeContent = <OperationalReference onOpenSettings={openThemeSettings} />;
+    routeContent = (
+      <OperationalReference
+        onNavigatePath={navigateToPath}
+        onOpenSettings={openThemeSettings}
+      />
+    );
   } else if (
     routeMatch.kind === "known" &&
     routeMatch.route === "Public Showcase"
@@ -2909,7 +2991,12 @@ export default function App() {
       />
     );
   } else if (routeMatch.kind === "farm-synthetic") {
-    routeContent = <FarmSyntheticProof onOpenSettings={openThemeSettings} />;
+    routeContent = (
+      <FarmSyntheticProof
+        onNavigatePath={navigateToPath}
+        onOpenSettings={openThemeSettings}
+      />
+    );
   } else if (routeMatch.kind === "brand-proof") {
     routeContent = (
       <BrandExpressionProof

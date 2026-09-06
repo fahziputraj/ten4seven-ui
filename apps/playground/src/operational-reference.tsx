@@ -1491,10 +1491,12 @@ function DecisionDrawerContent() {
 }
 
 export interface OperationalReferenceProps {
+  onNavigatePath?: (path: string) => void;
   onOpenSettings?: () => void;
 }
 
 export function OperationalReference({
+  onNavigatePath,
   onOpenSettings,
 }: OperationalReferenceProps) {
   const [activeView, setActiveView] = useState<OperationalView>("tower");
@@ -1533,6 +1535,15 @@ export function OperationalReference({
           context={`AAPM fixture / ${active.label}`}
           icon={active.icon}
         >
+          {onNavigatePath ? (
+            <IconButton
+              className="reference-topbar-back"
+              icon="arrowLeft"
+              label="Back to Studio"
+              onClick={() => onNavigatePath("/theme-studio")}
+              size="md"
+            />
+          ) : null}
           <IconButton
             icon="settings"
             label="Open operational reference settings"

@@ -114,9 +114,11 @@ function FarmBrand() {
 
 function FarmTopbar({
   farm,
+  onNavigatePath,
   onOpenSettings,
 }: {
   farm: FarmRecord;
+  onNavigatePath?: (path: string) => void;
   onOpenSettings?: () => void;
 }) {
   return (
@@ -133,6 +135,15 @@ function FarmTopbar({
         </div>
       </div>
       <div className="reference-topbar-actions t7-header-actions">
+        {onNavigatePath ? (
+          <IconButton
+            className="reference-topbar-back"
+            icon="arrowLeft"
+            label="Back to Studio"
+            onClick={() => onNavigatePath("/theme-studio")}
+            size="md"
+          />
+        ) : null}
         <Badge tone="success">Authorized fixture</Badge>
         <IconButton
           icon="settings"
@@ -419,10 +430,12 @@ function FarmScenarioSurface({
 }
 
 export interface FarmSyntheticProofProps {
+  onNavigatePath?: (path: string) => void;
   onOpenSettings?: () => void;
 }
 
 export function FarmSyntheticProof({
+  onNavigatePath,
   onOpenSettings,
 }: FarmSyntheticProofProps) {
   const [farmId, setFarmId] = useState(farmRecords[0].id);
@@ -464,7 +477,13 @@ export function FarmSyntheticProof({
     <AppShell
       className="reference-app-shell operations-app-shell operational-reference-shell farm-proof-shell"
       sidebar={sidebar}
-      topbar={<FarmTopbar farm={farm} onOpenSettings={onOpenSettings} />}
+      topbar={
+        <FarmTopbar
+          farm={farm}
+          onNavigatePath={onNavigatePath}
+          onOpenSettings={onOpenSettings}
+        />
+      }
     >
       <div
         className="reference-page operations-reference farm-proof-page"
@@ -492,7 +511,7 @@ export function FarmSyntheticProof({
                 Farm consumer proof
               </Badge>
               <Typography typeRole="caption">
-                Synthetic fixture · adoption remains conditional
+                Synthetic proof · AAPM production adoption unverified
               </Typography>
             </>
           }

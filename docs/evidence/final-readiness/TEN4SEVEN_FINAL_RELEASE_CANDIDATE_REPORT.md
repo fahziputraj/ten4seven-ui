@@ -79,7 +79,7 @@ into ten4seven components.
 | Gate                                       | Status                                                | Evidence / interpretation                                                                                                                                                        |
 | ------------------------------------------ | ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | F0 current-state reconstruction            | PASS                                                  | Isolated worktree pinned to `66cca70`; `origin/main` and the Gate 12 feature base recorded; unrelated worktrees preserved.                                                       |
-| F1 baseline quality convergence            | PASS                                                  | `pnpm format:check`, `pnpm typecheck`, `pnpm test`, and `pnpm build` pass in the final worktree.                                                                                 |
+| F1 baseline quality convergence            | PASS for changed scope                                | `pnpm typecheck`, `pnpm test`, and `pnpm build` pass; repository-wide `pnpm format:check` still reports 291 baseline files outside this closure, while targeted changed source/test checks pass. |
 | F2 portable package / isolated consumer    | PASS                                                  | UI and agent tarballs install and build in the clean Entity List fixture with no runtime workspace dependency.                                                                   |
 | F3 Next.js 16 / React 19 / RSC             | PASS                                                  | Next production build, strict typecheck, 3 Playwright tests, and axe pass under the fixture's declared Node >=24 runtime.                                                        |
 | F4 theme / exact brand source              | PASS                                                  | Presets, exact source values, light/dark derivation, DTCG, contrast, and AAPM green/orange consumer proof pass.                                                                  |
@@ -97,7 +97,7 @@ into ten4seven components.
 | F16 Academy compatibility                  | PASS as generic composition; AAPM Adoption UNVERIFIED | Content/catalog/reader and AAPM Academy brand composition are proven; the separate Academy production runtime is unverified.                                                     |
 | F17 mobile semantic compatibility          | PASS for Web semantics                                | 360/390/768 and other narrow Web journeys pass interaction/overflow checks; React Native implementation is not claimed.                                                          |
 | F18 public showcase alignment              | PASS for local consumer proof                         | `apps/adoption-public` now renders as a coherent public/commerce proof, and its 4-test behavior/theme suite passes.                                                              |
-| F19 playground / lab / studio alignment    | PASS                                                  | Shared shell, theme, token, component-lab, operations, and public reference routes remain aligned by the existing browser suite.                                                 |
+| F19 playground / lab / studio alignment    | PASS                                                  | Shared shell, theme, token, component-lab, operations, public reference routes, and final direct-navigation closure remain aligned by the browser suite.                         |
 | F20 global responsive QA                   | PASS                                                  | Responsive interaction, overflow, and reviewed screenshot baselines pass across desktop, wide, tablet, mobile, and narrow viewport families.                                     |
 | F21 accessibility convergence              | PASS for covered surfaces                             | Adoption, Next, Farm, operational, overlay, keyboard, focus, and representative axe checks pass.                                                                                 |
 | F22 system states                          | PASS                                                  | Loading, empty, no-data, error, unauthorized/safe-scope, and validation states are exercised in reference proofs.                                                                |
@@ -108,11 +108,41 @@ into ten4seven components.
 | F27 performance / bundle health            | PASS with v1 bundle note                              | Bundle measurements are recorded and accepted for v1: UI ESM is 10.8 MB (2.124 MB gzip), Playground is 21.8 MB (4.354 MB gzip), and Vite emits a documented large-chunk warning. |
 | F28 public API audit                       | PASS                                                  | Package verification passes with 15 root exports, bundled styles/tokens/icons/motion, and self-contained published output.                                                       |
 | F29 documentation convergence              | PASS for changed scope                                | Theme, component-selection, compatibility, and this evidence report document the current contracts and limitations.                                                              |
-| F30 visual regression normalization        | PASS                                                  | The initial 28 screenshot failures were classified and reviewed; only the affected five spec snapshot sets were normalized, followed by targeted 84/84 and full 233/233 passes.  |
+| F30 visual regression normalization        | PASS                                                  | The initial 28 screenshot failures and later navigation-closure deltas were classified/reviewed; affected snapshots were normalized, followed by final 240/240.                 |
 | F31 AAPM compatibility matrix              | PASS as evidence artifact                             | Matrix is present in `AAPM_UI_COMPATIBILITY_MATRIX.md`; generic library dispositions and the separate `AAPM ADOPTION UNVERIFIED` status are explicit.                            |
 | F32 final consumer proofs                  | PASS                                                  | Isolated tarball consumer, Next App Router consumer, adoption consumers, brand proof, and Tailwind bridge pass.                                                                  |
-| F33 full quality suite                     | PASS                                                  | `pnpm test` and the final Node 24 browser run are green; the complete browser matrix finished at 233/233.                                                                        |
+| F33 full quality suite                     | PASS                                                  | `pnpm test` and the final Node 24 browser run are green; the complete exact-RC browser matrix finished at 240/240.                                                               |
 | F34 final browser QA                       | PASS                                                  | Rendered/functional review and the complete visual suite pass; AAPM production-route status remains separately tracked as `AAPM ADOPTION UNVERIFIED`.                            |
+
+## Navigation closure
+
+The final RC Playground shell exposes the canonical system/reference surface
+as direct destinations in the requested four groups:
+
+| Group             | Direct destinations                                                                                                                                                                                                 |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `STUDIO`          | Theme Studio (`/theme-studio`); Component Lab (`/component-lab`)                                                                                                                                                   |
+| `LIBRARY`         | Tokens (`/tokens`); Components (`/components`); Blocks (`/blocks`); Icons (`/icons`); Recipes (`/recipes`)                                                                                                        |
+| `REFERENCES`      | Operations Tracker (`/operations-tracker`); Operational Patterns (`/operational-patterns`); Publishing Store (`/ebook-store`); Public Showcase (`/public-showcase`)                                            |
+| `ADOPTION PROOFS` | Farm Synthetic (`/farm-synthetic-proof`); Auth · Neutral (`/brand-proof/auth-neutral`); Auth · AAPM Academy (`/brand-proof/auth-aapm-academy`)                                                                  |
+
+The five Library destinations are now direct primary navigation items rather
+than being represented only by a `Library` launcher. Library detail routes
+retain the active parent context. Exact-RC browser closure evidence passed
+`49/49` targeted tests at `http://127.0.0.1:4183`, including desktop and
+320/375/390px mobile navigation, no document overflow, label geometry, direct
+route reachability, bounded active-route visibility, and bounded return paths
+from Farm and brand proof shells. `ADOPTION PROOFS` is visible by default. The
+desktop visual label is `Auth · Academy`; the accessible/full identity remains
+`Auth · AAPM Academy`, and the canonical route remains
+`/brand-proof/auth-aapm-academy`.
+The current Farm wording explicitly records `AAPM production adoption
+unverified`; that status belongs to the production consumer DoD and does not
+make the ten4seven library conditional.
+
+This is browser automation and reviewed snapshot evidence. A manual Opera
+inspection after the local server is started remains a separate human QA
+activity and is not claimed as completed by this report.
 
 ## Final capability inventory
 
@@ -252,10 +282,14 @@ cleans transient failure attachments after a subsequent passing run.
 |  27 | Recipes catalog, mobile                    | `tests/visual-regression.spec.ts-snapshots/recipes-mobile-chromium-win32.png`                                 | Same current recipe-surface expansion; mobile drawer and recipe anchors remained usable.                                                            | INTENDED DESIGN CHANGE | Adopt the current recipe baseline.                                                   |
 |  28 | Recipes catalog, narrow                    | `tests/visual-regression.spec.ts-snapshots/recipes-narrow-chromium-win32.png`                                 | Same current recipe-surface expansion; narrow content remained readable without document overflow.                                                  | INTENDED DESIGN CHANGE | Adopt the current recipe baseline.                                                   |
 
-Only the five affected spec snapshot sets were updated: AdvancedDataGrid,
-expressive blocks, operational patterns, public-showcase expression, and visual
-regression. The focused rerun passed `84/84`, and the final full rerun passed
-`233/233` under Node `v24.20.0`.
+Only the five affected pre-closure spec snapshot sets were updated:
+AdvancedDataGrid, expressive blocks, operational patterns, public-showcase
+expression, and visual regression. The pre-navigation-closure focused rerun
+passed `84/84`, and the pre-closure full rerun passed `233/233` under Node
+`v24.20.0`. The requested direct navigation closure added six tests plus the
+associated reviewed snapshot updates; the final discoverability closure added
+one active-scroll/label test; the final exact-RC full rerun passed `240/240`
+under the same Node runtime.
 
 ## Public showcase
 
@@ -290,7 +324,7 @@ focus, and responsive language as the rest of ten4seven.
 
 | Command                                                                                                                                | Result                                                                                                                                            |
 | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm format:check`                                                                                                                    | PASS — all files match Prettier                                                                                                                   |
+| `pnpm format:check`                                                                                                                    | BASELINE FAIL — 291 repository files outside this closure remain unformatted; targeted changed source/test check passes                              |
 | `pnpm typecheck`                                                                                                                       | PASS — contracts, agent, agent declaration build, playground                                                                                      |
 | `pnpm test`                                                                                                                            | PASS — contracts, DTCG, contrast, token governance, coverage, Slice A, brand, recipes, tokens, AI, component system, Tailwind bridge              |
 | `pnpm build`                                                                                                                           | PASS — Node 24 Playground production build; Vite large-chunk warning accepted as the documented v1 bundle note                                    |
@@ -304,7 +338,7 @@ focus, and responsive language as the rest of ten4seven.
 | `pnpm package:build`                                                                                                                   | PASS                                                                                                                                              |
 | `pnpm package:verify`                                                                                                                  | PASS                                                                                                                                              |
 | `pnpm exec playwright test tests/final-stabilization.spec.ts:25 tests/system-coherence.spec.ts:593 tests/system-coherence.spec.ts:652` | PASS — 3/3 after aligning assertions with exact-color-source provenance                                                                           |
-| `pnpm test:e2e`                                                                                                                        | PASS — Node 24.20.0 final full Chromium matrix: 233/233 passed in 10.3 minutes                                                                    |
+| exact-RC full Playwright matrix                                                                                                        | PASS — Node 24.20.0: 240/240 passed in 12.3 minutes using the temporary 4183 proof config; the 4173 server stayed untouched                           |
 
 ## Browser QA
 
@@ -381,7 +415,7 @@ consumer status is not used as a library-owned blocker.
 `TEN4SEVEN FINAL BUILD READY`
 
 All library-owned closure gates pass: the classified visual deltas are closed
-by the five targeted snapshot-set updates and a final `233/233` browser run;
+by the reviewed targeted snapshot-set updates and a final `240/240` browser run;
 Node `v24.20.0` proves the declared Next consumer engine; the declaration
 warning is removed and the declaration graph is leak-free; package and isolated
 consumer proofs pass; and the measured bundle-size tradeoff is explicitly
@@ -401,6 +435,7 @@ already-closed ten4seven library conditional.
    authorization, persistence, calculations, and workflow transitions in those
    consumers; do not use their absence to downgrade the complete ten4seven
    library.
-2. Review this isolated diff and explicitly decide whether to commit, merge,
-   tag, or publish. No remote mutation, merge, PR update, or automatic release
-   was performed by this run.
+2. Review this isolated diff and explicitly decide whether to merge, tag, or
+   publish. The bounded closure commit and its Draft PR publication are
+   separate from merge authorization; no merge, auto-merge, tag, release, or
+   npm publication is implied by this evidence.

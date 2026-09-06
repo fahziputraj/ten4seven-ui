@@ -106,6 +106,36 @@ parallel primitives are not created.
 | Public/customer-facing   | `COMPOSED + PROVEN` local public/commerce references                | `AAPM Adoption UNVERIFIED` for production | Connect a real consumer adapter; payment, catalog, identity, fulfillment, analytics remain external.                                     |
 | Native mobile            | `COMPOSED + PROVEN` Web semantics only                              | `AAPM Adoption UNVERIFIED`                | Implement and test native navigation, storage, offline/sync, device permissions, camera, push, and accessibility in the mobile consumer. |
 
+## Final navigation closure
+
+The Playground primary navigation now exposes the complete system/reference
+surface directly in four groups. The Library group no longer hides its five
+canonical routes behind a single launcher; the optional library popover remains
+only as a secondary shortcut.
+
+| Group             | Direct destinations                                                                                                                                                                                                 |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `STUDIO`          | Theme Studio (`/theme-studio`); Component Lab (`/component-lab`)                                                                                                                                                   |
+| `LIBRARY`         | Tokens (`/tokens`); Components (`/components`); Blocks (`/blocks`); Icons (`/icons`); Recipes (`/recipes`)                                                                                                        |
+| `REFERENCES`      | Operations Tracker (`/operations-tracker`); Operational Patterns (`/operational-patterns`); Publishing Store (`/ebook-store`); Public Showcase (`/public-showcase`)                                            |
+| `ADOPTION PROOFS` | Farm Synthetic (`/farm-synthetic-proof`); Auth · Neutral (`/brand-proof/auth-neutral`); Auth · AAPM Academy (`/brand-proof/auth-aapm-academy`)                                                                  |
+
+Exact-RC browser evidence is `49/49` targeted tests passed at
+`http://127.0.0.1:4183`, covering direct route reachability, library-detail
+active-parent state, desktop label geometry, mobile drawer reachability at
+320/375/390px, and bounded proof-shell return paths. The Farm proof copy now
+states `AAPM production adoption unverified`; that consumer status remains
+separate from the proven, library-owned ten4seven contracts. Browser
+automation and reviewed snapshots pass; a fresh manual Opera inspection is
+not claimed by this repository evidence.
+
+The final discoverability closure extends that targeted evidence to `49/49`:
+`ADOPTION PROOFS` is static and visible by default, the visual Academy label is
+`Auth · Academy` while the accessible/route identity remains `Auth · AAPM
+Academy`, and route transitions keep the active primary destination inside the
+bounded sidebar scroll owner. The active-scroll correction does not move the
+document or steal focus.
+
 ## Explicitly deferred or non-generalized items
 
 No item below is an unexplained generic gap:
@@ -155,21 +185,23 @@ The final RC gate was rerun on that exact RC checkout:
 | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | `pnpm contracts:generate`                    | PASS; 188 reproducible projections and three DTCG exports, with no generated diff.                         |
 | `pnpm package:build` / `pnpm package:verify` | PASS; self-contained UI package, 15 root exports, bundled styles/tokens/icons/motion.                      |
-| `pnpm format:check`                          | PASS.                                                                                                      |
+| `pnpm format:check`                          | BASELINE FAIL; 291 repository files outside this closure remain unformatted. Targeted changed source/test checks pass. |
 | `pnpm typecheck`                             | PASS; contracts, agent, and playground.                                                                    |
 | `pnpm test`                                  | PASS; all deterministic contract, token, AI, package, component, and consumer gates.                       |
 | `pnpm build`                                 | PASS; playground production build, with the documented large-chunk warning only.                           |
 | `pnpm test:next-consumer`                    | PASS; Next 16.3.4 / React 19.2.8 production consumer, strict typecheck, 3 Playwright/axe tests.            |
 | `pnpm test:adoption`                         | PASS; 4/4 operational/public/theme consumer tests.                                                         |
 | `pnpm test:adoption:static`                  | PASS; 2 isolated consumers, zero parallel primitives/design systems/raw icon imports/local color literals. |
-| Isolated browser matrix                      | PASS; `233/233` Playwright tests on the exact RC checkout at `http://127.0.0.1:4183`.                      |
+| Isolated browser matrix                      | PASS; `240/240` Playwright tests on the exact RC checkout at `http://127.0.0.1:4183`, including the final discoverability closure. |
 
-The first isolated browser attempt was `232/233` because the existing
-clipboard test granted permission to hard-coded port 4173 while the isolated
-server used 4179. The test now grants permission to
-`new URL(page.url()).origin`; the focused rerun passed 1/1 and the complete
-rerun passed 233/233. This is a test-portability hardening change, not a
-library behavior change.
+The first pre-navigation-closure isolated browser attempt was `232/233`
+because the existing clipboard test granted permission to hard-coded port 4173
+while the isolated server used 4179. The test now grants permission to
+`new URL(page.url()).origin`; the focused rerun passed 1/1 and the pre-closure
+complete rerun passed 233/233. This is a test-portability hardening change, not
+a library behavior change. The final navigation closure added six deterministic
+tests; the final discoverability closure added one active-scroll/label test; the
+complete exact-RC rerun then passed `240/240`.
 
 The local browser server at port 4173 was left untouched for the user's live
 theme/library view. The final RC browser proof used a separate port and an
