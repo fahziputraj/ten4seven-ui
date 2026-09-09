@@ -275,6 +275,10 @@ export const IconRegistry = Object.freeze({
     provider: "solar:chart-square-bold-duotone",
     body: solarBodies.progress,
   },
+  graph: {
+    provider: "solar:graph-bold-duotone",
+    body: solarBodies.graph,
+  },
   trendUp: {
     provider: "solar:graph-up-bold-duotone",
     body: solarBodies.trendUp,
@@ -407,49 +411,6 @@ export const IconRegistry = Object.freeze({
     provider: curatedIconMetadata.chick.provider,
     body: curatedIconBodies.chick,
   },
-  graph: {
-    provider: curatedIconMetadata.graph.provider,
-    body: curatedIconBodies.graph,
-    duotone: true,
-  },
-  graphUp: {
-    provider: curatedIconMetadata.graphUp.provider,
-    body: curatedIconBodies.graphUp,
-    duotone: true,
-  },
-  graphDown: {
-    provider: curatedIconMetadata.graphDown.provider,
-    body: curatedIconBodies.graphDown,
-    duotone: true,
-  },
-  graphUpAlt: {
-    provider: curatedIconMetadata.graphUpAlt.provider,
-    body: curatedIconBodies.graphUpAlt,
-    duotone: true,
-  },
-  graphDownAlt: {
-    provider: curatedIconMetadata.graphDownAlt.provider,
-    body: curatedIconBodies.graphDownAlt,
-    duotone: true,
-  },
-  graphBold: {
-    provider: curatedIconMetadata.graphBold.provider,
-    body: curatedIconBodies.graphBold,
-    duotone: true,
-  },
-  graphDownBold: {
-    provider: curatedIconMetadata.graphDownBold.provider,
-    body: curatedIconBodies.graphDownBold,
-    duotone: true,
-  },
-  graphUpLinear: {
-    provider: curatedIconMetadata.graphUpLinear.provider,
-    body: curatedIconBodies.graphUpLinear,
-  },
-  graphDownLinear: {
-    provider: curatedIconMetadata.graphDownLinear.provider,
-    body: curatedIconBodies.graphDownLinear,
-  },
   graphMemory: {
     provider: curatedIconMetadata.graphMemory.provider,
     body: curatedIconBodies.graphMemory,
@@ -469,9 +430,10 @@ export const IconRegistry = Object.freeze({
     provider: curatedIconMetadata.waterRate.provider,
     body: curatedIconBodies.waterRate,
   },
-  skullCrossbones: {
-    provider: curatedIconMetadata.skullCrossbones.provider,
-    body: curatedIconBodies.skullCrossbones,
+  mortality: {
+    provider: curatedIconMetadata.mortality.provider,
+    body: curatedIconBodies.mortality,
+    duotone: true,
   },
   breakEven: {
     provider: curatedIconMetadata.breakEven.provider,

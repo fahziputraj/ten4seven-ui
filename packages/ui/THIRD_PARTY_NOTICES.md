@@ -48,7 +48,7 @@ inside the self-contained UI bundle; consumer applications use the semantic
 
 ## Curated Iconify domain library
 
-The bundle also includes 35 deliberately selected farm and operations glyphs
+The bundle also includes 26 deliberately selected farm and operations glyphs
 from pinned local Iconify JSON packages. These are normalized to the same 24px
 viewBox and exposed through the semantic registry (`T7Icon`) or the local
 `IconifyIcon` catalog. The generated bodies use `currentColor` where the source
@@ -67,8 +67,6 @@ maintained in `packages/icons/src/curated-data.ts` and
 | Streamline                 | `@iconify-json/si@1.2.17`                        | MIT        | https://icon-sets.iconify.design/si/                         |
 | Phosphor                   | `@iconify-json/ph@1.2.2`                         | MIT        | https://icon-sets.iconify.design/ph/                         |
 | IconPark Twotone           | `@iconify-json/icon-park-twotone@1.2.4`          | Apache-2.0 | https://icon-sets.iconify.design/icon-park-twotone/          |
-| Iconoir                    | `@iconify-json/iconoir@1.2.11`                   | MIT        | https://icon-sets.iconify.design/iconoir/                    |
-| Font Awesome 6 Solid       | `@iconify-json/fa6-solid@1.2.4`                  | CC BY 4.0  | https://icon-sets.iconify.design/fa6-solid/                  |
 | Fluent Emoji High Contrast | `@iconify-json/fluent-emoji-high-contrast@1.2.6` | MIT        | https://icon-sets.iconify.design/fluent-emoji-high-contrast/ |
 | Fluent Emoji Flat          | `@iconify-json/fluent-emoji-flat@1.2.6`          | MIT        | https://icon-sets.iconify.design/fluent-emoji-flat/          |
 | Noto                       | `@iconify-json/noto@1.2.7`                       | Apache-2.0 | https://icon-sets.iconify.design/noto/                       |
@@ -76,6 +74,19 @@ maintained in `packages/icons/src/curated-data.ts` and
 The Solar pill glyph in this extension remains covered by the Solar CC BY 4.0
 notice above. The upstream package licenses and attribution links are kept here
 so the private bundle retains an auditable provenance boundary.
+
+### September 2026 graph and farm metric mapping
+
+The supplied graph files are intentionally mapped to one canonical semantic
+surface instead of creating visual variants in product code: Solar
+`graph-bold-duotone` backs `graph`, while all supplied up/down graph variants
+(Re:Icon and Iconoir) reuse `trendUp` or `trendDown`. The unique additions are
+`graphMemory`, `marginalRoi`, `hvac`, `waterRate`, `mortality`, `breakEven`,
+`equalRatio`, and `weight`. The supplied Font Awesome skull-crossbones glyph is
+represented by the bundled Phosphor `skull-duotone` fallback so mortality keeps
+the same duotone and optical-weight contract as the rest of the registry; the
+supplied thin break-even glyph is represented by Iconmind's regular weight for
+small-size legibility.
 
 ## anime.js
 
