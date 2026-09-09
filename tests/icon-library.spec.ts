@@ -43,14 +43,14 @@ test.describe("bundled Iconify Solar library", () => {
     await expect(catalog.locator(".iconify-icon-tile")).toHaveCount(96);
 
     const curated = page.locator(".iconify-curated-section");
-    await expect(curated).toHaveAttribute("data-iconify-count", "18");
+    await expect(curated).toHaveAttribute("data-iconify-count", "35");
     await expect(curated).toHaveAttribute(
       "data-iconify-family",
       "ten4seven-curated",
     );
     await expect(
       curated.locator('[data-icon-set="ten4seven-curated"]'),
-    ).toHaveCount(18);
+    ).toHaveCount(35);
     await expect(
       curated.getByRole("button", {
         name: "Copy Curated icon chicken",

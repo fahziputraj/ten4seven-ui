@@ -48,7 +48,7 @@ inside the self-contained UI bundle; consumer applications use the semantic
 
 ## Curated Iconify domain library
 
-The bundle also includes 18 deliberately selected farm and operations glyphs
+The bundle also includes 35 deliberately selected farm and operations glyphs
 from pinned local Iconify JSON packages. These are normalized to the same 24px
 viewBox and exposed through the semantic registry (`T7Icon`) or the local
 `IconifyIcon` catalog. The generated bodies use `currentColor` where the source
@@ -67,6 +67,8 @@ maintained in `packages/icons/src/curated-data.ts` and
 | Streamline                 | `@iconify-json/si@1.2.17`                        | MIT        | https://icon-sets.iconify.design/si/                         |
 | Phosphor                   | `@iconify-json/ph@1.2.2`                         | MIT        | https://icon-sets.iconify.design/ph/                         |
 | IconPark Twotone           | `@iconify-json/icon-park-twotone@1.2.4`          | Apache-2.0 | https://icon-sets.iconify.design/icon-park-twotone/          |
+| Iconoir                    | `@iconify-json/iconoir@1.2.11`                   | MIT        | https://icon-sets.iconify.design/iconoir/                    |
+| Font Awesome 6 Solid       | `@iconify-json/fa6-solid@1.2.4`                  | CC BY 4.0  | https://icon-sets.iconify.design/fa6-solid/                  |
 | Fluent Emoji High Contrast | `@iconify-json/fluent-emoji-high-contrast@1.2.6` | MIT        | https://icon-sets.iconify.design/fluent-emoji-high-contrast/ |
 | Fluent Emoji Flat          | `@iconify-json/fluent-emoji-flat@1.2.6`          | MIT        | https://icon-sets.iconify.design/fluent-emoji-flat/          |
 | Noto                       | `@iconify-json/noto@1.2.7`                       | Apache-2.0 | https://icon-sets.iconify.design/noto/                       |

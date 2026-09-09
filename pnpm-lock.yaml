@@ -146,6 +146,9 @@ importers:
       "@iconify-json/ant-design":
         specifier: 1.2.9
         version: 1.2.9
+      "@iconify-json/fa6-solid":
+        specifier: 1.2.4
+        version: 1.2.4
       "@iconify-json/fluent-emoji-flat":
         specifier: 1.2.6
         version: 1.2.6
@@ -164,6 +167,9 @@ importers:
       "@iconify-json/iconmind":
         specifier: 1.2.1
         version: 1.2.1
+      "@iconify-json/iconoir":
+        specifier: 1.2.11
+        version: 1.2.11
       "@iconify-json/noto":
         specifier: 1.2.7
         version: 1.2.7
@@ -483,6 +489,12 @@ packages:
         integrity: sha512-cAP5tQXUj05Hb0o3nyjEzYofuU5luRm6IV4FNZ3KQkG2cfzvmM34WYJuNLA3/sWqfE0cHSaaaEGvIdAUq+bN2Q==,
       }
 
+  "@iconify-json/fa6-solid@1.2.4":
+    resolution:
+      {
+        integrity: sha512-LmDNNdJVyvF5mPm1yxWvL8KjCc/E8LzoqnF1LNTVpyY2ZJRUlGOWuPIThdbuFBF2IovgttkIyumhyqfmlHdwKg==,
+      }
+
   "@iconify-json/fluent-emoji-flat@1.2.6":
     resolution:
       {
@@ -517,6 +529,12 @@ packages:
     resolution:
       {
         integrity: sha512-tdHauOnedz1V9gKoqhl6PRGganapLQg5zMYQU4SV0JLOtRXmXNBZDT7yclTeqKLtN6hJAAlxWPqRRZS1iEI/7Q==,
+      }
+
+  "@iconify-json/iconoir@1.2.11":
+    resolution:
+      {
+        integrity: sha512-clBrCsZPkmdksYOkufVp7aoAU1j1hFQPrLUooWWmoYIMvKskUHQ+IDnwV7agTR+tGYHbud7OP2SRfYEpnqFDNw==,
       }
 
   "@iconify-json/noto@1.2.7":
@@ -1776,6 +1794,10 @@ snapshots:
     dependencies:
       "@iconify/types": 2.0.0
 
+  "@iconify-json/fa6-solid@1.2.4":
+    dependencies:
+      "@iconify/types": 2.0.0
+
   "@iconify-json/fluent-emoji-flat@1.2.6":
     dependencies:
       "@iconify/types": 2.0.0
@@ -1797,6 +1819,10 @@ snapshots:
       "@iconify/types": 2.0.0
 
   "@iconify-json/iconmind@1.2.1":
+    dependencies:
+      "@iconify/types": 2.0.0
+
+  "@iconify-json/iconoir@1.2.11":
     dependencies:
       "@iconify/types": 2.0.0
 

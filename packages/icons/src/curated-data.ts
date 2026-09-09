@@ -38,6 +38,39 @@ export const curatedIconBodies = {
     '<g transform="scale(0.75 0.75)"><g fill="none"><path fill="currentColor" d="M15.5 28.5h-1.72l1.2-6h-1.5l-1.2 6h-1.8c-.73 0-1.33.52-1.47 1.21c-.04.15.08.29.24.29h7.47c.16 0 .28-.14.25-.29c-.14-.69-.74-1.21-1.47-1.21"/><path fill="currentColor" d="m2.33 10.35l2.72-1.99L4.17 13l-1.84-1.36a.795.795 0 0 1 0-1.29M18.77 28.5h1.78c.73 0 1.34.52 1.48 1.21c.03.15-.09.29-.25.29h-7.53c-.16 0-.28-.14-.25-.29c.14-.69.74-1.21 1.47-1.21h1.8l1.2-6h1.5z"/><path fill="currentColor" d="M18.71 9.55c.09.32.335.606.665.696l7.611 2.154l2.466 5.348C27.842 23.101 22.877 27 17 27C9.82 27 4 21.18 4 14v-2.52C4 7.35 7.35 4 11.48 4c3.47 0 6.38 2.35 7.23 5.55"/><path fill="currentColor" d="M21.26 24c3.82-.07 7.13-2.66 8.21-6.32c.34-1.17.53-2.4.53-3.68c0-.54-.34-1.02-.83-1.21l-10.045-2.602s12.832 3.713 6.563 7.124c-6.27 3.412-14-1.91-14-1.91v.41c0 4.94 5.005 8.188 9.572 8.188"/><path fill="currentColor" d="M9 11a1 1 0 1 0 0-2a1 1 0 0 0 0 2"/></g></g>',
   chickNoto:
     '<g transform="scale(0.1875 0.1875)"><path fill="currentColor" d="M52.68 96.89s1.25 8.8-.09 9.67c-1.31.84-5.54.26-7.79.66c-1.6.28-2.72 2.06-2.63 3.94s2.06 3.38 4.13 3.38s6.29-.08 8.07-.28c2.53-.28 4.15-1.87 4.6-3c.94-2.35.28-15.02.28-15.02zm16.52.66l6.66-.75s.19 9.29.28 11.26s.56 7.7-.09 9.2c-.73 1.67-4.41 4.79-8.63 5.35s-8.92.84-9.1-2.91s2.72-3.66 3.85-3.94s5.73-1.13 6.85-2.25c1.12-1.14.18-15.96.18-15.96"/><path fill="currentColor" d="M17.25 43.02s1.01-8.68 1.83-11.73c1.6-5.96 8.26-18.02 27.59-18.82c25.6-1.06 31.39 22.24 31.39 22.24s11.4 3.24 22.81 7.04s21.68 9.01 22.24 10.7s-3.26 25.91-24.35 38.86c-20.41 12.53-62.08 12.25-73.63-11.68c-5.55-11.51-4.67-18.57-5.77-25.9c-1.33-8.88-2.11-10.71-2.11-10.71"/><path fill="currentColor" d="M4.63 42.74c.22 3.09 14.08 6.95 14.08 6.95s2.35-1.13 2.35-6.95s-2.35-7.41-2.35-7.41s-14.27 4.78-14.08 7.41"/><ellipse cx="35.28" cy="38.56" fill="currentColor" rx="5.33" ry="4.9" transform="rotate(-71.319 35.282 38.558)"/><path fill="currentColor" d="M51.93 73.14c-2.73 2.73 3.85 7.79 12.11 11.26s17.93 2.35 25.34-1.03c7.07-3.22 13.7-13.8 12.58-18.77s-5.44-6.38-11.36-7.79c-5.91-1.41-14.83-3.57-16.8-3.85s-3.38-.09-3.75 1.69c-.27 1.3 1.03 2.53 4.32 3.47c3.28.94 19.99 4.97 19.99 8.26c0 3.28-3.38 9.39-10.42 12.39c-6.83 2.91-13.51 3.28-20.27.09c-4.17-1.97-7.6-4.79-8.45-5.35c-.85-.55-1.97-1.68-3.29-.37"/></g>',
+  graph:
+    '<g fill="currentColor"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2s7.071 0 8.535 1.464C22 4.93 22 7.286 22 12s0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12" opacity=".5"/><path d="M17.576 10.48a.75.75 0 0 0-1.152-.96l-1.797 2.156c-.37.445-.599.716-.786.885a.8.8 0 0 1-.163.122l-.011.005l-.008-.004l-.003-.001a.8.8 0 0 1-.164-.122c-.187-.17-.415-.44-.786-.885l-.292-.35c-.328-.395-.625-.75-.901-1c-.301-.272-.68-.514-1.18-.514s-.878.242-1.18.514c-.276.25-.572.605-.9 1l-1.83 2.194a.75.75 0 0 0 1.153.96l1.797-2.156c.37-.445.599-.716.786-.885a.8.8 0 0 1 .163-.122l.007-.003l.004-.001q.004 0 .011.004a.8.8 0 0 1 .164.122c.187.17.415.44.786.885l.292.35c.329.395.625.75.901 1c.301.272.68.514 1.18.514s.878-.242 1.18-.514c.276-.25.572-.605.9-1z"/></g>',
+  graphUp:
+    '<g fill="currentColor"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2s7.071 0 8.535 1.464C22 4.93 22 7.286 22 12s0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12" opacity=".5"/><path d="M14.5 10.75a.75.75 0 0 1 0-1.5H17a.75.75 0 0 1 .75.75v2.5a.75.75 0 0 1-1.5 0v-.69l-2.013 2.013a1.75 1.75 0 0 1-2.474 0l-1.586-1.586a.25.25 0 0 0-.354 0L7.53 14.53a.75.75 0 0 1-1.06-1.06l2.293-2.293a1.75 1.75 0 0 1 2.474 0l1.586 1.586a.25.25 0 0 0 .354 0l2.012-2.013z"/></g>',
+  graphDown:
+    '<g fill="currentColor"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2s7.071 0 8.535 1.464C22 4.93 22 7.286 22 12s0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12" opacity=".5"/><path d="M7.53 9.47a.75.75 0 0 0-1.06 1.06l2.293 2.293a1.75 1.75 0 0 0 2.474 0l1.586-1.586a.25.25 0 0 1 .354 0l2.012 2.013H14.5a.75.75 0 0 0 0 1.5H17a.75.75 0 0 0 .75-.75v-2.5a.75.75 0 0 0-1.5 0v.69l-2.013-2.013a1.75 1.75 0 0 0-2.474 0l-1.586 1.586a.25.25 0 0 1-.354 0z"/></g>',
+  graphUpAlt:
+    '<g fill="currentColor"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2s7.071 0 8.535 1.464C22 4.93 22 7.286 22 12s0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12" opacity=".5"/><path d="M22 5a3 3 0 1 1-6 0a3 3 0 0 1 6 0m-7.5 5.75a.75.75 0 0 1 0-1.5H17a.75.75 0 0 1 .75.75v2.5a.75.75 0 0 1-1.5 0v-.69l-2.013 2.013a1.75 1.75 0 0 1-2.474 0l-1.586-1.586a.25.25 0 0 0-.354 0L7.53 14.53a.75.75 0 0 1-1.06-1.06l2.293-2.293a1.75 1.75 0 0 1 2.474 0l1.586 1.586a.25.25 0 0 0 .354 0l2.012-2.013z"/></g>',
+  graphDownAlt:
+    '<g fill="currentColor"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2s7.071 0 8.535 1.464C22 4.93 22 7.286 22 12s0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12" opacity=".5"/><path d="M22 5a3 3 0 1 1-6 0a3 3 0 0 1 6 0m-7.5 8.25a.75.75 0 0 0 0 1.5H17a.75.75 0 0 0 .75-.75v-2.5a.75.75 0 0 0-1.5 0v.69l-2.013-2.013a1.75 1.75 0 0 0-2.474 0l-1.586 1.586a.25.25 0 0 1-.354 0L7.53 9.47a.75.75 0 0 0-1.06 1.06l2.293 2.293a1.75 1.75 0 0 0 2.474 0l1.586-1.586a.25.25 0 0 1 .354 0l2.012 2.013z"/></g>',
+  graphBold:
+    '<g fill="currentColor"><path d="M2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12Z" opacity=".5"/><path d="M17.5762 10.4802C17.8414 10.1619 17.7984 9.68903 17.4802 9.42385C17.1619 9.15868 16.689 9.20167 16.4239 9.51988L14.627 11.6761C14.2562 12.1211 14.0285 12.3915 13.8409 12.5609C13.7539 12.6395 13.7023 12.6708 13.6776 12.6827C13.6725 12.6852 13.6689 12.6866 13.6667 12.6875C13.6667 12.6875 13.6624 12.6858 13.659 12.6843L13.6558 12.6827C13.6311 12.6708 13.5795 12.6395 13.4925 12.5609C13.3049 12.3915 13.0772 12.1211 12.7064 11.6761L12.414 11.3253C12.0855 10.931 11.7894 10.5756 11.5128 10.3259C11.2119 10.0541 10.8328 9.81207 10.3334 9.81207C9.83386 9.81207 9.4548 10.0541 9.15386 10.3259C8.87727 10.5756 8.58115 10.931 8.25269 11.3253L6.42385 13.5199C6.15868 13.8381 6.20167 14.311 6.51988 14.5762C6.83809 14.8414 7.31101 14.7984 7.57619 14.4802L9.37308 12.3239C9.74387 11.8789 9.97157 11.6085 10.1592 11.4391C10.2461 11.3606 10.2978 11.3293 10.3225 11.3173L10.3292 11.3142L10.3334 11.3126C10.3356 11.3134 10.3392 11.3149 10.3442 11.3173C10.369 11.3293 10.4206 11.3606 10.5076 11.4391C10.6951 11.6085 10.9228 11.8789 11.2936 12.3239L11.586 12.6748L11.586 12.6748C11.9145 13.069 12.2106 13.4244 12.4872 13.6742C12.7881 13.9459 13.1672 14.188 13.6667 14.188C14.1662 14.188 14.5452 13.9459 14.8462 13.6742C15.1228 13.4244 15.4189 13.069 15.7473 12.6748L17.5762 10.4802Z"/></g>',
+  graphDownBold:
+    '<g fill="currentColor"><path d="M2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12Z" opacity=".5"/><path d="M7.53033 9.46967C7.23744 9.17678 6.76256 9.17678 6.46967 9.46967C6.17678 9.76256 6.17678 10.2374 6.46967 10.5303L8.76256 12.8232C9.44598 13.5066 10.554 13.5066 11.2374 12.8232L12.8232 11.2374C12.9209 11.1398 13.0791 11.1398 13.1768 11.2374L15.1893 13.25H14.5C14.0858 13.25 13.75 13.5858 13.75 14C13.75 14.4142 14.0858 14.75 14.5 14.75H17C17.4142 14.75 17.75 14.4142 17.75 14V11.5C17.75 11.0858 17.4142 10.75 17 10.75C16.5858 10.75 16.25 11.0858 16.25 11.5V12.1893L14.2374 10.1768C13.554 9.49336 12.446 9.49336 11.7626 10.1768L10.1768 11.7626C10.0791 11.8602 9.92085 11.8602 9.82322 11.7626L7.53033 9.46967Z"/></g>',
+  graphUpLinear:
+    '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><path d="M20 20H4V4"/><path d="M4 16.5L12 9l3 3l4.5-4.5"/></g>',
+  graphDownLinear:
+    '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><path d="M20 20H4V4"/><path d="m4 7l8 8l3-3l4.5 4.5"/></g>',
+  graphMemory:
+    '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path fill="currentColor" d="M4 15v4h16v-4" opacity=".2" stroke="none"/><path fill="currentColor" d="M6.5 5.5a1 1 0 1 0 2 0 1 1 0 1 0 -2 0" opacity=".2" stroke="none"/><path fill="currentColor" d="M15.5 5.5a1 1 0 1 0 2 0 1 1 0 1 0 -2 0" opacity=".2" stroke="none"/><path fill="currentColor" d="M11 10a1 1 0 1 0 2 0 1 1 0 1 0 -2 0" opacity=".2" stroke="none"/><path d="M4 15v4h16v-4"/><path d="M6.5 5.5a1 1 0 1 0 2 0 1 1 0 1 0 -2 0"/><path d="M15.5 5.5a1 1 0 1 0 2 0 1 1 0 1 0 -2 0"/><path d="M11 10a1 1 0 1 0 2 0 1 1 0 1 0 -2 0"/><path d="M8.5 6.5 11 9"/><path d="M15.5 6.5 13 9"/></g>',
+  marginalRoi:
+    '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path fill="currentColor" d="M9 5a3 3 0 1 0 6 0 3 3 0 1 0 -6 0" opacity=".2" stroke="none"/><path d="M5 10v9"/><path d="M11 13v6"/><path d="M17 16v3"/><path d="M3 21.5h18"/><path d="M9 5a3 3 0 1 0 6 0 3 3 0 1 0 -6 0"/></g>',
+  hvac: '<path fill="currentColor" d="M5 19h14V5H5zm7-13c3.31 0 6 2.69 6 6s-2.69 6-6 6s-6-2.69-6-6s2.69-6 6-6" opacity=".3"/><path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m0 16H5V5h14z"/><path fill="currentColor" d="M12 18c3.31 0 6-2.69 6-6s-2.69-6-6-6s-6 2.69-6 6s2.69 6 6 6m0-2c-1.01 0-1.91-.39-2.62-1h5.24c-.71.61-1.61 1-2.62 1m0-8c1.01 0 1.91.39 2.62 1H9.38c.71-.61 1.61-1 2.62-1m-3.44 2h6.89c.26.45.44.96.51 1.5h-7.9c.06-.54.23-1.05.5-1.5m7.39 2.5c-.07.54-.24 1.05-.51 1.5H8.56c-.26-.45-.44-.96-.51-1.5z"/>',
+  waterRate:
+    '<g transform="scale(0.5 0.5)"><defs><mask id="SVGIgrD9mmM"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path fill="#555" fill-rule="evenodd" d="M24 44c8.837 0 16-7.164 16-16C40 15 24 4 24 4S8 15 8 28c0 8.837 7.163 16 16 16" clip-rule="evenodd"/><path d="m24 20l-4 8h8l-4 8"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#SVGIgrD9mmM)"/></g>',
+  skullCrossbones:
+    '<g transform="scale(0.053571 0.046875)"><path fill="currentColor" d="M368 128c0 44.4-25.4 83.5-64 106.4V256c0 17.7-14.3 32-32 32h-96c-17.7 0-32-14.3-32-32v-21.6c-38.6-23-64-62.1-64-106.4C80 57.3 144.5 0 224 0s144 57.3 144 128m-200 48a32 32 0 1 0 0-64a32 32 0 1 0 0 64m144-32a32 32 0 1 0-64 0a32 32 0 1 0 64 0M3.4 273.7c7.9-15.8 27.1-22.2 42.9-14.3L224 348.2l177.7-88.8c15.8-7.9 35-1.5 42.9 14.3s1.5 35-14.3 42.9L295.6 384l134.8 67.4c15.8 7.9 22.2 27.1 14.3 42.9s-27.1 22.2-42.9 14.3L224 419.8L46.3 508.6c-15.8 7.9-35 1.5-42.9-14.3s-1.5-35 14.3-42.9L152.4 384L17.7 316.6c-15.8-7.9-22.2-27.1-14.3-42.9"/></g>',
+  breakEven:
+    '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><path stroke-width="4.5" d="M4 4v16" opacity=".2"/><path stroke-width="4.5" d="M4 20h16" opacity=".2"/><path stroke-width="4.5" d="M7 17 17 7" opacity=".2"/><path stroke-width="4.5" d="m7 9 8 8" opacity=".2"/><path d="M4 4v16"/><path d="M4 20h16"/><path d="M7 17 17 7"/><path d="m7 9 8 8"/></g>',
+  equalRatio:
+    '<g transform="scale(0.5 0.5)"><defs><mask id="SVGz8BPDc2k"><g fill="none"><rect width="36" height="36" x="6" y="6" fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4" rx="3"/><path fill="#fff" fill-rule="evenodd" d="M24 22.5a2.5 2.5 0 1 0 0-5a2.5 2.5 0 0 0 0 5m0 8a2.5 2.5 0 1 0 0-5a2.5 2.5 0 0 0 0 5" clip-rule="evenodd"/><path stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M15.5 17v14m17-14v14"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#SVGz8BPDc2k)"/></g>',
+  weight:
+    '<g transform="scale(0.5 0.5)"><defs><mask id="SVG4WpSWcqi"><g fill="none"><path fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4" d="M41 4H7a3 3 0 0 0-3 3v34a3 3 0 0 0 3 3h34a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Z"/><path stroke="#fff" stroke-linecap="round" stroke-width="4" d="M12 19.054q4.987-6 12-6q7.012 0 12 6"/><path fill="#fff" d="M24 31a3 3 0 1 0 0-6a3 3 0 0 0 0 6"/><path stroke="#fff" stroke-linecap="round" stroke-width="4" d="m19 21l5.008 7"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#SVG4WpSWcqi)"/></g>',
 } as const;
 export const curatedIconMetadata = {
   revenue: {
@@ -137,6 +170,102 @@ export const curatedIconMetadata = {
     provider: "noto:baby-chick",
     source: "@iconify-json/noto",
     icon: "baby-chick",
+  },
+  graph: {
+    provider: "reicon:graph-duotone",
+    source: "@iconify-json/reicon",
+    icon: "graph-duotone",
+    duotone: true,
+  },
+  graphUp: {
+    provider: "reicon:graph-up-duotone",
+    source: "@iconify-json/reicon",
+    icon: "graph-up-duotone",
+    duotone: true,
+  },
+  graphDown: {
+    provider: "reicon:graph-down-duotone",
+    source: "@iconify-json/reicon",
+    icon: "graph-down-duotone",
+    duotone: true,
+  },
+  graphUpAlt: {
+    provider: "reicon:graph-up2-duotone",
+    source: "@iconify-json/reicon",
+    icon: "graph-up2-duotone",
+    duotone: true,
+  },
+  graphDownAlt: {
+    provider: "reicon:graph-down2-duotone",
+    source: "@iconify-json/reicon",
+    icon: "graph-down2-duotone",
+    duotone: true,
+  },
+  graphBold: {
+    provider: "solar:graph-bold-duotone",
+    source: "@iconify-json/solar",
+    icon: "graph-bold-duotone",
+    duotone: true,
+  },
+  graphDownBold: {
+    provider: "solar:graph-down-bold-duotone",
+    source: "@iconify-json/solar",
+    icon: "graph-down-bold-duotone",
+    duotone: true,
+  },
+  graphUpLinear: {
+    provider: "iconoir:graph-up",
+    source: "@iconify-json/iconoir",
+    icon: "graph-up",
+  },
+  graphDownLinear: {
+    provider: "iconoir:graph-down",
+    source: "@iconify-json/iconoir",
+    icon: "graph-down",
+  },
+  graphMemory: {
+    provider: "iconmind:graph-memory-duotone-regular",
+    source: "@iconify-json/iconmind",
+    icon: "graph-memory-duotone-regular",
+    duotone: true,
+  },
+  marginalRoi: {
+    provider: "iconmind:marginal-roi-duotone-regular",
+    source: "@iconify-json/iconmind",
+    icon: "marginal-roi-duotone-regular",
+    duotone: true,
+  },
+  hvac: {
+    provider: "ic:twotone-hvac",
+    source: "@iconify-json/ic",
+    icon: "twotone-hvac",
+    duotone: true,
+  },
+  waterRate: {
+    provider: "icon-park-twotone:water-rate-two",
+    source: "@iconify-json/icon-park-twotone",
+    icon: "water-rate-two",
+  },
+  skullCrossbones: {
+    provider: "fa6-solid:skull-crossbones",
+    source: "@iconify-json/fa6-solid",
+    icon: "skull-crossbones",
+  },
+  breakEven: {
+    provider: "iconmind:break-even-duotone-thin",
+    source: "@iconify-json/iconmind",
+    icon: "break-even-duotone-thin",
+    duotone: true,
+  },
+  equalRatio: {
+    provider: "icon-park-twotone:equal-ratio",
+    source: "@iconify-json/icon-park-twotone",
+    icon: "equal-ratio",
+  },
+  weight: {
+    provider: "icon-park-twotone:weight",
+    source: "@iconify-json/icon-park-twotone",
+    icon: "weight",
   },
 } as const;
 export const curatedIconNames = Object.keys(

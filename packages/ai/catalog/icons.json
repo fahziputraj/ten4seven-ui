@@ -444,5 +444,73 @@
   "chick": {
     "provider": "fluent-emoji-high-contrast:baby-chick",
     "useWhen": ["chick", "pullet", "young bird"]
+  },
+  "graph": {
+    "provider": "reicon:graph-duotone",
+    "useWhen": ["graph", "trend", "analytics line"]
+  },
+  "graphUp": {
+    "provider": "reicon:graph-up-duotone",
+    "useWhen": ["graph up", "increasing trend", "positive trend"]
+  },
+  "graphDown": {
+    "provider": "reicon:graph-down-duotone",
+    "useWhen": ["graph down", "decreasing trend", "negative trend"]
+  },
+  "graphUpAlt": {
+    "provider": "reicon:graph-up2-duotone",
+    "useWhen": ["alternate graph up", "secondary increasing trend"]
+  },
+  "graphDownAlt": {
+    "provider": "reicon:graph-down2-duotone",
+    "useWhen": ["alternate graph down", "secondary decreasing trend"]
+  },
+  "graphBold": {
+    "provider": "solar:graph-bold-duotone",
+    "useWhen": ["bold graph", "trend visualization"]
+  },
+  "graphDownBold": {
+    "provider": "solar:graph-down-bold-duotone",
+    "useWhen": ["bold decreasing graph", "negative trend visualization"]
+  },
+  "graphUpLinear": {
+    "provider": "iconoir:graph-up",
+    "useWhen": ["outline graph up", "linear increasing trend"]
+  },
+  "graphDownLinear": {
+    "provider": "iconoir:graph-down",
+    "useWhen": ["outline graph down", "linear decreasing trend"]
+  },
+  "graphMemory": {
+    "provider": "iconmind:graph-memory-duotone-regular",
+    "useWhen": ["graph memory", "historical graph", "memory trend"]
+  },
+  "marginalRoi": {
+    "provider": "iconmind:marginal-roi-duotone-regular",
+    "useWhen": ["marginal ROI", "incremental return", "return on investment"]
+  },
+  "hvac": {
+    "provider": "ic:twotone-hvac",
+    "useWhen": ["HVAC", "climate control", "ventilation"]
+  },
+  "waterRate": {
+    "provider": "icon-park-twotone:water-rate-two",
+    "useWhen": ["water rate", "water consumption", "flow rate"]
+  },
+  "skullCrossbones": {
+    "provider": "fa6-solid:skull-crossbones",
+    "useWhen": ["mortality", "hazard", "critical loss"]
+  },
+  "breakEven": {
+    "provider": "iconmind:break-even-duotone-thin",
+    "useWhen": ["break-even", "financial threshold", "cost recovery"]
+  },
+  "equalRatio": {
+    "provider": "icon-park-twotone:equal-ratio",
+    "useWhen": ["equal ratio", "ratio", "proportion"]
+  },
+  "weight": {
+    "provider": "icon-park-twotone:weight",
+    "useWhen": ["weight", "mass", "weighing"]
   }
 }

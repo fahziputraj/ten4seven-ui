@@ -407,6 +407,85 @@ export const IconRegistry = Object.freeze({
     provider: curatedIconMetadata.chick.provider,
     body: curatedIconBodies.chick,
   },
+  graph: {
+    provider: curatedIconMetadata.graph.provider,
+    body: curatedIconBodies.graph,
+    duotone: true,
+  },
+  graphUp: {
+    provider: curatedIconMetadata.graphUp.provider,
+    body: curatedIconBodies.graphUp,
+    duotone: true,
+  },
+  graphDown: {
+    provider: curatedIconMetadata.graphDown.provider,
+    body: curatedIconBodies.graphDown,
+    duotone: true,
+  },
+  graphUpAlt: {
+    provider: curatedIconMetadata.graphUpAlt.provider,
+    body: curatedIconBodies.graphUpAlt,
+    duotone: true,
+  },
+  graphDownAlt: {
+    provider: curatedIconMetadata.graphDownAlt.provider,
+    body: curatedIconBodies.graphDownAlt,
+    duotone: true,
+  },
+  graphBold: {
+    provider: curatedIconMetadata.graphBold.provider,
+    body: curatedIconBodies.graphBold,
+    duotone: true,
+  },
+  graphDownBold: {
+    provider: curatedIconMetadata.graphDownBold.provider,
+    body: curatedIconBodies.graphDownBold,
+    duotone: true,
+  },
+  graphUpLinear: {
+    provider: curatedIconMetadata.graphUpLinear.provider,
+    body: curatedIconBodies.graphUpLinear,
+  },
+  graphDownLinear: {
+    provider: curatedIconMetadata.graphDownLinear.provider,
+    body: curatedIconBodies.graphDownLinear,
+  },
+  graphMemory: {
+    provider: curatedIconMetadata.graphMemory.provider,
+    body: curatedIconBodies.graphMemory,
+    duotone: true,
+  },
+  marginalRoi: {
+    provider: curatedIconMetadata.marginalRoi.provider,
+    body: curatedIconBodies.marginalRoi,
+    duotone: true,
+  },
+  hvac: {
+    provider: curatedIconMetadata.hvac.provider,
+    body: curatedIconBodies.hvac,
+    duotone: true,
+  },
+  waterRate: {
+    provider: curatedIconMetadata.waterRate.provider,
+    body: curatedIconBodies.waterRate,
+  },
+  skullCrossbones: {
+    provider: curatedIconMetadata.skullCrossbones.provider,
+    body: curatedIconBodies.skullCrossbones,
+  },
+  breakEven: {
+    provider: curatedIconMetadata.breakEven.provider,
+    body: curatedIconBodies.breakEven,
+    duotone: true,
+  },
+  equalRatio: {
+    provider: curatedIconMetadata.equalRatio.provider,
+    body: curatedIconBodies.equalRatio,
+  },
+  weight: {
+    provider: curatedIconMetadata.weight.provider,
+    body: curatedIconBodies.weight,
+  },
 } as const);
 
 export type IconName = keyof typeof IconRegistry;

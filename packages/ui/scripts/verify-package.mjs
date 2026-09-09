@@ -207,7 +207,7 @@ if (
 
 if (
   typeof esm.IconifyCuratedIconCount !== "number" ||
-  esm.IconifyCuratedIconCount < 18 ||
+  esm.IconifyCuratedIconCount < 35 ||
   !Array.isArray(esm.IconifyCuratedIconNames) ||
   esm.IconifyCuratedIconNames.length !== esm.IconifyCuratedIconCount ||
   esm.IconifyCuratedIconNames.length !== cjs.IconifyCuratedIconNames.length

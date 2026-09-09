@@ -54,7 +54,7 @@ export function App() {
 
 `T7Icon` remains the semantic API for product code. When a design surface
 needs a glyph outside the semantic registry, `IconifyIcon` resolves one of the
-7,962 local Solar names or one of the 18 curated farm and operations names
+7,962 local Solar names or one of the 35 curated farm and operations names
 without a CDN request. The playground's icon library keeps its Solar browsing
 surface intentionally cohesive by showing the curated 1,327-name Bold Duotone
 family:
@@ -76,9 +76,9 @@ available whenever a surface needs an explicit paint override. The complete
 name list and count are exported as `IconifyIconNames` and `IconifyIconCount`;
 `IconifyBoldDuotoneIconNames` and `IconifyBoldDuotoneIconCount` expose the
 focused workbench family for consumers that want the same visual boundary.
-`IconifyCuratedIconNames` and `IconifyCuratedIconCount` expose the 18 local
+`IconifyCuratedIconNames` and `IconifyCuratedIconCount` expose the 35 local
 domain glyphs; use their semantic aliases through `T7Icon` when the meaning is
-known (`egg`, `barn`, `medicine`, `wallet`, and so on).
+known (`egg`, `barn`, `medicine`, `wallet`, `graphUp`, `waterRate`, and so on).
 
 `enterprise`, `product`, `editorial`, and `commerce` are authored recipes.
 `THEME_RECIPES`, `THEME_RECIPE_NAMES`, and `getThemeRecipe()` are available
