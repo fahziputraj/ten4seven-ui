@@ -406,6 +406,7 @@ export const IconRegistry = Object.freeze({
   chicken: {
     provider: curatedIconMetadata.chicken.provider,
     body: curatedIconBodies.chicken,
+    duotone: true,
   },
   chick: {
     provider: curatedIconMetadata.chick.provider,

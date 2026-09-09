@@ -438,7 +438,7 @@
     "useWhen": ["egg", "egg production", "layer farm"]
   },
   "chicken": {
-    "provider": "fluent-emoji-high-contrast:chicken",
+    "provider": "curated:aapm-chicken-bold-duotone",
     "useWhen": ["chicken", "flock", "layer bird"]
   },
   "chick": {

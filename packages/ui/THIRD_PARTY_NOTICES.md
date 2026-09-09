@@ -49,12 +49,13 @@ inside the self-contained UI bundle; consumer applications use the semantic
 ## Curated Iconify domain library
 
 The bundle also includes 26 deliberately selected farm and operations glyphs
-from pinned local Iconify JSON packages. These are normalized to the same 24px
-viewBox and exposed through the semantic registry (`T7Icon`) or the local
-`IconifyIcon` catalog. The generated bodies use `currentColor` where the source
-paint is presentation rather than geometry; runtime rendering never requests a
-remote Iconify service or CDN. The source mapping and package versions are
-maintained in `packages/icons/src/curated-data.ts` and
+from pinned local Iconify JSON packages, plus the AAPM-authored chicken
+extension described below. These are normalized to the same 24px viewBox and
+exposed through the semantic registry (`T7Icon`) or the local `IconifyIcon`
+catalog. The generated bodies use `currentColor` where the source paint is
+presentation rather than geometry; runtime rendering never requests a remote
+Iconify service or CDN. The source mapping and package versions are maintained
+in `packages/icons/src/curated-data.ts` and
 `scripts/generate-curated-icon-subset.mjs`.
 
 | Collection                 | Pinned package                                   | License    | Source                                                       |
@@ -70,6 +71,15 @@ maintained in `packages/icons/src/curated-data.ts` and
 | Fluent Emoji High Contrast | `@iconify-json/fluent-emoji-high-contrast@1.2.6` | MIT        | https://icon-sets.iconify.design/fluent-emoji-high-contrast/ |
 | Fluent Emoji Flat          | `@iconify-json/fluent-emoji-flat@1.2.6`          | MIT        | https://icon-sets.iconify.design/fluent-emoji-flat/          |
 | Noto                       | `@iconify-json/noto@1.2.7`                       | Apache-2.0 | https://icon-sets.iconify.design/noto/                       |
+
+The semantic `chicken` icon is an internal AAPM-authored
+`curated:aapm-chicken-bold-duotone` variant. It is derived from the supplied
+Fluent chicken silhouette, then normalized into Solar-compatible duotone
+layers (`currentColor` plus a tokenized secondary opacity) so it follows the
+same theme and optical contract as the rest of the library. It is bundled
+locally and does not claim the upstream Fluent provider as its runtime source.
+The semantic `egg`, `eggCrack`, and `eggPair` names remain explicit mappings to
+their pinned IC, Phosphor, and IconPark sources respectively.
 
 The Solar pill glyph in this extension remains covered by the Solar CC BY 4.0
 notice above. The upstream package licenses and attribution links are kept here

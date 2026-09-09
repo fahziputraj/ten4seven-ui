@@ -14,6 +14,9 @@ const iconsRequire = createRequire(
  * source collections stay a build-time concern; consumers only see semantic
  * names through T7Icon or the local Iconify explorer.
  */
+const aapmChickenBody =
+  '<g transform="scale(0.75 0.75)"><g fill="currentColor"><path opacity=".28" d="M30.356 26.452L27.71 14.587c-.947-4.928-5.37-8.608-10.622-8.376c-1.592.069-3.018.848-4.221 1.941c-1.206 1.094-2.252 2.556-3.108 4.135C8.053 15.427 6.99 19.233 6.99 22v5.2c0 2.045 1.629 3.785 3.722 3.8a3.73 3.73 0 0 0 2.688-1.108A3.74 3.74 0 0 0 16.06 31a3.76 3.76 0 0 0 2.66-1.107A3.74 3.74 0 0 0 21.38 31a3.76 3.76 0 0 0 2.66-1.107a3.748 3.748 0 0 0 6.41-2.643v-.025l-.001-.025a4.5 4.5 0 0 0-.093-.748"/><path d="m9.3 16.66l.78.39c.63.31 1.03.96 1.03 1.67V21H7.82l-4.783-1.348a.92.92 0 0 1 .013-.632l.29-.72a6.14 6.14 0 0 1 4.85-3.79c.45-.06.84.28.84.73v.99c0 .18.11.35.27.43"/><path opacity=".52" d="M3.34 20.11C4.3 21.08 6.18 22 7.82 22h3.29v-1.26l-.51-1.1H3.035c.05.17.165.33.305.47"/><path d="M20.72 11.86v-.44a4.77 4.77 0 0 1-3.53-2.02c-.61.75-1.5 1.28-2.51 1.41a3.872 3.872 0 0 1-4 4.49C8.7 15.21 7.09 13.59 7 11.61a3.88 3.88 0 0 1 2.76-3.89c.33-.1.55-.4.55-.74v-.01c0-2.14 1.73-3.87 3.87-3.87c.56 0 1.09.12 1.57.33c.76.34 1.66.21 2.3-.33a4.72 4.72 0 0 1 3-1.1h.14c3.45.08 5.08 4.31 2.64 6.75z"/><path d="M13.5 18a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3"/></g></g>';
+
 const definitions = [
   {
     name: "revenue",
@@ -130,10 +133,13 @@ const definitions = [
   {
     name: "chicken",
     packageName: "@iconify-json/fluent-emoji-high-contrast",
-    iconName: "chicken",
-    provider: "fluent-emoji-high-contrast:chicken",
-    width: 32,
-    height: 32,
+    iconName: "chicken-bold-duotone",
+    provider: "curated:aapm-chicken-bold-duotone",
+    source: "@aapm/ten4seven-curated",
+    body: aapmChickenBody,
+    width: 24,
+    height: 24,
+    duotone: true,
   },
   {
     name: "chick",
@@ -268,8 +274,12 @@ function normalizeBody(body, definition) {
 const bodies = {};
 const metadata = {};
 for (const definition of definitions) {
-  const collection = iconsRequire(`${definition.packageName}/icons.json`);
-  const icon = collection.icons[definition.iconName];
+  const collection = definition.body
+    ? undefined
+    : iconsRequire(`${definition.packageName}/icons.json`);
+  const icon = definition.body
+    ? { body: definition.body }
+    : collection.icons[definition.iconName];
   if (!icon?.body)
     throw new Error(
       `Missing ${definition.packageName}:${definition.iconName} in local Iconify packages`,
@@ -278,7 +288,7 @@ for (const definition of definitions) {
   bodies[definition.name] = normalizeBody(icon.body, definition);
   metadata[definition.name] = {
     provider: definition.provider,
-    source: definition.packageName,
+    source: definition.source ?? definition.packageName,
     icon: definition.iconName,
     ...(definition.duotone ? { duotone: true } : {}),
   };
