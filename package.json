@@ -10,7 +10,7 @@
   },
   "scripts": {
     "inventory": "node scripts/collect-inventory.mjs",
-    "icons:generate": "node scripts/generate-solar-subset.mjs && node scripts/generate-solar-catalog.mjs",
+    "icons:generate": "node scripts/generate-solar-subset.mjs && node scripts/generate-solar-catalog.mjs && node scripts/generate-curated-icon-subset.mjs",
     "dev": "pnpm --filter @ten4seven/playground dev",
     "t7ui": "node packages/ai/bin/t7ui.mjs",
     "contracts:generate": "node --experimental-strip-types scripts/generate-contract-projections.mjs && node --experimental-strip-types scripts/generate-theme-recipes-css.mjs && node --experimental-strip-types scripts/generate-dtcg-token-export.mjs",

@@ -12,7 +12,7 @@ AAPM proves that semantic icon names are more stable than provider strings. It a
 
 ## Decision
 
-Expose `T7Icon name="..."`. Keep provider metadata in a static registry build boundary. The proof ships a small local SVG path subset and no runtime CDN; a later generator can consume `@iconify-json/solar` to refresh the subset.
+Expose `T7Icon name="..."`. Keep provider metadata in a static registry build boundary. The proof ships a local SVG path subset and no runtime CDN; the generator consumes pinned `@iconify-json/solar` and approved Iconify collections for a small curated domain extension (farm, egg, medicine, money, and navigation nouns). Every approved glyph is normalized to the package viewBox and is surfaced through a semantic name; provider strings remain provenance metadata only.
 
 ## Why
 

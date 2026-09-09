@@ -2,7 +2,8 @@
 
 The private, self-contained ten4seven UI distribution. One package contains
 the React components, provider/theme runtime, semantic icon registry, the
-complete locally bundled Solar Iconify library, token profiles, motion
+complete locally bundled Solar Iconify library plus the curated farm and
+operations extension, token profiles, motion
 contract, self-hosted Inter, DM Sans, Source Serif 4, and IBM Plex Mono fonts,
 and the stylesheet required by a consumer application.
 
@@ -53,9 +54,10 @@ export function App() {
 
 `T7Icon` remains the semantic API for product code. When a design surface
 needs a glyph outside the semantic registry, `IconifyIcon` resolves one of the
-7,962 local Solar names without a CDN request. The playground's icon library
-keeps its browsing surface intentionally cohesive by showing the curated
-1,327-name Bold Duotone family:
+7,962 local Solar names or one of the 18 curated farm and operations names
+without a CDN request. The playground's icon library keeps its Solar browsing
+surface intentionally cohesive by showing the curated 1,327-name Bold Duotone
+family:
 
 ```tsx
 import { IconifyIcon } from "@ten4seven/ui";
@@ -74,6 +76,9 @@ available whenever a surface needs an explicit paint override. The complete
 name list and count are exported as `IconifyIconNames` and `IconifyIconCount`;
 `IconifyBoldDuotoneIconNames` and `IconifyBoldDuotoneIconCount` expose the
 focused workbench family for consumers that want the same visual boundary.
+`IconifyCuratedIconNames` and `IconifyCuratedIconCount` expose the 18 local
+domain glyphs; use their semantic aliases through `T7Icon` when the meaning is
+known (`egg`, `barn`, `medicine`, `wallet`, and so on).
 
 `enterprise`, `product`, `editorial`, and `commerce` are authored recipes.
 `THEME_RECIPES`, `THEME_RECIPE_NAMES`, and `getThemeRecipe()` are available

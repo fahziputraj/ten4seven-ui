@@ -1,4 +1,10 @@
-import { forwardRef, memo, type CSSProperties, type SVGProps } from "react";
+import {
+  forwardRef,
+  memo,
+  useId,
+  type CSSProperties,
+  type SVGProps,
+} from "react";
 
 import {
   solarIconAliases,
@@ -6,6 +12,11 @@ import {
   solarIconNames,
 } from "./solar-catalog";
 import { solarBodies } from "./solar-data";
+import {
+  curatedIconBodies,
+  curatedIconMetadata,
+  curatedIconNames,
+} from "./curated-data";
 
 export const IconRegistry = Object.freeze({
   dashboard: {
@@ -328,6 +339,74 @@ export const IconRegistry = Object.freeze({
     provider: "solar:chat-round-line-bold-duotone",
     body: solarBodies.communication,
   },
+  revenue: {
+    provider: curatedIconMetadata.revenue.provider,
+    body: curatedIconBodies.revenue,
+    duotone: true,
+  },
+  medicine: {
+    provider: curatedIconMetadata.medicine.provider,
+    body: curatedIconBodies.medicine,
+    duotone: true,
+  },
+  pills: {
+    provider: curatedIconMetadata.pills.provider,
+    body: curatedIconBodies.pills,
+    duotone: true,
+  },
+  cashOnDelivery: {
+    provider: curatedIconMetadata.cashOnDelivery.provider,
+    body: curatedIconBodies.cashOnDelivery,
+    duotone: true,
+  },
+  wallet: {
+    provider: curatedIconMetadata.wallet.provider,
+    body: curatedIconBodies.wallet,
+    duotone: true,
+  },
+  triangleRight: {
+    provider: curatedIconMetadata.triangleRight.provider,
+    body: curatedIconBodies.triangleRight,
+  },
+  triangleLeft: {
+    provider: curatedIconMetadata.triangleLeft.provider,
+    body: curatedIconBodies.triangleLeft,
+  },
+  triangleUp: {
+    provider: curatedIconMetadata.triangleUp.provider,
+    body: curatedIconBodies.triangleUp,
+  },
+  triangleDown: {
+    provider: curatedIconMetadata.triangleDown.provider,
+    body: curatedIconBodies.triangleDown,
+  },
+  barn: {
+    provider: curatedIconMetadata.barn.provider,
+    body: curatedIconBodies.barn,
+    duotone: true,
+  },
+  eggCrack: {
+    provider: curatedIconMetadata.eggCrack.provider,
+    body: curatedIconBodies.eggCrack,
+    duotone: true,
+  },
+  eggPair: {
+    provider: curatedIconMetadata.eggPair.provider,
+    body: curatedIconBodies.eggPair,
+  },
+  egg: {
+    provider: curatedIconMetadata.egg.provider,
+    body: curatedIconBodies.egg,
+    duotone: true,
+  },
+  chicken: {
+    provider: curatedIconMetadata.chicken.provider,
+    body: curatedIconBodies.chicken,
+  },
+  chick: {
+    provider: curatedIconMetadata.chick.provider,
+    body: curatedIconBodies.chick,
+  },
 } as const);
 
 export type IconName = keyof typeof IconRegistry;
@@ -340,6 +419,10 @@ export const IconNames = Object.keys(IconRegistry) as IconName[];
 export type SolarIconName = (typeof solarIconNames)[number];
 export const IconifyIconNames = solarIconNames;
 export const IconifyIconCount = IconifyIconNames.length;
+export type CuratedIconName = (typeof curatedIconNames)[number];
+export const IconifyCuratedIconNames = curatedIconNames;
+export const IconifyCuratedIconCount = IconifyCuratedIconNames.length;
+export type IconifyIconName = SolarIconName | CuratedIconName;
 /**
  * The curated Solar family used by the icon workbench. Keeping this as a
  * named export makes the visual-family boundary explicit without removing
@@ -361,9 +444,18 @@ export const IconifyCollections = Object.freeze({
       .length,
     boldDuotoneCount: IconifyBoldDuotoneIconCount,
   }),
+  curated: Object.freeze({
+    name: "Curated operations",
+    prefix: "ten4seven",
+    iconCount: IconifyCuratedIconCount,
+    duotoneCount: IconifyCuratedIconNames.filter(
+      (name) => "duotone" in curatedIconMetadata[name],
+    ).length,
+    boldDuotoneCount: 0,
+  }),
 });
 
-const solarIconBodyCache = new Map<string, string>();
+const iconBodyCache = new Map<string, string>();
 
 /** Return a bundled Solar SVG body, resolving local aliases when necessary. */
 export function getSolarIconBody(name: string): string | undefined {
@@ -375,6 +467,28 @@ export function getSolarIconBody(name: string): string | undefined {
 
 export function isSolarIconName(name: string): name is SolarIconName {
   return Boolean(getSolarIconBody(name));
+}
+
+/** Return a curated local Iconify body selected for domain semantics. */
+export function getCuratedIconBody(name: string): string | undefined {
+  return curatedIconBodies[name as CuratedIconName];
+}
+
+export function isCuratedIconName(name: string): name is CuratedIconName {
+  return Boolean(getCuratedIconBody(name));
+}
+
+function scopeSvgIds(body: string, instanceId: string): string {
+  const suffix = instanceId.replace(/[^a-zA-Z0-9_-]/g, "") || "icon";
+  const ids = [...body.matchAll(/\bid="([^"]+)"/g)].map(([, id]) => id);
+  if (!ids.length) return body;
+
+  let scoped = body;
+  for (const id of ids)
+    scoped = scoped.replaceAll(`id="${id}"`, `id="${id}-${suffix}"`);
+  for (const id of ids)
+    scoped = scoped.replaceAll(`#${id}`, `#${id}-${suffix}`);
+  return scoped;
 }
 
 const THEME_PRIMARY = "hsl(var(--t7-primary-hsl, 0 0% 20%))";
@@ -403,12 +517,12 @@ function colorizeBody(
   accentPaint: string,
 ): string {
   const cacheKey = `${duotone ? "duotone" : "single"}:${primaryPaint}:${accentPaint}:${body}`;
-  const cachedBody = solarIconBodyCache.get(cacheKey);
+  const cachedBody = iconBodyCache.get(cacheKey);
   if (cachedBody) return cachedBody;
 
   const baseBody = body.replaceAll("currentColor", primaryPaint);
   if (!duotone) {
-    solarIconBodyCache.set(cacheKey, baseBody);
+    iconBodyCache.set(cacheKey, baseBody);
     return baseBody;
   }
 
@@ -437,7 +551,7 @@ function colorizeBody(
     },
   );
 
-  solarIconBodyCache.set(cacheKey, transformedBody);
+  iconBodyCache.set(cacheKey, transformedBody);
   return transformedBody;
 }
 
@@ -490,7 +604,11 @@ export const T7Icon = memo(
     ref,
   ) {
     const entry = IconRegistry[name];
-    const isDuotone = duotone ?? entry.provider.endsWith("-duotone");
+    const instanceId = useId();
+    const isDuotone =
+      duotone ??
+      ("duotone" in entry ? entry.duotone : undefined) ??
+      entry.provider.endsWith("-duotone");
 
     return (
       <svg
@@ -506,11 +624,14 @@ export const T7Icon = memo(
         width={size}
         {...props}
         dangerouslySetInnerHTML={{
-          __html: colorizeBody(
-            entry.body,
-            isDuotone,
-            PRIMARY_PAINT,
-            SEMANTIC_ACCENT_PAINT,
+          __html: scopeSvgIds(
+            colorizeBody(
+              entry.body,
+              isDuotone,
+              PRIMARY_PAINT,
+              SEMANTIC_ACCENT_PAINT,
+            ),
+            instanceId,
           ),
         }}
       />
@@ -524,8 +645,8 @@ export interface IconifyIconProps extends Omit<
   SVGProps<SVGSVGElement>,
   "name" | "title"
 > {
-  /** Unprefixed name from the bundled Solar Iconify collection. */
-  name: SolarIconName;
+  /** Unprefixed name from the bundled Solar or curated Iconify collections. */
+  name: IconifyIconName;
   /** Override the solid layer; defaults to the active theme primary token. */
   primaryColor?: string;
   /** Override the secondary duotone layer; defaults to the active theme accent. */
@@ -536,7 +657,7 @@ export interface IconifyIconProps extends Omit<
   label?: string;
 }
 
-/** Render any one of the locally bundled Solar Iconify glyphs. */
+/** Render any one of the locally bundled Solar or curated Iconify glyphs. */
 export const IconifyIcon = memo(
   forwardRef<SVGSVGElement, IconifyIconProps>(function IconifyIcon(
     {
@@ -552,9 +673,17 @@ export const IconifyIcon = memo(
     },
     ref,
   ) {
-    const body = getSolarIconBody(name);
+    const instanceId = useId();
+    const body = isCuratedIconName(name)
+      ? getCuratedIconBody(name)
+      : getSolarIconBody(name);
     if (!body) return null;
-    const isDuotone = duotone ?? name.includes("-duotone");
+    const isDuotone =
+      duotone ??
+      (isCuratedIconName(name)
+        ? "duotone" in curatedIconMetadata[name]
+        : name.includes("-duotone"));
+    const iconSet = isCuratedIconName(name) ? "ten4seven-curated" : "solar";
 
     return (
       <svg
@@ -562,7 +691,7 @@ export const IconifyIcon = memo(
         aria-hidden={label ? undefined : true}
         aria-label={label}
         className={className}
-        data-icon-set="solar"
+        data-icon-set={iconSet}
         data-icon-name={name}
         fill="none"
         height={size}
@@ -572,11 +701,9 @@ export const IconifyIcon = memo(
         width={size}
         {...props}
         dangerouslySetInnerHTML={{
-          __html: colorizeBody(
-            body,
-            isDuotone,
-            THEME_PRIMARY_PAINT,
-            ACCENT_PAINT,
+          __html: scopeSvgIds(
+            colorizeBody(body, isDuotone, THEME_PRIMARY_PAINT, ACCENT_PAINT),
+            instanceId,
           ),
         }}
       />

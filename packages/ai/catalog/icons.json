@@ -384,5 +384,65 @@
   "communication": {
     "provider": "solar:chat-round-line-bold-duotone",
     "useWhen": ["communication", "message"]
+  },
+  "revenue": {
+    "provider": "ic:twotone-monetization-on",
+    "useWhen": ["revenue", "monetization", "money"]
+  },
+  "medicine": {
+    "provider": "solar:jar-of-pills-2-bold-duotone",
+    "useWhen": ["medicine", "medication", "pharmacy"]
+  },
+  "pills": {
+    "provider": "reicon:pills-duotone",
+    "useWhen": ["pills", "medication", "health"]
+  },
+  "cashOnDelivery": {
+    "provider": "iconmind:cash-on-delivery-duotone-regular",
+    "useWhen": ["cash on delivery", "delivery payment", "payment collection"]
+  },
+  "wallet": {
+    "provider": "ant-design:wallet-twotone",
+    "useWhen": ["wallet", "cash", "finance"]
+  },
+  "triangleRight": {
+    "provider": "gravity-ui:triangle-right-fill",
+    "useWhen": ["next", "move right", "forward control"]
+  },
+  "triangleLeft": {
+    "provider": "gravity-ui:triangle-left-fill",
+    "useWhen": ["previous", "move left", "back control"]
+  },
+  "triangleUp": {
+    "provider": "gravity-ui:triangle-up-fill",
+    "useWhen": ["move up", "increase", "expand"]
+  },
+  "triangleDown": {
+    "provider": "gravity-ui:triangle-down-fill",
+    "useWhen": ["move down", "decrease", "collapse"]
+  },
+  "barn": {
+    "provider": "si:barn-duotone",
+    "useWhen": ["barn", "farm building", "housing"]
+  },
+  "eggCrack": {
+    "provider": "ph:egg-crack-duotone",
+    "useWhen": ["cracked egg", "egg loss", "hatch failure"]
+  },
+  "eggPair": {
+    "provider": "icon-park-twotone:egg-one",
+    "useWhen": ["egg pair", "egg count", "flock output"]
+  },
+  "egg": {
+    "provider": "ic:twotone-egg",
+    "useWhen": ["egg", "egg production", "layer farm"]
+  },
+  "chicken": {
+    "provider": "fluent-emoji-high-contrast:chicken",
+    "useWhen": ["chicken", "flock", "layer bird"]
+  },
+  "chick": {
+    "provider": "fluent-emoji-high-contrast:baby-chick",
+    "useWhen": ["chick", "pullet", "young bird"]
   }
 }

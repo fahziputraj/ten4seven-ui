@@ -164,6 +164,8 @@ const requiredExports = [
   "IconifyIconNames",
   "IconifyBoldDuotoneIconCount",
   "IconifyBoldDuotoneIconNames",
+  "IconifyCuratedIconCount",
+  "IconifyCuratedIconNames",
   "paletteProfiles",
   "t7Motion",
 ];
@@ -201,6 +203,16 @@ if (
   throw new Error(
     "the bundled Iconify Solar catalog or 1,000-name Bold Duotone family is incomplete",
   );
+}
+
+if (
+  typeof esm.IconifyCuratedIconCount !== "number" ||
+  esm.IconifyCuratedIconCount < 18 ||
+  !Array.isArray(esm.IconifyCuratedIconNames) ||
+  esm.IconifyCuratedIconNames.length !== esm.IconifyCuratedIconCount ||
+  esm.IconifyCuratedIconNames.length !== cjs.IconifyCuratedIconNames.length
+) {
+  throw new Error("the bundled curated Iconify domain library is incomplete");
 }
 
 console.log(

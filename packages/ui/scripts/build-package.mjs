@@ -161,6 +161,7 @@ await writeFile(
         "dtcg-compatible-token-export",
         "semantic-icons",
         "bundled-iconify-solar-library",
+        "curated-iconify-domain-library",
         "react-components",
         "motion",
         "self-hosted-fonts",

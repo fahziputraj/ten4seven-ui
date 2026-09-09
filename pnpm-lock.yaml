@@ -143,6 +143,39 @@ importers:
 
   packages/icons:
     devDependencies:
+      "@iconify-json/ant-design":
+        specifier: 1.2.9
+        version: 1.2.9
+      "@iconify-json/fluent-emoji-flat":
+        specifier: 1.2.6
+        version: 1.2.6
+      "@iconify-json/fluent-emoji-high-contrast":
+        specifier: 1.2.6
+        version: 1.2.6
+      "@iconify-json/gravity-ui":
+        specifier: 1.2.14
+        version: 1.2.14
+      "@iconify-json/ic":
+        specifier: 1.2.4
+        version: 1.2.4
+      "@iconify-json/icon-park-twotone":
+        specifier: 1.2.4
+        version: 1.2.4
+      "@iconify-json/iconmind":
+        specifier: 1.2.1
+        version: 1.2.1
+      "@iconify-json/noto":
+        specifier: 1.2.7
+        version: 1.2.7
+      "@iconify-json/ph":
+        specifier: 1.2.2
+        version: 1.2.2
+      "@iconify-json/reicon":
+        specifier: 1.2.4
+        version: 1.2.4
+      "@iconify-json/si":
+        specifier: 1.2.17
+        version: 1.2.17
       "@iconify-json/solar":
         specifier: 1.2.9
         version: 1.2.9
@@ -442,6 +475,72 @@ packages:
     resolution:
       {
         integrity: sha512-OTtjT1fY81kZDAs7KtcqFaOAZmYluHzus2i7sj82DfmzMcN66Dgo0SKPuPAuRH+0lQIYL01o8jwl89N5k+eNcg==,
+      }
+
+  "@iconify-json/ant-design@1.2.9":
+    resolution:
+      {
+        integrity: sha512-cAP5tQXUj05Hb0o3nyjEzYofuU5luRm6IV4FNZ3KQkG2cfzvmM34WYJuNLA3/sWqfE0cHSaaaEGvIdAUq+bN2Q==,
+      }
+
+  "@iconify-json/fluent-emoji-flat@1.2.6":
+    resolution:
+      {
+        integrity: sha512-RY47RgPb47fYUiyrA64sIOL0+UU02s29sXpNBbIQRBUlPlfNFTKUmZDERGuxDs/7yNGWqQYvuaSYM1M4fRXlUw==,
+      }
+
+  "@iconify-json/fluent-emoji-high-contrast@1.2.6":
+    resolution:
+      {
+        integrity: sha512-esqhZPpkrF7sNX3NsLoh8KW64okEr/bzko7WNnFP+qTJGAqDPDYjp0925yxuivXy3HtVQB8xhIKu3+Nq1byX5w==,
+      }
+
+  "@iconify-json/gravity-ui@1.2.14":
+    resolution:
+      {
+        integrity: sha512-d6ENT1S3YBs0ltTiuQIucun90C1mk//TVpe63tcIlzibujLMw9tpvZQ3Rb35xUyr5vcpxILEKr2spHD6uKaj5w==,
+      }
+
+  "@iconify-json/ic@1.2.4":
+    resolution:
+      {
+        integrity: sha512-pzPMmrZrBQuwT7nmtrYdkttun8KalRGgZPIL1Ny9KpF2zjRGIUPN+npTfuD3lrgO/OnSwAoJWuekQwBpt/Cqrw==,
+      }
+
+  "@iconify-json/icon-park-twotone@1.2.4":
+    resolution:
+      {
+        integrity: sha512-AhnGngG6DxuIZMsz4FMrv0QWTRM/CZ3NnEeaceV6psKSgt/axW+hft7oQ6pIAFN9KB95Kp3hbJuhlhG3ao60eQ==,
+      }
+
+  "@iconify-json/iconmind@1.2.1":
+    resolution:
+      {
+        integrity: sha512-tdHauOnedz1V9gKoqhl6PRGganapLQg5zMYQU4SV0JLOtRXmXNBZDT7yclTeqKLtN6hJAAlxWPqRRZS1iEI/7Q==,
+      }
+
+  "@iconify-json/noto@1.2.7":
+    resolution:
+      {
+        integrity: sha512-2pNHliXnMLpnepNTZwR9hPBSl6GmhIfXPnudFCHY5v9pJhmA7LoVb/pFY0qLDY/k+3ikET8RXRf7XFxc/pHObA==,
+      }
+
+  "@iconify-json/ph@1.2.2":
+    resolution:
+      {
+        integrity: sha512-PgkEZNtqa8hBGjHXQa4pMwZa93hmfu8FUSjs/nv4oUU6yLsgv+gh9nu28Kqi8Fz9CCVu4hj1MZs9/60J57IzFw==,
+      }
+
+  "@iconify-json/reicon@1.2.4":
+    resolution:
+      {
+        integrity: sha512-fDKTz5Y8WZLPr/np3R5cRCx2S14qP/+aiKMNk9EYrGhoeKa0S0WBjR0X7vwn6qRtFskjAaNNpOAU+SMeC5ItUQ==,
+      }
+
+  "@iconify-json/si@1.2.17":
+    resolution:
+      {
+        integrity: sha512-Jzz3DlAhQCjIhTvLA7PQ/cFhHp4mAS4rzbwwWPOlIqUeYotfocy0VFQjaKGsSk9rLmM5mOuEocyqZpf3sYHDvw==,
       }
 
   "@iconify/types@2.0.0":
@@ -1672,6 +1771,50 @@ snapshots:
 
   "@esbuild/win32-x64@0.28.2":
     optional: true
+
+  "@iconify-json/ant-design@1.2.9":
+    dependencies:
+      "@iconify/types": 2.0.0
+
+  "@iconify-json/fluent-emoji-flat@1.2.6":
+    dependencies:
+      "@iconify/types": 2.0.0
+
+  "@iconify-json/fluent-emoji-high-contrast@1.2.6":
+    dependencies:
+      "@iconify/types": 2.0.0
+
+  "@iconify-json/gravity-ui@1.2.14":
+    dependencies:
+      "@iconify/types": 2.0.0
+
+  "@iconify-json/ic@1.2.4":
+    dependencies:
+      "@iconify/types": 2.0.0
+
+  "@iconify-json/icon-park-twotone@1.2.4":
+    dependencies:
+      "@iconify/types": 2.0.0
+
+  "@iconify-json/iconmind@1.2.1":
+    dependencies:
+      "@iconify/types": 2.0.0
+
+  "@iconify-json/noto@1.2.7":
+    dependencies:
+      "@iconify/types": 2.0.0
+
+  "@iconify-json/ph@1.2.2":
+    dependencies:
+      "@iconify/types": 2.0.0
+
+  "@iconify-json/reicon@1.2.4":
+    dependencies:
+      "@iconify/types": 2.0.0
+
+  "@iconify-json/si@1.2.17":
+    dependencies:
+      "@iconify/types": 2.0.0
 
   "@iconify-json/solar@1.2.9":
     dependencies:

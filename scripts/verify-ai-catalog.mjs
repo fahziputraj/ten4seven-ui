@@ -520,11 +520,13 @@ assert.deepEqual(
   registryNames,
   "icon catalog and local registry must stay exactly synchronized",
 );
+const allowedIconifyProviders =
+  /^(?:solar|ic|reicon|iconmind|ant-design|gravity-ui|si|ph|icon-park-twotone|fluent-emoji-high-contrast|fluent-emoji-flat|noto):/;
 for (const [name, icon] of Object.entries(icons)) {
   assert.match(
     icon.provider,
-    /^solar:/,
-    `${name}: provider must remain local Solar provenance`,
+    allowedIconifyProviders,
+    `${name}: provider must remain local curated Iconify provenance`,
   );
   assert.match(
     iconSource,

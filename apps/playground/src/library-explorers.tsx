@@ -4,9 +4,12 @@ import {
   IconifyIcon,
   IconifyBoldDuotoneIconCount,
   IconifyBoldDuotoneIconNames,
+  IconifyCuratedIconCount,
+  IconifyCuratedIconNames,
   IconNames,
   T7Icon,
   type IconName,
+  type IconifyIconName,
 } from "@ten4seven/icons";
 import { buildThemeVariables } from "@ten4seven/tokens";
 import {
@@ -1192,17 +1195,19 @@ function hslToHex(value: string, fallback: string) {
 
 function IconifyCopyButton({
   accentColor,
+  familyLabel = "Solar",
   name,
   primaryColor,
 }: {
   accentColor?: string;
-  name: string;
+  familyLabel?: string;
+  name: IconifyIconName;
   primaryColor?: string;
 }) {
   const { toast } = useToast();
   return (
     <button
-      aria-label={`Copy Solar icon ${name}`}
+      aria-label={`Copy ${familyLabel} icon ${name}`}
       className="library-icon-tile iconify-icon-tile"
       onClick={async () => {
         try {
@@ -1213,7 +1218,7 @@ function IconifyCopyButton({
         toast({
           description: `Copied ${name}`,
           duration: 2200,
-          title: "Solar icon copied",
+          title: `${familyLabel} icon copied`,
           tone: "success",
         });
       }}
@@ -1410,6 +1415,41 @@ export function IconsExplorer() {
         <div className="library-icon-grid compact-icon-grid">
           {shownNames.map((name) => (
             <IconCopyButton key={name} name={name} />
+          ))}
+        </div>
+      </section>
+      <section
+        className="library-section iconify-curated-section"
+        data-iconify-count={IconifyCuratedIconCount}
+        data-iconify-family="ten4seven-curated"
+      >
+        <div className="library-section-heading">
+          <div>
+            <Typography as="h2" typeRole="heading-lg">
+              Curated farm &amp; operations
+            </Typography>
+            <Typography typeRole="body-sm">
+              A small, governed Iconify extension for farm nouns, money, and
+              directional controls. Every glyph is bundled locally, normalized
+              to the 24px canvas, and rendered with theme-aware paints.
+            </Typography>
+          </div>
+          <Typography className="icon-registry-proof" typeRole="caption">
+            {IconifyCuratedIconCount} curated glyphs
+          </Typography>
+        </div>
+        <div
+          aria-label="Curated farm and operations icons"
+          className="library-icon-grid iconify-icon-grid"
+        >
+          {IconifyCuratedIconNames.map((name) => (
+            <IconifyCopyButton
+              accentColor={customAccent}
+              familyLabel="Curated"
+              key={name}
+              name={name}
+              primaryColor={customPrimary}
+            />
           ))}
         </div>
       </section>

@@ -46,6 +46,35 @@ generated from the pinned `@iconify-json/solar` development package and shipped
 inside the self-contained UI bundle; consumer applications use the semantic
 `T7Icon` API or the local `IconifyIcon` catalog API.
 
+## Curated Iconify domain library
+
+The bundle also includes 18 deliberately selected farm and operations glyphs
+from pinned local Iconify JSON packages. These are normalized to the same 24px
+viewBox and exposed through the semantic registry (`T7Icon`) or the local
+`IconifyIcon` catalog. The generated bodies use `currentColor` where the source
+paint is presentation rather than geometry; runtime rendering never requests a
+remote Iconify service or CDN. The source mapping and package versions are
+maintained in `packages/icons/src/curated-data.ts` and
+`scripts/generate-curated-icon-subset.mjs`.
+
+| Collection                 | Pinned package                                   | License    | Source                                                       |
+| -------------------------- | ------------------------------------------------ | ---------- | ------------------------------------------------------------ |
+| Iconify IC                 | `@iconify-json/ic@1.2.4`                         | Apache-2.0 | https://icon-sets.iconify.design/ic/                         |
+| Iconify Re:Icon            | `@iconify-json/reicon@1.2.4`                     | MIT        | https://icon-sets.iconify.design/reicon/                     |
+| Iconmind                   | `@iconify-json/iconmind@1.2.1`                   | MIT        | https://icon-sets.iconify.design/iconmind/                   |
+| Ant Design                 | `@iconify-json/ant-design@1.2.9`                 | MIT        | https://icon-sets.iconify.design/ant-design/                 |
+| Gravity UI                 | `@iconify-json/gravity-ui@1.2.14`                | MIT        | https://icon-sets.iconify.design/gravity-ui/                 |
+| Streamline                 | `@iconify-json/si@1.2.17`                        | MIT        | https://icon-sets.iconify.design/si/                         |
+| Phosphor                   | `@iconify-json/ph@1.2.2`                         | MIT        | https://icon-sets.iconify.design/ph/                         |
+| IconPark Twotone           | `@iconify-json/icon-park-twotone@1.2.4`          | Apache-2.0 | https://icon-sets.iconify.design/icon-park-twotone/          |
+| Fluent Emoji High Contrast | `@iconify-json/fluent-emoji-high-contrast@1.2.6` | MIT        | https://icon-sets.iconify.design/fluent-emoji-high-contrast/ |
+| Fluent Emoji Flat          | `@iconify-json/fluent-emoji-flat@1.2.6`          | MIT        | https://icon-sets.iconify.design/fluent-emoji-flat/          |
+| Noto                       | `@iconify-json/noto@1.2.7`                       | Apache-2.0 | https://icon-sets.iconify.design/noto/                       |
+
+The Solar pill glyph in this extension remains covered by the Solar CC BY 4.0
+notice above. The upstream package licenses and attribution links are kept here
+so the private bundle retains an auditable provenance boundary.
+
 ## anime.js
 
 The motion adapter bundles anime.js 4.5.0 by Julian Garnier under the MIT
