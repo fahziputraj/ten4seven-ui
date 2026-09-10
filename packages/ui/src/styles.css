@@ -5571,7 +5571,10 @@
   border-radius: var(--t7-radius-panel);
   background: hsl(var(--t7-surface-hsl));
   min-width: 0;
-  overflow-x: auto;
+  /* Clip state fills to the same rail geometry as the container.  Keeping
+     horizontal scrolling here preserves the narrow-layout contract while
+     preventing a selected segment from painting past the panel corners. */
+  overflow: auto;
   padding: 0;
   scrollbar-width: thin;
 }
@@ -5636,13 +5639,6 @@
 }
 .t7-milestone-item[data-selected="true"] .t7-milestone-button {
   background: hsl(var(--t7-selected-hsl) / 0.12);
-}
-.t7-milestone-item[data-selected="true"] .t7-milestone-button::before {
-  position: absolute;
-  inset: 0 0 auto;
-  height: 3px;
-  background: hsl(var(--t7-primary-hsl));
-  content: "";
 }
 .t7-milestone-stage-header {
   display: flex;
@@ -5794,7 +5790,7 @@
 }
 .t7-milestone-item[data-selected="true"] .t7-milestone-button {
   z-index: var(--t7-z-focus);
-  border-radius: var(--t7-radius-control);
+  border-radius: 0;
   background:
     linear-gradient(
       180deg,
@@ -5807,6 +5803,14 @@
     inset 0 0 0 1px hsl(var(--t7-milestone-emphasis-foreground-hsl) / 0.22),
     var(--t7-shadow-card);
 }
+.t7-milestone-item:first-child[data-selected="true"] .t7-milestone-button {
+  border-top-left-radius: var(--t7-radius-panel);
+  border-bottom-left-radius: var(--t7-radius-panel);
+}
+.t7-milestone-item:last-child[data-selected="true"] .t7-milestone-button {
+  border-top-right-radius: var(--t7-radius-panel);
+  border-bottom-right-radius: var(--t7-radius-panel);
+}
 .t7-milestone-item[data-selected="true"] .t7-milestone-button:hover {
   background:
     linear-gradient(
@@ -5815,9 +5819,6 @@
       hsl(var(--t7-milestone-emphasis-foreground-hsl) / 0.12)
     ),
     hsl(var(--t7-milestone-emphasis-fill-hsl));
-}
-.t7-milestone-item[data-selected="true"] .t7-milestone-button::before {
-  background: hsl(var(--t7-milestone-emphasis-foreground-hsl) / 0.82);
 }
 .t7-milestone-item[data-selected="true"]
   :is(

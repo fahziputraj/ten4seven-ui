@@ -363,6 +363,7 @@ test.describe("end-to-end hardening regressions", () => {
         meter: getComputedStyle(
           element.querySelector(".t7-milestone-meter-value")!,
         ).backgroundColor,
+        selectedMarker: getComputedStyle(element, "::before").content,
       };
     });
     expect(milestoneAppearance.backgroundImage).toContain("linear-gradient");
@@ -370,6 +371,36 @@ test.describe("end-to-end hardening regressions", () => {
     expect(milestoneAppearance.iconColor).toBe("rgb(255, 255, 255)");
     expect(milestoneAppearance.meter).toBe("rgb(255, 255, 255)");
     expect(milestoneAppearance.backgroundColor).not.toBe("rgb(255, 255, 255)");
+    expect(milestoneAppearance.selectedMarker).toBe("none");
+
+    const firstMilestone = page.locator(".t7-milestone-item").first();
+    await firstMilestone.locator(".t7-milestone-button").click();
+    const firstMilestoneGeometry = await firstMilestone.evaluate((item) => {
+      const button = item.querySelector<HTMLElement>(".t7-milestone-button")!;
+      const rail = item.closest<HTMLElement>(".t7-milestone-scroll")!;
+      const buttonStyles = getComputedStyle(button);
+      const railStyles = getComputedStyle(rail);
+      return {
+        buttonTopLeft: buttonStyles.borderTopLeftRadius,
+        buttonBottomLeft: buttonStyles.borderBottomLeftRadius,
+        railTopLeft: railStyles.borderTopLeftRadius,
+        railBottomLeft: railStyles.borderBottomLeftRadius,
+      };
+    });
+    expect(firstMilestoneGeometry.buttonTopLeft).toBe(
+      firstMilestoneGeometry.railTopLeft,
+    );
+    expect(firstMilestoneGeometry.buttonBottomLeft).toBe(
+      firstMilestoneGeometry.railBottomLeft,
+    );
+    await expect(
+      page.locator(".t7-milestone-detail").getByRole("heading", {
+        name: "Capture",
+      }),
+    ).toBeVisible();
+    await expect(
+      firstMilestone.locator(".t7-milestone-button"),
+    ).toHaveAttribute("aria-current", "step");
 
     const workflowSpacing = await page
       .locator(".t7-milestone-tracker")
