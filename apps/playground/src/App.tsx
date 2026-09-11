@@ -136,6 +136,78 @@ type StudioThemeChange = {
 
 const runtimePreferencesStorageKey =
   "ten4seven.playground.runtime-preferences.v1";
+const playgroundHistoryStateKey = "__ten4seven_playground";
+
+type ScrollPosition = {
+  left: number;
+  top: number;
+};
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function getBrowserLocation() {
+  return `${window.location.pathname}${window.location.search}${window.location.hash}`;
+}
+
+function readRouteScrollPosition(state: unknown): ScrollPosition | null {
+  if (!isRecord(state)) return null;
+  const routeState = state[playgroundHistoryStateKey];
+  if (!isRecord(routeState) || !isRecord(routeState.scroll)) return null;
+
+  const { left, top } = routeState.scroll;
+  if (
+    typeof left !== "number" ||
+    typeof top !== "number" ||
+    !Number.isFinite(left) ||
+    !Number.isFinite(top)
+  ) {
+    return null;
+  }
+
+  return {
+    left: Math.max(0, left),
+    top: Math.max(0, top),
+  };
+}
+
+function withRouteScrollPosition(
+  state: unknown,
+  scroll: ScrollPosition,
+): Record<string, unknown> {
+  return {
+    ...(isRecord(state) ? state : {}),
+    [playgroundHistoryStateKey]: {
+      scroll: {
+        left: Math.max(0, scroll.left),
+        top: Math.max(0, scroll.top),
+      },
+    },
+  };
+}
+
+function getCurrentScrollPosition(): ScrollPosition {
+  return {
+    left: Math.max(0, window.scrollX),
+    top: Math.max(0, window.scrollY),
+  };
+}
+
+function focusRouteSurface() {
+  const routeFocusTarget = document.querySelector<HTMLElement>(
+    '[data-route-focus="main"]',
+  );
+  routeFocusTarget?.focus({ preventScroll: true });
+}
+
+function writeCurrentRouteScrollPosition(scroll: ScrollPosition) {
+  window.history.replaceState(
+    withRouteScrollPosition(window.history.state, scroll),
+    "",
+    getBrowserLocation(),
+  );
+}
 
 function readRuntimePreferences(): RuntimePreferences {
   if (typeof window === "undefined") return {};
@@ -180,6 +252,21 @@ function formatRadiusSetting(
   return theme.radiusValue === undefined
     ? theme.radius
     : `${theme.radiusValue}px`;
+}
+
+function RouteSurface({ children }: { children: ReactNode }) {
+  const [phase, setPhase] = useState<"entering" | "ready">("entering");
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => setPhase("ready"));
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
+  return (
+    <div className="playground-route-surface" data-route-phase={phase}>
+      {children}
+    </div>
+  );
 }
 
 function describeColorSource(source: ThemeColorSource) {
@@ -514,7 +601,7 @@ function Studio({
         onNavigatePath={onNavigatePath}
       />
 
-      <main className="studio-main">
+      <main className="studio-main" data-route-focus="main" tabIndex={-1}>
         <PlaygroundTopbar
           activeRoute={activeRoute}
           breadcrumbItems={breadcrumbItems}
@@ -2532,36 +2619,125 @@ export default function App() {
       ? { kind: "known", route: "Theme Studio" }
       : routeFromPath(window.location.pathname),
   );
+  const [routeLocation, setRouteLocation] = useState(() =>
+    typeof window === "undefined" ? "/theme-studio" : getBrowserLocation(),
+  );
+  const pendingScrollPositionRef = useRef<ScrollPosition | null>(
+    typeof window === "undefined"
+      ? null
+      : readRouteScrollPosition(window.history.state),
+  );
+  const scrollFrameRef = useRef<number | null>(null);
+  const currentScrollPositionRef = useRef<ScrollPosition>({ left: 0, top: 0 });
   const [operationsViewState, setOperationsViewState] =
     useState<ReferenceViewState>("ready");
 
   useLayoutEffect(() => {
+    const pending = pendingScrollPositionRef.current ?? {
+      left: 0,
+      top: 0,
+    };
+    pendingScrollPositionRef.current = null;
     const hash = window.location.hash.replace(/^#/, "");
     if (hash) {
       const target = document.getElementById(decodeURIComponent(hash));
       if (target) {
         target.scrollIntoView({ block: "start", behavior: "instant" });
-        return;
+      } else {
+        window.scrollTo({ behavior: "instant", left: 0, top: 0 });
       }
+    } else {
+      const maxLeft = Math.max(
+        0,
+        document.documentElement.scrollWidth - window.innerWidth,
+      );
+      const maxTop = Math.max(
+        0,
+        document.documentElement.scrollHeight - window.innerHeight,
+      );
+      window.scrollTo({
+        behavior: "instant",
+        left: Math.min(pending.left, maxLeft),
+        top: Math.min(pending.top, maxTop),
+      });
     }
-    window.scrollTo({ behavior: "instant", top: 0 });
-  }, [routeMatch]);
+
+    focusRouteSurface();
+  }, [routeLocation]);
 
   useEffect(() => {
-    const syncRoute = () => {
+    // A browser may apply native fragment focus after React's layout effect on
+    // a deep link. Re-assert the route landmark on the next frame so direct
+    // links and client-side navigation share the same focus contract.
+    const frame = window.requestAnimationFrame(focusRouteSurface);
+    return () => window.cancelAnimationFrame(frame);
+  }, [routeLocation]);
+
+  useEffect(() => {
+    const previousScrollRestoration = window.history.scrollRestoration;
+    window.history.scrollRestoration = "manual";
+
+    const storedPosition = readRouteScrollPosition(window.history.state);
+    currentScrollPositionRef.current =
+      storedPosition ?? getCurrentScrollPosition();
+    if (!storedPosition) {
+      writeCurrentRouteScrollPosition(currentScrollPositionRef.current);
+    }
+
+    const handleScroll = () => {
+      currentScrollPositionRef.current = getCurrentScrollPosition();
+      if (scrollFrameRef.current !== null) return;
+      scrollFrameRef.current = window.requestAnimationFrame(() => {
+        scrollFrameRef.current = null;
+        writeCurrentRouteScrollPosition(currentScrollPositionRef.current);
+      });
+    };
+
+    const flushScrollPosition = () => {
+      if (scrollFrameRef.current !== null) {
+        window.cancelAnimationFrame(scrollFrameRef.current);
+        scrollFrameRef.current = null;
+      }
+      currentScrollPositionRef.current = getCurrentScrollPosition();
+      writeCurrentRouteScrollPosition(currentScrollPositionRef.current);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("pagehide", flushScrollPosition);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("pagehide", flushScrollPosition);
+      if (scrollFrameRef.current !== null) {
+        window.cancelAnimationFrame(scrollFrameRef.current);
+        scrollFrameRef.current = null;
+      }
+      window.history.scrollRestoration = previousScrollRestoration;
+    };
+  }, []);
+
+  useEffect(() => {
+    const syncRoute = (restoredPosition?: ScrollPosition | null) => {
+      if (restoredPosition !== undefined) {
+        pendingScrollPositionRef.current = restoredPosition ?? {
+          left: 0,
+          top: 0,
+        };
+      }
+
       if (window.location.pathname === "/") {
         window.history.replaceState(
-          {},
+          window.history.state,
           "",
           playgroundRoutePaths["Theme Studio"],
         );
-        setRouteMatch({ kind: "known", route: "Theme Studio" });
-        return;
       }
+      setRouteLocation(getBrowserLocation());
       setRouteMatch(routeFromPath(window.location.pathname));
     };
     syncRoute();
-    const handlePopState = () => syncRoute();
+    const handlePopState = (event: PopStateEvent) => {
+      syncRoute(readRouteScrollPosition(event.state));
+    };
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
@@ -2654,7 +2830,19 @@ export default function App() {
     const currentLocation = `${window.location.pathname}${window.location.search}${window.location.hash}`;
     const nextLocationString = `${nextLocation.pathname}${nextLocation.search}${nextLocation.hash}`;
     if (currentLocation !== nextLocationString) {
-      window.history.pushState({}, "", nextLocationString);
+      if (scrollFrameRef.current !== null) {
+        window.cancelAnimationFrame(scrollFrameRef.current);
+        scrollFrameRef.current = null;
+      }
+      currentScrollPositionRef.current = getCurrentScrollPosition();
+      writeCurrentRouteScrollPosition(currentScrollPositionRef.current);
+      window.history.pushState(
+        withRouteScrollPosition(window.history.state, { left: 0, top: 0 }),
+        "",
+        nextLocationString,
+      );
+      pendingScrollPositionRef.current = { left: 0, top: 0 };
+      setRouteLocation(nextLocationString);
     }
     setRouteMatch(routeFromPath(nextLocation.pathname));
   }
@@ -2868,7 +3056,7 @@ export default function App() {
       theme={themeRecipe}
     >
       <ToastProvider>
-        {routeContent}
+        <RouteSurface key={routeLocation}>{routeContent}</RouteSurface>
         {showReferenceHarness && activeKnownRoute ? (
           <ReferenceHarness
             activeRoute={activeKnownRoute}

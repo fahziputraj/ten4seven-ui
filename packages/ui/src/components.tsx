@@ -1338,7 +1338,12 @@ export function AppShell({
             {topbar}
           </header>
         ) : null}
-        <Content className="t7-app-content" data-content-width={contentWidth}>
+        <Content
+          className="t7-app-content"
+          data-content-width={contentWidth}
+          data-route-focus="main"
+          tabIndex={-1}
+        >
           {children}
         </Content>
       </div>

@@ -67,6 +67,7 @@ export function ReferenceHarness({
         <Button
           aria-expanded={isOpen}
           aria-label="Open ten4seven reference QA controls"
+          aria-haspopup="dialog"
           intent="secondary"
           leadingIcon="components"
           onClick={() => setOpen(true)}
