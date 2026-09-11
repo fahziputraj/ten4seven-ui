@@ -1,0 +1,183 @@
+- generic [ref=f1e3]:
+  - generic [ref=f1e4]:
+    - complementary [ref=f1e5]:
+      - img "ten4seven UI system" [ref=f1e8]:
+        - generic [ref=f1e21]:
+          - generic [aria-hidden] [ref=f1e22]: ten4seven
+          - generic [aria-hidden] [ref=f1e23]: UI system
+      - navigation "ten4seven UI navigation" [ref=f1e25]:
+        - generic [ref=f1e26]:
+          - group "Studio" [ref=f1e27]:
+            - button "Theme Studio" [ref=f1e29] [cursor=pointer]
+            - button "Component Lab" [ref=f1e42] [cursor=pointer]
+          - group "Library" [ref=f1e50]:
+            - button "Tokens" [ref=f1e52] [cursor=pointer]
+            - button "Components" [ref=f1e61] [cursor=pointer]
+            - button "Blocks" [ref=f1e69] [cursor=pointer]
+            - button "Icons" [ref=f1e77] [cursor=pointer]
+            - button "Recipes" [ref=f1e84] [cursor=pointer]
+            - generic "Library menu" [ref=f1e92]:
+              - button "Browse library…" [ref=f1e93] [cursor=pointer]
+          - group "Reference" [ref=f1e101]:
+            - button "Publishing Store" [ref=f1e103] [cursor=pointer]
+          - group "Labs / Proofs" [ref=f1e111]:
+            - button "Operations Tracker" [ref=f1e113] [cursor=pointer]
+            - button "Operational Patterns" [ref=f1e121] [cursor=pointer]
+            - button "SaaS Control Plane" [ref=f1e127] [cursor=pointer]
+            - button "ERP Density Reference" [ref=f1e134] [cursor=pointer]
+            - button "Farm P1 Reference" [ref=f1e142] [cursor=pointer]
+            - button "Public Showcase" [ref=f1e148] [cursor=pointer]
+            - button "Farm Synthetic" [ref=f1e154] [cursor=pointer]
+            - button "Auth · Neutral" [ref=f1e160] [cursor=pointer]
+            - button "Auth · AAPM Academy" [ref=f1e167] [cursor=pointer]:
+              - generic [ref=f1e174]: Auth · Academy
+            - generic [ref=f1e175]: "Canonical identity: AAPM Academy."
+      - generic [ref=f1e176]:
+        - generic [ref=f1e177]: Explore
+        - paragraph [ref=f1e178]: Canonical UI surfaces, recipes, and practical previews.
+        - generic [ref=f1e179]: Ten4Seven UI
+    - main [ref=f1e180]:
+      - generic [ref=f1e181]:
+        - generic [ref=f1e183]:
+          - generic [ref=f1e184]: ten4seven UI
+          - strong [ref=f1e194]: Components
+        - generic [ref=f1e195]:
+          - button "Search ten4seven catalog" [ref=f1e196] [cursor=pointer]:
+            - generic [ref=f1e203]: Search catalogCtrl K
+          - generic "Live preview status" [ref=f1e204]:
+            - button "Live" [ref=f1e205] [cursor=pointer]
+          - button "Open settings" [ref=f1e210] [cursor=pointer]
+          - generic "ten4seven workspace menu" [ref=f1e215]:
+            - button "ten4seven workspace ten4seven UI workspace" [ref=f1e216] [cursor=pointer]:
+              - img "ten4seven workspace" [ref=f1e217]:
+                - generic [aria-hidden] [ref=f1e218]: T
+              - generic [ref=f1e219]:
+                - strong [ref=f1e220]: ten4seven
+                - generic [ref=f1e221]: UI workspace
+      - generic [ref=f1e225]:
+        - generic [ref=f1e227]:
+          - generic [ref=f1e228]: Library · canonical contracts
+          - heading "Components" [level=1] [ref=f1e237]
+          - paragraph [ref=f1e238]: A visual entry point for comparing canonical components by family. Browse the specimen first; open detail only when the full contract is needed.
+          - generic [ref=f1e239]: 145 canonical · 151 catalog contracts
+        - generic [ref=f1e241]:
+          - generic [ref=f1e242]: Search components
+          - textbox "Search canonical components" [ref=f1e244]:
+            - /placeholder: Button, form, table, overlay…
+        - region [ref=f1e245]:
+          - generic [ref=f1e246]:
+            - generic [ref=f1e247]:
+              - heading "Families" [level=2] [ref=f1e248]
+              - text: Choose one family to compare its live components, variants, states, and guidance together.
+            - generic [ref=f1e249]: 17 families · 145 contracts
+          - navigation "Component families" [ref=f1e250]:
+            - link "Foundations Theme, typography, icon, and provider contracts shared by every screen. 3" [ref=f1e251] [cursor=pointer]:
+              - /url: /components/foundations
+              - generic [ref=f1e260]:
+                - strong [ref=f1e261]: Foundations
+                - generic [ref=f1e262]: Theme, typography, icon, and provider contracts shared by every screen.
+              - generic [ref=f1e263]: "3"
+            - link "Actions Intent-bearing actions and compact controls for committing work. 6" [ref=f1e266] [cursor=pointer]:
+              - /url: /components/actions
+              - generic [ref=f1e270]:
+                - strong [ref=f1e271]: Actions
+                - generic [ref=f1e272]: Intent-bearing actions and compact controls for committing work.
+              - generic [ref=f1e273]: "6"
+            - link "Forms Inputs and selection controls for collecting clear, valid values. 27" [ref=f1e276] [cursor=pointer]:
+              - /url: /components/forms
+              - generic [ref=f1e283]:
+                - strong [ref=f1e284]: Forms
+                - generic [ref=f1e285]: Inputs and selection controls for collecting clear, valid values.
+              - generic [ref=f1e286]: "27"
+            - link "Navigation Wayfinding, disclosure, and command surfaces for moving through an app. 16" [ref=f1e289] [cursor=pointer]:
+              - /url: /components/navigation
+              - generic [ref=f1e295]:
+                - strong [ref=f1e296]: Navigation
+                - generic [ref=f1e297]: Wayfinding, disclosure, and command surfaces for moving through an app.
+              - generic [ref=f1e298]: "16"
+            - link "Layout Structural primitives that define page, panel, and responsive composition. 7" [ref=f1e301] [cursor=pointer]:
+              - /url: /components/layout
+              - generic [ref=f1e309]:
+                - strong [ref=f1e310]: Layout
+                - generic [ref=f1e311]: Structural primitives that define page, panel, and responsive composition.
+              - generic [ref=f1e312]: "7"
+            - link "Surfaces Cards, panels, separators, and containers that establish hierarchy. 8" [ref=f1e315] [cursor=pointer]:
+              - /url: /components/surfaces
+              - generic [ref=f1e323]:
+                - strong [ref=f1e324]: Surfaces
+                - generic [ref=f1e325]: Cards, panels, separators, and containers that establish hierarchy.
+              - generic [ref=f1e326]: "8"
+            - link "Data Display Metrics, status, lists, and visual signals for readable information. 11" [ref=f1e329] [cursor=pointer]:
+              - /url: /components/data-display
+              - generic [ref=f1e337]:
+                - strong [ref=f1e338]: Data Display
+                - generic [ref=f1e339]: Metrics, status, lists, and visual signals for readable information.
+              - generic [ref=f1e340]: "11"
+            - link "Tables Dense tabular records with selection, sorting, and responsive overflow. 9" [ref=f1e343] [cursor=pointer]:
+              - /url: /components/tables
+              - generic [ref=f1e351]:
+                - strong [ref=f1e352]: Tables
+                - generic [ref=f1e353]: Dense tabular records with selection, sorting, and responsive overflow.
+              - generic [ref=f1e354]: "9"
+            - link "Filtering & Bulk Actions Applied filters, filter drawers, and bulk operations around collections. 5" [ref=f1e357] [cursor=pointer]:
+              - /url: /components/filtering-bulk-actions
+              - generic [ref=f1e363]:
+                - strong [ref=f1e364]: Filtering & Bulk Actions
+                - generic [ref=f1e365]: Applied filters, filter drawers, and bulk operations around collections.
+              - generic [ref=f1e366]: "5"
+            - link "Overlays Focused modal, drawer, popover, menu, and tooltip layers. 8" [ref=f1e369] [cursor=pointer]:
+              - /url: /components/overlays
+              - generic [ref=f1e380]:
+                - strong [ref=f1e381]: Overlays
+                - generic [ref=f1e382]: Focused modal, drawer, popover, menu, and tooltip layers.
+              - generic [ref=f1e383]: "8"
+            - link "Feedback & Progress Status, progress, loading, and recovery feedback with live semantics. 11" [ref=f1e386] [cursor=pointer]:
+              - /url: /components/feedback-progress
+              - generic [ref=f1e392]:
+                - strong [ref=f1e393]: Feedback & Progress
+                - generic [ref=f1e394]: Status, progress, loading, and recovery feedback with live semantics.
+              - generic [ref=f1e395]: "11"
+            - link "Date & Time Calendar, range, time, and date-time entry with stable values. 6" [ref=f1e398] [cursor=pointer]:
+              - /url: /components/date-time
+              - generic [ref=f1e406]:
+                - strong [ref=f1e407]: Date & Time
+                - generic [ref=f1e408]: Calendar, range, time, and date-time entry with stable values.
+              - generic [ref=f1e409]: "6"
+            - link "Files Client-side file selection, upload affordances, and file records. 3" [ref=f1e412] [cursor=pointer]:
+              - /url: /components/files
+              - generic [ref=f1e419]:
+                - strong [ref=f1e420]: Files
+                - generic [ref=f1e421]: Client-side file selection, upload affordances, and file records.
+              - generic [ref=f1e422]: "3"
+            - link "Charts & Data Visualization Token-led charts and compact trend visualizations. 7" [ref=f1e425] [cursor=pointer]:
+              - /url: /components/charts-data-visualization
+              - generic [ref=f1e433]:
+                - strong [ref=f1e434]: Charts & Data Visualization
+                - generic [ref=f1e435]: Token-led charts and compact trend visualizations.
+              - generic [ref=f1e436]: "7"
+            - link "Media Responsive media frames, thumbnails, and content-safe imagery. 4" [ref=f1e439] [cursor=pointer]:
+              - /url: /components/media
+              - generic [ref=f1e446]:
+                - strong [ref=f1e447]: Media
+                - generic [ref=f1e448]: Responsive media frames, thumbnails, and content-safe imagery.
+              - generic [ref=f1e449]: "4"
+            - link "Commerce Catalog, cart, pricing, and order composition without a second primitive set. 8" [ref=f1e452] [cursor=pointer]:
+              - /url: /components/commerce
+              - generic [ref=f1e460]:
+                - strong [ref=f1e461]: Commerce
+                - generic [ref=f1e462]: Catalog, cart, pricing, and order composition without a second primitive set.
+              - generic [ref=f1e463]: "8"
+            - link "Patterns Reusable application flows composed from the contracts above. 6" [ref=f1e466] [cursor=pointer]:
+              - /url: /components/patterns
+              - generic [ref=f1e472]:
+                - strong [ref=f1e473]: Patterns
+                - generic [ref=f1e474]: Reusable application flows composed from the contracts above.
+              - generic [ref=f1e475]: "6"
+        - region "Library roles" [ref=f1e478]:
+          - generic [ref=f1e486]:
+            - strong [ref=f1e487]: Need edge-case proof?
+            - generic [ref=f1e488]: Components is for discovery and comparison. Use Component Lab for responsive stress, unusual states, and implementation QA.
+          - link "Open Component Lab" [ref=f1e489] [cursor=pointer]:
+            - /url: /component-lab
+  - button "Open ten4seven reference QA controls" [ref=f1e493] [cursor=pointer]:
+    - generic [ref=f1e500]: QA

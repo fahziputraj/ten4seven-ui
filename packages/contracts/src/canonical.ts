@@ -1,7 +1,7 @@
 import type { AliasMap, OwnershipRules } from "./types.ts";
 import { CONTRACT_SCHEMA_VERSION } from "./types.ts";
 import { AUTHENTICATION_CONTRACT } from "./authentication.ts";
-import { BRAND_PROFILES } from "./brand-profile.ts";
+import { AAPM_BRAND_ADAPTER, BRAND_PROFILES } from "./brand-profile.ts";
 import { ENTITY_DETAIL_CONTRACT } from "./entity-detail.ts";
 import { ENTITY_LIST_CONTRACT } from "./entity-list.ts";
 import {
@@ -20,6 +20,12 @@ import {
 } from "./operational-patterns.ts";
 import { DEFAULT_THEME_PROFILE, MOTION_PROFILES } from "./theme-profile.ts";
 import { THEME_RECIPES } from "./theme-recipe.ts";
+import { PLATFORM_NEUTRAL_CONTRACT } from "./platform-neutral.ts";
+import { MODULE_STATE_CONTRACT } from "./module-state.ts";
+import { RESPONSIVE_CONTRACT } from "./responsive-shell.ts";
+import { SAAS_CONTROL_PLANE_CONTRACT } from "./saas-control-plane.ts";
+import { NATIVE_MOBILE_CONTRACT } from "./native-mobile.ts";
+import { ERP_DENSITY_CONTRACT } from "./erp-density.ts";
 
 export const ALIAS_MAP: AliasMap = {
   RadioGroup: "CheckboxGroup",
@@ -46,18 +52,37 @@ export const OWNERSHIP_RULES: OwnershipRules = {
         "local basic Button/Input/Card/Table/Select primitive",
         "parallel theme provider",
         "raw external icon import",
+        "business data, permissions, entitlements, persistence, routing, or handlers in generic primitives",
       ],
       note: "The system owns interaction contracts, semantic tokens, icon names, and recipe decisions.",
+    },
+    {
+      scope: "platform-neutral-contracts",
+      owner: "ten4seven",
+      canonicalPaths: [
+        "packages/contracts/src/platform-neutral.ts",
+        "generated/platform-neutral.json",
+      ],
+      forbiddenPatterns: [
+        "DOM props or React event types",
+        "CSS selectors or browser APIs",
+        "native framework implementation details",
+        "business-domain calculations or authority",
+      ],
+      note: "Platform-neutral vocabulary is a shared semantic boundary; renderers and consumers own implementation and business behavior.",
     },
     {
       scope: "domain-behavior",
       owner: "consumer",
       canonicalPaths: [
         "consumer-owned API clients",
+        "consumer-owned business data and calculations",
         "consumer-owned permissions",
+        "consumer-owned entitlements",
         "consumer-owned persistence and handlers",
+        "consumer-owned routing and navigation state",
       ],
-      note: "Consumers own domain data and behavior while composing canonical contracts.",
+      note: "Consumers own domain data, permissions, entitlements, persistence, routing, and handlers while composing canonical contracts.",
     },
     {
       scope: "legacy-catalog-adapter",
@@ -77,7 +102,14 @@ export const CANONICAL_CONTRACTS = {
     default: DEFAULT_THEME_PROFILE,
   },
   themeRecipes: THEME_RECIPES,
+  brandAdapter: AAPM_BRAND_ADAPTER,
   brandProfiles: BRAND_PROFILES,
+  platformNeutral: PLATFORM_NEUTRAL_CONTRACT,
+  responsive: RESPONSIVE_CONTRACT,
+  moduleStates: MODULE_STATE_CONTRACT,
+  saasControlPlane: SAAS_CONTROL_PLANE_CONTRACT,
+  nativeMobile: NATIVE_MOBILE_CONTRACT,
+  erpDensity: ERP_DENSITY_CONTRACT,
   motionProfiles: MOTION_PROFILES,
   recipes: {
     "entity-list": ENTITY_LIST_CONTRACT,

@@ -1,0 +1,122 @@
+- generic [ref=f19e5]:
+  - banner [ref=f19e6]:
+    - button "Open application navigation" [ref=f19e7] [cursor=pointer]
+    - generic [ref=f19e10]:
+      - strong [ref=f19e18]: Farm Synthetic
+      - generic [ref=f19e19]:
+        - button "Back to Studio" [ref=f19e20] [cursor=pointer]
+        - button "Search ten4seven catalog" [ref=f19e23] [cursor=pointer]
+        - button "Open Farm proof settings" [ref=f19e30] [cursor=pointer]
+        - generic "ten4seven workspace menu" [ref=f19e35]:
+          - button [ref=f19e36] [cursor=pointer]:
+            - img "ten4seven workspace" [ref=f19e37]:
+              - generic [aria-hidden] [ref=f19e38]: T
+  - main [ref=f19e39]:
+    - generic [ref=f19e40]:
+      - generic [ref=f19e41]:
+        - generic [ref=f19e42]:
+          - generic [ref=f19e43]: AppShell · Authorized Farms · Farm Overview
+          - heading "Farm Overview" [level=1] [ref=f19e44]
+          - paragraph [ref=f19e45]: A bounded Farm consumer composition that proves authorized context, Farm Overview metrics, and safe loading/recovery states without implementing Farm business behavior.
+          - generic [ref=f19e46]:
+            - generic [ref=f19e47]: Farm consumer proof
+            - generic [ref=f19e53]: Synthetic proof · AAPM production adoption unverified
+        - button "Theme settings" [ref=f19e55] [cursor=pointer]
+      - generic [ref=f19e61]:
+        - generic [ref=f19e62]:
+          - generic [ref=f19e63]:
+            - generic [ref=f19e64]:
+              - heading "Farm context" [level=3] [ref=f19e65]
+              - paragraph [ref=f19e66]: Choose only from contexts supplied by the consumer authorization boundary.
+            - generic [ref=f19e67]: Authorized
+          - generic [ref=f19e69]:
+            - generic [ref=f19e70]:
+              - generic [ref=f19e71]:
+                - generic [ref=f19e72]: Farm context selector
+                - generic [ref=f19e73]:
+                  - combobox [aria-hidden] [ref=f19e74]
+                  - button "Farm context selector" [ref=f19e75] [cursor=pointer]:
+                    - generic [ref=f19e76]: Farm North
+              - generic [ref=f19e79]:
+                - generic [ref=f19e80]: Scenario state
+                - generic [ref=f19e81]:
+                  - combobox [aria-hidden] [ref=f19e82]
+                  - button "Scenario state" [ref=f19e83] [cursor=pointer]:
+                    - generic [ref=f19e84]: Current
+            - generic [ref=f19e87]: State selection is local fixture control for this proof; no Farm request, authorization decision, or persistence is performed.
+            - generic "Selected farm metadata" [ref=f19e88]:
+              - generic [ref=f19e89]:
+                - term [ref=f19e90]: Region
+                - definition [ref=f19e91]: Kediri · Unit 01
+              - generic [ref=f19e92]:
+                - term [ref=f19e93]: Owner
+                - definition [ref=f19e94]: Sari Wulandari
+        - generic [ref=f19e96]:
+          - generic [ref=f19e104]:
+            - generic [ref=f19e105]: Selected authorized farm
+            - heading "Farm North" [level=2] [ref=f19e106]
+            - paragraph [ref=f19e107]: Kediri · Unit 01 · production snapshot supplied by the consumer
+            - generic [ref=f19e108]: Current context
+          - generic "Farm identity and ownership" [ref=f19e111]:
+            - generic [ref=f19e112]:
+              - term [ref=f19e113]: Farm ID
+              - definition [ref=f19e114]: farm-north
+            - generic [ref=f19e115]:
+              - term [ref=f19e116]: Accountable owner
+              - definition [ref=f19e117]: Sari Wulandari
+            - generic [ref=f19e118]:
+              - term [ref=f19e119]: Last snapshot
+              - definition [ref=f19e120]: Today · 09:20
+      - region [ref=f19e121]:
+        - generic [ref=f19e122]:
+          - generic [ref=f19e123]:
+            - heading "Production signals" [level=2] [ref=f19e124]
+            - text: A small, truthful Farm Overview slice supplied by the consumer.
+          - generic [ref=f19e125]: Current snapshot
+        - region "Farm overview metrics" [ref=f19e127]:
+          - article "Eggs 42,860" [ref=f19e128]:
+            - generic [ref=f19e130]:
+              - term [ref=f19e131]:
+                - generic [ref=f19e132]: Eggs
+              - definition [ref=f19e140]:
+                - strong [ref=f19e142]: 42,860
+              - definition [ref=f19e143]: collected today
+          - article "Population 48,240" [ref=f19e144]:
+            - generic [ref=f19e146]:
+              - term [ref=f19e147]:
+                - generic [ref=f19e148]: Population
+              - definition [ref=f19e157]:
+                - strong [ref=f19e159]: 48,240
+              - definition [ref=f19e160]: active hens
+          - article "Mortality 0.8%" [ref=f19e161]:
+            - generic [ref=f19e163]:
+              - term [ref=f19e164]:
+                - generic [ref=f19e165]: Mortality
+              - definition [ref=f19e173]:
+                - strong [ref=f19e175]: 0.8%
+              - definition [ref=f19e176]: today's rate
+          - article "Hen Day 88.7%" [ref=f19e177]:
+            - generic [ref=f19e179]:
+              - term [ref=f19e180]:
+                - generic [ref=f19e181]: Hen Day
+              - definition [ref=f19e190]:
+                - strong [ref=f19e192]: 88.7%
+              - definition [ref=f19e193]: production rate
+          - article "Feed Intake 112 g" [ref=f19e194]:
+            - generic [ref=f19e196]:
+              - term [ref=f19e197]:
+                - generic [ref=f19e198]: Feed Intake
+              - definition [ref=f19e208]:
+                - strong [ref=f19e210]: 112 g
+              - definition [ref=f19e211]: per hen / day
+          - article "FCR 1.72" [ref=f19e212]:
+            - generic [ref=f19e214]:
+              - term [ref=f19e215]:
+                - generic [ref=f19e216]: FCR
+              - definition [ref=f19e225]:
+                - strong [ref=f19e227]: "1.72"
+              - definition [ref=f19e228]: consumer-provided ratio
+        - status [ref=f19e229]:
+          - generic [ref=f19e232]:
+            - strong [ref=f19e233]: Consumer-owned production truth
+            - paragraph [ref=f19e234]: These values are static synthetic fixture data. The UI does not derive FCR, evaluate flock health, or persist a Farm update.

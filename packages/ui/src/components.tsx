@@ -1272,7 +1272,15 @@ export interface AppShellProps extends React.HTMLAttributes<HTMLDivElement> {
    * opt into a neutral content wrapper so a catalog page never nests landmarks.
    */
   contentAs?: "div" | "main";
+  /** Select a shared content-bound token for the route body. */
+  contentWidth?: "full" | "wide" | "readable";
+  /** Optional consumer-owned tenant, resource, or workspace context slot. */
+  context?: ReactNode;
+  /** Label used by the mobile navigation trigger and its controlled Drawer. */
+  navigationLabel?: string;
   sidebar?: ReactNode;
+  /** Keep the shell header attached to the viewport while route content scrolls. */
+  stickyHeader?: boolean;
   topbar?: ReactNode;
 }
 
@@ -1280,7 +1288,11 @@ export function AppShell({
   children,
   className,
   contentAs: Content = "main",
+  contentWidth = "wide",
+  context,
+  navigationLabel = "Application navigation",
   sidebar,
+  stickyHeader = false,
   topbar,
   ...props
 }: AppShellProps) {
@@ -1298,33 +1310,43 @@ export function AppShell({
     <div
       {...props}
       className={cx("t7-app-shell", className)}
+      data-content-width={contentWidth}
       data-sidebar={sidebar ? "true" : undefined}
+      data-sticky-header={stickyHeader ? "true" : undefined}
     >
       {sidebar ? <aside className="t7-app-sidebar">{sidebar}</aside> : null}
       <div className="t7-app-main">
-        {sidebar || topbar ? (
-          <header className="t7-app-topbar">
+        {sidebar || topbar || context ? (
+          <header
+            className="t7-app-topbar"
+            data-sticky={stickyHeader ? "true" : undefined}
+          >
             {sidebar ? (
               <IconButton
                 className="t7-app-mobile-menu"
                 icon="menu"
-                label="Open application navigation"
+                label={`Open ${navigationLabel.toLowerCase()}`}
                 aria-expanded={navigationOpen}
                 aria-controls={navigationId}
                 aria-haspopup="dialog"
                 onClick={() => setNavigationOpen(true)}
               />
             ) : null}
+            {context ? (
+              <div className="t7-app-context-slot">{context}</div>
+            ) : null}
             {topbar}
           </header>
         ) : null}
-        <Content className="t7-app-content">{children}</Content>
+        <Content className="t7-app-content" data-content-width={contentWidth}>
+          {children}
+        </Content>
       </div>
       {sidebar ? (
         <Drawer
           id={navigationId}
           className="t7-mobile-sidebar"
-          title="Application navigation"
+          title={navigationLabel}
           open={navigationOpen}
           onClose={() => setNavigationOpen(false)}
           side="left"
@@ -1403,6 +1425,7 @@ export interface SidebarProps extends Omit<
   React.HTMLAttributes<HTMLElement>,
   "onSelect"
 > {
+  as?: "aside" | "div";
   brand?: ReactNode;
   groups?: SidebarGroupData[];
   items?: SidebarItem[];
@@ -1414,8 +1437,10 @@ export interface SidebarProps extends Omit<
 
 export function Sidebar({
   activeKey,
+  as: Element = "div",
   brand,
   className,
+  children,
   footer,
   groups,
   items,
@@ -1424,35 +1449,37 @@ export function Sidebar({
   ...props
 }: SidebarProps) {
   return (
-    <div {...props} className={cx("t7-sidebar", className)}>
+    <Element {...props} className={cx("t7-sidebar", className)}>
       {brand ? <div className="t7-sidebar-brand">{brand}</div> : null}
-      <nav
-        aria-label={label}
-        className={cx(
-          "t7-sidebar-nav",
-          Boolean(groups?.length) && "has-groups",
-        )}
-      >
-        {groups?.length ? (
-          groups.map((group) => (
+      {children ?? (
+        <nav
+          aria-label={label}
+          className={cx(
+            "t7-sidebar-nav",
+            Boolean(groups?.length) && "has-groups",
+          )}
+        >
+          {groups?.length ? (
+            groups.map((group) => (
+              <SidebarGroup
+                activeKey={activeKey}
+                items={group.items}
+                key={group.key}
+                label={group.label}
+                onSelect={onSelect}
+              />
+            ))
+          ) : (
             <SidebarGroup
               activeKey={activeKey}
-              items={group.items}
-              key={group.key}
-              label={group.label}
+              items={items ?? []}
               onSelect={onSelect}
             />
-          ))
-        ) : (
-          <SidebarGroup
-            activeKey={activeKey}
-            items={items ?? []}
-            onSelect={onSelect}
-          />
-        )}
-      </nav>
+          )}
+        </nav>
+      )}
       {footer ? <div className="t7-sidebar-footer">{footer}</div> : null}
-    </div>
+    </Element>
   );
 }
 

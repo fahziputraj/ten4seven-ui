@@ -25,6 +25,14 @@ export function resolveComponentShardPath(index, componentId) {
   return pattern.replace("{componentId}", componentId);
 }
 
+export function resolvePlatformNeutralContractPath(index) {
+  const path = index?.platformNeutral?.path;
+  if (typeof path !== "string" || path.length === 0) {
+    throw new Error("Generated index is missing platformNeutral path");
+  }
+  return path;
+}
+
 /**
  * Load exactly the requested contract IDs through an injected loader. The
  * loader may read a file, import JSON, query a registry, or return an embedded

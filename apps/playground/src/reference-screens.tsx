@@ -39,7 +39,6 @@ import {
   Rating,
   SearchInput,
   Select,
-  Sidebar,
   Sparkline,
   StatusChip,
   TrendIndicator,
@@ -51,31 +50,7 @@ import {
   type StatusTone,
 } from "@ten4seven/ui";
 
-function ReferenceBrand({
-  icon,
-  subtitle,
-  title,
-}: {
-  icon: IconName;
-  subtitle: string;
-  title: string;
-}) {
-  return (
-    <div className="reference-brand">
-      <span className="reference-brand-mark">
-        <T7Icon name={icon} size={18} />
-      </span>
-      <div>
-        <Typography as="strong" typeRole="card-title">
-          {title}
-        </Typography>
-        <Typography as="span" typeRole="caption">
-          {subtitle}
-        </Typography>
-      </div>
-    </div>
-  );
-}
+import { PlaygroundSidebar, PlaygroundTopbar } from "./playground-chrome";
 
 type WorkstreamStatus = "On track" | "Needs attention" | "Blocked" | "Waiting";
 type WorkstreamType =
@@ -429,33 +404,6 @@ function WorkstreamTypeChip({ workType }: { workType: WorkstreamType }) {
     <StatusChip icon={meta.icon} tone={meta.tone}>
       {workType}
     </StatusChip>
-  );
-}
-
-function OperationalTopbar({
-  children,
-  context,
-  icon,
-}: {
-  children?: ReactNode;
-  context: string;
-  icon: IconName;
-}) {
-  return (
-    <div className="reference-topbar">
-      <div className="reference-topbar-context">
-        <span aria-hidden="true" className="reference-topbar-context-icon">
-          <T7Icon name={icon} size={17} />
-        </span>
-        <div>
-          <Typography typeRole="label">{context}</Typography>
-          <Typography typeRole="caption">Operations workspace</Typography>
-        </div>
-      </div>
-      <div className="reference-topbar-actions t7-header-actions">
-        {children}
-      </div>
-    </div>
   );
 }
 
@@ -2272,10 +2220,12 @@ function OperationsDomainSurface({
 export interface OperationsTrackerProps {
   viewState: OperationsViewState;
   onViewStateChange: (viewState: OperationsViewState) => void;
+  onNavigatePath?: (path: string) => void;
   onOpenSettings?: () => void;
 }
 
 export function OperationsTracker({
+  onNavigatePath,
   onOpenSettings,
   onViewStateChange,
   viewState,
@@ -2515,48 +2465,86 @@ export function OperationsTracker({
   const activeDomainKey =
     activeNavigationKey === "work" ? null : activeNavigationKey;
 
+  const navigatePath = onNavigatePath ?? (() => undefined);
   const operationsSidebar = (
-    <Sidebar
-      activeKey={activeNavigationKey}
-      brand={
-        <ReferenceBrand
-          icon="analytics"
-          subtitle="Operations workspace"
-          title="ten4seven UI"
-        />
-      }
-      items={[
-        { icon: "table", key: "work", label: "Work queue" },
-        { icon: "users", key: "customers", label: "Customers" },
-        { icon: "delivery", key: "deliveries", label: "Deliveries" },
-        { icon: "package", key: "supply", label: "Supply & QC" },
-        { icon: "fleet", key: "fleet", label: "Fleet" },
-        { icon: "analytics", key: "reports", label: "Reports" },
+    <PlaygroundSidebar
+      activePath="/operations-tracker"
+      localNavigation={[
+        {
+          key: "operations-workspace",
+          label: "Operations",
+          items: [
+            {
+              active: activeNavigationKey === "work",
+              icon: "table",
+              key: "work",
+              label: "Work queue",
+              onSelect: () => handleOperationsNavigation("work"),
+            },
+            {
+              active: activeNavigationKey === "customers",
+              icon: "users",
+              key: "customers",
+              label: "Customers",
+              onSelect: () => handleOperationsNavigation("customers"),
+            },
+            {
+              active: activeNavigationKey === "deliveries",
+              icon: "delivery",
+              key: "deliveries",
+              label: "Deliveries",
+              onSelect: () => handleOperationsNavigation("deliveries"),
+            },
+            {
+              active: activeNavigationKey === "supply",
+              icon: "package",
+              key: "supply",
+              label: "Supply & QC",
+              onSelect: () => handleOperationsNavigation("supply"),
+            },
+            {
+              active: activeNavigationKey === "fleet",
+              icon: "fleet",
+              key: "fleet",
+              label: "Fleet",
+              onSelect: () => handleOperationsNavigation("fleet"),
+            },
+            {
+              active: activeNavigationKey === "reports",
+              icon: "analytics",
+              key: "reports",
+              label: "Reports",
+              onSelect: () => handleOperationsNavigation("reports"),
+            },
+          ],
+        },
       ]}
-      onSelect={handleOperationsNavigation}
+      footer={
+        <Typography typeRole="caption">
+          Reference fixture · no live AAPM data
+        </Typography>
+      }
+      label="Application navigation"
+      onNavigatePath={navigatePath}
     />
   );
 
   return (
     <AppShell
       className="reference-app-shell operations-app-shell"
+      data-shell-contract="reference-shell"
+      data-shell-variant="wide"
+      navigationLabel="Application navigation"
       sidebar={operationsSidebar}
+      stickyHeader
       topbar={
-        <OperationalTopbar
-          context={
-            activeNavigationKey === "work"
-              ? "ten4seven UI / Operations"
-              : `ten4seven UI / ${activeNavigation.title}`
-          }
-          icon={activeNavigation.icon}
-        >
-          <IconButton
-            icon="settings"
-            label="Open operations settings"
-            onClick={onOpenSettings}
-            size="md"
-          />
-        </OperationalTopbar>
+        <PlaygroundTopbar
+          activeRoute="Operations Tracker"
+          breadcrumbItems={[{ label: "Operations Tracker" }]}
+          onNavigatePath={navigatePath}
+          onOpenSettings={onOpenSettings}
+          settingsLabel="Open operations settings"
+        />
       }
     >
       <div

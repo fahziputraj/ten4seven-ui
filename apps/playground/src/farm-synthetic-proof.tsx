@@ -11,17 +11,17 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  IconButton,
   KPICluster,
   KeyValueList,
   PageHeader,
   RecordSummary,
   Select,
-  Sidebar,
   Spinner,
   StateView,
   Typography,
 } from "@ten4seven/ui";
+
+import { PlaygroundSidebar, PlaygroundTopbar } from "./playground-chrome";
 
 type FarmScenarioState =
   "current" | "loading" | "no_data" | "error" | "out_of_scope" | "not_found";
@@ -93,68 +93,6 @@ const scenarioOptions: Array<{
   { label: "Out of scope", value: "out_of_scope" },
   { label: "Not found", value: "not_found" },
 ];
-
-function FarmBrand() {
-  return (
-    <div className="reference-brand">
-      <span className="reference-brand-mark">
-        <T7Icon name="farm" size={18} />
-      </span>
-      <div>
-        <Typography as="strong" typeRole="card-title">
-          AAPM Farm
-        </Typography>
-        <Typography as="span" typeRole="caption">
-          Synthetic consumer proof
-        </Typography>
-      </div>
-    </div>
-  );
-}
-
-function FarmTopbar({
-  farm,
-  onNavigatePath,
-  onOpenSettings,
-}: {
-  farm: FarmRecord;
-  onNavigatePath?: (path: string) => void;
-  onOpenSettings?: () => void;
-}) {
-  return (
-    <div className="reference-topbar">
-      <div className="reference-topbar-context">
-        <span aria-hidden="true" className="reference-topbar-context-icon">
-          <T7Icon name="farm" size={17} />
-        </span>
-        <div>
-          <Typography typeRole="label">AAPM Farm · {farm.name}</Typography>
-          <Typography typeRole="caption">
-            Synthetic consumer data · no API or ERP connection
-          </Typography>
-        </div>
-      </div>
-      <div className="reference-topbar-actions t7-header-actions">
-        {onNavigatePath ? (
-          <IconButton
-            className="reference-topbar-back"
-            icon="arrowLeft"
-            label="Back to Studio"
-            onClick={() => onNavigatePath("/theme-studio")}
-            size="md"
-          />
-        ) : null}
-        <Badge tone="success">Authorized fixture</Badge>
-        <IconButton
-          icon="settings"
-          label="Open Farm proof settings"
-          onClick={onOpenSettings}
-          size="md"
-        />
-      </div>
-    </div>
-  );
-}
 
 function FarmContextCard({
   farm,
@@ -443,45 +381,54 @@ export function FarmSyntheticProof({
     useState<FarmScenarioState>("current");
   const farm =
     farmRecords.find((record) => record.id === farmId) ?? farmRecords[0];
+  const navigatePath = onNavigatePath ?? (() => undefined);
 
   const sidebar = (
-    <Sidebar
-      activeKey={farm.id}
-      brand={<FarmBrand />}
+    <PlaygroundSidebar
+      activePath="/farm-synthetic-proof"
+      localNavigation={[
+        {
+          key: "authorized-farms",
+          label: "Authorized Farms",
+          items: farmRecords.map((record) => ({
+            active: record.id === farm.id,
+            badge: record.id === farm.id ? "Current" : undefined,
+            icon: "farm" as IconName,
+            key: record.id,
+            label: record.name,
+            onSelect: () => {
+              setFarmId(record.id);
+              setScenarioState("current");
+            },
+          })),
+        },
+      ]}
       footer={
         <Typography typeRole="caption">
           Synthetic fixture · no live Farm data
         </Typography>
       }
-      groups={[
-        {
-          key: "authorized-farms",
-          label: "Authorized Farms",
-          items: farmRecords.map((record) => ({
-            badge: record.id === farm.id ? "Current" : undefined,
-            icon: "farm" as IconName,
-            key: record.id,
-            label: record.name,
-          })),
-        },
-      ]}
       label="Authorized Farms"
-      onSelect={(key) => {
-        setFarmId(key);
-        setScenarioState("current");
-      }}
+      onNavigatePath={navigatePath}
     />
   );
 
   return (
     <AppShell
       className="reference-app-shell operations-app-shell operational-reference-shell farm-proof-shell"
+      data-shell-contract="reference-shell"
+      data-shell-variant="contextual"
       sidebar={sidebar}
+      stickyHeader
       topbar={
-        <FarmTopbar
-          farm={farm}
-          onNavigatePath={onNavigatePath}
+        <PlaygroundTopbar
+          activeRoute="Farm P1 Reference"
+          backLabel="Back to Studio"
+          breadcrumbItems={[{ label: "Farm Synthetic" }]}
+          onNavigatePath={navigatePath}
           onOpenSettings={onOpenSettings}
+          settingsLabel="Open Farm proof settings"
+          showBack={Boolean(onNavigatePath)}
         />
       }
     >

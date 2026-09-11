@@ -123,6 +123,9 @@ export interface ThemeProfile {
   readonly canvas: {
     readonly mode: CanvasName;
   };
+  readonly surface: {
+    readonly treatment: SurfaceTreatment;
+  };
   readonly chart: {
     readonly palette: ChartPaletteName;
   };
@@ -162,6 +165,8 @@ export type ThemeExpression =
 
 export type ContrastPreference = "standard" | "more";
 export type MotionPreference = "full" | "reduced";
+/** How much container chrome the authored theme uses around content. */
+export type SurfaceTreatment = "quiet" | "low-contrast" | "outlined";
 
 /** Per-user/runtime choices that must not rewrite an authored theme recipe. */
 export interface RuntimePreferences {
@@ -197,7 +202,223 @@ export interface ThemeRecipe {
 /** Public name for an authored v2 theme aggregate. Recipes are definitions. */
 export type ThemeDefinition = ThemeRecipe;
 
-export type BrandProfileId = "neutral-product" | "aapm-academy";
+/**
+ * Brand profiles are product expressions, not primitive component variants.
+ * `neutral-product` remains the compatibility profile for non-AAPM consumers;
+ * the AAPM profiles all resolve through the explicit `aapm-core` adapter.
+ */
+export type BrandProfileId =
+  | "neutral-product"
+  | "aapm-core"
+  | "aapm-farm"
+  | "aapm-operations"
+  | "aapm-erp"
+  | "aapm-academy"
+  | "aapm-public";
+export type AuthBrandProfileId = "neutral-product" | "aapm-academy";
+export type BrandAdapterId = "neutral" | "aapm-core";
+export type BrandProductId =
+  | "neutral-product"
+  | "aapm-core"
+  | "farm-customer"
+  | "operations"
+  | "erp"
+  | "academy"
+  | "public-corporate";
+export type BrandAssetCollection = "corporate" | "academy";
+export type AapmBrandCoreName =
+  | "green"
+  | "orange"
+  | "white"
+  | "neutralDarkVariant";
+export type AapmBrandDigitalName =
+  | "lime"
+  | "limeSoft"
+  | "deepGreen"
+  | "warmCanvas"
+  | "greenTint"
+  | "softSurface"
+  | "ink";
+export type AapmBrandSemanticRole =
+  | "brand.primary"
+  | "brand.accent"
+  | "brand.highlight"
+  | "brand.highlight.soft"
+  | "brand.surface.deep"
+  | "surface.canvas.warm"
+  | "surface.brand.tint"
+  | "surface.brand.soft"
+  | "text.ink"
+  | "text.onBrand";
+export type BrandProfileRoleSlot =
+  | "primary"
+  | "accent"
+  | "highlight"
+  | "surface"
+  | "text";
+
+export interface BrandSemanticAlias {
+  readonly source: string;
+  readonly value: ExactColorSource;
+}
+
+export interface BrandAssetPathSet {
+  readonly light: string;
+  readonly dark: string;
+  readonly compactLight: string;
+  readonly compactDark: string;
+  readonly owner: "AAPM";
+  readonly distribution: "authorized-copy";
+  readonly derivativePolicy: "no-local-derivative";
+}
+
+/**
+ * Provenance-aware AAPM boundary. The generic token/runtime packages remain
+ * brand-neutral; consumers opt into this adapter at the profile layer.
+ */
+export interface BrandAdapterContract {
+  readonly id: "aapm-core";
+  readonly source: {
+    readonly authority: "canonical";
+    readonly repository: "AAPM_Ecosystem";
+    readonly documents: readonly string[];
+    readonly assetManifest: string;
+  };
+  readonly core: Readonly<Record<AapmBrandCoreName, ExactColorSource>>;
+  readonly digital: Readonly<Record<AapmBrandDigitalName, ExactColorSource>>;
+  readonly semantic: Readonly<
+    Record<AapmBrandSemanticRole, BrandSemanticAlias>
+  >;
+  readonly assets: Readonly<
+    Record<BrandAssetCollection, BrandAssetPathSet>
+  >;
+}
+
+export type BrandAssetBinding =
+  | {
+      readonly kind: "consumer-owned";
+    }
+  | {
+      readonly kind: "canonical";
+      readonly collection: BrandAssetCollection;
+    };
+export type SurfaceProfileId =
+  | "system-library"
+  | "content"
+  | "operational"
+  | "data-dense"
+  | "native";
+export type SurfacePlatform = "shared" | "web" | "native";
+export type SemanticComponentIntent =
+  | "action"
+  | "input"
+  | "selection"
+  | "navigation"
+  | "feedback"
+  | "data-display"
+  | "data-entry"
+  | "overlay"
+  | "layout"
+  | "composition"
+  | "identity"
+  | "media";
+export type PresentationState =
+  | "ready"
+  | "unavailable"
+  | "disabled"
+  | "loading"
+  | "empty"
+  | "error"
+  | "permission-denied"
+  | "dependency-unavailable"
+  | "setup-required"
+  | "suspended"
+  | "offline"
+  | "pending"
+  | "conflicted";
+export type InteractionState =
+  | "idle"
+  | "hover"
+  | "focus"
+  | "pressed"
+  | "selected"
+  | "expanded"
+  | "collapsed"
+  | "disabled"
+  | "loading"
+  | "invalid"
+  | "pending"
+  | "success"
+  | "error";
+export type InteractionCapability =
+  | "process-workflow"
+  | "board-reorder"
+  | "drag-and-drop"
+  | "file-transfer"
+  | "progress-feedback"
+  | "state-transition"
+  | "quantitative-comparison"
+  | "trend-visualization"
+  | "distribution-visualization";
+export type ResponsiveCapability =
+  | "reflow"
+  | "scroll"
+  | "stack"
+  | "collapse"
+  | "drawer"
+  | "priority-order"
+  | "touch-targets"
+  | "safe-area"
+  | "keyboard-navigation"
+  | "density-adaptive";
+export type OwnershipConcern =
+  | "interaction-contract"
+  | "semantic-tokens"
+  | "icon-vocabulary"
+  | "generic-recipes"
+  | "responsive-presentation"
+  | "accessibility"
+  | "motion"
+  | "surface-profile"
+  | "business-data"
+  | "business-rules"
+  | "permissions"
+  | "entitlements"
+  | "persistence"
+  | "routing"
+  | "handlers"
+  | "principal-context"
+  | "tenant-context"
+  | "effective-access"
+  | "module-lifecycle"
+  | "audit-authority"
+  | "workflow-authority"
+  | "reconciliation";
+
+export interface ContractOwnership {
+  readonly system: readonly OwnershipConcern[];
+  readonly consumer: readonly OwnershipConcern[];
+  readonly platform: readonly OwnershipConcern[];
+  readonly businessModule: readonly OwnershipConcern[];
+}
+
+export interface SurfaceProfileContract {
+  readonly id: SurfaceProfileId;
+  readonly platform: SurfacePlatform;
+  readonly purpose: string;
+  readonly sharedSemantics: readonly SemanticComponentIntent[];
+}
+
+export interface ComponentSemanticContract {
+  readonly intent: readonly SemanticComponentIntent[];
+  readonly states: readonly PresentationState[];
+  readonly interactionStates: readonly InteractionState[];
+  readonly capabilities: readonly InteractionCapability[];
+  readonly responsiveCapabilities: readonly ResponsiveCapability[];
+  readonly surfaceProfiles: readonly SurfaceProfileId[];
+  readonly ownership: ContractOwnership;
+}
+
 export type BrandMediaProminence = "none" | "low" | "medium" | "high";
 export type BrandMediaTreatment =
   "none" | "product" | "editorial" | "documentary";
@@ -218,6 +439,15 @@ export type BrandActionLevel = "quiet" | "balanced" | "strong";
  */
 export interface BrandProfile {
   readonly id: BrandProfileId;
+  readonly adapter: BrandAdapterId;
+  readonly product: BrandProductId;
+  readonly surfaceProfile: SurfaceProfileId;
+  readonly themeRecipe: ThemeRecipeName;
+  readonly density: DensityName;
+  readonly brandRoles: Readonly<
+    Record<BrandProfileRoleSlot, AapmBrandSemanticRole>
+  > | null;
+  readonly asset: BrandAssetBinding;
   readonly media: {
     readonly prominence: BrandMediaProminence;
     readonly treatment: BrandMediaTreatment;
@@ -242,6 +472,17 @@ export interface BrandProfile {
   };
 }
 
+/** Explicit composition boundary: recipe + brand + product surface + runtime. */
+export interface BrandProfileComposition {
+  readonly brandProfile: BrandProfileId;
+  readonly adapter: BrandAdapterId;
+  readonly product: BrandProductId;
+  readonly themeRecipe: ThemeRecipeName;
+  readonly surfaceProfile: SurfaceProfileId;
+  readonly density: DensityName;
+  readonly runtime: ResolvedRuntimePreferences;
+}
+
 export type BrandResponsiveMode =
   "split" | "rebalanced" | "centered" | "stacked";
 
@@ -262,6 +503,7 @@ export interface LegacyThemeConfigLike {
   readonly primary?: ThemeColorSource;
   readonly accent?: ThemeColorSource;
   readonly canvas?: CanvasName;
+  readonly surfaceTreatment?: SurfaceTreatment;
   readonly chartPalette?: ChartPaletteName;
   readonly radius?: RadiusName;
   readonly radiusValue?: number;
@@ -419,6 +661,7 @@ export interface ComponentContract {
   readonly aliasOf?: string;
   readonly recipes?: readonly string[];
   readonly importantProps?: readonly string[];
+  readonly semantic?: ComponentSemanticContract;
 }
 
 export interface RecipeContract {
@@ -441,6 +684,8 @@ export interface RecipeContract {
   readonly expression?: RecipeExpressionContract;
   readonly rationale?: Readonly<Record<string, string>>;
   readonly references?: readonly string[];
+  readonly surfaceProfiles?: readonly SurfaceProfileId[];
+  readonly ownership?: ContractOwnership;
 }
 
 export type AliasMap = Readonly<Record<string, string>>;

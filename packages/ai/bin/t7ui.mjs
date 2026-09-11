@@ -28,6 +28,8 @@ const recipes = selectiveIndex.recipes
       ]),
     )
   : readJson("packages/ai/catalog/recipes.json");
+const saasControlPlane = readJson("generated/saas-control-plane.json");
+const erpDensity = readJson("generated/erp-density.json");
 const packageInfo = readJson("package.json");
 const {
   composeBrandExpression,
@@ -67,7 +69,7 @@ function flatten(value) {
   return JSON.stringify(value).toLowerCase();
 }
 
-function findRecipe(query) {
+function findRecipe(query, { fallback = true } = {}) {
   const normalized = query.toLowerCase();
   const directHints = [
     ["control tower", "control-tower"],
@@ -141,6 +143,7 @@ function findRecipe(query) {
   ];
   const hinted = directHints.find(([term]) => normalized.includes(term))?.[1];
   if (hinted) return hinted;
+  if (!fallback) return undefined;
 
   return Object.entries(recipes)
     .map(([name, recipe]) => ({
@@ -148,6 +151,37 @@ function findRecipe(query) {
       score: flatten({ name, ...recipe }).split(normalized).length - 1,
     }))
     .sort((a, b) => b.score - a.score)[0]?.name;
+}
+
+function findControlPlanePattern(query) {
+  const normalized = query.toLowerCase();
+  const matches = [];
+  for (const [patternId, phrases] of Object.entries(
+    saasControlPlane.retrieval.intentPhrases,
+  )) {
+    for (const phrase of phrases) {
+      if (normalized.includes(phrase.toLowerCase()))
+        matches.push({ patternId, phraseLength: phrase.length });
+    }
+  }
+  return matches.sort(
+    (left, right) => right.phraseLength - left.phraseLength,
+  )[0]?.patternId;
+}
+
+function findErpDensityPattern(query) {
+  const normalized = query.toLowerCase();
+  return Object.entries(erpDensity.patterns)
+    .flatMap(([patternId, pattern]) =>
+      pattern.intentPhrases
+        .filter((phrase) => normalized.includes(phrase.toLowerCase()))
+        .map((phrase) => ({ patternId, phraseLength: phrase.length })),
+    )
+    .sort(
+      (left, right) =>
+        right.phraseLength - left.phraseLength ||
+        left.patternId.localeCompare(right.patternId),
+    )[0]?.patternId;
 }
 
 function findIcons(query) {
@@ -256,7 +290,50 @@ function findIcons(query) {
 }
 
 function printFind(query) {
-  const recipeName = findRecipe(query);
+  const directRecipeName = findRecipe(query, { fallback: false });
+  const erpDensityPatternId = findErpDensityPattern(query);
+  if (erpDensityPatternId && !directRecipeName) {
+    const pattern = erpDensity.patterns[erpDensityPatternId];
+    console.log(`Query: ${query}`);
+    console.log(
+      `ERP density pattern: ${pattern.displayName} (${erpDensityPatternId})`,
+    );
+    console.log("Contract: generated/erp-density.json");
+    console.log(`Reference: ${pattern.reference}`);
+    console.log("Components:");
+    for (const name of [
+      ...pattern.components,
+      ...pattern.optionalComponents,
+    ])
+      console.log(`- ${name}`);
+    console.log(`States: ${pattern.states.join(", ")}`);
+    console.log(
+      `Responsive: desktop=${pattern.responsive.desktop}, tablet=${pattern.responsive.tablet}, mobile=${pattern.responsive.mobile}`,
+    );
+    console.log("Unsupported bounded needs:");
+    for (const need of pattern.unsupportedNeeds) console.log(`- ${need}`);
+    console.log(`AI intent: ${pattern.aiGuidance}`);
+    return;
+  }
+  const controlPlanePatternId = findControlPlanePattern(query);
+  if (controlPlanePatternId && !directRecipeName) {
+    const pattern = saasControlPlane.patterns[controlPlanePatternId];
+    console.log(`Query: ${query}`);
+    console.log(
+      `Control-plane pattern: ${pattern.displayName} (${controlPlanePatternId})`,
+    );
+    console.log("Contract: generated/saas-control-plane.json");
+    console.log(`Reference: ${saasControlPlane.retrieval.reference}`);
+    console.log("Components:");
+    for (const name of [...pattern.components, ...pattern.optionalComponents])
+      console.log(`- ${name}`);
+    console.log(`States: ${pattern.states.join(", ")}`);
+    console.log(`AI intent: ${pattern.aiGuidance}`);
+    console.log("Icons:");
+    for (const name of pattern.icons) console.log(`- ${name}`);
+    return;
+  }
+  const recipeName = directRecipeName ?? findRecipe(query);
   const recipe = recipes[recipeName];
   const blocks = readBlocks();
   console.log(`Query: ${query}`);

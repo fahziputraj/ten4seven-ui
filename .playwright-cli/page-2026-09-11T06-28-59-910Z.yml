@@ -1,0 +1,232 @@
+- generic [ref=f4e5]:
+  - generic [ref=f4e6]:
+    - banner [ref=f4e7]:
+      - button "Open farm starter navigation" [expanded] [ref=f4e8] [cursor=pointer]
+      - generic [ref=f4e11]:
+        - strong [ref=f4e19]: Farm P1 Reference
+        - generic [ref=f4e20]:
+          - button "Back to Theme Studio" [ref=f4e21] [cursor=pointer]
+          - button "Search ten4seven catalog" [ref=f4e24] [cursor=pointer]
+          - button "Open Farm reference settings" [ref=f4e31] [cursor=pointer]
+          - generic "ten4seven workspace menu" [ref=f4e36]:
+            - button [ref=f4e37] [cursor=pointer]:
+              - img "ten4seven workspace" [ref=f4e38]:
+                - generic [aria-hidden] [ref=f4e39]: T
+    - main [ref=f4e40]:
+      - generic [ref=f4e41]:
+        - generic [ref=f4e42]:
+          - generic [ref=f4e43]:
+            - generic [ref=f4e44]: Farm customer platform · P1 reference slice
+            - heading "Farm overview" [level=1] [ref=f4e45]
+            - paragraph [ref=f4e46]: Today’s production signals and the next action for the farm team.
+            - generic [ref=f4e47]:
+              - generic [ref=f4e48]: AAPM Farm profile
+              - generic [ref=f4e50]: Static fixture
+          - button "Theme settings" [ref=f4e55] [cursor=pointer]
+        - generic [ref=f4e61]:
+          - region "Farm production signals" [ref=f4e62]:
+            - article "Eggs collected 42,860" [ref=f4e63]:
+              - generic [ref=f4e65]:
+                - term [ref=f4e66]:
+                  - generic [ref=f4e67]: Eggs collected
+                - definition [ref=f4e74]:
+                  - strong [ref=f4e76]: 42,860
+                - definition [ref=f4e77]: today
+            - article "Hen day 88.7%" [ref=f4e78]:
+              - generic [ref=f4e80]:
+                - term [ref=f4e81]:
+                  - generic [ref=f4e82]: Hen day
+                - definition [ref=f4e91]:
+                  - strong [ref=f4e93]: 88.7%
+                - definition [ref=f4e94]: production rate
+            - article "Feed intake 112 g / bird" [ref=f4e95]:
+              - generic [ref=f4e97]:
+                - term [ref=f4e98]:
+                  - generic [ref=f4e99]: Feed intake
+                - definition [ref=f4e109]:
+                  - strong [ref=f4e111]: 112 g / bird
+                - definition [ref=f4e112]: per bird / day
+            - article "Mortality 0.8%" [ref=f4e113]:
+              - generic [ref=f4e115]:
+                - term [ref=f4e116]:
+                  - generic [ref=f4e117]: Mortality
+                - definition [ref=f4e125]:
+                  - strong [ref=f4e127]: 0.8%
+                - definition [ref=f4e128]: today’s rate
+          - generic [ref=f4e129]:
+            - generic [ref=f4e130]:
+              - generic [ref=f4e131]:
+                - generic [ref=f4e132]:
+                  - heading "First-value journey" [level=3] [ref=f4e133]
+                  - paragraph [ref=f4e134]: One path from context to a useful daily decision.
+                - generic [ref=f4e135]: Ready
+              - navigation "Farm first-value journey" [ref=f4e140]:
+                - list [ref=f4e142]:
+                  - listitem [ref=f4e143]:
+                    - button "Authenticate Ready 100% 100" [ref=f4e144] [cursor=pointer]:
+                      - generic [aria-hidden] [ref=f4e146]:
+                        - generic [ref=f4e147]: "01"
+                        - generic [ref=f4e148]: Complete
+                      - generic [ref=f4e149]:
+                        - strong [ref=f4e153]: Authenticate
+                        - generic [ref=f4e154]:
+                          - generic [ref=f4e155]: Ready
+                          - generic [ref=f4e156]: 100%
+                        - 'progressbar "Authenticate: 100% complete" [ref=f4e157]'
+                  - listitem [ref=f4e159]:
+                    - button "Tenant context Selected 100% 100" [ref=f4e160] [cursor=pointer]:
+                      - generic [aria-hidden] [ref=f4e162]:
+                        - generic [ref=f4e163]: "02"
+                        - generic [ref=f4e164]: Complete
+                      - generic [ref=f4e165]:
+                        - strong [ref=f4e173]: Tenant context
+                        - generic [ref=f4e174]:
+                          - generic [ref=f4e175]: Selected
+                          - generic [ref=f4e176]: 100%
+                        - 'progressbar "Tenant context: 100% complete" [ref=f4e177]'
+                  - listitem [ref=f4e179]:
+                    - button "Farm Selected 100% 100" [ref=f4e180] [cursor=pointer]:
+                      - generic [aria-hidden] [ref=f4e182]:
+                        - generic [ref=f4e183]: "03"
+                        - generic [ref=f4e184]: Complete
+                      - generic [ref=f4e185]:
+                        - strong [ref=f4e191]: Farm
+                        - generic [ref=f4e192]:
+                          - generic [ref=f4e193]: Selected
+                          - generic [ref=f4e194]: 100%
+                        - 'progressbar "Farm: 100% complete" [ref=f4e195]'
+                  - listitem [ref=f4e197]:
+                    - button "Flock & cycle Selected 100% 100" [ref=f4e198] [cursor=pointer]:
+                      - generic [aria-hidden] [ref=f4e200]:
+                        - generic [ref=f4e201]: "04"
+                        - generic [ref=f4e202]: Complete
+                      - generic [ref=f4e203]:
+                        - strong [ref=f4e213]: Flock & cycle
+                        - generic [ref=f4e214]:
+                          - generic [ref=f4e215]: Selected
+                          - generic [ref=f4e216]: 100%
+                        - 'progressbar "Flock & cycle: 100% complete" [ref=f4e217]'
+                  - listitem [ref=f4e219]:
+                    - button "Daily entry Next action 35% 35" [pressed] [ref=f4e220] [cursor=pointer]:
+                      - generic [aria-hidden] [ref=f4e222]:
+                        - generic [ref=f4e223]: "05"
+                        - generic [ref=f4e224]: In progress
+                      - generic [ref=f4e225]:
+                        - strong [ref=f4e231]: Daily entry
+                        - generic [ref=f4e232]:
+                          - generic [ref=f4e233]: Next action
+                          - generic [ref=f4e234]: 35%
+                        - 'progressbar "Daily entry: 35% complete" [ref=f4e235]'
+                  - listitem [ref=f4e237]:
+                    - button "Farm overview Upcoming 0% 0" [ref=f4e238] [cursor=pointer]:
+                      - generic [aria-hidden] [ref=f4e240]:
+                        - generic [ref=f4e241]: "06"
+                        - generic [ref=f4e242]: Planned
+                      - generic [ref=f4e243]:
+                        - strong [ref=f4e251]: Farm overview
+                        - generic [ref=f4e252]:
+                          - generic [ref=f4e253]: Upcoming
+                          - generic [ref=f4e254]: 0%
+                        - 'progressbar "Farm overview: 0% complete" [ref=f4e255]'
+                - region "Daily entry milestone details" [ref=f4e256]:
+                  - generic [ref=f4e257]:
+                    - generic [ref=f4e258]:
+                      - generic [ref=f4e259]: Selected workflow stage
+                      - heading "Daily entry" [level=3] [ref=f4e260]
+                      - paragraph [ref=f4e261]: Eggs, feed, population, mortality
+                    - strong [ref=f4e262]: 35%
+            - generic [ref=f4e263]:
+              - generic [ref=f4e265]:
+                - heading "Today’s snapshot" [level=3] [ref=f4e266]
+                - paragraph [ref=f4e267]: House A · Flock 01 · Today · 09:20
+              - generic [ref=f4e274]:
+                - generic "Today’s farm snapshot" [ref=f4e275]:
+                  - generic [ref=f4e276]:
+                    - term [ref=f4e277]: Population
+                    - definition [ref=f4e278]: 48,240
+                  - generic [ref=f4e279]:
+                    - term [ref=f4e280]: Feed conversion
+                    - definition [ref=f4e281]: "1.72"
+                  - generic [ref=f4e282]:
+                    - term [ref=f4e283]: Owner
+                    - definition [ref=f4e284]: Sari Wulandari
+                  - generic [ref=f4e285]:
+                    - term [ref=f4e286]: Region
+                    - definition [ref=f4e287]: Kediri · Unit 01
+                - button "Open daily entry" [ref=f4e288] [cursor=pointer]
+          - generic [ref=f4e292]:
+            - generic [ref=f4e293]:
+              - generic [ref=f4e295]:
+                - heading "Recent activity" [level=3] [ref=f4e296]
+                - paragraph [ref=f4e297]: Latest entries from this farm fixture.
+              - list [ref=f4e303]:
+                - listitem [ref=f4e304]:
+                  - generic [ref=f4e310]:
+                    - strong [ref=f4e311]: Egg collection recorded
+                    - paragraph [ref=f4e312]: Daily production record captured for House A.
+                    - generic [ref=f4e313]: Maya Chen · Today · 09:20
+                - listitem [ref=f4e314]:
+                  - generic [ref=f4e323]:
+                    - strong [ref=f4e324]: Feed issue confirmed
+                    - paragraph [ref=f4e325]: Feed issue reconciled against the morning count.
+                    - generic [ref=f4e326]: Jordan Park · Today · 08:45
+                - listitem [ref=f4e327]:
+                  - generic [ref=f4e335]:
+                    - strong [ref=f4e336]: Flock count updated
+                    - paragraph [ref=f4e337]: Population count is ready for the next review.
+                    - generic [ref=f4e338]: Lina Wibowo · Yesterday · 16:40
+            - generic [ref=f4e339]:
+              - generic [ref=f4e340]:
+                - generic [ref=f4e341]:
+                  - heading "Inventory" [level=3] [ref=f4e342]
+                  - paragraph [ref=f4e343]: Optional capability, kept outside the first action.
+                - generic [ref=f4e344]: Unavailable
+              - region [ref=f4e352]:
+                - generic [ref=f4e360]:
+                  - generic [ref=f4e361]: Not entitled
+                  - heading "Connect Inventory when the farm is ready" [level=3] [ref=f4e362]
+                  - paragraph [ref=f4e363]: The starter workspace stays useful without stock movements.
+                - button "View capability" [ref=f4e366] [cursor=pointer]
+  - dialog [ref=f4e368]:
+    - complementary [ref=f4e369]:
+      - generic [ref=f4e370]:
+        - heading "Farm starter navigation" [level=2] [ref=f4e372]
+        - button "Close drawer" [active] [ref=f4e373] [cursor=pointer]
+      - generic [ref=f4e378]:
+        - img "ten4seven UI system" [ref=f4e381]:
+          - generic [aria-hidden] [ref=f4e395]: UI system
+        - navigation "ten4seven UI navigation" [ref=f4e397]:
+          - generic [ref=f4e398]:
+            - group "Studio" [ref=f4e399]:
+              - button "Theme Studio" [ref=f4e401] [cursor=pointer]
+              - button "Component Lab" [ref=f4e414] [cursor=pointer]
+            - group "Library" [ref=f4e422]:
+              - button "Tokens" [ref=f4e424] [cursor=pointer]
+              - button "Components" [ref=f4e433] [cursor=pointer]
+              - button "Blocks" [ref=f4e441] [cursor=pointer]
+              - button "Icons" [ref=f4e449] [cursor=pointer]
+              - button "Recipes" [ref=f4e456] [cursor=pointer]
+              - generic "Library menu" [ref=f4e464]:
+                - button "Browse library…" [ref=f4e465] [cursor=pointer]
+            - group "Reference" [ref=f4e473]:
+              - button "Publishing Store" [ref=f4e475] [cursor=pointer]
+            - group "Labs / Proofs" [ref=f4e483]:
+              - button "Operations Tracker" [ref=f4e485] [cursor=pointer]
+              - button "Operational Patterns" [ref=f4e493] [cursor=pointer]
+              - button "SaaS Control Plane" [ref=f4e499] [cursor=pointer]
+              - button "ERP Density Reference" [ref=f4e506] [cursor=pointer]
+              - button "Farm P1 Reference" [ref=f4e514] [cursor=pointer]
+              - button "Public Showcase" [ref=f4e520] [cursor=pointer]
+              - button "Farm Synthetic" [ref=f4e526] [cursor=pointer]
+              - button "Auth · Neutral" [ref=f4e532] [cursor=pointer]
+              - button "Auth · AAPM Academy" [ref=f4e539] [cursor=pointer]:
+                - generic [ref=f4e546]: Auth · Academy
+              - generic [ref=f4e547]: "Canonical identity: AAPM Academy."
+        - navigation "Farm starter navigation" [ref=f4e548]:
+          - group "Starter journey" [ref=f4e550]:
+            - button "Farm overview" [ref=f4e553] [cursor=pointer]
+            - button "Daily operations" [ref=f4e562] [cursor=pointer]
+            - button "Farm context" [ref=f4e569] [cursor=pointer]
+            - button "Flocks & cycles" [ref=f4e576] [cursor=pointer]
+            - button "Inventory capability" [ref=f4e587] [cursor=pointer]
+        - generic [ref=f4e595]: Reference fixture · no live Farm authority

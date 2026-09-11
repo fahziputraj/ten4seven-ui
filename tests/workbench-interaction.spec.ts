@@ -62,6 +62,96 @@ test.describe("workbench documentation and overlay integrity", () => {
     }
   });
 
+  test("sidebar scroll chrome stays quiet and exposes overflow direction", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ height: 900, width: 1440 });
+    await page.goto("/theme-studio");
+
+    const navigation = page.getByRole("navigation", {
+      name: "ten4seven UI navigation",
+    });
+    const scrollShell = navigation.locator("..");
+    const scrollCueDown = scrollShell.locator(".studio-nav-scroll-cue-down");
+    await expect(navigation).toHaveAttribute(
+      "data-scroll-can-scroll-down",
+      "true",
+    );
+    await expect(scrollCueDown).toBeVisible();
+    await expect(navigation).not.toHaveAttribute(
+      "data-scroll-scrolling",
+      "true",
+    );
+
+    await navigation.evaluate((element) => {
+      element.scrollTop = element.scrollHeight;
+      element.dispatchEvent(new Event("scroll"));
+    });
+    await expect(navigation).toHaveAttribute(
+      "data-scroll-can-scroll-up",
+      "true",
+    );
+    await expect(navigation).not.toHaveAttribute(
+      "data-scroll-can-scroll-down",
+      "true",
+    );
+    await expect(
+      scrollShell.locator(".studio-nav-scroll-cue-up"),
+    ).toBeVisible();
+    await expect(scrollCueDown).toHaveCount(0);
+
+    await page.waitForTimeout(700);
+    await expect(navigation).not.toHaveAttribute(
+      "data-scroll-scrolling",
+      "true",
+    );
+  });
+
+  test("Component Lab section navigation and mobile QA access stay usable", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ height: 900, width: 1440 });
+    await page.goto("/component-lab");
+
+    const sectionNavigation = page.getByRole("navigation", {
+      name: "Component Lab sections",
+    });
+    await expect(sectionNavigation).toBeVisible();
+    await expect(sectionNavigation.getByRole("link")).toHaveCount(6);
+    await expect(
+      sectionNavigation.getByRole("link", { name: "Charts", exact: true }),
+    ).toBeVisible();
+    await sectionNavigation
+      .getByRole("link", { name: "Charts", exact: true })
+      .click();
+    await expect(page.locator("#component-lab-charts")).toBeVisible();
+    expect(
+      await page.evaluate(
+        () =>
+          document.documentElement.scrollWidth -
+          document.documentElement.clientWidth,
+      ),
+    ).toBe(0);
+
+    await page.setViewportSize({ height: 844, width: 390 });
+    await page.goto("/component-lab");
+    await page
+      .getByRole("button", { name: "Open design system navigation" })
+      .click();
+    const studioNavigation = page.getByRole("dialog", {
+      name: "Design system navigation",
+    });
+    await expect(studioNavigation).toBeVisible();
+    await studioNavigation
+      .getByRole("button", { name: "Open reference QA" })
+      .click();
+    const referenceQa = page.getByRole("dialog", { name: "Reference QA" });
+    await expect(referenceQa).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(referenceQa).toBeHidden();
+    await expect(studioNavigation).toBeVisible();
+  });
+
   test("surface expression keeps paper neutral and applies bounded emphasis", async ({
     page,
   }) => {
@@ -150,6 +240,7 @@ test.describe("workbench documentation and overlay integrity", () => {
           return {
             background: getComputedStyle(surface).backgroundColor,
             backgroundImage: getComputedStyle(surface).backgroundImage,
+            boxShadow: getComputedStyle(surface).boxShadow,
             chartDasharray: surface.querySelector<SVGPathElement>(
               ".t7-sparkline-line",
             )
@@ -224,8 +315,8 @@ test.describe("workbench documentation and overlay integrity", () => {
     expect(
       colorwayProof.every(
         (surface) =>
-          surface.iconBackground === "rgba(0, 0, 0, 0)" &&
-          surface.iconWidth === 22,
+          surface.iconBackground !== "rgba(0, 0, 0, 0)" &&
+          surface.iconWidth > 22,
       ),
     ).toBe(true);
     expect(colorwayProof.filter((surface) => surface.chartStroke).length).toBe(
@@ -255,13 +346,14 @@ test.describe("workbench documentation and overlay integrity", () => {
       colorwayProof.every(
         (surface) =>
           surface.color === "rgb(255, 255, 255)" &&
-          surface.backgroundImage !== "none",
+          surface.backgroundImage.includes("linear-gradient") &&
+          surface.boxShadow.includes("inset"),
       ),
     ).toBe(true);
     expect(
       colorwayProof
         .filter((surface) => surface.chartStroke)
-        .every((surface) => surface.chartStroke === "rgb(255, 255, 255)"),
+        .every((surface) => surface.chartStroke.startsWith("url(")),
     ).toBe(true);
 
     await page.setViewportSize({ height: 844, width: 390 });
@@ -348,6 +440,71 @@ test.describe("workbench documentation and overlay integrity", () => {
     expect(endpointMotion.transform).toBe("matrix(1, 0, 0, 1, 0, 0)");
   });
 
+  test("KPI sparklines move one terminal marker to the inspected value", async ({
+    page,
+  }) => {
+    await page.goto("/component-lab#component-lab-surfaces");
+
+    const sparkline = page
+      .getByLabel("Chart-linked surface colorways")
+      .locator(".t7-sparkline")
+      .first();
+    await sparkline.scrollIntoViewIfNeeded();
+
+    const marker = sparkline.locator(".t7-sparkline-point");
+    await expect(sparkline.locator(".t7-sparkline-terminal-hit")).toHaveCount(
+      0,
+    );
+    await expect(sparkline.locator(".t7-sparkline-point-hit")).toHaveCount(0);
+    const bounds = await sparkline.boundingBox();
+    expect(bounds).not.toBeNull();
+
+    await sparkline.hover({
+      position: { x: 8, y: Math.round(bounds!.height / 2) },
+    });
+    const tooltip = page.locator(".t7-sparkline-tooltip");
+    await expect(tooltip).toBeVisible();
+    await expect(tooltip.locator(".t7-chart-tooltip-variable")).toContainText(
+      "Coverage trend",
+    );
+    await expect(tooltip.locator(".t7-chart-tooltip-context")).toHaveText(
+      "Point 1",
+    );
+    await expect(tooltip.locator(".t7-chart-tooltip-value > span")).toHaveText(
+      "Value",
+    );
+    await expect(tooltip.locator(".t7-chart-tooltip-swatch")).toBeVisible();
+    await expect(tooltip).toContainText("Point 1");
+    await expect(tooltip.locator("strong")).not.toHaveText("");
+    await assertInsideViewport(tooltip, page);
+    expect(
+      await tooltip.evaluate(
+        (element) => element.closest(".t7-kpi-item") === null,
+      ),
+    ).toBe(true);
+    expect(
+      await tooltip.evaluate((element) => getComputedStyle(element).position),
+    ).toBe("fixed");
+    const firstMarkerX = Number(await marker.getAttribute("x1"));
+
+    await sparkline.hover({
+      position: {
+        x: Math.round(bounds!.width - 8),
+        y: Math.round(bounds!.height / 2),
+      },
+    });
+    await expect(tooltip).toContainText("Latest");
+    expect(Number(await marker.getAttribute("x1"))).toBeGreaterThan(
+      firstMarkerX,
+    );
+
+    await sparkline.focus();
+    await expect(sparkline).toHaveAttribute("aria-label", /latest value/i);
+    await expect(tooltip).toBeVisible();
+    await sparkline.press("ArrowLeft");
+    await expect(tooltip).toContainText("Point 7");
+  });
+
   test("sparkline reveal remains one continuous clipped series and resolves under reduced motion", async ({
     page,
   }) => {
@@ -394,12 +551,12 @@ test.describe("workbench documentation and overlay integrity", () => {
       });
   });
 
-  test("components is one shallow, anchor-addressable catalog document", async ({
+  test("components is a visual family chooser with showroom routes", async ({
     page,
   }) => {
     await page.goto("/components#component-family-commerce");
     await expect(
-      page.getByRole("heading", { name: "Commerce", exact: true }),
+      page.getByRole("heading", { name: "Families", exact: true }),
     ).toBeVisible();
     await expect(page.locator(".studio-component-leaves")).toHaveCount(0);
     await expect(
@@ -418,16 +575,15 @@ test.describe("workbench documentation and overlay integrity", () => {
     await expect(libraryMenu).toContainText("Tokens");
     await expect(libraryMenu).toContainText("Recipes");
     await page.keyboard.press("Escape");
-    await expect(page.locator(".catalog-family-anchors a")).toHaveCount(17);
+    await expect(page.locator(".component-family-chooser a")).toHaveCount(17);
 
     await page
-      .locator(".catalog-family-anchors a")
+      .locator(".component-family-chooser a")
       .filter({ hasText: "Patterns" })
       .click();
-    await expect(page).toHaveURL(/\/components#component-family-pattern$/);
-    await expect(
-      page.getByRole("heading", { name: "Patterns", exact: true }),
-    ).toBeVisible();
+    await expect(page).toHaveURL(/\/components\/patterns$/);
+    await expect(page.locator("main h1")).toHaveText("Patterns");
+    await expect(page.locator("[data-component-contract]")).toHaveCount(6);
     expect(
       await page.locator(".studio-main").evaluate((element) => {
         const style = getComputedStyle(element);
@@ -493,7 +649,7 @@ test.describe("workbench documentation and overlay integrity", () => {
     ).toBeLessThanOrEqual(1);
     if (popoverGeometry.side === "top") {
       expect(popoverGeometry.panel.bottom).toBeLessThanOrEqual(
-        popoverGeometry.trigger!.top - 4,
+        popoverGeometry.trigger!.top - 3,
       );
     }
     if (popoverGeometry.side === "bottom") {
@@ -660,7 +816,7 @@ test.describe("workbench documentation and overlay integrity", () => {
     const signals = page.locator(".component-proof-signals-card");
     await expect(
       signals.getByRole("heading", {
-        name: "Data, progress, and media signals",
+        name: "Data signals",
         exact: true,
       }),
     ).toBeVisible();
@@ -674,11 +830,94 @@ test.describe("workbench documentation and overlay integrity", () => {
       signals.locator(".component-proof-signal-details"),
     ).toBeVisible();
     await expect(
-      page.getByRole("heading", { name: "Native file selection", exact: true }),
+      page.getByRole("heading", { name: "Files", exact: true }),
     ).toBeVisible();
     await expect(
-      page.getByText("Media handoff stays client-side"),
+      page.getByText("Client-side handoff.", { exact: true }),
     ).toBeVisible();
+  });
+
+  test("component lab proof surfaces share card depth and compact action sizing", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ height: 698, width: 1186 });
+    await page.goto("/component-lab");
+
+    const overlayActions = page.locator(
+      ".feedback-proof-overlay-actions .t7-button",
+    );
+    await expect(overlayActions).toHaveCount(4);
+    const actionGeometry = await overlayActions.evaluateAll((buttons) =>
+      buttons.map((button) => {
+        const bounds = button.getBoundingClientRect();
+        const style = getComputedStyle(button);
+        return {
+          height: bounds.height,
+          minHeight: style.minHeight,
+        };
+      }),
+    );
+    expect(new Set(actionGeometry.map(({ height }) => height)).size).toBe(1);
+    expect(new Set(actionGeometry.map(({ minHeight }) => minHeight)).size).toBe(
+      1,
+    );
+
+    const overlayCards = page.locator(
+      "#component-lab-overlays > .overlay-stress-grid > .t7-card",
+    );
+    await expect(overlayCards).toHaveCount(4);
+    const baseDepth = await overlayCards.first().evaluate((card) => {
+      const style = getComputedStyle(card);
+      const depthLayer = getComputedStyle(card, "::after");
+      return {
+        background: depthLayer.backgroundImage,
+        shadow: style.boxShadow,
+        transform: style.transform,
+      };
+    });
+    expect(baseDepth.background).toContain("linear-gradient");
+    expect(baseDepth.shadow).not.toBe("none");
+    expect(baseDepth.transform).toBe("none");
+
+    await overlayCards.first().hover();
+    await expect
+      .poll(() =>
+        overlayCards
+          .first()
+          .evaluate((card) => getComputedStyle(card).transform),
+      )
+      .not.toBe("none");
+
+    const coloredActionBackgrounds = await page
+      .locator(
+        ".feedback-proof-overlay-actions .t7-button[data-intent=primary], .feedback-proof-overlay-actions .t7-button[data-intent=danger]",
+      )
+      .evaluateAll((buttons) =>
+        buttons.map((button) => getComputedStyle(button).backgroundImage),
+      );
+    expect(coloredActionBackgrounds.length).toBeGreaterThan(0);
+    expect(
+      coloredActionBackgrounds.every((background) =>
+        background.includes("linear-gradient"),
+      ),
+    ).toBe(true);
+
+    const componentLabButtons = await page
+      .locator(".component-lab-page .t7-button[data-intent]")
+      .evaluateAll((buttons) =>
+        buttons
+          .filter((button) => {
+            const intent = button.getAttribute("data-intent");
+            return intent === "primary" || intent === "danger";
+          })
+          .map((button) => getComputedStyle(button).backgroundImage),
+      );
+    expect(componentLabButtons.length).toBeGreaterThan(0);
+    expect(
+      componentLabButtons.every((background) =>
+        background.includes("linear-gradient"),
+      ),
+    ).toBe(true);
   });
 
   test("component lab charts keep readable scales and time uses the shared picker", async ({
@@ -740,9 +979,117 @@ test.describe("workbench documentation and overlay integrity", () => {
     const line = page.locator('svg[aria-label="Line chart"]');
     const bar = page.locator('svg[aria-label="Bar chart"]');
     const donut = page.locator('svg[aria-label="Donut chart"]');
+    const kpiStack = page.locator(".surface-colorway-proof");
     await expect(line).toBeVisible();
     await expect(bar).toBeVisible();
     await expect(donut).toBeVisible();
+    const kpiGeometry = await kpiStack
+      .locator(".t7-kpi-item")
+      .evaluateAll((items) => {
+        const cards = items.map((item) => {
+          const bounds = item.getBoundingClientRect();
+          return {
+            bottom: bounds.bottom,
+            left: bounds.left,
+            right: bounds.right,
+            top: bounds.top,
+            width: bounds.width,
+          };
+        });
+        const stack = items[0]
+          ?.closest(".surface-colorway-proof")
+          ?.getBoundingClientRect();
+        const secondRow = cards.slice(-2);
+        return {
+          firstRowWidth: cards[0]?.width ?? 0,
+          secondRowWidth: secondRow[0]?.width ?? 0,
+          secondRowCenter:
+            ((secondRow[0]?.left ?? 0) + (secondRow[1]?.right ?? 0)) / 2,
+          stackCenter: ((stack?.left ?? 0) + (stack?.right ?? 0)) / 2,
+          secondRowTop: secondRow[0]?.top ?? 0,
+          firstRowBottom: cards[2]?.bottom ?? 0,
+        };
+      });
+    expect(
+      Math.abs(kpiGeometry.secondRowWidth - kpiGeometry.firstRowWidth),
+    ).toBeLessThanOrEqual(2);
+    expect(
+      Math.abs(kpiGeometry.secondRowCenter - kpiGeometry.stackCenter),
+    ).toBeLessThanOrEqual(2);
+    expect(kpiGeometry.secondRowTop).toBeGreaterThan(
+      kpiGeometry.firstRowBottom,
+    );
+    const kpiDepth = await page.evaluate(() => {
+      const provider = document.querySelector<HTMLElement>(".t7-provider");
+      const metric = document.querySelector<HTMLElement>(
+        '.surface-expression-grid .t7-metric-card[data-emphasis="solid"]',
+      );
+      const surface = document.querySelector<HTMLElement>(
+        '.surface-colorway-proof .t7-kpi-item[data-emphasis="solid"]',
+      );
+      return {
+        chartEase: provider
+          ? getComputedStyle(provider)
+              .getPropertyValue("--t7-ease-chart")
+              .trim()
+          : "",
+        metricBackground: metric
+          ? getComputedStyle(metric).backgroundImage
+          : "",
+        metricShadow: metric ? getComputedStyle(metric).boxShadow : "",
+        surfaceBackground: surface
+          ? getComputedStyle(surface).backgroundImage
+          : "",
+        surfaceShadow: surface ? getComputedStyle(surface).boxShadow : "",
+      };
+    });
+    expect(kpiDepth.chartEase).toContain("cubic-bezier");
+    expect(kpiDepth.metricBackground).toContain("linear-gradient");
+    expect(kpiDepth.surfaceBackground).toContain("linear-gradient");
+    expect(kpiDepth.metricShadow).toContain("inset");
+    expect(kpiDepth.surfaceShadow).toContain("inset");
+    const kpiDecoration = await page.evaluate(() => {
+      const provider = document.querySelector<HTMLElement>(".t7-provider");
+      const tokenStyle = provider ? getComputedStyle(provider) : null;
+      const cards = [
+        ...document.querySelectorAll<HTMLElement>(
+          ".surface-expression-grid > .surface-expression-kpi-card",
+        ),
+      ];
+      return {
+        tokens: {
+          offsetInline: tokenStyle
+            ?.getPropertyValue("--t7-kpi-decorative-offset-inline")
+            .trim(),
+          offsetTop: tokenStyle
+            ?.getPropertyValue("--t7-kpi-decorative-offset-top")
+            .trim(),
+          opacity: tokenStyle
+            ?.getPropertyValue("--t7-kpi-decorative-opacity")
+            .trim(),
+          size: tokenStyle?.getPropertyValue("--t7-kpi-decorative-size").trim(),
+        },
+        cards: cards.map((card) => {
+          const style = getComputedStyle(card, "::before");
+          return {
+            background: style.backgroundColor,
+            offsetInline: style.right,
+            offsetTop: style.top,
+            opacity: style.opacity,
+            size: style.width,
+          };
+        }),
+      };
+    });
+    for (const card of kpiDecoration.cards) {
+      expect(card.background).toBe("rgba(0, 0, 0, 0)");
+      expect({
+        offsetInline: card.offsetInline,
+        offsetTop: card.offsetTop,
+        opacity: card.opacity,
+        size: card.size,
+      }).toEqual(kpiDecoration.tokens);
+    }
     expect(
       await line
         .locator(".t7-chart-line")
@@ -760,6 +1107,9 @@ test.describe("workbench documentation and overlay integrity", () => {
     await expect(line.locator(".t7-chart-point")).toHaveCount(10);
     await expect(bar.locator(".t7-chart-bar")).toHaveCount(4);
     await expect(donut.locator(".t7-donut-segment")).toHaveCount(3);
+    await expect(line.locator("linearGradient")).toHaveCount(4);
+    await expect(bar.locator("linearGradient")).toHaveCount(4);
+    await expect(donut.locator("linearGradient")).toHaveCount(3);
     await line.evaluate((element) =>
       element.closest(".t7-chart")?.scrollIntoView({
         block: "center",
@@ -796,19 +1146,132 @@ test.describe("workbench documentation and overlay integrity", () => {
       const style = getComputedStyle(element);
       return { transform: style.transform, transition: style.transition };
     });
-    expect(donutMotion.transition).toContain("transform");
+    expect(donutMotion.transition).toContain("filter");
     await donutVisual.hover();
     await expect
       .poll(() =>
-        donutVisual.evaluate((element) => getComputedStyle(element).transform),
+        donutVisual.evaluate((element) => getComputedStyle(element).filter),
       )
       .not.toBe("none");
+    const donutSegment = donut.locator(".t7-donut-segment").nth(1);
+    const donutArcTarget = await donutSegment.evaluate((element) => {
+      const svg = element.ownerSVGElement!;
+      const bounds = svg.getBoundingClientRect();
+      const viewBox = svg.viewBox.baseVal;
+      const radius = Number(element.getAttribute("r"));
+      const centerX = Number(element.getAttribute("cx"));
+      const centerY = Number(element.getAttribute("cy"));
+      const visibleLength = Number(
+        element.getAttribute("stroke-dasharray")!.split(" ")[0],
+      );
+      const arcStart = -Number(element.getAttribute("stroke-dashoffset"));
+      const angle = (arcStart + visibleLength / 2) / radius - Math.PI / 2;
+      const point = {
+        x: centerX + radius * Math.cos(angle),
+        y: centerY + radius * Math.sin(angle),
+      };
+      return {
+        x: ((point.x - viewBox.x) / viewBox.width) * bounds.width,
+        y: ((point.y - viewBox.y) / viewBox.height) * bounds.height,
+      };
+    });
+    await donut.hover({ position: donutArcTarget });
+    const donutTooltip = page.locator(".t7-donut-tooltip");
+    await expect(donutTooltip).toBeVisible();
+    await expect(donutTooltip.locator(".t7-chart-tooltip-variable")).toHaveText(
+      "Review",
+    );
+    await expect(donutTooltip.locator(".t7-chart-tooltip-context")).toHaveText(
+      "State",
+    );
+    await expect(
+      donutTooltip.locator(".t7-chart-tooltip-value > span"),
+    ).toHaveText("Value");
+    await expect(
+      donutTooltip.locator(".t7-chart-tooltip-swatch"),
+    ).toBeVisible();
+    await expect(donutTooltip).toContainText("Review");
+    await expect(donutTooltip).toContainText("25");
+    await donutSegment.focus();
+    await expect(donutSegment).toHaveAttribute("aria-label", "Review: 25");
+    const barTarget = bar.locator(".t7-chart-bar").first();
+    await barTarget.hover();
+    const barTooltip = page.locator(".t7-chart-tooltip:not(.t7-donut-tooltip)");
+    await expect(barTooltip).toBeVisible();
+    await expect(barTooltip.locator(".t7-chart-tooltip-variable")).toHaveText(
+      "A",
+    );
+    await expect(barTooltip.locator(".t7-chart-tooltip-context")).toHaveText(
+      "Category",
+    );
+    await expect(
+      barTooltip.locator(".t7-chart-tooltip-value > span"),
+    ).toHaveText("Value");
+    await expect(barTooltip.locator(".t7-chart-tooltip-swatch")).toBeVisible();
+    await expect(barTooltip).toContainText("A");
+    await expect(barTooltip).toContainText("18");
+    expect(
+      await barTarget.evaluate(
+        (element) => getComputedStyle(element).transform,
+      ),
+    ).not.toBe("none");
     await line.locator(".t7-chart-point").first().click({ force: true });
     const chartTooltip = page.locator(".t7-chart-tooltip");
     await expect(chartTooltip).toBeVisible();
+    await expect(chartTooltip.locator(".t7-chart-tooltip-variable")).toHaveText(
+      "Coverage",
+    );
+    await expect(chartTooltip.locator(".t7-chart-tooltip-context")).toHaveText(
+      "Mon",
+    );
+    await expect(
+      chartTooltip.locator(".t7-chart-tooltip-value > span"),
+    ).toHaveText("Value");
+    await expect(
+      chartTooltip.locator(".t7-chart-tooltip-swatch"),
+    ).toBeVisible();
     await expect(chartTooltip).toContainText("Coverage");
     await expect(chartTooltip).toContainText("42%");
+    const tooltipAnchor = await line.evaluate((element) => {
+      const point = element.querySelector<SVGCircleElement>(".t7-chart-point")!;
+      const tooltip = document.querySelector<HTMLElement>(
+        ".t7-chart-tooltip:not(.t7-donut-tooltip)",
+      )!;
+      const pointBounds = point.getBoundingClientRect();
+      const tooltipBounds = tooltip.getBoundingClientRect();
+      return {
+        horizontalOffset: Math.abs(
+          pointBounds.left +
+            pointBounds.width / 2 -
+            (tooltipBounds.left + tooltipBounds.width / 2),
+        ),
+        verticalGap: pointBounds.top - tooltipBounds.bottom,
+      };
+    });
+    expect(tooltipAnchor.horizontalOffset).toBeLessThanOrEqual(2);
+    expect(tooltipAnchor.verticalGap).toBeGreaterThanOrEqual(5);
     await assertInsideViewport(chartTooltip, page);
+    const lastLinePoint = line.locator(".t7-chart-point").last();
+    await lastLinePoint.focus();
+    await expect(chartTooltip.locator(".t7-chart-tooltip-context")).toHaveText(
+      "Fri",
+    );
+    const terminalTooltipAnchor = await line.evaluate((element) => {
+      const points =
+        element.querySelectorAll<SVGCircleElement>(".t7-chart-point");
+      const point = points[points.length - 1]!;
+      const tooltip = document.querySelector<HTMLElement>(
+        ".t7-chart-tooltip:not(.t7-donut-tooltip)",
+      )!;
+      const pointBounds = point.getBoundingClientRect();
+      const tooltipBounds = tooltip.getBoundingClientRect();
+      return Math.abs(
+        pointBounds.left +
+          pointBounds.width / 2 -
+          (tooltipBounds.left + tooltipBounds.width / 2),
+      );
+    });
+    expect(terminalTooltipAnchor).toBeLessThanOrEqual(2);
     expect(
       await page.evaluate(
         () =>
@@ -906,7 +1369,7 @@ test.describe("workbench documentation and overlay integrity", () => {
     const feedbackCard = page.locator(".component-proof-feedback-card");
     await expect(
       feedbackCard.getByRole("heading", {
-        name: "Feedback, actions, and overlays",
+        name: "Feedback & actions",
       }),
     ).toBeVisible();
     await expect(
@@ -949,7 +1412,7 @@ test.describe("workbench documentation and overlay integrity", () => {
     await assertInsideViewport(toast, page);
 
     await feedbackCard.getByRole("button", { name: "Dismiss alert" }).click();
-    await expect(feedbackCard).toContainText("The warning is dismissed");
+    await expect(feedbackCard).toContainText("Warning dismissed.");
     await feedbackCard.getByRole("button", { name: "Show alert" }).click();
     await expect(feedbackCard).toContainText("Review needed");
   });

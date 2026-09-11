@@ -1,0 +1,7 @@
+[     727ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:4173/node_modules/.vite/deps/react-dom_client.js?v=2e70cbde:14335
+[    1316ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:4173/favicon.ico:0
+[   86744ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:4173/@fs/D:/SA/ten4seven-ui/packages/ui/dist/index.js?t=1789049565634:0
+[   86745ms] [ERROR] [vite] Failed to reload /@fs/D:/SA/ten4seven-ui/packages/ui/dist/index.js. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:4173/@vite/client:532
+[   86748ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:4173/@fs/D:/SA/ten4seven-ui/packages/ui/dist/styles.css?t=1789049565635:0
+[   86748ms] [ERROR] [vite] Failed to reload /@fs/D:/SA/ten4seven-ui/packages/ui/dist/styles.css. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:4173/@vite/client:532
+[   86867ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:4173/@fs/D:/SA/ten4seven-ui/packages/ui/dist/styles.css?t=1789049565635:0

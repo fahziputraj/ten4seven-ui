@@ -26,6 +26,8 @@ export interface FloatingPositionOptions {
   minWidth?: boolean;
   offset?: number;
   padding?: number;
+  /** Recalculate when a stable anchor element moves without resizing. */
+  positionKey?: number | string | null;
   side?: FloatingSide;
 }
 
@@ -45,6 +47,7 @@ export function useFloatingPosition(
     minWidth = false,
     offset = 6,
     padding = 8,
+    positionKey,
     preferredWidth,
     side = "bottom",
     widthStrategy,
@@ -67,10 +70,13 @@ export function useFloatingPosition(
     if (!anchor) return;
     const content = contentRef.current;
     const anchorRect = anchor.getBoundingClientRect();
-    const contentRect = content?.getBoundingClientRect();
+    // Use layout dimensions for positioning. A floating surface may be entering
+    // with a scale transform, but that visual transform must not move its
+    // logical center away from the highlighted anchor.
+    const measuredWidth = content?.offsetWidth ?? 0;
+    const measuredHeight = content?.offsetHeight ?? 0;
     const viewportWidth = document.documentElement.clientWidth;
     const viewportHeight = document.documentElement.clientHeight;
-    const measuredWidth = contentRect?.width ?? 0;
     const availableWidth = Math.max(0, viewportWidth - padding * 2);
     const strategy = widthStrategy ?? (minWidth ? "min-trigger" : "content");
     const intrinsicWidth = measuredWidth || preferredWidth || 240;
@@ -85,7 +91,7 @@ export function useFloatingPosition(
               ? availableWidth
               : intrinsicWidth;
     const safeWidth = Math.max(0, Math.min(width, availableWidth));
-    const height = contentRect?.height || 160;
+    const height = measuredHeight || 160;
     let nextSide = side;
     let left = anchorRect.left;
     let top = anchorRect.bottom + offset;
@@ -205,7 +211,14 @@ export function useFloatingPosition(
       document.removeEventListener("scroll", scheduleUpdate, true);
       resizeObserver?.disconnect();
     };
-  }, [anchorRef, contentVersion, open, side, updatePosition]);
+  }, [
+    anchorRef,
+    contentVersion,
+    open,
+    positionKey,
+    side,
+    updatePosition,
+  ]);
 
   return { contentRef, placement, setContentRef, style };
 }

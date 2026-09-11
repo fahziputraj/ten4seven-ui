@@ -4,10 +4,8 @@ import { T7Icon, type IconName } from "@ten4seven/icons";
 import { Badge, Button, Modal, Select, Typography } from "@ten4seven/ui";
 
 import {
-  libraryNavigation,
+  playgroundNavigationGroups,
   playgroundRoutePaths,
-  referenceNavigation,
-  studioNavigation,
   type PlaygroundRoute,
 } from "./playground-routes";
 
@@ -23,30 +21,42 @@ const routeIcons: Record<PlaygroundRoute, IconName> = {
   Recipes: "table",
   "Operations Tracker": "analytics",
   "Operational Patterns": "logistics",
+  "SaaS Control Plane": "admin",
+  "ERP Density Reference": "table",
+  "Farm P1 Reference": "farm",
   "Publishing Store": "book",
   "Public Showcase": "dashboard",
 };
 
-const routeGroups = [
-  { label: "Studio", routes: studioNavigation },
-  { label: "Library", routes: libraryNavigation },
-  { label: "References", routes: referenceNavigation },
-] as const;
+const routeGroups = playgroundNavigationGroups.map(({ label, routes }) => ({
+  label,
+  routes,
+}));
 
 export interface ReferenceHarnessProps {
   activeRoute: PlaygroundRoute;
   onNavigate: (route: PlaygroundRoute) => void;
+  onOpenChange?: (open: boolean) => void;
   operationsViewState: ReferenceViewState;
   onOperationsViewStateChange: (viewState: ReferenceViewState) => void;
+  open?: boolean;
 }
 
 export function ReferenceHarness({
   activeRoute,
   onNavigate,
+  onOpenChange,
   onOperationsViewStateChange,
   operationsViewState,
+  open,
 }: ReferenceHarnessProps) {
-  const [open, setOpen] = useState(false);
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(false);
+  const isOpen = open ?? uncontrolledOpen;
+
+  function setOpen(nextOpen: boolean) {
+    if (open === undefined) setUncontrolledOpen(nextOpen);
+    onOpenChange?.(nextOpen);
+  }
 
   return (
     <>
@@ -55,7 +65,7 @@ export function ReferenceHarness({
         data-testid="reference-harness-trigger"
       >
         <Button
-          aria-expanded={open}
+          aria-expanded={isOpen}
           aria-label="Open ten4seven reference QA controls"
           intent="secondary"
           leadingIcon="components"
@@ -69,7 +79,7 @@ export function ReferenceHarness({
       <Modal
         description="QA-only controls remain outside consumer preview routes."
         onClose={() => setOpen(false)}
-        open={open}
+        open={isOpen}
         title="Reference QA"
       >
         <div className="reference-harness-content">

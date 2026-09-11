@@ -20,6 +20,9 @@
       "canvas": {
         "mode": "balanced"
       },
+      "surface": {
+        "treatment": "outlined"
+      },
       "chart": {
         "palette": "spectrum"
       },
@@ -78,6 +81,9 @@
       },
       "canvas": {
         "mode": "balanced"
+      },
+      "surface": {
+        "treatment": "outlined"
       },
       "chart": {
         "palette": "spectrum"
@@ -138,6 +144,9 @@
       "canvas": {
         "mode": "paper"
       },
+      "surface": {
+        "treatment": "outlined"
+      },
       "chart": {
         "palette": "four"
       },
@@ -196,6 +205,9 @@
       },
       "canvas": {
         "mode": "paper"
+      },
+      "surface": {
+        "treatment": "outlined"
       },
       "chart": {
         "palette": "spectrum"

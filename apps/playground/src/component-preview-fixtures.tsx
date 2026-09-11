@@ -62,6 +62,7 @@ import {
   LineChart,
   MediaFrame,
   MetricCard,
+  ModuleState,
   MilestoneTracker,
   Modal,
   MobileSidebar,
@@ -1209,6 +1210,7 @@ export function ComponentPreview({
     if (component.displayName === "Milestone Tracker")
       return frame(
         <MilestoneTracker
+          detailMode="drawer"
           items={[
             {
               description: "Signals are captured and ready for review.",
@@ -1703,6 +1705,15 @@ export function ComponentPreview({
           description="The requested view is unavailable right now."
           state="error"
           title="Could not load records"
+        />,
+      );
+    if (component.displayName === "Module State")
+      return frame(
+        <ModuleState
+          action={<Button>Start setup</Button>}
+          description="The consumer supplies this explanation and owns the setup transition."
+          state="setup-required"
+          title="Workspace setup required"
         />,
       );
     if (component.displayName === "Progress")

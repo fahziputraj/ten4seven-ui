@@ -60,6 +60,33 @@ async function inspectProof(page: import("@playwright/test").Page) {
 }
 
 test.describe("bounded Brand Expression Slice B", () => {
+  test("exposes the Q03 AAPM adapter without duplicating component families", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/theme-studio");
+
+    const disclosure = page.getByRole("button", {
+      name: /AAPM profile adapter/,
+    });
+    await expect(disclosure).toHaveAttribute("aria-expanded", "false");
+    await disclosure.click();
+
+    const proof = page.getByTestId("studio-aapm-profile-proof");
+    await expect(proof).toHaveAttribute("data-adapter", "aapm-core");
+    await expect(proof.locator("[data-profile]")).toHaveCount(6);
+    for (const profile of [
+      "aapm-core",
+      "aapm-farm",
+      "aapm-operations",
+      "aapm-erp",
+      "aapm-academy",
+      "aapm-public",
+    ]) {
+      await expect(proof.locator(`[data-profile="${profile}"]`)).toBeVisible();
+    }
+  });
+
   test("keeps one Authentication anatomy while profiles resolve different visual character", async ({
     page,
   }) => {

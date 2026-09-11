@@ -4,6 +4,7 @@ import { createBrandExpressionResolver } from "@ten4seven/agent/core";
 import { brandProfiles, components, recipes } from "@ten4seven/agent/generated";
 import type { BrandExpressionContractData } from "@ten4seven/agent/core";
 import type {
+  AuthBrandProfileId,
   BrandProfile,
   BrandProfileId,
   ComponentContract,
@@ -30,13 +31,13 @@ const authBrandResolver = createBrandExpressionResolver({
   components: components as Readonly<Record<string, ComponentContract>>,
 } satisfies BrandExpressionContractData);
 
-const profileLabels: Record<BrandProfileId, string> = {
+const profileLabels: Record<AuthBrandProfileId, string> = {
   "neutral-product": "Neutral product",
   "aapm-academy": "AAPM Academy",
 };
 
 const profileCopy: Record<
-  BrandProfileId,
+  AuthBrandProfileId,
   {
     eyebrow: string;
     title: string;
@@ -57,21 +58,24 @@ const profileCopy: Record<
   },
 };
 
-const profileNotes: Record<BrandProfileId, string> = {
+const profileNotes: Record<AuthBrandProfileId, string> = {
   "neutral-product":
     "The same Authentication recipe resolves as a centered, restrained product surface.",
   "aapm-academy":
     "The same Authentication recipe resolves as a split, editorial surface with stronger media presence.",
 };
 
-const profileOrder: BrandProfileId[] = ["neutral-product", "aapm-academy"];
+const profileOrder: AuthBrandProfileId[] = [
+  "neutral-product",
+  "aapm-academy",
+];
 
 export function BrandExpressionProof({
   onNavigatePath,
   profileId,
 }: {
   onNavigatePath: (path: string) => void;
-  profileId: BrandProfileId;
+  profileId: AuthBrandProfileId;
 }) {
   const resolved = authBrandResolver.resolve({ brandProfile: profileId });
   const copy = profileCopy[profileId];

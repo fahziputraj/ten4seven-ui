@@ -5,12 +5,19 @@
     "themeProfile": "packages/contracts/src/theme-profile.ts",
     "foundation": "packages/contracts/src/foundation.ts",
     "themeRecipes": "packages/contracts/src/theme-recipe.ts",
+    "platformNeutral": "packages/contracts/src/platform-neutral.ts",
+    "brandAdapter": "packages/contracts/src/brand-profile.ts",
     "dtcgTokenExport": "packages/tokens/generated/tokens.dtcg.json",
     "brandProfiles": "packages/contracts/src/brand-profile.ts",
     "entityList": "packages/contracts/src/entity-list.ts",
     "entityDetail": "packages/contracts/src/entity-detail.ts",
     "authentication": "packages/contracts/src/authentication.ts",
-    "operationalPatterns": "packages/contracts/src/operational-patterns.ts"
+    "operationalPatterns": "packages/contracts/src/operational-patterns.ts",
+    "responsiveShell": "packages/contracts/src/responsive-shell.ts",
+    "moduleStates": "packages/contracts/src/module-state.ts",
+    "controlPlanePatterns": "packages/contracts/src/saas-control-plane.ts",
+    "nativeMobile": "packages/contracts/src/native-mobile.ts",
+    "erpDensity": "packages/contracts/src/erp-density.ts"
   },
   "defaultRetrieval": [
     "generated/index.json",
@@ -41,6 +48,11 @@
       "resolve": "t7ui brand resolve auth",
       "compose": "t7ui brand compose auth"
     },
+    "brand-profiles": {
+      "adapter": "generated/brand-adapter.json",
+      "profiles": "generated/brand-profiles.json",
+      "guidance": "docs/aapm/T7-AAPM-001-Q03-AAPM-PROFILES-EVIDENCE.md"
+    },
     "operational-patterns": {
       "find": "t7ui find \"control tower exception next action\"",
       "inspect": "t7ui recipe inspect control-tower",
@@ -56,12 +68,43 @@
       "source": "generated/theme-recipes.json",
       "tokenExport": "generated/tokens.dtcg.json",
       "guidance": "docs/THEME_RECIPES.md"
+    },
+    "contract-plane": {
+      "source": "generated/platform-neutral.json",
+      "guidance": "packages/contracts/src/platform-neutral.ts",
+      "inspect": "inspectPlatformNeutralContract()"
+    },
+    "responsive-shell": {
+      "source": "generated/responsive-shell.json",
+      "guidance": "packages/contracts/src/responsive-shell.ts",
+      "reference": "/theme-studio#responsive-contracts"
+    },
+    "module-states": {
+      "source": "generated/module-states.json",
+      "guidance": "packages/contracts/src/module-state.ts",
+      "reference": "/theme-studio#module-states"
+    },
+    "saas-control-plane": {
+      "source": "generated/saas-control-plane.json",
+      "guidance": "packages/contracts/src/saas-control-plane.ts",
+      "reference": "/saas-control-plane"
+    },
+    "native-mobile": {
+      "source": "generated/native-mobile.json",
+      "guidance": "packages/contracts/src/native-mobile.ts",
+      "reference": "packages/native/README.md"
+    },
+    "erp-density": {
+      "source": "generated/erp-density.json",
+      "guidance": "packages/contracts/src/erp-density.ts",
+      "reference": "/erp-reference",
+      "find": "t7ui find \"ERP dense table\""
     }
   },
   "metrics": {
-    "fullCatalogBytes": 329597,
-    "compactProjectionBytes": 100751,
+    "fullCatalogBytes": 333213,
+    "compactProjectionBytes": 198968,
     "selectiveRecipeShardBytes": 43720,
-    "selectiveComponentShardBytes": 41865
+    "selectiveComponentShardBytes": 261580
   }
 }

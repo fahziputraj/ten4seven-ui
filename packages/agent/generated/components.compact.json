@@ -23,7 +23,46 @@
       "density",
       "motionDuration",
       "typography"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "font-ui",
+      "font-display",
+      "font-optical-sizing",
+      "focus-ring",
+      "motion-duration",
+      "duration-loop",
+      "motion-interactive",
+      "motion-enter",
+      "motion-exit",
+      "motion-loop"
+    ],
+    "relatedComponents": [
+      "Typography",
+      "Button",
+      "Card"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Typography",
+      "Button",
+      "Card"
+    ],
+    "usedByPatterns": []
   },
   "Typography": {
     "id": "Typography",
@@ -40,6 +79,42 @@
     "importantProps": [
       "typeRole",
       "as"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "font-ui",
+      "font-display",
+      "font-optical-sizing",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Ten4SevenProvider",
+      "PageHeader",
+      "Card"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Ten4SevenProvider",
+      "PageHeader",
+      "Card"
+    ],
+    "usedByPatterns": [
+      "content-detail",
+      "ebook-reader"
     ]
   },
   "T7Icon": {
@@ -61,7 +136,40 @@
       "primaryColor",
       "accentColor",
       "duotone"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "font-ui",
+      "font-display",
+      "font-optical-sizing",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Button",
+      "IconButton",
+      "NavItem"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Button",
+      "IconButton",
+      "NavItem"
+    ],
+    "usedByPatterns": []
   },
   "Button": {
     "id": "Button",
@@ -83,6 +191,45 @@
       "loading",
       "disabled",
       "wrap"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "accent",
+      "accent-hover",
+      "accent-pressed",
+      "control-height",
+      "control-radius",
+      "focus-ring",
+      "motion"
+    ],
+    "relatedComponents": [
+      "IconButton",
+      "ButtonGroup",
+      "ActionFooter"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "IconButton",
+      "ButtonGroup",
+      "ActionFooter"
+    ],
+    "usedByPatterns": [
+      "marketing-home",
+      "cart"
     ]
   },
   "IconButton": {
@@ -103,7 +250,43 @@
       "intent",
       "size",
       "loading"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "accent",
+      "accent-hover",
+      "accent-pressed",
+      "control-height",
+      "control-radius",
+      "focus-ring",
+      "motion"
+    ],
+    "relatedComponents": [
+      "Button",
+      "Tooltip",
+      "DropdownMenu"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Button",
+      "Tooltip",
+      "DropdownMenu"
+    ],
+    "usedByPatterns": []
   },
   "ButtonGroup": {
     "id": "ButtonGroup",
@@ -123,7 +306,41 @@
       "label",
       "orientation",
       "children"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "accent",
+      "accent-hover",
+      "accent-pressed",
+      "control-height",
+      "control-radius",
+      "focus-ring",
+      "motion"
+    ],
+    "relatedComponents": [
+      "Button",
+      "ToggleButtonGroup"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Button",
+      "ToggleButtonGroup"
+    ],
+    "usedByPatterns": []
   },
   "ToggleButton": {
     "id": "ToggleButton",
@@ -144,7 +361,41 @@
       "onPressedChange",
       "leadingIcon",
       "value"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "accent",
+      "accent-hover",
+      "accent-pressed",
+      "control-height",
+      "control-radius",
+      "focus-ring",
+      "motion"
+    ],
+    "relatedComponents": [
+      "ToggleButtonGroup",
+      "Tabs"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "ToggleButtonGroup",
+      "Tabs"
+    ],
+    "usedByPatterns": []
   },
   "ToggleButtonGroup": {
     "id": "ToggleButtonGroup",
@@ -164,7 +415,41 @@
       "value",
       "onValueChange",
       "label"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "accent",
+      "accent-hover",
+      "accent-pressed",
+      "control-height",
+      "control-radius",
+      "focus-ring",
+      "motion"
+    ],
+    "relatedComponents": [
+      "ToggleButton",
+      "Tabs"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "ToggleButton",
+      "Tabs"
+    ],
+    "usedByPatterns": []
   },
   "SplitButton": {
     "id": "SplitButton",
@@ -185,7 +470,41 @@
       "items",
       "intent",
       "size"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "accent",
+      "accent-hover",
+      "accent-pressed",
+      "control-height",
+      "control-radius",
+      "focus-ring",
+      "motion"
+    ],
+    "relatedComponents": [
+      "Button",
+      "DropdownMenu"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Button",
+      "DropdownMenu"
+    ],
+    "usedByPatterns": []
   },
   "Input": {
     "id": "Input",
@@ -209,6 +528,49 @@
       "leadingIcon",
       "value",
       "onChange"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Textarea",
+      "Select",
+      "Field"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Textarea",
+      "Select",
+      "Field"
+    ],
+    "usedByPatterns": [
+      "entity-form",
+      "settings",
+      "checkout",
+      "auth"
     ]
   },
   "SearchInput": {
@@ -230,6 +592,45 @@
       "onChange",
       "label",
       "placeholder"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Input",
+      "FilterToolbar"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Input",
+      "FilterToolbar"
+    ],
+    "usedByPatterns": [
+      "catalog",
+      "content-list"
     ]
   },
   "PasswordInput": {
@@ -250,6 +651,44 @@
       "hint",
       "error",
       "revealLabel"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Input",
+      "OtpInput"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Input",
+      "OtpInput"
+    ],
+    "usedByPatterns": [
+      "auth"
     ]
   },
   "Textarea": {
@@ -272,7 +711,43 @@
       "rows",
       "value",
       "onChange"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Input",
+      "Field"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Input",
+      "Field"
+    ],
+    "usedByPatterns": []
   },
   "NumberInput": {
     "id": "NumberInput",
@@ -293,7 +768,43 @@
       "step",
       "value",
       "onChange"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "CurrencyInput",
+      "PercentInput"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "CurrencyInput",
+      "PercentInput"
+    ],
+    "usedByPatterns": []
   },
   "CurrencyInput": {
     "id": "CurrencyInput",
@@ -314,7 +825,43 @@
       "step",
       "value",
       "onChange"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "NumberInput",
+      "Price"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "NumberInput",
+      "Price"
+    ],
+    "usedByPatterns": []
   },
   "PercentInput": {
     "id": "PercentInput",
@@ -335,7 +882,43 @@
       "step",
       "value",
       "onChange"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "NumberInput",
+      "TrendIndicator"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "NumberInput",
+      "TrendIndicator"
+    ],
+    "usedByPatterns": []
   },
   "Select": {
     "id": "Select",
@@ -359,6 +942,52 @@
       "defaultValue",
       "onChange",
       "disabled"
+    ],
+    "states": [
+      "closed and focused",
+      "open listbox",
+      "selected option",
+      "disabled",
+      "invalid with hint"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "NativeSelect",
+      "Combobox",
+      "RadioGroup"
+    ],
+    "alternativeTo": [
+      "NativeSelect",
+      "Combobox"
+    ],
+    "composesWith": [
+      "NativeSelect",
+      "Combobox",
+      "RadioGroup"
+    ],
+    "usedByPatterns": [
+      "entity-form",
+      "settings",
+      "catalog",
+      "checkout"
     ]
   },
   "NativeSelect": {
@@ -379,7 +1008,44 @@
       "defaultValue",
       "onChange",
       "disabled"
-    ]
+    ],
+    "states": [
+      "closed native control",
+      "selected option",
+      "disabled",
+      "invalid"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Select",
+      "Field"
+    ],
+    "alternativeTo": [
+      "Select"
+    ],
+    "composesWith": [
+      "Select",
+      "Field"
+    ],
+    "usedByPatterns": []
   },
   "Combobox": {
     "id": "Combobox",
@@ -400,6 +1066,45 @@
       "onValueChange",
       "loading",
       "emptyMessage"
+    ],
+    "states": [
+      "idle",
+      "focused",
+      "loading",
+      "empty results",
+      "selected",
+      "disabled"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "MultiSelect",
+      "Select"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "MultiSelect",
+      "Select"
+    ],
+    "usedByPatterns": [
+      "entity-form"
     ]
   },
   "MultiSelect": {
@@ -423,7 +1128,45 @@
       "label",
       "loading",
       "error"
-    ]
+    ],
+    "states": [
+      "collapsed",
+      "expanded",
+      "selected values",
+      "loading",
+      "empty results",
+      "error",
+      "disabled"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "CheckboxGroup",
+      "Combobox"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "CheckboxGroup",
+      "Combobox"
+    ],
+    "usedByPatterns": []
   },
   "HierarchyPicker": {
     "id": "HierarchyPicker",
@@ -442,7 +1185,55 @@
       "expandedIds",
       "searchable",
       "label"
-    ]
+    ],
+    "states": [
+      "collapsed branches",
+      "expanded branches",
+      "none selected",
+      "partially selected",
+      "fully selected",
+      "disabled nodes",
+      "searching",
+      "empty results",
+      "disabled"
+    ],
+    "responsive": [
+      "Keeps the tree inside a bounded scroll owner so long hierarchies do not expand the page indefinitely.",
+      "Rows wrap long labels and retain shared touch-target geometry on narrow Web layouts."
+    ],
+    "motion": [
+      "Uses shared transition variables for focus, selection, and expansion affordances.",
+      "Respects prefers-reduced-motion through the global motion contract."
+    ],
+    "tokens": [
+      "surface-raised",
+      "border-strong",
+      "selected",
+      "focus-ring",
+      "control-height",
+      "touch-target-min",
+      "control-radius",
+      "indicator-radius",
+      "muted-foreground"
+    ],
+    "relatedComponents": [
+      "Select",
+      "Combobox",
+      "Checkbox",
+      "Collapsible",
+      "Input"
+    ],
+    "alternativeTo": [
+      "Select",
+      "Combobox",
+      "Sidebar"
+    ],
+    "composesWith": [
+      "Input",
+      "Checkbox",
+      "Collapsible"
+    ],
+    "usedByPatterns": []
   },
   "Checkbox": {
     "id": "Checkbox",
@@ -465,6 +1256,47 @@
       "label",
       "description",
       "onChange"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "CheckboxGroup",
+      "Radio"
+    ],
+    "alternativeTo": [
+      "Switch"
+    ],
+    "composesWith": [
+      "CheckboxGroup",
+      "Radio"
+    ],
+    "usedByPatterns": [
+      "checkout",
+      "auth"
     ]
   },
   "CheckboxGroup": {
@@ -486,6 +1318,44 @@
       "description",
       "error",
       "children"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Checkbox",
+      "FieldGroup"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Checkbox",
+      "FieldGroup"
+    ],
+    "usedByPatterns": [
+      "catalog"
     ]
   },
   "Radio": {
@@ -509,7 +1379,43 @@
       "label",
       "description",
       "onChange"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "RadioGroup",
+      "Select"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "RadioGroup",
+      "Select"
+    ],
+    "usedByPatterns": []
   },
   "RadioGroup": {
     "id": "RadioGroup",
@@ -530,6 +1436,44 @@
       "description",
       "error",
       "children"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Radio",
+      "Select"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Radio",
+      "Select"
+    ],
+    "usedByPatterns": [
+      "catalog"
     ]
   },
   "Switch": {
@@ -551,6 +1495,46 @@
       "checked",
       "onChange",
       "disabled"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Checkbox",
+      "ToggleButton"
+    ],
+    "alternativeTo": [
+      "Checkbox"
+    ],
+    "composesWith": [
+      "Checkbox",
+      "ToggleButton"
+    ],
+    "usedByPatterns": [
+      "settings"
     ]
   },
   "Slider": {
@@ -572,6 +1556,44 @@
       "step",
       "value",
       "label"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "RangeSlider",
+      "NumberInput"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "RangeSlider",
+      "NumberInput"
+    ],
+    "usedByPatterns": [
+      "ebook-reader"
     ]
   },
   "RangeSlider": {
@@ -593,7 +1615,43 @@
       "minValue",
       "maxValue",
       "onValueChange"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Slider",
+      "NumberInput"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Slider",
+      "NumberInput"
+    ],
+    "usedByPatterns": []
   },
   "OtpInput": {
     "id": "OtpInput",
@@ -612,6 +1670,44 @@
       "value",
       "onValueChange",
       "label"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Input",
+      "PasswordInput"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Input",
+      "PasswordInput"
+    ],
+    "usedByPatterns": [
+      "auth"
     ]
   },
   "Field": {
@@ -635,6 +1731,46 @@
       "error",
       "required",
       "optional"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Label",
+      "FieldGroup",
+      "Input"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Label",
+      "FieldGroup",
+      "Input"
+    ],
+    "usedByPatterns": [
+      "entity-form"
     ]
   },
   "Label": {
@@ -654,7 +1790,45 @@
       "htmlFor",
       "required",
       "optional"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Field",
+      "FieldDescription",
+      "FieldError"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Field",
+      "FieldDescription",
+      "FieldError"
+    ],
+    "usedByPatterns": []
   },
   "FieldGroup": {
     "id": "FieldGroup",
@@ -674,7 +1848,43 @@
       "description",
       "error",
       "children"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "CheckboxGroup",
+      "RadioGroup"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "CheckboxGroup",
+      "RadioGroup"
+    ],
+    "usedByPatterns": []
   },
   "FormSection": {
     "id": "FormSection",
@@ -695,6 +1905,46 @@
       "description",
       "action",
       "children"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "FormGrid",
+      "ActionFooter"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "FormGrid",
+      "ActionFooter"
+    ],
+    "usedByPatterns": [
+      "entity-form",
+      "settings",
+      "checkout"
     ]
   },
   "FormGrid": {
@@ -714,6 +1964,45 @@
     "importantProps": [
       "columns",
       "children"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "FormSection",
+      "Field"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "FormSection",
+      "Field"
+    ],
+    "usedByPatterns": [
+      "entity-form",
+      "settings"
     ]
   },
   "FormActions": {
@@ -730,7 +2019,43 @@
     ],
     "importantProps": [
       "children"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "ActionFooter",
+      "Button"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "ActionFooter",
+      "Button"
+    ],
+    "usedByPatterns": []
   },
   "Calendar": {
     "id": "Calendar",
@@ -752,7 +2077,40 @@
       "max",
       "rangeStart",
       "rangeEnd"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "surface-overlay",
+      "shadow-popover",
+      "control-height",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "DatePicker",
+      "DateRangePicker"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "DatePicker",
+      "DateRangePicker"
+    ],
+    "usedByPatterns": []
   },
   "DatePicker": {
     "id": "DatePicker",
@@ -773,6 +2131,41 @@
       "min",
       "max",
       "label"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "surface-overlay",
+      "shadow-popover",
+      "control-height",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Calendar",
+      "DateRangePicker"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Calendar",
+      "DateRangePicker"
+    ],
+    "usedByPatterns": [
+      "entity-form"
     ]
   },
   "DateRangePicker": {
@@ -794,6 +2187,41 @@
       "min",
       "max",
       "label"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "surface-overlay",
+      "shadow-popover",
+      "control-height",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Calendar",
+      "RangeSlider"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Calendar",
+      "RangeSlider"
+    ],
+    "usedByPatterns": [
+      "report"
     ]
   },
   "TimeInput": {
@@ -813,7 +2241,37 @@
       "label",
       "value",
       "onChange"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "control-height",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "NativeTimeInput",
+      "TimePicker",
+      "DateTimeInput"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "NativeTimeInput"
+    ],
+    "usedByPatterns": []
   },
   "NativeTimeInput": {
     "id": "NativeTimeInput",
@@ -831,7 +2289,40 @@
       "label",
       "value",
       "onChange"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "invalid",
+      "empty"
+    ],
+    "responsive": [
+      "Uses the platform time control without changing the field contract.",
+      "Retains shared control geometry and focus treatment."
+    ],
+    "motion": [
+      "Uses shared control transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "control-height",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "TimePicker",
+      "TimeInput",
+      "DateTimeInput"
+    ],
+    "alternativeTo": [
+      "TimePicker"
+    ],
+    "composesWith": [
+      "DateTimeInput"
+    ],
+    "usedByPatterns": []
   },
   "TimePicker": {
     "id": "TimePicker",
@@ -852,6 +2343,45 @@
       "min",
       "max",
       "label"
+    ],
+    "states": [
+      "closed",
+      "open listbox",
+      "selected",
+      "focused",
+      "disabled",
+      "empty or unavailable"
+    ],
+    "responsive": [
+      "Positions the listbox in viewport space and keeps it inside narrow viewports.",
+      "Retains shared touch-target minimums and field geometry."
+    ],
+    "motion": [
+      "Uses shared popup duration and easing.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "surface-overlay",
+      "shadow-popover",
+      "control-height",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "DatePicker",
+      "NativeTimeInput",
+      "DateTimeInput"
+    ],
+    "alternativeTo": [
+      "NativeTimeInput"
+    ],
+    "composesWith": [
+      "DatePicker",
+      "DateTimeInput"
+    ],
+    "usedByPatterns": [
+      "entity-form"
     ]
   },
   "DateTimeInput": {
@@ -871,7 +2401,41 @@
       "time",
       "onDateChange",
       "onTimeChange"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "surface-overlay",
+      "shadow-popover",
+      "control-height",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "DatePicker",
+      "TimePicker",
+      "NativeTimeInput"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "DatePicker",
+      "TimePicker"
+    ],
+    "usedByPatterns": []
   },
   "FileUpload": {
     "id": "FileUpload",
@@ -894,6 +2458,40 @@
       "value",
       "onFilesChange",
       "onReject"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-subtle",
+      "border",
+      "selected",
+      "selected-hover",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "FileList",
+      "Progress"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "FileList",
+      "Progress"
+    ],
+    "usedByPatterns": [
+      "entity-form"
     ]
   },
   "FileItem": {
@@ -915,7 +2513,41 @@
       "progress",
       "onRemove",
       "error"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-subtle",
+      "border",
+      "selected",
+      "selected-hover",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "FileList",
+      "Progress",
+      "StatusChip"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "FileList",
+      "Progress",
+      "StatusChip"
+    ],
+    "usedByPatterns": []
   },
   "FileList": {
     "id": "FileList",
@@ -931,7 +2563,39 @@
     ],
     "importantProps": [
       "files"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-subtle",
+      "border",
+      "selected",
+      "selected-hover",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "FileItem",
+      "FileUpload"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "FileItem",
+      "FileUpload"
+    ],
+    "usedByPatterns": []
   },
   "AppShell": {
     "id": "AppShell",
@@ -951,6 +2615,45 @@
       "sidebar",
       "topbar",
       "children"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-overlay",
+      "shadow-popover",
+      "scrim",
+      "radius-panel",
+      "motion"
+    ],
+    "relatedComponents": [
+      "Sidebar",
+      "TopNavigation",
+      "PageHeader"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Sidebar",
+      "TopNavigation",
+      "PageHeader"
+    ],
+    "usedByPatterns": [
+      "entity-list",
+      "master-detail",
+      "catalog",
+      "cart"
     ]
   },
   "Sidebar": {
@@ -974,6 +2677,45 @@
       "activeKey",
       "onSelect",
       "footer"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "selected",
+      "selected-hover",
+      "control-height",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "SidebarGroup",
+      "NavItem",
+      "MobileSidebar"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "SidebarGroup",
+      "NavItem",
+      "MobileSidebar"
+    ],
+    "usedByPatterns": [
+      "entity-list",
+      "master-detail",
+      "settings"
     ]
   },
   "SidebarGroup": {
@@ -994,7 +2736,40 @@
       "items",
       "activeKey",
       "onSelect"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "selected",
+      "selected-hover",
+      "control-height",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Sidebar",
+      "Collapsible"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Sidebar",
+      "Collapsible"
+    ],
+    "usedByPatterns": []
   },
   "NavItem": {
     "id": "NavItem",
@@ -1015,7 +2790,40 @@
       "icon",
       "active",
       "onClick"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "selected",
+      "selected-hover",
+      "control-height",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Sidebar",
+      "TopNavigation"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Sidebar",
+      "TopNavigation"
+    ],
+    "usedByPatterns": []
   },
   "NavigationMenu": {
     "id": "NavigationMenu",
@@ -1035,6 +2843,47 @@
       "label",
       "leading",
       "trailing"
+    ],
+    "states": [
+      "default",
+      "active link",
+      "open branch",
+      "focused",
+      "Escape dismissed",
+      "responsive overflow"
+    ],
+    "responsive": [
+      "Keeps the link row horizontally usable on narrow public headers.",
+      "Positions branch panels in viewport space so parent containers do not clip them."
+    ],
+    "motion": [
+      "Uses shared popup duration and easing.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "selected",
+      "control-height",
+      "shadow-popover",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "TopNavigation",
+      "PublicShell",
+      "MobileSidebar"
+    ],
+    "alternativeTo": [
+      "TopNavigation"
+    ],
+    "composesWith": [
+      "PublicShell",
+      "TopNavigation",
+      "MobileSidebar"
+    ],
+    "usedByPatterns": [
+      "catalog",
+      "marketing-home"
     ]
   },
   "TopNavigation": {
@@ -1056,6 +2905,43 @@
       "trailing",
       "label",
       "placement"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "selected",
+      "selected-hover",
+      "control-height",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "AppShell",
+      "MobileSidebar"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "AppShell",
+      "MobileSidebar"
+    ],
+    "usedByPatterns": [
+      "catalog",
+      "ebook-reader",
+      "cart"
     ]
   },
   "MobileSidebar": {
@@ -1076,7 +2962,40 @@
       "onClose",
       "title",
       "children"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "selected",
+      "selected-hover",
+      "control-height",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Drawer",
+      "Sidebar"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Drawer",
+      "Sidebar"
+    ],
+    "usedByPatterns": []
   },
   "Breadcrumb": {
     "id": "Breadcrumb",
@@ -1095,7 +3014,40 @@
     "importantProps": [
       "items",
       "label"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "selected",
+      "selected-hover",
+      "control-height",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "PageHeader",
+      "TopNavigation"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "PageHeader",
+      "TopNavigation"
+    ],
+    "usedByPatterns": []
   },
   "SectionNavigation": {
     "id": "SectionNavigation",
@@ -1114,7 +3066,44 @@
       "onSectionChange",
       "label",
       "sticky"
-    ]
+    ],
+    "states": [
+      "default",
+      "active anchor",
+      "focused",
+      "mobile menu expanded",
+      "sticky when enabled"
+    ],
+    "responsive": [
+      "Render the labelled anchor list on wide layouts.",
+      "Collapse to a native details summary and compact anchor menu on narrow layouts without changing item semantics."
+    ],
+    "motion": [
+      "Uses the shared transition and easing variables for mobile disclosure.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "selected",
+      "control-height",
+      "touch-target-min",
+      "sticky-offset",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Tabs",
+      "Sidebar",
+      "MobileSidebar",
+      "PageHeader"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "AppShell",
+      "PageHeader",
+      "Tabs"
+    ],
+    "usedByPatterns": []
   },
   "Tabs": {
     "id": "Tabs",
@@ -1136,6 +3125,43 @@
       "defaultValue",
       "onValueChange",
       "label"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "selected",
+      "selected-hover",
+      "control-height",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "TabPanel",
+      "ToggleButtonGroup"
+    ],
+    "alternativeTo": [
+      "ToggleButtonGroup"
+    ],
+    "composesWith": [
+      "TabPanel",
+      "ToggleButtonGroup"
+    ],
+    "usedByPatterns": [
+      "ebook-reader"
     ]
   },
   "Accordion": {
@@ -1156,7 +3182,40 @@
       "multiple",
       "value",
       "onValueChange"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "selected",
+      "selected-hover",
+      "control-height",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Collapsible",
+      "Tabs"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Collapsible",
+      "Tabs"
+    ],
+    "usedByPatterns": []
   },
   "Collapsible": {
     "id": "Collapsible",
@@ -1176,7 +3235,40 @@
       "open",
       "defaultOpen",
       "onOpenChange"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "selected",
+      "selected-hover",
+      "control-height",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Accordion",
+      "SidebarGroup"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Accordion",
+      "SidebarGroup"
+    ],
+    "usedByPatterns": []
   },
   "Stepper": {
     "id": "Stepper",
@@ -1195,7 +3287,40 @@
       "steps",
       "current",
       "onStepChange"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "selected",
+      "selected-hover",
+      "control-height",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Progress",
+      "ActionFooter"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Progress",
+      "ActionFooter"
+    ],
+    "usedByPatterns": []
   },
   "MilestoneTracker": {
     "id": "MilestoneTracker",
@@ -1216,7 +3341,59 @@
       "percentage",
       "status",
       "selectedId",
-      "onSelectedIdChange"
+      "onSelectedIdChange",
+      "detailMode"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "selected",
+      "complete",
+      "current",
+      "upcoming",
+      "blocked",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Keep the milestone sequence inside a bounded horizontal scroll region when the available width is narrow.",
+      "Preserve the ordered stage, state, progress, and detail contracts without introducing a mobile-only component.",
+      "Let the canonical DetailDrawer become full-width at compact widths while retaining its own scroll owner."
+    ],
+    "motion": [
+      "Animate workflow-stage entry and selected detail changes with shared transition variables.",
+      "Use the shared overlay motion for drawer entry and exit, and respect prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "border",
+      "primary",
+      "success",
+      "warning",
+      "danger",
+      "selected",
+      "focus-ring",
+      "radius-panel",
+      "transition-standard"
+    ],
+    "relatedComponents": [
+      "Progress",
+      "Stepper",
+      "StatusChip",
+      "KeyValueList",
+      "DetailDrawer"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "StatusChip",
+      "KeyValueList",
+      "ActivityFeed",
+      "DetailDrawer"
+    ],
+    "usedByPatterns": [
+      "entity-list",
+      "master-detail",
+      "report"
     ]
   },
   "CommandMenu": {
@@ -1237,7 +3414,42 @@
       "open",
       "onOpenChange",
       "shortcut"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "selected",
+      "selected-hover",
+      "control-height",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Modal",
+      "Input",
+      "DropdownMenu"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Modal",
+      "Input",
+      "DropdownMenu"
+    ],
+    "usedByPatterns": []
   },
   "Pagination": {
     "id": "Pagination",
@@ -1260,6 +3472,46 @@
       "total",
       "onPageChange",
       "label"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "selected",
+      "selected-hover",
+      "control-height",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "DataTable",
+      "ProductGrid"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "DataTable",
+      "ProductGrid"
+    ],
+    "usedByPatterns": [
+      "entity-list",
+      "master-detail",
+      "approval-queue",
+      "report",
+      "catalog",
+      "content-list"
     ]
   },
   "Card": {
@@ -1281,6 +3533,44 @@
       "tone",
       "colorway",
       "children"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "surface-emphasis",
+      "border",
+      "radius-card",
+      "shadow-card"
+    ],
+    "relatedComponents": [
+      "CardHeader",
+      "CardContent",
+      "CardFooter"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "CardHeader",
+      "CardContent",
+      "CardFooter"
+    ],
+    "usedByPatterns": [
+      "content-list",
+      "marketing-home"
     ]
   },
   "CardHeader": {
@@ -1298,7 +3588,41 @@
     ],
     "importantProps": [
       "children"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "border",
+      "radius-card",
+      "shadow-card"
+    ],
+    "relatedComponents": [
+      "Card",
+      "CardTitle",
+      "CardDescription"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Card",
+      "CardTitle",
+      "CardDescription"
+    ],
+    "usedByPatterns": []
   },
   "CardContent": {
     "id": "CardContent",
@@ -1314,7 +3638,41 @@
     ],
     "importantProps": [
       "children"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "border",
+      "radius-card",
+      "shadow-card"
+    ],
+    "relatedComponents": [
+      "Card",
+      "CardHeader",
+      "CardFooter"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Card",
+      "CardHeader",
+      "CardFooter"
+    ],
+    "usedByPatterns": []
   },
   "CardFooter": {
     "id": "CardFooter",
@@ -1331,7 +3689,39 @@
     ],
     "importantProps": [
       "children"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "border",
+      "radius-card",
+      "shadow-card"
+    ],
+    "relatedComponents": [
+      "Card",
+      "Button"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Card",
+      "Button"
+    ],
+    "usedByPatterns": []
   },
   "Surface": {
     "id": "Surface",
@@ -1353,6 +3743,44 @@
       "tone",
       "colorway",
       "children"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "surface-emphasis",
+      "border",
+      "radius-card",
+      "shadow-card"
+    ],
+    "relatedComponents": [
+      "Panel",
+      "Card",
+      "Section"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Panel",
+      "Card",
+      "Section"
+    ],
+    "usedByPatterns": [
+      "auth",
+      "marketing-home"
     ]
   },
   "Panel": {
@@ -1372,7 +3800,39 @@
       "as",
       "padded",
       "children"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "border",
+      "radius-card",
+      "shadow-card"
+    ],
+    "relatedComponents": [
+      "Surface",
+      "Card"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Surface",
+      "Card"
+    ],
+    "usedByPatterns": []
   },
   "Section": {
     "id": "Section",
@@ -1393,7 +3853,38 @@
       "description",
       "actions",
       "children"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "section-gap",
+      "surface",
+      "border",
+      "radius-panel"
+    ],
+    "relatedComponents": [
+      "SectionHeader",
+      "Separator"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "SectionHeader",
+      "Separator"
+    ],
+    "usedByPatterns": []
   },
   "Separator": {
     "id": "Separator",
@@ -1409,7 +3900,38 @@
     ],
     "importantProps": [
       "orientation"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "section-gap",
+      "surface",
+      "border",
+      "radius-panel"
+    ],
+    "relatedComponents": [
+      "Section",
+      "Panel"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Section",
+      "Panel"
+    ],
+    "usedByPatterns": []
   },
   "ScrollArea": {
     "id": "ScrollArea",
@@ -1421,14 +3943,44 @@
     "purpose": "Constrain a scrollable region while preserving native browser scroll behavior.",
     "source": "packages/ui/src/layout.tsx",
     "recipes": [
-      "master-detail",
-      "command-menu"
+      "master-detail"
     ],
     "importantProps": [
       "label",
       "maxHeight",
       "children"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "section-gap",
+      "surface",
+      "border",
+      "radius-panel"
+    ],
+    "relatedComponents": [
+      "Panel",
+      "Drawer"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Panel",
+      "Drawer"
+    ],
+    "usedByPatterns": []
   },
   "PageHeader": {
     "id": "PageHeader",
@@ -1452,6 +4004,54 @@
       "breadcrumbs",
       "meta",
       "actions"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "section-gap",
+      "surface",
+      "border",
+      "radius-panel"
+    ],
+    "relatedComponents": [
+      "Breadcrumb",
+      "SectionHeader",
+      "Button"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Breadcrumb",
+      "SectionHeader",
+      "Button"
+    ],
+    "usedByPatterns": [
+      "dashboard",
+      "entity-list",
+      "entity-detail",
+      "entity-form",
+      "master-detail",
+      "approval-queue",
+      "settings",
+      "report",
+      "catalog",
+      "product-detail",
+      "checkout",
+      "content-list",
+      "content-detail",
+      "marketing-home"
     ]
   },
   "SectionHeader": {
@@ -1473,7 +4073,38 @@
       "description",
       "eyebrow",
       "actions"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "section-gap",
+      "surface",
+      "border",
+      "radius-panel"
+    ],
+    "relatedComponents": [
+      "Section",
+      "PageHeader"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Section",
+      "PageHeader"
+    ],
+    "usedByPatterns": []
   },
   "Toolbar": {
     "id": "Toolbar",
@@ -1492,7 +4123,38 @@
       "label",
       "actions",
       "children"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "section-gap",
+      "surface",
+      "border",
+      "radius-panel"
+    ],
+    "relatedComponents": [
+      "ActionBar",
+      "FilterToolbar"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "ActionBar",
+      "FilterToolbar"
+    ],
+    "usedByPatterns": []
   },
   "ActionBar": {
     "id": "ActionBar",
@@ -1510,6 +4172,39 @@
     "importantProps": [
       "label",
       "children"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "section-gap",
+      "surface",
+      "border",
+      "radius-panel"
+    ],
+    "relatedComponents": [
+      "Toolbar",
+      "ButtonGroup"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Toolbar",
+      "ButtonGroup"
+    ],
+    "usedByPatterns": [
+      "ebook-reader"
     ]
   },
   "Table": {
@@ -1530,6 +4225,50 @@
       "children",
       "caption",
       "className"
+    ],
+    "states": [
+      "default",
+      "dense content",
+      "responsive overflow",
+      "empty when applicable"
+    ],
+    "responsive": [
+      "Uses a bounded horizontal scroll owner when content exceeds the viewport.",
+      "Keeps semantic rows and columns intact instead of switching to an unrelated card layout."
+    ],
+    "motion": [
+      "Uses shared row and surface transitions only where state changes.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "table-header",
+      "table-cell",
+      "radius-panel"
+    ],
+    "relatedComponents": [
+      "TableHeader",
+      "TableBody",
+      "TableRow",
+      "TableHead",
+      "TableCell",
+      "DataTable"
+    ],
+    "alternativeTo": [
+      "DataTable"
+    ],
+    "composesWith": [
+      "TableHeader",
+      "TableBody",
+      "TableRow",
+      "TableHead",
+      "TableCell"
+    ],
+    "usedByPatterns": [
+      "report",
+      "content-detail",
+      "catalog"
     ]
   },
   "TableHeader": {
@@ -1549,6 +4288,38 @@
     "importantProps": [
       "children",
       "className"
+    ],
+    "states": [
+      "default",
+      "responsive overflow"
+    ],
+    "responsive": [
+      "Reflows with the table's bounded scroll owner."
+    ],
+    "motion": [
+      "Uses shared table transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-subtle",
+      "border",
+      "table-header"
+    ],
+    "relatedComponents": [
+      "Table",
+      "TableRow",
+      "TableHead"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Table",
+      "TableRow",
+      "TableHead"
+    ],
+    "usedByPatterns": [
+      "report",
+      "content-detail",
+      "catalog"
     ]
   },
   "TableBody": {
@@ -1568,6 +4339,39 @@
     "importantProps": [
       "children",
       "className"
+    ],
+    "states": [
+      "default",
+      "empty when applicable",
+      "responsive overflow"
+    ],
+    "responsive": [
+      "Reflows with the table's bounded scroll owner."
+    ],
+    "motion": [
+      "Uses shared row transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "table-cell"
+    ],
+    "relatedComponents": [
+      "Table",
+      "TableRow",
+      "TableCell"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Table",
+      "TableRow",
+      "TableCell"
+    ],
+    "usedByPatterns": [
+      "report",
+      "content-detail",
+      "catalog"
     ]
   },
   "TableRow": {
@@ -1587,6 +4391,42 @@
     "importantProps": [
       "children",
       "className"
+    ],
+    "states": [
+      "default",
+      "hover",
+      "responsive overflow"
+    ],
+    "responsive": [
+      "Preserves row structure inside the table scroll owner."
+    ],
+    "motion": [
+      "Uses the shared row transition.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "border",
+      "selected-hover",
+      "table-cell"
+    ],
+    "relatedComponents": [
+      "Table",
+      "TableHeader",
+      "TableBody",
+      "TableHead",
+      "TableCell"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "TableHeader",
+      "TableBody",
+      "TableHead",
+      "TableCell"
+    ],
+    "usedByPatterns": [
+      "report",
+      "content-detail",
+      "catalog"
     ]
   },
   "TableHead": {
@@ -1607,6 +4447,45 @@
       "children",
       "scope",
       "className"
+    ],
+    "states": [
+      "default",
+      "focused when interactive",
+      "responsive overflow"
+    ],
+    "responsive": [
+      "Retains header association when the table scrolls horizontally."
+    ],
+    "motion": [
+      "Uses shared table transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-subtle",
+      "border",
+      "table-header",
+      "table-header-text"
+    ],
+    "relatedComponents": [
+      "Table",
+      "TableHeader",
+      "TableRow",
+      "TableCell",
+      "DataTable"
+    ],
+    "alternativeTo": [
+      "DataTable"
+    ],
+    "composesWith": [
+      "Table",
+      "TableHeader",
+      "TableRow",
+      "TableCell"
+    ],
+    "usedByPatterns": [
+      "report",
+      "content-detail",
+      "catalog"
     ]
   },
   "TableCell": {
@@ -1627,6 +4506,44 @@
       "children",
       "colSpan",
       "className"
+    ],
+    "states": [
+      "default",
+      "empty when applicable",
+      "responsive overflow"
+    ],
+    "responsive": [
+      "Preserves readable cell content inside the table scroll owner."
+    ],
+    "motion": [
+      "Uses shared table transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "table-cell"
+    ],
+    "relatedComponents": [
+      "Table",
+      "TableBody",
+      "TableRow",
+      "TableHead",
+      "DataTable"
+    ],
+    "alternativeTo": [
+      "DataTable"
+    ],
+    "composesWith": [
+      "Table",
+      "TableBody",
+      "TableRow",
+      "TableHead"
+    ],
+    "usedByPatterns": [
+      "report",
+      "content-detail",
+      "catalog"
     ]
   },
   "DataTable": {
@@ -1655,6 +4572,50 @@
       "sort",
       "loading",
       "error"
+    ],
+    "states": [
+      "loading",
+      "ready",
+      "empty",
+      "error",
+      "sorted",
+      "selected rows"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Supports a stacked record presentation on narrow screens when row comparison needs more room than a horizontal table.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "selected",
+      "selected-hover",
+      "row-height",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "DataTableColumnPicker",
+      "BulkActionBar",
+      "Pagination"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "DataTableColumnPicker",
+      "BulkActionBar",
+      "Pagination"
+    ],
+    "usedByPatterns": [
+      "dashboard",
+      "entity-list",
+      "entity-detail",
+      "master-detail",
+      "approval-queue",
+      "report"
     ]
   },
   "AdvancedDataGrid": {
@@ -1679,7 +4640,62 @@
       "onRowCancel",
       "selectable",
       "footer"
-    ]
+    ],
+    "states": [
+      "loading",
+      "ready",
+      "empty",
+      "error",
+      "dirty rows",
+      "saving rows",
+      "saved rows",
+      "row validation error",
+      "selected rows"
+    ],
+    "responsive": [
+      "Keeps editable columns inside a bounded horizontal scroll owner on narrow Web layouts.",
+      "Uses shared control geometry and lets consumers switch to a table plus form or drawer workflow when inline editing is too dense."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for focus and row-state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "selected",
+      "selected-hover",
+      "row-height",
+      "focus-ring",
+      "input-background",
+      "input-border",
+      "danger",
+      "muted-foreground"
+    ],
+    "relatedComponents": [
+      "DataTable",
+      "DataTableColumnPicker",
+      "BulkActionBar",
+      "Pagination",
+      "Input",
+      "NumberInput",
+      "CurrencyInput",
+      "Select",
+      "IconButton"
+    ],
+    "alternativeTo": [
+      "DataTable"
+    ],
+    "composesWith": [
+      "Input",
+      "NumberInput",
+      "CurrencyInput",
+      "Select",
+      "IconButton",
+      "BulkActionBar",
+      "Pagination"
+    ],
+    "usedByPatterns": []
   },
   "DataTableColumnPicker": {
     "id": "DataTableColumnPicker",
@@ -1698,7 +4714,40 @@
       "columns",
       "visibility",
       "onVisibilityChange"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "selected",
+      "selected-hover",
+      "row-height",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "DataTable",
+      "Checkbox"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "DataTable",
+      "Checkbox"
+    ],
+    "usedByPatterns": []
   },
   "Badge": {
     "id": "Badge",
@@ -1715,6 +4764,44 @@
     "importantProps": [
       "tone",
       "children"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "selected",
+      "selected-hover",
+      "muted-foreground",
+      "radius-control"
+    ],
+    "relatedComponents": [
+      "StatusChip",
+      "DataTable"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "StatusChip",
+      "DataTable"
+    ],
+    "usedByPatterns": [
+      "product-detail",
+      "content-list",
+      "content-detail",
+      "marketing-home"
     ]
   },
   "StatusChip": {
@@ -1735,6 +4822,42 @@
       "tone",
       "icon",
       "children"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "selected",
+      "selected-hover",
+      "muted-foreground",
+      "radius-control"
+    ],
+    "relatedComponents": [
+      "Badge",
+      "Alert"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Badge",
+      "Alert"
+    ],
+    "usedByPatterns": [
+      "entity-list",
+      "entity-detail"
     ]
   },
   "Avatar": {
@@ -1755,7 +4878,40 @@
       "src",
       "alt",
       "size"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "selected",
+      "selected-hover",
+      "muted-foreground",
+      "radius-control"
+    ],
+    "relatedComponents": [
+      "AvatarGroup",
+      "ActivityFeed"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "AvatarGroup",
+      "ActivityFeed"
+    ],
+    "usedByPatterns": []
   },
   "AvatarGroup": {
     "id": "AvatarGroup",
@@ -1773,7 +4929,40 @@
     "importantProps": [
       "avatars",
       "max"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "selected",
+      "selected-hover",
+      "muted-foreground",
+      "radius-control"
+    ],
+    "relatedComponents": [
+      "Avatar",
+      "ActivityFeed"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Avatar",
+      "ActivityFeed"
+    ],
+    "usedByPatterns": []
   },
   "KeyValueList": {
     "id": "KeyValueList",
@@ -1791,6 +4980,42 @@
     ],
     "importantProps": [
       "items"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "selected",
+      "selected-hover",
+      "muted-foreground",
+      "radius-control"
+    ],
+    "relatedComponents": [
+      "RecordSummary",
+      "DataTable"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "RecordSummary",
+      "DataTable"
+    ],
+    "usedByPatterns": [
+      "entity-detail",
+      "master-detail"
     ]
   },
   "MetricCard": {
@@ -1821,6 +5046,48 @@
       "emphasis",
       "tone",
       "colorway"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Value and trend wrap without clipping while bottom and inline charts retain bounded geometry.",
+      "Chart height, padding, direct icon sizing, and trend geometry follow density-aware KPI tokens."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-emphasis",
+      "border",
+      "muted-foreground",
+      "radius-control",
+      "kpi-padding",
+      "kpi-gap",
+      "kpi-content-gap",
+      "kpi-icon-container",
+      "kpi-icon-size",
+      "kpi-chart-height"
+    ],
+    "relatedComponents": [
+      "KPICluster",
+      "TrendIndicator",
+      "Sparkline"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "KPICluster",
+      "TrendIndicator",
+      "Sparkline"
+    ],
+    "usedByPatterns": [
+      "dashboard"
     ]
   },
   "KPICluster": {
@@ -1850,6 +5117,53 @@
       "variant",
       "orientation",
       "columns"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Horizontal groups collapse to two columns and visual-heavy KPI groups collapse to one column on narrow screens.",
+      "Vertical orientation retains separators and reading order without duplicating the component family."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-emphasis",
+      "border",
+      "muted-foreground",
+      "radius-control",
+      "kpi-padding",
+      "kpi-gap",
+      "kpi-content-gap",
+      "kpi-icon-container",
+      "kpi-icon-size",
+      "kpi-chart-height"
+    ],
+    "relatedComponents": [
+      "MetricCard",
+      "TrendIndicator",
+      "Sparkline",
+      "Progress"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "MetricCard",
+      "TrendIndicator",
+      "Sparkline",
+      "Progress"
+    ],
+    "usedByPatterns": [
+      "dashboard",
+      "entity-list",
+      "approval-queue",
+      "report"
     ]
   },
   "ActivityFeed": {
@@ -1867,6 +5181,42 @@
     ],
     "importantProps": [
       "items"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "selected",
+      "selected-hover",
+      "muted-foreground",
+      "radius-control"
+    ],
+    "relatedComponents": [
+      "Avatar",
+      "RecordSummary"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Avatar",
+      "RecordSummary"
+    ],
+    "usedByPatterns": [
+      "entity-detail",
+      "content-detail"
     ]
   },
   "RecordSummary": {
@@ -1890,6 +5240,47 @@
       "media",
       "metadata",
       "actions"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "selected",
+      "selected-hover",
+      "muted-foreground",
+      "radius-control"
+    ],
+    "relatedComponents": [
+      "KeyValueList",
+      "ActivityFeed",
+      "StatusChip"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "KeyValueList",
+      "ActivityFeed",
+      "StatusChip"
+    ],
+    "usedByPatterns": [
+      "entity-detail",
+      "master-detail",
+      "product-detail",
+      "checkout",
+      "content-detail"
     ]
   },
   "RevisionDiff": {
@@ -1909,7 +5300,42 @@
       "occurredAt",
       "evidence",
       "title"
-    ]
+    ],
+    "states": [
+      "default",
+      "empty or unavailable when applicable",
+      "changed, added, removed, or unchanged field rows"
+    ],
+    "responsive": [
+      "Stack each field's label, before value, after value, and change state in narrow containers without changing meaning.",
+      "Retain shared table geometry, readable wrapping, and touch-safe spacing."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "muted-foreground",
+      "radius-panel",
+      "table-cell-padding",
+      "motion"
+    ],
+    "relatedComponents": [
+      "KeyValueList",
+      "ActivityFeed",
+      "StatusChip",
+      "Table"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "KeyValueList",
+      "ActivityFeed",
+      "StatusChip",
+      "Table"
+    ],
+    "usedByPatterns": []
   },
   "ProductCard": {
     "id": "ProductCard",
@@ -1932,6 +5358,44 @@
       "price",
       "details",
       "actions"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-subtle",
+      "accent",
+      "selected",
+      "control-height",
+      "radius-card",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "ProductGrid",
+      "Price",
+      "Rating"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "ProductGrid",
+      "Price",
+      "Rating"
+    ],
+    "usedByPatterns": [
+      "catalog"
     ]
   },
   "ProductGrid": {
@@ -1950,6 +5414,43 @@
     "importantProps": [
       "minCardWidth",
       "children"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-subtle",
+      "accent",
+      "selected",
+      "control-height",
+      "radius-card",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "ProductCard",
+      "Pagination"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "ProductCard",
+      "Pagination"
+    ],
+    "usedByPatterns": [
+      "catalog",
+      "content-list"
     ]
   },
   "Price": {
@@ -1971,6 +5472,43 @@
       "currency",
       "locale",
       "originalAmount"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-subtle",
+      "accent",
+      "selected",
+      "control-height",
+      "radius-card",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "CurrencyInput",
+      "ProductCard"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "CurrencyInput",
+      "ProductCard"
+    ],
+    "usedByPatterns": [
+      "catalog",
+      "product-detail"
     ]
   },
   "Rating": {
@@ -1990,6 +5528,43 @@
       "value",
       "count",
       "label"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-subtle",
+      "accent",
+      "selected",
+      "control-height",
+      "radius-card",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "ProductCard",
+      "StatusChip"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "ProductCard",
+      "StatusChip"
+    ],
+    "usedByPatterns": [
+      "catalog",
+      "product-detail"
     ]
   },
   "ProductMeta": {
@@ -2007,6 +5582,42 @@
     ],
     "importantProps": [
       "items"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-subtle",
+      "accent",
+      "selected",
+      "control-height",
+      "radius-card",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "ProductCard",
+      "Price"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "ProductCard",
+      "Price"
+    ],
+    "usedByPatterns": [
+      "product-detail"
     ]
   },
   "FilterToolbar": {
@@ -2028,6 +5639,48 @@
       "summary",
       "children",
       "actions"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "accent",
+      "selected",
+      "control-gap",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "AppliedFilters",
+      "FilterDrawer",
+      "DataTable"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "AppliedFilters",
+      "FilterDrawer",
+      "DataTable"
+    ],
+    "usedByPatterns": [
+      "dashboard",
+      "entity-list",
+      "master-detail",
+      "approval-queue",
+      "report",
+      "content-list"
     ]
   },
   "FilterChip": {
@@ -2047,7 +5700,40 @@
     "importantProps": [
       "label",
       "onRemove"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "accent",
+      "selected",
+      "control-gap",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "AppliedFilters",
+      "FilterToolbar"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "AppliedFilters",
+      "FilterToolbar"
+    ],
+    "usedByPatterns": []
   },
   "AppliedFilters": {
     "id": "AppliedFilters",
@@ -2068,6 +5754,42 @@
       "onRemove",
       "onClear",
       "clearLabel"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "accent",
+      "selected",
+      "control-gap",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "FilterChip",
+      "FilterToolbar"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "FilterChip",
+      "FilterToolbar"
+    ],
+    "usedByPatterns": [
+      "entity-list",
+      "catalog"
     ]
   },
   "FilterDrawer": {
@@ -2090,6 +5812,44 @@
       "onApply",
       "onClear",
       "children"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "accent",
+      "selected",
+      "control-gap",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Drawer",
+      "ActionFooter",
+      "FilterToolbar"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Drawer",
+      "ActionFooter",
+      "FilterToolbar"
+    ],
+    "usedByPatterns": [
+      "entity-list",
+      "catalog"
     ]
   },
   "BulkActionBar": {
@@ -2111,6 +5871,42 @@
       "onClear",
       "noun",
       "reserveSpace"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "accent",
+      "selected",
+      "control-gap",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "DataTable",
+      "AlertDialog"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "DataTable",
+      "AlertDialog"
+    ],
+    "usedByPatterns": [
+      "entity-list",
+      "approval-queue"
     ]
   },
   "Modal": {
@@ -2133,6 +5929,46 @@
       "description",
       "onClose",
       "initialFocus"
+    ],
+    "states": [
+      "closed",
+      "open with focus",
+      "Escape dismissal",
+      "busy content"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-overlay",
+      "shadow-popover",
+      "shadow-modal",
+      "scrim",
+      "motion"
+    ],
+    "relatedComponents": [
+      "AlertDialog",
+      "CommandMenu",
+      "Drawer"
+    ],
+    "alternativeTo": [
+      "Drawer"
+    ],
+    "composesWith": [
+      "AlertDialog",
+      "CommandMenu",
+      "Drawer"
+    ],
+    "usedByPatterns": [
+      "entity-detail",
+      "approval-queue",
+      "checkout",
+      "ebook-reader"
     ]
   },
   "Drawer": {
@@ -2155,7 +5991,40 @@
       "onClose",
       "side",
       "initialFocus"
-    ]
+    ],
+    "states": [
+      "closed",
+      "open side panel",
+      "Escape dismissal",
+      "mobile full width"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-overlay",
+      "shadow-popover",
+      "shadow-modal",
+      "scrim",
+      "motion"
+    ],
+    "relatedComponents": [
+      "DetailDrawer",
+      "FilterDrawer",
+      "MobileSidebar"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "DetailDrawer",
+      "FilterDrawer",
+      "MobileSidebar"
+    ],
+    "usedByPatterns": []
   },
   "DetailDrawer": {
     "id": "DetailDrawer",
@@ -2178,6 +6047,45 @@
       "onClose",
       "side",
       "initialFocus"
+    ],
+    "states": [
+      "closed",
+      "open record context",
+      "Escape dismissal",
+      "mobile full width"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-overlay",
+      "shadow-popover",
+      "shadow-modal",
+      "scrim",
+      "motion"
+    ],
+    "relatedComponents": [
+      "Drawer",
+      "DataTable",
+      "ProductCard",
+      "RecordSummary"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Drawer",
+      "DataTable",
+      "ProductCard",
+      "RecordSummary"
+    ],
+    "usedByPatterns": [
+      "entity-list",
+      "master-detail",
+      "catalog"
     ]
   },
   "AlertDialog": {
@@ -2201,6 +6109,42 @@
       "confirmLabel",
       "onConfirm",
       "onClose"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-overlay",
+      "shadow-popover",
+      "shadow-modal",
+      "scrim",
+      "motion"
+    ],
+    "relatedComponents": [
+      "Modal",
+      "Button"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Modal",
+      "Button"
+    ],
+    "usedByPatterns": [
+      "entity-list",
+      "entity-form",
+      "approval-queue"
     ]
   },
   "Popover": {
@@ -2223,7 +6167,39 @@
       "defaultOpen",
       "onOpenChange",
       "side"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-overlay",
+      "shadow-popover",
+      "shadow-modal",
+      "scrim",
+      "motion"
+    ],
+    "relatedComponents": [
+      "Tooltip",
+      "DropdownMenu"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Tooltip",
+      "DropdownMenu"
+    ],
+    "usedByPatterns": []
   },
   "Tooltip": {
     "id": "Tooltip",
@@ -2241,7 +6217,39 @@
       "content",
       "side",
       "children"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-overlay",
+      "shadow-popover",
+      "shadow-modal",
+      "scrim",
+      "motion"
+    ],
+    "relatedComponents": [
+      "IconButton",
+      "Popover"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "IconButton",
+      "Popover"
+    ],
+    "usedByPatterns": []
   },
   "DropdownMenu": {
     "id": "DropdownMenu",
@@ -2263,7 +6271,41 @@
       "open",
       "onOpenChange",
       "label"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-overlay",
+      "shadow-popover",
+      "shadow-modal",
+      "scrim",
+      "motion"
+    ],
+    "relatedComponents": [
+      "ActionMenu",
+      "SplitButton",
+      "IconButton"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "ActionMenu",
+      "SplitButton",
+      "IconButton"
+    ],
+    "usedByPatterns": []
   },
   "ActionMenu": {
     "id": "ActionMenu",
@@ -2282,6 +6324,40 @@
     "importantProps": [
       "trigger",
       "items"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-overlay",
+      "shadow-popover",
+      "shadow-modal",
+      "scrim",
+      "motion"
+    ],
+    "relatedComponents": [
+      "DropdownMenu",
+      "DataTable"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "DropdownMenu",
+      "DataTable"
+    ],
+    "usedByPatterns": [
+      "entity-list"
     ]
   },
   "ContextMenu": {
@@ -2301,7 +6377,39 @@
       "items",
       "label",
       "children"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-overlay",
+      "shadow-popover",
+      "shadow-modal",
+      "scrim",
+      "motion"
+    ],
+    "relatedComponents": [
+      "DropdownMenu",
+      "ActionMenu"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "DropdownMenu",
+      "ActionMenu"
+    ],
+    "usedByPatterns": []
   },
   "Alert": {
     "id": "Alert",
@@ -2324,6 +6432,46 @@
       "description",
       "action",
       "onDismiss"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "success",
+      "warning",
+      "danger",
+      "info",
+      "surface-emphasis",
+      "surface-subtle",
+      "motion"
+    ],
+    "relatedComponents": [
+      "Toast",
+      "StateView"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Toast",
+      "StateView"
+    ],
+    "usedByPatterns": [
+      "entity-detail",
+      "settings",
+      "product-detail",
+      "checkout",
+      "auth"
     ]
   },
   "ToastProvider": {
@@ -2341,7 +6489,42 @@
     "importantProps": [
       "limit",
       "children"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "success",
+      "warning",
+      "danger",
+      "info",
+      "surface-subtle",
+      "motion"
+    ],
+    "relatedComponents": [
+      "Toaster",
+      "Toast",
+      "Alert"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Toaster",
+      "Toast",
+      "Alert"
+    ],
+    "usedByPatterns": []
   },
   "Toaster": {
     "id": "Toaster",
@@ -2358,7 +6541,40 @@
     "importantProps": [
       "toasts",
       "onDismiss"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "success",
+      "warning",
+      "danger",
+      "info",
+      "surface-subtle",
+      "motion"
+    ],
+    "relatedComponents": [
+      "ToastProvider",
+      "Toast"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "ToastProvider",
+      "Toast"
+    ],
+    "usedByPatterns": []
   },
   "Toast": {
     "id": "Toast",
@@ -2375,7 +6591,42 @@
     "importantProps": [
       "toast",
       "onDismiss"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "success",
+      "warning",
+      "danger",
+      "info",
+      "surface-subtle",
+      "motion"
+    ],
+    "relatedComponents": [
+      "Toaster",
+      "Alert"
+    ],
+    "alternativeTo": [
+      "Alert"
+    ],
+    "composesWith": [
+      "Toaster",
+      "Alert"
+    ],
+    "usedByPatterns": []
   },
   "EmptyState": {
     "id": "EmptyState",
@@ -2396,6 +6647,42 @@
       "description",
       "icon",
       "action"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "success",
+      "warning",
+      "danger",
+      "info",
+      "surface-subtle",
+      "motion"
+    ],
+    "relatedComponents": [
+      "StateView",
+      "DataTable"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "StateView",
+      "DataTable"
+    ],
+    "usedByPatterns": [
+      "content-list",
+      "cart"
     ]
   },
   "StateView": {
@@ -2418,6 +6705,114 @@
       "description",
       "action",
       "icon"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "success",
+      "warning",
+      "danger",
+      "info",
+      "surface-subtle",
+      "motion"
+    ],
+    "relatedComponents": [
+      "EmptyState",
+      "Alert"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "EmptyState",
+      "Alert"
+    ],
+    "usedByPatterns": []
+  },
+  "ModuleState": {
+    "id": "ModuleState",
+    "displayName": "Module State",
+    "status": "implemented",
+    "category": "feedback",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Render a consumer-supplied module availability, lifecycle, scope, or access state without evaluating business policy.",
+    "source": "packages/ui/src/module-state.tsx",
+    "recipes": [
+      "entity-list",
+      "entity-detail",
+      "entity-form",
+      "master-detail"
+    ],
+    "importantProps": [
+      "state",
+      "title",
+      "description",
+      "details",
+      "action",
+      "secondaryAction",
+      "icon"
+    ],
+    "states": [
+      "not-available",
+      "not-entitled",
+      "setup-required",
+      "provisioning",
+      "resuming",
+      "suspended",
+      "dependency-unavailable",
+      "permission-denied",
+      "out-of-scope",
+      "read-only",
+      "action-required"
+    ],
+    "responsive": [
+      "Uses the shared responsive shell behavior: inline on desktop, wrapping on tablet, and stacked actions on mobile.",
+      "Keeps consumer actions at the shared touch-target minimum without adding renderer-owned handlers."
+    ],
+    "motion": [
+      "Uses shared surface transition tokens when the state changes.",
+      "Respects prefers-reduced-motion through the shared token layer."
+    ],
+    "tokens": [
+      "surface-subtle",
+      "border",
+      "radius-card",
+      "shadow-card",
+      "primary",
+      "info",
+      "warning",
+      "danger",
+      "touch-target-min",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "StateView",
+      "Alert",
+      "PageHeader"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "StateView",
+      "Alert",
+      "PageHeader"
+    ],
+    "usedByPatterns": [
+      "entity-list",
+      "entity-detail",
+      "entity-form",
+      "master-detail"
     ]
   },
   "Skeleton": {
@@ -2437,7 +6832,40 @@
     "importantProps": [
       "width",
       "height"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "success",
+      "warning",
+      "danger",
+      "info",
+      "surface-subtle",
+      "motion"
+    ],
+    "relatedComponents": [
+      "Spinner",
+      "StateView"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Spinner",
+      "StateView"
+    ],
+    "usedByPatterns": []
   },
   "Spinner": {
     "id": "Spinner",
@@ -2454,7 +6882,40 @@
     "importantProps": [
       "label",
       "size"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "success",
+      "warning",
+      "danger",
+      "info",
+      "surface-subtle",
+      "motion"
+    ],
+    "relatedComponents": [
+      "Progress",
+      "Skeleton"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Progress",
+      "Skeleton"
+    ],
+    "usedByPatterns": []
   },
   "Progress": {
     "id": "Progress",
@@ -2475,6 +6936,41 @@
       "indeterminate",
       "label",
       "showValue"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "success",
+      "warning",
+      "danger",
+      "info",
+      "surface-subtle",
+      "motion"
+    ],
+    "relatedComponents": [
+      "CircularProgress",
+      "Spinner"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "CircularProgress",
+      "Spinner"
+    ],
+    "usedByPatterns": [
+      "ebook-reader"
     ]
   },
   "CircularProgress": {
@@ -2495,7 +6991,40 @@
       "max",
       "label",
       "size"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "success",
+      "warning",
+      "danger",
+      "info",
+      "surface-subtle",
+      "motion"
+    ],
+    "relatedComponents": [
+      "Progress",
+      "MetricCard"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Progress",
+      "MetricCard"
+    ],
+    "usedByPatterns": []
   },
   "TrendIndicator": {
     "id": "TrendIndicator",
@@ -2517,7 +7046,47 @@
       "context",
       "variant",
       "label"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "chart-1",
+      "chart-2",
+      "chart-3",
+      "chart-4",
+      "chart-5",
+      "success",
+      "warning",
+      "danger",
+      "muted-foreground",
+      "surface",
+      "border",
+      "kpi-trend-padding-block",
+      "kpi-trend-padding-inline"
+    ],
+    "relatedComponents": [
+      "MetricCard",
+      "Sparkline"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "MetricCard",
+      "Sparkline"
+    ],
+    "usedByPatterns": []
   },
   "Sparkline": {
     "id": "Sparkline",
@@ -2537,7 +7106,46 @@
       "label",
       "colorway",
       "tone"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Fills its bounded chart slot while preserving the parent card inset.",
+      "Uses non-scaling strokes so the compact line remains optically stable across widths."
+    ],
+    "motion": [
+      "Reveals the complete line, fill, and endpoint through one left-to-right clip so the path never appears fragmented.",
+      "Respects prefers-reduced-motion and renders the complete series immediately."
+    ],
+    "tokens": [
+      "chart-1",
+      "chart-2",
+      "chart-3",
+      "chart-4",
+      "chart-5",
+      "success",
+      "warning",
+      "danger",
+      "info",
+      "surface",
+      "border",
+      "kpi-chart-height"
+    ],
+    "relatedComponents": [
+      "TrendIndicator",
+      "LineChart"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "TrendIndicator",
+      "LineChart"
+    ],
+    "usedByPatterns": []
   },
   "LineChart": {
     "id": "LineChart",
@@ -2558,6 +7166,43 @@
       "title",
       "valueFormatter",
       "height"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "chart-1",
+      "chart-2",
+      "chart-3",
+      "chart-4",
+      "chart-5",
+      "surface",
+      "border"
+    ],
+    "relatedComponents": [
+      "Sparkline",
+      "ChartLegend"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Sparkline",
+      "ChartLegend"
+    ],
+    "usedByPatterns": [
+      "dashboard",
+      "report"
     ]
   },
   "BarChart": {
@@ -2578,6 +7223,43 @@
       "title",
       "valueFormatter",
       "height"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "chart-1",
+      "chart-2",
+      "chart-3",
+      "chart-4",
+      "chart-5",
+      "surface",
+      "border"
+    ],
+    "relatedComponents": [
+      "LineChart",
+      "DonutChart"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "LineChart",
+      "DonutChart"
+    ],
+    "usedByPatterns": [
+      "dashboard",
+      "report"
     ]
   },
   "DonutChart": {
@@ -2598,6 +7280,42 @@
       "centerLabel",
       "title",
       "valueFormatter"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "chart-1",
+      "chart-2",
+      "chart-3",
+      "chart-4",
+      "chart-5",
+      "surface",
+      "border"
+    ],
+    "relatedComponents": [
+      "BarChart",
+      "ChartLegend"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "BarChart",
+      "ChartLegend"
+    ],
+    "usedByPatterns": [
+      "report"
     ]
   },
   "AspectRatio": {
@@ -2617,7 +7335,38 @@
     "importantProps": [
       "ratio",
       "children"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-subtle",
+      "surface-raised",
+      "radius-card",
+      "shadow-card"
+    ],
+    "relatedComponents": [
+      "MediaFrame",
+      "Image"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "MediaFrame",
+      "Image"
+    ],
+    "usedByPatterns": []
   },
   "MediaFrame": {
     "id": "MediaFrame",
@@ -2638,6 +7387,43 @@
       "tone",
       "label",
       "children"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-subtle",
+      "surface-raised",
+      "radius-card",
+      "shadow-card"
+    ],
+    "relatedComponents": [
+      "AspectRatio",
+      "Image",
+      "ProductCard"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "AspectRatio",
+      "Image",
+      "ProductCard"
+    ],
+    "usedByPatterns": [
+      "product-detail",
+      "content-detail",
+      "marketing-home"
     ]
   },
   "Image": {
@@ -2658,7 +7444,38 @@
       "alt",
       "fallbackIcon",
       "fallbackLabel"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-subtle",
+      "surface-raised",
+      "radius-card",
+      "shadow-card"
+    ],
+    "relatedComponents": [
+      "MediaFrame",
+      "AspectRatio"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "MediaFrame",
+      "AspectRatio"
+    ],
+    "usedByPatterns": []
   },
   "QrCode": {
     "id": "QrCode",
@@ -2679,7 +7496,43 @@
       "copyable",
       "printable",
       "onCopy"
-    ]
+    ],
+    "states": [
+      "default",
+      "copied",
+      "copy unavailable",
+      "printing",
+      "value too long or invalid"
+    ],
+    "responsive": [
+      "Scale the mark within a bounded surface and let opaque values wrap without horizontal overflow.",
+      "Wrap copy and print actions at narrow widths while retaining shared touch-target geometry."
+    ],
+    "motion": [
+      "Uses canonical Button transitions for copy and print actions.",
+      "Does not animate the QR mark and respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-subtle",
+      "foreground",
+      "muted-foreground",
+      "border",
+      "radius-panel",
+      "control-gap",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Image",
+      "MediaFrame",
+      "Button"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "MediaFrame",
+      "Button"
+    ],
+    "usedByPatterns": []
   },
   "ApprovalPanel": {
     "id": "ApprovalPanel",
@@ -2700,6 +7553,40 @@
       "metadata",
       "actions",
       "tone"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-overlay",
+      "shadow-popover",
+      "scrim",
+      "radius-panel",
+      "motion"
+    ],
+    "relatedComponents": [
+      "ActionFooter",
+      "AlertDialog"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "ActionFooter",
+      "AlertDialog"
+    ],
+    "usedByPatterns": [
+      "approval-queue"
     ]
   },
   "ActionFooter": {
@@ -2721,6 +7608,50 @@
       "primaryAction",
       "secondaryActions",
       "summary"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-overlay",
+      "shadow-popover",
+      "scrim",
+      "radius-panel",
+      "motion"
+    ],
+    "relatedComponents": [
+      "Button",
+      "ApprovalPanel",
+      "AlertDialog"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Button",
+      "ApprovalPanel",
+      "AlertDialog"
+    ],
+    "usedByPatterns": [
+      "dashboard",
+      "entity-detail",
+      "entity-form",
+      "settings",
+      "product-detail",
+      "checkout",
+      "content-detail",
+      "auth",
+      "marketing-home"
     ]
   },
   "CardTitle": {
@@ -2738,7 +7669,41 @@
     "importantProps": [
       "children",
       "as"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "border",
+      "radius-card",
+      "shadow-card"
+    ],
+    "relatedComponents": [
+      "Card",
+      "CardHeader",
+      "CardDescription"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Card",
+      "CardHeader",
+      "CardDescription"
+    ],
+    "usedByPatterns": []
   },
   "CardDescription": {
     "id": "CardDescription",
@@ -2755,7 +7720,41 @@
     "importantProps": [
       "children",
       "as"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "border",
+      "radius-card",
+      "shadow-card"
+    ],
+    "relatedComponents": [
+      "Card",
+      "CardHeader",
+      "CardTitle"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Card",
+      "CardHeader",
+      "CardTitle"
+    ],
+    "usedByPatterns": []
   },
   "FieldDescription": {
     "id": "FieldDescription",
@@ -2774,7 +7773,45 @@
     "importantProps": [
       "id",
       "children"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Field",
+      "Label",
+      "FieldError"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Field",
+      "Label",
+      "FieldError"
+    ],
+    "usedByPatterns": []
   },
   "FieldError": {
     "id": "FieldError",
@@ -2793,7 +7830,45 @@
     "importantProps": [
       "id",
       "children"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-hover-border",
+      "input-focus-border",
+      "disabled-background",
+      "disabled-foreground",
+      "control-height",
+      "control-radius",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Field",
+      "Label",
+      "FieldDescription"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Field",
+      "Label",
+      "FieldDescription"
+    ],
+    "usedByPatterns": []
   },
   "TabPanel": {
     "id": "TabPanel",
@@ -2813,7 +7888,40 @@
       "id",
       "aria-labelledby",
       "children"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "selected",
+      "selected-hover",
+      "control-height",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Tabs",
+      "Accordion"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Tabs",
+      "Accordion"
+    ],
+    "usedByPatterns": []
   },
   "CommandPalette": {
     "id": "CommandPalette",
@@ -2835,7 +7943,40 @@
       "onOpenChange",
       "commands",
       "shortcut"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "selected",
+      "selected-hover",
+      "control-height",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "CommandMenu",
+      "Modal"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "CommandMenu",
+      "Modal"
+    ],
+    "usedByPatterns": []
   },
   "DescriptionList": {
     "id": "DescriptionList",
@@ -2854,7 +7995,40 @@
     ],
     "importantProps": [
       "items"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "selected",
+      "selected-hover",
+      "muted-foreground",
+      "radius-control"
+    ],
+    "relatedComponents": [
+      "KeyValueList",
+      "RecordSummary"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "KeyValueList",
+      "RecordSummary"
+    ],
+    "usedByPatterns": []
   },
   "Timeline": {
     "id": "Timeline",
@@ -2873,7 +8047,40 @@
     ],
     "importantProps": [
       "items"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "selected",
+      "selected-hover",
+      "muted-foreground",
+      "radius-control"
+    ],
+    "relatedComponents": [
+      "ActivityFeed",
+      "RecordSummary"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "ActivityFeed",
+      "RecordSummary"
+    ],
+    "usedByPatterns": []
   },
   "ChartLegend": {
     "id": "ChartLegend",
@@ -2890,7 +8097,43 @@
     ],
     "importantProps": [
       "items"
-    ]
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "chart-1",
+      "chart-2",
+      "chart-3",
+      "chart-4",
+      "chart-5",
+      "surface",
+      "border"
+    ],
+    "relatedComponents": [
+      "LineChart",
+      "BarChart",
+      "DonutChart"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "LineChart",
+      "BarChart",
+      "DonutChart"
+    ],
+    "usedByPatterns": []
   },
   "QuantityControl": {
     "id": "QuantityControl",
@@ -2914,6 +8157,45 @@
       "step",
       "label",
       "allowInput"
+    ],
+    "states": [
+      "minimum",
+      "bounded maximum",
+      "updated",
+      "disabled"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-subtle",
+      "accent",
+      "selected",
+      "control-height",
+      "radius-card",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "NumberInput",
+      "CartLineItem",
+      "Input"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "NumberInput",
+      "CartLineItem",
+      "Input"
+    ],
+    "usedByPatterns": [
+      "catalog",
+      "checkout",
+      "cart"
     ]
   },
   "CartTrigger": {
@@ -2935,6 +8217,45 @@
       "intent",
       "size",
       "onClick"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-subtle",
+      "accent",
+      "selected",
+      "control-height",
+      "radius-card",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Button",
+      "CartPanel",
+      "OrderSummary"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Button",
+      "CartPanel",
+      "OrderSummary"
+    ],
+    "usedByPatterns": [
+      "catalog",
+      "cart"
     ]
   },
   "CartLineItem": {
@@ -2958,6 +8279,45 @@
       "quantity",
       "onQuantityChange",
       "onRemove"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "surface-subtle",
+      "accent",
+      "selected",
+      "control-height",
+      "radius-card",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "QuantityControl",
+      "ProductCard",
+      "CartPanel"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "QuantityControl",
+      "ProductCard",
+      "CartPanel"
+    ],
+    "usedByPatterns": [
+      "catalog",
+      "cart"
     ]
   },
   "CartPanel": {
@@ -2981,6 +8341,45 @@
       "summary",
       "actions",
       "children"
+    ],
+    "states": [
+      "empty",
+      "items present",
+      "quantity changed",
+      "action feedback"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-overlay",
+      "shadow-popover",
+      "scrim",
+      "radius-panel",
+      "motion"
+    ],
+    "relatedComponents": [
+      "CartLineItem",
+      "OrderSummary",
+      "EmptyState",
+      "Popover"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "CartLineItem",
+      "OrderSummary",
+      "EmptyState",
+      "Popover"
+    ],
+    "usedByPatterns": [
+      "catalog",
+      "checkout",
+      "cart"
     ]
   },
   "OrderSummary": {
@@ -3000,6 +8399,43 @@
       "rows",
       "total",
       "totalLabel"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "disabled",
+      "loading or pending when applicable",
+      "empty or unavailable when applicable"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-overlay",
+      "shadow-popover",
+      "scrim",
+      "radius-panel",
+      "motion"
+    ],
+    "relatedComponents": [
+      "CartPanel",
+      "Price",
+      "RecordSummary"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "CartPanel",
+      "Price",
+      "RecordSummary"
+    ],
+    "usedByPatterns": [
+      "checkout",
+      "cart"
     ]
   },
   "Carousel": {
@@ -3021,6 +8457,45 @@
       "label",
       "slideWidth",
       "showIndicators"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "first slide",
+      "last slide",
+      "empty"
+    ],
+    "responsive": [
+      "Uses a bounded native scroll rail that keeps the next slide discoverable.",
+      "Caps slide width against the viewport without changing slide content."
+    ],
+    "motion": [
+      "Uses shared smooth scrolling for explicit navigation.",
+      "Falls back to instant scrolling when prefers-reduced-motion is enabled."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "primary",
+      "control-height",
+      "focus-ring",
+      "motion"
+    ],
+    "relatedComponents": [
+      "ProductCard",
+      "MediaFrame",
+      "IconButton"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "ProductCard",
+      "MediaFrame",
+      "IconButton"
+    ],
+    "usedByPatterns": [
+      "marketing-home",
+      "catalog",
+      "content-list"
     ]
   },
   "PublicShell": {
@@ -3043,6 +8518,41 @@
       "actions",
       "footer",
       "children"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "compact navigation"
+    ],
+    "responsive": [
+      "Wraps top navigation intentionally on narrow viewports.",
+      "Uses shared app content geometry and does not introduce a second shell engine."
+    ],
+    "motion": [
+      "Uses shared transition tokens for interactive navigation states.",
+      "Respects prefers-reduced-motion through the composed primitives."
+    ],
+    "tokens": [
+      "background",
+      "surface",
+      "border",
+      "surface-overlay",
+      "z-sticky",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "AppShell",
+      "TopNavigation"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "AppShell",
+      "TopNavigation"
+    ],
+    "usedByPatterns": [
+      "marketing-home",
+      "catalog",
+      "content-list"
     ]
   },
   "ChartPanel": {
@@ -3063,6 +8573,46 @@
       "title",
       "description",
       "chart"
+    ],
+    "states": [
+      "default",
+      "loading",
+      "empty",
+      "error"
+    ],
+    "responsive": [
+      "Keeps chart content bounded and readable in narrow containers.",
+      "Allows the chart implementation to own its responsive plot geometry."
+    ],
+    "motion": [
+      "Delegates data animation to the chart contract.",
+      "Respects prefers-reduced-motion through the composed chart."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "radius-panel",
+      "card-padding",
+      "chart-1",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "LineChart",
+      "BarChart",
+      "DonutChart",
+      "Card"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "LineChart",
+      "BarChart",
+      "DonutChart",
+      "Card"
+    ],
+    "usedByPatterns": [
+      "dashboard",
+      "report",
+      "marketing-home"
     ]
   }
 }

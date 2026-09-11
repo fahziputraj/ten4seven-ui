@@ -1,0 +1,154 @@
+{
+  "id": "aapm-core",
+  "source": {
+    "authority": "canonical",
+    "repository": "AAPM_Ecosystem",
+    "documents": [
+      "docs/design-system/README.md",
+      "docs/design-system/brand/README.md",
+      "docs/design-system/brand/AAPM_BRAND_DESIGN.md",
+      "docs/design-system/brand/tokens/aapm-brand.tokens.json"
+    ],
+    "assetManifest": "docs/design-system/brand/ASSET_MANIFEST.md"
+  },
+  "core": {
+    "green": {
+      "kind": "exact",
+      "value": "#318139"
+    },
+    "orange": {
+      "kind": "exact",
+      "value": "#D4451A"
+    },
+    "white": {
+      "kind": "exact",
+      "value": "#FFFFFF"
+    },
+    "neutralDarkVariant": {
+      "kind": "exact",
+      "value": "#CCCCCC"
+    }
+  },
+  "digital": {
+    "lime": {
+      "kind": "exact",
+      "value": "#B4E717"
+    },
+    "limeSoft": {
+      "kind": "exact",
+      "value": "#C3EC45"
+    },
+    "deepGreen": {
+      "kind": "exact",
+      "value": "#2C7433"
+    },
+    "warmCanvas": {
+      "kind": "exact",
+      "value": "#F6F5F2"
+    },
+    "greenTint": {
+      "kind": "exact",
+      "value": "#F2FCF3"
+    },
+    "softSurface": {
+      "kind": "exact",
+      "value": "#EFF5EF"
+    },
+    "ink": {
+      "kind": "exact",
+      "value": "#10191A"
+    }
+  },
+  "semantic": {
+    "brand.primary": {
+      "source": "brand.core.green",
+      "value": {
+        "kind": "exact",
+        "value": "#318139"
+      }
+    },
+    "brand.accent": {
+      "source": "brand.core.orange",
+      "value": {
+        "kind": "exact",
+        "value": "#D4451A"
+      }
+    },
+    "brand.highlight": {
+      "source": "brand.digital.lime",
+      "value": {
+        "kind": "exact",
+        "value": "#B4E717"
+      }
+    },
+    "brand.highlight.soft": {
+      "source": "brand.digital.limeSoft",
+      "value": {
+        "kind": "exact",
+        "value": "#C3EC45"
+      }
+    },
+    "brand.surface.deep": {
+      "source": "brand.digital.deepGreen",
+      "value": {
+        "kind": "exact",
+        "value": "#2C7433"
+      }
+    },
+    "surface.canvas.warm": {
+      "source": "brand.digital.warmCanvas",
+      "value": {
+        "kind": "exact",
+        "value": "#F6F5F2"
+      }
+    },
+    "surface.brand.tint": {
+      "source": "brand.digital.greenTint",
+      "value": {
+        "kind": "exact",
+        "value": "#F2FCF3"
+      }
+    },
+    "surface.brand.soft": {
+      "source": "brand.digital.softSurface",
+      "value": {
+        "kind": "exact",
+        "value": "#EFF5EF"
+      }
+    },
+    "text.ink": {
+      "source": "brand.digital.ink",
+      "value": {
+        "kind": "exact",
+        "value": "#10191A"
+      }
+    },
+    "text.onBrand": {
+      "source": "brand.core.white",
+      "value": {
+        "kind": "exact",
+        "value": "#FFFFFF"
+      }
+    }
+  },
+  "assets": {
+    "corporate": {
+      "light": "docs/design-system/brand/assets/aapm-logo-horizontal.svg",
+      "dark": "docs/design-system/brand/assets/aapm-logo-horizontal-dark.svg",
+      "compactLight": "docs/design-system/brand/assets/aapm-icon.svg",
+      "compactDark": "docs/design-system/brand/assets/aapm-icon-dark.svg",
+      "owner": "AAPM",
+      "distribution": "authorized-copy",
+      "derivativePolicy": "no-local-derivative"
+    },
+    "academy": {
+      "light": "docs/design-system/brand/assets/aapm-academy-horizontal.svg",
+      "dark": "docs/design-system/brand/assets/aapm-academy-horizontal-dark.svg",
+      "compactLight": "docs/design-system/brand/assets/aapm-academy-stacked.svg",
+      "compactDark": "docs/design-system/brand/assets/aapm-academy-stacked-dark.svg",
+      "owner": "AAPM",
+      "distribution": "authorized-copy",
+      "derivativePolicy": "no-local-derivative"
+    }
+  }
+}

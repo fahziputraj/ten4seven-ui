@@ -88,6 +88,9 @@ Reference routes:
 
 - Theme Studio: `http://localhost:4173/theme-studio`
 - Component Lab: `http://localhost:4173/component-lab`
+- SaaS Control Plane Patterns: `http://localhost:4173/saas-control-plane`
+- ERP Density Reference: `http://localhost:4173/erp-reference`
++ Farm P1 Reference: `http://localhost:4173/farm-reference`
 - Tokens: `http://localhost:4173/tokens`
 - Components: `http://localhost:4173/components`
 - Blocks: `http://localhost:4173/blocks`

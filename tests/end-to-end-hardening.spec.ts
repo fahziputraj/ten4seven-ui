@@ -264,6 +264,9 @@ test.describe("end-to-end hardening regressions", () => {
               .querySelector(".t7-kpi-item-value [data-t7-type]")
               ?.getAttribute("data-t7-type"),
             sentiment: trend?.dataset.sentiment,
+            sparklineForeground: sparkline
+              ? getComputedStyle(sparkline).color
+              : undefined,
             stroke: line ? getComputedStyle(line).stroke : undefined,
           };
         }),
@@ -297,7 +300,9 @@ test.describe("end-to-end hardening regressions", () => {
       graphicalCues
         .filter((cue) => cue.chartWidth > 0)
         .every(
-          (cue) => cue.hasRevealClip && cue.stroke === "rgb(255, 255, 255)",
+          (cue) =>
+            cue.hasRevealClip &&
+            cue.sparklineForeground === "rgb(255, 255, 255)",
         ),
     ).toBe(true);
 
@@ -451,12 +456,24 @@ test.describe("end-to-end hardening regressions", () => {
     const currentStep = page.locator(
       '.component-proof-stepper li[data-state="current"] > span',
     );
-    await expect(currentStep).toHaveCSS("color", "rgb(255, 255, 255)");
-    await expect(currentStep).toHaveCSS("background-image", /linear-gradient/);
-    await expect(currentStep.locator(".t7-stepper-indicator")).toHaveCSS(
-      "color",
-      "rgb(255, 255, 255)",
-    );
+    const currentStepAppearance = await currentStep.evaluate((element) => {
+      const styles = getComputedStyle(element);
+      const indicator = element.querySelector<HTMLElement>(
+        ".t7-stepper-indicator",
+      );
+      return {
+        backgroundColor: styles.backgroundColor,
+        backgroundImage: styles.backgroundImage,
+        boxShadow: styles.boxShadow,
+        color: styles.color,
+        indicatorColor: indicator ? getComputedStyle(indicator).color : "",
+      };
+    });
+    expect(currentStepAppearance.backgroundColor).toMatch(/^rgb\(/);
+    expect(currentStepAppearance.backgroundImage).toBe("none");
+    expect(currentStepAppearance.boxShadow).toBe("none");
+    expect(currentStepAppearance.color).not.toBe("rgb(255, 255, 255)");
+    expect(currentStepAppearance.indicatorColor).not.toBe("rgb(255, 255, 255)");
     expect(await rootOverflow(page)).toBeLessThanOrEqual(1);
   });
 

@@ -41,6 +41,7 @@ export const t7Motion = Object.freeze({
   easing: Object.freeze({
     standard: "var(--t7-ease-standard)",
     enter: "var(--t7-ease-enter)",
+    chart: "var(--t7-ease-chart)",
     exit: "var(--t7-ease-exit)",
   }),
 });
@@ -89,7 +90,7 @@ const easingTokens: Record<T7MotionRole, string> = {
   enter: "--t7-ease-enter",
   enterSlow: "--t7-ease-enter",
   exit: "--t7-ease-exit",
-  chart: "--t7-ease-enter",
+  chart: "--t7-ease-chart",
   loop: "--t7-ease-standard",
 };
 
@@ -111,7 +112,7 @@ const fallbackEasings: Record<T7MotionRole, string> = {
   enter: "cubic-bezier(.16, 1, .3, 1)",
   enterSlow: "cubic-bezier(.16, 1, .3, 1)",
   exit: "cubic-bezier(.4, 0, 1, 1)",
-  chart: "cubic-bezier(.16, 1, .3, 1)",
+  chart: "cubic-bezier(.22, .74, .24, 1)",
   loop: "cubic-bezier(.2, 0, 0, 1)",
 };
 
@@ -312,6 +313,13 @@ function elements(root: Element, selector: string) {
   return Array.from(root.querySelectorAll(selector));
 }
 
+function resolveNumericToken(target: Element, token: string, fallback: number) {
+  const value = Number.parseFloat(
+    window.getComputedStyle(target).getPropertyValue(token),
+  );
+  return Number.isFinite(value) ? value : fallback;
+}
+
 function addChartReveal(
   timeline: ReturnType<typeof createAnimeTimeline>,
   root: Element,
@@ -322,6 +330,7 @@ function addChartReveal(
   // slower global reveal role.
   const motionRole = kind === "sparkline" ? "enter" : "chart";
   const profile = resolveT7Motion(root, motionRole);
+  const chartEase = resolveT7Motion(root, "chart").ease;
   const duration = profile.duration;
   const stagger = animeStagger(Math.min(96, Math.max(28, duration * 0.06)));
 
@@ -329,25 +338,50 @@ function addChartReveal(
     const area = elements(root, ".t7-sparkline-area");
     const point = elements(root, ".t7-sparkline-point");
     const reveal = elements(root, ".t7-sparkline-reveal");
-    if (reveal.length) timeline.add(reveal, { scaleX: [0, 1], duration }, 0);
+    const pointSettleScale = resolveNumericToken(
+      root,
+      "--t7-chart-point-settle-scale",
+      1.06,
+    );
+    if (reveal.length)
+      timeline.add(reveal, { scaleX: [0, 1], duration, ease: chartEase }, 0);
     if (area.length)
-      timeline.add(area, { opacity: [0, 1], duration: duration * 0.72 }, 0);
+      timeline.add(
+        area,
+        { opacity: [0, 1], duration: duration * 0.72, ease: chartEase },
+        0,
+      );
     if (point.length) {
       const endpointStart = duration * 0.76;
       const endpointSettle = duration * 0.16;
+      const endpointHold = duration * 0.08;
       timeline.add(
         point,
         {
           opacity: [0, 1],
-          scale: [0.48, 1.14],
+          scale: [0.72, pointSettleScale],
           duration: endpointSettle,
+          ease: chartEase,
         },
         endpointStart,
       );
       timeline.add(
         point,
-        { scale: [1.14, 1], duration: duration * 0.14 },
+        {
+          scale: [pointSettleScale, pointSettleScale],
+          duration: endpointHold,
+          ease: "linear",
+        },
         endpointStart + endpointSettle,
+      );
+      timeline.add(
+        point,
+        {
+          scale: [pointSettleScale, 1],
+          duration: duration * 0.14,
+          ease: chartEase,
+        },
+        endpointStart + endpointSettle + endpointHold,
       );
     }
     return;
@@ -363,6 +397,7 @@ function addChartReveal(
           scale: [0.84, 1],
           delay: stagger,
           duration: duration * 0.68,
+          ease: chartEase,
         },
         0,
       );
@@ -375,7 +410,11 @@ function addChartReveal(
   const bars = elements(root, ".t7-chart-bar");
 
   if (area.length)
-    timeline.add(area, { opacity: [0, 1], duration: duration * 0.62 }, 0);
+    timeline.add(
+      area,
+      { opacity: [0, 1], duration: duration * 0.62, ease: chartEase },
+      0,
+    );
 
   if (kind === "bar") {
     if (bars.length)
@@ -386,6 +425,7 @@ function addChartReveal(
           scaleY: [0.04, 1],
           delay: stagger,
           duration: duration * 0.68,
+          ease: chartEase,
         },
         Math.min(70, duration * 0.06),
       );
@@ -395,7 +435,7 @@ function addChartReveal(
   if (line.length)
     timeline.add(
       line,
-      { strokeDashoffset: [1, 0], duration },
+      { strokeDashoffset: [1, 0], duration, ease: chartEase },
       Math.min(80, duration * 0.08),
     );
   if (points.length)
@@ -406,6 +446,7 @@ function addChartReveal(
         scale: [0.45, 1],
         delay: stagger,
         duration: duration * 0.52,
+        ease: chartEase,
       },
       Math.min(150, duration * 0.16),
     );

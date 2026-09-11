@@ -1,0 +1,59 @@
+- main [ref=f3e4]:
+  - generic [ref=f3e5]:
+    - link "Back to Theme Studio" [ref=f3e6] [cursor=pointer]:
+      - /url: /theme-studio
+      - generic [ref=f3e14]:
+        - strong [ref=f3e15]: ten4seven UI
+        - generic [ref=f3e16]: Brand expression proof
+    - navigation "Brand profile proof" [ref=f3e17]:
+      - generic [ref=f3e18]: Same Authentication recipe
+      - generic [ref=f3e19]:
+        - button "Neutral product" [ref=f3e20] [cursor=pointer]
+        - button "AAPM Academy" [ref=f3e22] [cursor=pointer]
+  - generic [ref=f3e24]:
+    - region [ref=f3e25]:
+      - generic "Abstract learning studio illustration" [ref=f3e27]:
+        - img "Abstract study tables and a warm field of light" [ref=f3e28]
+        - generic [ref=f3e29]:
+          - generic [ref=f3e30]: Consumer media slot
+          - paragraph [ref=f3e31]: One asset, expressed through the active BrandProfile.
+      - generic [ref=f3e32]:
+        - generic [ref=f3e33]: A clear way back in
+        - heading "Continue to your workspace." [level=1] [ref=f3e34]
+        - paragraph [ref=f3e35]: A focused sign-in surface for teams that need a calm, legible next step.
+        - generic [ref=f3e36]: The same Authentication recipe resolves as a centered, restrained product surface.
+    - region [ref=f3e39]:
+      - generic [ref=f3e47]:
+        - heading "Sign in" [level=2] [ref=f3e48]
+        - paragraph [ref=f3e49]: Use the account connected to your workspace.
+      - generic [ref=f3e50]:
+        - paragraph [ref=f3e51]: Authentication form using the canonical Input, PasswordInput, Checkbox, and ActionFooter contracts.
+        - generic [ref=f3e52]:
+          - generic [ref=f3e53]: Email address
+          - textbox "Email address" [ref=f3e55]:
+            - /placeholder: you@example.com
+        - generic [ref=f3e56]:
+          - generic [ref=f3e57]: Password
+          - generic [ref=f3e58]:
+            - textbox "Password Show password Use at least 8 characters." [ref=f3e59]:
+              - /placeholder: Enter your password
+            - button "Show password" [ref=f3e60] [cursor=pointer]
+          - generic [ref=f3e65]: Use at least 8 characters.
+        - generic [ref=f3e66] [cursor=pointer]:
+          - checkbox "Remember this device" [ref=f3e67]
+          - generic [ref=f3e71]: Remember this device
+        - generic [ref=f3e72]:
+          - generic [ref=f3e73]: Protected sign-in
+          - generic [ref=f3e74]:
+            - button "Recover access" [ref=f3e75] [cursor=pointer]
+            - button "Continue" [ref=f3e78] [cursor=pointer]
+      - generic [ref=f3e82]:
+        - generic [ref=f3e83]: By continuing, you agree to the workspace terms and privacy policy.
+        - generic [ref=f3e84]:
+          - link "Terms" [ref=f3e85] [cursor=pointer]:
+            - /url: /public-showcase
+          - link "Privacy" [ref=f3e86] [cursor=pointer]:
+            - /url: /public-showcase
+  - generic [ref=f3e87]:
+    - generic [ref=f3e88]: BrandProfile controls expression only. Authentication behavior, content, media, and legal links remain consumer-owned.
+    - code [ref=f3e89]: "agent-owned brand decisions: 0"

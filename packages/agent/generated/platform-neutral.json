@@ -1,0 +1,169 @@
+{
+  "schemaVersion": "0.1",
+  "id": "platform-neutral",
+  "intents": [
+    "action",
+    "input",
+    "selection",
+    "navigation",
+    "feedback",
+    "data-display",
+    "data-entry",
+    "overlay",
+    "layout",
+    "composition",
+    "identity",
+    "media"
+  ],
+  "presentationStates": [
+    "ready",
+    "unavailable",
+    "disabled",
+    "loading",
+    "empty",
+    "error",
+    "permission-denied",
+    "dependency-unavailable",
+    "setup-required",
+    "suspended",
+    "offline",
+    "pending",
+    "conflicted"
+  ],
+  "interactionStates": [
+    "idle",
+    "hover",
+    "focus",
+    "pressed",
+    "selected",
+    "expanded",
+    "collapsed",
+    "disabled",
+    "loading",
+    "invalid",
+    "pending",
+    "success",
+    "error"
+  ],
+  "interactionCapabilities": [
+    "process-workflow",
+    "board-reorder",
+    "drag-and-drop",
+    "file-transfer",
+    "progress-feedback",
+    "state-transition",
+    "quantitative-comparison",
+    "trend-visualization",
+    "distribution-visualization"
+  ],
+  "responsiveCapabilities": [
+    "reflow",
+    "scroll",
+    "stack",
+    "collapse",
+    "drawer",
+    "priority-order",
+    "touch-targets",
+    "safe-area",
+    "keyboard-navigation",
+    "density-adaptive"
+  ],
+  "surfaceProfiles": [
+    {
+      "id": "system-library",
+      "platform": "shared",
+      "purpose": "Design-system contracts, primitives, patterns, and retrieval.",
+      "sharedSemantics": [
+        "layout",
+        "composition",
+        "feedback",
+        "identity"
+      ]
+    },
+    {
+      "id": "content",
+      "platform": "shared",
+      "purpose": "Content-oriented presentation with readable hierarchy and media.",
+      "sharedSemantics": [
+        "composition",
+        "media"
+      ]
+    },
+    {
+      "id": "operational",
+      "platform": "shared",
+      "purpose": "Task-oriented workspaces with explicit state and next action.",
+      "sharedSemantics": [
+        "action",
+        "navigation",
+        "feedback",
+        "data-display",
+        "data-entry"
+      ]
+    },
+    {
+      "id": "data-dense",
+      "platform": "shared",
+      "purpose": "Comparable records, filtering, review, and dense data entry.",
+      "sharedSemantics": [
+        "selection",
+        "data-display",
+        "data-entry",
+        "feedback"
+      ]
+    },
+    {
+      "id": "native",
+      "platform": "native",
+      "purpose": "Native rendering of shared semantics with platform mechanics.",
+      "sharedSemantics": [
+        "navigation",
+        "action",
+        "input",
+        "feedback",
+        "media"
+      ]
+    }
+  ],
+  "ownership": {
+    "system": [
+      "interaction-contract",
+      "semantic-tokens",
+      "icon-vocabulary",
+      "generic-recipes",
+      "responsive-presentation",
+      "accessibility",
+      "motion",
+      "surface-profile"
+    ],
+    "consumer": [
+      "business-data",
+      "business-rules",
+      "permissions",
+      "entitlements",
+      "persistence",
+      "routing",
+      "handlers"
+    ],
+    "platform": [
+      "principal-context",
+      "tenant-context",
+      "effective-access",
+      "module-lifecycle",
+      "audit-authority"
+    ],
+    "businessModule": [
+      "business-data",
+      "business-rules",
+      "workflow-authority",
+      "reconciliation"
+    ]
+  },
+  "exclusions": [
+    "DOM props, CSS classes, selectors, measurements, and browser APIs",
+    "React components, hooks, refs, portals, context, and React event types",
+    "Native framework widgets, gestures, storage, and synchronization engines",
+    "API clients, persistence, routing, handlers, and transport details",
+    "Business data, business rules, permissions, entitlements, and calculations"
+  ]
+}

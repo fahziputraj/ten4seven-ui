@@ -8,10 +8,12 @@ type NavigationRoute = {
 
 const navigationGroups: Array<{
   label: string;
+  maturity: string;
   routes: NavigationRoute[];
 }> = [
   {
     label: "Studio",
+    maturity: "PRIMARY",
     routes: [
       { label: "Theme Studio", path: "/theme-studio" },
       { label: "Component Lab", path: "/component-lab" },
@@ -19,6 +21,7 @@ const navigationGroups: Array<{
   },
   {
     label: "Library",
+    maturity: "PRIMARY",
     routes: [
       { label: "Tokens", path: "/tokens" },
       { label: "Components", path: "/components" },
@@ -28,17 +31,18 @@ const navigationGroups: Array<{
     ],
   },
   {
-    label: "References",
+    label: "Reference",
+    maturity: "QUALITY_REFERENCE",
+    routes: [{ label: "Publishing Store", path: "/ebook-store" }],
+  },
+  {
+    label: "Labs / Proofs",
+    maturity: "LAB_PROOF",
     routes: [
       { label: "Operations Tracker", path: "/operations-tracker" },
       { label: "Operational Patterns", path: "/operational-patterns" },
-      { label: "Publishing Store", path: "/ebook-store" },
+      { label: "ERP Density Reference", path: "/erp-reference" },
       { label: "Public Showcase", path: "/public-showcase" },
-    ],
-  },
-  {
-    label: "Adoption Proofs",
-    routes: [
       { label: "Farm Synthetic", path: "/farm-synthetic-proof" },
       { label: "Auth · Neutral", path: "/brand-proof/auth-neutral" },
       {
@@ -67,6 +71,10 @@ test("exposes every canonical top-level destination directly", async ({
   for (const group of navigationGroups) {
     const groupNode = navigation.getByRole("group", { name: group.label });
     await expect(groupNode).toBeVisible();
+    await expect(groupNode).toHaveAttribute(
+      "data-surface-maturity",
+      group.maturity,
+    );
     for (const route of group.routes) {
       await expect(
         groupNode.getByRole("button", {
@@ -84,6 +92,13 @@ test("exposes every canonical top-level destination directly", async ({
       ).toHaveText(route.label);
     }
   }
+
+  await expect(
+    navigation.getByRole("group", { name: "References", exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    navigation.getByRole("group", { name: "Adoption Proofs", exact: true }),
+  ).toHaveCount(0);
 
   await expect(
     navigation.getByRole("button", { name: "Library", exact: true }),
@@ -227,6 +242,10 @@ test("mobile navigation keeps all groups reachable without horizontal overflow",
     for (const group of navigationGroups) {
       const groupNode = drawer.getByRole("group", { name: group.label });
       await expect(groupNode).toBeVisible();
+      await expect(groupNode).toHaveAttribute(
+        "data-surface-maturity",
+        group.maturity,
+      );
       for (const route of group.routes) {
         await expect(
           groupNode.getByRole("button", {

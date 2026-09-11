@@ -18,7 +18,34 @@ const canonicalModule = await import(
 
 const { CANONICAL_CONTRACTS, ALIAS_MAP, OWNERSHIP_RULES } = canonicalModule;
 
+const componentContractArrays = [
+  "states",
+  "accessibility",
+  "responsive",
+  "motion",
+  "tokens",
+  "api",
+  "relatedComponents",
+  "alternativeTo",
+  "composesWith",
+  "usedByPatterns",
+];
+const componentCompactArrays = componentContractArrays.filter(
+  (field) => field !== "api" && field !== "accessibility",
+);
+
+function projectComponentContract(component, fields = componentContractArrays) {
+  return Object.fromEntries(
+    fields
+      .filter((field) => Array.isArray(component[field]))
+      .map((field) => [field, component[field]]),
+  );
+}
+
 function projectComponent(name, component) {
+  // Keep the index projection retrieval-friendly; verbose API and
+  // accessibility guidance live in the component shard selected by the
+  // default retrieval pattern.
   return {
     id: name,
     displayName: component.displayName,
@@ -33,6 +60,7 @@ function projectComponent(name, component) {
     ...(component.importantProps
       ? { importantProps: component.importantProps }
       : {}),
+    ...projectComponentContract(component, componentCompactArrays),
   };
 }
 
@@ -47,6 +75,7 @@ function projectComponentShard(name, component) {
     ...(component.importantProps
       ? { importantProps: component.importantProps }
       : {}),
+    ...projectComponentContract(component),
   };
 }
 
@@ -173,12 +202,19 @@ export async function buildProjections() {
         themeProfile: "packages/contracts/src/theme-profile.ts",
         foundation: "packages/contracts/src/foundation.ts",
         themeRecipes: "packages/contracts/src/theme-recipe.ts",
+        platformNeutral: "packages/contracts/src/platform-neutral.ts",
+        brandAdapter: "packages/contracts/src/brand-profile.ts",
         dtcgTokenExport: "packages/tokens/generated/tokens.dtcg.json",
         brandProfiles: "packages/contracts/src/brand-profile.ts",
         entityList: "packages/contracts/src/entity-list.ts",
         entityDetail: "packages/contracts/src/entity-detail.ts",
         authentication: "packages/contracts/src/authentication.ts",
         operationalPatterns: "packages/contracts/src/operational-patterns.ts",
+        responsiveShell: "packages/contracts/src/responsive-shell.ts",
+        moduleStates: "packages/contracts/src/module-state.ts",
+        controlPlanePatterns: "packages/contracts/src/saas-control-plane.ts",
+        nativeMobile: "packages/contracts/src/native-mobile.ts",
+        erpDensity: "packages/contracts/src/erp-density.ts",
       },
       defaultRetrieval: [
         "generated/index.json",
@@ -209,6 +245,11 @@ export async function buildProjections() {
           resolve: "t7ui brand resolve auth",
           compose: "t7ui brand compose auth",
         },
+        "brand-profiles": {
+          adapter: "generated/brand-adapter.json",
+          profiles: "generated/brand-profiles.json",
+          guidance: "docs/aapm/T7-AAPM-001-Q03-AAPM-PROFILES-EVIDENCE.md",
+        },
         "operational-patterns": {
           find: 't7ui find "control tower exception next action"',
           inspect: "t7ui recipe inspect control-tower",
@@ -225,6 +266,37 @@ export async function buildProjections() {
           tokenExport: "generated/tokens.dtcg.json",
           guidance: "docs/THEME_RECIPES.md",
         },
+        "contract-plane": {
+          source: "generated/platform-neutral.json",
+          guidance: "packages/contracts/src/platform-neutral.ts",
+          inspect: "inspectPlatformNeutralContract()",
+        },
+        "responsive-shell": {
+          source: "generated/responsive-shell.json",
+          guidance: "packages/contracts/src/responsive-shell.ts",
+          reference: "/theme-studio#responsive-contracts",
+        },
+        "module-states": {
+          source: "generated/module-states.json",
+          guidance: "packages/contracts/src/module-state.ts",
+          reference: "/theme-studio#module-states",
+        },
+        "saas-control-plane": {
+          source: "generated/saas-control-plane.json",
+          guidance: "packages/contracts/src/saas-control-plane.ts",
+          reference: "/saas-control-plane",
+        },
+        "native-mobile": {
+          source: "generated/native-mobile.json",
+          guidance: "packages/contracts/src/native-mobile.ts",
+          reference: "packages/native/README.md",
+        },
+        "erp-density": {
+          source: "generated/erp-density.json",
+          guidance: "packages/contracts/src/erp-density.ts",
+          reference: "/erp-reference",
+          find: 't7ui find "ERP dense table"',
+        },
       },
       metrics: {
         fullCatalogBytes: fullComponentBytes + fullRecipeBytes,
@@ -240,6 +312,27 @@ export async function buildProjections() {
       themeRecipes: {
         path: "theme-recipes.json",
         ids: Object.keys(CANONICAL_CONTRACTS.themeRecipes),
+      },
+      brandAdapter: {
+        path: "brand-adapter.json",
+      },
+      platformNeutral: {
+        path: "platform-neutral.json",
+      },
+      responsive: {
+        path: "responsive-shell.json",
+      },
+      moduleStates: {
+        path: "module-states.json",
+      },
+      saasControlPlane: {
+        path: "saas-control-plane.json",
+      },
+      nativeMobile: {
+        path: "native-mobile.json",
+      },
+      erpDensity: {
+        path: "erp-density.json",
       },
       tokens: {
         dtcgPath: "tokens.dtcg.json",
@@ -261,7 +354,14 @@ export async function buildProjections() {
       },
     },
     "components.compact.json": components,
+    "brand-adapter.json": CANONICAL_CONTRACTS.brandAdapter,
     "brand-profiles.json": CANONICAL_CONTRACTS.brandProfiles,
+    "platform-neutral.json": CANONICAL_CONTRACTS.platformNeutral,
+    "responsive-shell.json": CANONICAL_CONTRACTS.responsive,
+    "module-states.json": CANONICAL_CONTRACTS.moduleStates,
+    "saas-control-plane.json": CANONICAL_CONTRACTS.saasControlPlane,
+    "native-mobile.json": CANONICAL_CONTRACTS.nativeMobile,
+    "erp-density.json": CANONICAL_CONTRACTS.erpDensity,
     "theme-recipes.json": CANONICAL_CONTRACTS.themeRecipes,
     "foundation.json": FOUNDATION_CONTRACT,
     "recipes.compact.json": recipes,
@@ -291,6 +391,18 @@ export function serializeProjection(filename, value) {
   return serialize(value, selective);
 }
 
+function normalizeLineEndings(value) {
+  return value.replace(/\r\n/g, "\n");
+}
+
+function preserveExistingLineEndings(target, serialized) {
+  if (!fs.existsSync(target)) return serialized;
+  const existing = fs.readFileSync(target, "utf8");
+  return existing.includes("\r\n")
+    ? serialized.replace(/\n/g, "\r\n")
+    : serialized;
+}
+
 const isMain =
   process.argv[1] &&
   path.resolve(process.argv[1]) ===
@@ -307,7 +419,8 @@ if (isMain) {
         const target = path.join(root, filename);
         if (
           !fs.existsSync(target) ||
-          fs.readFileSync(target, "utf8") !== expected
+          normalizeLineEndings(fs.readFileSync(target, "utf8")) !==
+            normalizeLineEndings(expected)
         )
           differences.push(path.relative(repoRoot, target));
       }
@@ -325,9 +438,13 @@ if (isMain) {
         fs.mkdirSync(path.dirname(path.join(root, filename)), {
           recursive: true,
         });
+        const target = path.join(root, filename);
         fs.writeFileSync(
-          path.join(root, filename),
-          serializeProjection(filename, value),
+          target,
+          preserveExistingLineEndings(
+            target,
+            serializeProjection(filename, value),
+          ),
         );
       }
     }

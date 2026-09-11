@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "baseUrl": ".",
+    "paths": {
+      "@ten4seven/contracts": ["../contracts/src/index.ts"],
+      "@ten4seven/tokens": ["../tokens/src/index.ts"]
+    }
+  },
+  "include": ["src/**/*.ts"]
+}

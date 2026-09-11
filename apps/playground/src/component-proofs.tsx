@@ -10,6 +10,7 @@ import {
   AlertDialog,
   AppliedFilters,
   ApprovalPanel,
+  Avatar,
   AvatarGroup,
   BarChart,
   Badge,
@@ -84,6 +85,7 @@ function ToastAction() {
           tone: "success",
         })
       }
+      size="sm"
     >
       Show toast
     </Button>
@@ -101,11 +103,12 @@ function OverlayStressFixture() {
     <section
       aria-label="Overlay stress fixture"
       className="overlay-stress-fixture"
+      id="component-lab-overlays"
     >
       <SectionHeader
-        description="The same floating contracts are exercised inside cards, bounded scroll regions, drawers, dialogs, and viewport edges."
-        eyebrow="Interaction integrity"
-        title="Overlay stress fixture"
+        description="Portals, scroll owners, drawers, and viewport-safe anchors."
+        eyebrow="Overlays"
+        title="Overlay contracts"
       />
       <div className="overlay-stress-grid">
         <Card data-overlay-fixture="card-select">
@@ -132,8 +135,7 @@ function OverlayStressFixture() {
               maxHeight={148}
             >
               <Typography typeRole="caption">
-                The popup must escape this bounded scroll owner while the panel
-                remains keyboard-scrollable.
+                Popup escapes the scroll owner; keyboard focus stays local.
               </Typography>
               <Combobox
                 label="Owner"
@@ -147,9 +149,9 @@ function OverlayStressFixture() {
                 value={owner}
               />
               <div className="overlay-stress-scroll-copy">
-                <span>Scroll ownership remains explicit.</span>
-                <span>Content continues below the field.</span>
-                <span>Focus stays inside the combobox.</span>
+                <span>Scroll owner: panel</span>
+                <span>Content continues below</span>
+                <span>Focus stays in field</span>
               </div>
             </ScrollArea>
           </CardContent>
@@ -161,8 +163,7 @@ function OverlayStressFixture() {
           </CardHeader>
           <CardContent className="component-proof-stack">
             <Typography typeRole="body-sm">
-              A modal drawer owns its scroll; the calendar remains
-              viewport-safe.
+              Drawer owns scroll; calendar stays viewport-safe.
             </Typography>
             <Button onClick={() => setDrawerOpen(true)} leadingIcon="sidebar">
               Open date drawer
@@ -175,8 +176,7 @@ function OverlayStressFixture() {
             <div>
               <CardTitle>Edge anchors</CardTitle>
               <CardDescription>
-                Floating actions stay attached to their trigger at the edge of a
-                bounded surface.
+                Actions stay attached to their edge trigger.
               </CardDescription>
             </div>
           </CardHeader>
@@ -186,7 +186,7 @@ function OverlayStressFixture() {
                 <div className="overlay-stress-edge-preview-copy">
                   <Typography typeRole="overline">Anchor playground</Typography>
                   <Typography typeRole="caption">
-                    Try a trigger to inspect its viewport-safe layer.
+                    Trigger a viewport-safe layer.
                   </Typography>
                 </div>
                 <Badge tone="success">
@@ -198,7 +198,7 @@ function OverlayStressFixture() {
                 <div className="overlay-stress-edge-demo-copy">
                   <Typography typeRole="label">Inline actions</Typography>
                   <Typography typeRole="caption">
-                    Portal layers detach cleanly from this bounded surface.
+                    Portal layer stays independent.
                   </Typography>
                 </div>
                 <div
@@ -237,9 +237,7 @@ function OverlayStressFixture() {
               <div className="overlay-stress-edge-footer">
                 <div className="overlay-stress-edge-footer-copy">
                   <Typography typeRole="label">Corner action</Typography>
-                  <Typography typeRole="caption">
-                    The menu remains anchored to its trigger.
-                  </Typography>
+                  <Typography typeRole="caption">Menu stays anchored.</Typography>
                 </div>
                 <div className="overlay-stress-edge-corner">
                   <DropdownMenu
@@ -333,11 +331,12 @@ function SurfaceExpressionFixture() {
     <section
       aria-label="Canonical surface expression"
       className="surface-expression-fixture"
+      id="component-lab-surfaces"
     >
       <SectionHeader
-        description="The page remains paper-neutral. Colour scales from soft context to a solid decision signal only on the bounded surface that needs it."
-        eyebrow="Surface contract"
-        title="Plain, soft, solid, and inverse emphasis"
+        description="Neutral paper with bounded emphasis where it helps."
+        eyebrow="Surfaces"
+        title="Surface treatments"
       />
       <div className="surface-expression-grid">
         <Card data-surface-treatment="plain" emphasis="plain">
@@ -345,14 +344,13 @@ function SurfaceExpressionFixture() {
             <div>
               <CardTitle>Plain baseline</CardTitle>
               <CardDescription>
-                Default reading and comparison stay quiet on paper.
+                Quiet reading surface.
               </CardDescription>
             </div>
           </CardHeader>
           <CardContent>
             <Typography typeRole="body-sm">
-              Use for the majority of work. Separation comes from neutral
-              border, elevation, and type hierarchy—not a tinted canvas.
+              Default reading surface with neutral separation.
             </Typography>
           </CardContent>
         </Card>
@@ -366,6 +364,7 @@ function SurfaceExpressionFixture() {
           value="3"
         />
         <MetricCard
+          className="surface-expression-kpi-card"
           chart={
             <Sparkline
               colorway={2}
@@ -393,19 +392,26 @@ function SurfaceExpressionFixture() {
           }
           value="87%"
         />
-        <Card data-surface-treatment="inverse" emphasis="inverse">
-          <CardHeader>
+        <Card
+          className="surface-expression-kpi-card surface-expression-inverse-card"
+          data-surface-treatment="inverse"
+          emphasis="inverse"
+        >
+          <CardHeader className="surface-expression-kpi-header">
             <div>
               <CardTitle>Inverse focal surface</CardTitle>
-              <CardDescription>
-                Reserve this treatment for one deliberate decision or finish.
-              </CardDescription>
+              <CardDescription>One deliberate focus surface.</CardDescription>
             </div>
+            <span
+              aria-hidden="true"
+              className="surface-expression-kpi-icon"
+            >
+              <T7Icon name="check" size={32} />
+            </span>
           </CardHeader>
           <CardContent className="surface-expression-inverse-content">
             <Typography typeRole="body-sm">
-              Inverse is a shared surface treatment, not a Button-only color
-              shortcut.
+              Use for one deliberate decision or finish.
             </Typography>
             <Button intent="secondary" size="sm">
               Review decision
@@ -575,11 +581,14 @@ export function ComponentProofs() {
       aria-label="Component interaction checks"
       className="component-proofs"
     >
-      <div className="component-proof-grid component-proof-grid-form">
+      <div
+        className="component-proof-grid component-proof-grid-form"
+        id="component-lab-forms-feedback"
+      >
         <FormSection
           className="component-proof-form-section"
-          description="Labels, helper text, error space, selection, and numeric controls share token-led density."
-          title="Form anatomy and date entry"
+          description="Labels, density, selection, and input states."
+          title="Forms"
         >
           <FormGrid>
             <Combobox
@@ -661,10 +670,9 @@ export function ComponentProofs() {
           <Card className="component-proof-feedback-card">
             <CardHeader>
               <div>
-                <CardTitle>Feedback, actions, and overlays</CardTitle>
+                <CardTitle>Feedback &amp; actions</CardTitle>
                 <CardDescription>
-                  Persistent feedback, prioritized actions, and floating
-                  surfaces share one interaction language.
+                  Status, actions, and overlays in one flow.
                 </CardDescription>
               </div>
             </CardHeader>
@@ -684,7 +692,7 @@ export function ComponentProofs() {
                       Feedback
                     </Typography>
                     <Typography typeRole="caption">
-                      In-context status and recovery
+                      Status &amp; recovery
                     </Typography>
                   </div>
                   {alertVisible ? (
@@ -698,7 +706,7 @@ export function ComponentProofs() {
                           Review issue
                         </Button>
                       }
-                      description="The review queue needs one decision before publishing."
+                      description="One review decision is needed."
                       onDismiss={() => setAlertVisible(false)}
                       title="Review needed"
                       tone="warning"
@@ -706,7 +714,7 @@ export function ComponentProofs() {
                   ) : (
                     <div className="feedback-proof-dismissed" role="status">
                       <Typography typeRole="caption">
-                        The warning is dismissed for this proof.
+                        Warning dismissed.
                       </Typography>
                       <Button
                         intent="quiet"
@@ -739,7 +747,7 @@ export function ComponentProofs() {
                         Approve request
                       </Button>
                     }
-                    description="A decision checkpoint keeps context, evidence, and the next action together."
+                    description="Decision and next action stay together."
                     metadata={
                       <Typography typeRole="caption">
                         Last action: {lastAction}
@@ -764,7 +772,7 @@ export function ComponentProofs() {
                       Actions
                     </Typography>
                     <Typography typeRole="caption">
-                      One primary path, then supporting choices
+                      Primary actions
                     </Typography>
                   </div>
                   <ActionBar
@@ -877,7 +885,7 @@ export function ComponentProofs() {
                       Overlays
                     </Typography>
                     <Typography typeRole="caption">
-                      Anchored help and contextual actions
+                      Anchored overlays
                     </Typography>
                   </div>
                   <div className="feedback-proof-overlay-grid">
@@ -889,7 +897,7 @@ export function ComponentProofs() {
                       }
                     >
                       <Typography typeRole="body-sm">
-                        Non-modal help stays close to its trigger.
+                        Context stays with its trigger.
                       </Typography>
                     </Popover>
                     <Tooltip content="Supplemental context for this action.">
@@ -973,17 +981,16 @@ export function ComponentProofs() {
         </ToastProvider>
       </div>
 
-      <div className="component-proof-grid">
+      <div className="component-proof-grid" id="component-lab-data-signals">
         <Card className="component-proof-signals-card">
           <CardHeader>
             <div>
-              <CardTitle>Data, progress, and media signals</CardTitle>
+              <CardTitle>Data signals</CardTitle>
               <CardDescription>
-                Keep the state a person needs to act on visible without making
-                every signal compete for attention.
+                Metrics, ownership, progress, and handoff.
               </CardDescription>
             </div>
-            <Badge tone="primary">Client-side proof</Badge>
+            <Badge tone="primary">Local proof</Badge>
           </CardHeader>
           <CardContent className="component-proof-signals-layout">
             <div className="component-proof-signals-primary">
@@ -1027,20 +1034,39 @@ export function ComponentProofs() {
               <div className="component-proof-progress-block">
                 <Progress label="Review completion" showValue value={72} />
                 <Typography typeRole="caption">
-                  Four of five checks are ready for the next action.
+                  4 of 5 checks ready.
                 </Typography>
               </div>
             </div>
             <div className="component-proof-signal-rail">
               <div className="component-proof-signal-block">
-                <Typography typeRole="overline">Ownership</Typography>
+                <div className="component-proof-signal-heading">
+                  <Typography typeRole="overline">Ownership</Typography>
+                  <span>3 collaborators</span>
+                </div>
                 <AvatarGroup
+                  className="component-proof-owner-group"
                   avatars={[
-                    { name: "Maya Chen" },
-                    { name: "Jordan Park" },
-                    { name: "Lin Wu" },
+                    { name: "Maya Chen", size: "md" },
+                    { name: "Jordan Park", size: "md" },
+                    { name: "Lin Wu", size: "md" },
                   ]}
                 />
+                <div aria-label="Ownership roster" className="component-proof-owner-list">
+                  {[
+                    { name: "Maya Chen", role: "Design lead" },
+                    { name: "Jordan Park", role: "Delivery owner" },
+                    { name: "Lin Wu", role: "Quality partner" },
+                  ].map((owner) => (
+                    <div className="component-proof-owner" key={owner.name}>
+                      <Avatar name={owner.name} size="sm" />
+                      <span>
+                        <strong>{owner.name}</strong>
+                        <small>{owner.role}</small>
+                      </span>
+                    </div>
+                  ))}
+                </div>
                 <Rating count={48} value={4.6} />
               </div>
               <div className="component-proof-signal-block">
@@ -1063,10 +1089,9 @@ export function ComponentProofs() {
         <Card>
           <CardHeader>
             <div>
-              <CardTitle>Native file selection</CardTitle>
+              <CardTitle>Files</CardTitle>
               <CardDescription>
-                Media handoff stays client-side and validates before it enters a
-                list.
+                Client-side handoff.
               </CardDescription>
             </div>
           </CardHeader>
@@ -1079,22 +1104,21 @@ export function ComponentProofs() {
               onReject={() => undefined}
               value={files}
             >
-              PDF or image, maximum 5 MB each.
+              PDF or image · max 5 MB.
             </FileUpload>
             <FileList files={fileItems} />
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Commerce contracts</CardTitle>
+            <CardTitle>Commerce</CardTitle>
           </CardHeader>
           <CardContent className="component-proof-stack">
             <div className="component-proof-commerce-head">
               <div>
                 <Typography typeRole="label">Cart interaction</Typography>
                 <Typography typeRole="caption">
-                  Shared cart primitives keep quantity, removal, summary, and
-                  checkout actions in one recipe-owned flow.
+                  Quantity, removal, summary, and checkout.
                 </Typography>
               </div>
               <CartTrigger
@@ -1113,7 +1137,7 @@ export function ComponentProofs() {
                       Add sample item
                     </Button>
                   }
-                  description="The same surface owns its empty state."
+                  description="The surface owns its empty state."
                   title="Cart is empty"
                 />
               }
@@ -1135,7 +1159,7 @@ export function ComponentProofs() {
                 <Button
                   onClick={() =>
                     setCommerceNotice(
-                      "Checkout action is ready for the recipe.",
+                      "Checkout ready.",
                     )
                   }
                 >
@@ -1171,14 +1195,16 @@ export function ComponentProofs() {
 
       <SurfaceExpressionFixture />
 
-      <div className="component-proof-grid component-proof-grid-charts">
+      <div
+        className="component-proof-grid component-proof-grid-charts"
+        id="component-lab-charts"
+      >
         <Card>
           <CardHeader>
             <div>
-              <CardTitle>Data signals in context</CardTitle>
+              <CardTitle>Chart contracts</CardTitle>
               <CardDescription>
-                Trends, comparisons, and state mix use one responsive SVG
-                contract with keyboard-safe points.
+                Line, bar, and donut share one SVG contract.
               </CardDescription>
             </div>
             <Badge tone="primary">SVG · interactive</Badge>
@@ -1200,7 +1226,7 @@ export function ComponentProofs() {
                   values: [36, 44, 62, 58, 70],
                 },
               ]}
-              summary="Coverage and quality across the review week."
+              summary="Coverage and quality."
               title="Coverage trend"
               valueFormatter={(value) => `${Math.round(value)}%`}
             />
@@ -1212,7 +1238,7 @@ export function ComponentProofs() {
                 { label: "C", value: 24 },
                 { label: "D", value: 39 },
               ]}
-              summary="Relative score by segment."
+              summary="Score by segment."
               title="Segment score"
             />
             <DonutChart
@@ -1228,20 +1254,19 @@ export function ComponentProofs() {
                 { label: "Review", value: 25 },
                 { label: "Blocked", value: 14 },
               ]}
-              summary="Current review-state mix · 61 ready."
+              summary="Review-state mix."
               title="Review state mix"
             />
           </CardContent>
         </Card>
       </div>
 
-      <Card>
+      <Card id="component-lab-navigation">
         <CardHeader>
           <div>
-            <CardTitle>Navigation and disclosure</CardTitle>
+            <CardTitle>Navigation &amp; disclosure</CardTitle>
             <CardDescription>
-              Switch peer views, reveal bounded context, and keep the next
-              handoff visible without crowding one row.
+              Views, steps, and disclosure keep context close.
             </CardDescription>
           </div>
         </CardHeader>
@@ -1265,9 +1290,7 @@ export function ComponentProofs() {
                     Live lens
                   </Badge>
                 </div>
-                <Typography typeRole="caption">
-                  Change the lens without leaving the surface.
-                </Typography>
+                  <Typography typeRole="caption">Switch lens.</Typography>
               </div>
               <Tabs
                 className="component-proof-tabs"
@@ -1275,12 +1298,18 @@ export function ComponentProofs() {
                   {
                     content: (
                       <div className="component-proof-tab-content">
-                        <Typography typeRole="label">
-                          Current handoff
-                        </Typography>
+                        <div className="component-proof-tab-heading">
+                          <T7Icon
+                            aria-hidden="true"
+                            name="timeline"
+                            size={16}
+                          />
+                          <Typography typeRole="label">
+                            Current handoff
+                          </Typography>
+                        </div>
                         <Typography typeRole="body-sm">
-                          The selected panel stays connected to its tab and
-                          exposes one focused review state.
+                          The selected panel stays connected to its tab.
                         </Typography>
                         <Badge tone="success">
                           <T7Icon aria-hidden="true" name="check" size={12} />
@@ -1298,8 +1327,7 @@ export function ComponentProofs() {
                           Recent activity
                         </Typography>
                         <Typography typeRole="body-sm">
-                          Keep related updates close; move longer workflows to a
-                          route or dialog.
+                          Related updates stay close.
                         </Typography>
                       </div>
                     ),
@@ -1324,7 +1352,7 @@ export function ComponentProofs() {
                     Handoff path
                   </Typography>
                   <Typography typeRole="caption">
-                    Three checkpoints keep the next action visible.
+                    Three checkpoints.
                   </Typography>
                 </div>
                 <Badge tone="primary">
@@ -1368,7 +1396,7 @@ export function ComponentProofs() {
                 Bounded disclosure
               </Typography>
               <Typography typeRole="caption">
-                Keep detail close to the selected view.
+                Keep detail close.
               </Typography>
             </div>
             <Accordion

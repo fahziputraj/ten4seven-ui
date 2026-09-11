@@ -1,0 +1,254 @@
+- generic [ref=f3e4]:
+  - complementary [ref=f3e5]:
+    - img "ten4seven UI system" [ref=f3e8]:
+      - generic [ref=f3e21]:
+        - generic [aria-hidden] [ref=f3e22]: ten4seven
+        - generic [aria-hidden] [ref=f3e23]: UI system
+    - navigation "ten4seven UI navigation" [ref=f3e25]:
+      - generic [ref=f3e26]:
+        - group "Studio" [ref=f3e27]:
+          - button "Theme Studio" [ref=f3e29] [cursor=pointer]
+          - button "Component Lab" [ref=f3e42] [cursor=pointer]
+        - group "Library" [ref=f3e50]:
+          - button "Tokens" [ref=f3e52] [cursor=pointer]
+          - button "Components" [ref=f3e61] [cursor=pointer]
+          - button "Blocks" [ref=f3e69] [cursor=pointer]
+          - button "Icons" [ref=f3e77] [cursor=pointer]
+          - button "Recipes" [ref=f3e84] [cursor=pointer]
+          - generic "Library menu" [ref=f3e92]:
+            - button "Browse library…" [ref=f3e93] [cursor=pointer]
+        - group "Reference" [ref=f3e101]:
+          - button "Publishing Store" [ref=f3e103] [cursor=pointer]
+        - group "Labs / Proofs" [ref=f3e111]:
+          - button "Operations Tracker" [ref=f3e113] [cursor=pointer]
+          - button "Operational Patterns" [ref=f3e121] [cursor=pointer]
+          - button "SaaS Control Plane" [ref=f3e127] [cursor=pointer]
+          - button "ERP Density Reference" [ref=f3e134] [cursor=pointer]
+          - button "Farm P1 Reference" [ref=f3e142] [cursor=pointer]
+          - button "Public Showcase" [ref=f3e148] [cursor=pointer]
+          - button "Farm Synthetic" [ref=f3e154] [cursor=pointer]
+          - button "Auth · Neutral" [ref=f3e160] [cursor=pointer]
+          - button "Auth · AAPM Academy" [ref=f3e167] [cursor=pointer]:
+            - generic [ref=f3e174]: Auth · Academy
+          - generic [ref=f3e175]: "Canonical identity: AAPM Academy."
+    - generic [ref=f3e176]:
+      - generic [ref=f3e177]: Explore
+      - paragraph [ref=f3e178]: Canonical UI surfaces, recipes, and practical previews.
+      - generic [ref=f3e179]: Ten4Seven UI
+  - main [ref=f3e180]:
+    - generic [ref=f3e181]:
+      - generic [ref=f3e183]:
+        - generic [ref=f3e184]: ten4seven UI
+        - link "Components" [ref=f3e188] [cursor=pointer]:
+          - /url: /components
+        - strong [ref=f3e198]: Actions
+      - generic [ref=f3e199]:
+        - button "Search ten4seven catalog" [ref=f3e200] [cursor=pointer]:
+          - generic [ref=f3e207]: Search catalogCtrl K
+        - generic "Live preview status" [ref=f3e208]:
+          - button "Live" [ref=f3e209] [cursor=pointer]
+        - button "Open settings" [ref=f3e214] [cursor=pointer]
+        - generic "ten4seven workspace menu" [ref=f3e219]:
+          - button "ten4seven workspace ten4seven UI workspace" [ref=f3e220] [cursor=pointer]:
+            - img "ten4seven workspace" [ref=f3e221]:
+              - generic [aria-hidden] [ref=f3e222]: T
+            - generic [ref=f3e223]:
+              - strong [ref=f3e224]: ten4seven
+              - generic [ref=f3e225]: UI workspace
+    - generic [ref=f3e229]:
+      - generic [ref=f3e230]:
+        - generic [ref=f3e231]:
+          - generic [ref=f3e232]: Components · Actions
+          - heading "Actions" [level=1] [ref=f3e237]
+          - paragraph [ref=f3e238]: Compare the actions family in one visual showroom. Canonical contracts stay separate underneath.
+          - generic [ref=f3e239]: 6 canonical contracts
+        - generic [ref=f3e242]:
+          - link "All families" [ref=f3e243] [cursor=pointer]:
+            - /url: /components
+          - link "Open Component Lab" [ref=f3e244] [cursor=pointer]:
+            - /url: /component-lab
+      - region "Actions component showroom" [ref=f3e245]:
+        - generic [ref=f3e246]:
+          - generic [ref=f3e247]:
+            - heading "Compare the family" [level=2] [ref=f3e248]
+            - generic [ref=f3e249]: Live specimens first. Open a contract only when you need the full API, accessibility notes, or implementation detail.
+          - generic [ref=f3e250]: 6 canonical contracts
+        - region [ref=f3e252]:
+          - generic [ref=f3e253]:
+            - generic [ref=f3e254]:
+              - heading "Action controls" [level=2] [ref=f3e255]
+              - generic [ref=f3e256]: Commit work, express intent, and expose compact action states.
+            - generic [ref=f3e257]: "6"
+          - generic [ref=f3e258]:
+            - article [ref=f3e259]:
+              - generic [ref=f3e260]:
+                - generic [ref=f3e261]:
+                  - generic [ref=f3e262]: "01"
+                  - generic [ref=f3e263]: implemented
+                - heading "Button" [level=3] [ref=f3e264]
+                - generic [ref=f3e265]: Trigger an explicit application action with intent, loading, and disabled semantics.
+                - generic "Button supported states" [ref=f3e266]:
+                  - generic [ref=f3e267]: default
+                  - generic [ref=f3e268]: focused
+                  - generic [ref=f3e269]: disabled
+                  - generic [ref=f3e270]: loading or pending when applicable
+                  - generic [ref=f3e271]: empty or unavailable when applicable
+                - link "Open API & detail" [ref=f3e272] [cursor=pointer]:
+                  - /url: /components/button
+              - generic [ref=f3e276]:
+                - generic [ref=f3e277]:
+                  - generic [ref=f3e282]:
+                    - strong [ref=f3e283]: Button
+                    - generic [ref=f3e284]: Canonical Actions fixture
+                  - generic [ref=f3e285]: Ready
+                - generic [ref=f3e289]:
+                  - generic [ref=f3e290]:
+                    - generic [ref=f3e291]: Available
+                    - button "Approve batch" [ref=f3e292] [cursor=pointer]
+                    - generic [ref=f3e296]: The operator can activate this action now.
+                  - generic [ref=f3e297]:
+                    - generic [ref=f3e298]: Disabled + explanation
+                    - generic [ref=f3e299]:
+                      - button "Release batch" [disabled] [ref=f3e300]
+                      - 'button "Why release batch is unavailable: Awaiting warehouse QA sign-off." [ref=f3e303] [cursor=pointer]'
+                    - generic [ref=f3e306]: Awaiting warehouse QA sign-off.
+                  - generic [ref=f3e307]:
+                    - generic [ref=f3e308]: Loading
+                    - button "Sync batch" [disabled] [ref=f3e309]
+                    - generic [ref=f3e312]: Pending work prevents duplicate activation.
+                  - generic [ref=f3e313]:
+                    - generic [ref=f3e314]: Completed / no longer available
+                    - button "Batch released" [disabled] [ref=f3e315]
+                    - generic [ref=f3e319]: The action remains visible after completion.
+              - group [ref=f3e320]:
+                - generic "Usage and accessibility" [ref=f3e321] [cursor=pointer]
+            - article [ref=f3e322]:
+              - generic [ref=f3e323]:
+                - generic [ref=f3e324]:
+                  - generic [ref=f3e325]: "02"
+                  - generic [ref=f3e326]: implemented
+                - heading "Icon Button" [level=3] [ref=f3e327]
+                - generic [ref=f3e328]: Render an accessible compact action with a required text label.
+                - generic "Icon Button supported states" [ref=f3e329]:
+                  - generic [ref=f3e330]: default
+                  - generic [ref=f3e331]: focused
+                  - generic [ref=f3e332]: disabled
+                  - generic [ref=f3e333]: loading or pending when applicable
+                  - generic [ref=f3e334]: empty or unavailable when applicable
+                - link "Open API & detail" [ref=f3e335] [cursor=pointer]:
+                  - /url: /components/icon-button
+              - generic [ref=f3e339]:
+                - generic [ref=f3e340]:
+                  - generic [ref=f3e345]:
+                    - strong [ref=f3e346]: Icon Button
+                    - generic [ref=f3e347]: Canonical Actions fixture
+                  - generic [ref=f3e348]: Ready
+                - generic [ref=f3e352]:
+                  - button "Edit item" [ref=f3e353] [cursor=pointer]
+                  - button "More actions" [ref=f3e359] [cursor=pointer]
+                  - button "Delete item" [disabled] [ref=f3e365]
+              - group [ref=f3e370]:
+                - generic "Usage and accessibility" [ref=f3e371] [cursor=pointer]
+            - article [ref=f3e372]:
+              - generic [ref=f3e373]:
+                - generic [ref=f3e374]:
+                  - generic [ref=f3e375]: "03"
+                  - generic [ref=f3e376]: implemented
+                - heading "Button Group" [level=3] [ref=f3e377]
+                - generic [ref=f3e378]: Visually bind closely related peer actions without inventing new button variants.
+                - generic "Button Group supported states" [ref=f3e379]:
+                  - generic [ref=f3e380]: default
+                  - generic [ref=f3e381]: focused
+                  - generic [ref=f3e382]: disabled
+                  - generic [ref=f3e383]: loading or pending when applicable
+                  - generic [ref=f3e384]: empty or unavailable when applicable
+                - link "Open API & detail" [ref=f3e385] [cursor=pointer]:
+                  - /url: /components/button-group
+              - generic [ref=f3e389]:
+                - generic [ref=f3e390]:
+                  - generic [ref=f3e395]:
+                    - strong [ref=f3e396]: Button Group
+                    - generic [ref=f3e397]: Canonical Actions fixture
+                  - generic [ref=f3e398]: Ready
+                - group "View actions" [ref=f3e402]:
+                  - button "Save" [ref=f3e403] [cursor=pointer]
+                  - button "Save as draft" [ref=f3e405] [cursor=pointer]
+                  - button "Cancel" [ref=f3e407] [cursor=pointer]
+              - group [ref=f3e409]:
+                - generic "Usage and accessibility" [ref=f3e410] [cursor=pointer]
+            - article [ref=f3e411]:
+              - generic [ref=f3e412]:
+                - generic [ref=f3e413]:
+                  - generic [ref=f3e414]: "04"
+                  - generic [ref=f3e415]: implemented
+                - heading "Toggle Button" [level=3] [ref=f3e416]
+                - generic [ref=f3e417]: Expose a pressed state for a compact reversible view or option control.
+                - generic "Toggle Button supported states" [ref=f3e418]:
+                  - generic [ref=f3e419]: default
+                  - generic [ref=f3e420]: focused
+                  - generic [ref=f3e421]: disabled
+                  - generic [ref=f3e422]: loading or pending when applicable
+                  - generic [ref=f3e423]: empty or unavailable when applicable
+                - link "Open API & detail" [ref=f3e424] [cursor=pointer]:
+                  - /url: /components/toggle-button
+              - generic [ref=f3e428]:
+                - generic [ref=f3e429]:
+                  - generic [ref=f3e434]:
+                    - strong [ref=f3e435]: Toggle Button
+                    - generic [ref=f3e436]: Canonical Actions fixture
+                  - generic [ref=f3e437]: Ready
+                - button "Included" [pressed] [ref=f3e441] [cursor=pointer]
+              - group [ref=f3e442]:
+                - generic "Usage and accessibility" [ref=f3e443] [cursor=pointer]
+            - article [ref=f3e444]:
+              - generic [ref=f3e445]:
+                - generic [ref=f3e446]:
+                  - generic [ref=f3e447]: "05"
+                  - generic [ref=f3e448]: implemented
+                - heading "Toggle Button Group" [level=3] [ref=f3e449]
+                - generic [ref=f3e450]: Coordinate single or multiple ToggleButton values.
+                - generic "Toggle Button Group supported states" [ref=f3e451]:
+                  - generic [ref=f3e452]: default
+                  - generic [ref=f3e453]: focused
+                  - generic [ref=f3e454]: disabled
+                  - generic [ref=f3e455]: loading or pending when applicable
+                  - generic [ref=f3e456]: empty or unavailable when applicable
+                - link "Open API & detail" [ref=f3e457] [cursor=pointer]:
+                  - /url: /components/toggle-button-group
+              - generic [ref=f3e461]:
+                - generic [ref=f3e462]:
+                  - generic [ref=f3e467]:
+                    - strong [ref=f3e468]: Toggle Button Group
+                    - generic [ref=f3e469]: Canonical Actions fixture
+                  - generic [ref=f3e470]: Ready
+                - group "View mode" [ref=f3e474]:
+                  - button "Grid" [pressed] [ref=f3e475] [cursor=pointer]
+                  - button "List" [ref=f3e482] [cursor=pointer]
+              - group [ref=f3e489]:
+                - generic "Usage and accessibility" [ref=f3e490] [cursor=pointer]
+            - article [ref=f3e491]:
+              - generic [ref=f3e492]:
+                - generic [ref=f3e493]:
+                  - generic [ref=f3e494]: "06"
+                  - generic [ref=f3e495]: implemented
+                - heading "Split Button" [level=3] [ref=f3e496]
+                - generic [ref=f3e497]: Pair one primary action with a canonical overflow menu.
+                - generic "Split Button supported states" [ref=f3e498]:
+                  - generic [ref=f3e499]: default
+                  - generic [ref=f3e500]: focused
+                  - generic [ref=f3e501]: disabled
+                  - generic [ref=f3e502]: loading or pending when applicable
+                  - generic [ref=f3e503]: empty or unavailable when applicable
+                - link "Open API & detail" [ref=f3e504] [cursor=pointer]:
+                  - /url: /components/split-button
+              - generic [ref=f3e508]:
+                - generic [ref=f3e509]:
+                  - generic [ref=f3e514]:
+                    - strong [ref=f3e515]: Split Button
+                    - generic [ref=f3e516]: Canonical Actions fixture
+                  - generic [ref=f3e517]: Ready
+                - generic [ref=f3e521]:
+                  - button "Save report" [ref=f3e522] [cursor=pointer]
+                  - button "More actions" [ref=f3e525] [cursor=pointer]
+              - group [ref=f3e528]:
+                - generic "Usage and accessibility" [ref=f3e529] [cursor=pointer]

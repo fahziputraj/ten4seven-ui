@@ -9,6 +9,7 @@ import type {
   MotionRoleScale,
   PaletteName,
   RadiusName,
+  SurfaceTreatment,
   ThemeColorSource,
   ThemeProfile,
   TypographyName,
@@ -84,6 +85,11 @@ const palettes: readonly PaletteName[] = [
   "amber",
 ];
 const canvases: readonly CanvasName[] = ["balanced", "paper", "monochrome"];
+const surfaceTreatments: readonly SurfaceTreatment[] = [
+  "quiet",
+  "low-contrast",
+  "outlined",
+];
 const chartPalettes: readonly ChartPaletteName[] = [
   "spectrum",
   "four",
@@ -200,6 +206,7 @@ export const DEFAULT_THEME_PROFILE: ThemeProfile = {
   action: { primary: "emerald" },
   accent: { source: "emerald" },
   canvas: { mode: "balanced" },
+  surface: { treatment: "outlined" },
   chart: { palette: "spectrum" },
   radius: { preset: "soft" },
   density: { preset: "default" },
@@ -230,6 +237,8 @@ export function normalizeThemeProfile(
           readonly source?: ThemeColorSource;
         };
     readonly canvas?: CanvasName | { readonly mode?: CanvasName };
+    readonly surfaceTreatment?: SurfaceTreatment;
+    readonly surface?: { readonly treatment?: SurfaceTreatment };
     readonly chartPalette?: ChartPaletteName;
     readonly chart?: { readonly palette?: ChartPaletteName };
     readonly radius?:
@@ -261,6 +270,8 @@ export function normalizeThemeProfile(
       : source.accent;
   const canvas =
     typeof source.canvas === "object" ? source.canvas?.mode : source.canvas;
+  const surfaceTreatment =
+    source.surface?.treatment ?? source.surfaceTreatment;
   const chartPalette = source.chart?.palette ?? source.chartPalette;
   const radius =
     typeof source.radius === "object" ? source.radius?.preset : source.radius;
@@ -320,6 +331,13 @@ export function normalizeThemeProfile(
     canvas: {
       mode: pick(canvas, canvases, DEFAULT_THEME_PROFILE.canvas.mode),
     },
+    surface: {
+      treatment: pick(
+        surfaceTreatment,
+        surfaceTreatments,
+        DEFAULT_THEME_PROFILE.surface.treatment,
+      ),
+    },
     chart: {
       palette: pick(
         chartPalette,
@@ -369,6 +387,7 @@ export function themeProfileToLegacyConfig(
     primary: profile.action.primary,
     accent: profile.accent.source,
     canvas: profile.canvas.mode,
+    surfaceTreatment: profile.surface.treatment,
     chartPalette: profile.chart.palette,
     radius: profile.radius.preset,
     ...(profile.radius.basePx === undefined
@@ -394,6 +413,7 @@ export interface ResolvedThemeLike {
   /** The canonical runtime accent source when available. */
   readonly accentSource?: ThemeColorSource;
   readonly canvas: CanvasName;
+  readonly surfaceTreatment: SurfaceTreatment;
   readonly chartPalette: ChartPaletteName;
   readonly radius: RadiusName;
   readonly radiusValue?: number;

@@ -210,6 +210,71 @@ test.describe("catalog information architecture", () => {
     ).toHaveAttribute("href", "#token-interaction");
   });
 
+  test("library discovery keeps recovery states and composition links usable", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+
+    await page.goto("/components");
+    const componentSearch = page.getByRole("textbox", {
+      name: "Search canonical components",
+    });
+    await componentSearch.fill("not-a-real-component");
+    await expect(
+      page.getByText("No matching components", { exact: true }),
+    ).toBeVisible();
+    await page
+      .getByRole("button", { name: "Clear search", exact: true })
+      .click();
+    await expect(
+      page.getByRole("heading", { name: "Families", exact: true }),
+    ).toBeVisible();
+
+    await page.goto("/components/date-time-input");
+    await expect(
+      page.getByRole("heading", { name: "Date–Time Input", exact: true }),
+    ).toBeVisible();
+    const detailOverflow = await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth -
+        document.documentElement.clientWidth,
+    );
+    expect(detailOverflow).toBeLessThanOrEqual(1);
+
+    await page.goto("/recipes");
+    await page
+      .getByRole("textbox", { name: "Search recipes" })
+      .fill("not-a-real-recipe");
+    await expect(
+      page.getByText("No matching recipes", { exact: true }),
+    ).toBeVisible();
+    await page
+      .getByRole("button", { name: "Clear filters", exact: true })
+      .click();
+    await expect(
+      page.getByRole("heading", { name: "Recipe index", exact: true }),
+    ).toBeVisible();
+
+    await page.goto("/icons");
+    await page
+      .getByRole("textbox", { name: "Search semantic icons" })
+      .fill("not-a-real-icon");
+    await expect(
+      page.getByText("No semantic icons match", { exact: true }),
+    ).toBeVisible();
+
+    await page.goto("/blocks");
+    const hierarchy = page.getByRole("navigation", {
+      name: "Composition hierarchy",
+    });
+    await expect(
+      hierarchy.getByRole("link", { name: "Recipes", exact: true }),
+    ).toHaveAttribute("href", "/recipes");
+    await expect(
+      hierarchy.getByRole("link", { name: "Blocks", exact: true }),
+    ).toHaveAttribute("aria-current", "page");
+  });
+
   test("mobile catalog navigation uses a drawer", async ({ page }) => {
     await page.setViewportSize({ height: 844, width: 390 });
     await page.goto("/components/forms");

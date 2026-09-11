@@ -30,12 +30,11 @@ import {
   exactColor,
   Input,
   IconButton,
-  CommandMenu,
   MobileSidebar,
   TopNavigation,
   Modal,
   NavItem,
-  Popover,
+  PageHeader,
   Select,
   Slider,
   Ten4SevenProvider,
@@ -54,6 +53,7 @@ import type {
   PaletteName,
   RadiusName,
   ResolvedTheme,
+  SurfaceTreatment,
   ThemeColorSource,
   TypographyName,
 } from "@ten4seven/tokens";
@@ -61,6 +61,7 @@ import {
   buildThemeVariables,
   buildRadiusProfile,
   canvasProfiles,
+  hslToHex,
   motionDurationRange,
   paletteProfiles,
   radiusProfiles,
@@ -86,38 +87,34 @@ import {
 } from "./library-explorers";
 import { PublicShowcase } from "./public-showcase";
 import { OperationalReference } from "./operational-reference";
+import { SaasControlPlaneReference } from "./saas-control-plane-reference";
 import { BrandExpressionProof } from "./brand-expression";
+import { AapmProfileWorkbench } from "./aapm-profile-workbench";
+import { ResponsiveContractWorkbench } from "./responsive-contract-workbench";
 import { FarmSyntheticProof } from "./farm-synthetic-proof";
+import { FarmP1Reference } from "./farm-p1-reference";
+import { ErpDataDenseReference } from "./erp-data-dense-reference";
 import {
   blockCatalog,
   categoryLabels,
   componentCatalog,
-  componentFamilyDefinitions,
   componentFamilyPath,
-  componentPath,
-  iconCatalog,
   recipeCatalog,
-  recipePath,
 } from "./catalog-model";
 import {
-  adoptionProofNavigation,
-  adoptionProofNavigationLabels,
-  adoptionProofRoutePaths,
-  libraryNavigation,
   brandProofRouteTitles,
   farmSyntheticProofDescription,
   farmSyntheticProofTitle,
   playgroundRoutePaths,
   playgroundRouteDescriptions,
+  playgroundShellVariants,
   playgroundRouteTitles,
-  referenceNavigation,
   routeFromPath,
-  studioNavigation,
   type PlaygroundRoute,
-  type AdoptionProofRoute,
   type RouteMatch,
 } from "./playground-routes";
 import { ReferenceHarness, type ReferenceViewState } from "./reference-harness";
+import { PlaygroundSidebar, PlaygroundTopbar } from "./playground-chrome";
 
 type StudioSettings = {
   appearance: Appearance;
@@ -191,36 +188,6 @@ function describeColorSource(source: ThemeColorSource) {
     : `${source.value} · exact source`;
 }
 
-function hslToHex(value: string, fallback: string) {
-  const match = value.match(/(-?[\d.]+)\s+([\d.]+)%\s+([\d.]+)%/);
-  if (!match) return fallback;
-
-  const hue = ((Number(match[1]) % 360) + 360) % 360;
-  const saturation = Math.max(0, Math.min(100, Number(match[2]))) / 100;
-  const lightness = Math.max(0, Math.min(100, Number(match[3]))) / 100;
-  const chroma = (1 - Math.abs(2 * lightness - 1)) * saturation;
-  const normalizedHue = hue / 60;
-  const second = chroma * (1 - Math.abs((normalizedHue % 2) - 1));
-  const matchValue = lightness - chroma / 2;
-  const [red, green, blue] =
-    normalizedHue < 1
-      ? [chroma, second, 0]
-      : normalizedHue < 2
-        ? [second, chroma, 0]
-        : normalizedHue < 3
-          ? [0, chroma, second]
-          : normalizedHue < 4
-            ? [0, second, chroma]
-            : normalizedHue < 5
-              ? [second, 0, chroma]
-              : [chroma, 0, second];
-  const toHex = (channel: number) =>
-    Math.round((channel + matchValue) * 255)
-      .toString(16)
-      .padStart(2, "0");
-  return `#${toHex(red)}${toHex(green)}${toHex(blue)}`;
-}
-
 function getThemeChange(
   previous: ResolvedTheme,
   next: ResolvedTheme,
@@ -292,329 +259,6 @@ const columns: DataTableColumn<InventoryRow>[] = [
   },
 ];
 
-const routeIcons: Record<PlaygroundRoute, IconName> = {
-  "Theme Studio": "theme",
-  "Component Lab": "components",
-  Tokens: "tokens",
-  Components: "components",
-  Blocks: "components",
-  Icons: "category",
-  Recipes: "table",
-  "Operations Tracker": "analytics",
-  "Operational Patterns": "logistics",
-  "Publishing Store": "book",
-  "Public Showcase": "dashboard",
-};
-
-const adoptionProofIcons: Record<AdoptionProofRoute, IconName> = {
-  "Farm Synthetic": "farm",
-  "Auth · Neutral": "user",
-  "Auth · AAPM Academy": "book",
-};
-
-const studioNavGroups: Array<{
-  label: string;
-  routes: PlaygroundRoute[];
-}> = [
-  { label: "Studio", routes: studioNavigation },
-  { label: "Library", routes: libraryNavigation },
-  { label: "References", routes: referenceNavigation },
-];
-
-function isPlaygroundNavigationActive(
-  route: PlaygroundRoute,
-  activePath: string,
-) {
-  const routePath = playgroundRoutePaths[route];
-  return (
-    activePath === routePath ||
-    ((route === "Components" || route === "Blocks" || route === "Recipes") &&
-      activePath.startsWith(`${routePath}/`))
-  );
-}
-
-function LibraryMenu({
-  activePath,
-  onNavigate,
-  onNavigatePath,
-}: {
-  activePath: string;
-  onNavigate: (route: PlaygroundRoute) => void;
-  onNavigatePath: (path: string) => void;
-}) {
-  const [open, setOpen] = useState(false);
-
-  const goRoute = (route: PlaygroundRoute) => {
-    setOpen(false);
-    onNavigate(route);
-  };
-  const goPath = (path: string) => {
-    setOpen(false);
-    onNavigatePath(path);
-  };
-
-  return (
-    <Popover
-      aria-label="Library menu"
-      className="studio-library-popover"
-      onOpenChange={setOpen}
-      open={open}
-      side="right"
-      trigger={<NavItem icon="components" label="Browse library…" />}
-    >
-      <div className="studio-library-menu">
-        <div className="studio-library-menu-heading">
-          <div>
-            <Typography typeRole="overline">Library</Typography>
-            <Typography as="h2" typeRole="heading-sm">
-              Browse contracts
-            </Typography>
-          </div>
-          <span>{componentFamilyDefinitions.length} families</span>
-        </div>
-
-        <section className="studio-library-menu-section">
-          <div className="studio-library-menu-section-heading">
-            <Typography typeRole="label">Components</Typography>
-            <span>Direct family access</span>
-          </div>
-          <NavItem
-            active={activePath.startsWith("/components")}
-            icon="components"
-            label="Components"
-            onClick={() => goPath("/components")}
-          />
-          <div
-            aria-label="Component families"
-            className="studio-library-family-grid"
-          >
-            {componentFamilyDefinitions.map((family) => (
-              <button
-                className="studio-library-family-link"
-                key={family.category}
-                onClick={() => goPath(componentFamilyPath(family.category))}
-                type="button"
-              >
-                <T7Icon name={family.icon} size={16} />
-                <span>{family.label}</span>
-                <T7Icon aria-hidden="true" name="arrowRight" size={13} />
-              </button>
-            ))}
-          </div>
-        </section>
-
-        <section className="studio-library-menu-section">
-          <Typography typeRole="label">Other library contracts</Typography>
-          <div className="studio-library-route-grid">
-            {libraryNavigation
-              .filter((route) => route !== "Components")
-              .map((route) => (
-                <NavItem
-                  active={activePath === playgroundRoutePaths[route]}
-                  icon={routeIcons[route]}
-                  key={route}
-                  label={route}
-                  onClick={() => goRoute(route)}
-                />
-              ))}
-          </div>
-        </section>
-      </div>
-    </Popover>
-  );
-}
-
-function WorkbenchNavigation({
-  activePath,
-  mode = "sidebar",
-  onNavigate,
-  onNavigatePath,
-}: {
-  activePath: string;
-  mode?: "mobile" | "sidebar";
-  onNavigate: (route: PlaygroundRoute) => void;
-  onNavigatePath: (path: string) => void;
-}) {
-  const academyIdentityId = useId();
-  const navigationRef = useRef<HTMLDivElement>(null);
-
-  useLayoutEffect(() => {
-    if (mode !== "sidebar") return;
-
-    const navigation = navigationRef.current;
-    const scrollContainer =
-      navigation?.closest<HTMLElement>(".studio-nav-groups");
-    if (!scrollContainer) return;
-
-    let cancelled = false;
-    const alignActiveItem = () => {
-      const activeItem = navigation?.querySelector<HTMLElement>(
-        '[data-active="true"]',
-      );
-      if (cancelled || !activeItem) return;
-
-      const containerRect = scrollContainer.getBoundingClientRect();
-      const itemRect = activeItem.getBoundingClientRect();
-      const topOverflow = itemRect.top - containerRect.top;
-      const bottomOverflow = itemRect.bottom - containerRect.bottom;
-
-      // Keep route visibility bounded to the sidebar's own scroll owner. The
-      // direct scroll adjustment avoids moving the document or stealing focus.
-      if (topOverflow < 0) {
-        scrollContainer.scrollTop += topOverflow;
-      } else if (bottomOverflow > 0) {
-        scrollContainer.scrollTop += bottomOverflow;
-      }
-    };
-
-    alignActiveItem();
-    const frame = window.requestAnimationFrame(alignActiveItem);
-    document.fonts?.ready.then(alignActiveItem);
-    return () => {
-      cancelled = true;
-      window.cancelAnimationFrame(frame);
-    };
-  }, [activePath, mode]);
-
-  return (
-    <div className="studio-navigation-tree" ref={navigationRef}>
-      {studioNavGroups.map((group) => (
-        <div
-          aria-label={group.label}
-          className="studio-nav-group"
-          key={group.label}
-          role="group"
-        >
-          <span className="studio-nav-label">{group.label}</span>
-          {group.routes.map((route) => {
-            const isActive = isPlaygroundNavigationActive(route, activePath);
-            return (
-              <NavItem
-                active={isActive}
-                aria-current={isActive ? "page" : undefined}
-                icon={routeIcons[route]}
-                key={route}
-                label={route}
-                onClick={() => onNavigate(route)}
-              />
-            );
-          })}
-          {group.label === "Library" && mode === "sidebar" ? (
-            <LibraryMenu
-              activePath={activePath}
-              onNavigate={onNavigate}
-              onNavigatePath={onNavigatePath}
-            />
-          ) : null}
-        </div>
-      ))}
-      <div
-        aria-label="Adoption Proofs"
-        className="studio-nav-group adoption-proof-nav-group"
-        role="group"
-      >
-        <span className="studio-nav-label">Adoption Proofs</span>
-        {adoptionProofNavigation.map((route) => {
-          const isActive = activePath === adoptionProofRoutePaths[route];
-          const isAcademy = route === "Auth · AAPM Academy";
-          return (
-            <NavItem
-              active={isActive}
-              aria-describedby={isAcademy ? academyIdentityId : undefined}
-              aria-current={isActive ? "page" : undefined}
-              aria-label={isAcademy ? route : undefined}
-              icon={adoptionProofIcons[route]}
-              key={route}
-              label={adoptionProofNavigationLabels[route]}
-              onClick={() => onNavigatePath(adoptionProofRoutePaths[route])}
-              title={isAcademy ? route : undefined}
-            />
-          );
-        })}
-        <span className="sr-only" id={academyIdentityId}>
-          Canonical identity: AAPM Academy.
-        </span>
-      </div>
-    </div>
-  );
-}
-
-function WorkbenchSearch({
-  onNavigatePath,
-}: {
-  onNavigatePath: (path: string) => void;
-}) {
-  const [open, setOpen] = useState(false);
-  const commands = useMemo(
-    () => [
-      ...Object.entries(componentCatalog).map(([name, component]) => ({
-        description: categoryLabels[component.category] ?? component.category,
-        group: "Components",
-        icon: "components" as IconName,
-        id: `component-${name}`,
-        keywords: [
-          component.displayName ?? "",
-          ...component.useWhen,
-          ...component.relatedComponents,
-          component.aliasOf ?? "",
-        ],
-        label: component.displayName ?? name,
-        onSelect: () => onNavigatePath(componentPath(name)),
-      })),
-      ...Object.keys(iconCatalog).map((name) => ({
-        description: "Semantic icon",
-        group: "Icons",
-        icon: "category" as IconName,
-        id: `icon-${name}`,
-        keywords: iconCatalog[name].useWhen,
-        label: name,
-        onSelect: () => onNavigatePath("/icons"),
-      })),
-      ...Object.entries(recipeCatalog).map(([name, recipe]) => ({
-        description: recipe.purpose,
-        group: "Recipes",
-        icon: "table" as IconName,
-        id: `recipe-${name}`,
-        keywords: recipe.components,
-        label: name,
-        onSelect: () => onNavigatePath(recipePath(name)),
-      })),
-    ],
-    [onNavigatePath],
-  );
-
-  return (
-    <>
-      <Button
-        aria-label="Search ten4seven catalog"
-        className="studio-search-trigger"
-        intent="quiet"
-        leadingIcon="search"
-        onClick={() => setOpen(true)}
-        size="sm"
-      >
-        <span>Search catalog</span>
-        <kbd>Ctrl K</kbd>
-      </Button>
-      <CommandMenu
-        commands={commands}
-        onOpenChange={setOpen}
-        open={open}
-        placeholder="Search components, tokens, icons, recipes…"
-        shortcut
-      />
-    </>
-  );
-}
-
-function StudioMark() {
-  return (
-    <span className="studio-mark">
-      <T7Icon name="theme" size={18} />
-    </span>
-  );
-}
-
 function TypographySpecimen() {
   const { theme } = useTen4SevenTheme();
 
@@ -639,8 +283,7 @@ function TypographySpecimen() {
                 Make the system legible.
               </Typography>
               <Typography typeRole="body-lg" as="p">
-                Hierarchy comes from size, space, color, tracking, and limited
-                emphasis—not a wall of bold text.
+                Hierarchy is scale, space, and limited emphasis.
               </Typography>
             </div>
             <div className="type-specimen-meta">
@@ -672,10 +315,10 @@ function TypographySpecimen() {
             <div className="type-specimen-group">
               <Typography typeRole="overline">Reading roles</Typography>
               <Typography typeRole="body" as="p">
-                Body text stays readable and calm at the default UI size.
+                Calm body text for the default UI size.
               </Typography>
               <Typography typeRole="body-sm" as="p">
-                Small body text carries supporting context without competing.
+                Supporting context without competition.
               </Typography>
               <Typography typeRole="label">Form label</Typography>
               <Typography typeRole="caption">Helper text</Typography>
@@ -728,24 +371,36 @@ function TypographySpecimen() {
             className="type-specimen-role-strip"
           >
             <div className="type-specimen-role-card">
-              <Typography typeRole="overline">Metric</Typography>
+              <div className="type-specimen-role-heading">
+                <T7Icon aria-hidden="true" name="kpi" size={15} />
+                <Typography typeRole="overline">Metric</Typography>
+              </div>
               <Typography typeRole="metric-lg" data-numeric>
                 12,480
               </Typography>
               <Typography typeRole="caption">metric-lg</Typography>
             </div>
             <div className="type-specimen-role-card">
-              <Typography typeRole="overline">Navigation</Typography>
+              <div className="type-specimen-role-heading">
+                <T7Icon aria-hidden="true" name="dashboard" size={15} />
+                <Typography typeRole="overline">Navigation</Typography>
+              </div>
               <Typography typeRole="nav">Operations tracker</Typography>
               <Typography typeRole="caption">nav</Typography>
             </div>
             <div className="type-specimen-role-card">
-              <Typography typeRole="overline">Input</Typography>
+              <div className="type-specimen-role-heading">
+                <T7Icon aria-hidden="true" name="type" size={15} />
+                <Typography typeRole="overline">Input</Typography>
+              </div>
               <Typography typeRole="input">Search records…</Typography>
               <Typography typeRole="caption">input</Typography>
             </div>
             <div className="type-specimen-role-card">
-              <Typography typeRole="overline">Code</Typography>
+              <div className="type-specimen-role-heading">
+                <T7Icon aria-hidden="true" name="file" size={15} />
+                <Typography typeRole="overline">Code</Typography>
+              </div>
               <code>--t7-focus-hsl</code>
               <Typography typeRole="caption">mono family</Typography>
             </div>
@@ -761,8 +416,8 @@ function Studio({
   activePath,
   breadcrumbItems,
   contentOverride,
-  onNavigate,
   onNavigatePath,
+  onOpenReferenceQa,
   onOpenSettings,
   onThemePreferencesChange,
   onThemeRecipeChange,
@@ -773,14 +428,15 @@ function Studio({
     PlaygroundRoute,
     | "Operations Tracker"
     | "Operational Patterns"
+    | "ERP Density Reference"
     | "Publishing Store"
     | "Public Showcase"
   >;
   activePath: string;
   breadcrumbItems?: Array<{ label: string; path?: string }>;
   contentOverride?: ReactNode;
-  onNavigate: (route: PlaygroundRoute) => void;
   onNavigatePath: (path: string) => void;
+  onOpenReferenceQa: () => void;
   onOpenSettings: () => void;
   onThemePreferencesChange: (preferences: RuntimePreferences) => void;
   onThemeRecipeChange: (recipe: ThemeRecipeName | undefined) => void;
@@ -828,6 +484,7 @@ function Studio({
       ["Main action", describeColorSource(theme.primarySource)],
       ["Accent color", describeColorSource(theme.accentSource)],
       ["Canvas", theme.canvas],
+      ["Surface treatment", theme.surfaceTreatment],
       ["Chart colorway", theme.chartPalette],
       [
         "Radius",
@@ -843,100 +500,32 @@ function Studio({
   );
 
   return (
-    <div className="studio-shell">
-      <aside className="studio-sidebar">
-        <div className="studio-brand">
-          <StudioMark />
-          <div>
-            <strong>ten4seven</strong>
-            <span>UI system</span>
-          </div>
-        </div>
-
-        <nav aria-label="ten4seven UI navigation" className="studio-nav-groups">
-          <WorkbenchNavigation
-            activePath={activePath}
-            onNavigate={onNavigate}
-            onNavigatePath={onNavigatePath}
-          />
-        </nav>
-
-        <div className="studio-sidebar-note">
-          <span className="studio-nav-label">Explore</span>
-          <p>Canonical foundations, recipes, and practical previews.</p>
-          <span className="studio-sidebar-version">Theme workbench</span>
-        </div>
-      </aside>
+    <div
+      className="studio-shell"
+      data-active-route={activeRoute}
+      data-shell-contract="reference-shell"
+      data-shell-variant={playgroundShellVariants[activeRoute]}
+    >
+      <PlaygroundSidebar
+        activePath={activePath}
+        className="studio-sidebar"
+        element="aside"
+        label="ten4seven UI navigation"
+        onNavigatePath={onNavigatePath}
+      />
 
       <main className="studio-main">
-        <header className="studio-topbar">
-          <div className="studio-topbar-leading">
-            <IconButton
-              className="studio-mobile-menu"
-              icon="menu"
-              label="Open design system navigation"
-              aria-expanded={isMobileNavOpen}
-              aria-controls={mobileNavigationId}
-              aria-haspopup="dialog"
-              onClick={() => setMobileNavOpen(true)}
-              size="md"
-            />
-            <div className="studio-breadcrumb">
-              <span>ten4seven UI</span>
-              <T7Icon aria-hidden="true" name="chevronRight" size={13} />
-              {(breadcrumbItems ?? [{ label: activeRoute }]).map(
-                (item, index, items) => (
-                  <span className="studio-breadcrumb-item" key={item.label}>
-                    {item.path ? (
-                      <a
-                        href={item.path}
-                        onClick={(event) => {
-                          if (
-                            event.defaultPrevented ||
-                            event.button !== 0 ||
-                            event.metaKey ||
-                            event.ctrlKey ||
-                            event.shiftKey ||
-                            event.altKey
-                          ) {
-                            return;
-                          }
-                          event.preventDefault();
-                          onNavigatePath(item.path!);
-                        }}
-                      >
-                        {item.label}
-                      </a>
-                    ) : (
-                      <strong>{item.label}</strong>
-                    )}
-                    {index < items.length - 1 ? (
-                      <T7Icon
-                        aria-hidden="true"
-                        name="chevronRight"
-                        size={13}
-                      />
-                    ) : null}
-                  </span>
-                ),
-              )}
-            </div>
-          </div>
-          <div className="studio-top-actions t7-header-actions">
-            <WorkbenchSearch onNavigatePath={onNavigatePath} />
-            <span aria-label="Live preview active" className="studio-live-dot">
-              <i /> Live
-            </span>
-            <IconButton
-              className="studio-top-icon"
-              icon="settings"
-              label="Open settings"
-              onClick={onOpenSettings}
-              size="md"
-            />
-            <span className="studio-avatar">T7</span>
-          </div>
-        </header>
+        <PlaygroundTopbar
+          activeRoute={activeRoute}
+          breadcrumbItems={breadcrumbItems}
+          isMobileNavOpen={isMobileNavOpen}
+          mobileMenuLabel="Open design system navigation"
+          mobileNavigationId={mobileNavigationId}
+          onNavigatePath={onNavigatePath}
+          onOpenMobileNavigation={() => setMobileNavOpen(true)}
+          onOpenSettings={onOpenSettings}
+          settingsLabel="Open settings"
+        />
 
         <MobileSidebar
           id={mobileNavigationId}
@@ -945,40 +534,41 @@ function Studio({
           title="Design system navigation"
         >
           <div className="studio-mobile-navigation">
-            <WorkbenchNavigation
+            <PlaygroundSidebar
               activePath={activePath}
+              label="ten4seven UI navigation"
               mode="mobile"
-              onNavigate={(route) => {
-                setMobileNavOpen(false);
-                onNavigate(route);
-              }}
               onNavigatePath={(path) => {
                 setMobileNavOpen(false);
                 onNavigatePath(path);
               }}
             />
+            <Button
+              className="studio-mobile-reference-qa"
+              intent="secondary"
+              leadingIcon="components"
+              onClick={onOpenReferenceQa}
+              size="sm"
+            >
+              Open reference QA
+            </Button>
           </div>
         </MobileSidebar>
 
         {activeRoute === "Theme Studio" && !contentOverride ? (
           <>
             <div className="studio-content">
-              <section className="studio-intro">
-                <div>
-                  <Typography typeRole="display-lg" as="h1">
-                    Theme Studio
-                  </Typography>
-                  <p>
-                    Start with a curated recipe, then inspect how runtime
-                    preferences and advanced tokens affect the same surfaces.
-                  </p>
-                </div>
-                <div className="studio-intro-actions">
+              <PageHeader
+                className="studio-page-header"
+                description="Tune shared tokens and preview their effect."
+                meta={
                   <span className="studio-last-updated">
-                    Preview changes as you adjust the workbench.
+                    Local preview · live tokens
                   </span>
-                </div>
-              </section>
+                }
+                overline="Theme workbench · live token preview"
+                title="Theme Studio"
+              />
 
               <section
                 aria-label="Theme recipe, runtime preferences, and live preview"
@@ -998,15 +588,16 @@ function Studio({
                 </aside>
               </section>
 
+              <AapmProfileWorkbench />
+
+              <ResponsiveContractWorkbench />
+
               <Collapsible
                 className="studio-advanced-authoring"
-                defaultOpen
                 title={
                   <span className="studio-advanced-authoring-title">
                     <span>Advanced theme authoring</span>
-                    <small>
-                      Fine-tune authored tokens when a recipe needs it
-                    </small>
+                    <small>Shared token controls</small>
                   </span>
                 }
               >
@@ -1016,9 +607,8 @@ function Studio({
                       <div className="studio-controls-header-copy">
                         <CardTitle as="h2">Authoring tokens</CardTitle>
                         <CardDescription>
-                          Fine-tune authored tokens after choosing a recipe and
-                          runtime preference. These settings travel with the
-                          provider without replacing user preferences.
+                          Tune the active palette, type, geometry, and motion
+                          axes.
                         </CardDescription>
                       </div>
                       <T7Icon
@@ -1043,14 +633,9 @@ function Studio({
                             How the controls relate
                           </Typography>
                           <p>
-                            <strong>Base palette</strong> sets the default hue.{" "}
-                            <strong>Main action</strong> colors buttons, links,
-                            and selected states. <strong>Accent color</strong>{" "}
-                            drives supporting emphasis. Focus uses a dedicated
-                            accessible role. <strong>Canvas</strong> controls
-                            neutral surfaces; <strong>Chart</strong> controls
-                            data series and explicitly colorway-linked Card,
-                            KPI, or bounded Surface regions.
+                            Palette sets hue. Main action covers UI. Accent
+                            supports emphasis. Canvas controls neutrals; Chart
+                            controls data colorways.
                           </p>
                         </div>
                         <div className="studio-control-guide-roles">
@@ -1066,15 +651,23 @@ function Studio({
                           className="studio-control-group studio-control-group-type"
                         >
                           <div className="studio-control-group-heading">
-                            <Typography
-                              as="h3"
-                              className="studio-control-group-title"
-                              id="studio-type-heading"
-                              typeRole="label"
-                            >
-                              Typography
-                            </Typography>
-                            <p>Choose the shared family and role hierarchy.</p>
+                            <div className="studio-control-group-title-row">
+                              <span
+                                aria-hidden="true"
+                                className="studio-control-group-icon"
+                              >
+                                <T7Icon name="type" size={16} />
+                              </span>
+                              <Typography
+                                as="h3"
+                                className="studio-control-group-title"
+                                id="studio-type-heading"
+                                typeRole="label"
+                              >
+                                Typography
+                              </Typography>
+                            </div>
+                            <p>Shared family and role hierarchy.</p>
                           </div>
                           <TypographyPicker value={theme.typography} />
                         </section>
@@ -1084,19 +677,23 @@ function Studio({
                           className="studio-control-group studio-control-group-color"
                         >
                           <div className="studio-control-group-heading">
-                            <Typography
-                              as="h3"
-                              className="studio-control-group-title"
-                              id="studio-color-heading"
-                              typeRole="label"
-                            >
-                              Color roles
-                            </Typography>
-                            <p>
-                              Set the base hue, then tune each semantic role.
-                              The labels below tell you exactly where each value
-                              appears.
-                            </p>
+                            <div className="studio-control-group-title-row">
+                              <span
+                                aria-hidden="true"
+                                className="studio-control-group-icon"
+                              >
+                                <T7Icon name="palette" size={16} />
+                              </span>
+                              <Typography
+                                as="h3"
+                                className="studio-control-group-title"
+                                id="studio-color-heading"
+                                typeRole="label"
+                              >
+                                Color roles
+                              </Typography>
+                            </div>
+                            <p>Base hue and semantic roles.</p>
                           </div>
                           <PalettePicker value={theme.palette} />
                           <div
@@ -1115,7 +712,7 @@ function Studio({
                               <span aria-hidden="true" />
                               <div>
                                 <strong>Accent color</strong>
-                                <small>Supporting emphasis · expression</small>
+                                <small>Supporting emphasis</small>
                               </div>
                             </div>
                             <div data-role="surface">
@@ -1129,21 +726,19 @@ function Studio({
                               <span aria-hidden="true" />
                               <div>
                                 <strong>Chart</strong>
-                                <small>
-                                  Data series · opted-in solid surfaces
-                                </small>
+                                <small>Data series and colorways</small>
                               </div>
                             </div>
                           </div>
                           <div className="studio-control-subgrid">
                             <ColorSourceControl
-                              hint="Primary actions, links, and selected states."
+                              hint="Buttons, links, selected states."
                               label="Main action color"
                               settingKey="primary"
                               source={theme.primarySource}
                             />
                             <ColorSourceControl
-                              hint="Supporting emphasis uses this accent. Focus color is independently resolved for visibility."
+                              hint="Supporting emphasis; focus stays semantic."
                               label="Accent color"
                               settingKey="accent"
                               source={theme.accentSource}
@@ -1161,18 +756,23 @@ function Studio({
                           className="studio-control-group studio-control-group-rhythm"
                         >
                           <div className="studio-control-group-heading">
-                            <Typography
-                              as="h3"
-                              className="studio-control-group-title"
-                              id="studio-rhythm-heading"
-                              typeRole="label"
-                            >
-                              Shape
-                            </Typography>
-                            <p>
-                              Adjust shared geometry. Density remains a runtime
-                              preference in the recipe rail above.
-                            </p>
+                            <div className="studio-control-group-title-row">
+                              <span
+                                aria-hidden="true"
+                                className="studio-control-group-icon"
+                              >
+                                <T7Icon name="components" size={16} />
+                              </span>
+                              <Typography
+                                as="h3"
+                                className="studio-control-group-title"
+                                id="studio-rhythm-heading"
+                                typeRole="label"
+                              >
+                                Shape
+                              </Typography>
+                            </div>
+                            <p>Shared geometry; density stays above.</p>
                           </div>
                           <RadiusSlider value={theme.radius} />
                         </section>
@@ -1182,17 +782,24 @@ function Studio({
                           className="studio-control-group studio-control-group-motion"
                         >
                           <div className="studio-control-group-heading">
-                            <Typography
-                              as="h3"
-                              className="studio-control-group-title"
-                              id="studio-motion-heading"
-                              typeRole="label"
-                            >
-                              Motion timing
-                            </Typography>
+                            <div className="studio-control-group-title-row">
+                              <span
+                                aria-hidden="true"
+                                className="studio-control-group-icon"
+                              >
+                                <T7Icon name="clock" size={16} />
+                              </span>
+                              <Typography
+                                as="h3"
+                                className="studio-control-group-title"
+                                id="studio-motion-heading"
+                                typeRole="label"
+                              >
+                                Motion timing
+                              </Typography>
+                            </div>
                             <p>
-                              Tune authored reveal and interaction timing. The
-                              runtime motion preference remains above.
+                              Authored timing; motion preference stays above.
                             </p>
                           </div>
                           <MotionSlider value={theme.motionDuration} />
@@ -1215,7 +822,7 @@ function Studio({
                       <div>
                         <CardTitle as="h2">Active profile</CardTitle>
                         <CardDescription>
-                          Current values written to the provider root.
+                          Current provider values.
                         </CardDescription>
                       </div>
                       <span
@@ -1254,9 +861,7 @@ function Studio({
                 title={
                   <span className="studio-developer-delivery-title">
                     <span>Developer delivery</span>
-                    <small>
-                      CSS-first selector proof and implementation reference
-                    </small>
+                    <small>CSS-first selector proof</small>
                   </span>
                 }
               >
@@ -1268,10 +873,7 @@ function Studio({
               <section className="studio-section-heading">
                 <div>
                   <h2>Component proof</h2>
-                  <p>
-                    Six surfaces are intentionally rendered together so global
-                    changes stay visible.
-                  </p>
+                  <p>A compact set of canonical controls for visual checks.</p>
                 </div>
                 <span className="studio-section-count">
                   6 surfaces / 10 axes
@@ -1284,7 +886,7 @@ function Studio({
                     <div>
                       <CardTitle>Button</CardTitle>
                       <CardDescription>
-                        Intent and size consume the same control height.
+                        Intent and size share one height.
                       </CardDescription>
                     </div>
                     <T7Icon
@@ -1307,7 +909,7 @@ function Studio({
                     <div>
                       <CardTitle>Input</CardTitle>
                       <CardDescription>
-                        Focus treatment stays semantic across palettes.
+                        Focus follows the semantic ring.
                       </CardDescription>
                     </div>
                     <T7Icon className="proof-icon" name="search" size={20} />
@@ -1327,7 +929,7 @@ function Studio({
                     <div>
                       <CardTitle>Card</CardTitle>
                       <CardDescription>
-                        Surface elevation follows the global profile.
+                        Elevation follows the active profile.
                       </CardDescription>
                     </div>
                     <T7Icon className="proof-icon" name="check" size={20} />
@@ -1348,7 +950,7 @@ function Studio({
                     <div>
                       <CardTitle>DataTable row</CardTitle>
                       <CardDescription>
-                        Declared density changes rows, not readability.
+                        Density changes rows, not readability.
                       </CardDescription>
                     </div>
                     <T7Icon className="proof-icon" name="table" size={20} />
@@ -1367,8 +969,7 @@ function Studio({
                     <div>
                       <CardTitle>Modal</CardTitle>
                       <CardDescription>
-                        Overlay surface uses the same radius and elevation
-                        family.
+                        Radius and elevation stay shared.
                       </CardDescription>
                     </div>
                     <T7Icon className="proof-icon" name="modal" size={20} />
@@ -1392,7 +993,7 @@ function Studio({
                     <div>
                       <CardTitle>Sidebar item</CardTitle>
                       <CardDescription>
-                        Navigation state uses semantic foregrounds.
+                        State uses semantic foregrounds.
                       </CardDescription>
                     </div>
                     <T7Icon className="proof-icon" name="sidebar" size={20} />
@@ -1409,12 +1010,14 @@ function Studio({
                   <T7Icon name="check" size={18} />
                   <strong>System coherence verified</strong>
                   <span>
-                    Change green → blue, soft → sharp, default → compact, font,
-                    and light → dark from the controls above.
+                    Review the live specimen, then save a local proof snapshot
+                    for this experiment.
                   </span>
                 </div>
                 <Button
+                  className="studio-footer-card-action"
                   intent={saved ? "secondary" : "primary"}
+                  leadingIcon={saved ? "fileCheck" : "export"}
                   size="sm"
                   onClick={() => setSaved(true)}
                 >
@@ -1569,10 +1172,12 @@ function RadiusSlider({ value }: { value: RadiusName }) {
         aria-describedby="studio-shape-preset-description"
         className="studio-choice-picker studio-radius-presets"
       >
-        <legend className="t7-field-label">Preset</legend>
+        <legend className="t7-field-label studio-choice-legend">
+          <T7Icon aria-hidden="true" name="components" size={15} />
+          <span>Preset</span>
+        </legend>
         <p className="studio-choice-help" id="studio-shape-preset-description">
-          Start from a named radius profile, or use Base radius for an exact
-          custom geometry.
+          Named profile or exact Base radius.
         </p>
         <div className="studio-radius-preset-options">
           {radiusNames.map((option) => {
@@ -1646,8 +1251,7 @@ function RadiusSlider({ value }: { value: RadiusName }) {
             className="studio-radius-description"
             id="studio-base-radius-description"
           >
-            Exact 0–24 px control. Moving this slider creates a Custom shape
-            override while preserving the selected recipe.
+            0–24 px control; custom values preserve the recipe.
           </p>
           <div aria-hidden="true" className="studio-axis-slider-scale">
             {["0 px", "12 px", "24 px"].map((stop, index) => (
@@ -1732,8 +1336,7 @@ function StudioLivePreview({
             Live visual preview
           </Typography>
           <Typography as="p" typeRole="body-sm">
-            Recipe, runtime preferences, and authored tokens resolve into one
-            small product surface.
+            One compact surface for the active theme.
           </Typography>
         </div>
         <div
@@ -1769,8 +1372,7 @@ function StudioLivePreview({
                 Release readiness
               </Typography>
               <Typography as="p" typeRole="body-sm">
-                Keep customer work moving with focused actions, status, form,
-                data, and scoped context.
+                Actions, status, form, and data in one surface.
               </Typography>
             </div>
             <Badge tone="success">Healthy</Badge>
@@ -1868,15 +1470,13 @@ function StudioLivePreview({
               Inverse ThemeScope
             </span>
             <span className="studio-live-preview-role-note">
-              Nested semantic contrast · same component contract
+              Nested contrast · shared contract
             </span>
           </div>
           <Button intent="secondary" size="sm">
             Scoped action
           </Button>
-          <span className="studio-live-preview-meta">
-            ThemeScope · inverse tone
-          </span>
+          <span className="studio-live-preview-meta">ThemeScope · inverse</span>
           <ThemeScope
             aria-label="Nested ThemeScope composition proof"
             className="studio-live-preview-nested-scope"
@@ -1893,7 +1493,7 @@ function StudioLivePreview({
           <div className="studio-live-preview-role-heading">
             <span className="studio-live-preview-label">Recipe scope</span>
             <span className="studio-live-preview-role-note">
-              Authored editorial geometry and type, bounded to this surface
+              Authored geometry and type
             </span>
           </div>
           <Button intent="secondary" size="sm">
@@ -1904,7 +1504,7 @@ function StudioLivePreview({
             <option value="inherited">Provider context</option>
           </Select>
           <span className="studio-live-preview-meta">
-            ThemeScope · editorial recipe defaults
+            ThemeScope · editorial
           </span>
         </ThemeScope>
       </div>
@@ -1986,7 +1586,7 @@ function MotionSlider({ value }: { value: number }) {
         valueLabel={valueLabel}
       />
       <span className="studio-axis-slider-detail">
-        0.25s anchor steps · bounded interactions · scaled reveals
+        0.25s steps · bounded transitions
       </span>
       <div
         aria-hidden="true"
@@ -2021,9 +1621,7 @@ function ColorSourceControl({
       : variables["--t7-accent-hsl"];
   const sourcePalette = settingKey === "primary" ? theme.primary : theme.accent;
   const inputValue =
-    typeof source === "string"
-      ? hslToHex(swatch, "#000000")
-      : source.value.toLowerCase();
+    typeof source === "string" ? hslToHex(swatch) : source.value.toLowerCase();
 
   function updateSource(next: ThemeColorSource) {
     if (settingKey === "primary") setTheme({ primary: next });
@@ -2061,9 +1659,9 @@ function ColorSourceControl({
       </Select>
       <Input
         data-testid={`exact-${settingKey}-source`}
-        hint={`Sets an exact sRGB source for ${
-          settingKey === "primary" ? "action roles" : "supporting emphasis"
-        }; choosing a preset above returns to its curated family.`}
+        hint={`Exact ${
+          settingKey === "primary" ? "action" : "supporting"
+        } source; presets restore the curated family.`}
         label={`Exact ${label.toLowerCase()} source`}
         onChange={(event) =>
           updateSource(exactColor(event.currentTarget.value))
@@ -2124,6 +1722,37 @@ const themeRecipeIntents: Record<ThemeRecipeName, string> = {
   editorial: "Reading-led hierarchy",
   commerce: "Discovery and buying clarity",
 };
+const themeRecipeIcons: Record<ThemeRecipeName, IconName> = {
+  enterprise: "dashboard",
+  product: "components",
+  editorial: "book",
+  commerce: "cart",
+};
+const surfaceTreatmentOptions: Array<{
+  value: SurfaceTreatment;
+  label: string;
+  description: string;
+  icon: IconName;
+}> = [
+  {
+    value: "quiet",
+    label: "Quiet canvas",
+    description: "Soft tonal separation",
+    icon: "view",
+  },
+  {
+    value: "low-contrast",
+    label: "Low contrast",
+    description: "Subtle field edges",
+    icon: "tokens",
+  },
+  {
+    value: "outlined",
+    label: "Outlined regions",
+    description: "Clear region edges",
+    icon: "components",
+  },
+];
 
 const radiusNames = [
   "sharp",
@@ -2152,7 +1781,7 @@ function ThemeRecipePicker({
   preferences: RuntimePreferences;
   value: ThemeRecipeName | undefined;
 }) {
-  const { resetTheme } = useTen4SevenTheme();
+  const { resetTheme, setTheme, theme } = useTen4SevenTheme();
 
   function selectRecipe(recipe: ThemeRecipeName | undefined) {
     resetTheme();
@@ -2166,16 +1795,23 @@ function ThemeRecipePicker({
       data-testid="theme-recipe-workbench"
     >
       <div className="studio-recipe-workbench-copy">
+        <div className="studio-sandbox-context">
+          <span aria-hidden="true" className="studio-sandbox-context-icon">
+            <T7Icon name="theme" size={16} />
+          </span>
+          <span className="studio-sandbox-context-copy">
+            <strong>Live sandbox</strong>
+            <small>Preview tokens in context.</small>
+          </span>
+        </div>
         <Typography as="p" typeRole="overline">
-          Theme Workbench
+          Theme recipe
         </Typography>
         <Typography as="h2" id="theme-recipe-heading" typeRole="heading-md">
-          Choose the authored language first
+          Choose a recipe
         </Typography>
         <Typography as="p" typeRole="body-sm">
-          Recipes coordinate color, canvas, typography, geometry, and rhythm.
-          Appearance and density remain runtime preferences; detailed axes are
-          available below for advanced authoring.
+          Start with a preset, then tune runtime preferences.
         </Typography>
       </div>
       <div aria-label="Theme recipes" className="studio-recipe-options">
@@ -2195,6 +1831,7 @@ function ThemeRecipePicker({
               onClick={() => selectRecipe(recipe.id)}
               size="sm"
               title={recipe.description}
+              leadingIcon={themeRecipeIcons[recipe.id]}
               trailingIcon={value === recipe.id ? "check" : undefined}
             >
               <span className="studio-recipe-option-copy">
@@ -2208,11 +1845,12 @@ function ThemeRecipePicker({
         </div>
         <div className="studio-custom-recipe">
           <Typography as="span" typeRole="caption">
-            Advanced / custom
+            Custom
           </Typography>
           <Button
             aria-pressed={value === undefined}
             intent={value === undefined ? "secondary" : "quiet"}
+            leadingIcon="palette"
             onClick={() => selectRecipe(undefined)}
             size="sm"
           >
@@ -2225,6 +1863,7 @@ function ThemeRecipePicker({
         className="studio-runtime-preferences"
       >
         <RuntimePreferenceOptions
+          icon="theme"
           label="Appearance"
           onChange={(appearance) =>
             onPreferencesChange({
@@ -2233,13 +1872,14 @@ function ThemeRecipePicker({
             })
           }
           options={[
-            ["system", "System"],
-            ["light", "Light"],
-            ["dark", "Dark"],
+            ["system", "System", "settings"],
+            ["light", "Light", "sun"],
+            ["dark", "Dark", "moon"],
           ]}
           value={preferences.appearance ?? "system"}
         />
         <RuntimePreferenceOptions
+          icon="density"
           label="Density"
           onChange={(density) =>
             onPreferencesChange({
@@ -2248,14 +1888,15 @@ function ThemeRecipePicker({
             })
           }
           options={[
-            ["dense", "Dense"],
-            ["compact", "Compact"],
-            ["default", "Regular"],
-            ["comfortable", "Comfortable"],
+            ["dense", "Dense", "density"],
+            ["compact", "Compact", "table"],
+            ["default", "Regular", "view"],
+            ["comfortable", "Comfortable", "components"],
           ]}
           value={preferences.density ?? "default"}
         />
         <RuntimePreferenceOptions
+          icon="eye"
           label="Contrast"
           onChange={(contrast) =>
             onPreferencesChange({
@@ -2264,12 +1905,13 @@ function ThemeRecipePicker({
             })
           }
           options={[
-            ["standard", "Standard"],
-            ["more", "More"],
+            ["standard", "Standard", "view"],
+            ["more", "More", "eye"],
           ]}
           value={preferences.contrast ?? "standard"}
         />
         <RuntimePreferenceOptions
+          icon="clock"
           label="Motion"
           onChange={(motion) =>
             onPreferencesChange({
@@ -2278,43 +1920,97 @@ function ThemeRecipePicker({
             })
           }
           options={[
-            ["full", "Full"],
-            ["reduced", "Reduced"],
+            ["full", "Full", "trendUp"],
+            ["reduced", "Reduced", "clock"],
           ]}
           value={preferences.motion ?? "full"}
         />
       </div>
+      <SurfaceTreatmentOptions
+        onChange={(surfaceTreatment) => setTheme({ surfaceTreatment })}
+        value={theme.surfaceTreatment}
+      />
       <Typography className="studio-recipe-active" typeRole="caption">
         {value
-          ? `${THEME_RECIPES[value].label} recipe · ${THEME_RECIPES[value].expression} expression`
-          : "Custom advanced configuration · no named recipe selected"}
+          ? `${THEME_RECIPES[value].label} · ${THEME_RECIPES[value].expression}`
+          : "Custom recipe · no preset selected"}
       </Typography>
     </section>
   );
 }
 
+function SurfaceTreatmentOptions({
+  onChange,
+  value,
+}: {
+  onChange: (value: SurfaceTreatment) => void;
+  value: SurfaceTreatment;
+}) {
+  return (
+    <fieldset className="studio-surface-treatment">
+      <legend>Surface treatment</legend>
+      <p>Container chrome for dense surfaces.</p>
+      <div
+        aria-label="Surface treatment"
+        className="studio-surface-treatment-options"
+        role="group"
+      >
+        {surfaceTreatmentOptions.map((option) => (
+          <Button
+            aria-pressed={value === option.value}
+            className="studio-surface-treatment-option"
+            intent={value === option.value ? "secondary" : "quiet"}
+            key={option.value}
+            leadingIcon={option.icon}
+            onClick={() => onChange(option.value)}
+            size="sm"
+          >
+            <span className="studio-surface-treatment-option-copy">
+              <strong>{option.label}</strong>
+              <small>{option.description}</small>
+            </span>
+          </Button>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
+
 function RuntimePreferenceOptions({
+  icon,
   label,
   onChange,
   options,
   value,
 }: {
+  icon: IconName;
   label: string;
   onChange: (value: string) => void;
-  options: Array<[string, string]>;
+  options: Array<[string, string, IconName]>;
   value: string;
 }) {
   return (
     <fieldset className="studio-runtime-preference">
-      <legend>{label}</legend>
+      <legend>
+        <span className="studio-runtime-preference-heading">
+          <span aria-hidden="true" className="studio-runtime-preference-icon">
+            <T7Icon name={icon} size={15} />
+          </span>
+          <span>{label}</span>
+        </span>
+      </legend>
       <div>
-        {options.map(([optionValue, optionLabel]) => (
+        {options.map(([optionValue, optionLabel, optionIcon]) => (
           <Button
             aria-pressed={value === optionValue}
-            intent={value === optionValue ? "secondary" : "quiet"}
+            className="studio-runtime-option"
+            data-option={optionValue}
+            intent="quiet"
             key={optionValue}
+            leadingIcon={optionIcon}
             onClick={() => onChange(optionValue)}
             size="sm"
+            trailingIcon={value === optionValue ? "check" : undefined}
           >
             {optionLabel}
           </Button>
@@ -2429,41 +2125,45 @@ function ThemeSettingsSheet({
           className="theme-settings-section theme-settings-runtime"
         >
           <RuntimePreferenceOptions
+            icon="theme"
             label="Appearance"
             onChange={(value) => updatePreference("appearance", value)}
             options={[
-              ["system", "System"],
-              ["light", "Light"],
-              ["dark", "Dark"],
+              ["system", "System", "settings"],
+              ["light", "Light", "sun"],
+              ["dark", "Dark", "moon"],
             ]}
             value={preferences.appearance ?? "system"}
           />
           <RuntimePreferenceOptions
+            icon="density"
             label="Density"
             onChange={(value) => updatePreference("density", value)}
             options={[
-              ["dense", "Dense"],
-              ["compact", "Compact"],
-              ["default", "Regular"],
-              ["comfortable", "Comfortable"],
+              ["dense", "Dense", "density"],
+              ["compact", "Compact", "table"],
+              ["default", "Regular", "view"],
+              ["comfortable", "Comfortable", "components"],
             ]}
             value={preferences.density ?? "default"}
           />
           <RuntimePreferenceOptions
+            icon="eye"
             label="Contrast"
             onChange={(value) => updatePreference("contrast", value)}
             options={[
-              ["standard", "Standard"],
-              ["more", "More"],
+              ["standard", "Standard", "view"],
+              ["more", "More", "eye"],
             ]}
             value={preferences.contrast ?? "standard"}
           />
           <RuntimePreferenceOptions
+            icon="clock"
             label="Motion"
             onChange={(value) => updatePreference("motion", value)}
             options={[
-              ["full", "Full"],
-              ["reduced", "Reduced"],
+              ["full", "Full", "trendUp"],
+              ["reduced", "Reduced", "clock"],
             ]}
             value={preferences.motion ?? "full"}
           />
@@ -2563,9 +2263,12 @@ function TypographyPicker({ value }: { value: TypographyName }) {
 
   return (
     <fieldset className="studio-choice-picker studio-typography-picker">
-      <legend className="t7-field-label">Typography style</legend>
+      <legend className="t7-field-label studio-choice-legend">
+        <T7Icon aria-hidden="true" name="type" size={15} />
+        <span>Typography style</span>
+      </legend>
       <p className="studio-choice-help">
-        Each preset changes the full role hierarchy, not only the display face.
+        Full role hierarchy, not display face alone.
       </p>
       <div className="studio-choice-options studio-typography-options">
         {typographyNames.map((option) => (
@@ -2609,9 +2312,12 @@ function CanvasPicker({
 
   return (
     <fieldset className="studio-choice-picker studio-canvas-picker">
-      <legend className="t7-field-label">Canvas</legend>
+      <legend className="t7-field-label studio-choice-legend">
+        <T7Icon aria-hidden="true" name="view" size={15} />
+        <span>Canvas</span>
+      </legend>
       <p className="studio-choice-help">
-        Controls page and card neutrals independently from brand color.
+        Page and card neutrals, independent from brand color.
       </p>
       <div className="studio-choice-options">
         {canvasNames.map((option) => {
@@ -2671,10 +2377,12 @@ function ChartPalettePicker({ value }: { value: ChartPaletteName }) {
 
   return (
     <fieldset className="studio-choice-picker studio-chart-picker">
-      <legend className="t7-field-label">Chart colorway</legend>
+      <legend className="t7-field-label studio-choice-legend">
+        <T7Icon aria-hidden="true" name="chart" size={15} />
+        <span>Chart colorway</span>
+      </legend>
       <p className="studio-choice-help">
-        Affects data series and explicitly colorway-linked Card, KPI, or bounded
-        Surface regions; semantic UI roles remain independent.
+        Data series and colorway-linked surfaces only.
       </p>
       <div className="studio-choice-options">
         {chartPaletteNames.map((option) => (
@@ -2715,10 +2423,12 @@ function PalettePicker({ value }: { value: PaletteName }) {
   const { setTheme } = useTen4SevenTheme();
   return (
     <fieldset className="studio-palette-picker">
-      <legend className="t7-field-label">Base palette</legend>
+      <legend className="t7-field-label studio-choice-legend">
+        <T7Icon aria-hidden="true" name="palette" size={15} />
+        <span>Base palette</span>
+      </legend>
       <p className="studio-palette-help">
-        Sets the default hue for UI and chart colors. Choosing a swatch also
-        resets Main action and Accent color to that family.
+        Default hue for UI and chart colors.
       </p>
       <div className="studio-palette-options">
         {paletteNames.map((palette) => (
@@ -2786,6 +2496,9 @@ function isConsumerReferenceRoute(route: PlaygroundRoute | undefined) {
   return (
     route === "Operations Tracker" ||
     route === "Operational Patterns" ||
+    route === "SaaS Control Plane" ||
+    route === "ERP Density Reference" ||
+    route === "Farm P1 Reference" ||
     route === "Publishing Store"
   );
 }
@@ -2813,6 +2526,7 @@ export default function App() {
     readRuntimePreferences,
   );
   const [themeSettingsOpen, setThemeSettingsOpen] = useState(false);
+  const [referenceHarnessOpen, setReferenceHarnessOpen] = useState(false);
   const [routeMatch, setRouteMatch] = useState<RouteMatch>(() =>
     typeof window === "undefined"
       ? { kind: "known", route: "Theme Studio" }
@@ -2858,17 +2572,19 @@ export default function App() {
         ? playgroundRouteTitles[routeMatch.route]
         : routeMatch.kind === "farm-synthetic"
           ? farmSyntheticProofTitle
-          : routeMatch.kind === "brand-proof"
-            ? brandProofRouteTitles[routeMatch.profileId]
-            : routeMatch.kind === "component-family"
-              ? `ten4seven UI — ${categoryLabels[routeMatch.category] ?? routeMatch.category}`
-              : routeMatch.kind === "component-detail"
-                ? `ten4seven UI — ${componentCatalog[routeMatch.name].displayName ?? routeMatch.name}`
-                : routeMatch.kind === "recipe-detail"
-                  ? `ten4seven UI — ${recipeCatalog[routeMatch.name].displayName ?? routeMatch.name}`
-                  : routeMatch.kind === "block-detail"
-                    ? `ten4seven UI — ${blockCatalog[routeMatch.name].displayName ?? routeMatch.name}`
-                    : "ten4seven UI — Route not found";
+          : routeMatch.kind === "farm-reference"
+            ? playgroundRouteTitles["Farm P1 Reference"]
+            : routeMatch.kind === "brand-proof"
+              ? brandProofRouteTitles[routeMatch.profileId]
+              : routeMatch.kind === "component-family"
+                ? `ten4seven UI — ${categoryLabels[routeMatch.category] ?? routeMatch.category}`
+                : routeMatch.kind === "component-detail"
+                  ? `ten4seven UI — ${componentCatalog[routeMatch.name].displayName ?? routeMatch.name}`
+                  : routeMatch.kind === "recipe-detail"
+                    ? `ten4seven UI — ${recipeCatalog[routeMatch.name].displayName ?? routeMatch.name}`
+                    : routeMatch.kind === "block-detail"
+                      ? `ten4seven UI — ${blockCatalog[routeMatch.name].displayName ?? routeMatch.name}`
+                      : "ten4seven UI — Route not found";
     document.title = routeTitle;
     const description = document.querySelector('meta[name="description"]');
     description?.setAttribute(
@@ -2877,17 +2593,19 @@ export default function App() {
         ? playgroundRouteDescriptions[routeMatch.route]
         : routeMatch.kind === "farm-synthetic"
           ? farmSyntheticProofDescription
-          : routeMatch.kind === "brand-proof"
-            ? "Brand expression proof for the canonical Authentication recipe in ten4seven UI."
-            : routeMatch.kind === "component-family"
-              ? `Canonical ${categoryLabels[routeMatch.category] ?? routeMatch.category} components in the ten4seven UI catalog.`
-              : routeMatch.kind === "component-detail"
-                ? componentCatalog[routeMatch.name].purpose
-                : routeMatch.kind === "recipe-detail"
-                  ? recipeCatalog[routeMatch.name].purpose
-                  : routeMatch.kind === "block-detail"
-                    ? blockCatalog[routeMatch.name].purpose
-                    : "The requested ten4seven UI playground route does not exist.",
+          : routeMatch.kind === "farm-reference"
+            ? playgroundRouteDescriptions["Farm P1 Reference"]
+            : routeMatch.kind === "brand-proof"
+              ? "Brand expression proof for the canonical Authentication recipe in ten4seven UI."
+              : routeMatch.kind === "component-family"
+                ? `Canonical ${categoryLabels[routeMatch.category] ?? routeMatch.category} components in the ten4seven UI catalog.`
+                : routeMatch.kind === "component-detail"
+                  ? componentCatalog[routeMatch.name].purpose
+                  : routeMatch.kind === "recipe-detail"
+                    ? recipeCatalog[routeMatch.name].purpose
+                    : routeMatch.kind === "block-detail"
+                      ? blockCatalog[routeMatch.name].purpose
+                      : "The requested ten4seven UI playground route does not exist.",
     );
   }, [routeMatch]);
 
@@ -2960,6 +2678,7 @@ export default function App() {
   ) {
     routeContent = (
       <OperationsTracker
+        onNavigatePath={navigateToPath}
         onOpenSettings={openThemeSettings}
         onViewStateChange={setOperationsViewState}
         viewState={operationsViewState as OperationsViewState}
@@ -2982,6 +2701,26 @@ export default function App() {
     );
   } else if (
     routeMatch.kind === "known" &&
+    routeMatch.route === "SaaS Control Plane"
+  ) {
+    routeContent = (
+      <SaasControlPlaneReference
+        onNavigatePath={navigateToPath}
+        onOpenSettings={openThemeSettings}
+      />
+    );
+  } else if (
+    routeMatch.kind === "known" &&
+    routeMatch.route === "ERP Density Reference"
+  ) {
+    routeContent = (
+      <ErpDataDenseReference
+        onNavigatePath={navigateToPath}
+        onOpenSettings={openThemeSettings}
+      />
+    );
+  } else if (
+    routeMatch.kind === "known" &&
     routeMatch.route === "Public Showcase"
   ) {
     routeContent = (
@@ -2997,6 +2736,14 @@ export default function App() {
         onOpenSettings={openThemeSettings}
       />
     );
+  } else if (routeMatch.kind === "farm-reference") {
+    routeContent = (
+      <FarmP1Reference
+        onNavigatePath={navigateToPath}
+        onOpenSettings={openThemeSettings}
+        pathname={routeMatch.pathname}
+      />
+    );
   } else if (routeMatch.kind === "brand-proof") {
     routeContent = (
       <BrandExpressionProof
@@ -3009,12 +2756,18 @@ export default function App() {
       PlaygroundRoute,
       | "Operations Tracker"
       | "Operational Patterns"
+      | "SaaS Control Plane"
+      | "ERP Density Reference"
+      | "Farm P1 Reference"
       | "Publishing Store"
       | "Public Showcase"
     > =
       routeMatch.kind === "known" &&
       routeMatch.route !== "Operations Tracker" &&
       routeMatch.route !== "Operational Patterns" &&
+      routeMatch.route !== "SaaS Control Plane" &&
+      routeMatch.route !== "ERP Density Reference" &&
+      routeMatch.route !== "Farm P1 Reference" &&
       routeMatch.route !== "Publishing Store" &&
       routeMatch.route !== "Public Showcase"
         ? routeMatch.route
@@ -3096,8 +2849,8 @@ export default function App() {
         activeRoute={activeRoute}
         breadcrumbItems={breadcrumbItems}
         contentOverride={contentOverride}
-        onNavigate={navigateTo}
         onNavigatePath={navigateToPath}
+        onOpenReferenceQa={() => setReferenceHarnessOpen(true)}
         onOpenSettings={openThemeSettings}
         onThemePreferencesChange={updateThemePreferences}
         onThemeRecipeChange={setThemeRecipe}
@@ -3120,7 +2873,9 @@ export default function App() {
           <ReferenceHarness
             activeRoute={activeKnownRoute}
             onNavigate={navigateTo}
+            onOpenChange={setReferenceHarnessOpen}
             onOperationsViewStateChange={setOperationsViewState}
+            open={referenceHarnessOpen}
             operationsViewState={operationsViewState}
           />
         ) : null}

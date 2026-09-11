@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
+import { COMPONENT_TOKEN_ROLE_CONTRACT } from "../../contracts/src/foundation.ts";
 import { resolveMotionRoles } from "../../contracts/src/theme-profile.ts";
-import { buildThemeVariables, resolveTheme, type PaletteName } from "./theme";
+import {
+  buildThemeVariables,
+  exactColor,
+  resolveTheme,
+  type PaletteName,
+} from "./theme";
 
 const palettes: PaletteName[] = [
   "emerald",
@@ -97,7 +103,7 @@ describe("bounded global foundation", () => {
       if (name.startsWith("--t7-duration-")) expect(value, name).toBe("0.01ms");
   });
 
-  it("keeps focus independent of accent and composes thickness with a separation halo", () => {
+  it("keeps focus tied to action rather than accent and composes thickness with a separation halo", () => {
     for (const appearance of ["light", "dark"] as const)
       for (const palette of palettes) {
         const normal = buildThemeVariables(
@@ -108,7 +114,7 @@ describe("bounded global foundation", () => {
           { contrast: "more" },
         );
         expect(normal["--t7-focus-hsl"]).toBe(
-          appearance === "dark" ? "216 70% 72%" : "216 72% 38%",
+          appearance === "dark" ? "148 58% 62%" : "148 58% 29%",
         );
         expect(more["--t7-focus-hsl"]).toBe(normal["--t7-focus-hsl"]);
         expect(parseFloat(more["--t7-focus-width"])).toBeGreaterThan(
@@ -116,6 +122,71 @@ describe("bounded global foundation", () => {
         );
         expect(more["--t7-focus-halo"]).toContain("--t7-surface-hsl");
       }
+  });
+
+  it("keeps contrast fallback in the authored action hue family", () => {
+    const light = buildThemeVariables(
+      resolveTheme({ primary: exactColor("#ffffff") }),
+    );
+    const dark = buildThemeVariables(
+      resolveTheme({ appearance: "dark", primary: exactColor("#000000") }),
+    );
+
+    expect(light["--t7-focus-hsl"]).toMatch(/^0 0% /);
+    expect(dark["--t7-focus-hsl"]).toMatch(/^0 0% /);
+    expect(light["--t7-focus-hsl"]).not.toContain("216");
+    expect(dark["--t7-focus-hsl"]).not.toContain("216");
+  });
+
+  it("keeps elevation and scrims neutral across every canvas profile", () => {
+    for (const appearance of ["light", "dark"] as const) {
+      const neutralInk = appearance === "dark" ? "0 0% 0%" : "0 0% 12%";
+
+      for (const canvas of ["balanced", "paper", "monochrome"] as const) {
+        const variables = buildThemeVariables(
+          resolveTheme({ appearance, canvas, elevation: "standard" }),
+        );
+
+        expect(variables["--t7-shadow-card"]).toContain(`hsl(${neutralInk}`);
+        expect(variables["--t7-shadow-raised"]).toContain(
+          `hsl(${neutralInk}`,
+        );
+        expect(variables["--t7-shadow-popover"]).toContain(
+          `hsl(${neutralInk}`,
+        );
+        expect(variables["--t7-shadow-modal"]).toContain(`hsl(${neutralInk}`);
+        expect(variables["--t7-scrim-hsl"]).toBe(neutralInk);
+        expect(variables["--t7-shadow-raised"]).not.toContain("222 30%");
+      }
+    }
+  });
+
+  it("keeps soft card depth neutral while leaving semantic emphasis explicit", () => {
+    for (const appearance of ["light", "dark"] as const) {
+      const variables = buildThemeVariables(
+        resolveTheme({ appearance, elevation: "soft", primary: "rose" }),
+      );
+
+      expect(variables["--t7-shadow-card"]).not.toContain(
+        "var(--t7-primary-hsl)",
+      );
+      expect(variables["--t7-shadow-card"]).toContain(
+        appearance === "dark" ? "hsl(0 0% 0%" : "hsl(0 0% 12%",
+      );
+    }
+  });
+
+  it("keeps component token roles canonical and runtime-resolvable", () => {
+    const variables = buildThemeVariables(resolveTheme());
+
+    for (const roles of Object.values(COMPONENT_TOKEN_ROLE_CONTRACT.sets)) {
+      expect(new Set(roles).size).toBe(roles.length);
+      for (const role of roles) {
+        const targets = COMPONENT_TOKEN_ROLE_CONTRACT.targets[role];
+        expect(targets, role).toBeDefined();
+        for (const target of targets) expect(target in variables).toBe(true);
+      }
+    }
   });
 
   it("keeps micro type readable at every density and caps data radius without flattening cards", () => {

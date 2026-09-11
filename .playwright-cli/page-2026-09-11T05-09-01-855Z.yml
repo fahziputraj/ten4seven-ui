@@ -1,0 +1,237 @@
+- generic [ref=f7e4]:
+  - complementary [ref=f7e5]:
+    - img "ten4seven UI system" [ref=f7e8]:
+      - generic [ref=f7e21]:
+        - generic [aria-hidden] [ref=f7e22]: ten4seven
+        - generic [aria-hidden] [ref=f7e23]: UI system
+    - navigation "ten4seven UI navigation" [ref=f7e25]:
+      - generic [ref=f7e26]:
+        - group "Studio" [ref=f7e27]:
+          - button "Theme Studio" [ref=f7e29] [cursor=pointer]
+          - button "Component Lab" [ref=f7e42] [cursor=pointer]
+        - group "Library" [ref=f7e50]:
+          - button "Tokens" [ref=f7e52] [cursor=pointer]
+          - button "Components" [ref=f7e61] [cursor=pointer]
+          - button "Blocks" [ref=f7e69] [cursor=pointer]
+          - button "Icons" [ref=f7e77] [cursor=pointer]
+          - button "Recipes" [ref=f7e84] [cursor=pointer]
+          - generic "Library menu" [ref=f7e92]:
+            - button "Browse library…" [ref=f7e93] [cursor=pointer]
+        - group "Reference" [ref=f7e101]:
+          - button "Publishing Store" [ref=f7e103] [cursor=pointer]
+        - group "Labs / Proofs" [ref=f7e111]:
+          - button "Operations Tracker" [ref=f7e113] [cursor=pointer]
+          - button "Operational Patterns" [ref=f7e121] [cursor=pointer]
+          - button "SaaS Control Plane" [ref=f7e127] [cursor=pointer]
+          - button "ERP Density Reference" [ref=f7e134] [cursor=pointer]
+          - button "Farm P1 Reference" [ref=f7e142] [cursor=pointer]
+          - button "Public Showcase" [ref=f7e148] [cursor=pointer]
+          - button "Farm Synthetic" [ref=f7e154] [cursor=pointer]
+          - button "Auth · Neutral" [ref=f7e160] [cursor=pointer]
+          - button "Auth · AAPM Academy" [ref=f7e167] [cursor=pointer]:
+            - generic [ref=f7e174]: Auth · Academy
+          - generic [ref=f7e175]: "Canonical identity: AAPM Academy."
+    - generic [ref=f7e176]:
+      - generic [ref=f7e177]: Explore
+      - paragraph [ref=f7e178]: Canonical UI surfaces, recipes, and practical previews.
+      - generic [ref=f7e179]: Ten4Seven UI
+  - main [ref=f7e180]:
+    - generic [ref=f7e181]:
+      - generic [ref=f7e183]:
+        - generic [ref=f7e184]: ten4seven UI
+        - link "Components" [ref=f7e188] [cursor=pointer]:
+          - /url: /components
+        - link "Actions" [ref=f7e192] [cursor=pointer]:
+          - /url: /components/actions
+        - strong [ref=f7e202]: Button
+      - generic [ref=f7e203]:
+        - button "Search ten4seven catalog" [ref=f7e204] [cursor=pointer]:
+          - generic [ref=f7e211]: Search catalogCtrl K
+        - generic "Live preview status" [ref=f7e212]:
+          - button "Live" [ref=f7e213] [cursor=pointer]
+        - button "Open settings" [ref=f7e218] [cursor=pointer]
+        - generic "ten4seven workspace menu" [ref=f7e223]:
+          - button "ten4seven workspace ten4seven UI workspace" [ref=f7e224] [cursor=pointer]:
+            - img "ten4seven workspace" [ref=f7e225]:
+              - generic [aria-hidden] [ref=f7e226]: T
+            - generic [ref=f7e227]:
+              - strong [ref=f7e228]: ten4seven
+              - generic [ref=f7e229]: UI workspace
+    - generic [ref=f7e233]:
+      - generic [ref=f7e235]:
+        - generic [ref=f7e236]: Components · Actions
+        - heading "Button" [level=1] [ref=f7e241]
+        - paragraph [ref=f7e242]: Trigger an explicit application action with intent, loading, and disabled semantics.
+        - generic [ref=f7e243]: implemented · polished
+      - generic [ref=f7e245]:
+        - generic [ref=f7e246]:
+          - generic [ref=f7e247]:
+            - generic [ref=f7e249]:
+              - heading "Preview" [level=2] [ref=f7e250]
+              - text: A focused live example of the canonical implementation.
+            - generic [ref=f7e252]:
+              - generic [ref=f7e253]:
+                - generic [ref=f7e258]:
+                  - strong [ref=f7e259]: Button
+                  - generic [ref=f7e260]: Canonical Actions fixture
+                - generic [ref=f7e261]: Ready
+              - generic [ref=f7e265]:
+                - generic [ref=f7e266]:
+                  - generic [ref=f7e267]: Available
+                  - button "Approve batch" [ref=f7e268] [cursor=pointer]
+                  - generic [ref=f7e272]: The operator can activate this action now.
+                - generic [ref=f7e273]:
+                  - generic [ref=f7e274]: Disabled + explanation
+                  - generic [ref=f7e275]:
+                    - button "Release batch" [disabled] [ref=f7e276]
+                    - 'button "Why release batch is unavailable: Awaiting warehouse QA sign-off." [ref=f7e279] [cursor=pointer]'
+                  - generic [ref=f7e282]: Awaiting warehouse QA sign-off.
+                - generic [ref=f7e283]:
+                  - generic [ref=f7e284]: Loading
+                  - button "Sync batch" [disabled] [ref=f7e285]
+                  - generic [ref=f7e288]: Pending work prevents duplicate activation.
+                - generic [ref=f7e289]:
+                  - generic [ref=f7e290]: Completed / no longer available
+                  - button "Batch released" [disabled] [ref=f7e291]
+                  - generic [ref=f7e295]: The action remains visible after completion.
+          - generic [ref=f7e296]:
+            - heading "Usage" [level=2] [ref=f7e297]
+            - generic [ref=f7e298]:
+              - generic [ref=f7e299]:
+                - text: Use when
+                - list [ref=f7e300]:
+                  - listitem [ref=f7e301]: submit, confirm, create, cancel, or navigate by action
+              - generic [ref=f7e302]:
+                - text: Avoid when
+                - list [ref=f7e303]:
+                  - listitem [ref=f7e304]: passive navigation that should be a link
+          - generic [ref=f7e305]:
+            - heading "API" [level=2] [ref=f7e306]
+            - table "Button API properties" [ref=f7e308]:
+              - rowgroup [ref=f7e309]:
+                - row [ref=f7e310]:
+                  - columnheader "Prop" [ref=f7e311]
+                  - columnheader "Type" [ref=f7e312]
+                  - columnheader "Default" [ref=f7e313]
+                  - columnheader "Required" [ref=f7e314]
+                  - columnheader "Description" [ref=f7e315]
+              - rowgroup [ref=f7e316]:
+                - row [ref=f7e317]:
+                  - rowheader "intent" [ref=f7e318]
+                  - cell "primary | secondary | quiet | danger" [ref=f7e319]
+                  - cell "\"primary\"" [ref=f7e320]
+                  - cell "No" [ref=f7e321]
+                  - cell "Configures intent for Button." [ref=f7e322]
+                - row [ref=f7e323]:
+                  - rowheader "size" [ref=f7e324]
+                  - cell "sm | md | lg" [ref=f7e325]
+                  - cell "\"md\"" [ref=f7e326]
+                  - cell "No" [ref=f7e327]
+                  - cell "Configures size for Button." [ref=f7e328]
+                - row [ref=f7e329]:
+                  - rowheader "wrap" [ref=f7e330]
+                  - cell "boolean" [ref=f7e331]
+                  - cell "false" [ref=f7e332]
+                  - cell "No" [ref=f7e333]
+                  - cell "Opt into natural CTA wrapping. Ordinary actions use a bounded single-line label with ellipsis; the full accessible name remains available." [ref=f7e334]
+                - row [ref=f7e335]:
+                  - rowheader "leadingIcon" [ref=f7e336]
+                  - cell "IconName" [ref=f7e337]
+                  - cell "—" [ref=f7e338]
+                  - cell "No" [ref=f7e339]
+                  - cell "Semantic icon rendered before the label." [ref=f7e340]
+                - row [ref=f7e341]:
+                  - rowheader "trailingIcon" [ref=f7e342]
+                  - cell "IconName" [ref=f7e343]
+                  - cell "—" [ref=f7e344]
+                  - cell "No" [ref=f7e345]
+                  - cell "Semantic icon rendered after the label." [ref=f7e346]
+                - row [ref=f7e347]:
+                  - rowheader "loading" [ref=f7e348]
+                  - cell "boolean" [ref=f7e349]
+                  - cell "false" [ref=f7e350]
+                  - cell "No" [ref=f7e351]
+                  - cell "Communicates pending work and prevents duplicate activation." [ref=f7e352]
+                - row [ref=f7e353]:
+                  - rowheader "disabled" [ref=f7e354]
+                  - cell "boolean" [ref=f7e355]
+                  - cell "false" [ref=f7e356]
+                  - cell "No" [ref=f7e357]
+                  - cell "Prevents interaction while preserving the disabled state." [ref=f7e358]
+            - generic [ref=f7e359]:
+              - generic [ref=f7e360]: Minimal example
+              - code [ref=f7e362]: <Button />
+          - generic [ref=f7e363]:
+            - heading "Accessibility" [level=2] [ref=f7e364]
+            - list [ref=f7e365]:
+              - listitem [ref=f7e366]: Expose a stable accessible name and use the semantic element for the interaction.
+              - listitem [ref=f7e367]: Preserve visible focus, keyboard reachability, and disabled or pending state semantics.
+          - generic [ref=f7e368]:
+            - heading "Critical states" [level=2] [ref=f7e369]
+            - list [ref=f7e370]:
+              - listitem [ref=f7e371]: default
+              - listitem [ref=f7e372]: focused
+              - listitem [ref=f7e373]: disabled
+              - listitem [ref=f7e374]: loading or pending when applicable
+              - listitem [ref=f7e375]: empty or unavailable when applicable
+          - generic [ref=f7e376]:
+            - heading "Responsive and motion" [level=2] [ref=f7e377]
+            - generic [ref=f7e378]:
+              - generic [ref=f7e379]:
+                - text: Responsive
+                - list [ref=f7e380]:
+                  - listitem [ref=f7e381]: Reflows within constrained containers without changing the content contract.
+                  - listitem [ref=f7e382]: Retains shared control geometry and touch-target minimums.
+              - generic [ref=f7e383]:
+                - text: Motion
+                - list [ref=f7e384]:
+                  - listitem [ref=f7e385]: Uses shared duration and easing variables for state transitions.
+                  - listitem [ref=f7e386]: Respects prefers-reduced-motion.
+        - complementary [ref=f7e387]:
+          - navigation "On this page" [ref=f7e388]:
+            - link "Preview" [ref=f7e390] [cursor=pointer]:
+              - /url: "#component-preview"
+            - link "Usage" [ref=f7e391] [cursor=pointer]:
+              - /url: "#component-usage"
+            - link "API" [ref=f7e392] [cursor=pointer]:
+              - /url: "#component-api"
+            - link "Accessibility" [ref=f7e393] [cursor=pointer]:
+              - /url: "#component-accessibility"
+            - link "Critical states" [ref=f7e394] [cursor=pointer]:
+              - /url: "#component-states"
+            - link "Responsive and motion" [ref=f7e395] [cursor=pointer]:
+              - /url: "#component-responsive-motion"
+          - generic [ref=f7e396]:
+            - heading "Tokens" [level=2] [ref=f7e397]
+            - generic [ref=f7e398]:
+              - generic [ref=f7e399]: accent
+              - generic [ref=f7e400]: accent-hover
+              - generic [ref=f7e401]: accent-pressed
+              - generic [ref=f7e402]: control-height
+              - generic [ref=f7e403]: control-radius
+              - generic [ref=f7e404]: focus-ring
+              - generic [ref=f7e405]: motion
+          - generic [ref=f7e406]:
+            - heading "Recipes" [level=2] [ref=f7e407]
+            - generic [ref=f7e408]: All composition recipes
+          - generic [ref=f7e410]:
+            - heading "Related" [level=2] [ref=f7e411]
+            - generic [ref=f7e412]:
+              - link "Icon Button" [ref=f7e413] [cursor=pointer]:
+                - /url: /components/icon-button
+              - link "Button Group" [ref=f7e414] [cursor=pointer]:
+                - /url: /components/button-group
+              - link "Action Footer" [ref=f7e415] [cursor=pointer]:
+                - /url: /components/action-footer
+          - generic [ref=f7e416]:
+            - heading "Alternatives" [level=2] [ref=f7e417]
+            - generic [ref=f7e418]: No semantic alternatives.
+          - generic [ref=f7e420]:
+            - heading "Composes with" [level=2] [ref=f7e421]
+            - generic [ref=f7e422]:
+              - link "Icon Button" [ref=f7e423] [cursor=pointer]:
+                - /url: /components/icon-button
+              - link "Button Group" [ref=f7e424] [cursor=pointer]:
+                - /url: /components/button-group
+              - link "Action Footer" [ref=f7e425] [cursor=pointer]:
+                - /url: /components/action-footer

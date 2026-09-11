@@ -3,14 +3,48 @@ import { exactColor, isExactColorSource } from "../../contracts/src/types.ts";
 import type {
   ExactColorSource,
   MotionProfileName,
+  SurfaceTreatment,
   ThemeColorSource,
 } from "../../contracts/src/types.ts";
 
 export { exactColor, isExactColorSource } from "../../contracts/src/types.ts";
 export type {
   ExactColorSource,
+  SurfaceTreatment,
   ThemeColorSource,
 } from "../../contracts/src/types.ts";
+
+/** Convert resolved HSL channels to the hex format required by color inputs. */
+export function hslToHex(value: string): string {
+  const match = value.match(/(-?[\d.]+)\s+([\d.]+)%\s+([\d.]+)%/);
+  if (!match)
+    throw new Error(`Expected resolved HSL channels, received: ${value}`);
+
+  const hue = ((Number(match[1]) % 360) + 360) % 360;
+  const saturation = Math.max(0, Math.min(100, Number(match[2]))) / 100;
+  const lightness = Math.max(0, Math.min(100, Number(match[3]))) / 100;
+  const chroma = (1 - Math.abs(2 * lightness - 1)) * saturation;
+  const normalizedHue = hue / 60;
+  const second = chroma * (1 - Math.abs((normalizedHue % 2) - 1));
+  const matchValue = lightness - chroma / 2;
+  const [red, green, blue] =
+    normalizedHue < 1
+      ? [chroma, second, 0]
+      : normalizedHue < 2
+        ? [second, chroma, 0]
+        : normalizedHue < 3
+          ? [0, chroma, second]
+          : normalizedHue < 4
+            ? [0, second, chroma]
+            : normalizedHue < 5
+              ? [second, 0, chroma]
+              : [chroma, 0, second];
+  const toHex = (channel: number) =>
+    Math.round((channel + matchValue) * 255)
+      .toString(16)
+      .padStart(2, "0");
+  return `#${toHex(red)}${toHex(green)}${toHex(blue)}`;
+}
 
 export type Appearance = "light" | "dark" | "system";
 export type PaletteName =
@@ -75,6 +109,8 @@ export interface ThemeConfig {
   accent?: ThemeColorSource;
   /** Neutral canvas treatment shared by every surface. */
   canvas?: CanvasName;
+  /** Authored container-chrome treatment; forms retain their own affordance. */
+  surfaceTreatment?: SurfaceTreatment;
   /** Chart colorway while retaining the five-slot chart contract. */
   chartPalette?: ChartPaletteName;
   radius?: RadiusName;
@@ -99,6 +135,7 @@ export interface ResolvedTheme {
   /** Canonical accent source, including a normalized exact sRGB color. */
   accentSource: ThemeColorSource;
   canvas: CanvasName;
+  surfaceTreatment: SurfaceTreatment;
   chartPalette: ChartPaletteName;
   radius: RadiusName;
   radiusValue?: number;
@@ -268,6 +305,35 @@ function exactInteractionColor(value: string, distance: number) {
   );
 }
 
+function resolveFocusColor(
+  primary: string,
+  surface: string,
+  appearance: ResolvedTheme["appearance"],
+) {
+  const { hue, lightness, saturation } = parseHslChannels(primary);
+  const candidates =
+    appearance === "dark"
+      ? [
+          formatHslChannels(
+            hue,
+            saturation,
+            Math.max(62, Math.min(78, lightness + 32)),
+          ),
+          formatHslChannels(hue, saturation, 82),
+        ]
+      : [
+          primary,
+          formatHslChannels(hue, saturation, Math.max(12, lightness - 18)),
+          formatHslChannels(hue, saturation, Math.max(8, lightness - 28)),
+        ];
+
+  return (
+    candidates.find(
+      (candidate) => contrastRatioForHsl(candidate, surface) >= 3,
+    ) ?? formatHslChannels(hue, saturation, appearance === "dark" ? 92 : 8)
+  );
+}
+
 function exactColorProfile(source: ExactColorSource): PaletteProfile {
   const primary = exactHexToHsl(exactColor(source.value).value);
   const primaryHover = exactInteractionColor(primary, 6);
@@ -404,6 +470,7 @@ export const defaultTheme: ResolvedTheme = {
   accent: "emerald",
   accentSource: "emerald",
   canvas: "balanced",
+  surfaceTreatment: "outlined",
   chartPalette: "spectrum",
   radius: "soft",
   density: "default",
@@ -806,6 +873,30 @@ export const iconGeometry = Object.freeze({
 });
 
 /**
+ * Shared contained-surface geometry. Cards, buttons, and data surfaces use
+ * the same depth direction so elevation reads as one system rather than a
+ * collection of route-specific effects.
+ */
+export const surfaceGeometry = Object.freeze({
+  depth: Object.freeze({
+    gradientAngle: "145deg",
+    gradientStop: "58%",
+    shadowBlur: "26px",
+    shadowOffsetY: "12px",
+  }),
+  hoverTranslateY: "-1px",
+});
+
+/**
+ * Table structure stays visible on every canvas treatment. Quiet surfaces
+ * remove ambient container chrome, but comparison rows still need a neutral
+ * divider so the data can be scanned without relying on semantic colour.
+ */
+export const tableGeometry = Object.freeze({
+  dividerAlpha: 0.82,
+});
+
+/**
  * KPI anatomy roles are global component tokens, not route-local dashboard
  * measurements. Density-aware values are derived in `buildThemeVariables`;
  * these defaults are also exported through the DTCG contract.
@@ -816,6 +907,42 @@ export const kpiGeometry = Object.freeze({
   iconSize: "22px",
   trendPaddingBlock: "3px",
   trendPaddingInline: referenceSpace[2],
+  decorative: Object.freeze({
+    size: "132px",
+    offsetTop: "-21px",
+    offsetInline: "-21px",
+    opacity: 0.09,
+  }),
+  depth: Object.freeze({
+    gradientAngle: surfaceGeometry.depth.gradientAngle,
+    gradientStop: surfaceGeometry.depth.gradientStop,
+    shadowBlur: surfaceGeometry.depth.shadowBlur,
+    shadowOffsetY: surfaceGeometry.depth.shadowOffsetY,
+  }),
+});
+
+/**
+ * Shared chart geometry keeps line, bar, donut, and sparkline primitives on
+ * one visual contract. Colour and depth intensity remain resolved by the
+ * active theme; these values describe the stable shape of the marks.
+ */
+export const chartGeometry = Object.freeze({
+  lineWidth: 2.5,
+  pointRadius: 3.5,
+  pointHoverScale: 1.65,
+  pointSettleScale: 1.06,
+  barRadius: 5,
+  barHoverTranslateY: "3px",
+  barHoverScaleY: 1.035,
+  donutStrokeWidth: 14,
+  donutHoverStrokeWidth: 16,
+  tooltipOffsetY: "12px",
+  depth: Object.freeze({
+    gradientAngle: kpiGeometry.depth.gradientAngle,
+    gradientStop: kpiGeometry.depth.gradientStop,
+    shadowBlur: "6px",
+    shadowOffsetY: "3px",
+  }),
 });
 
 /**
@@ -842,6 +969,7 @@ export interface OverlayGeometry {
     min: string;
     max: string;
   };
+  tooltipMin: string;
   tooltipMax: string;
   command: string;
   dialog: {
@@ -861,6 +989,7 @@ export const overlayGeometry: OverlayGeometry = Object.freeze({
   timePicker: "360px",
   colorPicker: "304px",
   popover: Object.freeze({ min: "220px", max: "360px" }),
+  tooltipMin: "128px",
   tooltipMax: "260px",
   command: "640px",
   dialog: Object.freeze({ sm: "400px", md: "520px", lg: "720px" }),
@@ -1119,6 +1248,10 @@ type NeutralProfile = {
   borderContrast: string;
   borderStrong: string;
   muted: string;
+  /** Neutral ink used by elevation shadows, independent of the brand hue. */
+  shadow: string;
+  /** Neutral ink used by viewport scrims, independent of the brand hue. */
+  scrim: string;
 };
 
 const lightNeutral: NeutralProfile = {
@@ -1136,6 +1269,8 @@ const lightNeutral: NeutralProfile = {
   borderContrast: "0 0% 80%",
   borderStrong: "0 0% 72%",
   muted: "0 0% 94%",
+  shadow: "0 0% 12%",
+  scrim: "0 0% 12%",
 };
 
 const darkNeutral: NeutralProfile = {
@@ -1151,6 +1286,8 @@ const darkNeutral: NeutralProfile = {
   borderContrast: "0 0% 30%",
   borderStrong: "0 0% 35%",
   muted: "0 0% 21%",
+  shadow: "0 0% 0%",
+  scrim: "0 0% 0%",
 };
 
 /** Neutral canvas families keep the palette independent from surface contrast. */
@@ -1173,6 +1310,8 @@ export const canvasProfiles: Record<
       borderContrast: "0 0% 77%",
       borderStrong: "0 0% 66%",
       muted: "0 0% 95%",
+      shadow: "0 0% 12%",
+      scrim: "0 0% 12%",
     },
     dark: darkNeutral,
   },
@@ -1190,6 +1329,8 @@ export const canvasProfiles: Record<
       borderContrast: "0 0% 74%",
       borderStrong: "0 0% 62%",
       muted: "0 0% 92%",
+      shadow: "0 0% 12%",
+      scrim: "0 0% 12%",
     },
     dark: {
       background: "0 0% 8%",
@@ -1204,6 +1345,8 @@ export const canvasProfiles: Record<
       borderContrast: "0 0% 30%",
       borderStrong: "0 0% 36%",
       muted: "0 0% 21%",
+      shadow: "0 0% 0%",
+      scrim: "0 0% 0%",
     },
   },
 };
@@ -1279,6 +1422,11 @@ export function resolveTheme(config: ThemeConfig = {}): ResolvedTheme {
     canvasProfiles,
     defaultTheme.canvas,
   );
+  const surfaceTreatment = resolveProfileName(
+    config.surfaceTreatment,
+    { quiet: true, "low-contrast": true, outlined: true },
+    defaultTheme.surfaceTreatment,
+  );
   const chartPalette = resolveProfileName(
     config.chartPalette,
     { spectrum: true, four: true, monochrome: true },
@@ -1316,6 +1464,7 @@ export function resolveTheme(config: ThemeConfig = {}): ResolvedTheme {
     accent,
     accentSource,
     canvas,
+    surfaceTreatment,
     chartPalette,
     radius,
     ...(radiusValue === undefined ? {} : { radiusValue }),
@@ -1381,12 +1530,13 @@ export function buildThemeVariables(
     display: typography.display,
     mono: typography.mono,
   };
+  // Card depth stays achromatic; semantic hue belongs to explicit emphasis.
   const shadow =
     theme.elevation === "flat"
       ? "none"
       : theme.elevation === "standard"
-        ? "0 12px 32px -24px hsl(222 30% 12% / .42)"
-        : "0 1px 2px hsl(222 30% 12% / .08), 0 16px 36px -26px hsl(var(--t7-primary-hsl) / .38)";
+        ? `0 12px 32px -24px hsl(${neutrals.shadow} / .42)`
+        : `0 1px 2px hsl(${neutrals.shadow} / .08), 0 16px 36px -26px hsl(${neutrals.shadow} / .24)`;
   const reducedMotion = options.motion === "reduced";
   const motionMilliseconds = Math.round(theme.motionDuration * 1000);
   const motionDurationValue = reducedMotion
@@ -1408,7 +1558,42 @@ export function buildThemeVariables(
   const motionLoop = milliseconds(motionRoles.loop);
   const motionEaseStandard = "cubic-bezier(.2, 0, 0, 1)";
   const motionEaseEnter = "cubic-bezier(.16, 1, .3, 1)";
+  const motionEaseChart = "cubic-bezier(.22, .74, .24, 1)";
   const motionEaseExit = "cubic-bezier(.4, 0, 1, 1)";
+
+  const kpiDepth =
+    theme.elevation === "flat"
+      ? {
+          borderAlpha: "1",
+          highlightAlpha: "0",
+          shadeAlpha: "0",
+          shadowAlpha: "0",
+        }
+      : theme.elevation === "standard"
+        ? {
+            borderAlpha: "0.7",
+            highlightAlpha: "0.36",
+            shadeAlpha: "0.18",
+            shadowAlpha: "0.3",
+          }
+        : {
+            borderAlpha: "0.56",
+            highlightAlpha: "0.3",
+            shadeAlpha: "0.14",
+            shadowAlpha: "0.24",
+          };
+  const surfaceDepth = {
+    ...kpiDepth,
+    hoverTranslateY:
+      theme.elevation === "flat" ? "0px" : surfaceGeometry.hoverTranslateY,
+  };
+  const chartGradientStartAlpha = String(
+    1 - Number(kpiDepth.highlightAlpha) * 0.55,
+  );
+  const chartGradientEndAlpha = String(1 - Number(kpiDepth.shadeAlpha) * 0.65);
+  const chartDepthShadowAlpha = (Number(kpiDepth.shadowAlpha) * 0.72).toFixed(
+    4,
+  );
 
   const semantic = {
     success: "128 42% 30%",
@@ -1445,12 +1630,64 @@ export function buildThemeVariables(
     return variables;
   }, {});
   const highContrast = options.contrast === "more";
+  const focusRingAlpha = highContrast ? "1" : "0.72";
+  const focusGlowAlpha = highContrast ? "0.3" : "0.18";
   const composition = options.composition ?? {
     contentMax: "1440px",
     readingMeasure: "68ch",
     pageGutter: "clamp(24px, 3vw, 44px)",
     sectionGap: "clamp(24px, 3vw, 44px)",
   };
+  const borderHsl =
+    theme.surfaceTreatment === "quiet"
+      ? highContrast
+        ? neutrals.borderContrast
+        : neutrals.surface
+      : theme.surfaceTreatment === "low-contrast"
+        ? highContrast
+          ? neutrals.borderContrast
+          : neutrals.border
+        : highContrast
+          ? neutrals.borderContrast
+          : neutrals.border;
+  const borderStrongHsl =
+    theme.surfaceTreatment === "quiet"
+      ? highContrast
+        ? neutrals.borderStrong
+        : neutrals.border
+      : theme.surfaceTreatment === "low-contrast"
+        ? highContrast
+          ? neutrals.borderStrong
+          : neutrals.border
+        : neutrals.borderStrong;
+  const borderSubtleHsl = highContrast
+    ? neutrals.border
+    : neutrals.surfaceMuted;
+  const surfaceHsl =
+    theme.surfaceTreatment === "quiet"
+      ? highContrast
+        ? neutrals.surfaceMuted
+        : neutrals.surfaceSubtle
+      : neutrals.surface;
+  const focusHsl = resolveFocusColor(
+    primaryPalette.primary,
+    neutrals.surface,
+    theme.appearance,
+  );
+  const formBorderHsl =
+    theme.surfaceTreatment === "outlined"
+      ? neutrals.borderStrong
+      : highContrast
+        ? neutrals.borderStrong
+        : neutrals.border;
+  // Quiet canvas intentionally softens generic container borders. Tables are
+  // a comparison surface, so keep their neutral boundary and row dividers
+  // visible without introducing semantic hue or a second grid treatment.
+  const tableBorderHsl = highContrast
+    ? neutrals.borderContrast
+    : theme.surfaceTreatment === "quiet"
+      ? neutrals.border
+      : borderHsl;
 
   return {
     "--t7-theme-recipe": options.recipe ?? "custom",
@@ -1473,6 +1710,7 @@ export function buildThemeVariables(
       ? theme.accentSource.value
       : theme.accentSource,
     "--t7-canvas-mode": theme.canvas,
+    "--t7-surface-treatment": theme.surfaceTreatment,
     "--t7-chart-palette": theme.chartPalette,
     "--t7-chart-palette-count":
       theme.chartPalette === "four"
@@ -1510,13 +1748,13 @@ export function buildThemeVariables(
     "--t7-surface-emphasis-solid-chart-foreground-hsl": solidSurfaceForeground,
     "--t7-background-hsl": neutrals.background,
     "--t7-color-bg-canvas-hsl": neutrals.background,
-    "--t7-surface-hsl": neutrals.surface,
-    "--t7-color-bg-surface-hsl": neutrals.surface,
+    "--t7-surface-hsl": surfaceHsl,
+    "--t7-color-bg-surface-hsl": surfaceHsl,
     "--t7-surface-subtle-hsl": neutrals.surfaceSubtle,
     "--t7-surface-muted-hsl": neutrals.surfaceMuted,
     "--t7-surface-raised-hsl": neutrals.surfaceRaised,
     "--t7-surface-overlay-hsl": neutrals.surfaceRaised,
-    "--t7-surface-emphasis-plain-hsl": neutrals.surface,
+    "--t7-surface-emphasis-plain-hsl": surfaceHsl,
     "--t7-surface-emphasis-soft-hsl": neutrals.surfaceSubtle,
     "--t7-surface-emphasis-soft-alpha": surfaceEmphasis.softAlpha,
     "--t7-surface-emphasis-soft-border-alpha": surfaceEmphasis.softBorderAlpha,
@@ -1556,23 +1794,25 @@ export function buildThemeVariables(
     "--t7-color-text-muted-hsl": highContrast
       ? neutrals.mutedForegroundStrong
       : neutrals.mutedForeground,
-    "--t7-border-hsl": highContrast ? neutrals.borderContrast : neutrals.border,
-    "--t7-border-strong-hsl": neutrals.borderStrong,
-    "--t7-border-subtle-hsl": highContrast
-      ? neutrals.border
-      : neutrals.surfaceMuted,
+    "--t7-border-hsl": borderHsl,
+    "--t7-border-strong-hsl": borderStrongHsl,
+    "--t7-border-subtle-hsl": borderSubtleHsl,
+    "--t7-table-border-hsl": tableBorderHsl,
+    "--t7-table-divider-alpha": `${tableGeometry.dividerAlpha}`,
     "--t7-muted-hsl": neutrals.muted,
-    "--t7-focus-hsl":
-      theme.appearance === "dark" ? "216 70% 72%" : "216 72% 38%",
-    "--t7-focus-width": highContrast ? "3px" : "2px",
+    "--t7-focus-hsl": focusHsl,
+    "--t7-focus-width": highContrast ? "3px" : "1px",
     "--t7-focus-offset": "2px",
+    "--t7-focus-ring-alpha": focusRingAlpha,
+    "--t7-focus-glow-alpha": focusGlowAlpha,
     "--t7-focus-halo":
       "0 0 0 var(--t7-focus-offset) hsl(var(--t7-surface-hsl))",
     "--t7-focus-ring":
-      "var(--t7-focus-halo), 0 0 0 calc(var(--t7-focus-offset) + var(--t7-focus-width)) hsl(var(--t7-focus-hsl))",
+      "var(--t7-focus-halo), 0 0 0 calc(var(--t7-focus-offset) + var(--t7-focus-width)) hsl(var(--t7-focus-hsl) / var(--t7-focus-ring-alpha)), 0 0 10px hsl(var(--t7-focus-hsl) / var(--t7-focus-glow-alpha))",
     "--t7-focus-ring-inset":
-      "inset 0 0 0 var(--t7-focus-width) hsl(var(--t7-focus-hsl))",
-    "--t7-shadow-selection": "inset 3px 0 0 hsl(var(--t7-selected-hsl))",
+      "inset 0 0 0 var(--t7-focus-width) hsl(var(--t7-focus-hsl) / var(--t7-focus-ring-alpha)), inset 0 0 8px hsl(var(--t7-focus-hsl) / var(--t7-focus-glow-alpha))",
+    "--t7-shadow-selection":
+      "inset 0 0 0 1px hsl(var(--t7-selected-hsl) / 0.24)",
     "--t7-shadow-state-boundary":
       "inset 0 0 0 1px hsl(var(--t7-state-boundary-hsl, var(--t7-primary-hsl)) / 0.18)",
     "--t7-selected-hsl": primaryPalette.primary,
@@ -1581,10 +1821,12 @@ export function buildThemeVariables(
     "--t7-interactive-border-hsl": primaryPalette.primary,
     "--t7-input-background-hsl": neutrals.surface,
     "--t7-field-background-hsl": neutrals.surface,
-    "--t7-input-border-hsl": neutrals.borderStrong,
-    "--t7-field-border-hsl": neutrals.borderStrong,
+    "--t7-input-border-hsl": formBorderHsl,
+    "--t7-field-border-hsl": formBorderHsl,
     "--t7-input-hover-border-hsl": primaryPalette.primary,
-    "--t7-input-focus-border-hsl": "var(--t7-focus-hsl)",
+    // Focus is carried by the semantic ring/glow. Keep the field edge
+    // neutral so focused controls do not grow a second accent border.
+    "--t7-input-focus-border-hsl": "var(--t7-field-border-hsl)",
     "--t7-field-foreground-hsl": neutrals.foreground,
     "--t7-disabled-background-hsl": neutrals.muted,
     "--t7-disabled-foreground-hsl": neutrals.mutedForegroundStrong,
@@ -1664,6 +1906,47 @@ export function buildThemeVariables(
     )}px`,
     "--t7-kpi-trend-padding-block": kpiGeometry.trendPaddingBlock,
     "--t7-kpi-trend-padding-inline": kpiGeometry.trendPaddingInline,
+    "--t7-kpi-decorative-size": kpiGeometry.decorative.size,
+    "--t7-kpi-decorative-offset-top": kpiGeometry.decorative.offsetTop,
+    "--t7-kpi-decorative-offset-inline": kpiGeometry.decorative.offsetInline,
+    "--t7-kpi-decorative-opacity": `${kpiGeometry.decorative.opacity}`,
+    "--t7-kpi-depth-gradient-angle": kpiGeometry.depth.gradientAngle,
+    "--t7-kpi-depth-gradient-stop": kpiGeometry.depth.gradientStop,
+    "--t7-kpi-depth-shadow-blur": kpiGeometry.depth.shadowBlur,
+    "--t7-kpi-depth-shadow-offset-y": kpiGeometry.depth.shadowOffsetY,
+    "--t7-kpi-depth-border-alpha": kpiDepth.borderAlpha,
+    "--t7-kpi-depth-highlight-alpha": kpiDepth.highlightAlpha,
+    "--t7-kpi-depth-shade-alpha": kpiDepth.shadeAlpha,
+    "--t7-kpi-depth-shadow-alpha": kpiDepth.shadowAlpha,
+    "--t7-surface-depth-gradient-angle": surfaceGeometry.depth.gradientAngle,
+    "--t7-surface-depth-gradient-stop": surfaceGeometry.depth.gradientStop,
+    "--t7-surface-depth-shadow-blur": surfaceGeometry.depth.shadowBlur,
+    "--t7-surface-depth-shadow-offset-y": surfaceGeometry.depth.shadowOffsetY,
+    "--t7-surface-depth-border-alpha": surfaceDepth.borderAlpha,
+    "--t7-surface-depth-highlight-alpha": surfaceDepth.highlightAlpha,
+    "--t7-surface-depth-shade-alpha": surfaceDepth.shadeAlpha,
+    "--t7-surface-depth-shadow-alpha": surfaceDepth.shadowAlpha,
+    "--t7-surface-hover-translate-y": surfaceDepth.hoverTranslateY,
+    "--t7-chart-line-width": `${chartGeometry.lineWidth}`,
+    "--t7-chart-point-radius": `${chartGeometry.pointRadius}`,
+    "--t7-chart-point-hover-scale": `${chartGeometry.pointHoverScale}`,
+    "--t7-chart-point-settle-scale": `${chartGeometry.pointSettleScale}`,
+    "--t7-chart-bar-radius": `${chartGeometry.barRadius}`,
+    "--t7-chart-bar-hover-translate-y": chartGeometry.barHoverTranslateY,
+    "--t7-chart-bar-hover-scale-y": `${chartGeometry.barHoverScaleY}`,
+    "--t7-chart-donut-stroke-width": `${chartGeometry.donutStrokeWidth}`,
+    "--t7-chart-donut-hover-stroke-width": `${chartGeometry.donutHoverStrokeWidth}`,
+    "--t7-chart-tooltip-offset-y": chartGeometry.tooltipOffsetY,
+    "--t7-chart-depth-gradient-angle": chartGeometry.depth.gradientAngle,
+    "--t7-chart-depth-gradient-stop": chartGeometry.depth.gradientStop,
+    "--t7-chart-depth-shadow-blur": chartGeometry.depth.shadowBlur,
+    "--t7-chart-depth-shadow-offset-y": chartGeometry.depth.shadowOffsetY,
+    "--t7-chart-depth-border-alpha": kpiDepth.borderAlpha,
+    "--t7-chart-depth-highlight-alpha": kpiDepth.highlightAlpha,
+    "--t7-chart-depth-shade-alpha": kpiDepth.shadeAlpha,
+    "--t7-chart-depth-shadow-alpha": chartDepthShadowAlpha,
+    "--t7-chart-gradient-start-alpha": chartGradientStartAlpha,
+    "--t7-chart-gradient-end-alpha": chartGradientEndAlpha,
     "--t7-section-gap": density.sectionGap,
     "--t7-control-gap": density.controlGap,
     "--t7-control-padding-inline": density.controlPaddingInline,
@@ -1713,6 +1996,7 @@ export function buildThemeVariables(
     "--t7-overlay-color": overlayGeometry.colorPicker,
     "--t7-overlay-popover-min": overlayGeometry.popover.min,
     "--t7-overlay-popover-max": overlayGeometry.popover.max,
+    "--t7-overlay-tooltip-min": overlayGeometry.tooltipMin,
     "--t7-overlay-tooltip-max": overlayGeometry.tooltipMax,
     "--t7-overlay-command": overlayGeometry.command,
     "--t7-overlay-dialog-sm": overlayGeometry.dialog.sm,
@@ -1763,19 +2047,21 @@ export function buildThemeVariables(
         ? "none"
         : "0 5px 12px -9px hsl(var(--t7-primary-hsl) / .8)",
     "--t7-shadow-surface":
-      theme.elevation === "flat" ? "none" : "0 1px 2px hsl(222 30% 12% / .08)",
+      theme.elevation === "flat"
+        ? "none"
+        : `0 1px 2px hsl(${neutrals.shadow} / .08)`,
     "--t7-shadow-raised":
       theme.elevation === "flat"
         ? "none"
-        : "0 10px 28px -20px hsl(222 30% 12% / .34)",
+        : `0 10px 28px -20px hsl(${neutrals.shadow} / .34)`,
     "--t7-shadow-popover":
       theme.elevation === "flat"
         ? "none"
-        : "0 18px 44px -24px hsl(222 30% 12% / .48)",
+        : `0 18px 44px -24px hsl(${neutrals.shadow} / .48)`,
     "--t7-shadow-modal":
       theme.elevation === "flat"
         ? "none"
-        : "0 28px 80px -30px hsl(222 30% 8% / .56)",
+        : `0 28px 80px -30px hsl(${neutrals.shadow} / .56)`,
     "--t7-motion-duration": motionDurationValue,
     "--t7-duration-instant": motionInstant,
     "--t7-duration-fast": motionFast,
@@ -1791,6 +2077,7 @@ export function buildThemeVariables(
     "--t7-duration-loop": motionLoop,
     "--t7-ease-standard": motionEaseStandard,
     "--t7-ease-enter": motionEaseEnter,
+    "--t7-ease-chart": motionEaseChart,
     "--t7-ease-exit": motionEaseExit,
     "--t7-motion-interactive":
       "var(--t7-duration-instant) var(--t7-ease-standard)",
@@ -1818,7 +2105,7 @@ export function buildThemeVariables(
     "--t7-z-command": "100",
     "--t7-doc-sticky-offset":
       "calc(var(--t7-header-height) + var(--t7-ref-space-2))",
-    "--t7-scrim-hsl": "222 30% 12%",
+    "--t7-scrim-hsl": neutrals.scrim,
     ...Object.fromEntries(
       Object.entries(referenceSpace).map(([step, value]) => [
         `--t7-ref-space-${step}`,

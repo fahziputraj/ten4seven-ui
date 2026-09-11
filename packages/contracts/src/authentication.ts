@@ -1,4 +1,5 @@
 import type { RecipeContract } from "./types.ts";
+import { AUTH_BRAND_PROFILE_IDS } from "./brand-profile.ts";
 
 /** Typed Authentication recipe used by the bounded Brand Expression proof. */
 export const AUTHENTICATION_CONTRACT: RecipeContract = {
@@ -41,7 +42,7 @@ export const AUTHENTICATION_CONTRACT: RecipeContract = {
   },
   expression: {
     kind: "brand-profile",
-    profiles: ["neutral-product", "aapm-academy"],
+    profiles: AUTH_BRAND_PROFILE_IDS,
     consumerSlots: [
       "brand-mark",
       "media",

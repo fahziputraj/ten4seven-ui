@@ -34,67 +34,67 @@
       "omitted": [],
       "conditionalComponentCount": 6,
       "retrieval": {
-        "actualRetrievalBytes": 7927,
-        "taskSpecificBytes": 5743,
-        "indexBytes": 2184,
-        "recipeBytes": 2865,
-        "componentContractBytes": 2878,
+        "actualRetrievalBytes": 25320,
+        "taskSpecificBytes": 22809,
+        "indexBytes": 2511,
+        "recipeBytes": 2866,
+        "componentContractBytes": 19943,
         "fullCatalogFallback": 0,
         "runtimeFiles": [
           {
             "kind": "index",
             "path": "generated/index.json",
-            "bytes": 2184
+            "bytes": 2511
           },
           {
             "kind": "recipe",
             "path": "generated/recipes/entity-list.json",
-            "bytes": 2865
+            "bytes": 2866
           },
           {
             "kind": "componentContract",
             "path": "generated/components/AppShell.json",
-            "bytes": 272
+            "bytes": 1634
           },
           {
             "kind": "componentContract",
             "path": "generated/components/PageHeader.json",
-            "bytes": 307
+            "bytes": 2123
           },
           {
             "kind": "componentContract",
             "path": "generated/components/DataTable.json",
-            "bytes": 396
+            "bytes": 3126
           },
           {
             "kind": "componentContract",
             "path": "generated/components/Sidebar.json",
-            "bytes": 306
+            "bytes": 1962
           },
           {
             "kind": "componentContract",
             "path": "generated/components/KPICluster.json",
-            "bytes": 464
+            "bytes": 3717
           },
           {
             "kind": "componentContract",
             "path": "generated/components/FilterToolbar.json",
-            "bytes": 280
+            "bytes": 1740
           },
           {
             "kind": "componentContract",
             "path": "generated/components/Pagination.json",
-            "bytes": 288
+            "bytes": 1836
           },
           {
             "kind": "componentContract",
             "path": "generated/components/BulkActionBar.json",
-            "bytes": 274
+            "bytes": 1825
           },
           {
             "kind": "componentContract",
             "path": "generated/components/DetailDrawer.json",
-            "bytes": 291
+            "bytes": 1980
           }
         ],
         "componentIds": [
@@ -139,42 +139,42 @@
       ],
       "conditionalComponentCount": 1,
       "retrieval": {
-        "actualRetrievalBytes": 6304,
-        "taskSpecificBytes": 4120,
-        "indexBytes": 2184,
-        "recipeBytes": 2865,
-        "componentContractBytes": 1255,
+        "actualRetrievalBytes": 14000,
+        "taskSpecificBytes": 11489,
+        "indexBytes": 2511,
+        "recipeBytes": 2866,
+        "componentContractBytes": 8623,
         "fullCatalogFallback": 0,
         "runtimeFiles": [
           {
             "kind": "index",
             "path": "generated/index.json",
-            "bytes": 2184
+            "bytes": 2511
           },
           {
             "kind": "recipe",
             "path": "generated/recipes/entity-list.json",
-            "bytes": 2865
+            "bytes": 2866
           },
           {
             "kind": "componentContract",
             "path": "generated/components/AppShell.json",
-            "bytes": 272
+            "bytes": 1634
           },
           {
             "kind": "componentContract",
             "path": "generated/components/PageHeader.json",
-            "bytes": 307
+            "bytes": 2123
           },
           {
             "kind": "componentContract",
             "path": "generated/components/DataTable.json",
-            "bytes": 396
+            "bytes": 3126
           },
           {
             "kind": "componentContract",
             "path": "generated/components/FilterToolbar.json",
-            "bytes": 280
+            "bytes": 1740
           }
         ],
         "componentIds": [
@@ -214,62 +214,62 @@
       ],
       "conditionalComponentCount": 5,
       "retrieval": {
-        "actualRetrievalBytes": 7463,
-        "taskSpecificBytes": 5279,
-        "indexBytes": 2184,
-        "recipeBytes": 2865,
-        "componentContractBytes": 2414,
+        "actualRetrievalBytes": 21603,
+        "taskSpecificBytes": 19092,
+        "indexBytes": 2511,
+        "recipeBytes": 2866,
+        "componentContractBytes": 16226,
         "fullCatalogFallback": 0,
         "runtimeFiles": [
           {
             "kind": "index",
             "path": "generated/index.json",
-            "bytes": 2184
+            "bytes": 2511
           },
           {
             "kind": "recipe",
             "path": "generated/recipes/entity-list.json",
-            "bytes": 2865
+            "bytes": 2866
           },
           {
             "kind": "componentContract",
             "path": "generated/components/AppShell.json",
-            "bytes": 272
+            "bytes": 1634
           },
           {
             "kind": "componentContract",
             "path": "generated/components/PageHeader.json",
-            "bytes": 307
+            "bytes": 2123
           },
           {
             "kind": "componentContract",
             "path": "generated/components/DataTable.json",
-            "bytes": 396
+            "bytes": 3126
           },
           {
             "kind": "componentContract",
             "path": "generated/components/Sidebar.json",
-            "bytes": 306
+            "bytes": 1962
           },
           {
             "kind": "componentContract",
             "path": "generated/components/FilterToolbar.json",
-            "bytes": 280
+            "bytes": 1740
           },
           {
             "kind": "componentContract",
             "path": "generated/components/Pagination.json",
-            "bytes": 288
+            "bytes": 1836
           },
           {
             "kind": "componentContract",
             "path": "generated/components/BulkActionBar.json",
-            "bytes": 274
+            "bytes": 1825
           },
           {
             "kind": "componentContract",
             "path": "generated/components/DetailDrawer.json",
-            "bytes": 291
+            "bytes": 1980
           }
         ],
         "componentIds": [
@@ -318,72 +318,72 @@
       ],
       "conditionalComponentCount": 7,
       "retrieval": {
-        "actualRetrievalBytes": 7886,
-        "taskSpecificBytes": 5702,
-        "indexBytes": 2184,
-        "recipeBytes": 2877,
-        "componentContractBytes": 2825,
+        "actualRetrievalBytes": 23092,
+        "taskSpecificBytes": 20581,
+        "indexBytes": 2511,
+        "recipeBytes": 2878,
+        "componentContractBytes": 17703,
         "fullCatalogFallback": 0,
         "runtimeFiles": [
           {
             "kind": "index",
             "path": "generated/index.json",
-            "bytes": 2184
+            "bytes": 2511
           },
           {
             "kind": "recipe",
             "path": "generated/recipes/entity-detail.json",
-            "bytes": 2877
+            "bytes": 2878
           },
           {
             "kind": "componentContract",
             "path": "generated/components/PageHeader.json",
-            "bytes": 307
+            "bytes": 2123
           },
           {
             "kind": "componentContract",
             "path": "generated/components/RecordSummary.json",
-            "bytes": 296
+            "bytes": 2039
           },
           {
             "kind": "componentContract",
             "path": "generated/components/KeyValueList.json",
-            "bytes": 234
+            "bytes": 1210
           },
           {
             "kind": "componentContract",
             "path": "generated/components/AppShell.json",
-            "bytes": 272
+            "bytes": 1634
           },
           {
             "kind": "componentContract",
             "path": "generated/components/Sidebar.json",
-            "bytes": 306
+            "bytes": 1962
           },
           {
             "kind": "componentContract",
             "path": "generated/components/StatusChip.json",
-            "bytes": 256
+            "bytes": 1440
           },
           {
             "kind": "componentContract",
             "path": "generated/components/ActivityFeed.json",
-            "bytes": 224
+            "bytes": 1195
           },
           {
             "kind": "componentContract",
             "path": "generated/components/ActionMenu.json",
-            "bytes": 249
+            "bytes": 1317
           },
           {
             "kind": "componentContract",
             "path": "generated/components/ActionFooter.json",
-            "bytes": 285
+            "bytes": 1657
           },
           {
             "kind": "componentContract",
             "path": "generated/components/DataTable.json",
-            "bytes": 396
+            "bytes": 3126
           }
         ],
         "componentIds": [
@@ -431,47 +431,47 @@
       ],
       "conditionalComponentCount": 2,
       "retrieval": {
-        "actualRetrievalBytes": 6378,
-        "taskSpecificBytes": 4194,
-        "indexBytes": 2184,
-        "recipeBytes": 2877,
-        "componentContractBytes": 1317,
+        "actualRetrievalBytes": 13396,
+        "taskSpecificBytes": 10885,
+        "indexBytes": 2511,
+        "recipeBytes": 2878,
+        "componentContractBytes": 8007,
         "fullCatalogFallback": 0,
         "runtimeFiles": [
           {
             "kind": "index",
             "path": "generated/index.json",
-            "bytes": 2184
+            "bytes": 2511
           },
           {
             "kind": "recipe",
             "path": "generated/recipes/entity-detail.json",
-            "bytes": 2877
+            "bytes": 2878
           },
           {
             "kind": "componentContract",
             "path": "generated/components/PageHeader.json",
-            "bytes": 307
+            "bytes": 2123
           },
           {
             "kind": "componentContract",
             "path": "generated/components/RecordSummary.json",
-            "bytes": 296
+            "bytes": 2039
           },
           {
             "kind": "componentContract",
             "path": "generated/components/KeyValueList.json",
-            "bytes": 234
+            "bytes": 1210
           },
           {
             "kind": "componentContract",
             "path": "generated/components/StatusChip.json",
-            "bytes": 256
+            "bytes": 1440
           },
           {
             "kind": "componentContract",
             "path": "generated/components/ActivityFeed.json",
-            "bytes": 224
+            "bytes": 1195
           }
         ],
         "componentIds": [
@@ -514,67 +514,67 @@
       ],
       "conditionalComponentCount": 6,
       "retrieval": {
-        "actualRetrievalBytes": 7601,
-        "taskSpecificBytes": 5417,
-        "indexBytes": 2184,
-        "recipeBytes": 2877,
-        "componentContractBytes": 2540,
+        "actualRetrievalBytes": 21435,
+        "taskSpecificBytes": 18924,
+        "indexBytes": 2511,
+        "recipeBytes": 2878,
+        "componentContractBytes": 16046,
         "fullCatalogFallback": 0,
         "runtimeFiles": [
           {
             "kind": "index",
             "path": "generated/index.json",
-            "bytes": 2184
+            "bytes": 2511
           },
           {
             "kind": "recipe",
             "path": "generated/recipes/entity-detail.json",
-            "bytes": 2877
+            "bytes": 2878
           },
           {
             "kind": "componentContract",
             "path": "generated/components/PageHeader.json",
-            "bytes": 307
+            "bytes": 2123
           },
           {
             "kind": "componentContract",
             "path": "generated/components/RecordSummary.json",
-            "bytes": 296
+            "bytes": 2039
           },
           {
             "kind": "componentContract",
             "path": "generated/components/KeyValueList.json",
-            "bytes": 234
+            "bytes": 1210
           },
           {
             "kind": "componentContract",
             "path": "generated/components/AppShell.json",
-            "bytes": 272
+            "bytes": 1634
           },
           {
             "kind": "componentContract",
             "path": "generated/components/Sidebar.json",
-            "bytes": 306
+            "bytes": 1962
           },
           {
             "kind": "componentContract",
             "path": "generated/components/StatusChip.json",
-            "bytes": 256
+            "bytes": 1440
           },
           {
             "kind": "componentContract",
             "path": "generated/components/ActivityFeed.json",
-            "bytes": 224
+            "bytes": 1195
           },
           {
             "kind": "componentContract",
             "path": "generated/components/ActionMenu.json",
-            "bytes": 249
+            "bytes": 1317
           },
           {
             "kind": "componentContract",
             "path": "generated/components/DataTable.json",
-            "bytes": 396
+            "bytes": 3126
           }
         ],
         "componentIds": [

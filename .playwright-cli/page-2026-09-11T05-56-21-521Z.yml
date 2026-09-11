@@ -1,0 +1,540 @@
+- main [ref=f1e5]:
+  - generic [ref=f1e6]:
+    - generic [ref=f1e7]:
+      - button "Open design system navigation" [ref=f1e8] [cursor=pointer]
+      - strong [ref=f1e19]: Components
+    - generic [ref=f1e20]:
+      - button "Search ten4seven catalog" [ref=f1e21] [cursor=pointer]
+      - button "Open settings" [ref=f1e28] [cursor=pointer]
+      - generic "ten4seven workspace menu" [ref=f1e33]:
+        - button [ref=f1e34] [cursor=pointer]:
+          - img "ten4seven workspace" [ref=f1e35]:
+            - generic [aria-hidden] [ref=f1e36]: T
+  - generic [ref=f1e38]:
+    - generic [ref=f1e40]:
+      - generic [ref=f1e41]: Library · canonical contracts
+      - heading "Components" [level=1] [ref=f1e50]
+      - paragraph [ref=f1e51]: A visual entry point for comparing canonical components by family. Browse the specimen first; open detail only when the full contract is needed.
+      - generic [ref=f1e52]: 145 canonical · 151 catalog contracts
+    - generic [ref=f1e54]:
+      - generic [ref=f1e55]: Search components
+      - textbox "Search canonical components" [ref=f1e57]:
+        - /placeholder: Button, form, table, overlay…
+    - region [ref=f1e58]:
+      - generic [ref=f1e59]:
+        - generic [ref=f1e60]:
+          - heading "Families" [level=2] [ref=f1e61]
+          - text: Choose one family to compare its live components, variants, states, and guidance together.
+        - generic [ref=f1e62]: 17 families · 145 contracts
+      - navigation "Component families" [ref=f1e63]:
+        - link "Foundations Theme, typography, icon, and provider contracts shared by every screen. Foundations indexed component examples 3" [ref=f1e64] [cursor=pointer]:
+          - /url: /components/foundations
+          - generic [ref=f1e73]:
+            - strong [ref=f1e74]: Foundations
+            - generic [ref=f1e75]: Theme, typography, icon, and provider contracts shared by every screen.
+            - generic "Foundations indexed component examples" [ref=f1e76]: Ten4Seven Provider · Typography · T7 Icon
+          - generic [ref=f1e77]: "3"
+        - link "Actions Intent-bearing actions and compact controls for committing work. Actions indexed component examples 6" [ref=f1e80] [cursor=pointer]:
+          - /url: /components/actions
+          - generic [ref=f1e84]:
+            - strong [ref=f1e85]: Actions
+            - generic [ref=f1e86]: Intent-bearing actions and compact controls for committing work.
+            - generic "Actions indexed component examples" [ref=f1e87]: Button · Icon Button · Button Group
+          - generic [ref=f1e88]: "6"
+        - link "Forms Inputs and selection controls for collecting clear, valid values. Forms indexed component examples 27" [ref=f1e91] [cursor=pointer]:
+          - /url: /components/forms
+          - generic [ref=f1e98]:
+            - strong [ref=f1e99]: Forms
+            - generic [ref=f1e100]: Inputs and selection controls for collecting clear, valid values.
+            - generic "Forms indexed component examples" [ref=f1e101]: Input · Search Input · Password Input
+          - generic [ref=f1e102]: "27"
+        - link "Navigation Wayfinding, disclosure, and command surfaces for moving through an app. Navigation indexed component examples 16" [ref=f1e105] [cursor=pointer]:
+          - /url: /components/navigation
+          - generic [ref=f1e111]:
+            - strong [ref=f1e112]: Navigation
+            - generic [ref=f1e113]: Wayfinding, disclosure, and command surfaces for moving through an app.
+            - generic "Navigation indexed component examples" [ref=f1e114]: Sidebar · Sidebar Group · Nav Item
+          - generic [ref=f1e115]: "16"
+        - link "Layout Structural primitives that define page, panel, and responsive composition. Layout indexed component examples 7" [ref=f1e118] [cursor=pointer]:
+          - /url: /components/layout
+          - generic [ref=f1e126]:
+            - strong [ref=f1e127]: Layout
+            - generic [ref=f1e128]: Structural primitives that define page, panel, and responsive composition.
+            - generic "Layout indexed component examples" [ref=f1e129]: Section · Separator · Scroll Area
+          - generic [ref=f1e130]: "7"
+        - link "Surfaces Cards, panels, separators, and containers that establish hierarchy. Surfaces indexed component examples 8" [ref=f1e133] [cursor=pointer]:
+          - /url: /components/surfaces
+          - generic [ref=f1e141]:
+            - strong [ref=f1e142]: Surfaces
+            - generic [ref=f1e143]: Cards, panels, separators, and containers that establish hierarchy.
+            - generic "Surfaces indexed component examples" [ref=f1e144]: Card · Card Header · Card Content
+          - generic [ref=f1e145]: "8"
+        - link "Data Display Metrics, status, lists, and visual signals for readable information. Data Display indexed component examples 11" [ref=f1e148] [cursor=pointer]:
+          - /url: /components/data-display
+          - generic [ref=f1e156]:
+            - strong [ref=f1e157]: Data Display
+            - generic [ref=f1e158]: Metrics, status, lists, and visual signals for readable information.
+            - generic "Data Display indexed component examples" [ref=f1e159]: Milestone Tracker · Badge · Status Chip
+          - generic [ref=f1e160]: "11"
+        - link "Tables Dense tabular records with selection, sorting, and responsive overflow. Tables indexed component examples 9" [ref=f1e163] [cursor=pointer]:
+          - /url: /components/tables
+          - generic [ref=f1e171]:
+            - strong [ref=f1e172]: Tables
+            - generic [ref=f1e173]: Dense tabular records with selection, sorting, and responsive overflow.
+            - generic "Tables indexed component examples" [ref=f1e174]: Table · Table Header · Table Body
+          - generic [ref=f1e175]: "9"
+        - link "Filtering & Bulk Actions Applied filters, filter drawers, and bulk operations around collections. Filtering & Bulk Actions indexed component examples 5" [ref=f1e178] [cursor=pointer]:
+          - /url: /components/filtering-bulk-actions
+          - generic [ref=f1e184]:
+            - strong [ref=f1e185]: Filtering & Bulk Actions
+            - generic [ref=f1e186]: Applied filters, filter drawers, and bulk operations around collections.
+            - generic "Filtering & Bulk Actions indexed component examples" [ref=f1e187]: Filter Toolbar · Filter Chip · Applied Filters
+          - generic [ref=f1e188]: "5"
+        - link "Overlays Focused modal, drawer, popover, menu, and tooltip layers. Overlays indexed component examples 8" [ref=f1e191] [cursor=pointer]:
+          - /url: /components/overlays
+          - generic [ref=f1e202]:
+            - strong [ref=f1e203]: Overlays
+            - generic [ref=f1e204]: Focused modal, drawer, popover, menu, and tooltip layers.
+            - generic "Overlays indexed component examples" [ref=f1e205]: Modal · Drawer · Detail Drawer
+          - generic [ref=f1e206]: "8"
+        - link "Feedback & Progress Status, progress, loading, and recovery feedback with live semantics. Feedback & Progress indexed component examples 11" [ref=f1e209] [cursor=pointer]:
+          - /url: /components/feedback-progress
+          - generic [ref=f1e215]:
+            - strong [ref=f1e216]: Feedback & Progress
+            - generic [ref=f1e217]: Status, progress, loading, and recovery feedback with live semantics.
+            - generic "Feedback & Progress indexed component examples" [ref=f1e218]: Alert · Toast Provider · Toaster
+          - generic [ref=f1e219]: "11"
+        - link "Date & Time Calendar, range, time, and date-time entry with stable values. Date & Time indexed component examples 6" [ref=f1e222] [cursor=pointer]:
+          - /url: /components/date-time
+          - generic [ref=f1e230]:
+            - strong [ref=f1e231]: Date & Time
+            - generic [ref=f1e232]: Calendar, range, time, and date-time entry with stable values.
+            - generic "Date & Time indexed component examples" [ref=f1e233]: Calendar · Date Picker · Date Range Picker
+          - generic [ref=f1e234]: "6"
+        - link "Files Client-side file selection, upload affordances, and file records. Files indexed component examples 3" [ref=f1e237] [cursor=pointer]:
+          - /url: /components/files
+          - generic [ref=f1e244]:
+            - strong [ref=f1e245]: Files
+            - generic [ref=f1e246]: Client-side file selection, upload affordances, and file records.
+            - generic "Files indexed component examples" [ref=f1e247]: File Upload · File Item · File List
+          - generic [ref=f1e248]: "3"
+        - link "Charts & Data Visualization Token-led charts and compact trend visualizations. Charts & Data Visualization indexed component examples 7" [ref=f1e251] [cursor=pointer]:
+          - /url: /components/charts-data-visualization
+          - generic [ref=f1e259]:
+            - strong [ref=f1e260]: Charts & Data Visualization
+            - generic [ref=f1e261]: Token-led charts and compact trend visualizations.
+            - generic "Charts & Data Visualization indexed component examples" [ref=f1e262]: Trend Indicator · Sparkline · Line Chart
+          - generic [ref=f1e263]: "7"
+        - link "Media Responsive media frames, thumbnails, and content-safe imagery. Media indexed component examples 4" [ref=f1e266] [cursor=pointer]:
+          - /url: /components/media
+          - generic [ref=f1e273]:
+            - strong [ref=f1e274]: Media
+            - generic [ref=f1e275]: Responsive media frames, thumbnails, and content-safe imagery.
+            - generic "Media indexed component examples" [ref=f1e276]: Aspect Ratio · Media Frame · Image
+          - generic [ref=f1e277]: "4"
+        - link "Commerce Catalog, cart, pricing, and order composition without a second primitive set. Commerce indexed component examples 8" [ref=f1e280] [cursor=pointer]:
+          - /url: /components/commerce
+          - generic [ref=f1e288]:
+            - strong [ref=f1e289]: Commerce
+            - generic [ref=f1e290]: Catalog, cart, pricing, and order composition without a second primitive set.
+            - generic "Commerce indexed component examples" [ref=f1e291]: Product Card · Product Grid · Price
+          - generic [ref=f1e292]: "8"
+        - link "Patterns Reusable application flows composed from the contracts above. Patterns indexed component examples 6" [ref=f1e295] [cursor=pointer]:
+          - /url: /components/patterns
+          - generic [ref=f1e301]:
+            - strong [ref=f1e302]: Patterns
+            - generic [ref=f1e303]: Reusable application flows composed from the contracts above.
+            - generic "Patterns indexed component examples" [ref=f1e304]: App Shell · Approval Panel · Action Footer
+          - generic [ref=f1e305]: "6"
+    - group [ref=f1e308]:
+      - generic "View all indexed contracts 145" [active] [ref=f1e309] [cursor=pointer]:
+        - generic [ref=f1e310]: View all indexed contracts
+        - generic [ref=f1e311]: "145"
+      - generic [ref=f1e363]:
+        - region [ref=f1e364]:
+          - generic [ref=f1e365]:
+            - heading "Foundations" [level=3] [ref=f1e366]
+            - generic [ref=f1e367]: "3"
+          - generic [ref=f1e368]:
+            - link "Ten4Seven Provider" [ref=f1e369] [cursor=pointer]:
+              - /url: /components/ten4-seven-provider
+            - link "Typography" [ref=f1e370] [cursor=pointer]:
+              - /url: /components/typography
+            - link "T7 Icon" [ref=f1e371] [cursor=pointer]:
+              - /url: /components/t7-icon
+        - region [ref=f1e372]:
+          - generic [ref=f1e373]:
+            - heading "Actions" [level=3] [ref=f1e374]
+            - generic [ref=f1e375]: "6"
+          - generic [ref=f1e376]:
+            - link "Button" [ref=f1e377] [cursor=pointer]:
+              - /url: /components/button
+            - link "Icon Button" [ref=f1e378] [cursor=pointer]:
+              - /url: /components/icon-button
+            - link "Button Group" [ref=f1e379] [cursor=pointer]:
+              - /url: /components/button-group
+            - link "Toggle Button" [ref=f1e380] [cursor=pointer]:
+              - /url: /components/toggle-button
+            - link "Toggle Button Group" [ref=f1e381] [cursor=pointer]:
+              - /url: /components/toggle-button-group
+            - link "Split Button" [ref=f1e382] [cursor=pointer]:
+              - /url: /components/split-button
+        - region [ref=f1e383]:
+          - generic [ref=f1e384]:
+            - heading "Forms" [level=3] [ref=f1e385]
+            - generic [ref=f1e386]: "27"
+          - generic [ref=f1e387]:
+            - link "Input" [ref=f1e388] [cursor=pointer]:
+              - /url: /components/input
+            - link "Search Input" [ref=f1e389] [cursor=pointer]:
+              - /url: /components/search-input
+            - link "Password Input" [ref=f1e390] [cursor=pointer]:
+              - /url: /components/password-input
+            - link "Textarea" [ref=f1e391] [cursor=pointer]:
+              - /url: /components/textarea
+            - link "Number Input" [ref=f1e392] [cursor=pointer]:
+              - /url: /components/number-input
+            - link "Currency Input" [ref=f1e393] [cursor=pointer]:
+              - /url: /components/currency-input
+            - link "Percent Input" [ref=f1e394] [cursor=pointer]:
+              - /url: /components/percent-input
+            - link "Select" [ref=f1e395] [cursor=pointer]:
+              - /url: /components/select
+            - link "Native Select" [ref=f1e396] [cursor=pointer]:
+              - /url: /components/native-select
+            - link "Combobox" [ref=f1e397] [cursor=pointer]:
+              - /url: /components/combobox
+            - link "Multi Select" [ref=f1e398] [cursor=pointer]:
+              - /url: /components/multi-select
+            - link "Hierarchy Picker" [ref=f1e399] [cursor=pointer]:
+              - /url: /components/hierarchy-picker
+            - link "Checkbox" [ref=f1e400] [cursor=pointer]:
+              - /url: /components/checkbox
+            - link "Checkbox Group" [ref=f1e401] [cursor=pointer]:
+              - /url: /components/checkbox-group
+            - link "Radio" [ref=f1e402] [cursor=pointer]:
+              - /url: /components/radio
+            - link "Switch" [ref=f1e403] [cursor=pointer]:
+              - /url: /components/switch
+            - link "Slider" [ref=f1e404] [cursor=pointer]:
+              - /url: /components/slider
+            - link "Range Slider" [ref=f1e405] [cursor=pointer]:
+              - /url: /components/range-slider
+            - link "Otp Input" [ref=f1e406] [cursor=pointer]:
+              - /url: /components/otp-input
+            - link "Field" [ref=f1e407] [cursor=pointer]:
+              - /url: /components/field
+            - link "Label" [ref=f1e408] [cursor=pointer]:
+              - /url: /components/label
+            - link "Field Group" [ref=f1e409] [cursor=pointer]:
+              - /url: /components/field-group
+            - link "Form Section" [ref=f1e410] [cursor=pointer]:
+              - /url: /components/form-section
+            - link "Form Grid" [ref=f1e411] [cursor=pointer]:
+              - /url: /components/form-grid
+            - link "Form Actions" [ref=f1e412] [cursor=pointer]:
+              - /url: /components/form-actions
+            - link "Field Description" [ref=f1e413] [cursor=pointer]:
+              - /url: /components/field-description
+            - link "Field Error" [ref=f1e414] [cursor=pointer]:
+              - /url: /components/field-error
+        - region [ref=f1e415]:
+          - generic [ref=f1e416]:
+            - heading "Navigation" [level=3] [ref=f1e417]
+            - generic [ref=f1e418]: "16"
+          - generic [ref=f1e419]:
+            - link "Sidebar" [ref=f1e420] [cursor=pointer]:
+              - /url: /components/sidebar
+            - link "Sidebar Group" [ref=f1e421] [cursor=pointer]:
+              - /url: /components/sidebar-group
+            - link "Nav Item" [ref=f1e422] [cursor=pointer]:
+              - /url: /components/nav-item
+            - link "Navigation Menu" [ref=f1e423] [cursor=pointer]:
+              - /url: /components/navigation-menu
+            - link "Top Navigation" [ref=f1e424] [cursor=pointer]:
+              - /url: /components/top-navigation
+            - link "Mobile Sidebar" [ref=f1e425] [cursor=pointer]:
+              - /url: /components/mobile-sidebar
+            - link "Breadcrumb" [ref=f1e426] [cursor=pointer]:
+              - /url: /components/breadcrumb
+            - link "Section Navigation" [ref=f1e427] [cursor=pointer]:
+              - /url: /components/section-navigation
+            - link "Tabs" [ref=f1e428] [cursor=pointer]:
+              - /url: /components/tabs
+            - link "Accordion" [ref=f1e429] [cursor=pointer]:
+              - /url: /components/accordion
+            - link "Collapsible" [ref=f1e430] [cursor=pointer]:
+              - /url: /components/collapsible
+            - link "Stepper" [ref=f1e431] [cursor=pointer]:
+              - /url: /components/stepper
+            - link "Command Menu" [ref=f1e432] [cursor=pointer]:
+              - /url: /components/command-menu
+            - link "Pagination" [ref=f1e433] [cursor=pointer]:
+              - /url: /components/pagination
+            - link "Tab Panel" [ref=f1e434] [cursor=pointer]:
+              - /url: /components/tab-panel
+            - link "Carousel" [ref=f1e435] [cursor=pointer]:
+              - /url: /components/carousel
+        - region [ref=f1e436]:
+          - generic [ref=f1e437]:
+            - heading "Layout" [level=3] [ref=f1e438]
+            - generic [ref=f1e439]: "7"
+          - generic [ref=f1e440]:
+            - link "Section" [ref=f1e441] [cursor=pointer]:
+              - /url: /components/section
+            - link "Separator" [ref=f1e442] [cursor=pointer]:
+              - /url: /components/separator
+            - link "Scroll Area" [ref=f1e443] [cursor=pointer]:
+              - /url: /components/scroll-area
+            - link "Page Header" [ref=f1e444] [cursor=pointer]:
+              - /url: /components/page-header
+            - link "Section Header" [ref=f1e445] [cursor=pointer]:
+              - /url: /components/section-header
+            - link "Toolbar" [ref=f1e446] [cursor=pointer]:
+              - /url: /components/toolbar
+            - link "Action Bar" [ref=f1e447] [cursor=pointer]:
+              - /url: /components/action-bar
+        - region [ref=f1e448]:
+          - generic [ref=f1e449]:
+            - heading "Surfaces" [level=3] [ref=f1e450]
+            - generic [ref=f1e451]: "8"
+          - generic [ref=f1e452]:
+            - link "Card" [ref=f1e453] [cursor=pointer]:
+              - /url: /components/card
+            - link "Card Header" [ref=f1e454] [cursor=pointer]:
+              - /url: /components/card-header
+            - link "Card Content" [ref=f1e455] [cursor=pointer]:
+              - /url: /components/card-content
+            - link "Card Footer" [ref=f1e456] [cursor=pointer]:
+              - /url: /components/card-footer
+            - link "Surface" [ref=f1e457] [cursor=pointer]:
+              - /url: /components/surface
+            - link "Panel" [ref=f1e458] [cursor=pointer]:
+              - /url: /components/panel
+            - link "Card Title" [ref=f1e459] [cursor=pointer]:
+              - /url: /components/card-title
+            - link "Card Description" [ref=f1e460] [cursor=pointer]:
+              - /url: /components/card-description
+        - region [ref=f1e461]:
+          - generic [ref=f1e462]:
+            - heading "Data Display" [level=3] [ref=f1e463]
+            - generic [ref=f1e464]: "11"
+          - generic [ref=f1e465]:
+            - link "Milestone Tracker" [ref=f1e466] [cursor=pointer]:
+              - /url: /components/milestone-tracker
+            - link "Badge" [ref=f1e467] [cursor=pointer]:
+              - /url: /components/badge
+            - link "Status Chip" [ref=f1e468] [cursor=pointer]:
+              - /url: /components/status-chip
+            - link "Avatar" [ref=f1e469] [cursor=pointer]:
+              - /url: /components/avatar
+            - link "Avatar Group" [ref=f1e470] [cursor=pointer]:
+              - /url: /components/avatar-group
+            - link "Key Value List" [ref=f1e471] [cursor=pointer]:
+              - /url: /components/key-value-list
+            - link "Metric Card" [ref=f1e472] [cursor=pointer]:
+              - /url: /components/metric-card
+            - link "KPI Cluster" [ref=f1e473] [cursor=pointer]:
+              - /url: /components/kpicluster
+            - link "Activity Feed" [ref=f1e474] [cursor=pointer]:
+              - /url: /components/activity-feed
+            - link "Record Summary" [ref=f1e475] [cursor=pointer]:
+              - /url: /components/record-summary
+            - link "Revision Diff" [ref=f1e476] [cursor=pointer]:
+              - /url: /components/revision-diff
+        - region [ref=f1e477]:
+          - generic [ref=f1e478]:
+            - heading "Tables" [level=3] [ref=f1e479]
+            - generic [ref=f1e480]: "9"
+          - generic [ref=f1e481]:
+            - link "Table" [ref=f1e482] [cursor=pointer]:
+              - /url: /components/table
+            - link "Table Header" [ref=f1e483] [cursor=pointer]:
+              - /url: /components/table-header
+            - link "Table Body" [ref=f1e484] [cursor=pointer]:
+              - /url: /components/table-body
+            - link "Table Row" [ref=f1e485] [cursor=pointer]:
+              - /url: /components/table-row
+            - link "Table Head" [ref=f1e486] [cursor=pointer]:
+              - /url: /components/table-head
+            - link "Table Cell" [ref=f1e487] [cursor=pointer]:
+              - /url: /components/table-cell
+            - link "Data Table" [ref=f1e488] [cursor=pointer]:
+              - /url: /components/data-table
+            - link "Advanced Data Grid" [ref=f1e489] [cursor=pointer]:
+              - /url: /components/advanced-data-grid
+            - link "Data Table Column Picker" [ref=f1e490] [cursor=pointer]:
+              - /url: /components/data-table-column-picker
+        - region [ref=f1e491]:
+          - generic [ref=f1e492]:
+            - heading "Filtering & Bulk Actions" [level=3] [ref=f1e493]
+            - generic [ref=f1e494]: "5"
+          - generic [ref=f1e495]:
+            - link "Filter Toolbar" [ref=f1e496] [cursor=pointer]:
+              - /url: /components/filter-toolbar
+            - link "Filter Chip" [ref=f1e497] [cursor=pointer]:
+              - /url: /components/filter-chip
+            - link "Applied Filters" [ref=f1e498] [cursor=pointer]:
+              - /url: /components/applied-filters
+            - link "Filter Drawer" [ref=f1e499] [cursor=pointer]:
+              - /url: /components/filter-drawer
+            - link "Bulk Action Bar" [ref=f1e500] [cursor=pointer]:
+              - /url: /components/bulk-action-bar
+        - region [ref=f1e501]:
+          - generic [ref=f1e502]:
+            - heading "Overlays" [level=3] [ref=f1e503]
+            - generic [ref=f1e504]: "8"
+          - generic [ref=f1e505]:
+            - link "Modal" [ref=f1e506] [cursor=pointer]:
+              - /url: /components/modal
+            - link "Drawer" [ref=f1e507] [cursor=pointer]:
+              - /url: /components/drawer
+            - link "Detail Drawer" [ref=f1e508] [cursor=pointer]:
+              - /url: /components/detail-drawer
+            - link "Alert Dialog" [ref=f1e509] [cursor=pointer]:
+              - /url: /components/alert-dialog
+            - link "Popover" [ref=f1e510] [cursor=pointer]:
+              - /url: /components/popover
+            - link "Tooltip" [ref=f1e511] [cursor=pointer]:
+              - /url: /components/tooltip
+            - link "Dropdown Menu" [ref=f1e512] [cursor=pointer]:
+              - /url: /components/dropdown-menu
+            - link "Context Menu" [ref=f1e513] [cursor=pointer]:
+              - /url: /components/context-menu
+        - region [ref=f1e514]:
+          - generic [ref=f1e515]:
+            - heading "Feedback & Progress" [level=3] [ref=f1e516]
+            - generic [ref=f1e517]: "11"
+          - generic [ref=f1e518]:
+            - link "Alert" [ref=f1e519] [cursor=pointer]:
+              - /url: /components/alert
+            - link "Toast Provider" [ref=f1e520] [cursor=pointer]:
+              - /url: /components/toast-provider
+            - link "Toaster" [ref=f1e521] [cursor=pointer]:
+              - /url: /components/toaster
+            - link "Toast" [ref=f1e522] [cursor=pointer]:
+              - /url: /components/toast
+            - link "Empty State" [ref=f1e523] [cursor=pointer]:
+              - /url: /components/empty-state
+            - link "State View" [ref=f1e524] [cursor=pointer]:
+              - /url: /components/state-view
+            - link "Module State" [ref=f1e525] [cursor=pointer]:
+              - /url: /components/module-state
+            - link "Skeleton" [ref=f1e526] [cursor=pointer]:
+              - /url: /components/skeleton
+            - link "Spinner" [ref=f1e527] [cursor=pointer]:
+              - /url: /components/spinner
+            - link "Progress" [ref=f1e528] [cursor=pointer]:
+              - /url: /components/progress
+            - link "Circular Progress" [ref=f1e529] [cursor=pointer]:
+              - /url: /components/circular-progress
+        - region [ref=f1e530]:
+          - generic [ref=f1e531]:
+            - heading "Date & Time" [level=3] [ref=f1e532]
+            - generic [ref=f1e533]: "6"
+          - generic [ref=f1e534]:
+            - link "Calendar" [ref=f1e535] [cursor=pointer]:
+              - /url: /components/calendar
+            - link "Date Picker" [ref=f1e536] [cursor=pointer]:
+              - /url: /components/date-picker
+            - link "Date Range Picker" [ref=f1e537] [cursor=pointer]:
+              - /url: /components/date-range-picker
+            - link "Native Time Input" [ref=f1e538] [cursor=pointer]:
+              - /url: /components/native-time-input
+            - link "Time Picker" [ref=f1e539] [cursor=pointer]:
+              - /url: /components/time-picker
+            - link "Date–Time Input" [ref=f1e540] [cursor=pointer]:
+              - /url: /components/date-time-input
+        - region [ref=f1e541]:
+          - generic [ref=f1e542]:
+            - heading "Files" [level=3] [ref=f1e543]
+            - generic [ref=f1e544]: "3"
+          - generic [ref=f1e545]:
+            - link "File Upload" [ref=f1e546] [cursor=pointer]:
+              - /url: /components/file-upload
+            - link "File Item" [ref=f1e547] [cursor=pointer]:
+              - /url: /components/file-item
+            - link "File List" [ref=f1e548] [cursor=pointer]:
+              - /url: /components/file-list
+        - region [ref=f1e549]:
+          - generic [ref=f1e550]:
+            - heading "Charts & Data Visualization" [level=3] [ref=f1e551]
+            - generic [ref=f1e552]: "7"
+          - generic [ref=f1e553]:
+            - link "Trend Indicator" [ref=f1e554] [cursor=pointer]:
+              - /url: /components/trend-indicator
+            - link "Sparkline" [ref=f1e555] [cursor=pointer]:
+              - /url: /components/sparkline
+            - link "Line Chart" [ref=f1e556] [cursor=pointer]:
+              - /url: /components/line-chart
+            - link "Bar Chart" [ref=f1e557] [cursor=pointer]:
+              - /url: /components/bar-chart
+            - link "Donut Chart" [ref=f1e558] [cursor=pointer]:
+              - /url: /components/donut-chart
+            - link "Chart Legend" [ref=f1e559] [cursor=pointer]:
+              - /url: /components/chart-legend
+            - link "Chart Panel" [ref=f1e560] [cursor=pointer]:
+              - /url: /components/chart-panel
+        - region [ref=f1e561]:
+          - generic [ref=f1e562]:
+            - heading "Media" [level=3] [ref=f1e563]
+            - generic [ref=f1e564]: "4"
+          - generic [ref=f1e565]:
+            - link "Aspect Ratio" [ref=f1e566] [cursor=pointer]:
+              - /url: /components/aspect-ratio
+            - link "Media Frame" [ref=f1e567] [cursor=pointer]:
+              - /url: /components/media-frame
+            - link "Image" [ref=f1e568] [cursor=pointer]:
+              - /url: /components/image
+            - link "QR Code" [ref=f1e569] [cursor=pointer]:
+              - /url: /components/qr-code
+        - region [ref=f1e570]:
+          - generic [ref=f1e571]:
+            - heading "Commerce" [level=3] [ref=f1e572]
+            - generic [ref=f1e573]: "8"
+          - generic [ref=f1e574]:
+            - link "Product Card" [ref=f1e575] [cursor=pointer]:
+              - /url: /components/product-card
+            - link "Product Grid" [ref=f1e576] [cursor=pointer]:
+              - /url: /components/product-grid
+            - link "Price" [ref=f1e577] [cursor=pointer]:
+              - /url: /components/price
+            - link "Rating" [ref=f1e578] [cursor=pointer]:
+              - /url: /components/rating
+            - link "Product Meta" [ref=f1e579] [cursor=pointer]:
+              - /url: /components/product-meta
+            - link "Quantity Control" [ref=f1e580] [cursor=pointer]:
+              - /url: /components/quantity-control
+            - link "Cart Trigger" [ref=f1e581] [cursor=pointer]:
+              - /url: /components/cart-trigger
+            - link "Cart Line Item" [ref=f1e582] [cursor=pointer]:
+              - /url: /components/cart-line-item
+        - region [ref=f1e583]:
+          - generic [ref=f1e584]:
+            - heading "Patterns" [level=3] [ref=f1e585]
+            - generic [ref=f1e586]: "6"
+          - generic [ref=f1e587]:
+            - link "App Shell" [ref=f1e588] [cursor=pointer]:
+              - /url: /components/app-shell
+            - link "Approval Panel" [ref=f1e589] [cursor=pointer]:
+              - /url: /components/approval-panel
+            - link "Action Footer" [ref=f1e590] [cursor=pointer]:
+              - /url: /components/action-footer
+            - link "Cart Panel" [ref=f1e591] [cursor=pointer]:
+              - /url: /components/cart-panel
+            - link "Order Summary" [ref=f1e592] [cursor=pointer]:
+              - /url: /components/order-summary
+            - link "Public Shell" [ref=f1e593] [cursor=pointer]:
+              - /url: /components/public-shell
+    - region "Library roles" [ref=f1e312]:
+      - generic [ref=f1e320]:
+        - strong [ref=f1e321]: Need edge-case proof?
+        - generic [ref=f1e322]: Components is for discovery and comparison. Use Component Lab for responsive stress, unusual states, and implementation QA.
+      - link "Open Component Lab" [ref=f1e323] [cursor=pointer]:
+        - /url: /component-lab
+  - navigation "Mobile shortcuts" [ref=f1e327]:
+    - generic [ref=f1e328]:
+      - button "Studio" [ref=f1e329] [cursor=pointer]
+      - button "Tokens" [ref=f1e342] [cursor=pointer]
+      - button "Components" [ref=f1e351] [cursor=pointer]
+      - button "Menu" [ref=f1e359] [cursor=pointer]

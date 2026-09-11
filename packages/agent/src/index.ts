@@ -5,6 +5,7 @@ import {
   inspectBrandExpression as inspectBrandRuntime,
   inspectEntityDetail as inspectEntityDetailRuntime,
   inspectEntityList as inspectRuntime,
+  inspectPlatformNeutralContract as inspectPlatformNeutralRuntime,
   resolveBrandExpression as resolveBrandRuntime,
   resolveEntityDetailIntent as resolveEntityDetailRuntime,
   resolveEntityListIntent as resolveRuntime,
@@ -23,6 +24,7 @@ import type {
   RecipeWorkflow,
   RecipeVisibility,
   RecipeResponsive,
+  PlatformNeutralContract,
 } from "@ten4seven/contracts";
 import type {
   BrandExpressionInput,
@@ -102,6 +104,13 @@ export interface RetrievalTelemetry {
   readonly fullCatalogFallbacks: number;
   readonly files: readonly RetrievalFile[];
   readonly componentIds: readonly string[];
+}
+
+export interface PlatformNeutralInspection {
+  readonly contract: PlatformNeutralContract;
+  readonly source: string;
+  readonly contextReads: readonly string[];
+  readonly retrieval: RetrievalTelemetry;
 }
 
 type RuntimeResolution<TRecipe, TFamily> = Omit<
@@ -223,6 +232,10 @@ export function composeBrandExpression(
 
 export function inspectBrandExpression() {
   return inspectBrandRuntime();
+}
+
+export function inspectPlatformNeutralContract(): PlatformNeutralInspection {
+  return inspectPlatformNeutralRuntime() as PlatformNeutralInspection;
 }
 
 export type { BrandProfileId };

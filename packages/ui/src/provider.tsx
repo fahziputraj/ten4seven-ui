@@ -118,6 +118,7 @@ function resolvedThemeToConfig(theme: ResolvedTheme): ThemeConfig {
     primary: theme.primarySource,
     accent: theme.accentSource,
     canvas: theme.canvas,
+    surfaceTreatment: theme.surfaceTreatment,
     chartPalette: theme.chartPalette,
     radius: theme.radius,
     radiusValue: theme.radiusValue,
@@ -141,6 +142,7 @@ export function Ten4SevenProvider({
   primary,
   accent,
   canvas = "balanced",
+  surfaceTreatment = "outlined",
   chartPalette = "spectrum",
   radius = "soft",
   radiusValue,
@@ -183,6 +185,8 @@ export function Ten4SevenProvider({
       primary: recipeConfig?.primary ?? primary,
       accent: recipeConfig?.accent ?? accent,
       canvas: recipeConfig?.canvas ?? canvas,
+      surfaceTreatment:
+        recipeConfig?.surfaceTreatment ?? surfaceTreatment,
       chartPalette: recipeConfig?.chartPalette ?? chartPalette,
       radius: recipeConfig?.radius ?? radius,
       radiusValue: recipeConfig?.radiusValue ?? radiusValue,
@@ -218,6 +222,7 @@ export function Ten4SevenProvider({
     persistedOverrides,
     themeConfig,
     recipeConfig,
+    surfaceTreatment,
     typography,
   ]);
   const requestedAppearance = resolveAppearanceSetting(mergedConfig.appearance);
@@ -283,6 +288,7 @@ export function Ten4SevenProvider({
       primary: mergedConfig.primary,
       accent: mergedConfig.accent,
       canvas: mergedConfig.canvas,
+      surfaceTreatment: mergedConfig.surfaceTreatment,
       chartPalette: mergedConfig.chartPalette,
       radius: mergedConfig.radius,
       radiusValue: mergedConfig.radiusValue,

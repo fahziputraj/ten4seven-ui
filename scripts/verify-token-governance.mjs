@@ -87,6 +87,8 @@ const requiredSemanticVariables = [
   "--t7-card-header-gap",
   "--t7-overlay-padding",
   "--t7-table-cell-padding-inline",
+  "--t7-table-border-hsl",
+  "--t7-table-divider-alpha",
   "--t7-kpi-padding",
   "--t7-kpi-content-gap",
   "--t7-kpi-chart-height",

@@ -1,0 +1,247 @@
+- generic [ref=f34e5]:
+  - banner [ref=f34e6]:
+    - navigation "Primary navigation" [ref=f34e7]:
+      - generic [ref=f34e17]:
+        - strong [ref=f34e18]: ten4seven UI
+        - generic [ref=f34e19]: Toko penerbitan
+      - menubar "Navigation menu" [ref=f34e21]:
+        - menuitem "Buku" [ref=f34e22] [cursor=pointer]
+        - menuitem "Jelajahi" [ref=f34e24] [cursor=pointer]
+        - menuitem "Kolaborasi" [ref=f34e28] [cursor=pointer]
+      - generic [ref=f34e31]:
+        - button "Terbitkan" [ref=f34e32] [cursor=pointer]
+        - button "Buka keranjang" [ref=f34e40] [cursor=pointer]:
+          - generic [ref=f34e48]: Keranjang
+        - button "Akun" [ref=f34e49] [cursor=pointer]
+        - button "Open settings" [ref=f34e51] [cursor=pointer]
+  - main [ref=f34e56]:
+    - generic [ref=f34e57]:
+      - generic [ref=f34e59]:
+        - generic [ref=f34e60]: ten4seven UI · Katalog penerbitan
+        - heading "Buku untuk ide yang bertahan" [level=1] [ref=f34e61]
+        - paragraph [ref=f34e62]: Buku pilihan untuk manajemen, ilmu terapan, dan gagasan yang membantu pekerjaan sehari-hari bergerak maju.
+        - generic [ref=f34e63]:
+          - generic [ref=f34e64]:
+            - generic [ref=f34e70]: "10"
+            - generic [ref=f34e71]: judul
+          - generic [ref=f34e72]: Ebook, buku cetak, dan Google Play Books
+      - generic [ref=f34e73]:
+        - complementary "Filter katalog" [ref=f34e74]:
+          - generic [ref=f34e76]:
+            - heading "Filter buku" [level=2] [ref=f34e77]
+            - text: Jelajahi koleksi
+          - generic [ref=f34e78]:
+            - generic [ref=f34e79]:
+              - generic [ref=f34e80]: Jelajahi kategori
+              - navigation "Jelajahi kategori buku" [ref=f34e87]:
+                - button "Semua buku" [pressed] [ref=f34e88] [cursor=pointer]
+                - button "Manajemen" [ref=f34e90] [cursor=pointer]
+                - button "Akuntansi" [ref=f34e92] [cursor=pointer]
+                - button "Pendidikan" [ref=f34e94] [cursor=pointer]
+                - button "Kesehatan" [ref=f34e96] [cursor=pointer]
+                - button "Teknologi Informasi" [ref=f34e98] [cursor=pointer]
+                - button "Hukum" [ref=f34e100] [cursor=pointer]
+                - button "Administrasi Publik" [ref=f34e102] [cursor=pointer]
+            - generic [ref=f34e104]:
+              - generic [ref=f34e105]: Penulis
+              - generic [ref=f34e112]:
+                - generic [ref=f34e113]: Saring berdasarkan penulis
+                - textbox "Saring berdasarkan penulis" [ref=f34e115]:
+                  - /placeholder: Cari penulis
+            - group "Rentang harga" [ref=f34e116]:
+              - generic [ref=f34e123]:
+                - generic [ref=f34e124] [cursor=pointer]:
+                  - radio "Semua harga" [ref=f34e125]
+                  - generic [ref=f34e128]: Semua harga
+                - generic [ref=f34e129] [cursor=pointer]:
+                  - radio "Di bawah Rp80.000" [ref=f34e130]
+                  - generic [ref=f34e133]: Di bawah Rp80.000
+                - generic [ref=f34e134] [cursor=pointer]:
+                  - radio "Rp80.000–Rp100.000" [ref=f34e135]
+                  - generic [ref=f34e138]: Rp80.000–Rp100.000
+                - generic [ref=f34e139] [cursor=pointer]:
+                  - radio "Di atas Rp100.000" [ref=f34e140]
+                  - generic [ref=f34e143]: Di atas Rp100.000
+            - group "Ketersediaan" [ref=f34e144]:
+              - generic [ref=f34e153]:
+                - generic [ref=f34e154] [cursor=pointer]:
+                  - checkbox "Google Play Books" [ref=f34e155]
+                  - generic [ref=f34e159]: Google Play Books
+                - generic [ref=f34e160] [cursor=pointer]:
+                  - checkbox "Ebook" [ref=f34e161]
+                  - generic [ref=f34e165]: Ebook
+                - generic [ref=f34e166] [cursor=pointer]:
+                  - checkbox "Buku cetak" [ref=f34e167]
+                  - generic [ref=f34e171]: Buku cetak
+        - region [ref=f34e172]:
+          - generic [ref=f34e173]:
+            - generic [ref=f34e174]:
+              - generic [ref=f34e175]: Cari buku
+              - searchbox "Cari buku" [ref=f34e177]
+            - generic [ref=f34e178]:
+              - generic [ref=f34e179]:
+                - generic [ref=f34e180]: Urutkan
+                - generic [ref=f34e181]:
+                  - combobox [aria-hidden] [ref=f34e182]
+                  - button "Urutkan" [ref=f34e183] [cursor=pointer]:
+                    - generic [ref=f34e184]: Unggulan
+              - group "Tampilan katalog" [ref=f34e187]:
+                - generic [ref=f34e188]: Tampilan
+                - button "Tampilan grid" [pressed] [ref=f34e189] [cursor=pointer]:
+                  - generic [ref=f34e195]: Grid
+                - button "Tampilan daftar" [ref=f34e196] [cursor=pointer]:
+                  - generic [ref=f34e203]: Daftar
+          - generic [ref=f34e204]:
+            - generic [ref=f34e205]:
+              - heading "Buku dalam koleksi" [level=2] [ref=f34e206]
+              - text: Edisi dengan informasi format dan akses yang jelas.
+            - generic [ref=f34e207]: 10 judul
+          - generic [ref=f34e208]:
+            - article [ref=f34e209] [cursor=pointer]:
+              - generic [ref=f34e210]:
+                - generic [ref=f34e211]:
+                  - img "Sampul Manajemen Strategis untuk Organisasi Modern" [ref=f34e213]
+                  - button "Simpan Manajemen Strategis untuk Organisasi Modern" [ref=f34e214]
+                - generic [ref=f34e219]: Pilihan editor
+              - generic [ref=f34e222]:
+                - generic [ref=f34e223]: Manajemen
+                - heading "Manajemen Strategis untuk Organisasi Modern" [level=2] [ref=f34e224]
+                - generic [ref=f34e225]: Rina Kartika
+                - generic [ref=f34e234]:
+                  - generic [ref=f34e235]: Google Play Books
+                  - generic [ref=f34e236]:
+                    - text: •
+                    - generic "Rating 4.9 dari 5" [ref=f34e237]: "4.9"
+                - strong [ref=f34e245]: Rp 95.000
+                - generic [ref=f34e246]:
+                  - button "Lihat detail" [ref=f34e247]
+                  - button "Tambah ke keranjang" [ref=f34e253]
+            - article [ref=f34e262] [cursor=pointer]:
+              - generic [ref=f34e264]:
+                - img "Sampul Akuntansi Keuangan Berbasis Kas dan Akrual" [ref=f34e266]
+                - button "Simpan Akuntansi Keuangan Berbasis Kas dan Akrual" [ref=f34e267]
+              - generic [ref=f34e272]:
+                - generic [ref=f34e273]: Akuntansi
+                - heading "Akuntansi Keuangan Berbasis Kas dan Akrual" [level=2] [ref=f34e274]
+                - generic [ref=f34e275]: Dwi Prasetyo
+                - generic [ref=f34e284]:
+                  - generic [ref=f34e285]: Buku cetak
+                  - generic [ref=f34e286]:
+                    - text: •
+                    - generic "Rating 4.8 dari 5" [ref=f34e287]: "4.8"
+                - strong [ref=f34e295]: Rp 110.000
+                - generic [ref=f34e296]:
+                  - button "Lihat detail" [ref=f34e297]
+                  - button "Tambah ke keranjang" [ref=f34e303]
+            - article [ref=f34e312] [cursor=pointer]:
+              - generic [ref=f34e313]:
+                - generic [ref=f34e314]:
+                  - img "Sampul Mendesain Pembelajaran yang Bermakna" [ref=f34e316]
+                  - button "Simpan Mendesain Pembelajaran yang Bermakna" [ref=f34e317]
+                - generic [ref=f34e322]: Baru
+              - generic [ref=f34e325]:
+                - generic [ref=f34e326]: Pendidikan
+                - heading "Mendesain Pembelajaran yang Bermakna" [level=2] [ref=f34e327]
+                - generic [ref=f34e328]: Nadya Anindita
+                - generic [ref=f34e337]:
+                  - generic [ref=f34e338]: Ebook
+                  - generic [ref=f34e339]:
+                    - text: •
+                    - generic "Rating 4.7 dari 5" [ref=f34e340]: "4.7"
+                - strong [ref=f34e348]: Rp 78.000
+                - generic [ref=f34e349]:
+                  - button "Lihat detail" [ref=f34e350]
+                  - button "Tambah ke keranjang" [ref=f34e356]
+            - article [ref=f34e365] [cursor=pointer]:
+              - generic [ref=f34e367]:
+                - img "Sampul Kesehatan Masyarakat di Tingkat Lokal" [ref=f34e369]
+                - button "Simpan Kesehatan Masyarakat di Tingkat Lokal" [ref=f34e370]
+              - generic [ref=f34e375]:
+                - generic [ref=f34e376]: Kesehatan
+                - heading "Kesehatan Masyarakat di Tingkat Lokal" [level=2] [ref=f34e377]
+                - generic [ref=f34e378]: dr. Bagus Santoso
+                - generic [ref=f34e387]:
+                  - generic [ref=f34e388]: Buku cetak
+                  - generic [ref=f34e389]:
+                    - text: •
+                    - generic "Rating 4.9 dari 5" [ref=f34e390]: "4.9"
+                - strong [ref=f34e398]: Rp 125.000
+                - generic [ref=f34e399]:
+                  - button "Lihat detail" [ref=f34e400]
+                  - button "Tambah ke keranjang" [ref=f34e406]
+            - article [ref=f34e415] [cursor=pointer]:
+              - generic [ref=f34e417]:
+                - img "Sampul Praktik Aman Data dan Sistem Informasi" [ref=f34e419]
+                - button "Simpan Praktik Aman Data dan Sistem Informasi" [ref=f34e420]
+              - generic [ref=f34e425]:
+                - generic [ref=f34e426]: Teknologi Informasi
+                - heading "Praktik Aman Data dan Sistem Informasi" [level=2] [ref=f34e427]
+                - generic [ref=f34e428]: Fajar Nugroho
+                - generic [ref=f34e437]:
+                  - generic [ref=f34e438]: Google Play Books
+                  - generic [ref=f34e439]:
+                    - text: •
+                    - generic "Rating 4.8 dari 5" [ref=f34e440]: "4.8"
+                - strong [ref=f34e448]: Rp 105.000
+                - generic [ref=f34e449]:
+                  - button "Lihat detail" [ref=f34e450]
+                  - button "Tambah ke keranjang" [ref=f34e456]
+            - article [ref=f34e465] [cursor=pointer]:
+              - generic [ref=f34e467]:
+                - img "Sampul Hukum Perjanjian dalam Praktik Bisnis" [ref=f34e469]
+                - button "Simpan Hukum Perjanjian dalam Praktik Bisnis" [ref=f34e470]
+              - generic [ref=f34e475]:
+                - generic [ref=f34e476]: Hukum
+                - heading "Hukum Perjanjian dalam Praktik Bisnis" [level=2] [ref=f34e477]
+                - generic [ref=f34e478]: Maya S. Wibowo
+                - generic [ref=f34e487]:
+                  - generic [ref=f34e488]: Ebook
+                  - generic [ref=f34e489]:
+                    - text: •
+                    - generic "Rating 4.6 dari 5" [ref=f34e490]: "4.6"
+                - strong [ref=f34e498]: Rp 89.000
+                - generic [ref=f34e499]:
+                  - button "Lihat detail" [ref=f34e500]
+                  - button "Tambah ke keranjang" [ref=f34e506]
+            - article [ref=f34e515] [cursor=pointer]:
+              - generic [ref=f34e517]:
+                - 'img "Sampul Melayani Warga: Administrasi Publik yang Tanggap" [ref=f34e519]'
+                - 'button "Simpan Melayani Warga: Administrasi Publik yang Tanggap" [ref=f34e520]'
+              - generic [ref=f34e525]:
+                - generic [ref=f34e526]: Administrasi Publik
+                - 'heading "Melayani Warga: Administrasi Publik yang Tanggap" [level=2] [ref=f34e527]'
+                - generic [ref=f34e528]: Arif Rahman Hakim
+                - generic [ref=f34e537]:
+                  - generic [ref=f34e538]: Google Play Books
+                  - generic [ref=f34e539]:
+                    - text: •
+                    - generic "Rating 4.8 dari 5" [ref=f34e540]: "4.8"
+                - strong [ref=f34e548]: Rp 99.000
+                - generic [ref=f34e549]:
+                  - button "Lihat detail" [ref=f34e550]
+                  - button "Tambah ke keranjang" [ref=f34e556]
+            - article [ref=f34e565] [cursor=pointer]:
+              - generic [ref=f34e567]:
+                - img "Sampul Membaca Laporan Keuangan untuk Pengambilan Keputusan" [ref=f34e569]
+                - button "Simpan Membaca Laporan Keuangan untuk Pengambilan Keputusan" [ref=f34e570]
+              - generic [ref=f34e575]:
+                - generic [ref=f34e576]: Akuntansi
+                - heading "Membaca Laporan Keuangan untuk Pengambilan Keputusan" [level=2] [ref=f34e577]
+                - generic [ref=f34e578]: Sari Kurnia
+                - generic [ref=f34e587]:
+                  - generic [ref=f34e588]: Ebook
+                  - generic [ref=f34e589]:
+                    - text: •
+                    - generic "Rating 4.5 dari 5" [ref=f34e590]: "4.5"
+                - strong [ref=f34e598]: Rp 75.000
+                - generic [ref=f34e599]:
+                  - button "Lihat detail" [ref=f34e600]
+                  - button "Tambah ke keranjang" [ref=f34e606]
+          - navigation "Pagination" [ref=f34e615]:
+            - generic [ref=f34e616]: Showing 1–8 of 10
+            - generic [ref=f34e617]:
+              - button "Previous page" [disabled] [ref=f34e618]:
+                - generic [ref=f34e621]: Previous
+              - generic [ref=f34e622]: Page 1 of 2
+              - button "Next page" [ref=f34e623] [cursor=pointer]:
+                - generic [ref=f34e624]: Next

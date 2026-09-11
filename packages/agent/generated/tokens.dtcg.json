@@ -1077,15 +1077,15 @@
           "$value": {
             "colorSpace": "srgb",
             "components": [
-              0.1064,
-              0.32528,
-              0.6536
+              0.1218,
+              0.4582,
+              0.278787
             ],
             "alpha": 1
           },
           "$extensions": {
             "org.ten4seven": {
-              "compatibilityHsl": "216 72% 38%"
+              "compatibilityHsl": "148 58% 29%"
             }
           }
         },
@@ -1343,6 +1343,45 @@
           }
         }
       },
+      "surface": {
+        "depth": {
+          "gradientAngle": {
+            "$type": "string",
+            "$value": "145deg"
+          },
+          "gradientStop": {
+            "$type": "string",
+            "$value": "58%"
+          },
+          "shadowBlur": {
+            "$type": "dimension",
+            "$value": {
+              "value": 26,
+              "unit": "px"
+            }
+          },
+          "shadowOffsetY": {
+            "$type": "dimension",
+            "$value": {
+              "value": 12,
+              "unit": "px"
+            }
+          }
+        },
+        "hoverTranslateY": {
+          "$type": "dimension",
+          "$value": {
+            "value": -1,
+            "unit": "px"
+          }
+        }
+      },
+      "table": {
+        "dividerAlpha": {
+          "$type": "number",
+          "$value": 0.82
+        }
+      },
       "kpi": {
         "padding": {
           "$type": "dimension",
@@ -1397,6 +1436,81 @@
           "$type": "dimension",
           "$value": {
             "value": 8,
+            "unit": "px"
+          }
+        },
+        "decorative": {
+          "size": {
+            "$type": "dimension",
+            "$value": {
+              "value": 132,
+              "unit": "px"
+            }
+          },
+          "offsetTop": {
+            "$type": "dimension",
+            "$value": {
+              "value": -21,
+              "unit": "px"
+            }
+          },
+          "offsetInline": {
+            "$type": "dimension",
+            "$value": {
+              "value": -21,
+              "unit": "px"
+            }
+          },
+          "opacity": {
+            "$type": "number",
+            "$value": 0.09
+          }
+        }
+      },
+      "chart": {
+        "lineWidth": {
+          "$type": "number",
+          "$value": 2.5
+        },
+        "pointRadius": {
+          "$type": "number",
+          "$value": 3.5
+        },
+        "pointHoverScale": {
+          "$type": "number",
+          "$value": 1.65
+        },
+        "pointSettleScale": {
+          "$type": "number",
+          "$value": 1.06
+        },
+        "barRadius": {
+          "$type": "number",
+          "$value": 5
+        },
+        "barHoverTranslateY": {
+          "$type": "dimension",
+          "$value": {
+            "value": 3,
+            "unit": "px"
+          }
+        },
+        "barHoverScaleY": {
+          "$type": "number",
+          "$value": 1.035
+        },
+        "donutStrokeWidth": {
+          "$type": "number",
+          "$value": 14
+        },
+        "donutHoverStrokeWidth": {
+          "$type": "number",
+          "$value": 16
+        },
+        "tooltipOffsetY": {
+          "$type": "dimension",
+          "$value": {
+            "value": 12,
             "unit": "px"
           }
         }
@@ -1490,6 +1604,13 @@
               "value": 360,
               "unit": "px"
             }
+          }
+        },
+        "tooltipMin": {
+          "$type": "dimension",
+          "$value": {
+            "value": 128,
+            "unit": "px"
           }
         },
         "tooltipMax": {

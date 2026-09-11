@@ -5,7 +5,7 @@ import {
   recipeCatalog,
   recipePath,
 } from "./catalog-model";
-import type { BrandProfileId } from "@ten4seven/contracts";
+import type { AuthBrandProfileId } from "@ten4seven/contracts";
 
 export type PlaygroundRoute =
   | "Theme Studio"
@@ -17,11 +17,35 @@ export type PlaygroundRoute =
   | "Recipes"
   | "Operations Tracker"
   | "Operational Patterns"
+  | "SaaS Control Plane"
+  | "ERP Density Reference"
+  | "Farm P1 Reference"
   | "Publishing Store"
   | "Public Showcase";
 
 export type AdoptionProofRoute =
   "Farm Synthetic" | "Auth · Neutral" | "Auth · AAPM Academy";
+
+export type SurfaceMaturity = "PRIMARY" | "QUALITY_REFERENCE" | "LAB_PROOF";
+
+/**
+ * The shell variant is a presentation contract, not a product-permission or
+ * business-authority boundary. Route content remains responsible for its own
+ * domain behavior while the shell keeps one shared coordinate system.
+ */
+export type PlaygroundShellVariant =
+  | "standard"
+  | "workbench"
+  | "wide"
+  | "contextual";
+
+export type PlaygroundNavigationGroup = {
+  adoptionProofRoutes?: AdoptionProofRoute[];
+  id: "studio" | "library" | "reference" | "labs-proofs";
+  label: "Studio" | "Library" | "Reference" | "Labs / Proofs";
+  maturity: SurfaceMaturity;
+  routes: PlaygroundRoute[];
+};
 
 export const playgroundRoutePaths: Record<PlaygroundRoute, string> = {
   "Theme Studio": "/theme-studio",
@@ -33,6 +57,9 @@ export const playgroundRoutePaths: Record<PlaygroundRoute, string> = {
   Recipes: "/recipes",
   "Operations Tracker": "/operations-tracker",
   "Operational Patterns": "/operational-patterns",
+  "SaaS Control Plane": "/saas-control-plane",
+  "ERP Density Reference": "/erp-reference",
+  "Farm P1 Reference": "/farm-reference",
   "Publishing Store": "/ebook-store",
   "Public Showcase": "/public-showcase",
 };
@@ -47,6 +74,9 @@ export const playgroundRouteTitles: Record<PlaygroundRoute, string> = {
   Recipes: "ten4seven UI — Recipes",
   "Operations Tracker": "ten4seven UI — Operations Tracker",
   "Operational Patterns": "ten4seven UI — Operational Patterns",
+  "SaaS Control Plane": "ten4seven UI — SaaS Control Plane Patterns",
+  "ERP Density Reference": "ten4seven UI — ERP Density Reference",
+  "Farm P1 Reference": "ten4seven UI — Farm P1 Reference",
   "Publishing Store": "ten4seven UI — Publishing Store",
   "Public Showcase": "ten4seven UI — Public Showcase",
 };
@@ -69,10 +99,41 @@ export const playgroundRouteDescriptions: Record<PlaygroundRoute, string> = {
     "Reference operations tracker for customer, supply, delivery, finance, and fleet work composed from ten4seven UI.",
   "Operational Patterns":
     "AAPM reference adoption for mature control tower, process, planning, receiving, entity, decision, exception, forecast, and audit patterns.",
+  "SaaS Control Plane":
+    "Generic multi-tenant SaaS control-plane composition patterns and static reference fixtures.",
+  "ERP Density Reference":
+    "ERP and data-dense reference composition for collection, entry, review, and operational dashboard contracts.",
+  "Farm P1 Reference":
+    "AAPM Farm customer journey reference composed from canonical Ten4Seven contracts and static fixtures.",
   "Publishing Store":
     "Reference Indonesian publishing catalog composed from ten4seven UI.",
   "Public Showcase":
     "Public composition showcase for ten4seven UI blocks and recipes.",
+};
+
+/**
+ * Explicit shell geometry ownership for every playground route. Public routes
+ * are listed for completeness, but their PublicShell composition remains the
+ * deliberate owner of their presentation grammar.
+ */
+export const playgroundShellVariants: Record<
+  PlaygroundRoute,
+  PlaygroundShellVariant
+> = {
+  "Theme Studio": "workbench",
+  "Component Lab": "standard",
+  Tokens: "standard",
+  Components: "standard",
+  Blocks: "standard",
+  Icons: "standard",
+  Recipes: "standard",
+  "Operations Tracker": "wide",
+  "Operational Patterns": "contextual",
+  "SaaS Control Plane": "contextual",
+  "ERP Density Reference": "wide",
+  "Farm P1 Reference": "contextual",
+  "Publishing Store": "standard",
+  "Public Showcase": "standard",
 };
 
 /** Synthetic consumer proof; discoverable from the design-system navigation while retaining its consumer-shaped shell. */
@@ -82,13 +143,26 @@ export const farmSyntheticProofTitle =
 export const farmSyntheticProofDescription =
   "Synthetic Farm consumer composition for authorized context, Farm Overview metrics, and safe recovery states.";
 
+/** Deterministic local reference slice for the first AAPM Farm customer journey. */
+export const farmP1ReferencePath = "/farm-reference";
+export const farmP1ReferenceRoutePaths = {
+  overview: "/farm-reference/overview",
+  "daily-operations": "/farm-reference/daily-operations",
+  context: "/farm-reference/context",
+  flocks: "/farm-reference/flocks",
+  inventory: "/farm-reference/inventory",
+} as const;
+export const farmP1ReferenceTitle = playgroundRouteTitles["Farm P1 Reference"];
+export const farmP1ReferenceDescription =
+  playgroundRouteDescriptions["Farm P1 Reference"];
+
 /** Bounded brand-expression proof routes; discoverable from the design-system navigation while retaining their consumer-shaped shells. */
-export const brandProofRoutePaths: Record<BrandProfileId, string> = {
+export const brandProofRoutePaths: Record<AuthBrandProfileId, string> = {
   "neutral-product": "/brand-proof/auth-neutral",
   "aapm-academy": "/brand-proof/auth-aapm-academy",
 };
 
-export const brandProofRouteTitles: Record<BrandProfileId, string> = {
+export const brandProofRouteTitles: Record<AuthBrandProfileId, string> = {
   "neutral-product": "ten4seven UI — Authentication · Neutral Product",
   "aapm-academy": "ten4seven UI — Authentication · AAPM Academy",
 };
@@ -133,7 +207,8 @@ export const adoptionProofRouteDescriptions: Record<
 export type RouteMatch =
   | { kind: "known"; route: PlaygroundRoute }
   | { kind: "farm-synthetic"; pathname: string }
-  | { kind: "brand-proof"; profileId: BrandProfileId; pathname: string }
+  | { kind: "farm-reference"; pathname: string }
+  | { kind: "brand-proof"; profileId: AuthBrandProfileId; pathname: string }
   | { kind: "component-family"; category: string; pathname: string }
   | { kind: "component-detail"; name: string; pathname: string }
   | { kind: "block-detail"; name: string; pathname: string }
@@ -152,6 +227,14 @@ export function routeFromPath(pathname: string): RouteMatch {
   if (normalizedPath === farmSyntheticProofPath) {
     return { kind: "farm-synthetic", pathname: normalizedPath };
   }
+  if (
+    normalizedPath === farmP1ReferencePath ||
+    Object.values(farmP1ReferenceRoutePaths).includes(
+      normalizedPath as (typeof farmP1ReferenceRoutePaths)[keyof typeof farmP1ReferenceRoutePaths],
+    )
+  ) {
+    return { kind: "farm-reference", pathname: normalizedPath };
+  }
   const entry = Object.entries(playgroundRoutePaths).find(
     ([, path]) => path === normalizedPath,
   );
@@ -167,7 +250,7 @@ export function routeFromPath(pathname: string): RouteMatch {
   if (brandProofEntry) {
     return {
       kind: "brand-proof",
-      profileId: brandProofEntry[0] as BrandProfileId,
+      profileId: brandProofEntry[0] as AuthBrandProfileId,
       pathname: normalizedPath,
     };
   }
@@ -213,9 +296,45 @@ export const libraryNavigation: PlaygroundRoute[] = [
   "Icons",
   "Recipes",
 ];
-export const referenceNavigation: PlaygroundRoute[] = [
+export const referenceNavigation: PlaygroundRoute[] = ["Publishing Store"];
+export const labProofNavigation: PlaygroundRoute[] = [
   "Operations Tracker",
   "Operational Patterns",
-  "Publishing Store",
+  "SaaS Control Plane",
+  "ERP Density Reference",
+  "Farm P1 Reference",
   "Public Showcase",
+];
+
+/**
+ * The playground route registry is the shell's single navigation/maturity
+ * source. Grouping communicates intended authority without changing any URL
+ * or turning maturity into entitlement or permission logic.
+ */
+export const playgroundNavigationGroups: PlaygroundNavigationGroup[] = [
+  {
+    id: "studio",
+    label: "Studio",
+    maturity: "PRIMARY",
+    routes: studioNavigation,
+  },
+  {
+    id: "library",
+    label: "Library",
+    maturity: "PRIMARY",
+    routes: libraryNavigation,
+  },
+  {
+    id: "reference",
+    label: "Reference",
+    maturity: "QUALITY_REFERENCE",
+    routes: referenceNavigation,
+  },
+  {
+    adoptionProofRoutes: adoptionProofNavigation,
+    id: "labs-proofs",
+    label: "Labs / Proofs",
+    maturity: "LAB_PROOF",
+    routes: labProofNavigation,
+  },
 ];

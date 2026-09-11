@@ -1,9 +1,14 @@
 export const agentIndex: Readonly<Record<string, unknown>>;
 export const aliases: Readonly<Record<string, string>>;
+export const brandAdapter: Readonly<Record<string, unknown>>;
 export const brandProfiles: Readonly<Record<string, unknown>>;
 export const components: Readonly<Record<string, unknown>>;
 export const index: Readonly<Record<string, unknown>>;
+export const moduleStates: Readonly<Record<string, unknown>>;
 export const ownershipRules: Readonly<Record<string, unknown>>;
 export const recipes: Readonly<Record<string, unknown>>;
+export const responsiveShell: Readonly<Record<string, unknown>>;
+export const saasControlPlane: Readonly<Record<string, unknown>>;
+export const nativeMobile: Readonly<Record<string, unknown>>;
 export const themeRecipes: Readonly<Record<string, unknown>>;
 export const tokensDtcg: Readonly<Record<string, unknown>>;

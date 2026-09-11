@@ -1,0 +1,937 @@
+- generic [ref=f4e4]:
+  - complementary [ref=f4e5]:
+    - img "ten4seven UI system" [ref=f4e8]:
+      - generic [ref=f4e21]:
+        - generic [aria-hidden] [ref=f4e22]: ten4seven
+        - generic [aria-hidden] [ref=f4e23]: UI system
+    - navigation "ten4seven UI navigation" [ref=f4e25]:
+      - generic [ref=f4e26]:
+        - group "Studio" [ref=f4e27]:
+          - button "Theme Studio" [ref=f4e29] [cursor=pointer]
+          - button "Component Lab" [ref=f4e42] [cursor=pointer]
+        - group "Library" [ref=f4e50]:
+          - button "Tokens" [ref=f4e52] [cursor=pointer]
+          - button "Components" [ref=f4e61] [cursor=pointer]
+          - button "Blocks" [ref=f4e69] [cursor=pointer]
+          - button "Icons" [ref=f4e77] [cursor=pointer]
+          - button "Recipes" [ref=f4e84] [cursor=pointer]
+          - generic "Library menu" [ref=f4e92]:
+            - button "Browse library…" [ref=f4e93] [cursor=pointer]
+        - group "Reference" [ref=f4e101]:
+          - button "Publishing Store" [ref=f4e103] [cursor=pointer]
+        - group "Labs / Proofs" [ref=f4e111]:
+          - button "Operations Tracker" [ref=f4e113] [cursor=pointer]
+          - button "Operational Patterns" [ref=f4e121] [cursor=pointer]
+          - button "SaaS Control Plane" [ref=f4e127] [cursor=pointer]
+          - button "ERP Density Reference" [ref=f4e134] [cursor=pointer]
+          - button "Farm P1 Reference" [ref=f4e142] [cursor=pointer]
+          - button "Public Showcase" [ref=f4e148] [cursor=pointer]
+          - button "Farm Synthetic" [ref=f4e154] [cursor=pointer]
+          - button "Auth · Neutral" [ref=f4e160] [cursor=pointer]
+          - button "Auth · AAPM Academy" [ref=f4e167] [cursor=pointer]:
+            - generic [ref=f4e174]: Auth · Academy
+          - generic [ref=f4e175]: "Canonical identity: AAPM Academy."
+    - generic [ref=f4e176]:
+      - generic [ref=f4e177]: Explore
+      - paragraph [ref=f4e178]: Canonical UI surfaces, recipes, and practical previews.
+      - generic [ref=f4e179]: Ten4Seven UI
+  - main [ref=f4e180]:
+    - generic [ref=f4e181]:
+      - generic [ref=f4e183]:
+        - generic [ref=f4e184]: ten4seven UI
+        - link "Components" [ref=f4e188] [cursor=pointer]:
+          - /url: /components
+        - strong [ref=f4e198]: Forms
+      - generic [ref=f4e199]:
+        - button "Search ten4seven catalog" [ref=f4e200] [cursor=pointer]:
+          - generic [ref=f4e207]: Search catalogCtrl K
+        - generic "Live preview status" [ref=f4e208]:
+          - button "Live" [ref=f4e209] [cursor=pointer]
+        - button "Open settings" [ref=f4e214] [cursor=pointer]
+        - generic "ten4seven workspace menu" [ref=f4e219]:
+          - button "ten4seven workspace ten4seven UI workspace" [ref=f4e220] [cursor=pointer]:
+            - img "ten4seven workspace" [ref=f4e221]:
+              - generic [aria-hidden] [ref=f4e222]: T
+            - generic [ref=f4e223]:
+              - strong [ref=f4e224]: ten4seven
+              - generic [ref=f4e225]: UI workspace
+    - generic [ref=f4e229]:
+      - generic [ref=f4e230]:
+        - generic [ref=f4e231]:
+          - generic [ref=f4e232]: Components · Forms
+          - heading "Forms" [level=1] [ref=f4e240]
+          - paragraph [ref=f4e241]: Compare the forms family in one visual showroom. Canonical contracts stay separate underneath.
+          - generic [ref=f4e242]: 27 canonical contracts
+        - generic [ref=f4e245]:
+          - link "All families" [ref=f4e246] [cursor=pointer]:
+            - /url: /components
+          - link "Open Component Lab" [ref=f4e247] [cursor=pointer]:
+            - /url: /component-lab
+      - region "Forms component showroom" [ref=f4e248]:
+        - generic [ref=f4e249]:
+          - generic [ref=f4e250]:
+            - heading "Compare the family" [level=2] [ref=f4e251]
+            - generic [ref=f4e252]: Live specimens first. Open a contract only when you need the full API, accessibility notes, or implementation detail.
+          - generic [ref=f4e253]: 27 canonical contracts
+        - navigation "Forms showroom sections" [ref=f4e254]:
+          - link "Text entry 8" [ref=f4e255] [cursor=pointer]:
+            - /url: "#showroom-group-text-entry"
+            - generic [ref=f4e256]: Text entry
+            - generic [ref=f4e257]: "8"
+          - link "Numeric entry 6" [ref=f4e258] [cursor=pointer]:
+            - /url: "#showroom-group-numeric-entry"
+            - generic [ref=f4e259]: Numeric entry
+            - generic [ref=f4e260]: "6"
+          - link "Choice and selection 9" [ref=f4e261] [cursor=pointer]:
+            - /url: "#showroom-group-choice-and-selection"
+            - generic [ref=f4e262]: Choice and selection
+            - generic [ref=f4e263]: "9"
+          - link "Form composition 4" [ref=f4e264] [cursor=pointer]:
+            - /url: "#showroom-group-form-composition"
+            - generic [ref=f4e265]: Form composition
+            - generic [ref=f4e266]: "4"
+        - generic [ref=f4e267]:
+          - region [ref=f4e268]:
+            - generic [ref=f4e269]:
+              - generic [ref=f4e270]:
+                - heading "Text entry" [level=2] [ref=f4e271]
+                - generic [ref=f4e272]: Collect text, credentials, and free-form values with clear labels.
+              - generic [ref=f4e273]: "8"
+            - generic [ref=f4e274]:
+              - article [ref=f4e275]:
+                - generic [ref=f4e276]:
+                  - generic [ref=f4e277]:
+                    - generic [ref=f4e278]: "01"
+                    - generic [ref=f4e279]: implemented
+                  - heading "Input" [level=3] [ref=f4e280]
+                  - generic [ref=f4e281]: Collect a labelled short text value with helper and invalid state support.
+                  - generic "Input supported states" [ref=f4e282]:
+                    - generic [ref=f4e283]: default
+                    - generic [ref=f4e284]: focused
+                    - generic [ref=f4e285]: disabled
+                    - generic [ref=f4e286]: loading or pending when applicable
+                    - generic [ref=f4e287]: empty or unavailable when applicable
+                  - link "Open API & detail" [ref=f4e288] [cursor=pointer]:
+                    - /url: /components/input
+                - generic [ref=f4e292]:
+                  - generic [ref=f4e293]:
+                    - generic [ref=f4e301]:
+                      - strong [ref=f4e302]: Input
+                      - generic [ref=f4e303]: Canonical Forms fixture
+                    - generic [ref=f4e304]: Ready
+                  - generic [ref=f4e308]:
+                    - generic [ref=f4e309]: Input
+                    - textbox "Input Helper text clarifies the expected value" [ref=f4e311]:
+                      - /placeholder: Enter input
+                    - generic [ref=f4e312]: Helper text clarifies the expected value
+                - group [ref=f4e313]:
+                  - generic "Usage and accessibility" [ref=f4e314] [cursor=pointer]
+              - article [ref=f4e315]:
+                - generic [ref=f4e316]:
+                  - generic [ref=f4e317]:
+                    - generic [ref=f4e318]: "02"
+                    - generic [ref=f4e319]: implemented
+                  - heading "Search Input" [level=3] [ref=f4e320]
+                  - generic [ref=f4e321]: Apply the canonical search input type and semantic search icon.
+                  - generic "Search Input supported states" [ref=f4e322]:
+                    - generic [ref=f4e323]: default
+                    - generic [ref=f4e324]: focused
+                    - generic [ref=f4e325]: disabled
+                    - generic [ref=f4e326]: loading or pending when applicable
+                    - generic [ref=f4e327]: empty or unavailable when applicable
+                  - link "Open API & detail" [ref=f4e328] [cursor=pointer]:
+                    - /url: /components/search-input
+                - generic [ref=f4e332]:
+                  - generic [ref=f4e333]:
+                    - generic [ref=f4e341]:
+                      - strong [ref=f4e342]: Search Input
+                      - generic [ref=f4e343]: Canonical Forms fixture
+                    - generic [ref=f4e344]: Ready
+                  - generic [ref=f4e348]:
+                    - generic [ref=f4e349]: Search Input
+                    - textbox "Search Input Helper text clarifies the expected value" [ref=f4e351]:
+                      - /placeholder: Enter search input
+                    - generic [ref=f4e352]: Helper text clarifies the expected value
+                - group [ref=f4e353]:
+                  - generic "Usage and accessibility" [ref=f4e354] [cursor=pointer]
+              - article [ref=f4e355]:
+                - generic [ref=f4e356]:
+                  - generic [ref=f4e357]:
+                    - generic [ref=f4e358]: "03"
+                    - generic [ref=f4e359]: implemented
+                  - heading "Password Input" [level=3] [ref=f4e360]
+                  - generic [ref=f4e361]: Collect a password with a local visibility toggle and native input semantics.
+                  - generic "Password Input supported states" [ref=f4e362]:
+                    - generic [ref=f4e363]: default
+                    - generic [ref=f4e364]: focused
+                    - generic [ref=f4e365]: disabled
+                    - generic [ref=f4e366]: loading or pending when applicable
+                    - generic [ref=f4e367]: empty or unavailable when applicable
+                  - link "Open API & detail" [ref=f4e368] [cursor=pointer]:
+                    - /url: /components/password-input
+                - generic [ref=f4e372]:
+                  - generic [ref=f4e373]:
+                    - generic [ref=f4e381]:
+                      - strong [ref=f4e382]: Password Input
+                      - generic [ref=f4e383]: Canonical Forms fixture
+                    - generic [ref=f4e384]: Ready
+                  - generic [ref=f4e388]:
+                    - generic [ref=f4e389]: Password Input
+                    - textbox "Password Input Use at least 12 characters" [ref=f4e391]:
+                      - /placeholder: Enter password
+                    - generic [ref=f4e392]: Use at least 12 characters
+                - group [ref=f4e393]:
+                  - generic "Usage and accessibility" [ref=f4e394] [cursor=pointer]
+              - article [ref=f4e395]:
+                - generic [ref=f4e396]:
+                  - generic [ref=f4e397]:
+                    - generic [ref=f4e398]: "04"
+                    - generic [ref=f4e399]: implemented
+                  - heading "Textarea" [level=3] [ref=f4e400]
+                  - generic [ref=f4e401]: Collect labelled multiline plain text.
+                  - generic "Textarea supported states" [ref=f4e402]:
+                    - generic [ref=f4e403]: default
+                    - generic [ref=f4e404]: focused
+                    - generic [ref=f4e405]: disabled
+                    - generic [ref=f4e406]: loading or pending when applicable
+                    - generic [ref=f4e407]: empty or unavailable when applicable
+                  - link "Open API & detail" [ref=f4e408] [cursor=pointer]:
+                    - /url: /components/textarea
+                - generic [ref=f4e412]:
+                  - generic [ref=f4e413]:
+                    - generic [ref=f4e421]:
+                      - strong [ref=f4e422]: Textarea
+                      - generic [ref=f4e423]: Canonical Forms fixture
+                    - generic [ref=f4e424]: Ready
+                  - generic [ref=f4e428]:
+                    - generic [ref=f4e429]: Notes
+                    - textbox "Notes Optional supporting context" [ref=f4e430]:
+                      - /placeholder: Add a short note…
+                    - generic [ref=f4e431]: Optional supporting context
+                - group [ref=f4e432]:
+                  - generic "Usage and accessibility" [ref=f4e433] [cursor=pointer]
+              - article [ref=f4e434]:
+                - generic [ref=f4e435]:
+                  - generic [ref=f4e436]:
+                    - generic [ref=f4e437]: "05"
+                    - generic [ref=f4e438]: implemented
+                  - heading "Field" [level=3] [ref=f4e439]
+                  - generic [ref=f4e440]: Provide reusable labelled field anatomy around compound or custom controls.
+                  - generic "Field supported states" [ref=f4e441]:
+                    - generic [ref=f4e442]: default
+                    - generic [ref=f4e443]: focused
+                    - generic [ref=f4e444]: disabled
+                    - generic [ref=f4e445]: loading or pending when applicable
+                    - generic [ref=f4e446]: empty or unavailable when applicable
+                  - link "Open API & detail" [ref=f4e447] [cursor=pointer]:
+                    - /url: /components/field
+                - generic [ref=f4e451]:
+                  - generic [ref=f4e452]:
+                    - generic [ref=f4e460]:
+                      - strong [ref=f4e461]: Field
+                      - generic [ref=f4e462]: Canonical Forms fixture
+                    - generic [ref=f4e463]: Ready
+                  - generic [ref=f4e467]:
+                    - generic [ref=f4e468]: Project name
+                    - textbox "Project name" [ref=f4e472]: ten4seven
+                    - paragraph [ref=f4e473]: Use a concise helper message.
+                - group [ref=f4e474]:
+                  - generic "Usage and accessibility" [ref=f4e475] [cursor=pointer]
+              - article [ref=f4e476]:
+                - generic [ref=f4e477]:
+                  - generic [ref=f4e478]:
+                    - generic [ref=f4e479]: "06"
+                    - generic [ref=f4e480]: implemented
+                  - heading "Label" [level=3] [ref=f4e481]
+                  - generic [ref=f4e482]: Render an explicit field label with required or optional indication.
+                  - generic "Label supported states" [ref=f4e483]:
+                    - generic [ref=f4e484]: default
+                    - generic [ref=f4e485]: focused
+                    - generic [ref=f4e486]: disabled
+                    - generic [ref=f4e487]: loading or pending when applicable
+                    - generic [ref=f4e488]: empty or unavailable when applicable
+                  - link "Open API & detail" [ref=f4e489] [cursor=pointer]:
+                    - /url: /components/label
+                - generic [ref=f4e493]:
+                  - generic [ref=f4e494]:
+                    - generic [ref=f4e502]:
+                      - strong [ref=f4e503]: Label
+                      - generic [ref=f4e504]: Canonical Forms fixture
+                    - generic [ref=f4e505]: Ready
+                  - generic [ref=f4e509]:
+                    - generic [ref=f4e510]: Project name
+                    - textbox "Project name" [ref=f4e514]: ten4seven
+                    - paragraph [ref=f4e515]: Use a concise helper message.
+                - group [ref=f4e516]:
+                  - generic "Usage and accessibility" [ref=f4e517] [cursor=pointer]
+              - article [ref=f4e518]:
+                - generic [ref=f4e519]:
+                  - generic [ref=f4e520]:
+                    - generic [ref=f4e521]: "07"
+                    - generic [ref=f4e522]: implemented
+                  - heading "Field Description" [level=3] [ref=f4e523]
+                  - generic [ref=f4e524]: Attach concise helper text to a field using the shared semantic description treatment.
+                  - generic "Field Description supported states" [ref=f4e525]:
+                    - generic [ref=f4e526]: default
+                    - generic [ref=f4e527]: focused
+                    - generic [ref=f4e528]: disabled
+                    - generic [ref=f4e529]: loading or pending when applicable
+                    - generic [ref=f4e530]: empty or unavailable when applicable
+                  - link "Open API & detail" [ref=f4e531] [cursor=pointer]:
+                    - /url: /components/field-description
+                - generic [ref=f4e535]:
+                  - generic [ref=f4e536]:
+                    - generic [ref=f4e544]:
+                      - strong [ref=f4e545]: Field Description
+                      - generic [ref=f4e546]: Canonical Forms fixture
+                    - generic [ref=f4e547]: Ready
+                  - generic [ref=f4e551]:
+                    - generic [ref=f4e552]: Project name
+                    - textbox "Project name" [ref=f4e556]: ten4seven
+                    - paragraph [ref=f4e557]: Use a concise helper message.
+                - group [ref=f4e558]:
+                  - generic "Usage and accessibility" [ref=f4e559] [cursor=pointer]
+              - article [ref=f4e560]:
+                - generic [ref=f4e561]:
+                  - generic [ref=f4e562]:
+                    - generic [ref=f4e563]: "08"
+                    - generic [ref=f4e564]: implemented
+                  - heading "Field Error" [level=3] [ref=f4e565]
+                  - generic [ref=f4e566]: Announce an actionable field validation error with the shared error treatment.
+                  - generic "Field Error supported states" [ref=f4e567]:
+                    - generic [ref=f4e568]: default
+                    - generic [ref=f4e569]: focused
+                    - generic [ref=f4e570]: disabled
+                    - generic [ref=f4e571]: loading or pending when applicable
+                    - generic [ref=f4e572]: empty or unavailable when applicable
+                  - link "Open API & detail" [ref=f4e573] [cursor=pointer]:
+                    - /url: /components/field-error
+                - generic [ref=f4e577]:
+                  - generic [ref=f4e578]:
+                    - generic [ref=f4e586]:
+                      - strong [ref=f4e587]: Field Error
+                      - generic [ref=f4e588]: Canonical Forms fixture
+                    - generic [ref=f4e589]: Ready
+                  - generic [ref=f4e593]:
+                    - generic [ref=f4e594]: Project name
+                    - textbox "Project name" [ref=f4e598]: ten4seven
+                    - paragraph [ref=f4e599]: Use a concise helper message.
+                    - alert [ref=f4e600]: Review this value.
+                - group [ref=f4e601]:
+                  - generic "Usage and accessibility" [ref=f4e602] [cursor=pointer]
+          - region [ref=f4e603]:
+            - generic [ref=f4e604]:
+              - generic [ref=f4e605]:
+                - heading "Numeric entry" [level=2] [ref=f4e606]
+                - generic [ref=f4e607]: Capture quantities and constrained numeric values without ambiguity.
+              - generic [ref=f4e608]: "6"
+            - generic [ref=f4e609]:
+              - article [ref=f4e610]:
+                - generic [ref=f4e611]:
+                  - generic [ref=f4e612]:
+                    - generic [ref=f4e613]: "01"
+                    - generic [ref=f4e614]: implemented
+                  - heading "Number Input" [level=3] [ref=f4e615]
+                  - generic [ref=f4e616]: Collect a native decimal or integer value.
+                  - generic "Number Input supported states" [ref=f4e617]:
+                    - generic [ref=f4e618]: default
+                    - generic [ref=f4e619]: focused
+                    - generic [ref=f4e620]: disabled
+                    - generic [ref=f4e621]: loading or pending when applicable
+                    - generic [ref=f4e622]: empty or unavailable when applicable
+                  - link "Open API & detail" [ref=f4e623] [cursor=pointer]:
+                    - /url: /components/number-input
+                - generic [ref=f4e627]:
+                  - generic [ref=f4e628]:
+                    - generic [ref=f4e636]:
+                      - strong [ref=f4e637]: Number Input
+                      - generic [ref=f4e638]: Canonical Forms fixture
+                    - generic [ref=f4e639]: Ready
+                  - generic [ref=f4e643]:
+                    - generic [ref=f4e644]: Quantity
+                    - spinbutton "Quantity" [ref=f4e646]: "12"
+                - group [ref=f4e647]:
+                  - generic "Usage and accessibility" [ref=f4e648] [cursor=pointer]
+              - article [ref=f4e649]:
+                - generic [ref=f4e650]:
+                  - generic [ref=f4e651]:
+                    - generic [ref=f4e652]: "02"
+                    - generic [ref=f4e653]: implemented
+                  - heading "Currency Input" [level=3] [ref=f4e654]
+                  - generic [ref=f4e655]: Collect a numeric monetary value without owning localization or ledger business logic.
+                  - generic "Currency Input supported states" [ref=f4e656]:
+                    - generic [ref=f4e657]: default
+                    - generic [ref=f4e658]: focused
+                    - generic [ref=f4e659]: disabled
+                    - generic [ref=f4e660]: loading or pending when applicable
+                    - generic [ref=f4e661]: empty or unavailable when applicable
+                  - link "Open API & detail" [ref=f4e662] [cursor=pointer]:
+                    - /url: /components/currency-input
+                - generic [ref=f4e666]:
+                  - generic [ref=f4e667]:
+                    - generic [ref=f4e675]:
+                      - strong [ref=f4e676]: Currency Input
+                      - generic [ref=f4e677]: Canonical Forms fixture
+                    - generic [ref=f4e678]: Ready
+                  - generic [ref=f4e682]:
+                    - generic [ref=f4e683]: Currency Input
+                    - spinbutton "Currency Input Helper text clarifies the expected value" [ref=f4e685]
+                    - generic [ref=f4e686]: Helper text clarifies the expected value
+                - group [ref=f4e687]:
+                  - generic "Usage and accessibility" [ref=f4e688] [cursor=pointer]
+              - article [ref=f4e689]:
+                - generic [ref=f4e690]:
+                  - generic [ref=f4e691]:
+                    - generic [ref=f4e692]: "03"
+                    - generic [ref=f4e693]: implemented
+                  - heading "Percent Input" [level=3] [ref=f4e694]
+                  - generic [ref=f4e695]: Collect a numeric percentage with clear helper wording.
+                  - generic "Percent Input supported states" [ref=f4e696]:
+                    - generic [ref=f4e697]: default
+                    - generic [ref=f4e698]: focused
+                    - generic [ref=f4e699]: disabled
+                    - generic [ref=f4e700]: loading or pending when applicable
+                    - generic [ref=f4e701]: empty or unavailable when applicable
+                  - link "Open API & detail" [ref=f4e702] [cursor=pointer]:
+                    - /url: /components/percent-input
+                - generic [ref=f4e706]:
+                  - generic [ref=f4e707]:
+                    - generic [ref=f4e715]:
+                      - strong [ref=f4e716]: Percent Input
+                      - generic [ref=f4e717]: Canonical Forms fixture
+                    - generic [ref=f4e718]: Ready
+                  - generic [ref=f4e722]:
+                    - generic [ref=f4e723]: Percent Input
+                    - spinbutton "Percent Input Helper text clarifies the expected value" [ref=f4e725]
+                    - generic [ref=f4e726]: Helper text clarifies the expected value
+                - group [ref=f4e727]:
+                  - generic "Usage and accessibility" [ref=f4e728] [cursor=pointer]
+              - article [ref=f4e729]:
+                - generic [ref=f4e730]:
+                  - generic [ref=f4e731]:
+                    - generic [ref=f4e732]: "04"
+                    - generic [ref=f4e733]: implemented
+                  - heading "Slider" [level=3] [ref=f4e734]
+                  - generic [ref=f4e735]: Set one bounded numeric value using a native range input.
+                  - generic "Slider supported states" [ref=f4e736]:
+                    - generic [ref=f4e737]: default
+                    - generic [ref=f4e738]: focused
+                    - generic [ref=f4e739]: disabled
+                    - generic [ref=f4e740]: loading or pending when applicable
+                    - generic [ref=f4e741]: empty or unavailable when applicable
+                  - link "Open API & detail" [ref=f4e742] [cursor=pointer]:
+                    - /url: /components/slider
+                - generic [ref=f4e746]:
+                  - generic [ref=f4e747]:
+                    - generic [ref=f4e755]:
+                      - strong [ref=f4e756]: Slider
+                      - generic [ref=f4e757]: Canonical Forms fixture
+                    - generic [ref=f4e758]: Ready
+                  - generic [ref=f4e762]:
+                    - generic [ref=f4e763]:
+                      - generic [ref=f4e764]: Confidence
+                      - generic [ref=f4e765]: "64"
+                    - slider "Confidence 64 0 to 100" [ref=f4e766] [cursor=pointer]: "64"
+                    - generic [ref=f4e767]: 0 to 100
+                - group [ref=f4e768]:
+                  - generic "Usage and accessibility" [ref=f4e769] [cursor=pointer]
+              - article [ref=f4e770]:
+                - generic [ref=f4e771]:
+                  - generic [ref=f4e772]:
+                    - generic [ref=f4e773]: "05"
+                    - generic [ref=f4e774]: implemented
+                  - heading "Range Slider" [level=3] [ref=f4e775]
+                  - generic [ref=f4e776]: Set a minimum and maximum value with two coordinated native ranges.
+                  - generic "Range Slider supported states" [ref=f4e777]:
+                    - generic [ref=f4e778]: default
+                    - generic [ref=f4e779]: focused
+                    - generic [ref=f4e780]: disabled
+                    - generic [ref=f4e781]: loading or pending when applicable
+                    - generic [ref=f4e782]: empty or unavailable when applicable
+                  - link "Open API & detail" [ref=f4e783] [cursor=pointer]:
+                    - /url: /components/range-slider
+                - generic [ref=f4e787]:
+                  - generic [ref=f4e788]:
+                    - generic [ref=f4e796]:
+                      - strong [ref=f4e797]: Range Slider
+                      - generic [ref=f4e798]: Canonical Forms fixture
+                    - generic [ref=f4e799]: Ready
+                  - generic [ref=f4e803]:
+                    - generic [ref=f4e804]:
+                      - generic [ref=f4e805]: Confidence range
+                      - generic [ref=f4e806]: 22–84
+                    - generic [ref=f4e807]:
+                      - slider "Confidence range minimum" [ref=f4e808] [cursor=pointer]: "22"
+                      - slider "Confidence range maximum" [ref=f4e809] [cursor=pointer]: "84"
+                - group [ref=f4e810]:
+                  - generic "Usage and accessibility" [ref=f4e811] [cursor=pointer]
+              - article [ref=f4e812]:
+                - generic [ref=f4e813]:
+                  - generic [ref=f4e814]:
+                    - generic [ref=f4e815]: "06"
+                    - generic [ref=f4e816]: implemented
+                  - heading "Otp Input" [level=3] [ref=f4e817]
+                  - generic [ref=f4e818]: Collect a short verification code with keyboard and paste distribution support.
+                  - generic "Otp Input supported states" [ref=f4e819]:
+                    - generic [ref=f4e820]: default
+                    - generic [ref=f4e821]: focused
+                    - generic [ref=f4e822]: disabled
+                    - generic [ref=f4e823]: loading or pending when applicable
+                    - generic [ref=f4e824]: empty or unavailable when applicable
+                  - link "Open API & detail" [ref=f4e825] [cursor=pointer]:
+                    - /url: /components/otp-input
+                - generic [ref=f4e829]:
+                  - generic [ref=f4e830]:
+                    - generic [ref=f4e838]:
+                      - strong [ref=f4e839]: Otp Input
+                      - generic [ref=f4e840]: Canonical Forms fixture
+                    - generic [ref=f4e841]: Ready
+                  - generic [ref=f4e845]:
+                    - generic [ref=f4e846]:
+                      - generic [ref=f4e847]: Field anatomy
+                      - textbox "Field preview" [ref=f4e849]:
+                        - /placeholder: A labelled field
+                    - generic [ref=f4e850]: Label, value, helper, focus, and error states share one shell.
+                - group [ref=f4e851]:
+                  - generic "Usage and accessibility" [ref=f4e852] [cursor=pointer]
+          - region [ref=f4e853]:
+            - generic [ref=f4e854]:
+              - generic [ref=f4e855]:
+                - heading "Choice and selection" [level=2] [ref=f4e856]
+                - generic [ref=f4e857]: Choose one or more values while preserving keyboard and state semantics.
+              - generic [ref=f4e858]: "9"
+            - generic [ref=f4e859]:
+              - article [ref=f4e860]:
+                - generic [ref=f4e861]:
+                  - generic [ref=f4e862]:
+                    - generic [ref=f4e863]: "01"
+                    - generic [ref=f4e864]: implemented
+                  - heading "Select" [level=3] [ref=f4e865]
+                  - generic [ref=f4e866]: Choose one value from a known bounded set through a custom ten4seven popup; use NativeSelect when platform-native behavior is intentional.
+                  - generic "Select supported states" [ref=f4e867]:
+                    - generic [ref=f4e868]: closed and focused
+                    - generic [ref=f4e869]: open listbox
+                    - generic [ref=f4e870]: selected option
+                    - generic [ref=f4e871]: disabled
+                    - generic [ref=f4e872]: invalid with hint
+                  - link "Open API & detail" [ref=f4e873] [cursor=pointer]:
+                    - /url: /components/select
+                - generic [ref=f4e877]:
+                  - generic [ref=f4e878]:
+                    - generic [ref=f4e886]:
+                      - strong [ref=f4e887]: Select
+                      - generic [ref=f4e888]: Canonical Forms fixture
+                    - generic [ref=f4e889]: Ready
+                  - generic [ref=f4e893]:
+                    - generic [ref=f4e894]: Select
+                    - generic [ref=f4e895]:
+                      - combobox [aria-hidden] [ref=f4e896]
+                      - button "Select" [ref=f4e897] [cursor=pointer]:
+                        - generic [ref=f4e898]: Ready
+                - group [ref=f4e901]:
+                  - generic "Usage and accessibility" [ref=f4e902] [cursor=pointer]
+              - article [ref=f4e903]:
+                - generic [ref=f4e904]:
+                  - generic [ref=f4e905]:
+                    - generic [ref=f4e906]: "02"
+                    - generic [ref=f4e907]: implemented
+                  - heading "Native Select" [level=3] [ref=f4e908]
+                  - generic [ref=f4e909]: Render an explicitly native select when platform-native behavior or form integration is the requirement.
+                  - generic "Native Select supported states" [ref=f4e910]:
+                    - generic [ref=f4e911]: closed native control
+                    - generic [ref=f4e912]: selected option
+                    - generic [ref=f4e913]: disabled
+                    - generic [ref=f4e914]: invalid
+                  - link "Open API & detail" [ref=f4e915] [cursor=pointer]:
+                    - /url: /components/native-select
+                - generic [ref=f4e919]:
+                  - generic [ref=f4e920]:
+                    - generic [ref=f4e928]:
+                      - strong [ref=f4e929]: Native Select
+                      - generic [ref=f4e930]: Canonical Forms fixture
+                    - generic [ref=f4e931]: Ready
+                  - combobox "Native status" [ref=f4e935]:
+                    - option "Ready" [selected]
+                    - option "In review"
+                    - option "Blocked"
+                - group [ref=f4e936]:
+                  - generic "Usage and accessibility" [ref=f4e937] [cursor=pointer]
+              - article [ref=f4e938]:
+                - generic [ref=f4e939]:
+                  - generic [ref=f4e940]:
+                    - generic [ref=f4e941]: "03"
+                    - generic [ref=f4e942]: implemented
+                  - heading "Combobox" [level=3] [ref=f4e943]
+                  - generic [ref=f4e944]: Search and choose one option from a bounded in-memory list.
+                  - generic "Combobox supported states" [ref=f4e945]:
+                    - generic [ref=f4e946]: idle
+                    - generic [ref=f4e947]: focused
+                    - generic [ref=f4e948]: loading
+                    - generic [ref=f4e949]: empty results
+                    - generic [ref=f4e950]: selected
+                  - link "Open API & detail" [ref=f4e951] [cursor=pointer]:
+                    - /url: /components/combobox
+                - generic [ref=f4e955]:
+                  - generic [ref=f4e956]:
+                    - generic [ref=f4e964]:
+                      - strong [ref=f4e965]: Combobox
+                      - generic [ref=f4e966]: Canonical Forms fixture
+                    - generic [ref=f4e967]: Ready
+                  - generic [ref=f4e971]:
+                    - generic [ref=f4e972]: Owner
+                    - combobox "Owner" [ref=f4e974]: Maya Chen
+                - group [ref=f4e975]:
+                  - generic "Usage and accessibility" [ref=f4e976] [cursor=pointer]
+              - article [ref=f4e977]:
+                - generic [ref=f4e978]:
+                  - generic [ref=f4e979]:
+                    - generic [ref=f4e980]: "04"
+                    - generic [ref=f4e981]: implemented
+                  - heading "Multi Select" [level=3] [ref=f4e982]
+                  - generic [ref=f4e983]: Choose multiple options from a bounded visible list.
+                  - generic "Multi Select supported states" [ref=f4e984]:
+                    - generic [ref=f4e985]: collapsed
+                    - generic [ref=f4e986]: expanded
+                    - generic [ref=f4e987]: selected values
+                    - generic [ref=f4e988]: loading
+                    - generic [ref=f4e989]: empty results
+                  - link "Open API & detail" [ref=f4e990] [cursor=pointer]:
+                    - /url: /components/multi-select
+                - generic [ref=f4e994]:
+                  - generic [ref=f4e995]:
+                    - generic [ref=f4e1003]:
+                      - strong [ref=f4e1004]: Multi Select
+                      - generic [ref=f4e1005]: Canonical Forms fixture
+                    - generic [ref=f4e1006]: Ready
+                  - generic [ref=f4e1010]:
+                    - generic [ref=f4e1011]: Workstreams
+                    - button "Design" [ref=f4e1012] [cursor=pointer]
+                - group [ref=f4e1016]:
+                  - generic "Usage and accessibility" [ref=f4e1017] [cursor=pointer]
+              - article [ref=f4e1018]:
+                - generic [ref=f4e1019]:
+                  - generic [ref=f4e1020]:
+                    - generic [ref=f4e1021]: "05"
+                    - generic [ref=f4e1022]: implemented
+                  - heading "Hierarchy Picker" [level=3] [ref=f4e1023]
+                  - generic [ref=f4e1024]: Select nested hierarchy nodes with expansion, mixed ancestor state, optional local search, and keyboard tree navigation while leaving resource meaning to the consumer.
+                  - generic "Hierarchy Picker supported states" [ref=f4e1025]:
+                    - generic [ref=f4e1026]: collapsed branches
+                    - generic [ref=f4e1027]: expanded branches
+                    - generic [ref=f4e1028]: none selected
+                    - generic [ref=f4e1029]: partially selected
+                    - generic [ref=f4e1030]: fully selected
+                  - link "Open API & detail" [ref=f4e1031] [cursor=pointer]:
+                    - /url: /components/hierarchy-picker
+                - generic [ref=f4e1035]:
+                  - generic [ref=f4e1036]:
+                    - generic [ref=f4e1044]:
+                      - strong [ref=f4e1045]: Hierarchy Picker
+                      - generic [ref=f4e1046]: Canonical Forms fixture
+                    - generic [ref=f4e1047]: Ready
+                  - generic [ref=f4e1051]:
+                    - generic [ref=f4e1052]: Resource scope
+                    - generic [ref=f4e1053]: Scope selection stays generic; the consumer owns permission meaning.
+                    - searchbox "Search resources" [ref=f4e1056]
+                    - tree "Resource scope" [ref=f4e1057]:
+                      - treeitem "Tenant Wisman Partially selected" [expanded] [level=1] [ref=f4e1058] [cursor=pointer]:
+                        - generic [ref=f4e1064]:
+                          - generic [ref=f4e1065]: Tenant Wisman
+                          - generic [ref=f4e1066]: Partially selected
+                      - treeitem "Farm North Partially selected" [expanded] [level=2] [ref=f4e1067] [cursor=pointer]:
+                        - generic [ref=f4e1073]:
+                          - generic [ref=f4e1074]: Farm North
+                          - generic [ref=f4e1075]: Partially selected
+                      - treeitem "Location Pilubang Partially selected" [expanded] [level=3] [ref=f4e1076] [cursor=pointer]:
+                        - generic [ref=f4e1082]:
+                          - generic [ref=f4e1083]: Location Pilubang
+                          - generic [ref=f4e1084]: Partially selected
+                      - treeitem "Cage A-14 Production · active Selected" [level=4] [selected] [ref=f4e1085] [cursor=pointer]:
+                        - generic [ref=f4e1090]:
+                          - generic [ref=f4e1091]: Cage A-14
+                          - generic [ref=f4e1092]: Production · active
+                          - generic [ref=f4e1093]: Selected
+                      - treeitem "Cage A-15 Managed by another scope Not selected" [disabled] [level=4] [ref=f4e1094]:
+                        - generic [ref=f4e1097]:
+                          - generic [ref=f4e1098]: Cage A-15
+                          - generic [ref=f4e1099]: Managed by another scope
+                          - generic [ref=f4e1100]: Not selected
+                      - treeitem "Cage A-16 Production · review Not selected" [level=4] [ref=f4e1101] [cursor=pointer]:
+                        - generic [ref=f4e1104]:
+                          - generic [ref=f4e1105]: Cage A-16
+                          - generic [ref=f4e1106]: Production · review
+                          - generic [ref=f4e1107]: Not selected
+                      - treeitem "Location East Not selected" [expanded] [level=3] [ref=f4e1108] [cursor=pointer]:
+                        - generic [ref=f4e1113]:
+                          - generic [ref=f4e1114]: Location East
+                          - generic [ref=f4e1115]: Not selected
+                      - treeitem "Cage B-02 Not selected" [level=4] [ref=f4e1116] [cursor=pointer]:
+                        - generic [ref=f4e1119]:
+                          - generic [ref=f4e1120]: Cage B-02
+                          - generic [ref=f4e1121]: Not selected
+                    - status [ref=f4e1122]: 1 selected
+                - group [ref=f4e1123]:
+                  - generic "Usage and accessibility" [ref=f4e1124] [cursor=pointer]
+              - article [ref=f4e1125]:
+                - generic [ref=f4e1126]:
+                  - generic [ref=f4e1127]:
+                    - generic [ref=f4e1128]: "06"
+                    - generic [ref=f4e1129]: implemented
+                  - heading "Checkbox" [level=3] [ref=f4e1130]
+                  - generic [ref=f4e1131]: Choose a boolean or one item from a multi-choice list with indeterminate support.
+                  - generic "Checkbox supported states" [ref=f4e1132]:
+                    - generic [ref=f4e1133]: default
+                    - generic [ref=f4e1134]: focused
+                    - generic [ref=f4e1135]: disabled
+                    - generic [ref=f4e1136]: loading or pending when applicable
+                    - generic [ref=f4e1137]: empty or unavailable when applicable
+                  - link "Open API & detail" [ref=f4e1138] [cursor=pointer]:
+                    - /url: /components/checkbox
+                - generic [ref=f4e1142]:
+                  - generic [ref=f4e1143]:
+                    - generic [ref=f4e1151]:
+                      - strong [ref=f4e1152]: Checkbox
+                      - generic [ref=f4e1153]: Canonical Forms fixture
+                    - generic [ref=f4e1154]: Ready
+                  - generic [ref=f4e1158] [cursor=pointer]:
+                    - checkbox "Notify collaborators" [checked] [ref=f4e1159]
+                    - generic [ref=f4e1163]: Notify collaborators
+                - group [ref=f4e1164]:
+                  - generic "Usage and accessibility" [ref=f4e1165] [cursor=pointer]
+              - article [ref=f4e1166]:
+                - generic [ref=f4e1167]:
+                  - generic [ref=f4e1168]:
+                    - generic [ref=f4e1169]: "07"
+                    - generic [ref=f4e1170]: implemented
+                  - heading "Checkbox Group" [level=3] [ref=f4e1171]
+                  - generic [ref=f4e1172]: Provide fieldset and legend semantics for related checkboxes.
+                  - generic "Checkbox Group supported states" [ref=f4e1173]:
+                    - generic [ref=f4e1174]: default
+                    - generic [ref=f4e1175]: focused
+                    - generic [ref=f4e1176]: disabled
+                    - generic [ref=f4e1177]: loading or pending when applicable
+                    - generic [ref=f4e1178]: empty or unavailable when applicable
+                  - link "Open API & detail" [ref=f4e1179] [cursor=pointer]:
+                    - /url: /components/checkbox-group
+                - generic [ref=f4e1183]:
+                  - generic [ref=f4e1184]:
+                    - generic [ref=f4e1192]:
+                      - strong [ref=f4e1193]: Checkbox Group
+                      - generic [ref=f4e1194]: Canonical Forms fixture
+                    - generic [ref=f4e1195]: Ready
+                  - group "Notifications" [ref=f4e1199]:
+                    - generic [ref=f4e1201]:
+                      - generic [ref=f4e1202] [cursor=pointer]:
+                        - checkbox "Email" [checked] [ref=f4e1203]
+                        - generic [ref=f4e1207]: Email
+                      - generic [ref=f4e1208] [cursor=pointer]:
+                        - checkbox "In-app" [ref=f4e1209]
+                        - generic [ref=f4e1213]: In-app
+                - group [ref=f4e1214]:
+                  - generic "Usage and accessibility" [ref=f4e1215] [cursor=pointer]
+              - article [ref=f4e1216]:
+                - generic [ref=f4e1217]:
+                  - generic [ref=f4e1218]:
+                    - generic [ref=f4e1219]: "08"
+                    - generic [ref=f4e1220]: implemented
+                  - heading "Radio" [level=3] [ref=f4e1221]
+                  - generic [ref=f4e1222]: Choose one value from a small mutually exclusive set.
+                  - generic "Radio supported states" [ref=f4e1223]:
+                    - generic [ref=f4e1224]: default
+                    - generic [ref=f4e1225]: focused
+                    - generic [ref=f4e1226]: disabled
+                    - generic [ref=f4e1227]: loading or pending when applicable
+                    - generic [ref=f4e1228]: empty or unavailable when applicable
+                  - link "Open API & detail" [ref=f4e1229] [cursor=pointer]:
+                    - /url: /components/radio
+                - generic [ref=f4e1233]:
+                  - generic [ref=f4e1234]:
+                    - generic [ref=f4e1242]:
+                      - strong [ref=f4e1243]: Radio
+                      - generic [ref=f4e1244]: Canonical Forms fixture
+                    - generic [ref=f4e1245]: Ready
+                  - generic [ref=f4e1249] [cursor=pointer]:
+                    - radio "Grid" [checked] [ref=f4e1250]
+                    - generic [ref=f4e1253]: Grid
+                - group [ref=f4e1254]:
+                  - generic "Usage and accessibility" [ref=f4e1255] [cursor=pointer]
+              - article [ref=f4e1256]:
+                - generic [ref=f4e1257]:
+                  - generic [ref=f4e1258]:
+                    - generic [ref=f4e1259]: "09"
+                    - generic [ref=f4e1260]: implemented
+                  - heading "Switch" [level=3] [ref=f4e1261]
+                  - generic [ref=f4e1262]: Toggle one immediate boolean preference with a compact binary control.
+                  - generic "Switch supported states" [ref=f4e1263]:
+                    - generic [ref=f4e1264]: default
+                    - generic [ref=f4e1265]: focused
+                    - generic [ref=f4e1266]: disabled
+                    - generic [ref=f4e1267]: loading or pending when applicable
+                    - generic [ref=f4e1268]: empty or unavailable when applicable
+                  - link "Open API & detail" [ref=f4e1269] [cursor=pointer]:
+                    - /url: /components/switch
+                - generic [ref=f4e1273]:
+                  - generic [ref=f4e1274]:
+                    - generic [ref=f4e1282]:
+                      - strong [ref=f4e1283]: Switch
+                      - generic [ref=f4e1284]: Canonical Forms fixture
+                    - generic [ref=f4e1285]: Ready
+                  - generic [ref=f4e1289] [cursor=pointer]:
+                    - checkbox "Notify collaborators Controls notification delivery" [checked] [ref=f4e1290]
+                    - generic [ref=f4e1293]:
+                      - generic [ref=f4e1294]: Notify collaborators
+                      - generic [ref=f4e1295]: Controls notification delivery
+                - group [ref=f4e1296]:
+                  - generic "Usage and accessibility" [ref=f4e1297] [cursor=pointer]
+          - region [ref=f4e1298]:
+            - generic [ref=f4e1299]:
+              - generic [ref=f4e1300]:
+                - heading "Form composition" [level=2] [ref=f4e1301]
+                - generic [ref=f4e1302]: Compose fields into repeatable form structure and action rows.
+              - generic [ref=f4e1303]: "4"
+            - generic [ref=f4e1304]:
+              - article [ref=f4e1305]:
+                - generic [ref=f4e1306]:
+                  - generic [ref=f4e1307]:
+                    - generic [ref=f4e1308]: "01"
+                    - generic [ref=f4e1309]: implemented
+                  - heading "Field Group" [level=3] [ref=f4e1310]
+                  - generic [ref=f4e1311]: Group related controls with fieldset, legend, description, and error semantics.
+                  - generic "Field Group supported states" [ref=f4e1312]:
+                    - generic [ref=f4e1313]: default
+                    - generic [ref=f4e1314]: focused
+                    - generic [ref=f4e1315]: disabled
+                    - generic [ref=f4e1316]: loading or pending when applicable
+                    - generic [ref=f4e1317]: empty or unavailable when applicable
+                  - link "Open API & detail" [ref=f4e1318] [cursor=pointer]:
+                    - /url: /components/field-group
+                - generic [ref=f4e1322]:
+                  - generic [ref=f4e1323]:
+                    - generic [ref=f4e1331]:
+                      - strong [ref=f4e1332]: Field Group
+                      - generic [ref=f4e1333]: Canonical Forms fixture
+                    - generic [ref=f4e1334]: Ready
+                  - group "Delivery settings" [ref=f4e1338]:
+                    - generic [ref=f4e1340]:
+                      - generic [ref=f4e1341] [cursor=pointer]:
+                        - checkbox "Email updates" [ref=f4e1342]
+                        - generic [ref=f4e1346]: Email updates
+                      - generic [ref=f4e1347] [cursor=pointer]:
+                        - checkbox "Weekly digest" [ref=f4e1348]
+                        - generic [ref=f4e1352]: Weekly digest
+                - group [ref=f4e1353]:
+                  - generic "Usage and accessibility" [ref=f4e1354] [cursor=pointer]
+              - article [ref=f4e1355]:
+                - generic [ref=f4e1356]:
+                  - generic [ref=f4e1357]:
+                    - generic [ref=f4e1358]: "02"
+                    - generic [ref=f4e1359]: implemented
+                  - heading "Form Section" [level=3] [ref=f4e1360]
+                  - generic [ref=f4e1361]: Group related fields into a neutral form section with an optional action.
+                  - generic "Form Section supported states" [ref=f4e1362]:
+                    - generic [ref=f4e1363]: default
+                    - generic [ref=f4e1364]: focused
+                    - generic [ref=f4e1365]: disabled
+                    - generic [ref=f4e1366]: loading or pending when applicable
+                    - generic [ref=f4e1367]: empty or unavailable when applicable
+                  - link "Open API & detail" [ref=f4e1368] [cursor=pointer]:
+                    - /url: /components/form-section
+                - generic [ref=f4e1372]:
+                  - generic [ref=f4e1373]:
+                    - generic [ref=f4e1381]:
+                      - strong [ref=f4e1382]: Form Section
+                      - generic [ref=f4e1383]: Canonical Forms fixture
+                    - generic [ref=f4e1384]: Ready
+                  - generic [ref=f4e1388]:
+                    - generic [ref=f4e1389]:
+                      - generic [ref=f4e1390]:
+                        - heading "Profile details" [level=2] [ref=f4e1391]
+                        - paragraph [ref=f4e1392]: Group related fields before submitting.
+                      - button "Edit" [ref=f4e1394] [cursor=pointer]
+                    - generic [ref=f4e1396]:
+                      - generic [ref=f4e1397]:
+                        - generic [ref=f4e1398]:
+                          - generic [ref=f4e1399]: First name
+                          - textbox "First name" [ref=f4e1401]: Maya
+                        - generic [ref=f4e1402]:
+                          - generic [ref=f4e1403]: Role
+                          - textbox "Role" [ref=f4e1405]: Designer
+                      - button "Save changes" [ref=f4e1407] [cursor=pointer]
+                - group [ref=f4e1409]:
+                  - generic "Usage and accessibility" [ref=f4e1410] [cursor=pointer]
+              - article [ref=f4e1411]:
+                - generic [ref=f4e1412]:
+                  - generic [ref=f4e1413]:
+                    - generic [ref=f4e1414]: "03"
+                    - generic [ref=f4e1415]: implemented
+                  - heading "Form Grid" [level=3] [ref=f4e1416]
+                  - generic [ref=f4e1417]: Lay out related form fields with token-led responsive columns.
+                  - generic "Form Grid supported states" [ref=f4e1418]:
+                    - generic [ref=f4e1419]: default
+                    - generic [ref=f4e1420]: focused
+                    - generic [ref=f4e1421]: disabled
+                    - generic [ref=f4e1422]: loading or pending when applicable
+                    - generic [ref=f4e1423]: empty or unavailable when applicable
+                  - link "Open API & detail" [ref=f4e1424] [cursor=pointer]:
+                    - /url: /components/form-grid
+                - generic [ref=f4e1428]:
+                  - generic [ref=f4e1429]:
+                    - generic [ref=f4e1437]:
+                      - strong [ref=f4e1438]: Form Grid
+                      - generic [ref=f4e1439]: Canonical Forms fixture
+                    - generic [ref=f4e1440]: Ready
+                  - generic [ref=f4e1444]:
+                    - generic [ref=f4e1445]:
+                      - generic [ref=f4e1446]:
+                        - heading "Profile details" [level=2] [ref=f4e1447]
+                        - paragraph [ref=f4e1448]: Group related fields before submitting.
+                      - button "Edit" [ref=f4e1450] [cursor=pointer]
+                    - generic [ref=f4e1452]:
+                      - generic [ref=f4e1453]:
+                        - generic [ref=f4e1454]:
+                          - generic [ref=f4e1455]: First name
+                          - textbox "First name" [ref=f4e1457]: Maya
+                        - generic [ref=f4e1458]:
+                          - generic [ref=f4e1459]: Role
+                          - textbox "Role" [ref=f4e1461]: Designer
+                      - button "Save changes" [ref=f4e1463] [cursor=pointer]
+                - group [ref=f4e1465]:
+                  - generic "Usage and accessibility" [ref=f4e1466] [cursor=pointer]
+              - article [ref=f4e1467]:
+                - generic [ref=f4e1468]:
+                  - generic [ref=f4e1469]:
+                    - generic [ref=f4e1470]: "04"
+                    - generic [ref=f4e1471]: implemented
+                  - heading "Form Actions" [level=3] [ref=f4e1472]
+                  - generic [ref=f4e1473]: Lay out local form actions before a broader ActionFooter is warranted.
+                  - generic "Form Actions supported states" [ref=f4e1474]:
+                    - generic [ref=f4e1475]: default
+                    - generic [ref=f4e1476]: focused
+                    - generic [ref=f4e1477]: disabled
+                    - generic [ref=f4e1478]: loading or pending when applicable
+                    - generic [ref=f4e1479]: empty or unavailable when applicable
+                  - link "Open API & detail" [ref=f4e1480] [cursor=pointer]:
+                    - /url: /components/form-actions
+                - generic [ref=f4e1484]:
+                  - generic [ref=f4e1485]:
+                    - generic [ref=f4e1493]:
+                      - strong [ref=f4e1494]: Form Actions
+                      - generic [ref=f4e1495]: Canonical Forms fixture
+                    - generic [ref=f4e1496]: Ready
+                  - generic [ref=f4e1500]:
+                    - generic [ref=f4e1501]:
+                      - generic [ref=f4e1502]:
+                        - heading "Profile details" [level=2] [ref=f4e1503]
+                        - paragraph [ref=f4e1504]: Group related fields before submitting.
+                      - button "Edit" [ref=f4e1506] [cursor=pointer]
+                    - generic [ref=f4e1508]:
+                      - generic [ref=f4e1509]:
+                        - generic [ref=f4e1510]:
+                          - generic [ref=f4e1511]: First name
+                          - textbox "First name" [ref=f4e1513]: Maya
+                        - generic [ref=f4e1514]:
+                          - generic [ref=f4e1515]: Role
+                          - textbox "Role" [ref=f4e1517]: Designer
+                      - button "Save changes" [ref=f4e1519] [cursor=pointer]
+                - group [ref=f4e1521]:
+                  - generic "Usage and accessibility" [ref=f4e1522] [cursor=pointer]

@@ -590,7 +590,7 @@ test("light application canvases stay white and structural surfaces stay achroma
   }
 });
 
-test("Theme Studio explains semantic color roles and keeps focus independent of accent", async ({
+test("Theme Studio explains semantic color roles and keeps focus tied to action, not accent", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1186, height: 698 });
@@ -601,17 +601,17 @@ test("Theme Studio explains semantic color roles and keeps focus independent of 
   await expect(roleMap).toContainText("Main action");
   await expect(roleMap).toContainText("Buttons · links · selected");
   await expect(roleMap).toContainText("Accent color");
-  await expect(roleMap).toContainText("Supporting emphasis · expression");
+  await expect(roleMap).toContainText("Supporting emphasis");
   await expect(roleMap).toContainText("Chart");
-  await expect(roleMap).toContainText("Data series · opted-in solid surfaces");
+  await expect(roleMap).toContainText("Data series and colorways");
 
   await chooseSelect(page, "Accent color", "amber");
   const provider = page.locator(".t7-provider");
   await expect(provider).toHaveAttribute("data-accent", "amber");
-  await expect(provider).toHaveCSS("--t7-focus-hsl", "216 72% 38%");
+  await expect(provider).toHaveCSS("--t7-focus-hsl", "148 58% 29%");
   await expect(provider).toHaveCSS(
     "--t7-input-focus-border-hsl",
-    "216 72% 38%",
+    "0 0% 72%",
   );
   await expect(
     page

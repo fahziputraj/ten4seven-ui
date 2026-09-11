@@ -68,6 +68,7 @@
     var(--t7-ease-enter, cubic-bezier(0.16, 1, 0.3, 1));
   --t7-motion-enter-slow: var(--t7-duration-reveal, 800ms)
     var(--t7-ease-enter, cubic-bezier(0.16, 1, 0.3, 1));
+  --t7-ease-chart: cubic-bezier(0.22, 0.74, 0.24, 1);
   --t7-motion-exit: var(--t7-duration-exit, 180ms)
     var(--t7-ease-exit, cubic-bezier(0.4, 0, 1, 1));
   --t7-motion-loop: var(--t7-duration-loop, 1200ms) linear;
@@ -75,16 +76,20 @@
   --t7-transition-fast: var(--t7-motion-interactive);
   --t7-transition-standard: var(--t7-motion-state);
   --t7-transition-large: var(--t7-motion-state);
-  --t7-focus-hsl: 216 72% 38%;
-  --t7-focus-width: 2px;
+  --t7-focus-hsl: var(--t7-primary-hsl, 148 58% 29%);
+  --t7-focus-width: 1px;
   --t7-focus-offset: 2px;
+  --t7-focus-ring-alpha: 0.72;
+  --t7-focus-glow-alpha: 0.18;
   --t7-focus-halo: 0 0 0 var(--t7-focus-offset) hsl(var(--t7-surface-hsl));
   --t7-focus-ring-inset: inset 0 0 0 var(--t7-focus-width)
-    hsl(var(--t7-focus-hsl));
+    hsl(var(--t7-focus-hsl) / var(--t7-focus-ring-alpha)),
+    inset 0 0 8px hsl(var(--t7-focus-hsl) / var(--t7-focus-glow-alpha));
   --t7-focus-ring:
     var(--t7-focus-halo),
     0 0 0 calc(var(--t7-focus-offset) + var(--t7-focus-width))
-      hsl(var(--t7-focus-hsl));
+      hsl(var(--t7-focus-hsl) / var(--t7-focus-ring-alpha)),
+    0 0 10px hsl(var(--t7-focus-hsl) / var(--t7-focus-glow-alpha));
   --t7-z-base: 0;
   --t7-z-sticky: 10;
   --t7-z-focus: 20;
@@ -96,6 +101,49 @@
   --t7-z-modal: 80;
   --t7-z-toast: 90;
   --t7-z-command: 100;
+  --t7-kpi-depth-gradient-angle: 145deg;
+  --t7-kpi-depth-gradient-stop: 58%;
+  --t7-kpi-depth-shadow-blur: 26px;
+  --t7-kpi-depth-shadow-offset-y: 12px;
+  --t7-kpi-depth-border-alpha: 0.56;
+  --t7-kpi-depth-highlight-alpha: 0.3;
+  --t7-kpi-depth-shade-alpha: 0.14;
+  --t7-kpi-depth-shadow-alpha: 0.24;
+  --t7-surface-depth-gradient-angle: 145deg;
+  --t7-surface-depth-gradient-stop: 58%;
+  --t7-surface-depth-shadow-blur: 26px;
+  --t7-surface-depth-shadow-offset-y: 12px;
+  --t7-surface-depth-border-alpha: 0.56;
+  --t7-surface-depth-highlight-alpha: 0.3;
+  --t7-surface-depth-shade-alpha: 0.14;
+  --t7-surface-depth-shadow-alpha: 0.24;
+  --t7-surface-hover-translate-y: -1px;
+  --t7-kpi-decorative-size: 132px;
+  --t7-kpi-decorative-offset-top: -21px;
+  --t7-kpi-decorative-offset-inline: -21px;
+  --t7-kpi-decorative-opacity: 0.09;
+  --t7-table-border-hsl: var(--t7-border-strong-hsl, 0 0% 72%);
+  --t7-table-divider-alpha: 0.82;
+  --t7-chart-line-width: 2.5;
+  --t7-chart-point-radius: 3.5;
+  --t7-chart-point-hover-scale: 1.65;
+  --t7-chart-point-settle-scale: 1.06;
+  --t7-chart-bar-radius: 5;
+  --t7-chart-bar-hover-translate-y: 3px;
+  --t7-chart-bar-hover-scale-y: 1.035;
+  --t7-chart-donut-stroke-width: 14;
+  --t7-chart-donut-hover-stroke-width: 16;
+  --t7-chart-tooltip-offset-y: 12px;
+  --t7-chart-depth-gradient-angle: 145deg;
+  --t7-chart-depth-gradient-stop: 58%;
+  --t7-chart-depth-shadow-blur: 6px;
+  --t7-chart-depth-shadow-offset-y: 3px;
+  --t7-chart-depth-border-alpha: 0.56;
+  --t7-chart-depth-highlight-alpha: 0.3;
+  --t7-chart-depth-shade-alpha: 0.14;
+  --t7-chart-depth-shadow-alpha: 0.1728;
+  --t7-chart-gradient-start-alpha: 0.835;
+  --t7-chart-gradient-end-alpha: 0.909;
   --t7-overlay-menu-sm: 200px;
   --t7-overlay-menu-md: 240px;
   --t7-overlay-menu-lg: 280px;
@@ -108,6 +156,7 @@
   --t7-overlay-color: 304px;
   --t7-overlay-popover-min: 220px;
   --t7-overlay-popover-max: 360px;
+  --t7-overlay-tooltip-min: 128px;
   --t7-overlay-tooltip-max: 260px;
   --t7-overlay-command: 640px;
   --t7-overlay-dialog-sm: 400px;
@@ -260,7 +309,7 @@ textarea:focus-visible {
 
 @media (forced-colors: active) {
   :focus-visible {
-    outline: var(--t7-focus-width, 2px) solid Highlight !important;
+    outline: 2px solid Highlight !important;
     outline-offset: var(--t7-focus-offset, 2px);
   }
 }

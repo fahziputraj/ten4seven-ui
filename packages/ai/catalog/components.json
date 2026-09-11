@@ -4911,9 +4911,16 @@
       "percentage",
       "status",
       "selectedId",
-      "onSelectedIdChange"
+      "onSelectedIdChange",
+      "detailMode"
     ],
-    "relatedComponents": ["Progress", "Stepper", "StatusChip", "KeyValueList"],
+    "relatedComponents": [
+      "Progress",
+      "Stepper",
+      "StatusChip",
+      "KeyValueList",
+      "DetailDrawer"
+    ],
     "source": "packages/ui/src/data-display.tsx",
     "displayName": "Milestone Tracker",
     "level": "component",
@@ -4931,15 +4938,17 @@
     "accessibility": [
       "Expose the journey as a labelled navigation region with an ordered list of keyboard-reachable buttons.",
       "Expose each percentage through visible text and progressbar semantics, with the selected stage detail linked from its control.",
-      "Keep selection feedback in a labelled live detail region and preserve visible focus."
+      "Keep selection feedback in a labelled live detail region and preserve visible focus.",
+      "When detailMode is drawer, expose the selected stage through the canonical right-side DetailDrawer and restore focus to its stage control on close."
     ],
     "responsive": [
       "Keep the milestone sequence inside a bounded horizontal scroll region when the available width is narrow.",
-      "Preserve the ordered stage, state, progress, and detail contracts without introducing a mobile-only component."
+      "Preserve the ordered stage, state, progress, and detail contracts without introducing a mobile-only component.",
+      "Let the canonical DetailDrawer become full-width at compact widths while retaining its own scroll owner."
     ],
     "motion": [
       "Animate workflow-stage entry and selected detail changes with shared transition variables.",
-      "Respect prefers-reduced-motion."
+      "Use the shared overlay motion for drawer entry and exit, and respect prefers-reduced-motion."
     ],
     "tokens": [
       "surface",
@@ -4977,6 +4986,13 @@
         "description": "Initial selected milestone identifier for uncontrolled usage."
       },
       {
+        "name": "detailMode",
+        "type": "\"inline\" | \"drawer\"",
+        "defaultValue": "inline",
+        "required": false,
+        "description": "Keeps selected detail inline or opens it in the canonical right-side DetailDrawer."
+      },
+      {
         "name": "onSelectedIdChange",
         "type": "(id: string) => void",
         "defaultValue": "—",
@@ -4991,9 +5007,14 @@
         "description": "Accessible name for the milestone navigation region."
       }
     ],
-    "example": "<MilestoneTracker items={milestones} />",
+    "example": "<MilestoneTracker detailMode=\"drawer\" items={milestones} />",
     "alternativeTo": [],
-    "composesWith": ["StatusChip", "KeyValueList", "ActivityFeed"],
+    "composesWith": [
+      "StatusChip",
+      "KeyValueList",
+      "ActivityFeed",
+      "DetailDrawer"
+    ],
     "usedByPatterns": ["entity-list", "master-detail", "report"]
   },
   "CommandMenu": {
@@ -5664,7 +5685,7 @@
     "purpose": "Constrain a scrollable region while preserving native browser scroll behavior.",
     "useWhen": ["a contained panel needs a bounded scroll region"],
     "avoidWhen": ["normal document flow can scroll"],
-    "recipes": ["master-detail", "command-menu"],
+    "recipes": ["master-detail"],
     "importantProps": ["label", "maxHeight", "children"],
     "relatedComponents": ["Panel", "Drawer"],
     "source": "packages/ui/src/layout.tsx",
@@ -9637,6 +9658,131 @@
     "alternativeTo": [],
     "composesWith": ["EmptyState", "Alert"],
     "usedByPatterns": []
+  },
+  "ModuleState": {
+    "status": "implemented",
+    "category": "feedback",
+    "purpose": "Render a consumer-supplied module availability, lifecycle, scope, or access state without evaluating business policy.",
+    "useWhen": [
+      "a module needs a consistent presentation for availability, setup, lifecycle, scope, or access state"
+    ],
+    "avoidWhen": [
+      "the renderer would need to fetch tenant data or decide entitlement, permission, or lifecycle transitions",
+      "a compact inline status is sufficient"
+    ],
+    "recipes": ["entity-list", "entity-detail", "entity-form", "master-detail"],
+    "importantProps": [
+      "state",
+      "title",
+      "description",
+      "details",
+      "action",
+      "secondaryAction",
+      "icon"
+    ],
+    "relatedComponents": ["StateView", "Alert", "PageHeader"],
+    "source": "packages/ui/src/module-state.tsx",
+    "displayName": "Module State",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "not-available",
+      "not-entitled",
+      "setup-required",
+      "provisioning",
+      "resuming",
+      "suspended",
+      "dependency-unavailable",
+      "permission-denied",
+      "out-of-scope",
+      "read-only",
+      "action-required"
+    ],
+    "accessibility": [
+      "Expose the state label, heading, explanation, and consumer-provided actions in document order.",
+      "Do not communicate module state with color alone.",
+      "Let the consumer control live-region behavior for asynchronous lifecycle transitions."
+    ],
+    "responsive": [
+      "Uses the shared responsive shell behavior: inline on desktop, wrapping on tablet, and stacked actions on mobile.",
+      "Keeps consumer actions at the shared touch-target minimum without adding renderer-owned handlers."
+    ],
+    "motion": [
+      "Uses shared surface transition tokens when the state changes.",
+      "Respects prefers-reduced-motion through the shared token layer."
+    ],
+    "tokens": [
+      "surface-subtle",
+      "border",
+      "radius-card",
+      "shadow-card",
+      "primary",
+      "info",
+      "warning",
+      "danger",
+      "touch-target-min",
+      "focus-ring"
+    ],
+    "api": [
+      {
+        "name": "state",
+        "type": "ModuleStateId",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Selects the presentation contract; the component does not evaluate its meaning."
+      },
+      {
+        "name": "title",
+        "type": "ReactNode",
+        "defaultValue": "state contract default",
+        "required": false,
+        "description": "Consumer-owned heading override."
+      },
+      {
+        "name": "description",
+        "type": "ReactNode",
+        "defaultValue": "state contract default",
+        "required": false,
+        "description": "Consumer-owned explanation of the current module state."
+      },
+      {
+        "name": "details",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Optional consumer-owned supporting context."
+      },
+      {
+        "name": "action",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Consumer-provided primary action; no handler is inferred."
+      },
+      {
+        "name": "secondaryAction",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Consumer-provided secondary or recovery action."
+      },
+      {
+        "name": "icon",
+        "type": "IconName",
+        "defaultValue": "state contract icon",
+        "required": false,
+        "description": "Optional semantic icon override."
+      }
+    ],
+    "example": "<ModuleState state=\"setup-required\" action={<Button>Start setup</Button>} />",
+    "alternativeTo": [],
+    "composesWith": ["StateView", "Alert", "PageHeader"],
+    "usedByPatterns": [
+      "entity-list",
+      "entity-detail",
+      "entity-form",
+      "master-detail"
+    ]
   },
   "Skeleton": {
     "status": "implemented",

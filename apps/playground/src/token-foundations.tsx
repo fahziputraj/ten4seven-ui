@@ -23,7 +23,6 @@ import {
   Input,
   LineChart,
   MetricCard,
-  PageHeader,
   Table,
   TableBody,
   TableCell,
@@ -35,6 +34,7 @@ import {
   useTen4SevenTheme,
   useToast,
 } from "@ten4seven/ui";
+import { LibraryPageHeader } from "./library-page-header";
 
 type TokenRow = readonly [label: string, variable: string];
 type TokenValues = Record<string, string>;
@@ -869,10 +869,12 @@ export function TokensExplorer() {
   };
   return (
     <div className="library-page foundation-page" ref={root}>
-      <PageHeader
-        overline="Global foundation"
-        title="Tokens"
+      <LibraryPageHeader
+        count={`${FOUNDATION_FAMILIES.length} token families · active profile`}
         description="The shared language, measured in the active theme. Inspect meaning, resolved values and propagation from one place."
+        icon="tokens"
+        overline="Library · foundation tokens"
+        title="Tokens"
       />
       <nav aria-label="Token families" className="token-family-nav">
         {FOUNDATION_FAMILIES.map(([id, label]) => (

@@ -1,0 +1,16 @@
+{
+  "name": "@ten4seven/native",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@ten4seven/contracts": "workspace:*",
+    "@ten4seven/tokens": "workspace:*"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  }
+}

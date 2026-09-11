@@ -1,0 +1,148 @@
+- generic [ref=f10e5]:
+  - banner [ref=f10e6]:
+    - navigation "Primary navigation" [ref=f10e7]:
+      - generic [ref=f10e17]:
+        - strong [ref=f10e18]: ten4seven UI
+        - generic [ref=f10e19]: Toko penerbitan
+      - menubar "Navigation menu" [ref=f10e21]:
+        - menuitem "Buku" [ref=f10e22] [cursor=pointer]
+        - menuitem "Jelajahi" [ref=f10e24] [cursor=pointer]
+        - menuitem "Kolaborasi" [ref=f10e28] [cursor=pointer]
+      - generic [ref=f10e31]:
+        - button "Terbitkan" [ref=f10e32] [cursor=pointer]
+        - button "Buka keranjang" [ref=f10e40] [cursor=pointer]:
+          - generic [ref=f10e48]: Keranjang
+        - button "Akun" [ref=f10e49] [cursor=pointer]
+        - button "Open settings" [ref=f10e51] [cursor=pointer]
+  - main [ref=f10e56]:
+    - generic [ref=f10e57]:
+      - generic [ref=f10e59]:
+        - generic [ref=f10e60]: ten4seven UI · Katalog penerbitan
+        - heading "Buku untuk ide yang bertahan" [level=1] [ref=f10e61]
+        - paragraph [ref=f10e62]: Buku pilihan untuk manajemen, ilmu terapan, dan gagasan yang membantu pekerjaan sehari-hari bergerak maju.
+        - generic [ref=f10e63]:
+          - generic [ref=f10e64]:
+            - generic [ref=f10e70]: "10"
+            - generic [ref=f10e71]: judul
+          - generic [ref=f10e72]: Ebook, buku cetak, dan Google Play Books
+      - generic [ref=f10e73]:
+        - complementary "Filter katalog" [ref=f10e74]:
+          - generic [ref=f10e75]:
+            - generic [ref=f10e76]:
+              - heading "Filter buku" [level=2] [ref=f10e77]
+              - text: 1 filter aktif
+            - button "Hapus" [ref=f10e627] [cursor=pointer]
+          - generic [ref=f10e78]:
+            - generic [ref=f10e79]:
+              - generic [ref=f10e80]: Jelajahi kategori
+              - navigation "Jelajahi kategori buku" [ref=f10e87]:
+                - button "Semua buku" [ref=f10e88] [cursor=pointer]
+                - button "Manajemen" [pressed] [ref=f10e90] [cursor=pointer]
+                - button "Akuntansi" [ref=f10e92] [cursor=pointer]
+                - button "Pendidikan" [ref=f10e94] [cursor=pointer]
+                - button "Kesehatan" [ref=f10e96] [cursor=pointer]
+                - button "Teknologi Informasi" [ref=f10e98] [cursor=pointer]
+                - button "Hukum" [ref=f10e100] [cursor=pointer]
+                - button "Administrasi Publik" [ref=f10e102] [cursor=pointer]
+            - generic [ref=f10e104]:
+              - generic [ref=f10e105]: Penulis
+              - generic [ref=f10e112]:
+                - generic [ref=f10e113]: Saring berdasarkan penulis
+                - textbox "Saring berdasarkan penulis" [ref=f10e115]:
+                  - /placeholder: Cari penulis
+            - group "Rentang harga" [ref=f10e116]:
+              - generic [ref=f10e123]:
+                - generic [ref=f10e124] [cursor=pointer]:
+                  - radio "Semua harga" [ref=f10e125]
+                  - generic [ref=f10e128]: Semua harga
+                - generic [ref=f10e129] [cursor=pointer]:
+                  - radio "Di bawah Rp80.000" [ref=f10e130]
+                  - generic [ref=f10e133]: Di bawah Rp80.000
+                - generic [ref=f10e134] [cursor=pointer]:
+                  - radio "Rp80.000–Rp100.000" [ref=f10e135]
+                  - generic [ref=f10e138]: Rp80.000–Rp100.000
+                - generic [ref=f10e139] [cursor=pointer]:
+                  - radio "Di atas Rp100.000" [ref=f10e140]
+                  - generic [ref=f10e143]: Di atas Rp100.000
+            - group "Ketersediaan" [ref=f10e144]:
+              - generic [ref=f10e153]:
+                - generic [ref=f10e154] [cursor=pointer]:
+                  - checkbox "Google Play Books" [ref=f10e155]
+                  - generic [ref=f10e159]: Google Play Books
+                - generic [ref=f10e160] [cursor=pointer]:
+                  - checkbox "Ebook" [ref=f10e161]
+                  - generic [ref=f10e165]: Ebook
+                - generic [ref=f10e166] [cursor=pointer]:
+                  - checkbox "Buku cetak" [ref=f10e167]
+                  - generic [ref=f10e171]: Buku cetak
+            - button "Hapus filter" [ref=f10e629] [cursor=pointer]
+        - region [ref=f10e172]:
+          - generic [ref=f10e173]:
+            - generic [ref=f10e174]:
+              - generic [ref=f10e175]: Cari buku
+              - searchbox "Cari buku" [ref=f10e177]
+            - generic [ref=f10e178]:
+              - generic [ref=f10e179]:
+                - generic [ref=f10e180]: Urutkan
+                - generic [ref=f10e181]:
+                  - combobox [aria-hidden] [ref=f10e182]
+                  - button "Urutkan" [ref=f10e183] [cursor=pointer]:
+                    - generic [ref=f10e184]: Unggulan
+              - group "Tampilan katalog" [ref=f10e187]:
+                - generic [ref=f10e188]: Tampilan
+                - button "Tampilan grid" [pressed] [ref=f10e189] [cursor=pointer]:
+                  - generic [ref=f10e195]: Grid
+                - button "Tampilan daftar" [ref=f10e196] [cursor=pointer]:
+                  - generic [ref=f10e203]: Daftar
+          - generic [ref=f10e204]:
+            - generic [ref=f10e205]:
+              - heading "Buku dalam koleksi" [level=2] [ref=f10e206]
+              - text: Edisi dengan informasi format dan akses yang jelas.
+            - generic [ref=f10e207]: 1 judul
+          - article [ref=f10e209] [cursor=pointer]:
+            - generic [ref=f10e210]:
+              - generic [ref=f10e211]:
+                - img "Sampul Manajemen Strategis untuk Organisasi Modern" [ref=f10e213]
+                - button "Simpan Manajemen Strategis untuk Organisasi Modern" [ref=f10e214]
+              - generic [ref=f10e219]: Pilihan editor
+            - generic [ref=f10e222]:
+              - generic [ref=f10e223]: Manajemen
+              - heading "Manajemen Strategis untuk Organisasi Modern" [level=2] [ref=f10e224]
+              - generic [ref=f10e225]: Rina Kartika
+              - generic [ref=f10e234]:
+                - generic [ref=f10e235]: Google Play Books
+                - generic [ref=f10e236]:
+                  - text: •
+                  - generic "Rating 4.9 dari 5" [ref=f10e237]: "4.9"
+              - strong [ref=f10e245]: Rp 95.000
+              - generic [ref=f10e246]:
+                - button "Lihat detail" [ref=f10e247]
+                - button "Tambah ke keranjang" [ref=f10e253]
+          - navigation "Pagination" [ref=f10e615]:
+            - generic [ref=f10e616]: Showing 1–1 of 1
+            - generic [ref=f10e617]:
+              - button "Previous page" [disabled] [ref=f10e618]:
+                - generic [ref=f10e621]: Previous
+              - generic [ref=f10e622]: Page 1 of 1
+              - button "Next page" [disabled] [ref=f10e623]:
+                - generic [ref=f10e624]: Next
+    - dialog [ref=f10e635]:
+      - complementary [ref=f10e636]:
+        - generic [ref=f10e637]:
+          - generic [ref=f10e638]:
+            - heading "Manajemen Strategis untuk Organisasi Modern" [level=2] [ref=f10e639]
+            - paragraph [ref=f10e640]: Rina Kartika · Manajemen · Google Play Books
+          - button "Close detail drawer" [active] [ref=f10e641] [cursor=pointer]
+        - generic [ref=f10e645]:
+          - generic [ref=f10e646]:
+            - img "Sampul Manajemen Strategis untuk Organisasi Modern" [ref=f10e648]
+            - button "Simpan Manajemen Strategis untuk Organisasi Modern" [ref=f10e649] [cursor=pointer]
+          - generic [ref=f10e654]:
+            - paragraph [ref=f10e655]: Edisi pilihan dari ten4seven UI untuk pembaca profesional dan komunitas belajar.
+            - generic [ref=f10e656]:
+              - text: Google Play Books
+              - generic [ref=f10e657]: "4.9"
+            - strong [ref=f10e663]: Rp 95.000
+          - generic [ref=f10e664]:
+            - button "Tambah ke keranjang" [ref=f10e665] [cursor=pointer]
+            - button "Tutup detail" [ref=f10e674] [cursor=pointer]
