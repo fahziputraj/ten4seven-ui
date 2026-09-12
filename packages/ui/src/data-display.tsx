@@ -6,6 +6,7 @@ import {
   useState,
   type CSSProperties,
   type HTMLAttributes,
+  type KeyboardEvent,
   type ReactNode,
   type TableHTMLAttributes,
   type TdHTMLAttributes,
@@ -439,6 +440,7 @@ export function MilestoneTracker({
     items.find((item) => item.id === activeId) ?? initialItem;
   const detailId = `${trackerId}-details`;
   const trackerRef = useRef<HTMLElement | null>(null);
+  const milestoneButtonRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const detailTriggerRef = useRef<HTMLButtonElement | null>(null);
   const [trackerVisible, setTrackerVisible] = useState(false);
   const [detailDrawerOpen, setDetailDrawerOpen] = useState(false);
@@ -461,6 +463,28 @@ export function MilestoneTracker({
     window.requestAnimationFrame(() =>
       detailTriggerRef.current?.focus({ preventScroll: true }),
     );
+  };
+
+  const handleMilestoneKeyDown = (
+    event: KeyboardEvent<HTMLButtonElement>,
+    index: number,
+  ) => {
+    if (!items.length) return;
+    let nextIndex = index;
+    if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+      nextIndex = Math.min(index + 1, items.length - 1);
+    } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+      nextIndex = Math.max(index - 1, 0);
+    } else if (event.key === "Home") {
+      nextIndex = 0;
+    } else if (event.key === "End") {
+      nextIndex = items.length - 1;
+    } else {
+      return;
+    }
+
+    event.preventDefault();
+    milestoneButtonRefs.current[nextIndex]?.focus();
   };
 
   useEffect(() => {
@@ -516,6 +540,10 @@ export function MilestoneTracker({
                   aria-pressed={isSelected}
                   className="t7-milestone-button"
                   onClick={(event) => selectItem(item.id, event.currentTarget)}
+                  onKeyDown={(event) => handleMilestoneKeyDown(event, index)}
+                  ref={(element) => {
+                    milestoneButtonRefs.current[index] = element;
+                  }}
                   type="button"
                 >
                   <span className="t7-milestone-stage-header">
@@ -579,6 +607,16 @@ export function MilestoneTracker({
           })}
         </ol>
       </div>
+      {items.length === 0 ? (
+        <div aria-live="polite" className="t7-milestone-empty" role="status">
+          <Typography as="strong" typeRole="label">
+            No milestones available
+          </Typography>
+          <Typography as="p" typeRole="body-sm">
+            The consumer has not supplied an ordered progress path yet.
+          </Typography>
+        </div>
+      ) : null}
       {detailMode === "inline" && selectedItem ? (
         <MilestoneDetail id={detailId} item={selectedItem} />
       ) : null}
@@ -994,7 +1032,12 @@ export function DataTableColumnPicker<Row>({
     [columns],
   );
   return (
-    <div {...props} className={cx("t7-column-picker", className)}>
+    <div
+      {...props}
+      aria-label={props["aria-label"] ?? "Table columns"}
+      className={cx("t7-column-picker", className)}
+      role="group"
+    >
       <span>Columns</span>
       <div>
         {entries.map((column) => (

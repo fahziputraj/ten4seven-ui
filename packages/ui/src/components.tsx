@@ -13,7 +13,7 @@ import {
   type SelectHTMLAttributes,
 } from "react";
 import type * as React from "react";
-import type { SurfaceExpression } from "@ten4seven/contracts";
+import type { MeasureIntent, SurfaceExpression } from "@ten4seven/contracts";
 
 import { T7Icon, type IconName } from "@ten4seven/icons";
 import { overlayGeometry, type TypographyRole } from "@ten4seven/tokens";
@@ -446,10 +446,12 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   hint?: string;
   error?: string;
   leadingIcon?: IconName;
+  /** Optional semantic width intent; controls remain fluid below that bound. */
+  measure?: MeasureIntent;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
-  { className, error, hint, id, label, leadingIcon, ...props },
+  { className, error, hint, id, label, leadingIcon, measure, ...props },
   ref,
 ) {
   const generatedId = useId();
@@ -458,7 +460,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   const describedBy = error || hint ? hintId : props["aria-describedby"];
 
   return (
-    <label className="t7-field" htmlFor={inputId}>
+    <label className="t7-field" data-t7-measure={measure} htmlFor={inputId}>
       {label ? <span className="t7-field-label">{label}</span> : null}
       <span className={cx("t7-input-wrap", error && "is-error")}>
         {leadingIcon ? (
@@ -563,6 +565,8 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   error?: string;
   label?: string;
   hint?: string;
+  /** Optional semantic width intent; the popup follows the trigger. */
+  measure?: MeasureIntent;
 }
 
 export function Select({
@@ -572,6 +576,7 @@ export function Select({
   hint,
   id,
   label,
+  measure,
   ...props
 }: SelectProps) {
   const generatedId = useId();
@@ -648,7 +653,11 @@ export function Select({
   }
 
   return (
-    <div className="t7-field t7-select-field" ref={rootRef}>
+    <div
+      className="t7-field t7-select-field"
+      data-t7-measure={measure}
+      ref={rootRef}
+    >
       {label ? (
         <span className="t7-field-label" id={labelId}>
           {label}
@@ -807,6 +816,8 @@ export interface DataTableColumn<Row> {
   key: string;
   header: string;
   align?: "left" | "right";
+  /** Semantic visibility order used by adaptive renderers; not a pixel width. */
+  priority?: "primary" | "secondary" | "tertiary" | "detailOnly";
   /** A required column cannot be hidden through a visibility control. */
   required?: boolean;
   sortable?: boolean;
@@ -833,13 +844,22 @@ export interface DataTableProps<
   density?: DataTableDensity;
   rows: Row[];
   rowKey: (row: Row) => string;
+  /** Supplies a readable row name for selection controls when row keys are opaque. */
+  rowLabel?: (row: Row) => string;
   responsive?: DataTableResponsive;
   emptyMessage?: string;
   emptyState?: ReactNode;
+  filteredEmptyMessage?: ReactNode;
+  hasActiveFilter?: boolean;
   error?: ReactNode;
+  footer?: ReactNode;
+  loadingMore?: boolean;
+  endOfResults?: boolean;
+  endOfResultsMessage?: ReactNode;
   loading?: boolean;
   caption?: string;
   selectable?: boolean;
+  selectionMode?: "none" | "single" | "multiple";
   selectedRowKeys?: string[];
   onSelectionChange?: (keys: string[]) => void;
   onRowClick?: (row: Row) => void;
@@ -854,11 +874,19 @@ export function DataTable<Row>({
   density,
   emptyMessage = "No records yet.",
   emptyState,
+  endOfResults = false,
+  endOfResultsMessage = "End of results.",
   error,
+  filteredEmptyMessage = "No results match the current filter.",
+  footer,
+  hasActiveFilter = false,
   loading = false,
+  loadingMore = false,
   rows,
   rowKey,
+  rowLabel,
   responsive = "scroll",
+  selectionMode,
   selectable = false,
   selectedRowKeys = [],
   onRowClick,
@@ -873,13 +901,22 @@ export function DataTable<Row>({
   );
   const visibleKeys = rows.map(rowKey);
   const selectedSet = new Set(selectedRowKeys);
+  const tableLabel = caption ?? "Data table";
+  const resolvedSelectionMode = selectionMode ?? (selectable ? "multiple" : "none");
+  const isSelectable = resolvedSelectionMode !== "none";
+  const isMultipleSelection = resolvedSelectionMode === "multiple";
+  const selectionName = useId();
   const allVisibleSelected =
     visibleKeys.length > 0 && visibleKeys.every((key) => selectedSet.has(key));
   const someVisibleSelected = visibleKeys.some((key) => selectedSet.has(key));
-  const selectionColumnCount = selectable ? 1 : 0;
+  const selectionColumnCount = isSelectable ? 1 : 0;
 
   function updateSelection(key: string, checked: boolean) {
     if (!onSelectionChange) return;
+    if (resolvedSelectionMode === "single") {
+      onSelectionChange(checked ? [key] : []);
+      return;
+    }
     const next = new Set(selectedRowKeys);
     if (checked) next.add(key);
     else next.delete(key);
@@ -905,10 +942,11 @@ export function DataTable<Row>({
       data-density={density}
       data-responsive={responsive}
     >
-      <table aria-label={caption} className="t7-table">
+      <table className="t7-table">
+        <caption className="t7-visually-hidden">{tableLabel}</caption>
         <thead>
           <tr>
-            {selectable ? (
+            {isMultipleSelection ? (
               <th className="t7-table-checkbox-cell" scope="col">
                 <input
                   aria-label="Select all records"
@@ -939,11 +977,13 @@ export function DataTable<Row>({
                 }
                 data-align={column.align ?? "left"}
                 data-column-key={column.key}
+                data-priority={column.priority}
                 data-sticky={column.sticky}
                 scope="col"
               >
                 {column.sortable && onSort ? (
                   <button
+                    aria-label={`Sort by ${column.header}`}
                     className="t7-table-sort-button"
                     onClick={() => onSort(column.key)}
                     type="button"
@@ -966,6 +1006,7 @@ export function DataTable<Row>({
           {loading ? (
             <tr>
               <td
+                aria-live="polite"
                 className="t7-table-state"
                 colSpan={visibleColumns.length + selectionColumnCount}
               >
@@ -976,7 +1017,9 @@ export function DataTable<Row>({
           ) : error ? (
             <tr>
               <td
+                aria-live="assertive"
                 className="t7-table-state is-error"
+                role="alert"
                 colSpan={visibleColumns.length + selectionColumnCount}
               >
                 {error}
@@ -985,10 +1028,12 @@ export function DataTable<Row>({
           ) : rows.length === 0 ? (
             <tr>
               <td
+                aria-live="polite"
                 className="t7-table-state"
                 colSpan={visibleColumns.length + selectionColumnCount}
               >
-                {emptyState ?? emptyMessage}
+                {emptyState ??
+                  (hasActiveFilter ? filteredEmptyMessage : emptyMessage)}
               </td>
             </tr>
           ) : (
@@ -1033,17 +1078,18 @@ export function DataTable<Row>({
                   }
                   tabIndex={onRowClick ? 0 : undefined}
                 >
-                  {selectable ? (
+                  {isSelectable ? (
                     <td className="t7-table-checkbox-cell">
                       <input
-                        aria-label={`Select ${key}`}
+                        aria-label={`Select ${rowLabel?.(row) ?? key}`}
                         checked={selectedSet.has(key)}
                         className="t7-checkbox"
                         onChange={(event) =>
                           updateSelection(key, event.target.checked)
                         }
                         onClick={(event) => event.stopPropagation()}
-                        type="checkbox"
+                        name={resolvedSelectionMode === "single" ? selectionName : undefined}
+                        type={resolvedSelectionMode === "single" ? "radio" : "checkbox"}
                       />
                     </td>
                   ) : null}
@@ -1058,6 +1104,7 @@ export function DataTable<Row>({
                         key={column.key}
                         data-align={column.align ?? "left"}
                         data-column-key={column.key}
+                        data-priority={column.priority}
                         data-sticky={column.sticky}
                         data-overflow={column.overflow}
                       >
@@ -1076,8 +1123,8 @@ export function DataTable<Row>({
         </tbody>
       </table>
       {responsive === "stacked" ? (
-        <div aria-label={caption} className="t7-table-stacked" role="list">
-          {selectable ? (
+        <div aria-label={tableLabel} className="t7-table-stacked" role="list">
+          {isMultipleSelection ? (
             <div className="t7-table-stacked-select-all">
               <input
                 aria-label="Select all records"
@@ -1104,7 +1151,8 @@ export function DataTable<Row>({
             <div className="t7-table-stacked-state is-error">{error}</div>
           ) : rows.length === 0 ? (
             <div className="t7-table-stacked-state">
-              {emptyState ?? emptyMessage}
+              {emptyState ??
+                (hasActiveFilter ? filteredEmptyMessage : emptyMessage)}
             </div>
           ) : (
             rows.map((row) => {
@@ -1150,16 +1198,17 @@ export function DataTable<Row>({
                   role="listitem"
                   tabIndex={onRowClick ? 0 : undefined}
                 >
-                  {selectable ? (
+                  {isSelectable ? (
                     <input
-                      aria-label={`Select ${key}`}
+                      aria-label={`Select ${rowLabel?.(row) ?? key}`}
                       checked={selectedSet.has(key)}
                       className="t7-checkbox t7-table-stacked-checkbox"
                       onChange={(event) =>
                         updateSelection(key, event.target.checked)
                       }
                       onClick={(event) => event.stopPropagation()}
-                      type="checkbox"
+                      name={resolvedSelectionMode === "single" ? selectionName : undefined}
+                      type={resolvedSelectionMode === "single" ? "radio" : "checkbox"}
                     />
                   ) : null}
                   <div className="t7-table-stacked-fields">
@@ -1169,6 +1218,7 @@ export function DataTable<Row>({
                         className="t7-table-stacked-field"
                         data-align={column.align ?? "left"}
                         data-column-key={column.key}
+                        data-priority={column.priority}
                       >
                         <span className="t7-table-stacked-label">
                           {column.header}
@@ -1193,47 +1243,65 @@ export function DataTable<Row>({
           )}
         </div>
       ) : null}
+      {loadingMore ? (
+        <div className="t7-table-stacked-state">
+          <span className="t7-state-indicator" aria-hidden="true" />
+          Loading more records…
+        </div>
+      ) : null}
+      {endOfResults && rows.length > 0 && !loadingMore ? (
+        <div className="t7-table-stacked-state">{endOfResultsMessage}</div>
+      ) : null}
+      {footer ? <div className="t7-table-footer">{footer}</div> : null}
     </div>
   );
 }
 
-export interface ModalProps {
+export interface DialogProps {
   open: boolean;
-  title: string;
-  description?: string;
+  title: ReactNode;
+  description?: ReactNode;
   children: ReactNode;
   onClose: () => void;
   initialFocus?: React.RefObject<HTMLElement | null>;
   /** Component-owned modal geometry; the default preserves the standard dialog. */
   size?: "sm" | "md" | "lg" | "command";
+  closeLabel?: string;
+  /** AlertDialog and other consequential tasks can require explicit actions. */
+  dismissible?: boolean;
 }
 
-export function Modal({
+export function Dialog({
+  closeLabel = "Close dialog",
   children,
   description,
+  dismissible = true,
   initialFocus,
   onClose,
   open,
   size = "md",
   title,
-}: ModalProps) {
+}: DialogProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
   const descriptionId = `${titleId}-description`;
-  const dialogRef = useNativeDialog(open, onClose, initialFocus ?? closeRef);
+  const dialogRef = useNativeDialog(
+    open,
+    onClose,
+    initialFocus ?? (dismissible ? closeRef : undefined),
+    dismissible,
+  );
 
   return (
     <dialog
       ref={dialogRef}
+      aria-modal="true"
       aria-describedby={description ? descriptionId : undefined}
       aria-labelledby={titleId}
       className="t7-modal-backdrop"
+      data-overlay-kind="dialog"
       onClick={(event) => {
-        if (event.target === event.currentTarget) onClose();
-      }}
-      onKeyDown={(event) => {
-        if (event.key === "Escape") {
-          event.preventDefault();
+        if (dismissible && event.target === event.currentTarget) {
           onClose();
         }
       }}
@@ -1250,20 +1318,33 @@ export function Modal({
               </p>
             ) : null}
           </div>
-          <button
-            ref={closeRef}
-            aria-label="Close dialog"
-            className="t7-icon-button"
-            onClick={onClose}
-            type="button"
-          >
-            <T7Icon name="close" size={18} />
-          </button>
+          {dismissible ? (
+            <button
+              ref={closeRef}
+              aria-label={closeLabel}
+              className="t7-icon-button"
+              onClick={onClose}
+              type="button"
+            >
+              <T7Icon name="close" size={18} />
+            </button>
+          ) : null}
         </div>
         <div className="t7-modal-body">{children}</div>
       </section>
     </dialog>
   );
+}
+
+export interface ModalProps extends DialogProps {
+  /** Modal is retained as a compatibility name; Dialog is canonical. */
+  title: string;
+  description?: string;
+}
+
+/** @deprecated Use Dialog. Kept as a compatibility wrapper for existing consumers. */
+export function Modal(props: ModalProps) {
+  return <Dialog {...props} />;
 }
 
 export interface AppShellProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -1704,7 +1785,7 @@ export function FilterToolbar({
   return (
     <div
       {...props}
-      aria-label="List filters"
+      aria-label={props["aria-label"] ?? "List filters"}
       className={cx("t7-filter-toolbar", className)}
       role="region"
     >
@@ -1743,9 +1824,12 @@ export function Pagination({
   total,
   ...props
 }: PaginationProps) {
-  const pageCount = Math.max(1, Math.ceil(total / pageSize));
-  const start = total === 0 ? 0 : (page - 1) * pageSize + 1;
-  const end = Math.min(page * pageSize, total);
+  const safePageSize = Math.max(1, pageSize);
+  const safeTotal = Math.max(0, total);
+  const pageCount = Math.max(1, Math.ceil(safeTotal / safePageSize));
+  const currentPage = Math.min(Math.max(1, page), pageCount);
+  const start = safeTotal === 0 ? 0 : (currentPage - 1) * safePageSize + 1;
+  const end = Math.min(currentPage * safePageSize, safeTotal);
 
   return (
     <nav
@@ -1759,22 +1843,22 @@ export function Pagination({
       <div className="t7-pagination-controls">
         <Button
           aria-label="Previous page"
-          disabled={page <= 1}
+          disabled={currentPage <= 1}
           intent="quiet"
-          onClick={() => onPageChange(Math.max(1, page - 1))}
+          onClick={() => onPageChange(Math.max(1, currentPage - 1))}
           size="sm"
           leadingIcon="arrowLeft"
         >
           Previous
         </Button>
         <Typography aria-live="polite" typeRole="caption">
-          Page {Math.min(page, pageCount)} of {pageCount}
+          Page {currentPage} of {pageCount}
         </Typography>
         <Button
           aria-label="Next page"
-          disabled={page >= pageCount}
+          disabled={currentPage >= pageCount}
           intent="quiet"
-          onClick={() => onPageChange(Math.min(pageCount, page + 1))}
+          onClick={() => onPageChange(Math.min(pageCount, currentPage + 1))}
           size="sm"
           trailingIcon="arrowRight"
         >
@@ -1840,7 +1924,7 @@ export interface DrawerProps {
   description?: ReactNode;
   children: ReactNode;
   onClose: () => void;
-  side?: "left" | "right";
+  side?: "left" | "right" | "top" | "bottom";
   initialFocus?: React.RefObject<HTMLElement | null>;
 }
 
@@ -1868,16 +1952,11 @@ export function Drawer({
       aria-describedby={description ? descriptionId : undefined}
       aria-labelledby={titleId}
       className="t7-drawer-backdrop"
+      data-overlay-kind="drawer"
       id={id}
       data-side={side}
       onClick={(event) => {
         if (event.target === event.currentTarget) onClose();
-      }}
-      onKeyDown={(event) => {
-        if (event.key === "Escape") {
-          event.preventDefault();
-          onClose();
-        }
       }}
     >
       <aside className={cx("t7-drawer", className)} data-side={side}>

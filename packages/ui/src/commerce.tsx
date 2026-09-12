@@ -6,6 +6,7 @@ import {
 } from "react";
 
 import { T7Icon } from "@ten4seven/icons";
+import type { MeasureIntent } from "@ten4seven/contracts";
 
 import { IconButton } from "./actions";
 import { Button, type ButtonProps, Typography } from "./components";
@@ -307,6 +308,9 @@ export function OrderSummary({
 
 export interface ProductGridProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
+  /** Semantic minimum useful item measure for the intrinsic grid. */
+  minItemMeasure?: Exclude<MeasureIntent, "fill">;
+  /** @deprecated Use minItemMeasure so the grid remains token-owned. */
   minCardWidth?: number;
 }
 
@@ -314,7 +318,8 @@ export interface ProductGridProps extends HTMLAttributes<HTMLDivElement> {
 export function ProductGrid({
   children,
   className,
-  minCardWidth = 172,
+  minCardWidth,
+  minItemMeasure = "compact",
   style,
   ...props
 }: ProductGridProps) {
@@ -322,9 +327,12 @@ export function ProductGrid({
     <div
       {...props}
       className={cx("t7-product-grid", className)}
+      data-t7-item-measure={minItemMeasure}
       style={
         {
-          "--t7-product-grid-min": `${minCardWidth}px`,
+          ...(minCardWidth === undefined
+            ? {}
+            : { "--t7-product-grid-min": `${minCardWidth}px` }),
           ...style,
         } as CSSProperties
       }

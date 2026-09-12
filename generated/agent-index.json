@@ -5,6 +5,7 @@
     "themeProfile": "packages/contracts/src/theme-profile.ts",
     "foundation": "packages/contracts/src/foundation.ts",
     "themeRecipes": "packages/contracts/src/theme-recipe.ts",
+    "themeStudio": "packages/contracts/src/theme-studio.ts",
     "platformNeutral": "packages/contracts/src/platform-neutral.ts",
     "brandAdapter": "packages/contracts/src/brand-profile.ts",
     "dtcgTokenExport": "packages/tokens/generated/tokens.dtcg.json",
@@ -17,10 +18,26 @@
     "moduleStates": "packages/contracts/src/module-state.ts",
     "controlPlanePatterns": "packages/contracts/src/saas-control-plane.ts",
     "nativeMobile": "packages/contracts/src/native-mobile.ts",
-    "erpDensity": "packages/contracts/src/erp-density.ts"
+    "nativeExpo": "packages/contracts/src/native-expo.ts",
+    "componentPlatform": "packages/contracts/src/component-platform.ts",
+    "inputContracts": "packages/contracts/src/input-contracts.ts",
+    "navigationOverlayFeedback": "packages/contracts/src/navigation-overlay-feedback.ts",
+    "dataCollections": "packages/contracts/src/data-collections.ts",
+    "visualizationSchedulingMaps": "packages/contracts/src/visualization.ts",
+    "erpDensity": "packages/contracts/src/erp-density.ts",
+    "editorBuilderAi": "packages/contracts/src/editor-builder-ai.ts",
+    "workflowProductivity": "packages/contracts/src/workflow-productivity.ts",
+    "composition": "packages/contracts/src/composition.ts",
+    "componentCorpusLedger": "scripts/component-corpus-ledger.mjs"
   },
   "defaultRetrieval": [
     "generated/index.json",
+    "generated/composition.compact.json",
+    "generated/composition.json",
+    "generated/input-contracts.json",
+    "generated/navigation-overlay-feedback.json",
+    "generated/data-collections.json",
+    "generated/visualization-scheduling-maps.json",
     "generated/recipes/{recipe}.json",
     "generated/components/{componentId}.json"
   ],
@@ -69,6 +86,11 @@
       "tokenExport": "generated/tokens.dtcg.json",
       "guidance": "docs/THEME_RECIPES.md"
     },
+    "theme-studio": {
+      "source": "packages/contracts/src/theme-studio.ts",
+      "guidance": "docs/aapm/T7-COMP-EXP-Q02-DYNAMIC-THEME-STUDIO-EVIDENCE.md",
+      "reference": "/theme-studio"
+    },
     "contract-plane": {
       "source": "generated/platform-neutral.json",
       "guidance": "packages/contracts/src/platform-neutral.ts",
@@ -94,17 +116,79 @@
       "guidance": "packages/contracts/src/native-mobile.ts",
       "reference": "packages/native/README.md"
     },
+    "native-expo": {
+      "source": "generated/native-expo.json",
+      "guidance": "packages/contracts/src/native-expo.ts",
+      "reference": "apps/native-lab"
+    },
+    "component-contract-plane": {
+      "source": "generated/component-contract-plane.json",
+      "guidance": "packages/contracts/src/component-platform.ts",
+      "reference": "/components"
+    },
+    "component-corpus": {
+      "source": "generated/component-corpus-ledger.json",
+      "generator": "pnpm corpus:generate",
+      "guidance": "docs/aapm/T7-UNIVERSAL-HARDENING-U13-CORPUS-EXPANSION-EVIDENCE.md"
+    },
+    "final-acceptance": {
+      "source": "generated/index.json",
+      "verifier": "pnpm test:final-ai-acceptance",
+      "guidance": "docs/aapm/T7-UNIVERSAL-HARDENING-U14-FINAL-ACCEPTANCE-EVIDENCE.md"
+    },
+    "input-contracts": {
+      "source": "generated/input-contracts.json",
+      "guidance": "packages/contracts/src/input-contracts.ts",
+      "reference": "/components/forms"
+    },
+    "navigation-overlay-feedback": {
+      "source": "generated/navigation-overlay-feedback.json",
+      "guidance": "packages/contracts/src/navigation-overlay-feedback.ts",
+      "reference": "/component-lab#component-lab-navigation-overlay-feedback"
+    },
+    "data-collections": {
+      "source": "generated/data-collections.json",
+      "guidance": "packages/contracts/src/data-collections.ts",
+      "reference": "/components/tables"
+    },
+    "visualization-scheduling-maps": {
+      "source": "generated/visualization-scheduling-maps.json",
+      "guidance": "packages/contracts/src/visualization.ts",
+      "reference": "/components/charts-data-visualization"
+    },
     "erp-density": {
       "source": "generated/erp-density.json",
       "guidance": "packages/contracts/src/erp-density.ts",
       "reference": "/erp-reference",
       "find": "t7ui find \"ERP dense table\""
+    },
+    "workflow-productivity": {
+      "source": "generated/workflow-productivity.json",
+      "guidance": "packages/contracts/src/workflow-productivity.ts",
+      "reference": "/component-lab#component-lab-workflow"
+    },
+    "editors-builders-ai": {
+      "source": "generated/editor-builder-ai.json",
+      "guidance": "packages/contracts/src/editor-builder-ai.ts",
+      "reference": "/component-lab#component-lab-editors-builders-ai"
+    },
+    "composition": {
+      "source": "generated/composition.json",
+      "compact": "generated/composition.compact.json",
+      "guidance": "packages/contracts/src/composition.ts",
+      "reference": "/blocks",
+      "recipes": "/recipes"
+    },
+    "product-profiles": {
+      "source": "generated/composition.json",
+      "guidance": "packages/contracts/src/brand-profile.ts",
+      "reference": "/theme-studio"
     }
   },
   "metrics": {
-    "fullCatalogBytes": 333213,
-    "compactProjectionBytes": 198968,
+    "fullCatalogBytes": 394398,
+    "compactProjectionBytes": 294181,
     "selectiveRecipeShardBytes": 43720,
-    "selectiveComponentShardBytes": 261580
+    "selectiveComponentShardBytes": 743125
   }
 }

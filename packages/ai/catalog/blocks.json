@@ -394,5 +394,1756 @@
     "source": "packages/ui/src/blocks.tsx",
     "displayName": "Public Footer",
     "example": "<PublicFooter brand={brand} groups={groups} />"
+  },
+  "public-shell-navigation": {
+    "category": "Navigation",
+    "purpose": "Frame a public or content-led surface with a clear navigation contract and a quiet supporting footer.",
+    "useWhen": [
+      "Frame a public or content-led surface with a clear navigation contract and a quiet supporting footer."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["PublicShell", "NavigationMenu", "Typography"],
+    "optionalComponents": ["TopNavigation", "Button"],
+    "contentSlots": ["brand", "navigation", "actions", "content"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["marketing-home", "content-list"],
+    "variants": ["navigation-menu", "announcement-led"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Public Shell Navigation",
+    "example": "<Q12BlockComposition family=\"Public / marketing\">…</Q12BlockComposition>",
+    "family": "Public / marketing"
+  },
+  "hero-progress-ring": {
+    "category": "Hero",
+    "purpose": "Lead with one proposition while a bounded progress signal explains the next stage.",
+    "useWhen": [
+      "Lead with one proposition while a bounded progress signal explains the next stage."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Typography", "Button", "Card"],
+    "optionalComponents": ["Progress", "MediaFrame"],
+    "contentSlots": ["eyebrow", "title", "description", "progress", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["marketing-home", "report"],
+    "variants": ["centered-progress", "split-progress"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Hero With Progress Ring",
+    "example": "<Q12BlockComposition family=\"Public / marketing\">…</Q12BlockComposition>",
+    "family": "Public / marketing"
+  },
+  "hero-kanban-preview": {
+    "category": "Hero",
+    "purpose": "Use a restrained workflow preview to make a product proposition concrete without implementing a second board.",
+    "useWhen": [
+      "Use a restrained workflow preview to make a product proposition concrete without implementing a second board."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Typography", "Button", "Card"],
+    "optionalComponents": ["MediaFrame", "MilestoneTracker"],
+    "contentSlots": [
+      "title",
+      "description",
+      "preview",
+      "primaryAction",
+      "trust"
+    ],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["marketing-home", "process-workspace"],
+    "variants": ["split-board", "media-right"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Hero With Kanban Preview",
+    "example": "<Q12BlockComposition family=\"Public / marketing\">…</Q12BlockComposition>",
+    "family": "Public / marketing"
+  },
+  "feature-proof-grid": {
+    "category": "Features",
+    "purpose": "Explain a small capability set with evidence-led cards and one clear supporting action.",
+    "useWhen": [
+      "Explain a small capability set with evidence-led cards and one clear supporting action."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Typography", "Card", "Button"],
+    "optionalComponents": ["MediaFrame", "ChartPanel"],
+    "contentSlots": ["title", "description", "items", "leadProof", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["marketing-home", "content-list"],
+    "variants": ["three-up", "lead-and-list"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Feature Proof Grid",
+    "example": "<Q12BlockComposition family=\"Public / marketing\">…</Q12BlockComposition>",
+    "family": "Public / marketing"
+  },
+  "trust-outcomes": {
+    "category": "Social proof",
+    "purpose": "Pair named proof points with concise outcomes so trust is specific rather than decorative.",
+    "useWhen": [
+      "Pair named proof points with concise outcomes so trust is specific rather than decorative."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Typography", "Card", "Button"],
+    "optionalComponents": ["MediaFrame"],
+    "contentSlots": ["title", "items", "attribution", "action"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["marketing-home", "report"],
+    "variants": ["outcomes", "proof-and-quote"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Trust Outcomes",
+    "example": "<Q12BlockComposition family=\"Public / marketing\">…</Q12BlockComposition>",
+    "family": "Public / marketing"
+  },
+  "campaign-launch": {
+    "category": "Announcement",
+    "purpose": "Communicate a launch or time-bounded update with one useful next step.",
+    "useWhen": [
+      "Communicate a launch or time-bounded update with one useful next step."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Typography", "Button"],
+    "optionalComponents": ["IconButton", "MediaFrame"],
+    "contentSlots": ["message", "context", "action", "dismiss"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["marketing-home", "content-detail"],
+    "variants": ["launch", "promotion"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Campaign Launch",
+    "example": "<Q12BlockComposition family=\"Public / marketing\">…</Q12BlockComposition>",
+    "family": "Public / marketing"
+  },
+  "content-reading": {
+    "category": "Content",
+    "purpose": "Give long-form or educational content a readable lead, metadata, and related action.",
+    "useWhen": [
+      "Give long-form or educational content a readable lead, metadata, and related action."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Typography", "Card", "MediaFrame"],
+    "optionalComponents": ["Carousel", "Button"],
+    "contentSlots": ["title", "meta", "summary", "media", "related"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["content-list", "content-detail", "ebook-reader"],
+    "variants": ["article", "guide", "chapter"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Content Reading",
+    "example": "<Q12BlockComposition family=\"Public / marketing\">…</Q12BlockComposition>",
+    "family": "Public / marketing"
+  },
+  "public-auth-entry": {
+    "category": "Features",
+    "purpose": "Present sign-in, registration, or recovery entry points as a focused public composition.",
+    "useWhen": [
+      "Present sign-in, registration, or recovery entry points as a focused public composition."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Card", "Input", "Button"],
+    "optionalComponents": ["Field", "Alert"],
+    "contentSlots": [
+      "title",
+      "fields",
+      "supportingCopy",
+      "primaryAction",
+      "recovery"
+    ],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["auth", "marketing-home"],
+    "variants": ["sign-in", "registration", "recovery"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Public Auth Entry",
+    "example": "<Q12BlockComposition family=\"Public / marketing\">…</Q12BlockComposition>",
+    "family": "Public / marketing"
+  },
+  "kpi-dashboard": {
+    "category": "Stats",
+    "purpose": "Compose a truthful operational signal surface from page context, KPI cards, and one bounded chart.",
+    "useWhen": [
+      "Compose a truthful operational signal surface from page context, KPI cards, and one bounded chart."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": [
+      "PageHeader",
+      "KPICluster",
+      "MetricCard",
+      "LineChart"
+    ],
+    "optionalComponents": ["FilterToolbar", "DataTable", "ActionFooter"],
+    "contentSlots": ["title", "summary", "metrics", "trend", "nextAction"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["dashboard", "report"],
+    "variants": ["signal-grid", "signal-and-table"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "KPI Dashboard",
+    "example": "<Q12BlockComposition family=\"Admin / application\">…</Q12BlockComposition>",
+    "family": "Admin / application"
+  },
+  "operations-control-tower": {
+    "category": "Features",
+    "purpose": "Keep exceptions, current load, and the next operational action visible in one application block.",
+    "useWhen": [
+      "Keep exceptions, current load, and the next operational action visible in one application block."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["PageHeader", "Card", "DataTable"],
+    "optionalComponents": ["KPICluster", "FilterToolbar", "DetailDrawer"],
+    "contentSlots": ["title", "context", "signals", "queue", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["control-tower", "dashboard"],
+    "variants": ["queue-led", "signal-and-table"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Operations Control Tower",
+    "example": "<Q12BlockComposition family=\"Admin / application\">…</Q12BlockComposition>",
+    "family": "Admin / application"
+  },
+  "exception-queue-summary": {
+    "category": "Stats",
+    "purpose": "Summarize unresolved signals with ownership, severity, and a route into review.",
+    "useWhen": [
+      "Summarize unresolved signals with ownership, severity, and a route into review."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["PageHeader", "KPICluster", "Card"],
+    "optionalComponents": ["StatusChip", "DataTable", "DetailDrawer"],
+    "contentSlots": ["title", "count", "severity", "owner", "nextAction"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["exception-queue", "dashboard"],
+    "variants": ["severity-summary", "owner-summary"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Exception Queue Summary",
+    "example": "<Q12BlockComposition family=\"Admin / application\">…</Q12BlockComposition>",
+    "family": "Admin / application"
+  },
+  "readiness-review-summary": {
+    "category": "Features",
+    "purpose": "Show a readiness result, factual blockers, and the decision path without owning evaluation rules.",
+    "useWhen": [
+      "Show a readiness result, factual blockers, and the decision path without owning evaluation rules."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["PageHeader", "Card", "StatusChip"],
+    "optionalComponents": ["MilestoneTracker", "DetailDrawer", "ActionFooter"],
+    "contentSlots": ["title", "result", "freshness", "blockers", "resolution"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["readiness-review", "entity-detail"],
+    "variants": ["result-first", "blockers-and-action"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Readiness Review Summary",
+    "example": "<Q12BlockComposition family=\"Admin / application\">…</Q12BlockComposition>",
+    "family": "Admin / application"
+  },
+  "activity-audit-stream": {
+    "category": "Content",
+    "purpose": "Present ordered activity and audit evidence with filters and an inspectable record boundary.",
+    "useWhen": [
+      "Present ordered activity and audit evidence with filters and an inspectable record boundary."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["PageHeader", "ActivityFeed", "DataTable"],
+    "optionalComponents": ["FilterToolbar", "DetailDrawer", "StatusChip"],
+    "contentSlots": ["title", "filters", "events", "actor", "timestamp"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["activity-audit", "entity-detail"],
+    "variants": ["stream", "stream-and-detail"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Activity Audit Stream",
+    "example": "<Q12BlockComposition family=\"Admin / application\">…</Q12BlockComposition>",
+    "family": "Admin / application"
+  },
+  "entity-360-overview": {
+    "category": "Features",
+    "purpose": "Organize one entity's identity, key values, history, and next action into a readable overview.",
+    "useWhen": [
+      "Organize one entity's identity, key values, history, and next action into a readable overview."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["PageHeader", "Card", "KeyValueList"],
+    "optionalComponents": ["ActivityFeed", "DataTable", "DetailDrawer"],
+    "contentSlots": ["title", "identity", "keyValues", "history", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["entity-360", "entity-detail"],
+    "variants": ["overview", "overview-and-history"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Entity 360 Overview",
+    "example": "<Q12BlockComposition family=\"Admin / application\">…</Q12BlockComposition>",
+    "family": "Admin / application"
+  },
+  "decision-workspace-evidence": {
+    "category": "Features",
+    "purpose": "Place evidence, current state, and human decision actions together without hiding the decision boundary.",
+    "useWhen": [
+      "Place evidence, current state, and human decision actions together without hiding the decision boundary."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["PageHeader", "Card", "Button"],
+    "optionalComponents": ["DataTable", "DetailDrawer", "ActionFooter"],
+    "contentSlots": ["title", "subject", "evidence", "decision", "audit"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["decision-workspace", "entity-detail"],
+    "variants": ["evidence-first", "evidence-and-action"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Decision Workspace Evidence",
+    "example": "<Q12BlockComposition family=\"Admin / application\">…</Q12BlockComposition>",
+    "family": "Admin / application"
+  },
+  "resource-forecast-panel": {
+    "category": "Stats",
+    "purpose": "Show a bounded forecast signal with the assumptions and current horizon needed for planning.",
+    "useWhen": [
+      "Show a bounded forecast signal with the assumptions and current horizon needed for planning."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["PageHeader", "ChartPanel", "LineChart"],
+    "optionalComponents": ["FilterToolbar", "DataTable", "Card"],
+    "contentSlots": ["title", "horizon", "series", "assumptions", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["resource-forecast", "report"],
+    "variants": ["trend", "trend-and-table"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Resource Forecast Panel",
+    "example": "<Q12BlockComposition family=\"Admin / application\">…</Q12BlockComposition>",
+    "family": "Admin / application"
+  },
+  "settings-permission-workspace": {
+    "category": "Content",
+    "purpose": "Group settings and permission controls around a clear scope, validation, and save boundary.",
+    "useWhen": [
+      "Group settings and permission controls around a clear scope, validation, and save boundary."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["PageHeader", "FormSection", "Field", "Button"],
+    "optionalComponents": ["Tabs", "DataTable", "Alert"],
+    "contentSlots": ["title", "scope", "fields", "permissions", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["settings", "entity-form"],
+    "variants": ["settings", "permission-matrix"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Settings Permission Workspace",
+    "example": "<Q12BlockComposition family=\"Admin / application\">…</Q12BlockComposition>",
+    "family": "Admin / application"
+  },
+  "approval-queue-summary": {
+    "category": "Features",
+    "purpose": "Give reviewers a compact queue summary, selection path, and explicit approval action.",
+    "useWhen": [
+      "Give reviewers a compact queue summary, selection path, and explicit approval action."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["PageHeader", "DataTable", "Button"],
+    "optionalComponents": ["BulkActionBar", "FilterToolbar", "DetailDrawer"],
+    "contentSlots": ["title", "queue", "filters", "selection", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["approval-queue", "entity-list"],
+    "variants": ["review-queue", "review-and-approve"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Approval Queue Summary",
+    "example": "<Q12BlockComposition family=\"Admin / application\">…</Q12BlockComposition>",
+    "family": "Admin / application"
+  },
+  "product-comparison": {
+    "category": "Commerce",
+    "purpose": "Compare a bounded set of products while keeping product anatomy and actions shared.",
+    "useWhen": [
+      "Compare a bounded set of products while keeping product anatomy and actions shared."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Card", "ProductCard", "Button"],
+    "optionalComponents": ["ProductGrid", "Price", "Table"],
+    "contentSlots": ["title", "products", "comparisonRows", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["catalog", "product-detail"],
+    "variants": ["side-by-side", "comparison-table"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Product Comparison",
+    "example": "<Q12BlockComposition family=\"Commerce\">…</Q12BlockComposition>",
+    "family": "Commerce"
+  },
+  "collection-hero": {
+    "category": "Hero",
+    "purpose": "Introduce a product collection with a clear proposition, bounded media, and browse action.",
+    "useWhen": [
+      "Introduce a product collection with a clear proposition, bounded media, and browse action."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Typography", "Button", "MediaFrame"],
+    "optionalComponents": ["ProductGrid", "Card"],
+    "contentSlots": ["title", "description", "media", "collection", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["catalog", "marketing-home"],
+    "variants": ["split", "media-led"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Collection Hero",
+    "example": "<Q12BlockComposition family=\"Commerce\">…</Q12BlockComposition>",
+    "family": "Commerce"
+  },
+  "cart-summary": {
+    "category": "Commerce",
+    "purpose": "Keep cart lines, quantity context, totals, and the next action together without owning checkout state.",
+    "useWhen": [
+      "Keep cart lines, quantity context, totals, and the next action together without owning checkout state."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Card", "CartLineItem", "OrderSummary"],
+    "optionalComponents": ["QuantityControl", "CartTrigger", "Button"],
+    "contentSlots": ["title", "lines", "quantities", "totals", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["cart", "checkout"],
+    "variants": ["drawer-ready", "page-summary"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Cart Summary",
+    "example": "<Q12BlockComposition family=\"Commerce\">…</Q12BlockComposition>",
+    "family": "Commerce"
+  },
+  "checkout-progress": {
+    "category": "Commerce",
+    "purpose": "Make checkout stages and the current order context legible before product-owned validation.",
+    "useWhen": [
+      "Make checkout stages and the current order context legible before product-owned validation."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Stepper", "Card", "Button"],
+    "optionalComponents": ["CartLineItem", "OrderSummary", "Alert"],
+    "contentSlots": [
+      "title",
+      "steps",
+      "currentStep",
+      "orderContext",
+      "actions"
+    ],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["checkout", "cart"],
+    "variants": ["stepper-led", "stepper-and-summary"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Checkout Progress",
+    "example": "<Q12BlockComposition family=\"Commerce\">…</Q12BlockComposition>",
+    "family": "Commerce"
+  },
+  "order-summary": {
+    "category": "Commerce",
+    "purpose": "Present a confirmed or reviewable order summary with status, totals, and follow-up actions.",
+    "useWhen": [
+      "Present a confirmed or reviewable order summary with status, totals, and follow-up actions."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["OrderSummary", "Card", "Typography"],
+    "optionalComponents": ["StatusChip", "Button", "DetailDrawer"],
+    "contentSlots": ["title", "status", "lines", "totals", "followUp"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["checkout", "entity-detail"],
+    "variants": ["confirmation", "review"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Order Summary",
+    "example": "<Q12BlockComposition family=\"Commerce\">…</Q12BlockComposition>",
+    "family": "Commerce"
+  },
+  "commerce-trust-strip": {
+    "category": "Social proof",
+    "purpose": "Reinforce a commerce decision with concise assurance, delivery, or support proof.",
+    "useWhen": [
+      "Reinforce a commerce decision with concise assurance, delivery, or support proof."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Typography", "Card"],
+    "optionalComponents": ["Button", "MediaFrame"],
+    "contentSlots": ["label", "assurances", "support", "action"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["catalog", "checkout"],
+    "variants": ["assurance-row", "assurance-grid"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Commerce Trust Strip",
+    "example": "<Q12BlockComposition family=\"Commerce\">…</Q12BlockComposition>",
+    "family": "Commerce"
+  },
+  "product-detail-proof": {
+    "category": "Commerce",
+    "purpose": "Pair a product decision surface with evidence, metadata, and one clear next action.",
+    "useWhen": [
+      "Pair a product decision surface with evidence, metadata, and one clear next action."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["ProductCard", "Price", "Card"],
+    "optionalComponents": ["Button", "Carousel"],
+    "contentSlots": ["title", "media", "price", "details", "proof", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["product-detail", "catalog"],
+    "variants": ["featured", "detail-and-proof"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Product Detail Proof",
+    "example": "<Q12BlockComposition family=\"Commerce\">…</Q12BlockComposition>",
+    "family": "Commerce"
+  },
+  "pricing-comparison": {
+    "category": "Pricing",
+    "purpose": "Compare presentation-only plans while leaving billing, entitlements, and eligibility to the product.",
+    "useWhen": [
+      "Compare presentation-only plans while leaving billing, entitlements, and eligibility to the product."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Card", "Button", "Typography"],
+    "optionalComponents": ["Price", "Tabs", "Badge"],
+    "contentSlots": ["title", "plans", "features", "recommended", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["marketing-home", "checkout"],
+    "variants": ["three-column", "featured-plan"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Pricing Comparison",
+    "example": "<Q12BlockComposition family=\"Commerce\">…</Q12BlockComposition>",
+    "family": "Commerce"
+  },
+  "csv-import-wizard": {
+    "category": "Content",
+    "purpose": "Guide upload, mapping, validation, and review through a bounded workflow composition.",
+    "useWhen": [
+      "Guide upload, mapping, validation, and review through a bounded workflow composition."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["FileUpload", "Table", "Button"],
+    "optionalComponents": ["Stepper", "Progress", "Alert"],
+    "contentSlots": ["title", "file", "mapping", "validation", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["entity-form", "entity-list"],
+    "variants": ["mapping", "mapping-and-validation"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "CSV Import Wizard",
+    "example": "<Q12BlockComposition family=\"Workflow / productivity\">…</Q12BlockComposition>",
+    "family": "Workflow / productivity"
+  },
+  "review-and-approve": {
+    "category": "Features",
+    "purpose": "Keep review context, decision state, and the next approval action adjacent.",
+    "useWhen": [
+      "Keep review context, decision state, and the next approval action adjacent."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Card", "StatusChip", "Button"],
+    "optionalComponents": ["ActivityFeed", "DetailDrawer", "ActionFooter"],
+    "contentSlots": ["title", "subject", "status", "evidence", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["approval-queue", "readiness-review"],
+    "variants": ["decision", "decision-and-history"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Review and Approve",
+    "example": "<Q12BlockComposition family=\"Workflow / productivity\">…</Q12BlockComposition>",
+    "family": "Workflow / productivity"
+  },
+  "onboarding-stepper": {
+    "category": "Features",
+    "purpose": "Explain a staged setup path with current progress, useful context, and recoverable next actions.",
+    "useWhen": [
+      "Explain a staged setup path with current progress, useful context, and recoverable next actions."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Stepper", "Card", "Button"],
+    "optionalComponents": ["Progress", "Alert", "MediaFrame"],
+    "contentSlots": ["title", "steps", "currentStep", "context", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["auth", "entity-form"],
+    "variants": ["guided", "guided-with-proof"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Onboarding Stepper",
+    "example": "<Q12BlockComposition family=\"Workflow / productivity\">…</Q12BlockComposition>",
+    "family": "Workflow / productivity"
+  },
+  "milestone-tracker": {
+    "category": "Navigation",
+    "purpose": "Show ordered work milestones with the current checkpoint and next handoff visible.",
+    "useWhen": [
+      "Show ordered work milestones with the current checkpoint and next handoff visible."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["MilestoneTracker", "Card", "Button"],
+    "optionalComponents": ["ActivityFeed", "DetailDrawer", "StatusChip"],
+    "contentSlots": ["title", "milestones", "current", "owner", "nextAction"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["process-workspace", "operational-kanban"],
+    "variants": ["horizontal", "vertical"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Milestone Tracker",
+    "example": "<Q12BlockComposition family=\"Workflow / productivity\">…</Q12BlockComposition>",
+    "family": "Workflow / productivity"
+  },
+  "task-handoff": {
+    "category": "Features",
+    "purpose": "Transfer a task between people or stages while keeping ownership and the next action explicit.",
+    "useWhen": [
+      "Transfer a task between people or stages while keeping ownership and the next action explicit."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Card", "StatusChip", "Button"],
+    "optionalComponents": ["MilestoneTracker", "ActivityFeed", "DetailDrawer"],
+    "contentSlots": ["title", "task", "owner", "handoff", "nextAction"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["process-workspace", "entity-detail"],
+    "variants": ["handoff", "handoff-and-history"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Task Handoff",
+    "example": "<Q12BlockComposition family=\"Workflow / productivity\">…</Q12BlockComposition>",
+    "family": "Workflow / productivity"
+  },
+  "revision-diff-review": {
+    "category": "Content",
+    "purpose": "Review a bounded revision with visible changes, decision state, and a clear resolution action.",
+    "useWhen": [
+      "Review a bounded revision with visible changes, decision state, and a clear resolution action."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Card", "Table", "Button"],
+    "optionalComponents": ["Modal", "DetailDrawer", "StatusChip"],
+    "contentSlots": ["title", "version", "changes", "reviewer", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["entity-detail", "approval-queue"],
+    "variants": ["inline", "detail-drawer"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Revision Diff Review",
+    "example": "<Q12BlockComposition family=\"Workflow / productivity\">…</Q12BlockComposition>",
+    "family": "Workflow / productivity"
+  },
+  "form-progress": {
+    "category": "Content",
+    "purpose": "Pair grouped form sections with a visible completion state without stretching every field to the canvas.",
+    "useWhen": [
+      "Pair grouped form sections with a visible completion state without stretching every field to the canvas."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["FormSection", "Field", "Button"],
+    "optionalComponents": ["Progress", "Stepper", "Alert"],
+    "contentSlots": ["title", "sections", "current", "validation", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["entity-form", "settings"],
+    "variants": ["sectioned", "sectioned-with-progress"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Form Progress",
+    "example": "<Q12BlockComposition family=\"Workflow / productivity\">…</Q12BlockComposition>",
+    "family": "Workflow / productivity"
+  },
+  "workflow-board-preview": {
+    "category": "Features",
+    "purpose": "Preview work stages and movement as a composition while leaving board behavior to the product route.",
+    "useWhen": [
+      "Preview work stages and movement as a composition while leaving board behavior to the product route."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Card", "Button", "StatusChip"],
+    "optionalComponents": ["MilestoneTracker", "DataTable", "DetailDrawer"],
+    "contentSlots": ["title", "stages", "items", "filters", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["operational-kanban", "process-workspace"],
+    "variants": ["stage-columns", "stage-summary"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Workflow Board Preview",
+    "example": "<Q12BlockComposition family=\"Workflow / productivity\">…</Q12BlockComposition>",
+    "family": "Workflow / productivity"
+  },
+  "command-shortcuts": {
+    "category": "Navigation",
+    "purpose": "Expose a small set of high-value commands with search, keyboard hints, and explicit scope.",
+    "useWhen": [
+      "Expose a small set of high-value commands with search, keyboard hints, and explicit scope."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Card", "Input", "Button"],
+    "optionalComponents": ["SearchInput", "Modal", "Popover"],
+    "contentSlots": ["title", "query", "commands", "keyboardHints", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["dashboard", "entity-list"],
+    "variants": ["palette", "inline"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Command Shortcuts",
+    "example": "<Q12BlockComposition family=\"Workflow / productivity\">…</Q12BlockComposition>",
+    "family": "Workflow / productivity"
+  },
+  "dense-data-summary": {
+    "category": "Stats",
+    "purpose": "Pair a compact data summary with the row-level surface needed to inspect the underlying records.",
+    "useWhen": [
+      "Pair a compact data summary with the row-level surface needed to inspect the underlying records."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["DataTable", "PageHeader", "Card"],
+    "optionalComponents": ["FilterToolbar", "Pagination", "BulkActionBar"],
+    "contentSlots": ["title", "summary", "columns", "rows", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["entity-list", "report"],
+    "variants": ["summary-and-table", "table-led"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Dense Data Summary",
+    "example": "<Q12BlockComposition family=\"Data management\">…</Q12BlockComposition>",
+    "family": "Data management"
+  },
+  "filterable-data-preview": {
+    "category": "Content",
+    "purpose": "Show how filters, applied state, and a bounded result preview work together.",
+    "useWhen": [
+      "Show how filters, applied state, and a bounded result preview work together."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["FilterToolbar", "DataTable", "Card"],
+    "optionalComponents": ["AppliedFilters", "Pagination", "FilterDrawer"],
+    "contentSlots": ["title", "filters", "applied", "rows", "emptyState"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["entity-list", "report"],
+    "variants": ["toolbar-led", "drawer-filtered"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Filterable Data Preview",
+    "example": "<Q12BlockComposition family=\"Data management\">…</Q12BlockComposition>",
+    "family": "Data management"
+  },
+  "data-quality-summary": {
+    "category": "Stats",
+    "purpose": "Explain quality coverage, unresolved issues, and the route into correction.",
+    "useWhen": [
+      "Explain quality coverage, unresolved issues, and the route into correction."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["PageHeader", "KPICluster", "StatusChip"],
+    "optionalComponents": ["DataTable", "Alert", "ChartPanel"],
+    "contentSlots": ["title", "metrics", "issues", "freshness", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["report", "dashboard"],
+    "variants": ["quality-led", "quality-and-issues"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Data Quality Summary",
+    "example": "<Q12BlockComposition family=\"Data management\">…</Q12BlockComposition>",
+    "family": "Data management"
+  },
+  "segment-breakdown": {
+    "category": "Stats",
+    "purpose": "Compare segments with readable labels, a bounded chart, and a text-accessible summary.",
+    "useWhen": [
+      "Compare segments with readable labels, a bounded chart, and a text-accessible summary."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["ChartPanel", "BarChart", "Card"],
+    "optionalComponents": ["FilterToolbar", "Table", "DataTable"],
+    "contentSlots": ["title", "segments", "series", "summary", "filters"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["report", "dashboard"],
+    "variants": ["bar-breakdown", "chart-and-table"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Segment Breakdown",
+    "example": "<Q12BlockComposition family=\"Data management\">…</Q12BlockComposition>",
+    "family": "Data management"
+  },
+  "import-validation-summary": {
+    "category": "Features",
+    "purpose": "Summarize import validation results with clear counts, row access, and next actions.",
+    "useWhen": [
+      "Summarize import validation results with clear counts, row access, and next actions."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["FileUpload", "DataTable", "Alert"],
+    "optionalComponents": ["Progress", "DetailDrawer", "Button"],
+    "contentSlots": ["title", "file", "counts", "errors", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["entity-list", "entity-form"],
+    "variants": ["validation", "validation-and-detail"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Import Validation Summary",
+    "example": "<Q12BlockComposition family=\"Data management\">…</Q12BlockComposition>",
+    "family": "Data management"
+  },
+  "comparison-report": {
+    "category": "Content",
+    "purpose": "Compare periods or cohorts using a bounded presentation surface and explicit summary copy.",
+    "useWhen": [
+      "Compare periods or cohorts using a bounded presentation surface and explicit summary copy."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["PageHeader", "Table", "ChartPanel"],
+    "optionalComponents": ["BarChart", "LineChart", "Card"],
+    "contentSlots": ["title", "periods", "table", "chart", "summary"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["report", "dashboard"],
+    "variants": ["period-comparison", "comparison-and-chart"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Comparison Report",
+    "example": "<Q12BlockComposition family=\"Data management\">…</Q12BlockComposition>",
+    "family": "Data management"
+  },
+  "table-insight-panel": {
+    "category": "Content",
+    "purpose": "Attach a concise insight summary to a readable table without replacing the table contract.",
+    "useWhen": [
+      "Attach a concise insight summary to a readable table without replacing the table contract."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Table", "Card", "Typography"],
+    "optionalComponents": ["DataTable", "Tooltip", "Pagination"],
+    "contentSlots": ["title", "insight", "columns", "rows", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["report", "entity-list"],
+    "variants": ["insight-first", "insight-and-table"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Table Insight Panel",
+    "example": "<Q12BlockComposition family=\"Data management\">…</Q12BlockComposition>",
+    "family": "Data management"
+  },
+  "ai-prompt-workbench": {
+    "category": "Content",
+    "purpose": "Give prompt context, controls, and a reviewable submit boundary a focused composition.",
+    "useWhen": [
+      "Give prompt context, controls, and a reviewable submit boundary a focused composition."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Card", "Input", "Button"],
+    "optionalComponents": ["Tabs", "Popover", "Modal"],
+    "contentSlots": ["title", "prompt", "context", "controls", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["auth", "content-detail"],
+    "variants": ["composer", "composer-with-context"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "AI Prompt Workbench",
+    "example": "<Q12BlockComposition family=\"AI / conversation\">…</Q12BlockComposition>",
+    "family": "AI / conversation"
+  },
+  "conversation-summary": {
+    "category": "Content",
+    "purpose": "Summarize a conversation with the current task, source context, and a clear continuation.",
+    "useWhen": [
+      "Summarize a conversation with the current task, source context, and a clear continuation."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Card", "Typography", "Button"],
+    "optionalComponents": ["ActivityFeed", "DetailDrawer", "StatusChip"],
+    "contentSlots": ["title", "summary", "messages", "sources", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["content-detail", "entity-detail"],
+    "variants": ["summary", "summary-and-history"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Conversation Summary",
+    "example": "<Q12BlockComposition family=\"AI / conversation\">…</Q12BlockComposition>",
+    "family": "AI / conversation"
+  },
+  "citation-source-panel": {
+    "category": "Content",
+    "purpose": "Keep source references adjacent to an answer so provenance remains inspectable.",
+    "useWhen": [
+      "Keep source references adjacent to an answer so provenance remains inspectable."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Card", "Table", "Button"],
+    "optionalComponents": ["Popover", "DetailDrawer", "Tooltip"],
+    "contentSlots": ["title", "answer", "sources", "sourceMeta", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["content-detail", "report"],
+    "variants": ["inline", "side-panel"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Citation Source Panel",
+    "example": "<Q12BlockComposition family=\"AI / conversation\">…</Q12BlockComposition>",
+    "family": "AI / conversation"
+  },
+  "tool-call-review": {
+    "category": "Features",
+    "purpose": "Review a proposed tool call, its inputs, status, and the human action boundary.",
+    "useWhen": [
+      "Review a proposed tool call, its inputs, status, and the human action boundary."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Card", "StatusChip", "Button"],
+    "optionalComponents": ["Table", "DetailDrawer", "Alert"],
+    "contentSlots": ["title", "tool", "inputs", "status", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["decision-workspace", "entity-detail"],
+    "variants": ["review", "review-and-confirm"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Tool Call Review",
+    "example": "<Q12BlockComposition family=\"AI / conversation\">…</Q12BlockComposition>",
+    "family": "AI / conversation"
+  },
+  "model-output-compare": {
+    "category": "Content",
+    "purpose": "Compare bounded outputs with consistent labels, source context, and a deliberate selection action.",
+    "useWhen": [
+      "Compare bounded outputs with consistent labels, source context, and a deliberate selection action."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Card", "Table", "Button"],
+    "optionalComponents": ["Tabs", "Modal", "Typography"],
+    "contentSlots": ["title", "outputs", "criteria", "sources", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["report", "content-detail"],
+    "variants": ["side-by-side", "stacked"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "Model Output Compare",
+    "example": "<Q12BlockComposition family=\"AI / conversation\">…</Q12BlockComposition>",
+    "family": "AI / conversation"
+  },
+  "ai-handoff-panel": {
+    "category": "Features",
+    "purpose": "Make the transition from assisted output to human review explicit and recoverable.",
+    "useWhen": [
+      "Make the transition from assisted output to human review explicit and recoverable."
+    ],
+    "avoidWhen": [
+      "the page needs a new primitive or canonical component contract",
+      "business rules, permissions, persistence, or authoritative data would live in the block"
+    ],
+    "requiredComponents": ["Card", "Button", "StatusChip"],
+    "optionalComponents": ["DetailDrawer", "ActivityFeed", "Alert"],
+    "contentSlots": ["title", "summary", "confidence", "owner", "actions"],
+    "responsive": [
+      "Recompose the primary and supporting regions before shrinking readable content.",
+      "Keep actions, status, and supporting evidence adjacent at each breakpoint."
+    ],
+    "motion": [
+      "Use canonical hover, focus, and enter roles only where they clarify state.",
+      "Respect prefers-reduced-motion and keep the final content visible."
+    ],
+    "accessibility": [
+      "Preserve one clear heading hierarchy and a logical reading order.",
+      "Expose status, action, and data meaning in text; never rely on color alone."
+    ],
+    "performance": [
+      "Bound media and data previews to the visible composition and avoid unnecessary engines."
+    ],
+    "recommendedRecipes": ["decision-workspace", "readiness-review"],
+    "variants": ["handoff", "handoff-with-evidence"],
+    "source": "packages/ui/src/blocks.tsx",
+    "sourceSymbol": "Q12BlockComposition",
+    "displayName": "AI Handoff Panel",
+    "example": "<Q12BlockComposition family=\"AI / conversation\">…</Q12BlockComposition>",
+    "family": "AI / conversation"
   }
 }

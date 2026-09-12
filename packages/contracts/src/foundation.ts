@@ -1,4 +1,707 @@
 /** Shared vocabulary for the foundation debugger, documentation and AI retrieval. */
+
+export type TokenOwnershipLayer =
+  | "FOUNDATION"
+  | "SEMANTIC"
+  | "LAYOUT"
+  | "COMPONENT"
+  | "PRODUCT_PROFILE"
+  | "SCOPE";
+
+export type TokenDimensionClassification =
+  | "GLOBAL_CUSTOMIZABLE"
+  | "DERIVED"
+  | "FIXED_SYSTEM_SEMANTIC"
+  | "PRODUCT_PROFILE"
+  | "COMPONENT_SEMANTIC"
+  | "COMPOSITION_LOCAL";
+
+export type TokenPlatform = "BOTH" | "WEB" | "NATIVE" | "ADAPTIVE";
+
+export type NativeTokenStrategy =
+  "SAME_INTENT" | "NATIVE_RENDERER" | "ALTERNATE_PATTERN" | "NOT_APPLICABLE";
+
+export type TokenResolutionStage =
+  | "SYSTEM_DEFAULTS"
+  | "BASE_RECIPE"
+  | "PRODUCT_PROFILE"
+  | "THEME_OVERRIDE"
+  | "SCOPED_OVERRIDE"
+  | "COMPONENT_STATE";
+
+export const TOKEN_RESOLUTION_ORDER = Object.freeze([
+  "SYSTEM_DEFAULTS",
+  "BASE_RECIPE",
+  "PRODUCT_PROFILE",
+  "THEME_OVERRIDE",
+  "SCOPED_OVERRIDE",
+  "COMPONENT_STATE",
+] as const satisfies readonly TokenResolutionStage[]);
+
+/**
+ * The shared component taxonomy. Variants and aliases point back to a
+ * canonical contract and therefore do not create another primitive family.
+ */
+export type ComponentClassification =
+  | "FOUNDATION"
+  | "CANONICAL_COMPONENT"
+  | "COMPONENT_VARIANT"
+  | "UTILITY_OR_PROVIDER"
+  | "COMPOSITE_BLOCK"
+  | "RECIPE_OR_PATTERN"
+  | "ENGINE_ADAPTER"
+  | "DOMAIN_COMPOSITION"
+  | "ALIAS"
+  | "WEB_ONLY"
+  | "NATIVE_ONLY"
+  | "ADAPTIVE"
+  | "DEFERRED"
+  | "REJECTED_DUPLICATE";
+
+/** Named measure roles are semantic layout vocabulary, not pixel props. */
+export type MeasureName =
+  "compact" | "control" | "content" | "wide" | "reading" | "fluid";
+
+/** Small public API vocabulary for components that need an explicit measure. */
+export type MeasureIntent = "compact" | "default" | "wide" | "fill";
+
+export const MEASURE_NAMES = Object.freeze([
+  "compact",
+  "control",
+  "content",
+  "wide",
+  "reading",
+  "fluid",
+] as const satisfies readonly MeasureName[]);
+
+export const MEASURE_INTENT_TO_NAME = Object.freeze({
+  compact: "compact",
+  default: "control",
+  wide: "wide",
+  fill: "fluid",
+} as const satisfies Record<MeasureIntent, MeasureName>);
+
+export interface MeasureContractEntry {
+  readonly name: MeasureName;
+  readonly token: string;
+  readonly minimumPx: number;
+  readonly preferredPx: number | null;
+  readonly maximumPx: number | null;
+  readonly mode: "bounded" | "fluid";
+  readonly dimensionClassification: TokenDimensionClassification;
+  readonly platform: TokenPlatform;
+  readonly nativeStrategy: NativeTokenStrategy;
+  readonly useWhen: readonly string[];
+  readonly avoidFor: readonly string[];
+  readonly note: string;
+}
+
+/**
+ * One renderer-neutral measure vocabulary. The numeric bounds are authored in
+ * the typed contract; Web CSS and native JS projections consume this object.
+ */
+export const MEASURE_CONTRACT = {
+  compact: {
+    name: "compact",
+    token: "--t7-measure-compact",
+    minimumPx: 172,
+    preferredPx: 208,
+    maximumPx: 256,
+    mode: "bounded",
+    dimensionClassification: "COMPONENT_SEMANTIC",
+    platform: "BOTH",
+    nativeStrategy: "SAME_INTENT",
+    useWhen: ["short fields", "compact cards", "small repeated items"],
+    avoidFor: ["prose", "wide data comparison", "editor canvases"],
+    note: "The smallest generally useful bounded item; it may shrink below its minimum only when the containing surface itself is narrower.",
+  },
+  control: {
+    name: "control",
+    token: "--t7-measure-control",
+    minimumPx: 224,
+    preferredPx: 320,
+    maximumPx: 480,
+    mode: "bounded",
+    dimensionClassification: "COMPONENT_SEMANTIC",
+    platform: "BOTH",
+    nativeStrategy: "SAME_INTENT",
+    useWhen: ["default form controls", "bounded search", "focused tasks"],
+    avoidFor: ["long-form reading", "dense table columns"],
+    note: "The default focused-control measure; fields remain fluid below the maximum.",
+  },
+  content: {
+    name: "content",
+    token: "--t7-measure-content",
+    minimumPx: 320,
+    preferredPx: 720,
+    maximumPx: 1200,
+    mode: "bounded",
+    dimensionClassification: "DERIVED",
+    platform: "BOTH",
+    nativeStrategy: "SAME_INTENT",
+    useWhen: ["route content", "detail surfaces", "standard cards"],
+    avoidFor: ["single short controls", "full-width data surfaces"],
+    note: "A bounded content well that preserves useful line length and leaves shell gutters available.",
+  },
+  wide: {
+    name: "wide",
+    token: "--t7-measure-wide",
+    minimumPx: 480,
+    preferredPx: 960,
+    maximumPx: 1440,
+    mode: "bounded",
+    dimensionClassification: "DERIVED",
+    platform: "BOTH",
+    nativeStrategy: "SAME_INTENT",
+    useWhen: ["multi-column workspaces", "catalog grids", "broad composition"],
+    avoidFor: ["reading measure", "single short controls"],
+    note: "A wide bounded surface; it does not authorize a universal full-bleed layout.",
+  },
+  reading: {
+    name: "reading",
+    token: "--t7-measure-reading",
+    minimumPx: 280,
+    preferredPx: 680,
+    maximumPx: 880,
+    mode: "bounded",
+    dimensionClassification: "FIXED_SYSTEM_SEMANTIC",
+    platform: "BOTH",
+    nativeStrategy: "SAME_INTENT",
+    useWhen: ["prose", "public descriptions", "product explanations"],
+    avoidFor: ["tables", "charts", "operations grids", "editor workspaces"],
+    note: "Reading is a text measure. Existing recipe rails may retain a ch-based Web projection while native consumes this numeric semantic bound.",
+  },
+  fluid: {
+    name: "fluid",
+    token: "--t7-measure-fluid",
+    minimumPx: 0,
+    preferredPx: null,
+    maximumPx: null,
+    mode: "fluid",
+    dimensionClassification: "DERIVED",
+    platform: "BOTH",
+    nativeStrategy: "SAME_INTENT",
+    useWhen: ["explicit fill behavior", "shell-owned surfaces"],
+    avoidFor: ["unbounded prose", "a replacement for a content rail"],
+    note: "Fill is an explicit opt-in; it does not change the owning shell or create a new max-width policy.",
+  },
+} as const satisfies Record<MeasureName, MeasureContractEntry>;
+
+export type LayoutGrammarId =
+  | "Stack"
+  | "Cluster"
+  | "Inline"
+  | "Grid"
+  | "AutoGrid"
+  | "Split"
+  | "Sidebar"
+  | "Rail"
+  | "MasterDetail"
+  | "CenteredBoundedContent"
+  | "ScrollRegion"
+  | "OverlayRegion";
+
+export interface LayoutGrammarContractEntry {
+  readonly id: LayoutGrammarId;
+  readonly classification: ComponentClassification;
+  readonly platform: TokenPlatform;
+  readonly nativeStrategy: NativeTokenStrategy;
+  readonly purpose: string;
+  readonly minimumUsefulMeasure: MeasureName | null;
+  readonly responsiveIntent: Readonly<{
+    readonly wide: string;
+    readonly constrained: string;
+    readonly narrow: string;
+  }>;
+  readonly overflowContract: string;
+  readonly webRenderer: string;
+  readonly nativeRenderer: string;
+  readonly canonicalImplementation: readonly string[];
+}
+
+/**
+ * Renderer-neutral layout grammar. These are intent contracts over existing
+ * primitives and recipes, not a second component library.
+ */
+export const LAYOUT_GRAMMAR_CONTRACT = {
+  Stack: {
+    id: "Stack",
+    classification: "CANONICAL_COMPONENT",
+    platform: "BOTH",
+    nativeStrategy: "SAME_INTENT",
+    purpose:
+      "Arrange related content on one axis with tokenized gap and alignment.",
+    minimumUsefulMeasure: null,
+    responsiveIntent: {
+      wide: "Preserve the authored axis and spacing.",
+      constrained: "Allow a row to wrap when the consumer opts in.",
+      narrow:
+        "Stack only when the composition contract says order is preserved.",
+    },
+    overflowContract:
+      "Children remain min-inline-size safe; no page overflow is created by the helper.",
+    webRenderer: "Flex column or row with shared gap variables.",
+    nativeRenderer:
+      "View flex direction, gap equivalent, and platform alignment.",
+    canonicalImplementation: ["packages/ui/src/layout.tsx:Stack"],
+  },
+  Cluster: {
+    id: "Cluster",
+    classification: "RECIPE_OR_PATTERN",
+    platform: "BOTH",
+    nativeStrategy: "SAME_INTENT",
+    purpose: "Group peer actions or metadata with wrap-safe distribution.",
+    minimumUsefulMeasure: "compact",
+    responsiveIntent: {
+      wide: "Keep peers on one row when their useful measures fit.",
+      constrained: "Wrap at content pressure rather than compressing labels.",
+      narrow:
+        "Stack or scroll only when the recipe declares the alternate pattern.",
+    },
+    overflowContract:
+      "Wrap is the default; horizontal scroll is explicit and bounded to the owning region.",
+    webRenderer: "A wrapping Stack or flex group composed by the recipe.",
+    nativeRenderer:
+      "A wrapping or stacked View group preserving reading order.",
+    canonicalImplementation: ['Stack(direction="row", wrap)'],
+  },
+  Inline: {
+    id: "Inline",
+    classification: "RECIPE_OR_PATTERN",
+    platform: "BOTH",
+    nativeStrategy: "SAME_INTENT",
+    purpose:
+      "Keep short related content inline without assigning a universal width.",
+    minimumUsefulMeasure: "compact",
+    responsiveIntent: {
+      wide: "Remain inline when content fits its useful measure.",
+      constrained: "Wrap at a natural boundary.",
+      narrow: "Stack when wrapping would obscure relationship or affordance.",
+    },
+    overflowContract:
+      "Text may wrap; controls never force document-level horizontal overflow.",
+    webRenderer: "Inline or flex composition owned by the consumer recipe.",
+    nativeRenderer:
+      "Inline-like text composition or a row View with wrapping policy.",
+    canonicalImplementation: ['Stack(direction="row", wrap)'],
+  },
+  Grid: {
+    id: "Grid",
+    classification: "RECIPE_OR_PATTERN",
+    platform: "BOTH",
+    nativeStrategy: "SAME_INTENT",
+    purpose:
+      "Arrange two-dimensional peers with explicit useful item geometry.",
+    minimumUsefulMeasure: "compact",
+    responsiveIntent: {
+      wide: "Use intrinsic columns and retain peer alignment.",
+      constrained: "Reduce columns when useful item measures no longer fit.",
+      narrow: "Use one column or an explicitly alternate representation.",
+    },
+    overflowContract:
+      "Grid tracks use minmax(0, 1fr) or a bounded item minimum; no implicit min-content track may escape the owner.",
+    webRenderer: "CSS Grid with intrinsic tracks and container-owned gaps.",
+    nativeRenderer:
+      "FlatList/SectionList or measured flex rows selected by the native renderer.",
+    canonicalImplementation: ["FormGrid", "KPICluster"],
+  },
+  AutoGrid: {
+    id: "AutoGrid",
+    classification: "CANONICAL_COMPONENT",
+    platform: "BOTH",
+    nativeStrategy: "SAME_INTENT",
+    purpose:
+      "Fill available space with repeated items while respecting a minimum useful item measure.",
+    minimumUsefulMeasure: "compact",
+    responsiveIntent: {
+      wide: "Auto-fill as many useful columns as the owning rail permits.",
+      constrained:
+        "Drop columns before shrinking content below the item minimum.",
+      narrow: "Use the remaining useful column count without page overflow.",
+    },
+    overflowContract:
+      "Item minimum is bounded to the grid owner; overflow belongs to an explicit region, never the document by accident.",
+    webRenderer: "ProductGrid CSS Grid auto-fill with a semantic item measure.",
+    nativeRenderer:
+      "Native collection layout using the same item intent and adaptive count.",
+    canonicalImplementation: ["packages/ui/src/commerce.tsx:ProductGrid"],
+  },
+  Split: {
+    id: "Split",
+    classification: "CANONICAL_COMPONENT",
+    platform: "WEB",
+    nativeStrategy: "NOT_APPLICABLE",
+    purpose:
+      "Keep two panes simultaneously useful in a desktop-oriented workspace.",
+    minimumUsefulMeasure: "compact",
+    responsiveIntent: {
+      wide: "Resizable panes may remain side by side.",
+      constrained:
+        "Clamp panes to useful minimums and let the recipe decide whether to stack.",
+      narrow:
+        "Use the recipe's alternate list/detail or stacked pattern; do not squeeze two panes into unreadable columns.",
+    },
+    overflowContract:
+      "Each pane owns bounded scrolling; the split surface itself never becomes an accidental page-width source.",
+    webRenderer: "CSS Grid with a keyboard- and pointer-resizable separator.",
+    nativeRenderer:
+      "Not a native component contract; use the adaptive MasterDetail pattern.",
+    canonicalImplementation: ["packages/ui/src/layout.tsx:SplitPane"],
+  },
+  Sidebar: {
+    id: "Sidebar",
+    classification: "CANONICAL_COMPONENT",
+    platform: "ADAPTIVE",
+    nativeStrategy: "ALTERNATE_PATTERN",
+    purpose:
+      "Provide persistent secondary navigation or context when the shell has room.",
+    minimumUsefulMeasure: "compact",
+    responsiveIntent: {
+      wide: "Persist beside bounded route content.",
+      constrained: "Collapse or become a user-invoked secondary surface.",
+      narrow: "Use MobileSidebar, drawer, or native navigation affordance.",
+    },
+    overflowContract:
+      "Navigation owns its own scroll region; the document remains the primary scroll owner.",
+    webRenderer: "Sidebar or MobileSidebar within AppShell.",
+    nativeRenderer:
+      "Native navigation, drawer, or tab surface selected by the shell.",
+    canonicalImplementation: ["AppShell", "Sidebar", "MobileSidebar"],
+  },
+  Rail: {
+    id: "Rail",
+    classification: "CANONICAL_COMPONENT",
+    platform: "BOTH",
+    nativeStrategy: "SAME_INTENT",
+    purpose:
+      "Bound meaningful content without making every surface full bleed.",
+    minimumUsefulMeasure: "content",
+    responsiveIntent: {
+      wide: "Center the selected bounded rail inside shell gutters.",
+      constrained: "Remain fluid below its maximum.",
+      narrow:
+        "Use available width after safe gutters; preserve minimum useful content.",
+    },
+    overflowContract:
+      "Rail width is bounded by its owner; long data uses a declared region strategy.",
+    webRenderer: "Container plus semantic rail tokens.",
+    nativeRenderer:
+      "View/Text wrapper with resolved numeric max and gutter intent.",
+    canonicalImplementation: ["packages/ui/src/layout.tsx:Container"],
+  },
+  MasterDetail: {
+    id: "MasterDetail",
+    classification: "RECIPE_OR_PATTERN",
+    platform: "ADAPTIVE",
+    nativeStrategy: "ALTERNATE_PATTERN",
+    purpose: "Relate a collection to a selected record without losing context.",
+    minimumUsefulMeasure: "compact",
+    responsiveIntent: {
+      wide: "Show master and detail together when both remain useful.",
+      constrained:
+        "Retain the relationship while reducing pane width or using a bounded drawer.",
+      narrow:
+        "Use list/detail navigation, a drawer, or a sheet while preserving selection and back behavior.",
+    },
+    overflowContract:
+      "The collection and detail owner may scroll independently only when the recipe declares it.",
+    webRenderer: "SplitPane or a recipe-owned two-region layout.",
+    nativeRenderer:
+      "Native list/detail navigation or sheet, not a DOM split pane.",
+    canonicalImplementation: [
+      "entity-list",
+      "entity-detail",
+      "SplitPane",
+      "DetailDrawer",
+    ],
+  },
+  CenteredBoundedContent: {
+    id: "CenteredBoundedContent",
+    classification: "CANONICAL_COMPONENT",
+    platform: "BOTH",
+    nativeStrategy: "SAME_INTENT",
+    purpose: "Center content while retaining a useful intrinsic measure.",
+    minimumUsefulMeasure: "content",
+    responsiveIntent: {
+      wide: "Center within a named content or reading rail.",
+      constrained: "Remain fluid until the minimum useful surface is reached.",
+      narrow: "Use full available width after shell gutters.",
+    },
+    overflowContract:
+      "Centered content never relies on a fixed width larger than its containing block.",
+    webRenderer: "Container with width: 100% and max-inline-size token.",
+    nativeRenderer: "Centered View/Text block with numeric width constraints.",
+    canonicalImplementation: ["Container"],
+  },
+  ScrollRegion: {
+    id: "ScrollRegion",
+    classification: "CANONICAL_COMPONENT",
+    platform: "BOTH",
+    nativeStrategy: "NATIVE_RENDERER",
+    purpose:
+      "Give a bounded collection or surface an explicit scrolling owner.",
+    minimumUsefulMeasure: "compact",
+    responsiveIntent: {
+      wide: "Use the owning region's natural height or declared bound.",
+      constrained:
+        "Keep scrolling inside the bounded owner when context requires it.",
+      narrow:
+        "Prefer document scroll unless a bounded collection contract justifies internal scroll.",
+    },
+    overflowContract:
+      "No nested scroll is introduced without an owning label, bound, and keyboard/touch affordance.",
+    webRenderer: "ScrollArea with native overflow scrolling.",
+    nativeRenderer:
+      "ScrollView, FlatList, or SectionList selected by content semantics.",
+    canonicalImplementation: ["packages/ui/src/layout.tsx:ScrollArea"],
+  },
+  OverlayRegion: {
+    id: "OverlayRegion",
+    classification: "ADAPTIVE",
+    platform: "ADAPTIVE",
+    nativeStrategy: "ALTERNATE_PATTERN",
+    purpose:
+      "Present contextual work without changing the owning page composition.",
+    minimumUsefulMeasure: "compact",
+    responsiveIntent: {
+      wide: "Use popup, popover, drawer, or modal according to task scope.",
+      constrained:
+        "Prefer a bounded drawer or modal when popup space is insufficient.",
+      narrow:
+        "Use a sheet or full-width contextual surface with preserved focus/back behavior.",
+    },
+    overflowContract:
+      "The overlay owns its own scroll body and focus boundary; background page scroll is managed by the overlay contract.",
+    webRenderer:
+      "Popup, Drawer, Modal, or AlertDialog with the shared overlay layer.",
+    nativeRenderer:
+      "Native sheet, modal, or popover selected by task and platform convention.",
+    canonicalImplementation: ["packages/ui/src/overlay.tsx", "Drawer", "Modal"],
+  },
+} as const satisfies Record<LayoutGrammarId, LayoutGrammarContractEntry>;
+
+export interface TokenOwnershipMatrixEntry {
+  readonly layer: TokenOwnershipLayer;
+  readonly owner: string;
+  readonly sourceOfTruth: readonly string[];
+  readonly classification: readonly TokenDimensionClassification[];
+  readonly platform: TokenPlatform;
+  readonly nativeStrategy: NativeTokenStrategy;
+  readonly examples: readonly string[];
+  readonly note: string;
+}
+
+/**
+ * The single ownership matrix for the token contract plane. Values remain in
+ * the typed token runtime; this matrix records who may author or transform
+ * them so CSS, native data, and AI projections cannot become sibling sources.
+ */
+export const TOKEN_OWNERSHIP_MATRIX = {
+  FOUNDATION: {
+    layer: "FOUNDATION",
+    owner: "Ten4Seven token runtime",
+    sourceOfTruth: ["packages/tokens/src/theme.ts"],
+    classification: ["GLOBAL_CUSTOMIZABLE", "DERIVED", "FIXED_SYSTEM_SEMANTIC"],
+    platform: "BOTH",
+    nativeStrategy: "SAME_INTENT",
+    examples: [
+      "primitive color ramps",
+      "reference space",
+      "typography families and role defaults",
+      "raw radius, elevation, and motion scales",
+      "foundational icon and sizing geometry",
+    ],
+    note: "Only named axes and foundational scales are authored here; component consumers do not copy raw values.",
+  },
+  SEMANTIC: {
+    layer: "SEMANTIC",
+    owner: "Ten4Seven semantic resolver",
+    sourceOfTruth: [
+      "packages/contracts/src/theme-profile.ts",
+      "packages/tokens/src/theme.ts",
+    ],
+    classification: ["DERIVED", "FIXED_SYSTEM_SEMANTIC"],
+    platform: "BOTH",
+    nativeStrategy: "SAME_INTENT",
+    examples: [
+      "foreground, background, surface, border, and focus",
+      "action and selected states",
+      "destructive, warning, success, and information",
+      "disabled and data-visualization roles",
+    ],
+    note: "Semantic roles carry meaning; renderer projections choose CSS values or native values without changing the role.",
+  },
+  LAYOUT: {
+    layer: "LAYOUT",
+    owner: "Ten4Seven layout and recipe contract",
+    sourceOfTruth: [
+      "packages/contracts/src/foundation.ts",
+      "packages/tokens/src/theme.ts",
+      "packages/contracts/src/theme-recipe.ts",
+    ],
+    classification: ["DERIVED", "PRODUCT_PROFILE", "COMPOSITION_LOCAL"],
+    platform: "ADAPTIVE",
+    nativeStrategy: "ALTERNATE_PATTERN",
+    examples: [
+      "page gutter and section rhythm",
+      "content, reading, compact, control, and wide measures",
+      "minimum useful surface",
+      "systemic shell dimensions",
+    ],
+    note: "Recipes may choose composition bounds; a native renderer may use a different arrangement while preserving reading order and intent.",
+  },
+  COMPONENT: {
+    layer: "COMPONENT",
+    owner: "Ten4Seven component contract",
+    sourceOfTruth: [
+      "packages/contracts/src/foundation.ts",
+      "packages/tokens/src/theme.ts",
+    ],
+    classification: ["COMPONENT_SEMANTIC", "FIXED_SYSTEM_SEMANTIC"],
+    platform: "BOTH",
+    nativeStrategy: "NATIVE_RENDERER",
+    examples: [
+      "control, row, and touch-target measures",
+      "field, card, overlay, navigation, and collection roles",
+      "component radii, elevation, and interaction timing",
+    ],
+    note: "Components consume semantic roles and component tokens; product routes do not create parallel primitive values.",
+  },
+  PRODUCT_PROFILE: {
+    layer: "PRODUCT_PROFILE",
+    owner: "Product profile authoring contract",
+    sourceOfTruth: [
+      "packages/contracts/src/theme-recipe.ts",
+      "packages/contracts/src/brand-profile.ts",
+    ],
+    classification: ["PRODUCT_PROFILE"],
+    platform: "BOTH",
+    nativeStrategy: "SAME_INTENT",
+    examples: [
+      "neutral, AAPM, Academy, Publishing, Farm, and Operations selections",
+      "named recipe axes and justified brand semantic aliases",
+      "profile density and composition preferences",
+    ],
+    note: "Profiles select named token axes and approved brand aliases; they may not redefine generic component semantics.",
+  },
+  SCOPE: {
+    layer: "SCOPE",
+    owner: "Bounded ThemeScope consumer context",
+    sourceOfTruth: ["packages/ui/src/provider.tsx"],
+    classification: ["COMPONENT_SEMANTIC", "COMPOSITION_LOCAL"],
+    platform: "ADAPTIVE",
+    nativeStrategy: "SAME_INTENT",
+    examples: [
+      "inverse or contextual semantic surface",
+      "typed scoped theme axes",
+      "bounded scoped semantic overrides",
+    ],
+    note: "A scope re-resolves the same contract; it is not a second provider, primitive library, or CSS token source.",
+  },
+} as const satisfies Record<TokenOwnershipLayer, TokenOwnershipMatrixEntry>;
+
+export const TOKEN_DIMENSION_CLASSIFICATIONS = Object.freeze([
+  {
+    id: "GLOBAL_CUSTOMIZABLE",
+    meaning:
+      "A named system axis intentionally selectable by a product or user.",
+    examples: ["palette", "density", "typography", "radius", "motion"],
+  },
+  {
+    id: "DERIVED",
+    meaning:
+      "Computed from typed foundation, semantic roles, recipe, or runtime preferences.",
+    examples: [
+      "focus color",
+      "chart marks",
+      "density geometry",
+      "surface tiers",
+    ],
+  },
+  {
+    id: "FIXED_SYSTEM_SEMANTIC",
+    meaning: "A stable system obligation whose meaning must not vary by route.",
+    examples: ["touch-target minimum", "status meaning", "safe-area contract"],
+  },
+  {
+    id: "PRODUCT_PROFILE",
+    meaning:
+      "An approved product or brand selection, not a generic primitive value.",
+    examples: ["AAPM brand alias", "Farm density", "Academy recipe"],
+  },
+  {
+    id: "COMPONENT_SEMANTIC",
+    meaning:
+      "A component contract value shared by every consumer of that component.",
+    examples: ["control height", "overlay width", "card padding", "row height"],
+  },
+  {
+    id: "COMPOSITION_LOCAL",
+    meaning:
+      "A bounded arrangement measurement with no system-wide reuse obligation.",
+    examples: [
+      "one-off hero artwork offset",
+      "domain-specific plot annotation",
+    ],
+  },
+] as const);
+
+export type TokenLayerValues<T extends object> = Readonly<
+  Partial<Record<TokenResolutionStage, Partial<T>>>
+>;
+
+/** Apply the contract order without interpreting renderer-specific values. */
+export function resolveTokenLayers<T extends object>(
+  layers: TokenLayerValues<T> = {},
+): Partial<T> {
+  const resolved: Partial<T> = {};
+  for (const stage of TOKEN_RESOLUTION_ORDER)
+    Object.assign(resolved, layers[stage] ?? {});
+  return resolved;
+}
+
+/** Resolve a named measure through the same six-stage contract order. */
+export function resolveMeasureLayers(
+  layers: TokenLayerValues<{ measure: MeasureName }> = {},
+): MeasureName {
+  const resolved = resolveTokenLayers({
+    SYSTEM_DEFAULTS: { measure: "control" },
+    ...layers,
+  });
+  return resolved.measure ?? "control";
+}
+
+/** Normalize the short component API to the canonical measure role. */
+export function resolveMeasureIntent(intent: MeasureIntent): MeasureName {
+  return MEASURE_INTENT_TO_NAME[intent];
+}
+
+export const TOKEN_OWNERSHIP_CONTRACT = {
+  matrix: TOKEN_OWNERSHIP_MATRIX,
+  dimensionClassifications: TOKEN_DIMENSION_CLASSIFICATIONS,
+  resolutionOrder: TOKEN_RESOLUTION_ORDER,
+  sourceOfTruth: {
+    typedThemeContract: [
+      "packages/contracts/src/theme-profile.ts",
+      "packages/contracts/src/theme-recipe.ts",
+      "packages/contracts/src/brand-profile.ts",
+      "packages/contracts/src/foundation.ts",
+      "packages/tokens/src/theme.ts",
+    ],
+    webProjection: "CSS custom properties generated from buildThemeVariables",
+    nativeProjection:
+      "typed JS/TS values generated from buildNativeThemeSnapshot",
+    aiProjection: "generated foundation and DTCG projections",
+  },
+  compatibility: {
+    legacyThemeConfig: "accepted by normalizeThemeProfile and resolveTheme",
+    legacyCssVariables:
+      "remain a Web delivery surface; they are not a native input or source of truth",
+    themeScope:
+      "re-resolves the same layers and may apply bounded semantic overrides",
+  },
+} as const;
+
 export const FOUNDATION_FAMILIES = [
   ["color", "Color"],
   ["typography", "Typography"],
@@ -60,6 +763,7 @@ const tokenRoleSets = {
     "font-display",
     "font-optical-sizing",
     "focus-ring",
+    "ref-space",
   ],
   action: [
     "accent",
@@ -88,8 +792,19 @@ const tokenRoleSets = {
     "selected-hover",
     "control-height",
     "focus-ring",
+    "safe-area",
+    "content-rail",
   ],
-  layout: ["section-gap", "surface", "border", "radius-panel"],
+  layout: [
+    "section-gap",
+    "surface",
+    "border",
+    "radius-panel",
+    "content-rail",
+    "gutter",
+    "measure",
+    "ref-space",
+  ],
   pattern: [
     "surface-overlay",
     "shadow-popover",
@@ -164,6 +879,11 @@ const tokenRoleSets = {
     "chart-3",
     "chart-4",
     "chart-5",
+    "chart-comparison",
+    "chart-threshold",
+    "chart-positive",
+    "chart-negative",
+    "chart-no-data",
     "surface",
     "border",
   ],
@@ -195,9 +915,35 @@ export const COMPONENT_TOKEN_ROLE_CONTRACT = {
     "chart-3": ["--t7-chart-3-hsl"],
     "chart-4": ["--t7-chart-4-hsl"],
     "chart-5": ["--t7-chart-5-hsl"],
+    "chart-comparison": ["--t7-chart-comparison-hsl"],
+    "chart-threshold": ["--t7-chart-threshold-hsl"],
+    "chart-positive": ["--t7-chart-positive-hsl"],
+    "chart-negative": ["--t7-chart-negative-hsl"],
+    "chart-no-data": ["--t7-chart-no-data-hsl"],
     "control-gap": ["--t7-control-gap"],
     "control-height": ["--t7-control-height"],
     "control-radius": ["--t7-radius-control"],
+    "content-rail": [
+      "--t7-content-max",
+      "--t7-rail-reading",
+      "--t7-rail-form",
+      "--t7-rail-application",
+      "--t7-rail-data",
+    ],
+    measure: [
+      "--t7-measure-compact",
+      "--t7-measure-compact-min",
+      "--t7-measure-control",
+      "--t7-measure-control-min",
+      "--t7-measure-content",
+      "--t7-measure-content-min",
+      "--t7-measure-wide",
+      "--t7-measure-wide-min",
+      "--t7-measure-reading",
+      "--t7-measure-reading-min",
+      "--t7-measure-fluid",
+      "--t7-measure-fluid-min",
+    ],
     danger: ["--t7-danger-hsl"],
     "disabled-background": ["--t7-disabled-background-hsl"],
     "disabled-foreground": ["--t7-disabled-foreground-hsl"],
@@ -207,6 +953,13 @@ export const COMPONENT_TOKEN_ROLE_CONTRACT = {
     "font-optical-sizing": ["--t7-font-optical-sizing"],
     "font-ui": ["--t7-font-ui"],
     foreground: ["--t7-foreground-hsl"],
+    gutter: [
+      "--t7-page-gutter",
+      "--t7-gutter-mobile",
+      "--t7-gutter-tablet",
+      "--t7-gutter-desktop",
+      "--t7-gutter-wide",
+    ],
     "indicator-radius": ["--t7-radius-indicator"],
     info: ["--t7-info-hsl"],
     "input-background": ["--t7-input-background-hsl"],
@@ -229,9 +982,22 @@ export const COMPONENT_TOKEN_ROLE_CONTRACT = {
     "motion-loop": ["--t7-motion-loop"],
     "muted-foreground": ["--t7-muted-foreground-hsl"],
     primary: ["--t7-primary-hsl"],
+    "primary-hover": ["--t7-primary-hover-hsl"],
     "radius-card": ["--t7-radius-card"],
     "radius-control": ["--t7-radius-control"],
     "radius-panel": ["--t7-radius-panel"],
+    "ref-space": [
+      "--t7-ref-space-0",
+      "--t7-ref-space-1",
+      "--t7-ref-space-2",
+      "--t7-ref-space-3",
+      "--t7-ref-space-4",
+      "--t7-ref-space-5",
+      "--t7-ref-space-6",
+      "--t7-ref-space-8",
+      "--t7-ref-space-10",
+      "--t7-ref-space-12",
+    ],
     "row-height": ["--t7-row-height"],
     scrim: ["--t7-scrim-hsl"],
     "section-gap": ["--t7-section-gap"],
@@ -251,6 +1017,12 @@ export const COMPONENT_TOKEN_ROLE_CONTRACT = {
     "surface-overlay": ["--t7-surface-overlay-hsl"],
     "surface-raised": ["--t7-surface-raised-hsl"],
     "surface-subtle": ["--t7-surface-subtle-hsl"],
+    "safe-area": [
+      "--t7-safe-area-top",
+      "--t7-safe-area-right",
+      "--t7-safe-area-bottom",
+      "--t7-safe-area-left",
+    ],
     "table-cell": ["--t7-type-table-cell-size"],
     "table-cell-padding": ["--t7-table-cell-padding-inline"],
     "table-header": ["--t7-type-table-header-size"],
@@ -293,6 +1065,9 @@ export const VIEWPORT_RULES = [
 
 export const FOUNDATION_CONTRACT = {
   families: FOUNDATION_FAMILIES,
+  measures: MEASURE_CONTRACT,
+  layoutGrammar: LAYOUT_GRAMMAR_CONTRACT,
+  tokenOwnership: TOKEN_OWNERSHIP_CONTRACT,
   surfaceExpressions: SURFACE_EXPRESSIONS,
   canvasLabels: CANVAS_LABELS,
   componentTokenRoles: COMPONENT_TOKEN_ROLE_CONTRACT,

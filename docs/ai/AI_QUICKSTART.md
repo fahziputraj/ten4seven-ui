@@ -47,6 +47,34 @@ Studio-like editor, the compatible object form remains available:
 `theme={{ palette: "blue", primary: "indigo", accent: "cyan" }}`. Use typed
 `ThemeOverrides` only as a bounded product-root exception after a recipe.
 
+### Native / Expo consumers
+
+Native uses the same typed theme and component intent through a separate
+renderer boundary. It does not import the Web DOM renderer or parse CSS:
+
+```tsx
+import {
+  NativeButton,
+  NativeScreen,
+  NativeThemeProvider,
+} from "@ten4seven/native/renderer";
+
+<NativeThemeProvider profile="aapm-farm" appearance="system" density="default">
+  <NativeScreen>
+    <NativeButton onPress={save}>Save</NativeButton>
+  </NativeScreen>
+</NativeThemeProvider>;
+```
+
+The native adapter resolves the same semantic profile into JS/TS values for
+React Native. Use the native package's documented renderer exports and keep
+platform presentation explicit: popups may become sheets, dense tables may
+become list/detail surfaces, and touch-safe move actions may accompany or
+replace drag. `@ten4seven/native` is currently a private source-workspace
+package with a bounded partial renderer; the Native Lab Web export is not
+Android/iOS device proof, and no native publication or parity claim should be
+inferred until the U12 runtime gate is passed.
+
 ## 4. Select a page recipe
 
 Start with `generated/agent-index.json`, then read the compact recipe and

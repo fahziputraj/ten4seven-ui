@@ -1,0 +1,414 @@
+- generic [ref=f13e6]:
+  - banner [ref=f13e7]:
+    - navigation "Primary navigation" [ref=f13e8]:
+      - link "ten4seven UI Composable by default" [ref=f13e10] [cursor=pointer]:
+        - /url: /public-showcase
+        - generic [ref=f13e18]:
+          - strong [ref=f13e19]: ten4seven UI
+          - generic [ref=f13e20]: Composable by default
+      - menubar "Navigation menu" [ref=f13e22]:
+        - menuitem "Overview" [ref=f13e23] [cursor=pointer]
+        - menuitem "Explore" [ref=f13e25] [cursor=pointer]
+        - menuitem "System" [ref=f13e29] [cursor=pointer]
+        - menuitem "Stories" [ref=f13e33] [cursor=pointer]
+      - generic [ref=f13e35]:
+        - button "View components" [ref=f13e36] [cursor=pointer]
+        - button "Open settings" [ref=f13e44] [cursor=pointer]
+  - main [active] [ref=f13e49]:
+    - generic [ref=f13e50]:
+      - region [ref=f13e51]:
+        - generic [ref=f13e52]:
+          - generic [ref=f13e53]: TEN4SEVEN UI / COMPOSITION SYSTEM
+          - heading "Build consistent interfaces, faster." [level=1] [ref=f13e54]
+          - paragraph [ref=f13e55]: A composable system for product surfaces, reference work, and public experiences—connected by the same tokens, contracts, and visual language.
+          - generic [ref=f13e56]:
+            - button "Explore the system" [ref=f13e57] [cursor=pointer]
+            - button "Browse blocks" [ref=f13e59] [cursor=pointer]
+          - generic [ref=f13e61]:
+            - generic [ref=f13e62]: Semantic by default
+            - generic [ref=f13e65]: Theme-aware
+            - generic [ref=f13e68]: Built for reuse
+        - generic "A live product surface preview" [ref=f13e72]:
+          - generic [ref=f13e73]:
+            - generic [ref=f13e74]:
+              - generic [ref=f13e75]: Foundations
+              - generic [ref=f13e82]: Search docs…
+            - generic [ref=f13e90]:
+              - complementary [ref=f13e91]:
+                - generic [ref=f13e92]: Tokens
+                - generic [ref=f13e93]: Components
+                - generic [ref=f13e94]: Patterns
+                - generic [ref=f13e95]: Recipes
+              - generic [ref=f13e96]:
+                - generic [ref=f13e98]:
+                  - text: Product overview
+                  - heading "One shared language." [level=2] [ref=f13e99]
+                - generic [ref=f13e102]:
+                  - generic [ref=f13e103]:
+                    - generic [ref=f13e104]: Components
+                    - strong [ref=f13e105]: "144"
+                  - generic [ref=f13e106]:
+                    - generic [ref=f13e107]: Themes
+                    - strong [ref=f13e108]: "11"
+                  - generic [ref=f13e109]:
+                    - generic [ref=f13e110]: System health
+                    - strong [ref=f13e111]: Ready
+                - region [ref=f13e112]:
+                  - generic [ref=f13e113]:
+                    - heading "Connected surfaces" [level=2] [ref=f13e114]
+                    - paragraph [ref=f13e115]: Product, web, docs, and learning in one view
+                  - img "Connected product surfaces chart" [ref=f13e118]:
+                    - generic [ref=f13e119]: "0"
+                    - generic [ref=f13e121]: "25"
+                    - generic [ref=f13e123]: "50"
+                    - generic [ref=f13e125]: "75"
+                    - generic [ref=f13e127]: "100"
+                    - 'generic "App: 82" [ref=f13e129]':
+                      - 'img "App: 82" [ref=f13e130]'
+                      - generic [ref=f13e131]: App
+                    - 'generic "Web: 64" [ref=f13e132]':
+                      - 'img "Web: 64" [ref=f13e133]'
+                      - generic [ref=f13e134]: Web
+                    - 'generic "Docs: 48" [ref=f13e135]':
+                      - 'img "Docs: 48" [ref=f13e136]'
+                      - generic [ref=f13e137]: Docs
+                    - 'generic "Labs: 36" [ref=f13e138]':
+                      - 'img "Labs: 36" [ref=f13e139]'
+                      - generic [ref=f13e140]: Labs
+      - navigation "Public showcase sections" [ref=f13e141]:
+        - generic [ref=f13e142]:
+          - generic [ref=f13e143]: Navigate the system
+          - generic [ref=f13e144]: Start with the foundation, then move through the reusable work.
+        - generic [ref=f13e145]:
+          - link "01 Foundations Tokens, roles, and responsive foundations" [ref=f13e146] [cursor=pointer]:
+            - /url: "#showcase-features"
+            - generic [ref=f13e147]: "01"
+            - generic [ref=f13e148]:
+              - strong [ref=f13e149]: Foundations
+              - generic [ref=f13e150]: Tokens, roles, and responsive foundations
+          - link "02 Guides Guides and editorial notes for the system" [ref=f13e153] [cursor=pointer]:
+            - /url: "#showcase-content"
+            - generic [ref=f13e154]: "02"
+            - generic [ref=f13e155]:
+              - strong [ref=f13e156]: Guides
+              - generic [ref=f13e157]: Guides and editorial notes for the system
+          - link "03 Blocks Reusable blocks ready for composition" [ref=f13e160] [cursor=pointer]:
+            - /url: "#showcase-products"
+            - generic [ref=f13e161]: "03"
+            - generic [ref=f13e162]:
+              - strong [ref=f13e163]: Blocks
+              - generic [ref=f13e164]: Reusable blocks ready for composition
+          - link "04 Stories Specific proof from teams using the language" [ref=f13e167] [cursor=pointer]:
+            - /url: "#showcase-testimonials"
+            - generic [ref=f13e168]: "04"
+            - generic [ref=f13e169]:
+              - strong [ref=f13e170]: Stories
+              - generic [ref=f13e171]: Specific proof from teams using the language
+      - region "A shared language for teams" [ref=f13e174]:
+        - generic [ref=f13e176]:
+          - generic [ref=f13e177]: Product teams
+          - generic [ref=f13e184]: Content teams
+          - generic [ref=f13e193]: Platform teams
+          - generic [ref=f13e202]: Design systems
+          - generic [ref=f13e211]: Public teams
+      - region [ref=f13e221]:
+        - generic [ref=f13e222]:
+          - heading "A system that scales by composition" [level=2] [ref=f13e223]
+          - paragraph [ref=f13e224]: Counts are local catalog proof, not product performance claims.
+        - generic [ref=f13e225]:
+          - generic [ref=f13e226]:
+            - strong [ref=f13e227]: "144"
+            - generic [ref=f13e228]: Components
+            - generic [ref=f13e229]: canonical contracts
+          - generic [ref=f13e230]:
+            - strong [ref=f13e231]: "29"
+            - generic [ref=f13e232]: Recipes
+            - generic [ref=f13e233]: reusable page recipes
+          - generic [ref=f13e234]:
+            - strong [ref=f13e235]: "113"
+            - generic [ref=f13e236]: Icons
+            - generic [ref=f13e237]: semantic names
+          - generic [ref=f13e238]:
+            - strong [ref=f13e239]: "12"
+            - generic [ref=f13e240]: Blocks
+            - generic [ref=f13e241]: separate expressive blocks
+      - region [ref=f13e242]:
+        - generic [ref=f13e243]:
+          - heading "Foundations that stay useful" [level=2] [ref=f13e244]
+          - paragraph [ref=f13e245]: The public layer adds section-level composition without changing the contracts that make dense product work predictable.
+        - generic [ref=f13e246]:
+          - region [ref=f13e248]:
+            - generic [ref=f13e249]:
+              - heading "Signals remain readable" [level=2] [ref=f13e250]
+              - paragraph [ref=f13e251]: Five tokenized series · reduced-motion safe
+            - generic [ref=f13e252]:
+              - paragraph [ref=f13e253]: Coverage signals across app, public, and docs remain readable at a glance.
+              - img "Coverage trend chart" [ref=f13e255]:
+                - generic [ref=f13e256]: "0"
+                - generic [ref=f13e258]: "25"
+                - generic [ref=f13e260]: "50"
+                - generic [ref=f13e262]: "75"
+                - generic [ref=f13e264]: "100"
+                - generic [ref=f13e266]:
+                  - 'generic "App, May: 32" [ref=f13e268] [cursor=pointer]'
+                  - 'generic "App, Jun: 44" [ref=f13e269] [cursor=pointer]'
+                  - 'generic "App, Jul: 51" [ref=f13e270] [cursor=pointer]'
+                  - 'generic "App, Aug: 63" [ref=f13e271] [cursor=pointer]'
+                  - 'generic "App, Sep: 72" [ref=f13e272] [cursor=pointer]'
+                  - 'generic "App, Oct: 82" [ref=f13e273] [cursor=pointer]'
+                - generic [ref=f13e274]:
+                  - 'generic "Public, May: 14" [ref=f13e276] [cursor=pointer]'
+                  - 'generic "Public, Jun: 24" [ref=f13e277] [cursor=pointer]'
+                  - 'generic "Public, Jul: 29" [ref=f13e278] [cursor=pointer]'
+                  - 'generic "Public, Aug: 38" [ref=f13e279] [cursor=pointer]'
+                  - 'generic "Public, Sep: 47" [ref=f13e280] [cursor=pointer]'
+                  - 'generic "Public, Oct: 58" [ref=f13e281] [cursor=pointer]'
+                - generic [ref=f13e282]:
+                  - 'generic "Docs, May: 8" [ref=f13e284] [cursor=pointer]'
+                  - 'generic "Docs, Jun: 12" [ref=f13e285] [cursor=pointer]'
+                  - 'generic "Docs, Jul: 19" [ref=f13e286] [cursor=pointer]'
+                  - 'generic "Docs, Aug: 25" [ref=f13e287] [cursor=pointer]'
+                  - 'generic "Docs, Sep: 33" [ref=f13e288] [cursor=pointer]'
+                  - 'generic "Docs, Oct: 45" [ref=f13e289] [cursor=pointer]'
+                - generic [ref=f13e290]: May
+                - generic [ref=f13e291]: Jun
+                - generic [ref=f13e292]: Jul
+                - generic [ref=f13e293]: Aug
+                - generic [ref=f13e294]: Sep
+                - generic [ref=f13e295]: Oct
+              - list [ref=f13e296]:
+                - listitem [ref=f13e297]:
+                  - generic [ref=f13e299]: App
+                - listitem [ref=f13e300]:
+                  - generic [ref=f13e302]: Public
+                - listitem [ref=f13e303]:
+                  - generic [ref=f13e305]: Docs
+          - generic [ref=f13e306]:
+            - article [ref=f13e307]:
+              - generic [ref=f13e313]:
+                - heading "Typography with a job" [level=3] [ref=f13e314]
+                - paragraph [ref=f13e315]: Semantic roles keep hierarchy calm across headers, fields, data, actions, and public copy.
+            - article [ref=f13e316]:
+              - generic [ref=f13e324]:
+                - heading "Composition over decoration" [level=3] [ref=f13e325]
+                - paragraph [ref=f13e326]: Blocks combine existing surfaces, media frames, controls, and motion tokens instead of inventing variants.
+            - article [ref=f13e327]:
+              - generic [ref=f13e333]:
+                - heading "Responsive by design" [level=3] [ref=f13e334]
+                - paragraph [ref=f13e335]: "Responsive behavior is part of the contract: stacks, rails, and carousels change geometry intentionally."
+      - region [ref=f13e336]:
+        - generic [ref=f13e337]:
+          - heading "Made for reading as well as operating" [level=2] [ref=f13e338]
+          - paragraph [ref=f13e339]: A content-led section uses the same card, media, type, and action contracts without becoming an operational list.
+        - generic [ref=f13e340]:
+          - generic [ref=f13e341]:
+            - generic [ref=f13e344]:
+              - generic [ref=f13e345]: TYPOGRAPHY
+              - heading "Hierarchy that breathes" [level=3] [ref=f13e351]
+              - generic [ref=f13e352]:
+                - generic [ref=f13e353]: Token-led
+                - generic [ref=f13e355]: Responsive
+            - generic [ref=f13e357]:
+              - generic [ref=f13e358]: Guide · Foundations
+              - heading "Designing hierarchy that breathes" [level=3] [ref=f13e359]
+              - paragraph [ref=f13e360]: How semantic roles keep a product readable when every surface has a different density.
+              - button "Read the guide" [ref=f13e362] [cursor=pointer]
+          - generic [ref=f13e366]:
+            - generic [ref=f13e369]:
+              - generic [ref=f13e370]: RECIPES
+              - heading "A path from contract to product" [level=3] [ref=f13e376]
+              - generic [ref=f13e377]:
+                - generic [ref=f13e378]: Token-led
+                - generic [ref=f13e380]: Responsive
+            - generic [ref=f13e382]:
+              - generic [ref=f13e383]: Field note · Composition
+              - heading "The contract is the product" [level=3] [ref=f13e384]
+              - paragraph [ref=f13e385]: A practical map from primitive behavior to complete, responsive application recipes.
+              - button "Read the guide" [ref=f13e387] [cursor=pointer]
+          - generic [ref=f13e391]:
+            - generic [ref=f13e394]:
+              - generic [ref=f13e395]: COMPOSITION
+              - heading "Blocks with a point of view" [level=3] [ref=f13e403]
+              - generic [ref=f13e404]:
+                - generic [ref=f13e405]: Token-led
+                - generic [ref=f13e407]: Responsive
+            - generic [ref=f13e409]:
+              - generic [ref=f13e410]: Essay · Practice
+              - heading "Polish without a second system" [level=3] [ref=f13e411]
+              - paragraph [ref=f13e412]: Why restrained surfaces, local media, and explicit state make an AI-built interface trustworthy.
+              - button "Read the guide" [ref=f13e414] [cursor=pointer]
+      - region [ref=f13e418]:
+        - generic [ref=f13e419]:
+          - generic [ref=f13e420]:
+            - heading "Browse the composition library" [level=2] [ref=f13e421]
+            - paragraph [ref=f13e422]: Product cards remain content-focused; the carousel owns sequencing, controls, and overflow.
+          - button "View all guides" [ref=f13e424] [cursor=pointer]
+        - region "Carousel" [ref=f13e428]:
+          - generic [ref=f13e429]:
+            - generic [ref=f13e430]:
+              - generic [ref=f13e431]: Slide
+              - text: 1 of 3
+            - generic [ref=f13e432]:
+              - button "Previous slide" [disabled] [ref=f13e433]
+              - button "Next slide" [ref=f13e436] [cursor=pointer]
+          - group "Carousel slides" [ref=f13e439]:
+            - generic [ref=f13e440]:
+              - group "Slide 1 of 3" [ref=f13e441]:
+                - article [ref=f13e442]:
+                  - generic [ref=f13e445]:
+                    - generic [ref=f13e446]: TYPOGRAPHY
+                    - heading "Hierarchy that breathes" [level=3] [ref=f13e452]
+                    - generic [ref=f13e453]:
+                      - generic [ref=f13e454]: Token-led
+                      - generic [ref=f13e456]: Responsive
+                  - generic [ref=f13e458]:
+                    - generic [ref=f13e459]: Foundations
+                    - heading "Tokens that explain themselves" [level=2] [ref=f13e460]
+                    - generic [ref=f13e461]: Guide · 8 min read
+                    - generic "Rated 4.9 out of 5" [ref=f13e463]: "4.9"
+                    - generic [ref=f13e469]: Included in the reference
+                    - button "Read guide" [ref=f13e471] [cursor=pointer]
+              - group "Slide 2 of 3" [ref=f13e475]:
+                - article [ref=f13e476]:
+                  - generic [ref=f13e479]:
+                    - generic [ref=f13e480]: RECIPES
+                    - heading "A path from contract to product" [level=3] [ref=f13e486]
+                    - generic [ref=f13e487]:
+                      - generic [ref=f13e488]: Token-led
+                      - generic [ref=f13e490]: Responsive
+                  - generic [ref=f13e492]:
+                    - generic [ref=f13e493]: Patterns
+                    - heading "Recipes for real product work" [level=2] [ref=f13e494]
+                    - generic [ref=f13e495]: Guide · 8 min read
+                    - generic "Rated 4.9 out of 5" [ref=f13e497]: "4.9"
+                    - generic [ref=f13e503]: Included in the reference
+                    - button "Read guide" [ref=f13e505] [cursor=pointer]
+              - group "Slide 3 of 3" [ref=f13e509]:
+                - article [ref=f13e510]:
+                  - generic [ref=f13e513]:
+                    - generic [ref=f13e514]: COMPOSITION
+                    - heading "Blocks with a point of view" [level=3] [ref=f13e522]
+                    - generic [ref=f13e523]:
+                      - generic [ref=f13e524]: Token-led
+                      - generic [ref=f13e526]: Responsive
+                  - generic [ref=f13e528]:
+                    - generic [ref=f13e529]: Blocks
+                    - heading "Public sections with restraint" [level=2] [ref=f13e530]
+                    - generic [ref=f13e531]: Guide · 8 min read
+                    - generic "Rated 4.9 out of 5" [ref=f13e533]: "4.9"
+                    - generic [ref=f13e539]: Included in the reference
+                    - button "Read guide" [ref=f13e541] [cursor=pointer]
+          - generic "Choose slide" [ref=f13e545]:
+            - button "Go to slide 1" [pressed] [ref=f13e546] [cursor=pointer]
+            - button "Go to slide 2" [ref=f13e547] [cursor=pointer]
+            - button "Go to slide 3" [ref=f13e548] [cursor=pointer]
+          - generic [ref=f13e549]: Slide 1 of 3
+      - region [ref=f13e550]:
+        - generic [ref=f13e551]:
+          - heading "Built for teams that care about the details" [level=2] [ref=f13e552]
+          - paragraph [ref=f13e553]: Proof is useful when it stays specific and readable.
+        - generic [ref=f13e554]:
+          - figure "Maya Patel Design systems lead · Product engineering" [ref=f13e555]:
+            - blockquote [ref=f13e556]:
+              - paragraph [ref=f13e557]: “The same contracts let our inventory workbench and public catalog feel related without making them look the same.”
+            - generic [ref=f13e558]:
+              - generic [aria-hidden] [ref=f13e559]: MP
+              - generic [ref=f13e560]:
+                - strong [ref=f13e561]: Maya Patel
+                - generic [ref=f13e562]: Design systems lead · Product engineering
+          - figure "Andre Reyes Staff engineer · Platform team" [ref=f13e563]:
+            - blockquote [ref=f13e564]:
+              - paragraph [ref=f13e565]: "“The value is in the decisions an agent can retrieve: hierarchy, composition, state, and the boundary between them.”"
+            - generic [ref=f13e566]:
+              - generic [aria-hidden] [ref=f13e567]: AR
+              - generic [ref=f13e568]:
+                - strong [ref=f13e569]: Andre Reyes
+                - generic [ref=f13e570]: Staff engineer · Platform team
+      - region [ref=f13e571]:
+        - generic [ref=f13e572]:
+          - heading "A clear place for every stage" [level=2] [ref=f13e573]
+          - paragraph [ref=f13e574]: A presentation-only comparison block. Entitlements and billing remain product-owned.
+        - generic [ref=f13e575]:
+          - generic [ref=f13e577]:
+            - heading "Starter" [level=3] [ref=f13e578]
+            - paragraph [ref=f13e579]: For a focused team proving one product surface.
+            - generic [ref=f13e580]: Free
+            - list [ref=f13e581]:
+              - listitem [ref=f13e582]:
+                - generic [ref=f13e585]: Canonical components
+              - listitem [ref=f13e586]:
+                - generic [ref=f13e589]: Theme axes
+              - listitem [ref=f13e590]:
+                - generic [ref=f13e593]: AI contracts
+            - button "Start with the system" [ref=f13e595] [cursor=pointer]
+          - generic [ref=f13e598]:
+            - generic [ref=f13e599]: Recommended
+            - heading "Team" [level=3] [ref=f13e600]
+            - paragraph [ref=f13e601]: For teams shipping across product and public surfaces.
+            - generic [ref=f13e602]: $19 / member
+            - list [ref=f13e603]:
+              - listitem [ref=f13e604]:
+                - generic [ref=f13e607]: Everything in Starter
+              - listitem [ref=f13e608]:
+                - generic [ref=f13e611]: Reusable blocks
+              - listitem [ref=f13e612]:
+                - generic [ref=f13e615]: Reference recipes
+            - button "Compose with a team" [ref=f13e617] [cursor=pointer]
+          - generic [ref=f13e620]:
+            - heading "Enterprise" [level=3] [ref=f13e621]
+            - paragraph [ref=f13e622]: For organizations standardizing multiple product lines.
+            - generic [ref=f13e623]: Custom
+            - list [ref=f13e624]:
+              - listitem [ref=f13e625]:
+                - generic [ref=f13e628]: Everything in Team
+              - listitem [ref=f13e629]:
+                - generic [ref=f13e632]: Governance guidance
+              - listitem [ref=f13e633]:
+                - generic [ref=f13e636]: Migration support
+            - button "Talk to the team" [ref=f13e638] [cursor=pointer]
+      - region [ref=f13e640]:
+        - generic [ref=f13e641]:
+          - heading "Ready to build a surface that holds together?" [level=2] [ref=f13e642]
+          - paragraph [ref=f13e643]: Start with a complete recipe, then let the system carry the details through every breakpoint and theme.
+          - generic [ref=f13e644]:
+            - button "Browse the blocks" [ref=f13e645] [cursor=pointer]
+            - button "Read documentation" [ref=f13e647] [cursor=pointer]
+    - generic [ref=f13e649]:
+      - generic [ref=f13e650]:
+        - generic [ref=f13e652]:
+          - link "ten4seven UI Composable by default" [ref=f13e653] [cursor=pointer]:
+            - /url: /public-showcase
+            - generic [ref=f13e661]:
+              - strong [ref=f13e662]: ten4seven UI
+              - generic [ref=f13e663]: Composable by default
+          - generic [ref=f13e664]: A calm, token-led system for product and public interfaces.
+        - generic [ref=f13e665]:
+          - generic [ref=f13e666]: Explore
+          - navigation "Explore" [ref=f13e667]:
+            - link "Foundations" [ref=f13e668] [cursor=pointer]:
+              - /url: "#showcase-features"
+            - link "Blocks" [ref=f13e669] [cursor=pointer]:
+              - /url: "#showcase-products"
+            - link "Recipes" [ref=f13e670] [cursor=pointer]:
+              - /url: "#showcase-plans"
+        - generic [ref=f13e671]:
+          - generic [ref=f13e672]: Resources
+          - navigation "Resources" [ref=f13e673]:
+            - link "System proof" [ref=f13e674] [cursor=pointer]:
+              - /url: "#showcase-stats"
+            - link "Stories" [ref=f13e675] [cursor=pointer]:
+              - /url: "#showcase-testimonials"
+            - link "Contact" [ref=f13e676] [cursor=pointer]:
+              - /url: "#showcase-cta"
+        - generic [ref=f13e677]:
+          - generic [ref=f13e678]: Library
+          - navigation "Library" [ref=f13e679]:
+            - link "Components" [ref=f13e680] [cursor=pointer]:
+              - /url: /components
+            - link "Tokens" [ref=f13e681] [cursor=pointer]:
+              - /url: /tokens
+            - link "Recipes" [ref=f13e682] [cursor=pointer]:
+              - /url: /recipes
+      - generic [ref=f13e683]:
+        - generic [ref=f13e684]: © 2026 ten4seven UI
+        - button "Share feedback" [ref=f13e686] [cursor=pointer]

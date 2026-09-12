@@ -1,6 +1,18 @@
+import { readFileSync } from "node:fs";
+
 import { describe, expect, it } from "vitest";
 
 import {
+  MEASURE_CONTRACT,
+  MEASURE_NAMES,
+  TOKEN_OWNERSHIP_CONTRACT,
+  TOKEN_RESOLUTION_ORDER,
+  resolveMeasureIntent,
+  resolveMeasureLayers,
+  resolveTokenLayers,
+} from "../../contracts/src/foundation.ts";
+import {
+  buildNativeThemeSnapshot,
   buildRadiusProfile,
   buildThemeVariables,
   chartGeometry,
@@ -10,12 +22,146 @@ import {
   kpiGeometry,
   layoutGeometry,
   overlayGeometry,
+  resolveThemeConfigLayers,
   resolveTheme,
   surfaceGeometry,
   tableGeometry,
 } from "./theme";
 
 describe("theme engine", () => {
+  it("resolves every authored layer in the canonical order", () => {
+    expect(TOKEN_RESOLUTION_ORDER).toEqual([
+      "SYSTEM_DEFAULTS",
+      "BASE_RECIPE",
+      "PRODUCT_PROFILE",
+      "THEME_OVERRIDE",
+      "SCOPED_OVERRIDE",
+      "COMPONENT_STATE",
+    ]);
+    expect(TOKEN_OWNERSHIP_CONTRACT.resolutionOrder).toEqual(
+      TOKEN_RESOLUTION_ORDER,
+    );
+
+    const resolved = resolveTokenLayers<{ value: string }>({
+      SYSTEM_DEFAULTS: { value: "defaults" },
+      BASE_RECIPE: { value: "recipe" },
+      PRODUCT_PROFILE: { value: "profile" },
+      THEME_OVERRIDE: { value: "override" },
+      SCOPED_OVERRIDE: { value: "scope" },
+      COMPONENT_STATE: { value: "state" },
+    });
+    expect(resolved.value).toBe("state");
+
+    expect(resolveThemeConfigLayers().palette).toBe("emerald");
+    expect(
+      resolveThemeConfigLayers({
+        BASE_RECIPE: { palette: "blue" },
+        PRODUCT_PROFILE: { palette: "indigo" },
+        THEME_OVERRIDE: { palette: "violet" },
+        SCOPED_OVERRIDE: { palette: "rose" },
+        COMPONENT_STATE: { palette: "amber" },
+      }).palette,
+    ).toBe("amber");
+
+    expect(resolveMeasureLayers()).toBe("control");
+    expect(
+      resolveMeasureLayers({
+        SYSTEM_DEFAULTS: { measure: "compact" },
+        BASE_RECIPE: { measure: "content" },
+        PRODUCT_PROFILE: { measure: "wide" },
+        THEME_OVERRIDE: { measure: "reading" },
+        SCOPED_OVERRIDE: { measure: "control" },
+        COMPONENT_STATE: { measure: "fluid" },
+      }),
+    ).toBe("fluid");
+    expect(resolveMeasureIntent("default")).toBe("control");
+    expect(resolveMeasureIntent("fill")).toBe("fluid");
+  });
+
+  it("projects the same light, dark, contrast, and reduced-motion roles to native data", () => {
+    for (const appearance of ["light", "dark"] as const) {
+      for (const motion of ["full", "reduced"] as const) {
+        const theme = resolveTheme({
+          appearance,
+          density: "compact",
+          primary: "indigo",
+          radius: "rounded",
+        });
+        const options = {
+          contrast: "more" as const,
+          motion,
+          motionProfile: "calm" as const,
+        };
+        const css = buildThemeVariables(theme, options);
+        const native = buildNativeThemeSnapshot(theme, options);
+
+        expect(native.colors.actionPrimary).toBe(
+          hslToHex(css["--t7-action-primary-hsl"]),
+        );
+        expect(native.colors.surface).toBe(hslToHex(css["--t7-surface-hsl"]));
+        expect(native.colors.borderStrong).toBe(
+          hslToHex(css["--t7-border-strong-hsl"]),
+        );
+        expect(native.colors.statusDanger).toBe(
+          hslToHex(css["--t7-danger-hsl"]),
+        );
+        expect(native.spacing.control).toBe(
+          Number.parseFloat(css["--t7-control-height"]),
+        );
+        expect(native.spacing.cardPadding).toBe(
+          Number.parseFloat(css["--t7-card-padding"]),
+        );
+        expect(native.radius.card).toBe(
+          Number.parseFloat(css["--t7-radius-card"]),
+        );
+        expect(native.touchTarget).toBe(
+          Number.parseFloat(css["--t7-touch-target-min"]),
+        );
+        expect(native.motion.enabled).toBe(motion === "full");
+        expect(native.motion.rolesMs.chart).toBe(
+          Number.parseFloat(css["--t7-duration-chart"]),
+        );
+        for (const name of MEASURE_NAMES) {
+          const entry = MEASURE_CONTRACT[name];
+          const nativeMeasure = native.layout.measures[name];
+          expect(nativeMeasure.minimumPx).toBe(entry.minimumPx);
+          expect(nativeMeasure.preferredPx).toBe(entry.preferredPx);
+          expect(nativeMeasure.maximumPx).toBe(entry.maximumPx);
+          expect(nativeMeasure.fluid).toBe(entry.mode === "fluid");
+          expect(css[`--t7-measure-${name}-min`]).toBe(`${entry.minimumPx}px`);
+          expect(css[`--t7-measure-${name}`]).toBe(
+            entry.maximumPx === null ? "100%" : `${entry.maximumPx}px`,
+          );
+        }
+      }
+    }
+  });
+
+  it("keeps the base Web token block derived from the typed resolver", () => {
+    const css = readFileSync(new URL("./theme.css", import.meta.url), "utf8");
+    const rootStart = css.indexOf(":root {");
+    const rootEnd = css.indexOf("\n}\n\n[data-theme-appearance", rootStart);
+    const root = css.slice(rootStart, rootEnd);
+    const normalize = (value: string) =>
+      value
+        .replace(/\s+/g, " ")
+        .replace(/\b0\.(\d+)/g, ".$1")
+        .trim();
+    const projected = Object.fromEntries(
+      [...root.matchAll(/^\s*(--t7-[\w-]+):\s*([\s\S]*?);$/gm)].map(
+        ([, name, value]) => [name, normalize(value)],
+      ),
+    );
+    const variables = buildThemeVariables(resolveTheme());
+
+    expect(css).toContain(
+      "Generated from packages/tokens/src/theme.ts. Do not edit the :root token block by hand.",
+    );
+    expect(Object.keys(projected)).toEqual(Object.keys(variables));
+    for (const [name, value] of Object.entries(variables))
+      expect(projected[name]).toBe(normalize(value));
+  });
+
   it("converts resolved color channels once for all token-aware color inputs", () => {
     expect(hslToHex("148 58% 29%")).toBe("#1f7547");
     expect(hslToHex("78 82% 45%")).toBe("#98d115");
@@ -580,15 +726,11 @@ describe("theme engine", () => {
       resolveTheme({ appearance: "light", surfaceTreatment: "quiet" }),
     );
 
-    expect(quiet["--t7-border-hsl"]).not.toBe(
-      quiet["--t7-surface-hsl"],
-    );
+    expect(quiet["--t7-border-hsl"]).not.toBe(quiet["--t7-surface-hsl"]);
     expect(quiet["--t7-table-border-hsl"]).toBe(
       quiet["--t7-border-strong-hsl"],
     );
-    expect(quiet["--t7-table-border-hsl"]).not.toBe(
-      quiet["--t7-border-hsl"],
-    );
+    expect(quiet["--t7-table-border-hsl"]).not.toBe(quiet["--t7-border-hsl"]);
     expect(quiet["--t7-table-divider-alpha"]).toBe(
       `${tableGeometry.dividerAlpha}`,
     );

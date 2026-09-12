@@ -5,6 +5,7 @@
     "shared": [
       "semantic intents, presentation states, interaction states, and ownership",
       "theme profiles, brand profiles, density, typography, and motion roles",
+      "named layout measures and minimum useful surface intent",
       "semantic icon names and meaning"
     ],
     "web": [
@@ -158,6 +159,32 @@
         "path": "semantic.typography.metric-lg"
       }
     },
+    "layout": {
+      "compact": {
+        "layer": "layout",
+        "path": "layout.measure.compact"
+      },
+      "control": {
+        "layer": "layout",
+        "path": "layout.measure.control"
+      },
+      "content": {
+        "layer": "layout",
+        "path": "layout.measure.content"
+      },
+      "wide": {
+        "layer": "layout",
+        "path": "layout.measure.wide"
+      },
+      "reading": {
+        "layer": "layout",
+        "path": "layout.measure.reading"
+      },
+      "fluid": {
+        "layer": "layout",
+        "path": "layout.measure.fluid"
+      }
+    },
     "spacing": {
       "control": {
         "layer": "component",
@@ -240,6 +267,14 @@
       "layer": "component",
       "path": "component.interaction.touchTarget.minimum"
     }
+  },
+  "resolvedProjection": {
+    "sourceOfTruth": "packages/tokens/src/theme.ts",
+    "format": "typed-js",
+    "colors": "opaque-srgb-hex",
+    "dimensions": "number-px",
+    "durations": "number-ms",
+    "cssIndependent": true
   },
   "actionIntents": {
     "primary": {

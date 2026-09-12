@@ -1006,7 +1006,7 @@ function ReceivingConsole() {
                 ]}
               />
             </div>
-            <form onSubmit={submitDecision}>
+            <form data-t7-rail="form" onSubmit={submitDecision}>
               <RadioGroup
                 description="Only the selected outcome is recorded by this reference fixture."
                 legend="Disposition"

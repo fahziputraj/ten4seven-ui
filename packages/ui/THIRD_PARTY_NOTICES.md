@@ -46,57 +46,23 @@ generated from the pinned `@iconify-json/solar` development package and shipped
 inside the self-contained UI bundle; consumer applications use the semantic
 `T7Icon` API or the local `IconifyIcon` catalog API.
 
-## Curated Iconify domain library
+## Curated farm and operations aliases
 
-The bundle also includes 26 deliberately selected farm and operations glyphs
-from pinned local Iconify JSON packages, plus the AAPM-authored chicken
-extension described below. These are normalized to the same 24px viewBox and
-exposed through the semantic registry (`T7Icon`) or the local `IconifyIcon`
-catalog. The generated bodies use `currentColor` where the source paint is
-presentation rather than geometry; runtime rendering never requests a remote
-Iconify service or CDN. The source mapping and package versions are maintained
-in `packages/icons/src/curated-data.ts` and
+The bundle includes 23 deliberately selected farm and operations aliases. The
+18 aliases that have a Solar equivalent are generated directly from the pinned
+local Solar JSON package; the five farm-specific egg, chicken, and chick bodies
+are maintained locally as Solar-compatible Bold Duotone paths. All bodies are
+normalized to the shared 24px viewBox, use `currentColor` and opacity layers,
+and are exposed through the semantic registry (`T7Icon`) or local
+`IconifyIcon` catalog. Runtime rendering never requests a remote Iconify
+service or CDN. The source mapping and generator are maintained in
+`packages/icons/src/curated-data.ts` and
 `scripts/generate-curated-icon-subset.mjs`.
 
-| Collection                 | Pinned package                                   | License    | Source                                                       |
-| -------------------------- | ------------------------------------------------ | ---------- | ------------------------------------------------------------ |
-| Iconify IC                 | `@iconify-json/ic@1.2.4`                         | Apache-2.0 | https://icon-sets.iconify.design/ic/                         |
-| Iconify Re:Icon            | `@iconify-json/reicon@1.2.4`                     | MIT        | https://icon-sets.iconify.design/reicon/                     |
-| Iconmind                   | `@iconify-json/iconmind@1.2.1`                   | MIT        | https://icon-sets.iconify.design/iconmind/                   |
-| Ant Design                 | `@iconify-json/ant-design@1.2.9`                 | MIT        | https://icon-sets.iconify.design/ant-design/                 |
-| Gravity UI                 | `@iconify-json/gravity-ui@1.2.14`                | MIT        | https://icon-sets.iconify.design/gravity-ui/                 |
-| Streamline                 | `@iconify-json/si@1.2.17`                        | MIT        | https://icon-sets.iconify.design/si/                         |
-| Phosphor                   | `@iconify-json/ph@1.2.2`                         | MIT        | https://icon-sets.iconify.design/ph/                         |
-| IconPark Twotone           | `@iconify-json/icon-park-twotone@1.2.4`          | Apache-2.0 | https://icon-sets.iconify.design/icon-park-twotone/          |
-| Fluent Emoji High Contrast | `@iconify-json/fluent-emoji-high-contrast@1.2.6` | MIT        | https://icon-sets.iconify.design/fluent-emoji-high-contrast/ |
-| Fluent Emoji Flat          | `@iconify-json/fluent-emoji-flat@1.2.6`          | MIT        | https://icon-sets.iconify.design/fluent-emoji-flat/          |
-| Noto                       | `@iconify-json/noto@1.2.7`                       | Apache-2.0 | https://icon-sets.iconify.design/noto/                       |
-
-The semantic `chicken` icon is an internal AAPM-authored
-`curated:aapm-chicken-bold-duotone` variant. It is derived from the supplied
-Fluent chicken silhouette, then normalized into Solar-compatible duotone
-layers (`currentColor` plus a tokenized secondary opacity) so it follows the
-same theme and optical contract as the rest of the library. It is bundled
-locally and does not claim the upstream Fluent provider as its runtime source.
-The semantic `egg`, `eggCrack`, and `eggPair` names remain explicit mappings to
-their pinned IC, Phosphor, and IconPark sources respectively.
-
-The Solar pill glyph in this extension remains covered by the Solar CC BY 4.0
-notice above. The upstream package licenses and attribution links are kept here
-so the private bundle retains an auditable provenance boundary.
-
-### September 2026 graph and farm metric mapping
-
-The supplied graph files are intentionally mapped to one canonical semantic
-surface instead of creating visual variants in product code: Solar
-`graph-bold-duotone` backs `graph`, while all supplied up/down graph variants
-(Re:Icon and Iconoir) reuse `trendUp` or `trendDown`. The unique additions are
-`graphMemory`, `marginalRoi`, `hvac`, `waterRate`, `mortality`, `breakEven`,
-`equalRatio`, and `weight`. The supplied Font Awesome skull-crossbones glyph is
-represented by the bundled Phosphor `skull-duotone` fallback so mortality keeps
-the same duotone and optical-weight contract as the rest of the registry; the
-supplied thin break-even glyph is represented by Iconmind's regular weight for
-small-size legibility.
+The chicken and chick bodies retain the internal AAPM farm-glyph provenance
+recorded by the project, but no upstream emoji collection is loaded at runtime
+or required to regenerate the curated subset. The farm-specific bodies use the
+same Solar Bold Duotone primary/accent paint contract as the Solar aliases.
 
 ## anime.js
 

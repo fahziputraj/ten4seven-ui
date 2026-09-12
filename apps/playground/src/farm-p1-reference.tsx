@@ -56,7 +56,11 @@ import {
   type FarmP1InventoryState,
   type FarmP1View,
 } from "./farm-p1-reference-data";
-import { farmP1ReferenceRoutePaths } from "./playground-routes";
+import {
+  canonicalPathForPath,
+  farmP1ReferencePathForView,
+  farmP1ReferenceRoutePaths,
+} from "./playground-routes";
 
 const profiles = brandProfiles as unknown as Readonly<
   Record<BrandProfileId, BrandProfile>
@@ -70,8 +74,9 @@ function roleColor(slot: "primary" | "accent") {
 }
 
 function viewFromPath(pathname: string): FarmP1View {
+  const canonicalPath = canonicalPathForPath(pathname);
   const match = Object.entries(farmP1ReferenceRoutePaths).find(
-    ([, path]) => path === pathname,
+    ([, path]) => path === canonicalPath,
   );
   return (match?.[0] as FarmP1View | undefined) ?? "overview";
 }
@@ -322,7 +327,7 @@ function FarmP1ContextView({
             <T7Icon aria-hidden="true" name="farm" size={22} />
           </CardHeader>
           <CardContent>
-            <div className="farm-p1-form">
+            <div className="farm-p1-form" data-t7-rail="form">
               <Select
                 id="farm-p1-tenant"
                 label="Tenant"
@@ -439,7 +444,7 @@ function FarmP1DailyOperations({
             <StatusChip icon="calendar">Today</StatusChip>
           </CardHeader>
           <CardContent>
-            <FormGrid className="farm-p1-form" columns={2}>
+            <FormGrid className="farm-p1-form" columns={2} data-t7-rail="form">
               <Input
                 id="farm-p1-operation-date"
                 label="Operation date"
@@ -873,7 +878,7 @@ export function FarmP1Reference({
   const navigatePath = onNavigatePath ?? (() => undefined);
 
   function navigate(nextView: FarmP1View) {
-    onNavigatePath?.(farmP1ReferenceRoutePaths[nextView]);
+    onNavigatePath?.(farmP1ReferencePathForView(nextView, pathname));
   }
 
   function updateOperationValue(key: string, value: string) {
@@ -903,7 +908,7 @@ export function FarmP1Reference({
         navigationLabel="Farm starter navigation"
         sidebar={
           <PlaygroundSidebar
-            activePath={pathname}
+            activePath={canonicalPathForPath(pathname)}
             localNavigation={[
               {
                 key: "farm-p1",

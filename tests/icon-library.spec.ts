@@ -29,7 +29,7 @@ test.describe("bundled Iconify Solar library", () => {
       catalog.getByRole("button", { name: "Linear", exact: true }),
     ).toHaveCount(0);
     const visibleNames = await catalog
-      .locator("[data-icon-name]")
+      .locator(".iconify-icon-tile [data-icon-name]")
       .evaluateAll((nodes) =>
         nodes
           .map((node) => node.getAttribute("data-icon-name") ?? "")
@@ -43,14 +43,27 @@ test.describe("bundled Iconify Solar library", () => {
     await expect(catalog.locator(".iconify-icon-tile")).toHaveCount(96);
 
     const curated = page.locator(".iconify-curated-section");
-    await expect(curated).toHaveAttribute("data-iconify-count", "26");
+    await expect(curated).toHaveAttribute("data-iconify-count", "23");
     await expect(curated).toHaveAttribute(
       "data-iconify-family",
       "ten4seven-curated",
     );
+    await expect(curated).toHaveAttribute(
+      "data-iconify-style",
+      "solar-bold-duotone",
+    );
     await expect(
       curated.locator('[data-icon-set="ten4seven-curated"]'),
-    ).toHaveCount(26);
+    ).toHaveCount(23);
+    const curatedStyles = await curated
+      .locator('[data-icon-set="ten4seven-curated"]')
+      .evaluateAll((nodes) =>
+        nodes.map((node) => node.getAttribute("data-icon-style")),
+      );
+    expect(curatedStyles).toHaveLength(23);
+    expect(curatedStyles.every((style) => style === "solar-bold-duotone")).toBe(
+      true,
+    );
     await expect(
       curated.getByRole("button", {
         name: "Copy Curated icon chicken",

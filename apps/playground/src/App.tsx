@@ -1,4 +1,20 @@
-import { CANVAS_LABELS } from "@ten4seven/contracts";
+import {
+  BRAND_PROFILE_IDS,
+  CANVAS_LABELS,
+  createDefaultThemeStudioConfig,
+  createThemeStudioConfig,
+  getBrandProfile,
+  parseThemeStudioConfig,
+  resetThemeStudioAxis,
+  resetThemeStudioOverrides,
+  resolveThemeStudioConfig,
+  serializeThemeStudioConfig,
+  THEME_STUDIO_VIEWPORTS,
+  type BrandProfileId,
+  type ThemeStudioAxis,
+  type ThemeStudioConfig,
+  type ThemeViewportPreset,
+} from "@ten4seven/contracts";
 import {
   useEffect,
   useId,
@@ -28,6 +44,7 @@ import {
   DataTable,
   Drawer,
   exactColor,
+  LineChart,
   Input,
   IconButton,
   MobileSidebar,
@@ -35,6 +52,7 @@ import {
   Modal,
   NavItem,
   PageHeader,
+  Progress,
   Select,
   Slider,
   Ten4SevenProvider,
@@ -42,6 +60,7 @@ import {
   Typography,
   useTen4SevenTheme,
   ToastProvider,
+  Textarea,
   Badge,
   type DataTableColumn,
 } from "@ten4seven/ui";
@@ -102,19 +121,17 @@ import {
   recipeCatalog,
 } from "./catalog-model";
 import {
-  brandProofRouteTitles,
-  farmSyntheticProofDescription,
-  farmSyntheticProofTitle,
   playgroundRoutePaths,
-  playgroundRouteDescriptions,
   playgroundShellVariants,
-  playgroundRouteTitles,
+  routeDescriptionForMatch,
   routeFromPath,
+  routeTitleForMatch,
   type PlaygroundRoute,
   type RouteMatch,
 } from "./playground-routes";
 import { ReferenceHarness, type ReferenceViewState } from "./reference-harness";
 import { PlaygroundSidebar, PlaygroundTopbar } from "./playground-chrome";
+import { playgroundBuildIdentity } from "./build-identity";
 
 type StudioSettings = {
   appearance: Appearance;
@@ -136,6 +153,8 @@ type StudioThemeChange = {
 
 const runtimePreferencesStorageKey =
   "ten4seven.playground.runtime-preferences.v1";
+const themeStudioStorageKey = "ten4seven.playground.theme-studio.v1";
+const legacyThemeStorageKey = "ten4seven.playground.theme.v1";
 const playgroundHistoryStateKey = "__ten4seven_playground";
 
 type ScrollPosition = {
@@ -246,6 +265,32 @@ function readRuntimePreferences(): RuntimePreferences {
   }
 }
 
+function readThemeStudioConfig(): ThemeStudioConfig {
+  if (typeof window === "undefined") return createDefaultThemeStudioConfig();
+  try {
+    const stored = window.localStorage.getItem(themeStudioStorageKey);
+    const parsed = stored ? parseThemeStudioConfig(stored) : null;
+    if (parsed) return parsed;
+
+    // Keep the recovery path for the pre-Q02 partial override key. It is
+    // translated into the versioned contract instead of being consumed by
+    // the provider as an unbounded object.
+    const legacyValue = window.localStorage.getItem(legacyThemeStorageKey);
+    if (legacyValue) {
+      const legacy = JSON.parse(legacyValue);
+      if (isRecord(legacy)) {
+        return createThemeStudioConfig({
+          runtime: readRuntimePreferences(),
+          overrides: legacy as ThemeStudioConfig["overrides"],
+        });
+      }
+    }
+  } catch {
+    // The studio can always start from its deterministic defaults.
+  }
+  return createDefaultThemeStudioConfig();
+}
+
 function formatRadiusSetting(
   theme: Pick<ResolvedTheme, "radius" | "radiusValue">,
 ) {
@@ -254,7 +299,13 @@ function formatRadiusSetting(
     : `${theme.radiusValue}px`;
 }
 
-function RouteSurface({ children }: { children: ReactNode }) {
+function RouteSurface({
+  children,
+  immediate = false,
+}: {
+  children: ReactNode;
+  immediate?: boolean;
+}) {
   const [phase, setPhase] = useState<"entering" | "ready">("entering");
 
   useEffect(() => {
@@ -263,7 +314,11 @@ function RouteSurface({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <div className="playground-route-surface" data-route-phase={phase}>
+    <div
+      className="playground-route-surface"
+      data-route-immediate={immediate ? "true" : undefined}
+      data-route-phase={phase}
+    >
       {children}
     </div>
   );
@@ -508,6 +563,8 @@ function Studio({
   onOpenSettings,
   onThemePreferencesChange,
   onThemeRecipeChange,
+  onThemeStudioChange,
+  themeStudioConfig,
   themePreferences,
   themeRecipe,
 }: {
@@ -527,6 +584,8 @@ function Studio({
   onOpenSettings: () => void;
   onThemePreferencesChange: (preferences: RuntimePreferences) => void;
   onThemeRecipeChange: (recipe: ThemeRecipeName | undefined) => void;
+  onThemeStudioChange: (config: ThemeStudioConfig) => void;
+  themeStudioConfig: ThemeStudioConfig;
   themePreferences: RuntimePreferences;
   themeRecipe: ThemeRecipeName | undefined;
 }) {
@@ -559,29 +618,35 @@ function Studio({
     previousThemeRef.current = theme;
   }, [theme]);
 
-  const axisRows = useMemo(
+  const studioResolution = useMemo(
+    () => resolveThemeStudioConfig(themeStudioConfig),
+    [themeStudioConfig],
+  );
+  const axisRows: Array<[string, string, ThemeStudioAxis]> = useMemo(
     () => [
       [
         "Appearance",
         appearanceSetting === "system"
           ? `system · ${theme.appearance}`
           : theme.appearance,
+        "appearance",
       ],
-      ["Base palette", theme.palette],
-      ["Main action", describeColorSource(theme.primarySource)],
-      ["Accent color", describeColorSource(theme.accentSource)],
-      ["Canvas", theme.canvas],
-      ["Surface treatment", theme.surfaceTreatment],
-      ["Chart colorway", theme.chartPalette],
+      ["Base palette", theme.palette, "brand"],
+      ["Main action", describeColorSource(theme.primarySource), "brand"],
+      ["Accent color", describeColorSource(theme.accentSource), "brand"],
+      ["Canvas", theme.canvas, "surface"],
+      ["Surface treatment", theme.surfaceTreatment, "surface"],
+      ["Chart colorway", theme.chartPalette, "chart"],
       [
         "Radius",
         theme.radiusValue === undefined
           ? theme.radius
           : `${theme.radiusValue}px`,
+        "shape",
       ],
-      ["Density", theme.density],
-      ["Motion duration", formatMotionDuration(theme.motionDuration)],
-      ["Typography", theme.typography],
+      ["Density", theme.density, "density"],
+      ["Motion duration", formatMotionDuration(theme.motionDuration), "motion"],
+      ["Typography", theme.typography, "typography"],
     ],
     [appearanceSetting, theme],
   );
@@ -665,8 +730,15 @@ function Studio({
                   <ThemeRecipePicker
                     onPreferencesChange={onThemePreferencesChange}
                     onSelect={onThemeRecipeChange}
+                    onStudioChange={onThemeStudioChange}
                     preferences={themePreferences}
+                    productProfile={themeStudioConfig.productProfile}
+                    studioConfig={themeStudioConfig}
                     value={themeRecipe}
+                  />
+                  <ThemeStudioProgressiveSections
+                    config={themeStudioConfig}
+                    onChange={onThemeStudioChange}
                   />
                 </div>
 
@@ -679,8 +751,14 @@ function Studio({
 
               <ResponsiveContractWorkbench />
 
+              <ThemeStudioTransfer
+                config={themeStudioConfig}
+                onChange={onThemeStudioChange}
+              />
+
               <Collapsible
                 className="studio-advanced-authoring"
+                defaultOpen
                 title={
                   <span className="studio-advanced-authoring-title">
                     <span>Advanced theme authoring</span>
@@ -862,6 +940,7 @@ function Studio({
                             <p>Shared geometry; density stays above.</p>
                           </div>
                           <RadiusSlider value={theme.radius} />
+                          <ElevationPicker value={theme.elevation} />
                         </section>
 
                         <section
@@ -921,7 +1000,7 @@ function Studio({
                     </CardHeader>
                     <CardContent>
                       <dl className="studio-axis-list">
-                        {axisRows.map(([label, value]) => (
+                        {axisRows.map(([label, value, axis]) => (
                           <div key={label}>
                             <dt>{label}</dt>
                             <dd
@@ -930,6 +1009,9 @@ function Studio({
                               }
                             >
                               {value}
+                              <AxisStateBadge
+                                state={studioResolution.axisStates[axis]}
+                              />
                             </dd>
                           </div>
                         ))}
@@ -1399,6 +1481,44 @@ function RadiusSlider({ value }: { value: RadiusName }) {
   );
 }
 
+function ElevationPicker({ value }: { value: "flat" | "soft" | "standard" }) {
+  const { setTheme } = useTen4SevenTheme();
+  const options = [
+    ["flat", "Flat", "Quiet separation"],
+    ["soft", "Soft", "Subtle lift"],
+    ["standard", "Standard", "Clear elevation"],
+  ] as const;
+  return (
+    <fieldset className="studio-choice-picker studio-elevation-picker">
+      <legend className="t7-field-label studio-choice-legend">
+        <T7Icon aria-hidden="true" name="components" size={15} />
+        <span>Elevation</span>
+      </legend>
+      <p className="studio-choice-help">
+        Surface lift follows one shared scale.
+      </p>
+      <div className="studio-choice-options studio-elevation-options">
+        {options.map(([option, label, description]) => (
+          <Button
+            aria-pressed={value === option}
+            className="studio-choice-option"
+            intent={value === option ? "secondary" : "quiet"}
+            key={option}
+            onClick={() => setTheme({ elevation: option })}
+            size="sm"
+            trailingIcon={value === option ? "check" : undefined}
+          >
+            <span className="studio-choice-option-copy">
+              <strong>{label}</strong>
+              <small>{description}</small>
+            </span>
+          </Button>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
+
 function StudioLivePreview({
   lastChange,
 }: {
@@ -1594,6 +1714,68 @@ function StudioLivePreview({
             ThemeScope · editorial
           </span>
         </ThemeScope>
+      </div>
+      <StudioCanaryPreview />
+    </section>
+  );
+}
+
+function StudioCanaryPreview() {
+  const { theme } = useTen4SevenTheme();
+  return (
+    <section
+      aria-label="Theme Studio component family canaries"
+      className="studio-canary-preview"
+      data-testid="studio-canary-preview"
+    >
+      <div className="studio-canary-heading">
+        <Typography as="h3" typeRole="label">
+          Family canaries
+        </Typography>
+        <Typography typeRole="caption">
+          Same resolved tokens across the system.
+        </Typography>
+      </div>
+      <div className="studio-canary-grid">
+        <div className="studio-canary-item" data-canary-family="navigation">
+          <span>Navigation</span>
+          <NavItem active icon="dashboard" label="Workspace" />
+        </div>
+        <div className="studio-canary-item" data-canary-family="overlays">
+          <span>Overlay</span>
+          <Button intent="secondary" leadingIcon="modal" size="sm">
+            Open detail
+          </Button>
+        </div>
+        <div className="studio-canary-item" data-canary-family="progress">
+          <span>Workflow</span>
+          <Progress label="Review" showValue value={68} />
+        </div>
+        <div className="studio-canary-item" data-canary-family="files">
+          <span>Files</span>
+          <Badge tone="success">PDF ready</Badge>
+        </div>
+        <div
+          className="studio-canary-item studio-canary-chart"
+          data-canary-family="visualization"
+        >
+          <span>Visualization · {theme.chartPalette}</span>
+          <LineChart
+            ariaLabel="Theme Studio visualization canary"
+            className="studio-canary-line-chart"
+            height={92}
+            labels={["Mon", "Tue", "Wed", "Thu"]}
+            series={[
+              { id: "coverage", label: "Coverage", values: [42, 58, 51, 68] },
+            ]}
+          />
+        </div>
+        <div className="studio-canary-item" data-canary-family="advanced">
+          <span>Advanced</span>
+          <Button intent="quiet" leadingIcon="settings" size="sm">
+            Inspect tokens
+          </Button>
+        </div>
       </div>
     </section>
   );
@@ -1815,6 +1997,15 @@ const themeRecipeIcons: Record<ThemeRecipeName, IconName> = {
   editorial: "book",
   commerce: "cart",
 };
+const brandProfileLabels: Record<BrandProfileId, string> = {
+  "neutral-product": "Neutral product",
+  "aapm-core": "AAPM core",
+  "aapm-farm": "Farm",
+  "aapm-operations": "Operations",
+  "aapm-erp": "ERP",
+  "aapm-academy": "Academy",
+  "aapm-public": "Public",
+};
 const surfaceTreatmentOptions: Array<{
   value: SurfaceTreatment;
   label: string;
@@ -1857,21 +2048,325 @@ const radiusPresetDescriptors: Record<RadiusName, string> = {
   rounded: "generous corners",
 };
 
+function AxisStateBadge({
+  state,
+}: {
+  state: "inherited" | "profile" | "overridden";
+}) {
+  const label =
+    state === "overridden"
+      ? "Overridden"
+      : state === "profile"
+        ? "Profile"
+        : "Inherited";
+  return (
+    <span className="studio-axis-state" data-state={state}>
+      {label}
+    </span>
+  );
+}
+
+const themeStudioAxisLabels: Record<ThemeStudioAxis, string> = {
+  recipe: "Base recipe",
+  profile: "Product profile",
+  appearance: "Appearance",
+  brand: "Brand roles",
+  typography: "Typography",
+  density: "Density",
+  shape: "Shape",
+  surface: "Surface",
+  elevation: "Elevation",
+  chart: "Chart palette",
+  contrast: "Contrast",
+  motion: "Motion",
+  viewport: "Content rail",
+  interaction: "Focus / interaction",
+  iconography: "Iconography",
+};
+
+const themeStudioProgressiveSections: Array<{
+  key: "BASE" | "STYLE" | "EXPERIENCE" | "DATA" | "ADVANCED";
+  axes: ThemeStudioAxis[];
+  description: string;
+}> = [
+  {
+    key: "BASE",
+    axes: ["recipe", "profile"],
+    description: "Choose the authored starting point.",
+  },
+  {
+    key: "STYLE",
+    axes: ["brand", "typography", "shape", "surface"],
+    description: "Tune the visual language.",
+  },
+  {
+    key: "EXPERIENCE",
+    axes: ["appearance", "density", "elevation", "contrast", "motion"],
+    description: "Set reading and interaction preferences.",
+  },
+  {
+    key: "DATA",
+    axes: ["chart"],
+    description: "Keep data colorways coherent.",
+  },
+  {
+    key: "ADVANCED",
+    axes: ["viewport", "interaction", "iconography"],
+    description: "Inspect bounded delivery contracts.",
+  },
+];
+
+function ThemeStudioProgressiveSections({
+  config,
+  onChange,
+}: {
+  config: ThemeStudioConfig;
+  onChange: (config: ThemeStudioConfig) => void;
+}) {
+  const resolution = useMemo(() => resolveThemeStudioConfig(config), [config]);
+
+  return (
+    <section
+      aria-labelledby="theme-studio-progressive-heading"
+      className="studio-progressive-sections"
+      data-testid="theme-studio-progressive-sections"
+    >
+      <div className="studio-progressive-heading">
+        <div>
+          <Typography
+            as="h2"
+            id="theme-studio-progressive-heading"
+            typeRole="heading-sm"
+          >
+            Theme map
+          </Typography>
+          <Typography typeRole="caption">
+            Five short sections; every axis shows its source.
+          </Typography>
+        </div>
+        <Button
+          aria-label="Reset all theme overrides"
+          intent="quiet"
+          leadingIcon="refresh"
+          onClick={() => onChange(resetThemeStudioOverrides(config))}
+          size="sm"
+        >
+          Reset all
+        </Button>
+      </div>
+      <nav
+        aria-label="Theme Studio sections"
+        className="studio-progressive-nav"
+      >
+        {themeStudioProgressiveSections.map((section) => (
+          <a
+            href={`#theme-studio-section-${section.key.toLowerCase()}`}
+            key={section.key}
+          >
+            {section.key}
+          </a>
+        ))}
+      </nav>
+      <div className="studio-progressive-grid">
+        {themeStudioProgressiveSections.map((section) => (
+          <section
+            aria-labelledby={`theme-studio-section-${section.key.toLowerCase()}-heading`}
+            className="studio-progressive-section"
+            data-theme-section={section.key}
+            id={`theme-studio-section-${section.key.toLowerCase()}`}
+            key={section.key}
+          >
+            <div className="studio-progressive-section-heading">
+              <div>
+                <Typography
+                  as="h3"
+                  id={`theme-studio-section-${section.key.toLowerCase()}-heading`}
+                  typeRole="overline"
+                >
+                  {section.key}
+                </Typography>
+                <Typography typeRole="caption">
+                  {section.description}
+                </Typography>
+              </div>
+              <span className="studio-progressive-section-count">
+                {section.axes.length}
+              </span>
+            </div>
+            <div className="studio-progressive-axis-list">
+              {section.axes.map((axis) => {
+                const state = resolution.axisStates[axis];
+                return (
+                  <div
+                    className="studio-progressive-axis"
+                    data-axis={axis}
+                    key={axis}
+                  >
+                    <span>{themeStudioAxisLabels[axis]}</span>
+                    <span className="studio-progressive-axis-actions">
+                      <AxisStateBadge state={state} />
+                      {state !== "inherited" &&
+                      axis !== "interaction" &&
+                      axis !== "iconography" ? (
+                        <IconButton
+                          aria-label={`Reset ${themeStudioAxisLabels[axis]}`}
+                          icon="refresh"
+                          label={`Reset ${themeStudioAxisLabels[axis]}`}
+                          onClick={() =>
+                            onChange(resetThemeStudioAxis(config, axis))
+                          }
+                          size="sm"
+                          title={`Reset ${themeStudioAxisLabels[axis]}`}
+                        />
+                      ) : null}
+                    </span>
+                  </div>
+                );
+              })}
+              {section.key === "ADVANCED" ? (
+                <Select
+                  label="Content rail"
+                  value={config.overrides.viewport ?? "standard"}
+                  onChange={(event) =>
+                    onChange({
+                      ...config,
+                      overrides: {
+                        ...config.overrides,
+                        viewport: event.target.value as ThemeViewportPreset,
+                      },
+                    })
+                  }
+                >
+                  {(
+                    Object.keys(THEME_STUDIO_VIEWPORTS) as ThemeViewportPreset[]
+                  ).map((preset) => (
+                    <option key={preset} value={preset}>
+                      {preset[0].toUpperCase() + preset.slice(1)} ·{" "}
+                      {THEME_STUDIO_VIEWPORTS[preset].contentMax}
+                    </option>
+                  ))}
+                </Select>
+              ) : null}
+            </div>
+          </section>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ThemeStudioTransfer({
+  config,
+  onChange,
+}: {
+  config: ThemeStudioConfig;
+  onChange: (config: ThemeStudioConfig) => void;
+}) {
+  const [draft, setDraft] = useState(() => serializeThemeStudioConfig(config));
+  const [status, setStatus] = useState("Versioned config ready");
+
+  useEffect(() => {
+    setDraft(serializeThemeStudioConfig(config));
+  }, [config]);
+
+  async function copyConfig() {
+    try {
+      await navigator.clipboard.writeText(draft);
+      setStatus("Config copied");
+    } catch {
+      setStatus("Copy unavailable; select the JSON manually");
+    }
+  }
+
+  function loadConfig() {
+    const parsed = parseThemeStudioConfig(draft);
+    if (!parsed) {
+      setStatus("Invalid versioned config; nothing changed");
+      return;
+    }
+    onChange(parsed);
+    setStatus("Config loaded safely");
+  }
+
+  return (
+    <section
+      aria-labelledby="theme-studio-transfer-heading"
+      className="studio-transfer-section"
+      data-testid="theme-studio-transfer"
+    >
+      <div className="studio-transfer-heading">
+        <div>
+          <Typography
+            as="h2"
+            id="theme-studio-transfer-heading"
+            typeRole="heading-sm"
+          >
+            Config transfer
+          </Typography>
+          <Typography typeRole="caption">
+            Import/export only the safe, versioned Theme Studio contract.
+          </Typography>
+        </div>
+        <span className="studio-axis-state" data-state="inherited">
+          v{config.schemaVersion}
+        </span>
+      </div>
+      <Textarea
+        aria-describedby="theme-studio-transfer-status"
+        label="Theme Studio JSON"
+        onChange={(event) => setDraft(event.target.value)}
+        rows={8}
+        value={draft}
+      />
+      <div className="studio-transfer-actions">
+        <Button
+          intent="secondary"
+          leadingIcon="export"
+          onClick={copyConfig}
+          size="sm"
+        >
+          Copy JSON
+        </Button>
+        <Button leadingIcon="check" onClick={loadConfig} size="sm">
+          Load config
+        </Button>
+        <Typography
+          aria-live="polite"
+          className="studio-transfer-status"
+          id="theme-studio-transfer-status"
+          role="status"
+          typeRole="caption"
+        >
+          {status}
+        </Typography>
+      </div>
+    </section>
+  );
+}
+
 function ThemeRecipePicker({
   onPreferencesChange,
   onSelect,
+  onStudioChange,
   preferences,
+  productProfile,
+  studioConfig,
   value,
 }: {
   onPreferencesChange: (preferences: RuntimePreferences) => void;
   onSelect: (recipe: ThemeRecipeName | undefined) => void;
+  onStudioChange: (config: ThemeStudioConfig) => void;
   preferences: RuntimePreferences;
+  productProfile: BrandProfileId;
+  studioConfig: ThemeStudioConfig;
   value: ThemeRecipeName | undefined;
 }) {
-  const { resetTheme, setTheme, theme } = useTen4SevenTheme();
+  const { setTheme, theme } = useTen4SevenTheme();
 
   function selectRecipe(recipe: ThemeRecipeName | undefined) {
-    resetTheme();
+    // Recipe changes are one atomic authored update. Calling the provider
+    // reset first would enqueue a second stale controlled-state update and
+    // could win over the selected recipe during React batching.
     onSelect(recipe);
   }
 
@@ -1932,19 +2427,70 @@ function ThemeRecipePicker({
         </div>
         <div className="studio-custom-recipe">
           <Typography as="span" typeRole="caption">
-            Custom
+            Base + overrides
           </Typography>
           <Button
-            aria-pressed={value === undefined}
-            intent={value === undefined ? "secondary" : "quiet"}
+            aria-pressed={value === "product"}
+            intent={value === "product" ? "secondary" : "quiet"}
             leadingIcon="palette"
-            onClick={() => selectRecipe(undefined)}
+            onClick={() => selectRecipe("product")}
             size="sm"
           >
-            Custom
+            Start from Product
           </Button>
         </div>
       </div>
+      <section
+        aria-labelledby="studio-product-profile-heading"
+        className="studio-product-profile"
+      >
+        <div className="studio-product-profile-heading">
+          <div>
+            <Typography
+              as="h3"
+              id="studio-product-profile-heading"
+              typeRole="label"
+            >
+              Product profile
+            </Typography>
+            <Typography typeRole="caption">
+              Profile-owned recipe and density.
+            </Typography>
+          </div>
+          <AxisStateBadge
+            state={
+              productProfile === "neutral-product" ? "inherited" : "profile"
+            }
+          />
+        </div>
+        <Select
+          aria-describedby="studio-product-profile-detail"
+          label="Active product profile"
+          value={productProfile}
+          onChange={(event) =>
+            onStudioChange({
+              ...studioConfig,
+              productProfile: event.target.value as BrandProfileId,
+              overrides: {},
+            })
+          }
+        >
+          {BRAND_PROFILE_IDS.map((profileId) => (
+            <option key={profileId} value={profileId}>
+              {brandProfileLabels[profileId]}
+            </option>
+          ))}
+        </Select>
+        <Typography
+          className="studio-product-profile-detail"
+          id="studio-product-profile-detail"
+          typeRole="caption"
+        >
+          {brandProfileLabels[productProfile]} ·{" "}
+          {getBrandProfile(productProfile).themeRecipe} recipe ·{" "}
+          {getBrandProfile(productProfile).density} density
+        </Typography>
+      </section>
       <div
         aria-label="Runtime preferences"
         className="studio-runtime-preferences"
@@ -2019,7 +2565,7 @@ function ThemeRecipePicker({
       />
       <Typography className="studio-recipe-active" typeRole="caption">
         {value
-          ? `${THEME_RECIPES[value].label} · ${THEME_RECIPES[value].expression}`
+          ? `${THEME_RECIPES[value].label} recipe · ${THEME_RECIPES[value].expression}`
           : "Custom recipe · no preset selected"}
       </Typography>
     </section>
@@ -2157,6 +2703,7 @@ function ThemeSettingsSheet({
         aria-label="Global theme settings"
         className="theme-settings-panel"
         data-testid="theme-settings-panel"
+        data-t7-rail="form"
       >
         <div className="theme-settings-summary">
           <Typography as="p" typeRole="body-sm">
@@ -2608,10 +3155,14 @@ export default function App() {
     motionDuration: 1.5,
     typography: "modern",
   });
-  const [themeRecipe, setThemeRecipe] = useState<ThemeRecipeName>();
-  const [themePreferences, setThemePreferences] = useState<RuntimePreferences>(
-    readRuntimePreferences,
+  const [themeStudioConfig, setThemeStudioConfig] = useState<ThemeStudioConfig>(
+    readThemeStudioConfig,
   );
+  const [themeStudioEnabled, setThemeStudioEnabled] = useState(true);
+  const themeRecipe = themeStudioEnabled
+    ? themeStudioConfig.baseRecipe
+    : undefined;
+  const themePreferences = themeStudioConfig.runtime;
   const [themeSettingsOpen, setThemeSettingsOpen] = useState(false);
   const [referenceHarnessOpen, setReferenceHarnessOpen] = useState(false);
   const [routeMatch, setRouteMatch] = useState<RouteMatch>(() =>
@@ -2742,47 +3293,10 @@ export default function App() {
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
-  useEffect(() => {
-    const routeTitle =
-      routeMatch.kind === "known"
-        ? playgroundRouteTitles[routeMatch.route]
-        : routeMatch.kind === "farm-synthetic"
-          ? farmSyntheticProofTitle
-          : routeMatch.kind === "farm-reference"
-            ? playgroundRouteTitles["Farm P1 Reference"]
-            : routeMatch.kind === "brand-proof"
-              ? brandProofRouteTitles[routeMatch.profileId]
-              : routeMatch.kind === "component-family"
-                ? `ten4seven UI — ${categoryLabels[routeMatch.category] ?? routeMatch.category}`
-                : routeMatch.kind === "component-detail"
-                  ? `ten4seven UI — ${componentCatalog[routeMatch.name].displayName ?? routeMatch.name}`
-                  : routeMatch.kind === "recipe-detail"
-                    ? `ten4seven UI — ${recipeCatalog[routeMatch.name].displayName ?? routeMatch.name}`
-                    : routeMatch.kind === "block-detail"
-                      ? `ten4seven UI — ${blockCatalog[routeMatch.name].displayName ?? routeMatch.name}`
-                      : "ten4seven UI — Route not found";
-    document.title = routeTitle;
+  useLayoutEffect(() => {
+    document.title = routeTitleForMatch(routeMatch);
     const description = document.querySelector('meta[name="description"]');
-    description?.setAttribute(
-      "content",
-      routeMatch.kind === "known"
-        ? playgroundRouteDescriptions[routeMatch.route]
-        : routeMatch.kind === "farm-synthetic"
-          ? farmSyntheticProofDescription
-          : routeMatch.kind === "farm-reference"
-            ? playgroundRouteDescriptions["Farm P1 Reference"]
-            : routeMatch.kind === "brand-proof"
-              ? "Brand expression proof for the canonical Authentication recipe in ten4seven UI."
-              : routeMatch.kind === "component-family"
-                ? `Canonical ${categoryLabels[routeMatch.category] ?? routeMatch.category} components in the ten4seven UI catalog.`
-                : routeMatch.kind === "component-detail"
-                  ? componentCatalog[routeMatch.name].purpose
-                  : routeMatch.kind === "recipe-detail"
-                    ? recipeCatalog[routeMatch.name].purpose
-                    : routeMatch.kind === "block-detail"
-                      ? blockCatalog[routeMatch.name].purpose
-                      : "The requested ten4seven UI playground route does not exist.",
-    );
+    description?.setAttribute("content", routeDescriptionForMatch(routeMatch));
   }, [routeMatch]);
 
   function navigateTo(route: PlaygroundRoute) {
@@ -2790,14 +3304,35 @@ export default function App() {
   }
 
   function updateThemePreferences(preferences: RuntimePreferences) {
-    setThemePreferences(preferences);
+    updateThemeStudioConfig({ ...themeStudioConfig, runtime: preferences });
     try {
-      window.localStorage.setItem(
-        runtimePreferencesStorageKey,
-        JSON.stringify(preferences),
-      );
+      // Keep the legacy key readable for older open tabs, but the versioned
+      // Theme Studio document above is the single writer going forward.
+      window.localStorage.removeItem(runtimePreferencesStorageKey);
     } catch {
       // Runtime preferences still apply for the active session if storage is unavailable.
+    }
+  }
+
+  function updateThemeRecipe(recipe: ThemeRecipeName | undefined) {
+    setThemeStudioEnabled(recipe !== undefined);
+    updateThemeStudioConfig({
+      ...themeStudioConfig,
+      baseRecipe: recipe ?? "product",
+      overrides: {},
+    });
+  }
+
+  function updateThemeStudioConfig(next: ThemeStudioConfig) {
+    const normalized = createThemeStudioConfig(next);
+    setThemeStudioConfig(normalized);
+    try {
+      window.localStorage.setItem(
+        themeStudioStorageKey,
+        serializeThemeStudioConfig(normalized),
+      );
+    } catch {
+      // The active session remains functional if storage is unavailable.
     }
   }
 
@@ -2934,10 +3469,7 @@ export default function App() {
     );
   } else if (routeMatch.kind === "brand-proof") {
     routeContent = (
-      <BrandExpressionProof
-        onNavigatePath={navigateToPath}
-        profileId={routeMatch.profileId}
-      />
+      <BrandExpressionProof profileId={routeMatch.profileId} />
     );
   } else {
     const activeRoute: Exclude<
@@ -3041,7 +3573,9 @@ export default function App() {
         onOpenReferenceQa={() => setReferenceHarnessOpen(true)}
         onOpenSettings={openThemeSettings}
         onThemePreferencesChange={updateThemePreferences}
-        onThemeRecipeChange={setThemeRecipe}
+        onThemeRecipeChange={updateThemeRecipe}
+        onThemeStudioChange={updateThemeStudioConfig}
+        themeStudioConfig={themeStudioConfig}
         themePreferences={themePreferences}
         themeRecipe={themeRecipe}
       />
@@ -3052,14 +3586,22 @@ export default function App() {
     <Ten4SevenProvider
       {...settings}
       persistenceKey="ten4seven.playground.theme.v1"
+      onThemeStudioChange={updateThemeStudioConfig}
       preferences={themePreferences}
+      themeStudio={themeStudioEnabled ? themeStudioConfig : undefined}
       theme={themeRecipe}
     >
       <ToastProvider>
-        <RouteSurface key={routeLocation}>{routeContent}</RouteSurface>
+        <RouteSurface
+          immediate={routeMatch.kind === "brand-proof"}
+          key={routeLocation}
+        >
+          {routeContent}
+        </RouteSurface>
         {showReferenceHarness && activeKnownRoute ? (
           <ReferenceHarness
             activeRoute={activeKnownRoute}
+            buildIdentity={playgroundBuildIdentity}
             onNavigate={navigateTo}
             onOpenChange={setReferenceHarnessOpen}
             onOperationsViewStateChange={setOperationsViewState}
@@ -3072,7 +3614,7 @@ export default function App() {
             onClose={closeThemeSettings}
             onNavigatePath={navigateToPath}
             onPreferencesChange={updateThemePreferences}
-            onRecipeChange={setThemeRecipe}
+            onRecipeChange={updateThemeRecipe}
             open
             preferences={themePreferences}
             recipe={themeRecipe}

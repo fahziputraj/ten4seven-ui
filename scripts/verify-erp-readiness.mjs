@@ -69,7 +69,10 @@ for (const pattern of Object.values(erpDensity.patterns)) {
 }
 
 assert.match(routeSource, /"ERP Density Reference"/);
-assert.match(routeSource, /"ERP Density Reference": "\/erp-reference"/);
+assert.match(
+  routeSource,
+  /"ERP Density Reference": \{[\s\S]*?path: "\/erp-density-reference"/,
+);
 assert.match(appSource, /ErpDataDenseReference/);
 assert.match(appSource, /routeMatch\.route === "ERP Density Reference"/);
 assert.match(referenceSource, /data-contract=\{ERP_DENSITY_CONTRACT\.id\}/);

@@ -1,0 +1,3089 @@
+{
+  "schemaVersion": "0.1",
+  "id": "navigation-overlay-feedback",
+  "sourceOfTruth": "packages/contracts/src/navigation-overlay-feedback.ts",
+  "platformSourceOfTruth": "packages/contracts/src/component-platform.ts",
+  "tokenSourceOfTruth": "packages/tokens/src/theme.ts",
+  "taxonomy": {
+    "families": [
+      "NAVIGATION",
+      "DISCLOSURE",
+      "MENU",
+      "OVERLAY",
+      "FEEDBACK"
+    ],
+    "statuses": [
+      "implemented",
+      "variant",
+      "deferred",
+      "rejected"
+    ]
+  },
+  "ownership": {
+    "ten4sevenOwns": [
+      "active and selected presentation",
+      "grouping and hierarchy presentation",
+      "responsive/adaptive shell treatment",
+      "keyboard, focus, dismissal, and touch behavior",
+      "semantic feedback tone, urgency, and persistence presentation"
+    ],
+    "consumerOwns": [
+      "route definition and deep-link resolution",
+      "guards, permissions, entitlements, and effective access",
+      "business routing decisions and handlers",
+      "notification data, persistence, and event source",
+      "connectivity, retry, sync, and business truth"
+    ]
+  },
+  "layers": {
+    "base": {
+      "token": "--t7-z-base",
+      "nativeRole": "base",
+      "meaning": "ordinary document and renderer content"
+    },
+    "sticky": {
+      "token": "--t7-z-sticky",
+      "nativeRole": "sticky",
+      "meaning": "persistent headers and navigation affordances"
+    },
+    "focus": {
+      "token": "--t7-z-focus",
+      "nativeRole": "focus",
+      "meaning": "focus feedback above the owning surface"
+    },
+    "dropdown": {
+      "token": "--t7-z-dropdown",
+      "nativeRole": "dropdown",
+      "meaning": "triggered menus and selection lists"
+    },
+    "popover": {
+      "token": "--t7-z-popover",
+      "nativeRole": "popover",
+      "meaning": "anchored contextual content"
+    },
+    "tooltip": {
+      "token": "--t7-z-tooltip",
+      "nativeRole": "tooltip",
+      "meaning": "supplemental explanatory content"
+    },
+    "drawer": {
+      "token": "--t7-z-drawer",
+      "nativeRole": "drawer",
+      "meaning": "edge-attached contextual surfaces"
+    },
+    "overlay": {
+      "token": "--t7-z-overlay",
+      "nativeRole": "overlay",
+      "meaning": "shared overlay presentation root"
+    },
+    "modal": {
+      "token": "--t7-z-modal",
+      "nativeRole": "modal",
+      "meaning": "modal and alert-dialog task surfaces"
+    },
+    "toast": {
+      "token": "--t7-z-toast",
+      "nativeRole": "toast",
+      "meaning": "transient feedback above task surfaces"
+    },
+    "command": {
+      "token": "--t7-z-command",
+      "nativeRole": "command",
+      "meaning": "keyboard-first command surfaces"
+    }
+  },
+  "focusDismissal": {
+    "presentationRoot": "One renderer-owned presentation root; floating content may remain inside an open modal dialog to preserve scoped tokens and clipping boundaries.",
+    "modal": {
+      "initialFocus": "renderer focuses the supplied target or the first usable control",
+      "containment": "focus remains within the active modal task surface",
+      "returnFocus": "dismissal returns focus to the invoking control when it remains connected",
+      "dismiss": [
+        "explicit close",
+        "Escape on Web",
+        "system back on Native"
+      ],
+      "scroll": "renderer owns underlay scroll locking for active modal depth"
+    },
+    "nonModal": {
+      "initialFocus": "trigger or consumer-owned focus target",
+      "returnFocus": "interactive menus and popovers return to their trigger",
+      "dismiss": [
+        "outside interaction",
+        "Escape on Web",
+        "system back on Native"
+      ],
+      "scroll": "the owning page remains scrollable unless the renderer surface says otherwise"
+    },
+    "nesting": "The active top layer receives dismissal first; an inner popup closes before its owning modal or drawer.",
+    "safeArea": "Native renderers resolve safe-area insets; Web uses the existing semantic safe-area variables."
+  },
+  "components": {
+    "Sidebar": {
+      "classification": "ADAPTIVE",
+      "interactionModel": "navigation",
+      "states": [
+        "idle",
+        "focus",
+        "selected",
+        "expanded",
+        "collapsed",
+        "disabled"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "navigation-role",
+        "selected-state",
+        "expanded-state",
+        "focus-or-press-feedback",
+        "keyboard-navigation"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure",
+        "density"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "priority-order",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "interaction",
+        "enter",
+        "exit",
+        "state"
+      ],
+      "dismissModel": "consumer-controlled",
+      "focusModel": "roving-items",
+      "persistence": "consumer-controlled",
+      "urgency": "not-applicable",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "useWhen": [
+        "dense operational and ERP shells"
+      ],
+      "avoidWhen": [
+        "small public navigation or mobile-only primary destinations"
+      ],
+      "canonicalComponent": "Sidebar",
+      "displayName": "Sidebar",
+      "family": "NAVIGATION",
+      "intent": "Present persistent or collapsible application destinations.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "Sidebar",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-persistent-navigation"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-navigation"
+      },
+      "webPresentation": "web-persistent-navigation",
+      "nativePresentation": "native-navigation",
+      "adaptivePattern": "sidebar",
+      "nativeAlternative": "navigation-drawer"
+    },
+    "SidebarGroup": {
+      "classification": "CANONICAL_COMPONENT",
+      "interactionModel": "navigation",
+      "states": [
+        "idle",
+        "focus",
+        "selected",
+        "expanded",
+        "collapsed",
+        "disabled"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "navigation-role",
+        "selected-state",
+        "expanded-state",
+        "focus-or-press-feedback",
+        "keyboard-navigation"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure",
+        "density"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "priority-order",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "interaction",
+        "enter",
+        "exit",
+        "state"
+      ],
+      "dismissModel": "consumer-controlled",
+      "focusModel": "roving-items",
+      "persistence": "consumer-controlled",
+      "urgency": "not-applicable",
+      "nativeStrategy": "SAME_INTENT",
+      "useWhen": [
+        "a product surface needs destination or peer-view orientation"
+      ],
+      "avoidWhen": [
+        "business route truth or permission logic belongs in the consumer"
+      ],
+      "canonicalComponent": "SidebarGroup",
+      "displayName": "Sidebar Group",
+      "family": "NAVIGATION",
+      "intent": "Group related destinations under one navigation hierarchy.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "SidebarGroup",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-persistent-navigation"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-navigation"
+      },
+      "webPresentation": "web-persistent-navigation",
+      "nativePresentation": "native-navigation",
+      "adaptivePattern": "navigation-shell"
+    },
+    "NavigationMenu": {
+      "classification": "ADAPTIVE",
+      "interactionModel": "navigation",
+      "states": [
+        "idle",
+        "focus",
+        "selected",
+        "expanded",
+        "collapsed",
+        "disabled"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "navigation-role",
+        "selected-state",
+        "expanded-state",
+        "focus-or-press-feedback",
+        "keyboard-navigation"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure",
+        "density"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "priority-order",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "interaction",
+        "enter",
+        "exit",
+        "state"
+      ],
+      "dismissModel": "consumer-controlled",
+      "focusModel": "roving-items",
+      "persistence": "consumer-controlled",
+      "urgency": "not-applicable",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "useWhen": [
+        "public and commerce headers with a small grouped link set"
+      ],
+      "avoidWhen": [
+        "business route truth or permission logic belongs in the consumer"
+      ],
+      "canonicalComponent": "NavigationMenu",
+      "displayName": "Navigation Menu",
+      "family": "NAVIGATION",
+      "intent": "Present public or commerce navigation with bounded nested branches.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "NavigationMenu",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-persistent-navigation"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-navigation"
+      },
+      "webPresentation": "web-persistent-navigation",
+      "nativePresentation": "native-navigation",
+      "adaptivePattern": "navigation-shell",
+      "nativeAlternative": "navigation-tabs"
+    },
+    "TopNavigation": {
+      "classification": "ADAPTIVE",
+      "interactionModel": "navigation",
+      "states": [
+        "idle",
+        "focus",
+        "selected",
+        "expanded",
+        "collapsed",
+        "disabled"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "navigation-role",
+        "selected-state",
+        "expanded-state",
+        "focus-or-press-feedback",
+        "keyboard-navigation"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure",
+        "density"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "priority-order",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "interaction",
+        "enter",
+        "exit",
+        "state"
+      ],
+      "dismissModel": "consumer-controlled",
+      "focusModel": "roving-items",
+      "persistence": "consumer-controlled",
+      "urgency": "not-applicable",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "useWhen": [
+        "a product surface needs destination or peer-view orientation"
+      ],
+      "avoidWhen": [
+        "business route truth or permission logic belongs in the consumer"
+      ],
+      "canonicalComponent": "TopNavigation",
+      "displayName": "Top Navigation",
+      "family": "NAVIGATION",
+      "intent": "Present a horizontal application or public destination set.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "TopNavigation",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-persistent-navigation"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-navigation"
+      },
+      "webPresentation": "web-persistent-navigation",
+      "nativePresentation": "native-navigation",
+      "adaptivePattern": "navigation-shell",
+      "nativeAlternative": "navigation-tabs"
+    },
+    "BottomNavigation": {
+      "classification": "ADAPTIVE",
+      "interactionModel": "navigation",
+      "states": [
+        "idle",
+        "focus",
+        "selected",
+        "expanded",
+        "collapsed",
+        "disabled"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "navigation-role",
+        "selected-state",
+        "expanded-state",
+        "focus-or-press-feedback",
+        "keyboard-navigation"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure",
+        "density"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "touch-target-minimum",
+        "safe-area-inset"
+      ],
+      "motionRoles": [
+        "interaction",
+        "enter",
+        "exit",
+        "state"
+      ],
+      "dismissModel": "consumer-controlled",
+      "focusModel": "roving-items",
+      "persistence": "consumer-controlled",
+      "urgency": "not-applicable",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "useWhen": [
+        "a product surface needs destination or peer-view orientation"
+      ],
+      "avoidWhen": [
+        "business route truth or permission logic belongs in the consumer"
+      ],
+      "canonicalComponent": "BottomNavigation",
+      "displayName": "Bottom Navigation",
+      "family": "NAVIGATION",
+      "intent": "Present a bounded mobile-primary destination set with safe-area treatment.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "BottomNavigation",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-persistent-navigation"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-navigation"
+      },
+      "webPresentation": "web-persistent-navigation",
+      "nativePresentation": "native-navigation",
+      "adaptivePattern": "sidebar",
+      "nativeAlternative": "navigation-tabs"
+    },
+    "NavigationRail": {
+      "classification": "ADAPTIVE",
+      "interactionModel": "navigation",
+      "states": [
+        "idle",
+        "focus",
+        "selected",
+        "expanded",
+        "collapsed",
+        "disabled"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "navigation-role",
+        "selected-state",
+        "expanded-state",
+        "focus-or-press-feedback",
+        "keyboard-navigation"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure",
+        "density"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "priority-order",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "interaction",
+        "enter",
+        "exit",
+        "state"
+      ],
+      "dismissModel": "consumer-controlled",
+      "focusModel": "roving-items",
+      "persistence": "consumer-controlled",
+      "urgency": "not-applicable",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "useWhen": [
+        "a product surface needs destination or peer-view orientation"
+      ],
+      "avoidWhen": [
+        "business route truth or permission logic belongs in the consumer"
+      ],
+      "canonicalComponent": "NavigationRail",
+      "displayName": "Navigation Rail",
+      "family": "NAVIGATION",
+      "intent": "Present a compact desktop rail as a sidebar state, never as a mobile parity target.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "NavigationRail",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-persistent-navigation"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-navigation"
+      },
+      "webPresentation": "web-persistent-navigation",
+      "nativePresentation": "native-navigation",
+      "adaptivePattern": "sidebar",
+      "nativeAlternative": "navigation-drawer"
+    },
+    "MobileSidebar": {
+      "classification": "ADAPTIVE",
+      "interactionModel": "navigation",
+      "states": [
+        "idle",
+        "focus",
+        "selected",
+        "expanded",
+        "collapsed",
+        "disabled"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "navigation-role",
+        "selected-state",
+        "expanded-state",
+        "focus-or-press-feedback",
+        "keyboard-navigation"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure",
+        "density"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "priority-order",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "interaction",
+        "enter",
+        "exit",
+        "state"
+      ],
+      "dismissModel": "explicit-or-system-back",
+      "focusModel": "initial-focus-and-containment",
+      "persistence": "consumer-controlled",
+      "urgency": "not-applicable",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "useWhen": [
+        "a product surface needs destination or peer-view orientation"
+      ],
+      "avoidWhen": [
+        "business route truth or permission logic belongs in the consumer"
+      ],
+      "canonicalComponent": "MobileSidebar",
+      "displayName": "Mobile Sidebar",
+      "family": "NAVIGATION",
+      "intent": "Reveal application navigation in an adaptive mobile drawer.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "MobileSidebar",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-persistent-navigation"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-navigation"
+      },
+      "webPresentation": "web-persistent-navigation",
+      "nativePresentation": "native-navigation",
+      "adaptivePattern": "sidebar",
+      "nativeAlternative": "navigation-drawer"
+    },
+    "Breadcrumb": {
+      "classification": "ADAPTIVE",
+      "interactionModel": "navigation",
+      "states": [
+        "idle",
+        "focus",
+        "selected",
+        "expanded",
+        "collapsed",
+        "disabled"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "navigation-role",
+        "selected-state",
+        "expanded-state",
+        "focus-or-press-feedback",
+        "keyboard-navigation"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure",
+        "density"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "priority-order",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "interaction",
+        "enter",
+        "exit",
+        "state"
+      ],
+      "dismissModel": "consumer-controlled",
+      "focusModel": "consumer-owned",
+      "persistence": "consumer-controlled",
+      "urgency": "not-applicable",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "useWhen": [
+        "a product surface needs destination or peer-view orientation"
+      ],
+      "avoidWhen": [
+        "business route truth or permission logic belongs in the consumer"
+      ],
+      "canonicalComponent": "Breadcrumb",
+      "displayName": "Breadcrumb",
+      "family": "NAVIGATION",
+      "intent": "Communicate route ancestry and current-page context.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "Breadcrumb",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-persistent-navigation"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-navigation"
+      },
+      "webPresentation": "web-persistent-navigation",
+      "nativePresentation": "native-navigation",
+      "adaptivePattern": "navigation-shell",
+      "nativeAlternative": "stack-detail"
+    },
+    "SectionNavigation": {
+      "classification": "ADAPTIVE",
+      "interactionModel": "navigation",
+      "states": [
+        "idle",
+        "focus",
+        "selected",
+        "expanded",
+        "collapsed",
+        "disabled"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "navigation-role",
+        "selected-state",
+        "expanded-state",
+        "focus-or-press-feedback",
+        "keyboard-navigation"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure",
+        "density"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "priority-order",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "interaction",
+        "enter",
+        "exit",
+        "state"
+      ],
+      "dismissModel": "consumer-controlled",
+      "focusModel": "roving-items",
+      "persistence": "consumer-controlled",
+      "urgency": "not-applicable",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "useWhen": [
+        "a product surface needs destination or peer-view orientation"
+      ],
+      "avoidWhen": [
+        "business route truth or permission logic belongs in the consumer"
+      ],
+      "canonicalComponent": "SectionNavigation",
+      "displayName": "Section Navigation",
+      "family": "NAVIGATION",
+      "intent": "Move between sections inside one long page or workspace.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "SectionNavigation",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-persistent-navigation"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-navigation"
+      },
+      "webPresentation": "web-persistent-navigation",
+      "nativePresentation": "native-navigation",
+      "adaptivePattern": "navigation-shell",
+      "nativeAlternative": "navigation-tabs"
+    },
+    "Tabs": {
+      "classification": "CANONICAL_COMPONENT",
+      "interactionModel": "navigation",
+      "states": [
+        "idle",
+        "focus",
+        "selected",
+        "expanded",
+        "collapsed",
+        "disabled"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "navigation-role",
+        "selected-state",
+        "expanded-state",
+        "focus-or-press-feedback",
+        "keyboard-navigation"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure",
+        "density"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "priority-order",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "interaction",
+        "enter",
+        "exit",
+        "state"
+      ],
+      "dismissModel": "consumer-controlled",
+      "focusModel": "roving-items",
+      "persistence": "consumer-controlled",
+      "urgency": "not-applicable",
+      "nativeStrategy": "SAME_INTENT",
+      "useWhen": [
+        "a product surface needs destination or peer-view orientation"
+      ],
+      "avoidWhen": [
+        "business route truth or permission logic belongs in the consumer"
+      ],
+      "canonicalComponent": "Tabs",
+      "displayName": "Tabs",
+      "family": "NAVIGATION",
+      "intent": "Switch between bounded peer panels in one context.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "Tabs",
+      "platform": "BOTH",
+      "rendererStrategy": "SAME_INTENT",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-persistent-navigation"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-navigation"
+      },
+      "webPresentation": "web-persistent-navigation",
+      "nativePresentation": "native-navigation"
+    },
+    "Pagination": {
+      "classification": "ADAPTIVE",
+      "interactionModel": "navigation",
+      "states": [
+        "idle",
+        "focus",
+        "selected",
+        "expanded",
+        "collapsed",
+        "disabled"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "navigation-role",
+        "selected-state",
+        "expanded-state",
+        "focus-or-press-feedback",
+        "keyboard-navigation"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure",
+        "density"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "priority-order",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "interaction",
+        "enter",
+        "exit",
+        "state"
+      ],
+      "dismissModel": "consumer-controlled",
+      "focusModel": "roving-items",
+      "persistence": "consumer-controlled",
+      "urgency": "not-applicable",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "useWhen": [
+        "a product surface needs destination or peer-view orientation"
+      ],
+      "avoidWhen": [
+        "business route truth or permission logic belongs in the consumer"
+      ],
+      "canonicalComponent": "Pagination",
+      "displayName": "Pagination",
+      "family": "NAVIGATION",
+      "intent": "Move through a bounded set of result pages.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "Pagination",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-persistent-navigation"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-navigation"
+      },
+      "webPresentation": "web-persistent-navigation",
+      "nativePresentation": "native-navigation",
+      "adaptivePattern": "collection",
+      "nativeAlternative": "collection-paging"
+    },
+    "Stepper": {
+      "classification": "CANONICAL_COMPONENT",
+      "interactionModel": "navigation",
+      "states": [
+        "idle",
+        "focus",
+        "selected",
+        "expanded",
+        "collapsed",
+        "disabled"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "navigation-role",
+        "selected-state",
+        "expanded-state",
+        "focus-or-press-feedback",
+        "keyboard-navigation"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure",
+        "density"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "priority-order",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "interaction",
+        "enter",
+        "exit",
+        "state"
+      ],
+      "dismissModel": "consumer-controlled",
+      "focusModel": "roving-items",
+      "persistence": "consumer-controlled",
+      "urgency": "not-applicable",
+      "nativeStrategy": "SAME_INTENT",
+      "useWhen": [
+        "short form, checkout, or setup workflows"
+      ],
+      "avoidWhen": [
+        "read-only lifecycle status; use MilestoneTracker"
+      ],
+      "canonicalComponent": "Stepper",
+      "displayName": "Stepper",
+      "family": "NAVIGATION",
+      "intent": "Guide an interactive ordered multi-step task.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "Stepper",
+      "platform": "BOTH",
+      "rendererStrategy": "SAME_INTENT",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-persistent-navigation"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-navigation"
+      },
+      "webPresentation": "web-persistent-navigation",
+      "nativePresentation": "native-navigation"
+    },
+    "MilestoneTracker": {
+      "classification": "ADAPTIVE",
+      "interactionModel": "navigation",
+      "states": [
+        "idle",
+        "focus",
+        "selected",
+        "expanded",
+        "collapsed",
+        "disabled"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "navigation-role",
+        "selected-state",
+        "expanded-state",
+        "focus-or-press-feedback",
+        "keyboard-navigation"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure",
+        "density"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "priority-order",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "interaction",
+        "enter",
+        "exit",
+        "state"
+      ],
+      "dismissModel": "consumer-controlled",
+      "focusModel": "consumer-owned",
+      "persistence": "consumer-controlled",
+      "urgency": "not-applicable",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "useWhen": [
+        "short operational lifecycle or approval progression"
+      ],
+      "avoidWhen": [
+        "interactive form steps or unbounded project planning"
+      ],
+      "canonicalComponent": "MilestoneTracker",
+      "displayName": "Milestone Tracker",
+      "family": "NAVIGATION",
+      "intent": "Present read/inspect lifecycle progression and the current stage.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "MilestoneTracker",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-semantic-element"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-composition"
+      },
+      "webPresentation": "web-semantic-element",
+      "nativePresentation": "native-composition",
+      "adaptivePattern": "master-detail",
+      "nativeAlternative": "stack-detail"
+    },
+    "CommandMenu": {
+      "classification": "ADAPTIVE",
+      "interactionModel": "navigation",
+      "states": [
+        "idle",
+        "focus",
+        "selected",
+        "expanded",
+        "collapsed",
+        "disabled"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "navigation-role",
+        "selected-state",
+        "expanded-state",
+        "focus-or-press-feedback",
+        "keyboard-navigation"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure",
+        "density"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "priority-order",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "interaction",
+        "enter",
+        "exit",
+        "state"
+      ],
+      "dismissModel": "explicit-or-system-back",
+      "focusModel": "initial-focus-and-containment",
+      "persistence": "consumer-controlled",
+      "urgency": "not-applicable",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "useWhen": [
+        "a product surface needs destination or peer-view orientation"
+      ],
+      "avoidWhen": [
+        "business route truth or permission logic belongs in the consumer"
+      ],
+      "canonicalComponent": "CommandMenu",
+      "displayName": "Command Menu",
+      "family": "NAVIGATION",
+      "intent": "Provide keyboard-first search and execution of bounded commands.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "CommandMenu",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-persistent-navigation"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-navigation"
+      },
+      "webPresentation": "web-persistent-navigation",
+      "nativePresentation": "native-navigation",
+      "adaptivePattern": "command-surface",
+      "nativeAlternative": "search-action-surface"
+    },
+    "Accordion": {
+      "classification": "CANONICAL_COMPONENT",
+      "interactionModel": "disclosure",
+      "states": [
+        "idle",
+        "focus",
+        "expanded",
+        "collapsed",
+        "disabled"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "expanded-state",
+        "keyboard-navigation",
+        "focus-or-press-feedback"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "interaction",
+        "state",
+        "reveal"
+      ],
+      "dismissModel": "consumer-controlled",
+      "focusModel": "roving-items",
+      "persistence": "consumer-controlled",
+      "urgency": "not-applicable",
+      "nativeStrategy": "SAME_INTENT",
+      "useWhen": [
+        "short FAQ, settings, or supporting sections"
+      ],
+      "avoidWhen": [
+        "long workflows or route navigation"
+      ],
+      "canonicalComponent": "Accordion",
+      "displayName": "Accordion",
+      "family": "DISCLOSURE",
+      "intent": "Progressively disclose a collection of related sections.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "Accordion",
+      "platform": "BOTH",
+      "rendererStrategy": "SAME_INTENT",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-persistent-navigation"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-navigation"
+      },
+      "webPresentation": "web-persistent-navigation",
+      "nativePresentation": "native-navigation"
+    },
+    "Collapsible": {
+      "classification": "CANONICAL_COMPONENT",
+      "interactionModel": "disclosure",
+      "states": [
+        "idle",
+        "focus",
+        "expanded",
+        "collapsed",
+        "disabled"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "expanded-state",
+        "keyboard-navigation",
+        "focus-or-press-feedback"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "interaction",
+        "state",
+        "reveal"
+      ],
+      "dismissModel": "consumer-controlled",
+      "focusModel": "roving-items",
+      "persistence": "consumer-controlled",
+      "urgency": "not-applicable",
+      "nativeStrategy": "SAME_INTENT",
+      "useWhen": [
+        "one optional settings, filter, or supporting section"
+      ],
+      "avoidWhen": [
+        "long workflows or route-level navigation"
+      ],
+      "canonicalComponent": "Collapsible",
+      "displayName": "Collapsible",
+      "family": "DISCLOSURE",
+      "intent": "Show or hide one bounded optional region.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "Collapsible",
+      "platform": "BOTH",
+      "rendererStrategy": "SAME_INTENT",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-persistent-navigation"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-navigation"
+      },
+      "webPresentation": "web-persistent-navigation",
+      "nativePresentation": "native-navigation"
+    },
+    "DropdownMenu": {
+      "classification": "ADAPTIVE",
+      "interactionModel": "selection",
+      "states": [
+        "idle",
+        "focus",
+        "selected",
+        "expanded",
+        "disabled"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "actionable-role",
+        "selected-state",
+        "keyboard-navigation",
+        "focus-return",
+        "dismissal"
+      ],
+      "tokenRoles": [
+        "color",
+        "spacing",
+        "radius",
+        "elevation",
+        "focus",
+        "motion",
+        "measure"
+      ],
+      "layoutIntents": [
+        "measure-compact",
+        "minimum-useful-surface",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "interaction",
+        "enter",
+        "exit"
+      ],
+      "dismissModel": "outside-or-escape",
+      "focusModel": "roving-items",
+      "persistence": "transient",
+      "urgency": "not-applicable",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "useWhen": [
+        "a bounded action or choice set is attached to a trigger"
+      ],
+      "avoidWhen": [
+        "essential actions need to remain visible or a workflow is long"
+      ],
+      "canonicalComponent": "DropdownMenu",
+      "displayName": "Dropdown Menu",
+      "family": "MENU",
+      "intent": "Present a bounded action or choice menu from a trigger.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "DropdownMenu",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-modal"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-modal"
+      },
+      "webPresentation": "web-modal",
+      "nativePresentation": "native-modal",
+      "adaptivePattern": "dialog",
+      "nativeAlternative": "native-sheet"
+    },
+    "ContextMenu": {
+      "classification": "ADAPTIVE",
+      "interactionModel": "selection",
+      "states": [
+        "idle",
+        "focus",
+        "selected",
+        "expanded",
+        "disabled"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "actionable-role",
+        "selected-state",
+        "keyboard-navigation",
+        "focus-return",
+        "dismissal"
+      ],
+      "tokenRoles": [
+        "color",
+        "spacing",
+        "radius",
+        "elevation",
+        "focus",
+        "motion",
+        "measure"
+      ],
+      "layoutIntents": [
+        "measure-compact",
+        "minimum-useful-surface",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "interaction",
+        "enter",
+        "exit"
+      ],
+      "dismissModel": "outside-or-escape",
+      "focusModel": "roving-items",
+      "persistence": "transient",
+      "urgency": "not-applicable",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "useWhen": [
+        "desktop power workflows with non-essential contextual actions"
+      ],
+      "avoidWhen": [
+        "touch-primary flows or actions that must remain visible"
+      ],
+      "canonicalComponent": "ContextMenu",
+      "displayName": "Context Menu",
+      "family": "MENU",
+      "intent": "Present contextual actions from a pointer or keyboard context gesture.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "ContextMenu",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-modal"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-modal"
+      },
+      "webPresentation": "web-modal",
+      "nativePresentation": "native-modal",
+      "adaptivePattern": "dialog",
+      "nativeAlternative": "native-sheet"
+    },
+    "Dialog": {
+      "classification": "ADAPTIVE",
+      "interactionModel": "overlay",
+      "states": [
+        "idle",
+        "focus",
+        "expanded",
+        "collapsed",
+        "disabled",
+        "loading"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "labelled-surface",
+        "focus-containment",
+        "focus-return",
+        "dismissal",
+        "focus-or-press-feedback"
+      ],
+      "tokenRoles": [
+        "color",
+        "spacing",
+        "radius",
+        "elevation",
+        "focus",
+        "motion",
+        "measure"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "measure-wide",
+        "bounded-scroll-owner",
+        "touch-target-minimum",
+        "safe-area-inset"
+      ],
+      "motionRoles": [
+        "enter",
+        "exit",
+        "state"
+      ],
+      "dismissModel": "explicit-or-system-back",
+      "focusModel": "initial-focus-and-containment",
+      "persistence": "consumer-controlled",
+      "urgency": "not-applicable",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "useWhen": [
+        "focused tasks, forms, acknowledgement, or non-destructive confirmation"
+      ],
+      "avoidWhen": [
+        "irreversible decisions; use AlertDialog",
+        "long workflows needing a route"
+      ],
+      "canonicalComponent": "Dialog",
+      "displayName": "Dialog",
+      "family": "OVERLAY",
+      "intent": "Present focused content or a task in a labelled modal surface.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "Dialog",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-modal"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-modal"
+      },
+      "webPresentation": "web-modal",
+      "nativePresentation": "native-modal",
+      "adaptivePattern": "dialog",
+      "nativeAlternative": "native-modal"
+    },
+    "AlertDialog": {
+      "classification": "ADAPTIVE",
+      "interactionModel": "overlay",
+      "states": [
+        "idle",
+        "focus",
+        "expanded",
+        "collapsed",
+        "disabled",
+        "loading"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "labelled-surface",
+        "focus-containment",
+        "focus-return",
+        "dismissal",
+        "focus-or-press-feedback"
+      ],
+      "tokenRoles": [
+        "color",
+        "spacing",
+        "radius",
+        "elevation",
+        "focus",
+        "motion",
+        "measure"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "measure-wide",
+        "bounded-scroll-owner",
+        "touch-target-minimum",
+        "safe-area-inset"
+      ],
+      "motionRoles": [
+        "enter",
+        "exit",
+        "state"
+      ],
+      "dismissModel": "explicit-or-system-back",
+      "focusModel": "initial-focus-and-containment",
+      "persistence": "consumer-controlled",
+      "urgency": "not-applicable",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "useWhen": [
+        "destructive confirmation, irreversible action, critical acknowledgement"
+      ],
+      "avoidWhen": [
+        "ordinary information or passive feedback"
+      ],
+      "canonicalComponent": "AlertDialog",
+      "displayName": "Alert Dialog",
+      "family": "OVERLAY",
+      "intent": "Require an explicit decision for destructive or high-impact actions.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "AlertDialog",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-modal"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-modal"
+      },
+      "webPresentation": "web-modal",
+      "nativePresentation": "native-modal",
+      "adaptivePattern": "dialog",
+      "nativeAlternative": "native-modal"
+    },
+    "Drawer": {
+      "classification": "ADAPTIVE",
+      "interactionModel": "overlay",
+      "states": [
+        "idle",
+        "focus",
+        "expanded",
+        "collapsed",
+        "disabled",
+        "loading"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "labelled-surface",
+        "focus-containment",
+        "focus-return",
+        "dismissal",
+        "focus-or-press-feedback"
+      ],
+      "tokenRoles": [
+        "color",
+        "spacing",
+        "radius",
+        "elevation",
+        "focus",
+        "motion",
+        "measure"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "measure-wide",
+        "bounded-scroll-owner",
+        "touch-target-minimum",
+        "safe-area-inset"
+      ],
+      "motionRoles": [
+        "enter",
+        "exit",
+        "state"
+      ],
+      "dismissModel": "explicit-or-system-back",
+      "focusModel": "initial-focus-and-containment",
+      "persistence": "consumer-controlled",
+      "urgency": "not-applicable",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "useWhen": [
+        "content needs a temporary contextual or task surface"
+      ],
+      "avoidWhen": [
+        "a route or persistent page surface is the clearer context"
+      ],
+      "canonicalComponent": "Drawer",
+      "displayName": "Drawer",
+      "family": "OVERLAY",
+      "intent": "Present an edge-attached contextual, navigation, or work surface.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "Drawer",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-modal"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-modal"
+      },
+      "webPresentation": "web-modal",
+      "nativePresentation": "native-modal",
+      "adaptivePattern": "drawer",
+      "nativeAlternative": "native-sheet"
+    },
+    "DetailDrawer": {
+      "classification": "ADAPTIVE",
+      "interactionModel": "overlay",
+      "states": [
+        "idle",
+        "focus",
+        "expanded",
+        "collapsed",
+        "disabled",
+        "loading"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "labelled-surface",
+        "focus-containment",
+        "focus-return",
+        "dismissal",
+        "focus-or-press-feedback"
+      ],
+      "tokenRoles": [
+        "color",
+        "spacing",
+        "radius",
+        "elevation",
+        "focus",
+        "motion",
+        "measure"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "measure-wide",
+        "bounded-scroll-owner",
+        "touch-target-minimum",
+        "safe-area-inset"
+      ],
+      "motionRoles": [
+        "enter",
+        "exit",
+        "state"
+      ],
+      "dismissModel": "explicit-or-system-back",
+      "focusModel": "initial-focus-and-containment",
+      "persistence": "consumer-controlled",
+      "urgency": "not-applicable",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "useWhen": [
+        "row quick view and master-detail inspection"
+      ],
+      "avoidWhen": [
+        "a route or persistent page surface is the clearer context"
+      ],
+      "canonicalComponent": "DetailDrawer",
+      "displayName": "Detail Drawer",
+      "family": "OVERLAY",
+      "intent": "Inspect a selected record while retaining the parent route context.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "DetailDrawer",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-modal"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-modal"
+      },
+      "webPresentation": "web-modal",
+      "nativePresentation": "native-modal",
+      "adaptivePattern": "drawer",
+      "nativeAlternative": "native-sheet"
+    },
+    "Popover": {
+      "classification": "ADAPTIVE",
+      "interactionModel": "overlay",
+      "states": [
+        "idle",
+        "focus",
+        "expanded",
+        "collapsed",
+        "disabled",
+        "loading"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "labelled-surface",
+        "focus-containment",
+        "focus-return",
+        "dismissal",
+        "focus-or-press-feedback"
+      ],
+      "tokenRoles": [
+        "color",
+        "spacing",
+        "radius",
+        "elevation",
+        "focus",
+        "motion",
+        "measure"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "measure-wide",
+        "bounded-scroll-owner",
+        "touch-target-minimum",
+        "safe-area-inset"
+      ],
+      "motionRoles": [
+        "enter",
+        "exit",
+        "state"
+      ],
+      "dismissModel": "outside-or-escape",
+      "focusModel": "return-to-invoker",
+      "persistence": "consumer-controlled",
+      "urgency": "not-applicable",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "useWhen": [
+        "content needs a temporary contextual or task surface"
+      ],
+      "avoidWhen": [
+        "a route or persistent page surface is the clearer context"
+      ],
+      "canonicalComponent": "Popover",
+      "displayName": "Popover",
+      "family": "OVERLAY",
+      "intent": "Present dismissible anchored interactive content.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "Popover",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-modal"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-modal"
+      },
+      "webPresentation": "web-modal",
+      "nativePresentation": "native-modal",
+      "adaptivePattern": "dialog",
+      "nativeAlternative": "native-sheet"
+    },
+    "Tooltip": {
+      "classification": "WEB_ONLY",
+      "interactionModel": "overlay",
+      "states": [
+        "idle",
+        "focus",
+        "expanded",
+        "collapsed",
+        "disabled",
+        "loading"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "supplemental-description",
+        "non-hover-alternative",
+        "focus-or-press-feedback"
+      ],
+      "tokenRoles": [
+        "color",
+        "spacing",
+        "radius",
+        "elevation",
+        "focus",
+        "motion",
+        "measure"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "measure-wide",
+        "bounded-scroll-owner",
+        "touch-target-minimum",
+        "safe-area-inset"
+      ],
+      "motionRoles": [
+        "enter",
+        "exit",
+        "state"
+      ],
+      "dismissModel": "outside-or-escape",
+      "focusModel": "non-modal",
+      "persistence": "transient",
+      "urgency": "not-applicable",
+      "nativeStrategy": "NOT_APPLICABLE",
+      "useWhen": [
+        "content needs a temporary contextual or task surface"
+      ],
+      "avoidWhen": [
+        "a route or persistent page surface is the clearer context"
+      ],
+      "canonicalComponent": "Tooltip",
+      "displayName": "Tooltip",
+      "family": "OVERLAY",
+      "intent": "Present short supplemental hover or focus help.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "Tooltip",
+      "platform": "WEB",
+      "rendererStrategy": "NOT_APPLICABLE",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-modal"
+      },
+      "native": {
+        "status": "not-applicable",
+        "presentation": "not-applicable"
+      },
+      "webPresentation": "web-modal",
+      "nativePresentation": "not-applicable",
+      "nativeAlternative": "contextual-help"
+    },
+    "Alert": {
+      "classification": "CANONICAL_COMPONENT",
+      "interactionModel": "feedback",
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "offline",
+        "pendingSync",
+        "syncing",
+        "syncFailed",
+        "retryAvailable"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "status-announcement",
+        "non-color-status",
+        "focus-or-press-feedback"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "elevation",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "state",
+        "enter",
+        "exit",
+        "reveal"
+      ],
+      "dismissModel": "consumer-controlled",
+      "focusModel": "consumer-owned",
+      "persistence": "persistent",
+      "urgency": "consumer-controlled",
+      "nativeStrategy": "NATIVE_RENDERER",
+      "useWhen": [
+        "a product needs semantic status, recovery, progress, or event feedback"
+      ],
+      "avoidWhen": [
+        "the message would become business truth, routing, or a data source"
+      ],
+      "canonicalComponent": "Alert",
+      "displayName": "Alert",
+      "family": "FEEDBACK",
+      "intent": "Present persistent in-context feedback with optional recovery action.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "Alert",
+      "platform": "BOTH",
+      "rendererStrategy": "NATIVE_RENDERER",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-feedback-surface"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-feedback-surface"
+      },
+      "webPresentation": "web-feedback-surface",
+      "nativePresentation": "native-feedback-surface"
+    },
+    "Banner": {
+      "classification": "CANONICAL_COMPONENT",
+      "interactionModel": "feedback",
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "offline",
+        "pendingSync",
+        "syncing",
+        "syncFailed",
+        "retryAvailable"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "status-announcement",
+        "non-color-status",
+        "focus-or-press-feedback"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "elevation",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure"
+      ],
+      "layoutIntents": [
+        "measure-wide",
+        "minimum-useful-surface",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "state",
+        "enter",
+        "exit",
+        "reveal"
+      ],
+      "dismissModel": "consumer-controlled",
+      "focusModel": "consumer-owned",
+      "persistence": "persistent",
+      "urgency": "consumer-controlled",
+      "nativeStrategy": "NATIVE_RENDERER",
+      "useWhen": [
+        "a product needs semantic status, recovery, progress, or event feedback"
+      ],
+      "avoidWhen": [
+        "the message would become business truth, routing, or a data source"
+      ],
+      "canonicalComponent": "Banner",
+      "displayName": "Banner",
+      "family": "FEEDBACK",
+      "intent": "Present important page or shell-wide information such as offline or maintenance state.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "Banner",
+      "platform": "BOTH",
+      "rendererStrategy": "NATIVE_RENDERER",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-feedback-surface"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-feedback-surface"
+      },
+      "webPresentation": "web-feedback-surface",
+      "nativePresentation": "native-feedback-surface"
+    },
+    "ToastProvider": {
+      "classification": "UTILITY_OR_PROVIDER",
+      "interactionModel": "feedback",
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "offline",
+        "pendingSync",
+        "syncing",
+        "syncFailed",
+        "retryAvailable"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "status-announcement",
+        "non-color-status",
+        "focus-or-press-feedback"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "elevation",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "state",
+        "enter",
+        "exit",
+        "reveal"
+      ],
+      "dismissModel": "consumer-controlled",
+      "focusModel": "consumer-owned",
+      "persistence": "transient",
+      "urgency": "polite",
+      "nativeStrategy": "NATIVE_RENDERER",
+      "useWhen": [
+        "a product needs semantic status, recovery, progress, or event feedback"
+      ],
+      "avoidWhen": [
+        "the message would become business truth, routing, or a data source"
+      ],
+      "canonicalComponent": "ToastProvider",
+      "displayName": "Toast Provider",
+      "family": "FEEDBACK",
+      "intent": "Own one canonical transient feedback queue for the provider tree.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "ToastProvider",
+      "platform": "BOTH",
+      "rendererStrategy": "NATIVE_RENDERER",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-feedback-surface"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-feedback-surface"
+      },
+      "webPresentation": "web-feedback-surface",
+      "nativePresentation": "native-feedback-surface"
+    },
+    "Toaster": {
+      "classification": "UTILITY_OR_PROVIDER",
+      "interactionModel": "feedback",
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "offline",
+        "pendingSync",
+        "syncing",
+        "syncFailed",
+        "retryAvailable"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "status-announcement",
+        "non-color-status",
+        "focus-or-press-feedback"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "elevation",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "state",
+        "enter",
+        "exit",
+        "reveal"
+      ],
+      "dismissModel": "consumer-controlled",
+      "focusModel": "consumer-owned",
+      "persistence": "transient",
+      "urgency": "polite",
+      "nativeStrategy": "NATIVE_RENDERER",
+      "useWhen": [
+        "a product needs semantic status, recovery, progress, or event feedback"
+      ],
+      "avoidWhen": [
+        "the message would become business truth, routing, or a data source"
+      ],
+      "canonicalComponent": "Toaster",
+      "displayName": "Toaster",
+      "family": "FEEDBACK",
+      "intent": "Render the provider-owned transient feedback viewport.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "Toaster",
+      "platform": "BOTH",
+      "rendererStrategy": "NATIVE_RENDERER",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-feedback-surface"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-feedback-surface"
+      },
+      "webPresentation": "web-feedback-surface",
+      "nativePresentation": "native-feedback-surface"
+    },
+    "Toast": {
+      "classification": "CANONICAL_COMPONENT",
+      "interactionModel": "feedback",
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "offline",
+        "pendingSync",
+        "syncing",
+        "syncFailed",
+        "retryAvailable"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "status-announcement",
+        "non-color-status",
+        "focus-or-press-feedback"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "elevation",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "state",
+        "enter",
+        "exit",
+        "reveal"
+      ],
+      "dismissModel": "timeout-or-explicit",
+      "focusModel": "consumer-owned",
+      "persistence": "transient",
+      "urgency": "consumer-controlled",
+      "nativeStrategy": "NATIVE_RENDERER",
+      "useWhen": [
+        "a product needs semantic status, recovery, progress, or event feedback"
+      ],
+      "avoidWhen": [
+        "the message would become business truth, routing, or a data source"
+      ],
+      "canonicalComponent": "Toast",
+      "displayName": "Toast",
+      "family": "FEEDBACK",
+      "intent": "Present brief transient feedback after an action or event.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "Toast",
+      "platform": "BOTH",
+      "rendererStrategy": "NATIVE_RENDERER",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-feedback-surface"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-feedback-surface"
+      },
+      "webPresentation": "web-feedback-surface",
+      "nativePresentation": "native-feedback-surface"
+    },
+    "Notification": {
+      "classification": "CANONICAL_COMPONENT",
+      "interactionModel": "feedback",
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "offline",
+        "pendingSync",
+        "syncing",
+        "syncFailed",
+        "retryAvailable"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "status-announcement",
+        "non-color-status",
+        "focus-or-press-feedback"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "elevation",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "state",
+        "enter",
+        "exit",
+        "reveal"
+      ],
+      "dismissModel": "consumer-controlled",
+      "focusModel": "consumer-owned",
+      "persistence": "inspectable-history",
+      "urgency": "consumer-controlled",
+      "nativeStrategy": "NATIVE_RENDERER",
+      "useWhen": [
+        "a product needs semantic status, recovery, progress, or event feedback"
+      ],
+      "avoidWhen": [
+        "the message would become business truth, routing, or a data source"
+      ],
+      "canonicalComponent": "Notification",
+      "displayName": "Notification",
+      "family": "FEEDBACK",
+      "intent": "Present one persisted or inspectable event item with read state and optional action.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "Notification",
+      "platform": "BOTH",
+      "rendererStrategy": "NATIVE_RENDERER",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-feedback-surface"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-feedback-surface"
+      },
+      "webPresentation": "web-feedback-surface",
+      "nativePresentation": "native-feedback-surface"
+    },
+    "NotificationCenter": {
+      "classification": "ADAPTIVE",
+      "interactionModel": "feedback",
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "offline",
+        "pendingSync",
+        "syncing",
+        "syncFailed",
+        "retryAvailable"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "status-announcement",
+        "non-color-status",
+        "focus-or-press-feedback"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "elevation",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "bounded-scroll-owner",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "state",
+        "enter",
+        "exit",
+        "reveal"
+      ],
+      "dismissModel": "explicit-or-system-back",
+      "focusModel": "initial-focus-and-containment",
+      "persistence": "inspectable-history",
+      "urgency": "consumer-controlled",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "useWhen": [
+        "a product needs semantic status, recovery, progress, or event feedback"
+      ],
+      "avoidWhen": [
+        "the message would become business truth, routing, or a data source"
+      ],
+      "canonicalComponent": "NotificationCenter",
+      "displayName": "Notification Center",
+      "family": "FEEDBACK",
+      "intent": "Present a bounded inspectable notification collection with read and clear actions.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "NotificationCenter",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-feedback-surface"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-feedback-surface"
+      },
+      "webPresentation": "web-feedback-surface",
+      "nativePresentation": "native-feedback-surface",
+      "adaptivePattern": "notification-center",
+      "nativeAlternative": "native-sheet"
+    },
+    "EmptyState": {
+      "classification": "CANONICAL_COMPONENT",
+      "interactionModel": "feedback",
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "offline",
+        "pendingSync",
+        "syncing",
+        "syncFailed",
+        "retryAvailable"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "status-announcement",
+        "non-color-status",
+        "focus-or-press-feedback"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "elevation",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "state",
+        "enter",
+        "exit",
+        "reveal"
+      ],
+      "dismissModel": "consumer-controlled",
+      "focusModel": "consumer-owned",
+      "persistence": "consumer-controlled",
+      "urgency": "polite",
+      "nativeStrategy": "NATIVE_RENDERER",
+      "useWhen": [
+        "a product needs semantic status, recovery, progress, or event feedback"
+      ],
+      "avoidWhen": [
+        "the message would become business truth, routing, or a data source"
+      ],
+      "canonicalComponent": "EmptyState",
+      "displayName": "Empty State",
+      "family": "FEEDBACK",
+      "intent": "Explain a global or filtered empty result with optional recovery actions.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "EmptyState",
+      "platform": "BOTH",
+      "rendererStrategy": "NATIVE_RENDERER",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-feedback-surface"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-feedback-surface"
+      },
+      "webPresentation": "web-feedback-surface",
+      "nativePresentation": "native-feedback-surface"
+    },
+    "StateView": {
+      "classification": "CANONICAL_COMPONENT",
+      "interactionModel": "feedback",
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "offline",
+        "pendingSync",
+        "syncing",
+        "syncFailed",
+        "retryAvailable"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "status-announcement",
+        "non-color-status",
+        "focus-or-press-feedback"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "elevation",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "state",
+        "enter",
+        "exit",
+        "reveal"
+      ],
+      "dismissModel": "consumer-controlled",
+      "focusModel": "consumer-owned",
+      "persistence": "consumer-controlled",
+      "urgency": "consumer-controlled",
+      "nativeStrategy": "NATIVE_RENDERER",
+      "useWhen": [
+        "a product needs semantic status, recovery, progress, or event feedback"
+      ],
+      "avoidWhen": [
+        "the message would become business truth, routing, or a data source"
+      ],
+      "canonicalComponent": "StateView",
+      "displayName": "State View",
+      "family": "FEEDBACK",
+      "intent": "Present an empty, error, permission, or unavailable screen state.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "StateView",
+      "platform": "BOTH",
+      "rendererStrategy": "NATIVE_RENDERER",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-feedback-surface"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-feedback-surface"
+      },
+      "webPresentation": "web-feedback-surface",
+      "nativePresentation": "native-feedback-surface"
+    },
+    "Skeleton": {
+      "classification": "CANONICAL_COMPONENT",
+      "interactionModel": "feedback",
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "offline",
+        "pendingSync",
+        "syncing",
+        "syncFailed",
+        "retryAvailable"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "status-announcement",
+        "non-color-status",
+        "focus-or-press-feedback"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "elevation",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "state",
+        "enter",
+        "exit",
+        "reveal"
+      ],
+      "dismissModel": "not-applicable",
+      "focusModel": "not-applicable",
+      "persistence": "not-applicable",
+      "urgency": "not-applicable",
+      "nativeStrategy": "NATIVE_RENDERER",
+      "useWhen": [
+        "a product needs semantic status, recovery, progress, or event feedback"
+      ],
+      "avoidWhen": [
+        "the message would become business truth, routing, or a data source"
+      ],
+      "canonicalComponent": "Skeleton",
+      "displayName": "Skeleton",
+      "family": "FEEDBACK",
+      "intent": "Approximate known content shape while data is loading.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "Skeleton",
+      "platform": "BOTH",
+      "rendererStrategy": "NATIVE_RENDERER",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-feedback-surface"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-feedback-surface"
+      },
+      "webPresentation": "web-feedback-surface",
+      "nativePresentation": "native-feedback-surface"
+    },
+    "Spinner": {
+      "classification": "CANONICAL_COMPONENT",
+      "interactionModel": "feedback",
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "offline",
+        "pendingSync",
+        "syncing",
+        "syncFailed",
+        "retryAvailable"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "status-announcement",
+        "non-color-status",
+        "focus-or-press-feedback"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "elevation",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "state",
+        "enter",
+        "exit",
+        "reveal"
+      ],
+      "dismissModel": "not-applicable",
+      "focusModel": "not-applicable",
+      "persistence": "not-applicable",
+      "urgency": "polite",
+      "nativeStrategy": "NATIVE_RENDERER",
+      "useWhen": [
+        "a product needs semantic status, recovery, progress, or event feedback"
+      ],
+      "avoidWhen": [
+        "the message would become business truth, routing, or a data source"
+      ],
+      "canonicalComponent": "Spinner",
+      "displayName": "Spinner",
+      "family": "FEEDBACK",
+      "intent": "Announce an indeterminate short loading operation.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "Spinner",
+      "platform": "BOTH",
+      "rendererStrategy": "NATIVE_RENDERER",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-feedback-surface"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-feedback-surface"
+      },
+      "webPresentation": "web-feedback-surface",
+      "nativePresentation": "native-feedback-surface"
+    },
+    "Progress": {
+      "classification": "CANONICAL_COMPONENT",
+      "interactionModel": "feedback",
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "offline",
+        "pendingSync",
+        "syncing",
+        "syncFailed",
+        "retryAvailable"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "status-announcement",
+        "non-color-status",
+        "focus-or-press-feedback"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "elevation",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "state",
+        "enter",
+        "exit",
+        "reveal"
+      ],
+      "dismissModel": "not-applicable",
+      "focusModel": "not-applicable",
+      "persistence": "not-applicable",
+      "urgency": "polite",
+      "nativeStrategy": "NATIVE_RENDERER",
+      "useWhen": [
+        "a product needs semantic status, recovery, progress, or event feedback"
+      ],
+      "avoidWhen": [
+        "the message would become business truth, routing, or a data source"
+      ],
+      "canonicalComponent": "Progress",
+      "displayName": "Progress",
+      "family": "FEEDBACK",
+      "intent": "Present determinate or indeterminate progress without inventing a percentage.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "Progress",
+      "platform": "BOTH",
+      "rendererStrategy": "NATIVE_RENDERER",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-feedback-surface"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-feedback-surface"
+      },
+      "webPresentation": "web-feedback-surface",
+      "nativePresentation": "native-feedback-surface"
+    },
+    "CircularProgress": {
+      "classification": "CANONICAL_COMPONENT",
+      "interactionModel": "feedback",
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "offline",
+        "pendingSync",
+        "syncing",
+        "syncFailed",
+        "retryAvailable"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "status-announcement",
+        "non-color-status",
+        "focus-or-press-feedback"
+      ],
+      "tokenRoles": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "elevation",
+        "focus",
+        "motion",
+        "touch-target",
+        "measure"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "minimum-useful-surface",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "state",
+        "enter",
+        "exit",
+        "reveal"
+      ],
+      "dismissModel": "not-applicable",
+      "focusModel": "not-applicable",
+      "persistence": "not-applicable",
+      "urgency": "polite",
+      "nativeStrategy": "NATIVE_RENDERER",
+      "useWhen": [
+        "a product needs semantic status, recovery, progress, or event feedback"
+      ],
+      "avoidWhen": [
+        "the message would become business truth, routing, or a data source"
+      ],
+      "canonicalComponent": "CircularProgress",
+      "displayName": "Circular Progress",
+      "family": "FEEDBACK",
+      "intent": "Present compact determinate progress when a circular signal fits the surface.",
+      "status": "implemented",
+      "compatibility": [
+        "Consumes the existing @ten4seven/ui export and catalog entry.",
+        "Consumers retain ownership of route, business, persistence, and event truth.",
+        "Web CSS and Native descriptors are projections of this semantic contract, not separate authorities."
+      ],
+      "canonicalId": "CircularProgress",
+      "platform": "BOTH",
+      "rendererStrategy": "NATIVE_RENDERER",
+      "web": {
+        "status": "implemented",
+        "presentation": "web-feedback-surface"
+      },
+      "native": {
+        "status": "planned",
+        "presentation": "native-feedback-surface"
+      },
+      "webPresentation": "web-feedback-surface",
+      "nativePresentation": "native-feedback-surface"
+    }
+  },
+  "gapDecisions": {
+    "Disclosure": {
+      "id": "Disclosure",
+      "classification": "COMPONENT_VARIANT",
+      "status": "variant",
+      "canonicalComponent": "Collapsible",
+      "reason": "The generic open/closed disclosure intent is already represented by Collapsible.",
+      "aiGuidance": "Use Collapsible for one region; use Accordion for a collection. Do not create a Disclosure wrapper per product."
+    },
+    "TreeDisclosure": {
+      "id": "TreeDisclosure",
+      "classification": "COMPONENT_VARIANT",
+      "status": "variant",
+      "canonicalComponent": "TreeView",
+      "reason": "Hierarchy expansion owns level, position, and selection semantics that Accordion does not.",
+      "aiGuidance": "Use TreeView for hierarchy disclosure; do not flatten tree expansion into Accordion."
+    },
+    "Menubar": {
+      "id": "Menubar",
+      "classification": "DEFERRED",
+      "status": "deferred",
+      "platform": "WEB",
+      "reason": "The current canonical menu engine supports bounded dropdown and context actions; persistent hierarchical desktop menubar behavior needs a separate bounded proof.",
+      "aiGuidance": "Use NavigationMenu or DropdownMenu for current coverage. Do not invent a local menubar."
+    },
+    "Menu": {
+      "id": "Menu",
+      "classification": "COMPONENT_VARIANT",
+      "status": "variant",
+      "canonicalComponent": "DropdownMenu",
+      "reason": "Menu is the shared action-item contract underneath DropdownMenu and ContextMenu, not a third visual primitive.",
+      "aiGuidance": "Use DropdownMenu for a trigger-attached action menu and ContextMenu for contextual invocation."
+    },
+    "Sheet": {
+      "id": "Sheet",
+      "classification": "COMPONENT_VARIANT",
+      "status": "variant",
+      "canonicalComponent": "Drawer",
+      "reason": "Drawer already owns edge-attached surface mechanics; bottom placement is a semantic presentation variant sharing the same overlay engine.",
+      "aiGuidance": "Use Drawer with the appropriate side/presentation. Do not create a second Sheet runtime."
+    },
+    "BottomSheet": {
+      "id": "BottomSheet",
+      "classification": "COMPONENT_VARIANT",
+      "status": "variant",
+      "canonicalComponent": "Drawer",
+      "reason": "Native bottom-sheet presentation is a renderer strategy for Drawer, not a separate Web primitive.",
+      "aiGuidance": "Use Drawer intent with a Native bottom-sheet renderer when the platform calls for it."
+    },
+    "HoverCard": {
+      "id": "HoverCard",
+      "classification": "DEFERRED",
+      "status": "deferred",
+      "platform": "WEB",
+      "reason": "Rich preview content needs a bounded content contract and a deliberate press alternative before implementation.",
+      "aiGuidance": "Use Popover for interactive anchored content. Do not fake hover-only behavior on Native."
+    },
+    "Snackbar": {
+      "id": "Snackbar",
+      "classification": "ALIAS",
+      "status": "variant",
+      "canonicalComponent": "Toast",
+      "reason": "Snackbar is the platform presentation name for the same transient feedback intent.",
+      "aiGuidance": "Use Toast semantics; Native may render the same event as a platform Snackbar."
+    },
+    "InlineNotice": {
+      "id": "InlineNotice",
+      "classification": "COMPONENT_VARIANT",
+      "status": "variant",
+      "canonicalComponent": "Alert",
+      "reason": "The existing Alert owns persistent in-context feedback; emphasis and tone are presentation choices.",
+      "aiGuidance": "Use Alert for local notices instead of creating a product-specific notice primitive."
+    },
+    "LoadingState": {
+      "id": "LoadingState",
+      "classification": "COMPONENT_VARIANT",
+      "status": "variant",
+      "canonicalComponent": "StateView",
+      "reason": "Loading grammar is already covered by Spinner, Skeleton, and the module-state plane.",
+      "aiGuidance": "Choose Spinner or Skeleton for local work and ModuleState for module lifecycle; do not create LoadingState by route."
+    },
+    "ErrorState": {
+      "id": "ErrorState",
+      "classification": "COMPONENT_VARIANT",
+      "status": "variant",
+      "canonicalComponent": "StateView",
+      "reason": "StateView already covers recoverable error presentation with consumer-owned retry action.",
+      "aiGuidance": "Use StateView for a screen state or Alert for local recovery; keep error truth with the consumer."
+    },
+    "StatusIndicator": {
+      "id": "StatusIndicator",
+      "classification": "COMPONENT_VARIANT",
+      "status": "variant",
+      "canonicalComponent": "StatusChip",
+      "reason": "StatusChip already provides compact non-color status presentation.",
+      "aiGuidance": "Use StatusChip for compact state and a feedback component when a message or recovery action is needed."
+    },
+    "InfiniteScroll": {
+      "id": "InfiniteScroll",
+      "classification": "DEFERRED",
+      "status": "deferred",
+      "reason": "Incremental collection loading is a U07 collection concern and must not be mixed into Pagination.",
+      "aiGuidance": "Use Pagination for bounded pages; defer infinite loading to the collection contract."
+    }
+  },
+  "compatibility": [
+    "Modal remains exported as a compatibility wrapper for Dialog.",
+    "ActionMenu remains the existing alias of DropdownMenu.",
+    "Snackbar, InlineNotice, LoadingState, ErrorState, and StatusIndicator remain semantic variants rather than parallel primitives.",
+    "ActivityFeed remains a data/audit feed; NotificationCenter owns persisted inspectable event presentation.",
+    "Native renderers may choose drawer, sheet, snackbar, or screen presentation while preserving shared intent and state vocabulary."
+  ]
+}

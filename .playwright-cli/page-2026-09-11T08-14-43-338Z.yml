@@ -1,0 +1,571 @@
+- generic [ref=f15e3]:
+  - main [ref=f15e6]:
+    - generic [ref=f15e7]:
+      - generic [ref=f15e8]:
+        - button "Open design system navigation" [expanded] [ref=f15e9] [cursor=pointer]
+        - generic [ref=f15e12]:
+          - generic [ref=f15e13]: ten4seven UI
+          - strong [ref=f15e17]: Component Lab
+      - generic [ref=f15e18]:
+        - button "Search ten4seven catalog" [ref=f15e19] [cursor=pointer]
+        - button "Open settings" [ref=f15e26] [cursor=pointer]
+        - generic [ref=f15e31]: T7
+    - dialog [ref=f15e952]:
+      - complementary [ref=f15e953]:
+        - generic [ref=f15e954]:
+          - heading "Design system navigation" [level=2] [ref=f15e956]
+          - button "Close drawer" [active] [ref=f15e957] [cursor=pointer]
+        - generic [ref=f15e962]:
+          - group "Studio" [ref=f15e963]:
+            - button "Theme Studio" [ref=f15e965] [cursor=pointer]
+            - button "Component Lab" [ref=f15e978] [cursor=pointer]
+          - group "Library" [ref=f15e986]:
+            - button "Tokens" [ref=f15e988] [cursor=pointer]
+            - button "Components" [ref=f15e997] [cursor=pointer]
+            - button "Blocks" [ref=f15e1005] [cursor=pointer]
+            - button "Icons" [ref=f15e1013] [cursor=pointer]
+            - button "Recipes" [ref=f15e1020] [cursor=pointer]
+          - group "References" [ref=f15e1028]:
+            - button "Operations Tracker" [ref=f15e1030] [cursor=pointer]
+            - button "Operational Patterns" [ref=f15e1038] [cursor=pointer]
+            - button "Publishing Store" [ref=f15e1044] [cursor=pointer]
+            - button "Public Showcase" [ref=f15e1052] [cursor=pointer]
+          - group "Adoption Proofs" [ref=f15e1058]:
+            - button "Farm Synthetic" [ref=f15e1060] [cursor=pointer]
+            - button "Auth · Neutral" [ref=f15e1066] [cursor=pointer]
+            - button "Auth · AAPM Academy" [ref=f15e1073] [cursor=pointer]:
+              - generic [ref=f15e1080]: Auth · Academy
+            - generic [ref=f15e1081]: "Canonical identity: AAPM Academy."
+    - generic [ref=f15e33]:
+      - generic [ref=f15e34]:
+        - generic [ref=f15e42]:
+          - heading "Component Lab" [level=1] [ref=f15e43]
+          - paragraph [ref=f15e44]: Explore canonical components in a calm, interactive workspace.
+        - generic [ref=f15e45]: QA workbench
+      - region "Component interaction checks" [ref=f15e46]:
+        - generic [ref=f15e47]:
+          - generic [ref=f15e48]:
+            - generic [ref=f15e50]:
+              - heading "Form anatomy and date entry" [level=2] [ref=f15e51]
+              - paragraph [ref=f15e52]: Labels, helper text, error space, selection, and numeric controls share token-led density.
+            - generic [ref=f15e53]:
+              - generic [ref=f15e54]:
+                - generic [ref=f15e55]:
+                  - generic [ref=f15e56]: Owner
+                  - combobox "Owner" [ref=f15e58]: Maya Chen
+                - generic [ref=f15e59]:
+                  - generic [ref=f15e60]: Workstreams
+                  - button "Design" [ref=f15e61] [cursor=pointer]
+                - generic [ref=f15e65]:
+                  - generic [ref=f15e66]: Review date
+                  - generic [ref=f15e67]:
+                    - combobox "Review date Open calendar" [ref=f15e68]
+                    - button "Open calendar" [ref=f15e69] [cursor=pointer]
+                - generic [ref=f15e76]:
+                  - generic [ref=f15e77]: Review time
+                  - generic [ref=f15e78]:
+                    - combobox "Review time Open time options" [ref=f15e79]: 09:30 AM
+                    - button "Open time options" [ref=f15e80] [cursor=pointer]
+                - generic [ref=f15e83]:
+                  - generic [ref=f15e84]: Planning range
+                  - button "Select dates" [ref=f15e86] [cursor=pointer]
+                - generic [ref=f15e94] [cursor=pointer]:
+                  - checkbox "Notify collaborators Controls whether collaborators receive updates." [checked] [ref=f15e95]
+                  - generic [ref=f15e98]:
+                    - generic [ref=f15e99]: Notify collaborators
+                    - generic [ref=f15e100]: Controls whether collaborators receive updates.
+              - generic [ref=f15e101]:
+                - generic [ref=f15e102]: Notes
+                - textbox "Notes" [ref=f15e103]:
+                  - /placeholder: A short component QA note…
+              - generic [ref=f15e104]:
+                - generic [ref=f15e105]:
+                  - generic [ref=f15e106]: Confidence range
+                  - generic [ref=f15e107]: 22–84
+                - generic [ref=f15e108]:
+                  - slider "Confidence range minimum" [ref=f15e109] [cursor=pointer]: "22"
+                  - slider "Confidence range maximum" [ref=f15e110] [cursor=pointer]: "84"
+              - group "Verification sample" [ref=f15e111]:
+                - textbox "Verification sample, digit 1 of 6" [ref=f15e112]
+                - textbox "Verification sample, digit 2 of 6" [ref=f15e113]
+                - textbox "Verification sample, digit 3 of 6" [ref=f15e114]
+                - textbox "Verification sample, digit 4 of 6" [ref=f15e115]
+                - textbox "Verification sample, digit 5 of 6" [ref=f15e116]
+                - textbox "Verification sample, digit 6 of 6" [ref=f15e117]
+          - generic [ref=f15e118]:
+            - generic [ref=f15e120]:
+              - heading "Feedback, actions, and overlays" [level=3] [ref=f15e121]
+              - paragraph [ref=f15e122]: Persistent feedback, prioritized actions, and floating surfaces share one interaction language.
+            - generic [ref=f15e124]:
+              - region "Feedback" [ref=f15e125]:
+                - generic [ref=f15e126]:
+                  - generic [ref=f15e127]: Feedback
+                  - generic [ref=f15e128]: In-context status and recovery
+                - status [ref=f15e129]:
+                  - generic [ref=f15e135]:
+                    - strong [ref=f15e136]: Review needed
+                    - paragraph [ref=f15e137]: The review queue needs one decision before publishing.
+                  - button "Review issue" [ref=f15e139] [cursor=pointer]
+                  - button "Dismiss alert" [ref=f15e141] [cursor=pointer]
+                - generic "Applied filters" [ref=f15e144]:
+                  - generic [ref=f15e145]:
+                    - generic [ref=f15e146]: "Status: active"
+                    - 'button "Remove filter Status: active" [ref=f15e147] [cursor=pointer]'
+                  - generic [ref=f15e150]:
+                    - generic [ref=f15e151]: "Team: Design"
+                    - 'button "Remove filter Team: Design" [ref=f15e152] [cursor=pointer]'
+                  - button "Clear filters" [ref=f15e155] [cursor=pointer]
+                - generic [ref=f15e157]:
+                  - generic [ref=f15e161]:
+                    - heading "Ready for decision" [level=2] [ref=f15e162]
+                    - paragraph [ref=f15e163]: A decision checkpoint keeps context, evidence, and the next action together.
+                    - generic [ref=f15e164]: "Last action: No action selected"
+                  - button "Approve request" [ref=f15e167] [cursor=pointer]
+              - region "Actions" [ref=f15e169]:
+                - generic [ref=f15e170]:
+                  - generic [ref=f15e171]: Actions
+                  - generic [ref=f15e172]: One primary path, then supporting choices
+                - toolbar "Primary sample actions" [ref=f15e173]:
+                  - button "Save changes" [ref=f15e174] [cursor=pointer]
+                  - button "Preview" [ref=f15e178] [cursor=pointer]
+                  - button "Sample actions" [ref=f15e181] [cursor=pointer]
+                - generic [ref=f15e187]:
+                  - group "Record actions" [ref=f15e188]:
+                    - button "Save draft" [ref=f15e189] [cursor=pointer]
+                    - button "Cancel" [ref=f15e191] [cursor=pointer]
+                  - group "Review mode" [ref=f15e193]:
+                    - button "Review" [pressed] [ref=f15e194] [cursor=pointer]
+                    - button "Approved" [ref=f15e200] [cursor=pointer]
+                - generic [ref=f15e203]:
+                  - generic [ref=f15e204]: No action selected
+                  - generic [ref=f15e205]:
+                    - button "Pause" [ref=f15e206] [cursor=pointer]
+                    - button "Continue" [ref=f15e208] [cursor=pointer]
+              - region "Overlays" [ref=f15e210]:
+                - generic [ref=f15e211]:
+                  - generic [ref=f15e212]: Overlays
+                  - generic [ref=f15e213]: Anchored help and contextual actions
+                - generic [ref=f15e214]:
+                  - button "Open popover" [ref=f15e216] [cursor=pointer]
+                  - button "More information" [ref=f15e221] [cursor=pointer]
+                  - button "Menu" [ref=f15e225] [cursor=pointer]
+                  - button "Context menu" [ref=f15e230] [cursor=pointer]
+                - generic [ref=f15e237]:
+                  - button "Open modal" [ref=f15e238] [cursor=pointer]
+                  - button "Confirm action" [ref=f15e240] [cursor=pointer]
+                  - button "Show toast" [ref=f15e242] [cursor=pointer]
+                  - button "Open command menu" [ref=f15e244] [cursor=pointer]
+        - generic [ref=f15e252]:
+          - generic [ref=f15e253]:
+            - generic [ref=f15e254]:
+              - generic [ref=f15e255]:
+                - heading "Data, progress, and media signals" [level=3] [ref=f15e256]
+                - paragraph [ref=f15e257]: Keep the state a person needs to act on visible without making every signal compete for attention.
+              - generic [ref=f15e258]: Client-side proof
+            - generic [ref=f15e260]:
+              - generic [ref=f15e261]:
+                - generic [ref=f15e262]:
+                  - region "Review coverage" [ref=f15e263]:
+                    - generic [ref=f15e266]:
+                      - term [ref=f15e267]:
+                        - generic [ref=f15e268]: Review coverage
+                      - definition [ref=f15e277]:
+                        - strong [ref=f15e279]: 87%
+                        - generic [ref=f15e281]:
+                          - generic [ref=f15e282]: "Increased:"
+                          - generic [ref=f15e287]: 8.4%
+                          - generic [ref=f15e288]: vs prior
+                      - definition [ref=f15e289]: Compared with last period
+                  - region "Delivery trend" [ref=f15e290]:
+                    - generic [ref=f15e293]:
+                      - term [ref=f15e294]:
+                        - generic [ref=f15e295]: Delivery trend
+                      - definition [ref=f15e304]:
+                        - strong [ref=f15e306]: "12"
+                        - generic [ref=f15e308]:
+                          - generic [ref=f15e309]: "Increased:"
+                          - generic [ref=f15e314]: "+3"
+                          - generic [ref=f15e315]: vs 7d
+                      - definition [ref=f15e316]: A compact embedded signal
+                      - definition [ref=f15e317]:
+                        - img "Sample delivery trend" [ref=f15e318]
+                - generic [ref=f15e321]:
+                  - generic [ref=f15e322]:
+                    - generic [ref=f15e323]:
+                      - generic [ref=f15e324]: Review completion
+                      - generic [ref=f15e325]: 72%
+                    - progressbar "Review completion" [ref=f15e326]
+                  - generic [ref=f15e328]: Four of five checks are ready for the next action.
+              - generic [ref=f15e329]:
+                - generic [ref=f15e330]:
+                  - generic [ref=f15e331]: Ownership
+                  - generic "3 people" [ref=f15e332]:
+                    - img "Maya Chen" [ref=f15e333]:
+                      - generic [aria-hidden] [ref=f15e334]: MC
+                    - img "Jordan Park" [ref=f15e335]:
+                      - generic [aria-hidden] [ref=f15e336]: JP
+                    - img "Lin Wu" [ref=f15e337]:
+                      - generic [aria-hidden] [ref=f15e338]: LW
+                  - generic "4.6 out of 5" [ref=f15e339]:
+                    - generic [ref=f15e344]: "4.6"
+                    - generic [ref=f15e345]: (48)
+                - generic [ref=f15e346]:
+                  - generic [ref=f15e347]: Loading state
+                  - status "Loading sample" [ref=f15e349]
+              - generic [ref=f15e353]:
+                - generic [ref=f15e354]:
+                  - term [ref=f15e355]: State
+                  - definition [ref=f15e356]: Ready for review
+                - generic [ref=f15e357]:
+                  - term [ref=f15e358]: Updated
+                  - definition [ref=f15e359]: Today
+          - generic [ref=f15e360]:
+            - generic [ref=f15e362]:
+              - heading "Native file selection" [level=3] [ref=f15e363]
+              - paragraph [ref=f15e364]: Media handoff stays client-side and validates before it enters a list.
+            - generic [ref=f15e366]:
+              - button "Upload files" [ref=f15e367]
+              - button "Upload files PDF or image, maximum 5 MB each." [ref=f15e368] [cursor=pointer]:
+                - strong [ref=f15e373]: Upload files
+                - generic [ref=f15e374]: PDF or image, maximum 5 MB each.
+          - generic [ref=f15e375]:
+            - heading "Commerce contracts" [level=3] [ref=f15e377]
+            - generic [ref=f15e378]:
+              - generic [ref=f15e379]:
+                - generic [ref=f15e380]:
+                  - generic [ref=f15e381]: Cart interaction
+                  - generic [ref=f15e382]: Shared cart primitives keep quantity, removal, summary, and checkout actions in one recipe-owned flow.
+                - button "1 item in cart" [ref=f15e383] [cursor=pointer]:
+                  - generic [ref=f15e391]:
+                    - text: Cart
+                    - generic [aria-hidden] [ref=f15e392]: "1"
+              - region "Cart" [ref=f15e393]:
+                - generic [ref=f15e395]:
+                  - heading "Cart" [level=2] [ref=f15e396]
+                  - text: 1 item
+                - article [ref=f15e398]:
+                  - generic [ref=f15e399]:
+                    - heading "Manajemen Strategis" [level=3] [ref=f15e400]
+                    - generic [ref=f15e401]: EPUB · PDF · Editorial sample
+                    - strong [ref=f15e404]: Rp 95.000
+                    - group "Quantity for Manajemen Strategis" [ref=f15e405]:
+                      - button "Decrease Quantity for Manajemen Strategis" [disabled] [ref=f15e406]:
+                        - generic [ref=f15e407]: −
+                      - status [ref=f15e408]: "1"
+                      - button "Increase Quantity for Manajemen Strategis" [ref=f15e409] [cursor=pointer]:
+                        - generic [ref=f15e410]: +
+                  - button "Remove Manajemen Strategis from cart" [ref=f15e411] [cursor=pointer]
+                - generic [ref=f15e416]:
+                  - generic [ref=f15e417]:
+                    - generic [ref=f15e418]:
+                      - term [ref=f15e419]: Subtotal
+                      - definition [ref=f15e420]:
+                        - strong [ref=f15e422]: Rp 95.000
+                    - generic [ref=f15e423]:
+                      - term [ref=f15e424]: Total
+                      - definition [ref=f15e425]:
+                        - strong [ref=f15e427]: Rp 95.000
+                  - button "Continue to checkout" [ref=f15e429] [cursor=pointer]
+              - generic [ref=f15e431]: Cart actions report feedback only after an interaction.
+        - region "Overlay stress fixture" [ref=f15e432]:
+          - generic [ref=f15e434]:
+            - generic [ref=f15e435]: Interaction integrity
+            - heading "Overlay stress fixture" [level=2] [ref=f15e436]
+            - paragraph [ref=f15e437]: The same floating contracts are exercised inside cards, bounded scroll regions, drawers, dialogs, and viewport edges.
+          - generic [ref=f15e438]:
+            - generic [ref=f15e439]:
+              - heading "Card → Select" [level=3] [ref=f15e441]
+              - generic [ref=f15e443]:
+                - generic [ref=f15e444]: Fulfillment state
+                - generic [ref=f15e445]:
+                  - combobox [aria-hidden] [ref=f15e446]
+                  - button "Fulfillment state" [ref=f15e447] [cursor=pointer]:
+                    - generic [ref=f15e448]: Ready to ship
+            - generic [ref=f15e451]:
+              - heading "Scroll panel → Combobox" [level=3] [ref=f15e453]
+              - generic "Scrollable combobox panel" [ref=f15e455]:
+                - generic [ref=f15e456]: The popup must escape this bounded scroll owner while the panel remains keyboard-scrollable.
+                - generic [ref=f15e457]:
+                  - generic [ref=f15e458]: Owner
+                  - combobox "Owner" [ref=f15e460]: Maya Chen
+                - generic [ref=f15e461]:
+                  - generic [ref=f15e462]: Scroll ownership remains explicit.
+                  - generic [ref=f15e463]: Content continues below the field.
+                  - generic [ref=f15e464]: Focus stays inside the combobox.
+            - generic [ref=f15e465]:
+              - heading "Drawer → DatePicker" [level=3] [ref=f15e467]
+              - generic [ref=f15e468]:
+                - generic [ref=f15e469]: A modal drawer owns its scroll; the calendar remains viewport-safe.
+                - button "Open date drawer" [ref=f15e470] [cursor=pointer]
+            - generic [ref=f15e476]:
+              - generic [ref=f15e478]:
+                - heading "Edge anchors" [level=3] [ref=f15e479]
+                - paragraph [ref=f15e480]: Floating actions stay attached to their trigger at the edge of a bounded surface.
+              - generic [ref=f15e481]:
+                - generic [ref=f15e482]:
+                  - generic [ref=f15e483]:
+                    - generic [ref=f15e484]:
+                      - generic [ref=f15e485]: Anchor playground
+                      - generic [ref=f15e486]: Try a trigger to inspect its viewport-safe layer.
+                    - generic [ref=f15e487]: Viewport safe
+                  - generic [ref=f15e491]:
+                    - generic [ref=f15e492]:
+                      - generic [ref=f15e493]: Inline actions
+                      - generic [ref=f15e494]: Portal layers detach cleanly from this bounded surface.
+                    - generic "Floating layer examples" [ref=f15e495]:
+                      - button "Popover" [ref=f15e497] [cursor=pointer]
+                      - button "Menu" [ref=f15e500] [cursor=pointer]
+                      - button "Tooltip" [ref=f15e503] [cursor=pointer]
+                  - generic [ref=f15e505]:
+                    - generic [ref=f15e506]:
+                      - generic [ref=f15e507]: Corner action
+                      - generic [ref=f15e508]: The menu remains anchored to its trigger.
+                    - button "Edge actions" [ref=f15e511] [cursor=pointer]
+                - generic "Overlay contracts" [ref=f15e517]:
+                  - generic [ref=f15e518]: Flips
+                  - generic [ref=f15e519]: Aligns
+                  - generic [ref=f15e520]: Supplements
+          - button "Open nested modal fixture" [ref=f15e521] [cursor=pointer]
+        - region "Canonical surface expression" [ref=f15e523]:
+          - generic [ref=f15e525]:
+            - generic [ref=f15e526]: Surface contract
+            - heading "Plain, soft, solid, and inverse emphasis" [level=2] [ref=f15e527]
+            - paragraph [ref=f15e528]: The page remains paper-neutral. Colour scales from soft context to a solid decision signal only on the bounded surface that needs it.
+          - generic [ref=f15e529]:
+            - generic [ref=f15e530]:
+              - generic [ref=f15e532]:
+                - heading "Plain baseline" [level=3] [ref=f15e533]
+                - paragraph [ref=f15e534]: Default reading and comparison stay quiet on paper.
+              - generic [ref=f15e535]: Use for the majority of work. Separation comes from neutral border, elevation, and type hierarchy—not a tinted canvas.
+            - region "Soft data accent" [ref=f15e536]:
+              - generic [ref=f15e539]:
+                - term [ref=f15e540]:
+                  - generic [ref=f15e541]: Soft data accent
+                - definition [ref=f15e550]:
+                  - strong [ref=f15e552]: "3"
+                - definition [ref=f15e553]: A non-status customer signal
+            - region "Solid KPI signal" [ref=f15e554]:
+              - generic [ref=f15e557]:
+                - term [ref=f15e558]:
+                  - generic [ref=f15e559]: Solid KPI signal
+                - definition [ref=f15e568]:
+                  - strong [ref=f15e570]: 87%
+                  - generic "Increased 5.2 percent compared with the prior period" [ref=f15e572]:
+                    - generic [ref=f15e577]: +5.2%
+                    - generic [ref=f15e578]: vs prior
+                - definition [ref=f15e579]: Rolling 30-day review window
+                - definition [ref=f15e580]:
+                  - img "Review coverage over the last eight periods" [ref=f15e581]
+            - generic [ref=f15e584]:
+              - generic [ref=f15e586]:
+                - heading "Inverse focal surface" [level=3] [ref=f15e587]
+                - paragraph [ref=f15e588]: Reserve this treatment for one deliberate decision or finish.
+              - generic [ref=f15e589]:
+                - generic [ref=f15e590]: Inverse is a shared surface treatment, not a Button-only color shortcut.
+                - button "Review decision" [ref=f15e591] [cursor=pointer]
+          - region "Chart-linked surface colorways" [ref=f15e593]:
+            - article "Coverage 91%" [ref=f15e594]:
+              - generic [ref=f15e596]:
+                - term [ref=f15e597]:
+                  - generic [ref=f15e598]: Coverage
+                - definition [ref=f15e605]:
+                  - strong [ref=f15e607]: 91%
+                  - generic "Coverage increased 6.2 percent compared with the prior period" [ref=f15e609]:
+                    - generic [ref=f15e614]: +6.2%
+                    - generic [ref=f15e615]: vs prior
+                - definition [ref=f15e616]: Rolling 30 days
+                - definition [ref=f15e617]:
+                  - img "Coverage trend across eight review periods" [ref=f15e618]
+            - article "Throughput 72%" [ref=f15e621]:
+              - generic [ref=f15e623]:
+                - term [ref=f15e624]:
+                  - generic [ref=f15e625]: Throughput
+                - definition [ref=f15e634]:
+                  - strong [ref=f15e636]: 72%
+                - definition [ref=f15e637]: Weekly delivery target
+                - definition [ref=f15e638]:
+                  - generic [ref=f15e639]:
+                    - generic [ref=f15e640]:
+                      - generic [ref=f15e641]: Target progress
+                      - generic [ref=f15e642]: 72%
+                    - progressbar "Target progress" [ref=f15e643]
+            - article "Attention queue 14" [ref=f15e645]:
+              - generic [ref=f15e647]:
+                - term [ref=f15e648]:
+                  - generic [ref=f15e649]: Attention queue
+                - definition [ref=f15e656]:
+                  - strong [ref=f15e658]: "14"
+                  - generic "Attention queue decreased 18 percent, which is positive" [ref=f15e660]:
+                    - generic [ref=f15e665]: "-18%"
+                    - generic [ref=f15e666]: vs 7d
+                - definition [ref=f15e667]: Fewer unresolved signals
+                - definition [ref=f15e668]:
+                  - img "Attention queue across eight daily periods" [ref=f15e669]
+            - article "Cycle time 1.8d" [ref=f15e672]:
+              - generic [ref=f15e674]:
+                - term [ref=f15e675]:
+                  - generic [ref=f15e676]: Cycle time
+                - definition [ref=f15e685]:
+                  - strong [ref=f15e687]: 1.8d
+                  - generic "Cycle time decreased 0.4 days, which is positive" [ref=f15e689]:
+                    - generic [ref=f15e694]: "-0.4d"
+                    - generic [ref=f15e695]: vs 30d
+                - definition [ref=f15e696]: Median decision latency
+                - definition [ref=f15e697]:
+                  - img "Cycle time across eight delivery periods" [ref=f15e698]
+            - article "Conversion 42%" [ref=f15e701]:
+              - generic [ref=f15e703]:
+                - term [ref=f15e704]:
+                  - generic [ref=f15e705]: Conversion
+                - definition [ref=f15e713]:
+                  - strong [ref=f15e715]: 42%
+                  - generic "Conversion increased 3.1 percent compared with the prior period" [ref=f15e717]:
+                    - generic [ref=f15e722]: +3.1%
+                    - generic [ref=f15e723]: vs 30d
+                - definition [ref=f15e724]: Qualified next actions
+                - definition [ref=f15e725]: Trend only · 184 qualified leads
+        - generic [ref=f15e727]:
+          - generic [ref=f15e728]:
+            - generic [ref=f15e729]:
+              - heading "Data signals in context" [level=3] [ref=f15e730]
+              - paragraph [ref=f15e731]: Trends, comparisons, and state mix use one responsive SVG contract with keyboard-safe points.
+            - generic [ref=f15e732]: SVG · interactive
+          - generic [ref=f15e734]:
+            - generic [ref=f15e735]:
+              - generic [ref=f15e736]: Coverage trend
+              - paragraph [ref=f15e737]: Coverage and quality across the review week.
+              - img "Line chart" [ref=f15e739]:
+                - generic [ref=f15e740]: 0%
+                - generic [ref=f15e742]: 20%
+                - generic [ref=f15e744]: 40%
+                - generic [ref=f15e746]: 60%
+                - generic [ref=f15e748]: 80%
+                - generic [ref=f15e750]:
+                  - 'generic "Coverage, Mon: 42%" [ref=f15e752] [cursor=pointer]'
+                  - 'generic "Coverage, Tue: 56%" [ref=f15e753] [cursor=pointer]'
+                  - 'generic "Coverage, Wed: 51%" [ref=f15e754] [cursor=pointer]'
+                  - 'generic "Coverage, Thu: 68%" [ref=f15e755] [cursor=pointer]'
+                  - 'generic "Coverage, Fri: 74%" [ref=f15e756] [cursor=pointer]'
+                - generic [ref=f15e757]:
+                  - 'generic "Quality, Mon: 36%" [ref=f15e759] [cursor=pointer]'
+                  - 'generic "Quality, Tue: 44%" [ref=f15e760] [cursor=pointer]'
+                  - 'generic "Quality, Wed: 62%" [ref=f15e761] [cursor=pointer]'
+                  - 'generic "Quality, Thu: 58%" [ref=f15e762] [cursor=pointer]'
+                  - 'generic "Quality, Fri: 70%" [ref=f15e763] [cursor=pointer]'
+                - generic [ref=f15e764]: Mon
+                - generic [ref=f15e765]: Tue
+                - generic [ref=f15e766]: Wed
+                - generic [ref=f15e767]: Thu
+                - generic [ref=f15e768]: Fri
+              - list [ref=f15e769]:
+                - listitem [ref=f15e770]:
+                  - generic [ref=f15e772]: Coverage
+                - listitem [ref=f15e773]:
+                  - generic [ref=f15e775]: Quality
+            - generic [ref=f15e776]:
+              - generic [ref=f15e777]: Segment score
+              - paragraph [ref=f15e778]: Relative score by segment.
+              - img "Bar chart" [ref=f15e780]:
+                - generic [ref=f15e781]: "0"
+                - generic [ref=f15e783]: "10"
+                - generic [ref=f15e785]: "20"
+                - generic [ref=f15e787]: "30"
+                - generic [ref=f15e789]: "40"
+                - 'generic "A: 18" [ref=f15e791]':
+                  - 'img "A: 18" [ref=f15e792]'
+                  - generic [ref=f15e793]: A
+                - 'generic "B: 31" [ref=f15e794]':
+                  - 'img "B: 31" [ref=f15e795]'
+                  - generic [ref=f15e796]: B
+                - 'generic "C: 24" [ref=f15e797]':
+                  - 'img "C: 24" [ref=f15e798]'
+                  - generic [ref=f15e799]: C
+                - 'generic "D: 39" [ref=f15e800]':
+                  - 'img "D: 39" [ref=f15e801]'
+                  - generic [ref=f15e802]: D
+            - generic [ref=f15e803]:
+              - generic [ref=f15e804]: Review state mix
+              - paragraph [ref=f15e805]: Current review-state mix · 61 ready.
+              - generic [ref=f15e806]:
+                - generic [ref=f15e807]:
+                  - img "Donut chart" [ref=f15e808]:
+                    - 'generic "Ready: 61" [ref=f15e810]'
+                    - 'generic "Review: 25" [ref=f15e811]'
+                    - 'generic "Blocked: 14" [ref=f15e812]'
+                  - generic [ref=f15e813]:
+                    - strong [ref=f15e814]: "100"
+                    - generic [ref=f15e815]: records
+                - list [ref=f15e816]:
+                  - listitem [ref=f15e817]:
+                    - generic [ref=f15e819]: Ready
+                    - strong [ref=f15e820]: "61"
+                  - listitem [ref=f15e821]:
+                    - generic [ref=f15e823]: Review
+                    - strong [ref=f15e824]: "25"
+                  - listitem [ref=f15e825]:
+                    - generic [ref=f15e827]: Blocked
+                    - strong [ref=f15e828]: "14"
+        - generic [ref=f15e829]:
+          - generic [ref=f15e831]:
+            - heading "Navigation and disclosure" [level=3] [ref=f15e832]
+            - paragraph [ref=f15e833]: Switch peer views, reveal bounded context, and keep the next handoff visible without crowding one row.
+          - generic [ref=f15e834]:
+            - generic [ref=f15e835]:
+              - region [ref=f15e836]:
+                - generic [ref=f15e837]:
+                  - generic [ref=f15e838]:
+                    - heading "Peer views" [level=3] [ref=f15e839]
+                    - generic [ref=f15e840]: Live lens
+                  - generic [ref=f15e844]: Change the lens without leaving the surface.
+                - generic [ref=f15e845]:
+                  - tablist "Sections" [ref=f15e846]:
+                    - tab "Summary" [selected] [ref=f15e847] [cursor=pointer]
+                    - tab "Activity" [ref=f15e848] [cursor=pointer]
+                  - tabpanel "Summary" [ref=f15e849]:
+                    - generic [ref=f15e850]:
+                      - generic [ref=f15e851]: Current handoff
+                      - generic [ref=f15e852]: The selected panel stays connected to its tab and exposes one focused review state.
+                      - generic [ref=f15e853]: Ready for review
+              - region [ref=f15e857]:
+                - generic [ref=f15e858]:
+                  - generic [ref=f15e859]:
+                    - heading "Handoff path" [level=3] [ref=f15e860]
+                    - generic [ref=f15e861]: Three checkpoints keep the next action visible.
+                  - generic [ref=f15e862]: 2 of 3
+                - navigation "Progress" [ref=f15e866]:
+                  - list [ref=f15e867]:
+                    - listitem [ref=f15e868]:
+                      - generic [ref=f15e873]:
+                        - strong [ref=f15e874]: Mapped
+                        - generic [ref=f15e875]: 8 contracts linked
+                    - listitem [ref=f15e876]:
+                      - generic [ref=f15e877]:
+                        - generic [ref=f15e878]: "2"
+                        - generic [ref=f15e879]:
+                          - strong [ref=f15e880]: Review
+                          - generic [ref=f15e881]: Needs review
+                    - listitem [ref=f15e882]:
+                      - generic [ref=f15e883]:
+                        - generic [ref=f15e884]: "3"
+                        - generic [ref=f15e885]:
+                          - strong [ref=f15e886]: Ready
+                          - generic [ref=f15e887]: Ready to ship
+            - region [ref=f15e888]:
+              - generic [ref=f15e889]:
+                - heading "Bounded disclosure" [level=3] [ref=f15e890]
+                - generic [ref=f15e891]: Keep detail close to the selected view.
+              - generic [ref=f15e892]:
+                - generic [ref=f15e893]:
+                  - heading [level=3] [ref=f15e894]:
+                    - button "What belongs in this panel?" [expanded] [ref=f15e895] [cursor=pointer]
+                  - generic [ref=f15e899]: Use an accordion for short, related context that belongs to this surface.
+                - heading [level=3] [ref=f15e901]:
+                  - button "When should this move to a route?" [ref=f15e902] [cursor=pointer]
+    - navigation "Mobile shortcuts" [ref=f15e907]:
+      - generic [ref=f15e908]:
+        - button "Studio" [ref=f15e909] [cursor=pointer]
+        - button "Tokens" [ref=f15e922] [cursor=pointer]
+        - button "Components" [ref=f15e931] [cursor=pointer]
+        - button "Menu" [expanded] [ref=f15e939] [cursor=pointer]
+  - button "Open ten4seven reference QA controls" [ref=f15e944] [cursor=pointer]:
+    - generic [ref=f15e951]: QA

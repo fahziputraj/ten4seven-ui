@@ -3,6 +3,7 @@ import { useState } from "react";
 import { T7Icon, type IconName } from "@ten4seven/icons";
 import { Badge, Button, Modal, Select, Typography } from "@ten4seven/ui";
 
+import type { PlaygroundBuildIdentity } from "./build-identity";
 import {
   playgroundNavigationGroups,
   playgroundRoutePaths,
@@ -35,6 +36,7 @@ const routeGroups = playgroundNavigationGroups.map(({ label, routes }) => ({
 
 export interface ReferenceHarnessProps {
   activeRoute: PlaygroundRoute;
+  buildIdentity: PlaygroundBuildIdentity;
   onNavigate: (route: PlaygroundRoute) => void;
   onOpenChange?: (open: boolean) => void;
   operationsViewState: ReferenceViewState;
@@ -44,6 +46,7 @@ export interface ReferenceHarnessProps {
 
 export function ReferenceHarness({
   activeRoute,
+  buildIdentity,
   onNavigate,
   onOpenChange,
   onOperationsViewStateChange,
@@ -92,6 +95,43 @@ export function ReferenceHarness({
               Active route: {playgroundRoutePaths[activeRoute]}
             </Typography>
           </div>
+
+          <section
+            aria-labelledby="reference-build-identity-title"
+            className="reference-harness-build-identity"
+            data-testid="build-identity"
+          >
+            <div className="reference-harness-build-identity-heading">
+              <Typography
+                as="h2"
+                id="reference-build-identity-title"
+                typeRole="overline"
+              >
+                Runtime build identity
+              </Typography>
+              <Badge tone={buildIdentity.dirty ? "warning" : "success"}>
+                {buildIdentity.dirty ? "Working tree" : "Clean build"}
+              </Badge>
+            </div>
+            <dl className="reference-harness-build-identity-list">
+              <div data-build-identity-field="version">
+                <dt>Package</dt>
+                <dd>{buildIdentity.appVersion}</dd>
+              </div>
+              <div data-build-identity-field="commit">
+                <dt>Commit</dt>
+                <dd>{buildIdentity.commit}</dd>
+              </div>
+              <div data-build-identity-field="branch">
+                <dt>Branch / ref</dt>
+                <dd>{buildIdentity.branch}</dd>
+              </div>
+            </dl>
+            <Typography typeRole="caption">
+              Playground QA metadata only; product and consumer shells do not
+              render build diagnostics.
+            </Typography>
+          </section>
 
           <div className="reference-harness-navigation">
             {routeGroups.map((group) => (

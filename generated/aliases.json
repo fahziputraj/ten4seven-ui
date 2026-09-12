@@ -4,5 +4,6 @@
   "ActionMenu": "DropdownMenu",
   "CommandPalette": "CommandMenu",
   "DescriptionList": "KeyValueList",
-  "Timeline": "ActivityFeed"
+  "Timeline": "ActivityFeed",
+  "Modal": "Dialog"
 }

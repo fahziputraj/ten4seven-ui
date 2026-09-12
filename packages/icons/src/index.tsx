@@ -371,18 +371,22 @@ export const IconRegistry = Object.freeze({
   triangleRight: {
     provider: curatedIconMetadata.triangleRight.provider,
     body: curatedIconBodies.triangleRight,
+    duotone: true,
   },
   triangleLeft: {
     provider: curatedIconMetadata.triangleLeft.provider,
     body: curatedIconBodies.triangleLeft,
+    duotone: true,
   },
   triangleUp: {
     provider: curatedIconMetadata.triangleUp.provider,
     body: curatedIconBodies.triangleUp,
+    duotone: true,
   },
   triangleDown: {
     provider: curatedIconMetadata.triangleDown.provider,
     body: curatedIconBodies.triangleDown,
+    duotone: true,
   },
   barn: {
     provider: curatedIconMetadata.barn.provider,
@@ -397,6 +401,7 @@ export const IconRegistry = Object.freeze({
   eggPair: {
     provider: curatedIconMetadata.eggPair.provider,
     body: curatedIconBodies.eggPair,
+    duotone: true,
   },
   egg: {
     provider: curatedIconMetadata.egg.provider,
@@ -411,6 +416,7 @@ export const IconRegistry = Object.freeze({
   chick: {
     provider: curatedIconMetadata.chick.provider,
     body: curatedIconBodies.chick,
+    duotone: true,
   },
   graphMemory: {
     provider: curatedIconMetadata.graphMemory.provider,
@@ -430,6 +436,7 @@ export const IconRegistry = Object.freeze({
   waterRate: {
     provider: curatedIconMetadata.waterRate.provider,
     body: curatedIconBodies.waterRate,
+    duotone: true,
   },
   mortality: {
     provider: curatedIconMetadata.mortality.provider,
@@ -444,10 +451,12 @@ export const IconRegistry = Object.freeze({
   equalRatio: {
     provider: curatedIconMetadata.equalRatio.provider,
     body: curatedIconBodies.equalRatio,
+    duotone: true,
   },
   weight: {
     provider: curatedIconMetadata.weight.provider,
     body: curatedIconBodies.weight,
+    duotone: true,
   },
 } as const);
 
@@ -487,13 +496,16 @@ export const IconifyCollections = Object.freeze({
     boldDuotoneCount: IconifyBoldDuotoneIconCount,
   }),
   curated: Object.freeze({
-    name: "Curated operations",
+    name: "Curated farm & operations",
     prefix: "ten4seven",
+    style: "solar-bold-duotone",
     iconCount: IconifyCuratedIconCount,
     duotoneCount: IconifyCuratedIconNames.filter(
       (name) => "duotone" in curatedIconMetadata[name],
     ).length,
-    boldDuotoneCount: 0,
+    boldDuotoneCount: IconifyCuratedIconNames.filter(
+      (name) => curatedIconMetadata[name].style === "solar-bold-duotone",
+    ).length,
   }),
 });
 
@@ -647,6 +659,7 @@ export const T7Icon = memo(
   ) {
     const entry = IconRegistry[name];
     const instanceId = useId();
+    const isCurated = isCuratedIconName(name);
     const isDuotone =
       duotone ??
       ("duotone" in entry ? entry.duotone : undefined) ??
@@ -658,6 +671,11 @@ export const T7Icon = memo(
         aria-hidden={label ? undefined : true}
         aria-label={label}
         className={className}
+        data-icon-set={isCurated ? "ten4seven-curated" : "solar"}
+        data-icon-name={name}
+        data-icon-style={
+          isCurated ? curatedIconMetadata[name].style : undefined
+        }
         fill="none"
         height={size}
         role={label ? "img" : undefined}
@@ -716,16 +734,15 @@ export const IconifyIcon = memo(
     ref,
   ) {
     const instanceId = useId();
-    const body = isCuratedIconName(name)
-      ? getCuratedIconBody(name)
-      : getSolarIconBody(name);
+    const isCurated = isCuratedIconName(name);
+    const body = isCurated ? getCuratedIconBody(name) : getSolarIconBody(name);
     if (!body) return null;
     const isDuotone =
       duotone ??
-      (isCuratedIconName(name)
+      (isCurated
         ? "duotone" in curatedIconMetadata[name]
         : name.includes("-duotone"));
-    const iconSet = isCuratedIconName(name) ? "ten4seven-curated" : "solar";
+    const iconSet = isCurated ? "ten4seven-curated" : "solar";
 
     return (
       <svg
@@ -735,6 +752,9 @@ export const IconifyIcon = memo(
         className={className}
         data-icon-set={iconSet}
         data-icon-name={name}
+        data-icon-style={
+          isCurated ? curatedIconMetadata[name].style : undefined
+        }
         fill="none"
         height={size}
         role={label ? "img" : undefined}

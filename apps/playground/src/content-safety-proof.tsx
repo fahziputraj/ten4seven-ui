@@ -93,7 +93,11 @@ export function ContentSafetyProof() {
       aria-label="Content safety workbench"
       className="content-safety-proof"
     >
-      <FormGrid className="content-safety-settings" columns={2}>
+      <FormGrid
+        className="content-safety-settings"
+        columns={2}
+        data-t7-rail="form"
+      >
         <Field label="Stress recipe" htmlFor="stress-recipe">
           <NativeSelect
             id="stress-recipe"

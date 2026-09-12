@@ -21,7 +21,7 @@ test.describe("Q05 SaaS control-plane patterns", () => {
     await page.setViewportSize({ height: 900, width: 1440 });
     await page.goto("/saas-control-plane");
 
-    await expect(page).toHaveTitle(/SaaS Control Plane Patterns/);
+    await expect(page).toHaveTitle("ten4seven UI — SaaS Control Plane");
     await expect(
       page.getByRole("heading", { name: "SaaS control-plane patterns" }),
     ).toBeVisible();

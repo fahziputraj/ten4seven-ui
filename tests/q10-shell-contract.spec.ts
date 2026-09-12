@@ -112,4 +112,40 @@ test.describe("Q10 shell contract and geometry authority", () => {
       await expect(shell.locator(".t7-app-topbar")).toBeVisible();
     }
   });
+
+  test("desktop sidebars stay pinned while route content scrolls", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ height: 900, width: 1440 });
+
+    const routes = [
+      { path: "/theme-studio", selector: ".studio-shell > .studio-sidebar" },
+      { path: "/saas-control-plane", selector: ".t7-app-sidebar" },
+    ] as const;
+
+    for (const route of routes) {
+      await page.goto(route.path);
+      const sidebar = page.locator(route.selector);
+      await expect(sidebar).toBeVisible();
+      await expect(sidebar).toHaveCSS("position", "sticky");
+
+      await page.evaluate(() =>
+        window.scrollTo({
+          behavior: "instant",
+          left: 0,
+          top: document.documentElement.scrollHeight,
+        }),
+      );
+
+      const scrollState = await page.evaluate(() => ({
+        top: window.scrollY,
+        viewport: window.innerHeight,
+      }));
+      const box = await sidebar.boundingBox();
+
+      expect(scrollState.top, route.path).toBeGreaterThan(0);
+      expect(box?.y, route.path).toBeCloseTo(0, 0);
+      expect(box?.height, route.path).toBeCloseTo(scrollState.viewport, 0);
+    }
+  });
 });

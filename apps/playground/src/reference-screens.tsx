@@ -11,6 +11,7 @@ import {
   CartLineItem,
   CartPanel,
   CartTrigger,
+  CitationList,
   Checkbox,
   Card,
   CardContent,
@@ -34,13 +35,21 @@ import {
   ProductGrid,
   ProductMeta,
   Progress,
+  PublicFooter,
   PublicShell,
   Radio,
   Rating,
   SearchInput,
   Select,
+  Skeleton,
   Sparkline,
   StatusChip,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
   TrendIndicator,
   Typography,
   OrderSummary,
@@ -3089,6 +3098,446 @@ const ebooks: Ebook[] = [
   },
 ];
 
+type EbookFormatKind = "physical" | "ebook";
+type EbookFormatState = "available" | "external" | "unavailable";
+
+type EbookFormatOption = {
+  label: string;
+  memberPrice?: number;
+  note: string;
+  price: number;
+  state: EbookFormatState;
+};
+
+type EbookCitation = {
+  excerpt: string;
+  id: string;
+  label: string;
+  source: string;
+};
+
+type EbookDetailMetadata = {
+  citations: EbookCitation[];
+  description: string;
+  isbn: string;
+  language: string;
+  memberPrice?: number;
+  pages: number;
+  previewLabel: string;
+  publicationDate: string;
+  publisher: string;
+};
+
+const ebookDetailMetadata: Record<string, EbookDetailMetadata> = {
+  "book-01": {
+    citations: [
+      {
+        excerpt: "Kerangka keputusan untuk menyusun prioritas organisasi.",
+        id: "book-01-citation-1",
+        label: "Ringkasan editorial Manajemen Strategis",
+        source: "GetPress Publishing Store proof",
+      },
+    ],
+    description:
+      "Panduan praktis untuk merumuskan arah, memilih prioritas, dan menerjemahkan strategi menjadi ritme kerja yang dapat ditinjau ulang.",
+    isbn: "978-623-8012-01-8",
+    language: "Bahasa Indonesia",
+    pages: 216,
+    previewLabel: "Bab 1 · Menentukan arah",
+    publicationDate: "12 Februari 2025",
+    publisher: "GetPress Publishing",
+  },
+  "book-02": {
+    citations: [
+      {
+        excerpt: "Contoh pencatatan transaksi dan pembacaan arus kas.",
+        id: "book-02-citation-1",
+        label: "Ringkasan editorial Akuntansi Keuangan",
+        source: "GetPress Publishing Store proof",
+      },
+    ],
+    description:
+      "Referensi ringkas bagi tim operasional yang perlu memahami hubungan antara transaksi, laporan, dan keputusan tanpa kehilangan konteks kas.",
+    isbn: "978-623-8012-02-5",
+    language: "Bahasa Indonesia",
+    memberPrice: 99000,
+    pages: 248,
+    previewLabel: "Bab 2 · Kas dan akrual",
+    publicationDate: "28 Januari 2025",
+    publisher: "GetPress Publishing",
+  },
+  "book-03": {
+    citations: [
+      {
+        excerpt: "Prinsip desain aktivitas belajar yang kontekstual.",
+        id: "book-03-citation-1",
+        label: "Ringkasan editorial Pembelajaran Bermakna",
+        source: "GetPress Publishing Store proof",
+      },
+    ],
+    description:
+      "Kumpulan pendekatan untuk merancang pengalaman belajar yang dekat dengan kebutuhan peserta, tujuan pembelajaran, dan bukti kemajuan.",
+    isbn: "978-623-8012-03-2",
+    language: "Bahasa Indonesia",
+    memberPrice: 65000,
+    pages: 184,
+    previewLabel: "Bab 1 · Memulai dari kebutuhan",
+    publicationDate: "6 Maret 2025",
+    publisher: "GetPress Publishing",
+  },
+  "book-04": {
+    citations: [
+      {
+        excerpt: "Peta kerja kolaboratif untuk program kesehatan lokal.",
+        id: "book-04-citation-1",
+        label: "Ringkasan editorial Kesehatan Masyarakat",
+        source: "GetPress Publishing Store proof",
+      },
+    ],
+    description:
+      "Membaca tantangan kesehatan masyarakat dari tingkat lokal, dengan perhatian pada kolaborasi, data lapangan, dan tindakan yang realistis.",
+    isbn: "978-623-8012-04-9",
+    language: "Bahasa Indonesia",
+    memberPrice: 112000,
+    pages: 272,
+    previewLabel: "Bab 1 · Membaca konteks lokal",
+    publicationDate: "21 Februari 2025",
+    publisher: "GetPress Publishing",
+  },
+  "book-05": {
+    citations: [
+      {
+        excerpt: "Checklist pengambilan keputusan untuk keamanan data.",
+        id: "book-05-citation-1",
+        label: "Ringkasan editorial Praktik Aman Data",
+        source: "GetPress Publishing Store proof",
+      },
+    ],
+    description:
+      "Checklist dan pola percakapan untuk membantu organisasi mengelola data secara aman, jelas, dan dapat dipertanggungjawabkan.",
+    isbn: "978-623-8012-05-6",
+    language: "Bahasa Indonesia",
+    pages: 206,
+    previewLabel: "Bab 1 · Memetakan risiko",
+    publicationDate: "14 Januari 2025",
+    publisher: "GetPress Publishing",
+  },
+  "book-06": {
+    citations: [
+      {
+        excerpt: "Istilah penting dalam membaca perjanjian bisnis.",
+        id: "book-06-citation-1",
+        label: "Ringkasan editorial Hukum Perjanjian",
+        source: "GetPress Publishing Store proof",
+      },
+    ],
+    description:
+      "Penjelasan praktis tentang struktur perjanjian, risiko umum, dan pertanyaan yang perlu disiapkan sebelum menandatangani dokumen bisnis.",
+    isbn: "978-623-8012-06-3",
+    language: "Bahasa Indonesia",
+    memberPrice: 79000,
+    pages: 198,
+    previewLabel: "Bab 1 · Membaca klausul",
+    publicationDate: "10 Desember 2024",
+    publisher: "GetPress Publishing",
+  },
+  "book-07": {
+    citations: [
+      {
+        excerpt: "Pola layanan publik yang mendengar kebutuhan warga.",
+        id: "book-07-citation-1",
+        label: "Ringkasan editorial Melayani Warga",
+        source: "GetPress Publishing Store proof",
+      },
+    ],
+    description:
+      "Catatan praktik untuk merancang layanan publik yang responsif, mudah dipahami, dan tetap terbuka terhadap umpan balik warga.",
+    isbn: "978-623-8012-07-0",
+    language: "Bahasa Indonesia",
+    pages: 224,
+    previewLabel: "Bab 2 · Mendengar warga",
+    publicationDate: "18 Februari 2025",
+    publisher: "GetPress Publishing",
+  },
+  "book-08": {
+    citations: [
+      {
+        excerpt: "Pertanyaan dasar saat menafsirkan laporan keuangan.",
+        id: "book-08-citation-1",
+        label: "Ringkasan editorial Membaca Laporan Keuangan",
+        source: "GetPress Publishing Store proof",
+      },
+    ],
+    description:
+      "Panduan pengantar bagi pengambil keputusan yang ingin membaca laporan keuangan dengan pertanyaan yang tepat dan konteks yang cukup.",
+    isbn: "978-623-8012-08-7",
+    language: "Bahasa Indonesia",
+    memberPrice: 68000,
+    pages: 176,
+    previewLabel: "Bab 1 · Melihat gambaran besar",
+    publicationDate: "4 Maret 2025",
+    publisher: "GetPress Publishing",
+  },
+  "book-09": {
+    citations: [
+      {
+        excerpt: "Kriteria memilih teknologi yang sesuai dengan konteks layanan.",
+        id: "book-09-citation-1",
+        label: "Ringkasan editorial Teknologi Tepat Guna",
+        source: "GetPress Publishing Store proof",
+      },
+    ],
+    description:
+      "Eksplorasi cara memilih teknologi yang cukup sederhana untuk dipelihara, tetapi tetap berdampak bagi layanan publik sehari-hari.",
+    isbn: "978-623-8012-09-4",
+    language: "Bahasa Indonesia",
+    memberPrice: 74000,
+    pages: 192,
+    previewLabel: "Bab 1 · Mulai dari masalah",
+    publicationDate: "22 November 2024",
+    publisher: "GetPress Publishing",
+  },
+  "book-10": {
+    citations: [
+      {
+        excerpt: "Prinsip keselamatan pasien sebagai kebiasaan tim.",
+        id: "book-10-citation-1",
+        label: "Ringkasan editorial Etika Profesi Kesehatan",
+        source: "GetPress Publishing Store proof",
+      },
+    ],
+    description:
+      "Rujukan untuk mendiskusikan etika profesi, keselamatan pasien, dan tanggung jawab tim dalam situasi layanan yang kompleks.",
+    isbn: "978-623-8012-10-0",
+    language: "Bahasa Indonesia",
+    pages: 238,
+    previewLabel: "Bab 1 · Menjaga kepercayaan",
+    publicationDate: "25 Februari 2025",
+    publisher: "GetPress Publishing",
+  },
+};
+
+const ebookFormatOverrides: Record<
+  string,
+  Partial<Record<EbookFormatKind, EbookFormatOption>>
+> = {
+  "book-01": {
+    ebook: {
+      label: "Ebook",
+      note: "Akses melalui provider eksternal",
+      price: 65000,
+      state: "external",
+    },
+    physical: {
+      label: "Physical Book",
+      note: "Belum tersedia di katalog lokal",
+      price: 95000,
+      state: "unavailable",
+    },
+  },
+  "book-02": {
+    ebook: {
+      label: "Ebook",
+      note: "Belum tersedia untuk judul ini",
+      price: 90000,
+      state: "unavailable",
+    },
+    physical: {
+      label: "Physical Book",
+      note: "Tersedia untuk pesanan fixture",
+      price: 110000,
+      state: "available",
+    },
+  },
+  "book-03": {
+    ebook: {
+      label: "Ebook",
+      note: "Tersedia dalam proof lokal",
+      price: 78000,
+      state: "available",
+    },
+    physical: {
+      label: "Physical Book",
+      note: "Belum tersedia untuk judul ini",
+      price: 98000,
+      state: "unavailable",
+    },
+  },
+  "book-04": {
+    ebook: {
+      label: "Ebook",
+      note: "Tersedia dalam proof lokal",
+      price: 85000,
+      state: "available",
+    },
+    physical: {
+      label: "Physical Book",
+      note: "Tersedia untuk pesanan fixture",
+      price: 125000,
+      state: "available",
+    },
+  },
+  "book-05": {
+    ebook: {
+      label: "Ebook",
+      note: "Akses melalui provider eksternal",
+      price: 72000,
+      state: "external",
+    },
+    physical: {
+      label: "Physical Book",
+      note: "Belum tersedia di katalog lokal",
+      price: 105000,
+      state: "unavailable",
+    },
+  },
+  "book-06": {
+    ebook: {
+      label: "Ebook",
+      note: "Tersedia dalam proof lokal",
+      price: 89000,
+      state: "available",
+    },
+    physical: {
+      label: "Physical Book",
+      note: "Belum tersedia untuk judul ini",
+      price: 109000,
+      state: "unavailable",
+    },
+  },
+  "book-07": {
+    ebook: {
+      label: "Ebook",
+      note: "Akses melalui provider eksternal",
+      price: 69000,
+      state: "external",
+    },
+    physical: {
+      label: "Physical Book",
+      note: "Belum tersedia di katalog lokal",
+      price: 99000,
+      state: "unavailable",
+    },
+  },
+  "book-08": {
+    ebook: {
+      label: "Ebook",
+      note: "Tersedia dalam proof lokal",
+      price: 75000,
+      state: "available",
+    },
+    physical: {
+      label: "Physical Book",
+      note: "Belum tersedia untuk judul ini",
+      price: 95000,
+      state: "unavailable",
+    },
+  },
+  "book-09": {
+    ebook: {
+      label: "Ebook",
+      note: "Belum tersedia untuk judul ini",
+      price: 70000,
+      state: "unavailable",
+    },
+    physical: {
+      label: "Physical Book",
+      note: "Tersedia untuk pesanan fixture",
+      price: 82000,
+      state: "available",
+    },
+  },
+  "book-10": {
+    ebook: {
+      label: "Ebook",
+      note: "Akses melalui provider eksternal",
+      price: 76000,
+      state: "external",
+    },
+    physical: {
+      label: "Physical Book",
+      note: "Belum tersedia di katalog lokal",
+      price: 115000,
+      state: "unavailable",
+    },
+  },
+};
+
+function getEbookDetail(book: Ebook): EbookDetailMetadata {
+  return ebookDetailMetadata[book.id] ?? {
+    citations: [],
+    description: "Informasi editorial lokal untuk proof katalog.",
+    isbn: "Belum ditentukan",
+    language: "Bahasa Indonesia",
+    pages: 0,
+    previewLabel: "Cuplikan lokal",
+    publicationDate: "Belum ditentukan",
+    publisher: "GetPress Publishing",
+  };
+}
+
+function getEbookFormat(book: Ebook, kind: EbookFormatKind): EbookFormatOption {
+  const override = ebookFormatOverrides[book.id]?.[kind];
+  if (override) {
+    return override;
+  }
+  return {
+    label: kind === "physical" ? "Physical Book" : "Ebook",
+    note: "Informasi akses lokal",
+    price: book.price,
+    state: "unavailable",
+  };
+}
+
+function getDefaultEbookFormat(book: Ebook): EbookFormatKind {
+  const physical = getEbookFormat(book, "physical");
+  return physical.state === "available" ? "physical" : "ebook";
+}
+
+function getFormatStateLabel(state: EbookFormatState) {
+  if (state === "available") return "Tersedia";
+  if (state === "external") return "Provider eksternal";
+  return "Belum tersedia";
+}
+
+function getEbookAccessLabel(book: Ebook, kind: EbookFormatKind) {
+  const option = getEbookFormat(book, kind);
+  if (option.state === "available") return "Local store";
+  if (option.state === "external") {
+    return book.availability === "Google Play Books"
+      ? "Google Play Books"
+      : "External";
+  }
+  return "Unavailable";
+}
+
+function getEbookMemberPrice(
+  book: Ebook,
+  kind = getDefaultEbookFormat(book),
+) {
+  const option = getEbookFormat(book, kind);
+  const memberPrice = getEbookDetail(book).memberPrice;
+  if (
+    memberPrice === undefined ||
+    option.state !== "available" ||
+    memberPrice > option.price
+  ) {
+    return undefined;
+  }
+  return memberPrice;
+}
+
+function getEbookFormatSummary(book: Ebook) {
+  const available = (["physical", "ebook"] as EbookFormatKind[])
+    .map((kind) => ({ kind, option: getEbookFormat(book, kind) }))
+    .filter(({ option }) => option.state !== "unavailable")
+    .map(
+      ({ kind, option }) =>
+        `${option.label} · ${getEbookAccessLabel(book, kind)}`,
+    );
+  return available.length ? available.join(" · ") : "Format belum tersedia";
+}
+
 type EbookCatalogFiltersProps = {
   authorQuery: string;
   availability: EbookAvailability[];
@@ -3251,6 +3700,11 @@ export function EbookStoreCatalog({
 }: {
   onOpenSettings?: () => void;
 } = {}) {
+  const [fixtureState] = useState<"empty" | "loading" | "ready">(() => {
+    if (typeof window === "undefined") return "ready";
+    const state = new URLSearchParams(window.location.search).get("state");
+    return state === "loading" || state === "empty" ? state : "ready";
+  });
   const [query, setQuery] = useState("");
   const [authorQuery, setAuthorQuery] = useState("");
   const [category, setCategory] = useState<EbookCategoryFilter>("all");
@@ -3259,20 +3713,37 @@ export function EbookStoreCatalog({
   const [page, setPage] = useState(1);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [cart, setCart] = useState<Record<string, number>>({});
+  const [cartFormats, setCartFormats] = useState<
+    Record<string, EbookFormatKind>
+  >({});
   const [cartOpen, setCartOpen] = useState(false);
   const [isNarrowViewport, setIsNarrowViewport] = useState(false);
   const [priceRange, setPriceRange] = useState<EbookPriceRange>("all");
   const [availability, setAvailability] = useState<EbookAvailability[]>([]);
   const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
-  const [selectedBook, setSelectedBook] = useState<Ebook | null>(null);
+  const [selectedBook, setSelectedBook] = useState<Ebook | null>(() => {
+    if (typeof window === "undefined") return null;
+    const bookId = new URLSearchParams(window.location.search).get("book");
+    return ebooks.find((book) => book.id === bookId) ?? null;
+  });
+  const [selectedFormat, setSelectedFormat] =
+    useState<EbookFormatKind>("ebook");
   const [notice, setNotice] = useState("");
   const pageSize = 8;
   const cartItems = ebooks
     .filter((book) => cart[book.id])
-    .map((book) => ({ book, quantity: cart[book.id] }));
+    .map((book) => {
+      const format = cartFormats[book.id] ?? getDefaultEbookFormat(book);
+      return {
+        book,
+        format,
+        formatOption: getEbookFormat(book, format),
+        quantity: cart[book.id],
+      };
+    });
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
   const cartSubtotal = cartItems.reduce(
-    (total, item) => total + item.book.price * item.quantity,
+    (total, item) => total + item.formatOption.price * item.quantity,
     0,
   );
 
@@ -3283,6 +3754,12 @@ export function EbookStoreCatalog({
     media.addEventListener?.("change", update);
     return () => media.removeEventListener?.("change", update);
   }, []);
+
+  useEffect(() => {
+    if (!selectedBook) return;
+    const defaultFormat = getDefaultEbookFormat(selectedBook);
+    setSelectedFormat(defaultFormat);
+  }, [selectedBook]);
 
   const filteredBooks = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -3329,6 +3806,7 @@ export function EbookStoreCatalog({
     (page - 1) * pageSize,
     page * pageSize,
   );
+  const catalogBooks = fixtureState === "empty" ? [] : visibleBooks;
   const activeFilterCount =
     (category === "all" ? 0 : 1) +
     (authorQuery ? 1 : 0) +
@@ -3358,15 +3836,38 @@ export function EbookStoreCatalog({
     );
   }
 
-  function addToCart(book: Ebook) {
+  function addToCart(book: Ebook, format = getDefaultEbookFormat(book)) {
+    const option = getEbookFormat(book, format);
+    if (option.state === "external") {
+      setSelectedBook(book);
+      setSelectedFormat(format);
+      setNotice(
+        `${book.title} tersedia melalui provider eksternal. Tinjau detail untuk aksesnya.`,
+      );
+      return;
+    }
+    if (option.state === "unavailable") {
+      setSelectedBook(book);
+      setSelectedFormat(format);
+      setNotice(`${option.label} belum tersedia untuk ${book.title}.`);
+      return;
+    }
     setCart((current) => ({
       ...current,
       [book.id]: (current[book.id] ?? 0) + 1,
     }));
-    setNotice(`${book.title} ditambahkan ke keranjang.`);
+    setCartFormats((current) => ({ ...current, [book.id]: format }));
+    setNotice(`${book.title} · ${option.label} ditambahkan ke keranjang.`);
   }
 
   function setCartQuantity(book: Ebook, quantity: number) {
+    if (quantity <= 0) {
+      setCartFormats((currentFormats) => {
+        const nextFormats = { ...currentFormats };
+        delete nextFormats[book.id];
+        return nextFormats;
+      });
+    }
     setCart((current) => {
       if (quantity <= 0) {
         const next = { ...current };
@@ -3381,8 +3882,22 @@ export function EbookStoreCatalog({
     <CartPanel
       actions={
         <>
-          <Button intent="secondary">Lihat keranjang</Button>
-          <Button leadingIcon="checkout">Checkout</Button>
+          <Button
+            intent="secondary"
+            onClick={() => setNotice("Keranjang lokal siap ditinjau.")}
+          >
+            Lihat keranjang
+          </Button>
+          <Button
+            leadingIcon="checkout"
+            onClick={() =>
+              setNotice(
+                "Checkout adalah fixture presentasi; pembayaran nyata belum dihubungkan.",
+              )
+            }
+          >
+            Checkout
+          </Button>
         </>
       }
       aria-label="Keranjang"
@@ -3413,12 +3928,19 @@ export function EbookStoreCatalog({
         <CartLineItem
           key={book.id}
           media={<img alt="" src={book.cover} />}
-          meta={book.author}
+          meta={`${book.author} · ${getEbookFormat(book, cartFormats[book.id] ?? getDefaultEbookFormat(book)).label}`}
           onQuantityChange={(nextQuantity) =>
             setCartQuantity(book, nextQuantity)
           }
           onRemove={() => setCartQuantity(book, 0)}
-          price={<Price amount={book.price} />}
+          price={
+            <Price
+              amount={getEbookFormat(
+                book,
+                cartFormats[book.id] ?? getDefaultEbookFormat(book),
+              ).price}
+            />
+          }
           quantity={quantity}
           quantityLabel={`Jumlah ${book.title}`}
           removeLabel={`Hapus ${book.title} dari keranjang`}
@@ -3464,12 +3986,68 @@ export function EbookStoreCatalog({
     priceRange,
   };
 
+  const storeFooter = (
+    <PublicFooter
+      brand={
+        <div className="ebook-footer-brand">
+          <span className="reference-brand-mark">
+            <T7Icon name="book" size={18} />
+          </span>
+          <div>
+            <Typography as="strong" typeRole="card-title">
+              GetPress
+            </Typography>
+            <Typography as="span" typeRole="caption">
+              Publishing store proof
+            </Typography>
+          </div>
+        </div>
+      }
+      groups={[
+        {
+          items: [
+            { href: "#ebook-catalog", label: "Buku terbaru" },
+            { href: "#ebook-categories", label: "Kategori" },
+            { href: "#ebook-catalog", label: "Koleksi" },
+          ],
+          label: "Toko buku",
+        },
+        {
+          items: [
+            { href: "#ebook-publishing-service", label: "Terbitkan buku" },
+            { href: "#ebook-publishing-service", label: "Kolaborasi" },
+            { href: "#ebook-publishing-service", label: "Layanan HKI" },
+          ],
+          label: "Penerbitan",
+        },
+        {
+          items: [
+            { href: "#ebook-catalog", label: "Bantuan katalog" },
+            { href: "#ebook-member-entry", label: "Masuk member" },
+            { href: "#ebook-catalog", label: "Kontak" },
+          ],
+          label: "Bantuan & akun",
+        },
+      ]}
+      legal="GetPress Publishing store proof · Konten lokal untuk demonstrasi UI."
+    />
+  );
+  const selectedDetail = selectedBook ? getEbookDetail(selectedBook) : null;
+  const selectedFormatOption = selectedBook
+    ? getEbookFormat(selectedBook, selectedFormat)
+    : null;
+  const selectedMemberPrice =
+    selectedBook && selectedFormatOption
+      ? getEbookMemberPrice(selectedBook, selectedFormat)
+      : undefined;
+
   return (
     <PublicShell
       actions={
         <div className="ebook-store-actions t7-header-actions">
           <Button
             className="ebook-publish-button"
+            id="ebook-publish-button"
             intent="primary"
             leadingIcon="publisher"
             onClick={() =>
@@ -3496,13 +4074,14 @@ export function EbookStoreCatalog({
           )}
           <Button
             className="ebook-account-button"
+            id="ebook-member-entry"
             intent="quiet"
             onClick={() =>
               setNotice("Akses akun tetap berada pada storefront pengelola.")
             }
             size="sm"
           >
-            Akun
+            Masuk member
           </Button>
           <IconButton
             icon="settings"
@@ -3519,21 +4098,26 @@ export function EbookStoreCatalog({
           </span>
           <div>
             <Typography as="strong" typeRole="card-title">
-              ten4seven UI
+              GetPress
             </Typography>
             <Typography as="span" typeRole="caption">
-              Toko penerbitan
+              Publishing store
             </Typography>
           </div>
         </div>
       }
-      className="reference-app-shell ebook-app-shell"
+        className="reference-app-shell ebook-app-shell"
       navigationMenu={[
+        {
+          href: "#ebook-store-top",
+          key: "home",
+          label: "Beranda",
+        },
         {
           active: true,
           href: "#ebook-catalog",
           key: "books",
-          label: "Buku",
+          label: "Toko Buku",
         },
         {
           children: [
@@ -3549,6 +4133,11 @@ export function EbookStoreCatalog({
                   label: "Kategori",
                 },
             { href: "#ebook-catalog", key: "collection", label: "Koleksi" },
+            {
+              href: "#ebook-publishing-service",
+              key: "publishing",
+              label: "Layanan penerbitan",
+            },
           ],
           key: "explore",
           label: "Jelajahi",
@@ -3559,25 +4148,148 @@ export function EbookStoreCatalog({
           onSelect: () =>
             setNotice("Kolaborasi menghubungkan penulis, editor, dan pembaca."),
         },
+        {
+          key: "publishing",
+          label: "Penerbitan",
+          onSelect: () =>
+            setNotice(
+              "Jalur layanan penerbitan siap dihubungkan ke percakapan berikutnya.",
+            ),
+        },
       ]}
+        footer={storeFooter}
     >
-      <div className="reference-page ebook-reference" data-profile="commerce">
-        <PageHeader
-          description="Buku pilihan untuk manajemen, ilmu terapan, dan gagasan yang membantu pekerjaan sehari-hari bergerak maju."
-          meta={
-            <>
-              <Badge tone="primary">
-                <T7Icon name="catalog" size={13} />
-                {ebooks.length} judul
-              </Badge>
-              <Typography typeRole="caption">
-                Ebook, buku cetak, dan Google Play Books
-              </Typography>
-            </>
-          }
-          overline="ten4seven UI · Katalog penerbitan"
-          title="Buku untuk ide yang bertahan"
-        />
+      <div
+        className="reference-page ebook-reference"
+        data-profile="commerce"
+        id="ebook-store-top"
+      >
+        <nav aria-label="Jaringan publishing" className="ebook-utility-strip">
+          <span className="ebook-utility-label">Jaringan GetPress</span>
+          <a href="#ebook-publishing-service">Penerbitan buku</a>
+          <a href="#ebook-publishing-service">Layanan HKI</a>
+          <a href="#ebook-member-entry">Membership</a>
+          <a href="#ebook-publishing-service">Kontak</a>
+        </nav>
+
+        <section
+          aria-label="Promosi penerbitan dan toko buku"
+          className="ebook-store-promo"
+        >
+          <div className="ebook-promo-copy">
+            <PageHeader
+              className="ebook-promo-page-header"
+              description="Buku pilihan untuk manajemen, ilmu terapan, dan gagasan yang membantu pekerjaan sehari-hari bergerak maju."
+              meta={
+                <>
+                  <Badge tone="primary">
+                    <T7Icon name="catalog" size={13} />
+                    {ebooks.length} judul
+                  </Badge>
+                  <Typography typeRole="caption">
+                    Ebook, buku cetak, dan Google Play Books
+                  </Typography>
+                </>
+              }
+              overline="GetPress · Toko buku & penerbitan"
+              title="Buku untuk ide yang bertahan"
+            />
+
+            <SearchInput
+              aria-label="Cari buku"
+              className="ebook-shell-search"
+              label="Cari buku"
+              leadingIcon="search"
+              onChange={(event) =>
+                updateCatalogFilter(setQuery, event.target.value)
+              }
+              placeholder="Cari judul, penulis, atau kategori"
+              value={query}
+            />
+
+            <div className="ebook-promo-actions">
+              <Button
+                leadingIcon="catalog"
+                onClick={() =>
+                  document
+                    .getElementById("ebook-catalog")
+                    ?.scrollIntoView({ behavior: "smooth", block: "start" })
+                }
+              >
+                Jelajahi buku
+              </Button>
+              <Button
+                intent="secondary"
+                leadingIcon="publisher"
+                onClick={() =>
+                  document
+                    .getElementById("ebook-publishing-service")
+                    ?.scrollIntoView({ behavior: "smooth", block: "start" })
+                }
+              >
+                Terbitkan buku
+              </Button>
+            </div>
+          </div>
+
+          <aside
+            aria-label="Sorotan penerbitan"
+            className="ebook-promo-proof"
+          >
+            <div className="ebook-promo-proof-heading">
+              <div>
+                <Typography typeRole="overline">Update penerbitan</Typography>
+                <Typography as="h2" typeRole="heading-sm">
+                  Pilihan editor minggu ini
+                </Typography>
+              </div>
+              <Badge tone="primary">{ebooks.length} judul</Badge>
+            </div>
+            <div className="ebook-promo-proof-book">
+              <div className="ebook-promo-cover">
+                <EbookCover book={ebooks[3]} />
+              </div>
+              <div className="ebook-promo-proof-copy">
+                <Typography typeRole="overline">Buku pilihan</Typography>
+                <Typography as="h3" typeRole="card-title">
+                  {ebooks[3].title}
+                </Typography>
+                <Typography typeRole="body-sm">
+                  Baca konteks lokal, bandingkan format, dan lanjutkan ke
+                  koleksi yang relevan.
+                </Typography>
+                <a href="#ebook-catalog">Lihat koleksi buku</a>
+              </div>
+            </div>
+            <div className="ebook-promo-proof-metrics">
+              <span>
+                <strong>6</strong> kategori
+              </span>
+              <span>
+                <strong>2</strong> format
+              </span>
+              <span>
+                <strong>1</strong> jalur penerbitan
+              </span>
+            </div>
+          </aside>
+        </section>
+
+        <section aria-label="Jelajah toko" className="ebook-store-intro">
+          <div>
+            <Typography typeRole="overline">Temukan bacaan berikutnya</Typography>
+            <Typography as="p" typeRole="body-sm">
+              Jelajahi judul terbaru, bandingkan format, lalu simpan bacaan yang
+              paling dekat dengan pekerjaan Anda.
+            </Typography>
+          </div>
+          <nav aria-label="Jelajah toko cepat" className="ebook-discovery-links">
+            <a href="#ebook-catalog">Semua buku</a>
+            <a href="#ebook-categories">Kategori</a>
+            <a href="#ebook-catalog">Buku terbaru</a>
+            <a href="#ebook-publishing-service">Terbitkan buku</a>
+          </nav>
+        </section>
 
         <div className="ebook-catalog-layout" id="ebook-catalog">
           <aside aria-label="Filter katalog" className="ebook-filter-rail">
@@ -3604,22 +4316,11 @@ export function EbookStoreCatalog({
             />
           </aside>
 
-          <section
+            <section
             aria-labelledby="ebook-results-title"
             className="ebook-results"
           >
             <div className="ebook-results-search-row">
-              <SearchInput
-                aria-label="Cari buku"
-                className="ebook-catalog-search"
-                label="Cari buku"
-                leadingIcon="search"
-                onChange={(event) =>
-                  updateCatalogFilter(setQuery, event.target.value)
-                }
-                placeholder="Cari judul, penulis, atau kategori"
-                value={query}
-              />
               <div className="ebook-results-controls">
                 <Button
                   aria-expanded={filterDrawerOpen}
@@ -3700,17 +4401,41 @@ export function EbookStoreCatalog({
                 </Typography>
               </div>
               <Typography typeRole="caption">
-                {filteredBooks.length} judul
+                {fixtureState === "empty" ? 0 : filteredBooks.length} judul
               </Typography>
             </div>
 
-            {visibleBooks.length > 0 ? (
+            {fixtureState === "loading" ? (
+              <div
+                aria-busy="true"
+                aria-label="Memuat koleksi buku"
+                className="ebook-catalog-loading"
+                role="status"
+              >
+                <div className="ebook-loading-cover" aria-hidden="true">
+                  <Skeleton height="100%" width="100%" />
+                </div>
+                <div className="ebook-loading-copy" aria-hidden="true">
+                  <Skeleton height="12px" width="34%" />
+                  <Skeleton height="24px" width="82%" />
+                  <Skeleton height="12px" width="64%" />
+                  <Skeleton height="12px" width="48%" />
+                </div>
+                <Typography typeRole="body-sm">
+                  Memuat koleksi buku…
+                </Typography>
+              </div>
+            ) : catalogBooks.length > 0 ? (
               <ProductGrid
                 className="ebook-product-grid"
                 data-view={view}
                 minCardWidth={172}
               >
-                {visibleBooks.map((book) => (
+                {catalogBooks.map((book) => {
+                  const defaultFormat = getDefaultEbookFormat(book);
+                  const defaultOption = getEbookFormat(book, defaultFormat);
+                  const memberPrice = getEbookMemberPrice(book, defaultFormat);
+                  return (
                   <ProductCard
                     actions={
                       <>
@@ -3732,11 +4457,20 @@ export function EbookStoreCatalog({
                           leadingIcon="cart"
                           onClick={(event) => {
                             event.stopPropagation();
-                            addToCart(book);
+                            if (defaultOption.state === "available") {
+                              addToCart(book, defaultFormat);
+                            } else {
+                              setSelectedBook(book);
+                              setSelectedFormat(defaultFormat);
+                            }
                           }}
                           size="sm"
                         >
-                          Tambah ke keranjang
+                          {defaultOption.state === "available"
+                            ? "Tambah ke keranjang"
+                            : defaultOption.state === "external"
+                              ? "Lihat akses"
+                              : "Lihat format"}
                         </Button>
                       </>
                     }
@@ -3746,11 +4480,24 @@ export function EbookStoreCatalog({
                       ) : null
                     }
                     className="ebook-product-card"
+                    data-access={getEbookAccessLabel(book, defaultFormat)}
+                    data-book-id={book.id}
+                    data-format={defaultOption.label}
+                    data-member-price={memberPrice}
+                    data-price-state={defaultOption.state}
+                    data-standard-price={defaultOption.price}
                     details={
                       <ProductMeta
                         className="ebook-product-detail-line"
                         items={[
-                          book.availability,
+                          <span className="ebook-meta-pair" key="format">
+                            <span className="ebook-meta-label">Format</span>
+                            {defaultOption.label}
+                          </span>,
+                          <span className="ebook-meta-pair" key="access">
+                            <span className="ebook-meta-label">Access</span>
+                            {getEbookAccessLabel(book, defaultFormat)}
+                          </span>,
                           <Rating
                             key="rating"
                             label={`Rating ${book.rating} dari 5`}
@@ -3782,10 +4529,33 @@ export function EbookStoreCatalog({
                         return;
                       setSelectedBook(book);
                     }}
-                    price={<Price amount={book.price} />}
+                    price={
+                      <div className="ebook-price-stack">
+                        {defaultOption.state === "available" ? (
+                          <>
+                            <Price amount={defaultOption.price} />
+                            {memberPrice ? (
+                              <Typography typeRole="caption">
+                                Member/VIP · <Price amount={memberPrice} />
+                              </Typography>
+                            ) : null}
+                          </>
+                        ) : (
+                          <Typography
+                            className="ebook-price-state"
+                            typeRole="caption"
+                          >
+                            {defaultOption.state === "external"
+                              ? `Akses · ${getEbookAccessLabel(book, defaultFormat)}`
+                              : "Belum tersedia"}
+                          </Typography>
+                        )}
+                      </div>
+                    }
                     title={book.title}
                   />
-                ))}
+                  );
+                })}
               </ProductGrid>
             ) : (
               <EmptyState
@@ -3808,10 +4578,41 @@ export function EbookStoreCatalog({
               onPageChange={setPage}
               page={page}
               pageSize={pageSize}
-              total={filteredBooks.length}
+              total={fixtureState === "empty" ? 0 : filteredBooks.length}
             />
           </section>
         </div>
+
+        <section
+          aria-labelledby="ebook-publishing-service-title"
+          className="ebook-publishing-callout"
+          id="ebook-publishing-service"
+        >
+          <div>
+            <Typography typeRole="overline">Layanan penerbitan</Typography>
+            <Typography
+              as="h2"
+              id="ebook-publishing-service-title"
+              typeRole="heading-sm"
+            >
+              Punya gagasan yang siap dibagikan?
+            </Typography>
+            <Typography typeRole="body-sm">
+              Mulai percakapan tentang editorial, produksi, dan distribusi buku
+              melalui jalur fixture yang terpisah dari checkout.
+            </Typography>
+          </div>
+          <Button
+            leadingIcon="publisher"
+            onClick={() =>
+              setNotice(
+                "Jalur layanan penerbitan siap dihubungkan ke percakapan berikutnya.",
+              )
+            }
+          >
+            Mulai percakapan penerbitan
+          </Button>
+        </section>
       </div>
 
       <DetailDrawer
@@ -3849,7 +4650,10 @@ export function EbookStoreCatalog({
       <DetailDrawer
         description={
           selectedBook
-            ? `${selectedBook.author} · ${selectedBook.category} · ${selectedBook.availability}`
+            ? `${selectedBook.author} · ${selectedBook.category} · ${getEbookAccessLabel(
+                selectedBook,
+                getDefaultEbookFormat(selectedBook),
+              )}`
             : undefined
         }
         onClose={() => setSelectedBook(null)}
@@ -3857,36 +4661,205 @@ export function EbookStoreCatalog({
         title={selectedBook?.title ?? "Detail buku"}
       >
         {selectedBook ? (
-          <div className="ebook-quick-view">
-            <EbookCover
-              book={selectedBook}
-              isFavorite={favorites.includes(selectedBook.id)}
-              onToggleFavorite={() => toggleFavorite(selectedBook)}
-            />
-            <div className="ebook-quick-copy">
-              <Typography as="p" typeRole="body">
-                Edisi pilihan dari ten4seven UI untuk pembaca profesional dan
-                komunitas belajar.
-              </Typography>
-              <div className="ebook-quick-facts">
-                <span>{selectedBook.availability}</span>
-                <span>
-                  <T7Icon name="rating" size={13} /> {selectedBook.rating}
-                </span>
+          <div
+            className="ebook-detail-view"
+            data-book-id={selectedBook.id}
+            data-format-state={selectedFormatOption?.state}
+          >
+            <div className="ebook-detail-hero">
+              <EbookCover
+                book={selectedBook}
+                isFavorite={favorites.includes(selectedBook.id)}
+                onToggleFavorite={() => toggleFavorite(selectedBook)}
+              />
+              <div className="ebook-detail-copy">
+                <div className="ebook-detail-kicker">
+                  <Badge tone="primary">{selectedBook.category}</Badge>
+                  <Rating
+                    label={`Rating ${selectedBook.rating} dari 5`}
+                    value={selectedBook.rating}
+                  />
+                </div>
+                <Typography as="h3" typeRole="heading-sm">
+                  {selectedBook.title}
+                </Typography>
+                <ProductMeta
+                  items={[
+                    <span key="author">
+                      <T7Icon name="author" size={14} /> {selectedBook.author}
+                    </span>,
+                    <span className="ebook-meta-pair" key="format">
+                      <span className="ebook-meta-label">Format</span>
+                      {selectedFormatOption?.label}
+                    </span>,
+                    <span className="ebook-meta-pair" key="access">
+                      <span className="ebook-meta-label">Access</span>
+                      {getEbookAccessLabel(selectedBook, selectedFormat)}
+                    </span>,
+                  ]}
+                />
+                <Typography as="p" typeRole="body-sm">
+                  {selectedDetail?.description}
+                </Typography>
+
+                <fieldset className="ebook-format-selector">
+                  <legend>Format produk</legend>
+                  <div className="ebook-format-options">
+                    {(["physical", "ebook"] as EbookFormatKind[]).map(
+                      (kind) => {
+                        const option = getEbookFormat(selectedBook, kind);
+                        return (
+                          <Radio
+                            checked={selectedFormat === kind}
+                            className="ebook-format-option"
+                            description={`${getFormatStateLabel(option.state)} · ${option.note}`}
+                            disabled={option.state === "unavailable"}
+                            key={kind}
+                            label={option.label}
+                            name={`format-${selectedBook.id}`}
+                            onChange={() => setSelectedFormat(kind)}
+                            value={kind}
+                          />
+                        );
+                      },
+                    )}
+                  </div>
+                </fieldset>
+
+                <div className="ebook-detail-price">
+                  <div>
+                    <Typography typeRole="caption">
+                      {selectedFormatOption
+                        ? getFormatStateLabel(selectedFormatOption.state)
+                        : "Format"}
+                    </Typography>
+                    {selectedFormatOption?.state === "available" ? (
+                      <Price amount={selectedFormatOption.price} />
+                    ) : (
+                      <Typography typeRole="body-sm">
+                        {selectedFormatOption
+                          ? `Akses · ${getEbookAccessLabel(selectedBook, selectedFormat)}`
+                          : "Pilih format"}
+                      </Typography>
+                    )}
+                  </div>
+                  {selectedMemberPrice ? (
+                    <Typography typeRole="caption">
+                      Harga member/VIP · <Price amount={selectedMemberPrice} />
+                    </Typography>
+                  ) : null}
+                </div>
+
+                <div className="reference-drawer-actions">
+                  <Button
+                    disabled={selectedFormatOption?.state === "unavailable"}
+                    leadingIcon="cart"
+                    onClick={() => {
+                      if (selectedFormatOption?.state === "external") {
+                        setNotice(
+                          `${selectedBook.title} mengarah ke provider eksternal dalam proof ini.`,
+                        );
+                        return;
+                      }
+                      addToCart(selectedBook, selectedFormat);
+                    }}
+                  >
+                    {selectedFormatOption?.state === "external"
+                      ? "Lihat akses eksternal"
+                      : selectedFormatOption?.state === "unavailable"
+                        ? "Belum tersedia"
+                        : "Tambah ke keranjang"}
+                  </Button>
+                  <Button
+                    intent="secondary"
+                    leadingIcon="preview"
+                    onClick={() =>
+                      setNotice(
+                        `Pratinjau ${selectedBook.title}: ${selectedDetail?.previewLabel}.`,
+                      )
+                    }
+                  >
+                    Baca cuplikan
+                  </Button>
+                </div>
               </div>
-              <Price amount={selectedBook.price} />
             </div>
-            <div className="reference-drawer-actions">
-              <Button
-                leadingIcon="cart"
-                onClick={() => addToCart(selectedBook)}
+
+            <section
+              aria-labelledby="ebook-detail-description"
+              className="ebook-detail-section"
+            >
+              <Typography
+                as="h3"
+                id="ebook-detail-description"
+                typeRole="label"
               >
-                Tambah ke keranjang
-              </Button>
-              <Button intent="quiet" onClick={() => setSelectedBook(null)}>
-                Tutup detail
-              </Button>
-            </div>
+                Tentang buku ini
+              </Typography>
+              <Typography typeRole="body-sm">
+                {selectedDetail?.description}
+              </Typography>
+            </section>
+
+            <section className="ebook-detail-section">
+              <Typography as="h3" typeRole="label">
+                Detail penerbitan
+              </Typography>
+              <Table aria-label={`Metadata ${selectedBook.title}`}>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Metadata</TableHead>
+                    <TableHead>Nilai</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    <TableHead scope="row">ISBN</TableHead>
+                    <TableCell>{selectedDetail?.isbn}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableHead scope="row">Penerbit</TableHead>
+                    <TableCell>{selectedDetail?.publisher}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableHead scope="row">Tanggal terbit</TableHead>
+                    <TableCell>{selectedDetail?.publicationDate}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableHead scope="row">Bahasa</TableHead>
+                    <TableCell>{selectedDetail?.language}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableHead scope="row">Jumlah halaman</TableHead>
+                    <TableCell>{selectedDetail?.pages}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableHead scope="row">Format</TableHead>
+                    <TableCell>{getEbookFormatSummary(selectedBook)}</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </section>
+
+            <CitationList
+              aria-label={`Sitasi ${selectedBook.title}`}
+              citations={selectedDetail?.citations ?? []}
+              className="ebook-detail-citations"
+              title="Sumber & sitasi"
+            />
+            <Button
+              intent="quiet"
+              leadingIcon="download"
+              onClick={() =>
+                setNotice(`Format sitasi ${selectedBook.title} siap disalin.`)
+              }
+              size="sm"
+            >
+              Salin sitasi
+            </Button>
+            <Button intent="quiet" onClick={() => setSelectedBook(null)}>
+              Tutup detail
+            </Button>
           </div>
         ) : null}
       </DetailDrawer>

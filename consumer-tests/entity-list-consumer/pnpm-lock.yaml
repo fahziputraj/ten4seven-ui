@@ -34,11 +34,11 @@ importers:
 packages:
 
   '@ten4seven/agent@file:../../artifacts/consumer-proof/ten4seven-agent-0.1.0.tgz':
-    resolution: {integrity: sha512-Gaz5ZaHZGMYMg/k9pau3BlcjuYB5in7k2HDAGx7kfbNye5LZdwQc9mrQM4ETM8oZY15LXGeb+kvLFcaN9oPAvw==, tarball: file:../../artifacts/consumer-proof/ten4seven-agent-0.1.0.tgz}
+    resolution: {integrity: sha512-DfnaA4zITwNKnlnvccQp63Uxcc94qAhj5+M23KQAY4PS1HIhFJV6MqYDIleCyDPgRwmpFgkYSXOBsmen5SBbiw==, tarball: file:../../artifacts/consumer-proof/ten4seven-agent-0.1.0.tgz}
     version: 0.1.0
 
   '@ten4seven/ui@file:../../artifacts/consumer-proof/ten4seven-ui-1.0.0.tgz':
-    resolution: {integrity: sha512-GO1sxvjB7OkfgvivbilGDcrnzziaxlbMsTebWdMf6ROVUxrqXgtuADZgu/y9eZSN+YkVEUAtoJdCc8u4MrK4uA==, tarball: file:../../artifacts/consumer-proof/ten4seven-ui-1.0.0.tgz}
+    resolution: {integrity: sha512-LLrU9U3JQHL5fi8IaCLb0vOogb2hPkzfbj9mbPSWuLKjLBELSep+Ac/0JikwBhFFh9lQcQn+DB9w1tlKzpqRGg==, tarball: file:../../artifacts/consumer-proof/ten4seven-ui-1.0.0.tgz}
     version: 1.0.0
     peerDependencies:
       react: '>=18.2.0'

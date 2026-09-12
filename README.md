@@ -22,6 +22,39 @@ The repository currently contains:
 - A local semantic icon package with no runtime Iconify CDN.
 - An AI application kit under `docs/ai/`, `packages/ai/`, and `skills/ten4seven-ui/`.
 
+## Universal contract plane and package graph
+
+Ten4Seven has one semantic source of truth and platform-specific renderers.
+The typed contracts under `packages/contracts/src/` own component intent,
+states, accessibility obligations, platform strategy, theme profiles, motion
+roles, recipes, blocks, and aliases. The generated files under `generated/`
+and `packages/agent/generated/` are deterministic retrieval and distribution
+projections; they are not a second hand-maintained decision manifest. Run
+`pnpm contracts:generate` after changing the typed source.
+
+The package responsibilities are intentionally separated:
+
+- `@ten4seven/contracts` is the typed contract plane.
+- `@ten4seven/tokens` resolves the renderer-neutral theme and projects Web CSS
+  plus JS/TS values from that same contract.
+- `@ten4seven/ui` is the self-contained Web DOM/CSS renderer and the private
+  Web consumer artifact.
+- `@ten4seven/native` is the React Native/Expo contract adapter and bounded
+  native renderer. It consumes resolved JS/TS theme values and never parses
+  CSS; it is currently a private source workspace package rather than a
+  published native artifact.
+- `@ten4seven/agent` packages generated projections and deterministic
+  retrieval helpers; `@ten4seven/ai` provides the local `t7ui` catalog CLI.
+
+Blocks and recipes compose canonical components, while product profiles and
+`ThemeScope` provide bounded semantic variation. They are not parallel
+primitive libraries. Web and native share meaning, token roles, state and
+accessibility contracts, and adaptive intent; they do not share DOM or React
+Native implementation code. The Expo Native Lab is a source-level consumer
+proof and Web export harness today. Android/iOS device runtime proof and a
+publishable native package remain explicit release gates, not implied by the
+Web package build.
+
 ## Run
 
 ```bash

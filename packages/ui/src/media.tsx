@@ -41,9 +41,11 @@ export interface MediaFrameProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export function MediaFrame({
+  "aria-label": ariaLabel,
   children,
   className,
   label,
+  role,
   ratio = 16 / 9,
   tone = "default",
   ...props
@@ -51,10 +53,11 @@ export function MediaFrame({
   return (
     <AspectRatio
       {...props}
-      aria-label={label}
+      aria-label={ariaLabel ?? label}
       className={cx("t7-media-frame", className)}
       data-tone={tone}
       ratio={ratio}
+      role={role ?? (label || ariaLabel ? "group" : undefined)}
     >
       {children}
     </AspectRatio>
@@ -77,10 +80,11 @@ export function Image({
   ...props
 }: ImageProps) {
   const [failed, setFailed] = useState(false);
+  const resolvedAlt = alt ?? "";
   if (!src || failed) {
     return (
       <span
-        aria-label={alt || fallbackLabel}
+        aria-label={resolvedAlt || fallbackLabel}
         className={cx("t7-image-fallback", className)}
         role="img"
       >
@@ -92,7 +96,7 @@ export function Image({
   return (
     <img
       {...props}
-      alt={alt}
+      alt={resolvedAlt}
       className={cx("t7-image", className)}
       onError={(event) => {
         onError?.(event);

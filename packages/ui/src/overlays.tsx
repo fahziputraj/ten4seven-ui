@@ -17,7 +17,7 @@ import {
 
 import { T7Icon, type IconName } from "@ten4seven/icons";
 
-import { Button, Modal } from "./components";
+import { Button, Dialog } from "./components";
 import {
   FloatingPortal,
   useExclusiveFloatingLayer,
@@ -269,7 +269,14 @@ export function Tooltip({
         ? cloneElement(
             children as ReactElement<TriggerProps>,
             {
-              "aria-describedby": id,
+              "aria-describedby": [
+                (children as ReactElement<TriggerProps>).props[
+                  "aria-describedby"
+                ],
+                id,
+              ]
+                .filter(Boolean)
+                .join(" "),
             } as TriggerProps,
           )
         : children}
@@ -278,7 +285,7 @@ export function Tooltip({
           <span
             className="t7-tooltip t7-floating-content"
             data-floating-placement={floating.placement}
-            data-side={side}
+            data-side={floating.placement}
             id={id}
             ref={floating.setContentRef}
             role="tooltip"
@@ -808,9 +815,12 @@ export function AlertDialog({
   open,
   title,
 }: AlertDialogProps) {
+  const cancelRef = useRef<HTMLButtonElement>(null);
   return (
-    <Modal
+    <Dialog
       description={description}
+      dismissible={false}
+      initialFocus={cancelRef}
       onClose={onClose}
       open={open}
       title={title}
@@ -818,7 +828,7 @@ export function AlertDialog({
       <div className="t7-alert-dialog-content">
         {children}
         <div className="t7-alert-dialog-actions">
-          <Button intent="secondary" onClick={onClose}>
+          <Button ref={cancelRef} intent="secondary" onClick={onClose}>
             {cancelLabel}
           </Button>
           <Button intent="danger" onClick={onConfirm}>
@@ -826,6 +836,6 @@ export function AlertDialog({
           </Button>
         </div>
       </div>
-    </Modal>
+    </Dialog>
   );
 }

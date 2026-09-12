@@ -45,12 +45,12 @@ const relationFields = ["alternativeTo", "composesWith"];
 
 assert.equal(
   canonical.length,
-  145,
+  172,
   "canonical component count changed; update evidence intentionally",
 );
 assert.equal(
   Object.keys(components).length,
-  151,
+  179,
   "component catalog count changed; update evidence intentionally",
 );
 assert.equal(
@@ -68,9 +68,22 @@ assert.equal(
 
 assert.equal(
   Object.keys(blocks).length,
-  12,
-  "expressive block count changed; update evidence intentionally",
+  60,
+  "expressive block count changed; update Q12 block evidence intentionally",
 );
+const expectedBlockFamilies = new Set([
+  "Public / marketing",
+  "Admin / application",
+  "Commerce",
+  "Workflow / productivity",
+  "Data management",
+  "AI / conversation",
+]);
+for (const family of expectedBlockFamilies)
+  assert.ok(
+    Object.values(blocks).some((block) => block.family === family),
+    `Q12 block family missing: ${family}`,
+  );
 
 for (const [name, component] of Object.entries(components)) {
   assert.ok(categories.has(component.category), `${name}: invalid taxonomy`);
@@ -140,6 +153,9 @@ assert.equal(
 assert.equal(components.NativeSelect.alternativeTo.join(","), "Select");
 assert.equal(components.DataTable.category, "table");
 assert.equal(components.DataTableColumnPicker.category, "table");
+assert.equal(components.List.status, "implemented");
+assert.equal(components.List.category, "data");
+assert.equal(components.List.source, "packages/ui/src/collections.tsx");
 assert.equal(components.AdvancedDataGrid.status, "implemented");
 assert.equal(components.AdvancedDataGrid.category, "table");
 assert.equal(

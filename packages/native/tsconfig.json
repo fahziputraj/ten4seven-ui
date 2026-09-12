@@ -8,5 +8,5 @@
       "@ten4seven/tokens": ["../tokens/src/index.ts"]
     }
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

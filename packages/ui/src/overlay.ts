@@ -211,14 +211,7 @@ export function useFloatingPosition(
       document.removeEventListener("scroll", scheduleUpdate, true);
       resizeObserver?.disconnect();
     };
-  }, [
-    anchorRef,
-    contentVersion,
-    open,
-    positionKey,
-    side,
-    updatePosition,
-  ]);
+  }, [anchorRef, contentVersion, open, positionKey, side, updatePosition]);
 
   return { contentRef, placement, setContentRef, style };
 }
@@ -388,8 +381,10 @@ export function useNativeDialog(
   open: boolean,
   onClose: () => void,
   initialFocus?: RefObject<HTMLElement | null>,
+  dismissOnEscape = true,
 ) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const returnFocusRef = useRef<HTMLElement | null>(null);
 
   // The visual viewport shrinks when a mobile keyboard opens; dvh alone does
   // not reflect that in every browser. Keep the native top layer in that space.
@@ -423,6 +418,9 @@ export function useNativeDialog(
     if (!dialog) return;
 
     if (open && !dialog.open) {
+      const activeElement = document.activeElement;
+      returnFocusRef.current =
+        activeElement instanceof HTMLElement ? activeElement : null;
       dialog.showModal();
       const frame = requestAnimationFrame(() =>
         initialFocus?.current?.focus({ preventScroll: true }),
@@ -430,7 +428,17 @@ export function useNativeDialog(
       return () => cancelAnimationFrame(frame);
     }
 
-    if (!open && dialog.open) dialog.close();
+    if (!open && dialog.open) {
+      dialog.close();
+      const frame = requestAnimationFrame(() => {
+        const returnFocus = returnFocusRef.current;
+        if (returnFocus?.isConnected) {
+          returnFocus.focus({ preventScroll: true });
+        }
+        returnFocusRef.current = null;
+      });
+      return () => cancelAnimationFrame(frame);
+    }
   }, [initialFocus, open]);
 
   useEffect(() => {
@@ -439,7 +447,7 @@ export function useNativeDialog(
 
     const handleCancel = (event: Event) => {
       event.preventDefault();
-      onClose();
+      if (dismissOnEscape) onClose();
     };
     // Native modality makes the page inert, but browsers may send Tab from an
     // edge control into browser chrome. Cycle explicitly within the top dialog.
@@ -455,6 +463,7 @@ export function useNativeDialog(
           node.tabIndex >= 0 &&
           !node.matches(":disabled") &&
           !node.closest("[inert]") &&
+          node.closest("dialog") === dialog &&
           node.getClientRects().length > 0 &&
           getComputedStyle(node).visibility !== "hidden",
       );
@@ -481,7 +490,7 @@ export function useNativeDialog(
       dialog.removeEventListener("cancel", handleCancel);
       dialog.removeEventListener("keydown", handleTab);
     };
-  }, [onClose]);
+  }, [dismissOnEscape, onClose]);
 
   useEffect(() => {
     if (!open || typeof document === "undefined") return undefined;

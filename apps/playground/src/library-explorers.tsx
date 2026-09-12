@@ -36,10 +36,12 @@ import {
   ProductShowcase,
   PublicFooter,
   PageHeader,
+  Q12BlockComposition,
   SectionNavigation,
   StatsSection,
   Testimonials,
   Typography,
+  type Q12BlockFamily,
   useToast,
   useTen4SevenTheme,
 } from "@ten4seven/ui";
@@ -47,6 +49,7 @@ import { ComponentProofs } from "./component-proofs";
 import { ContentSafetyProof } from "./content-safety-proof";
 import { ComponentPreview } from "./component-preview-fixtures";
 import { LibraryPageHeader } from "./library-page-header";
+import { CompositionShowcase } from "./composition-showcase";
 import {
   blockCatalog,
   blockPath,
@@ -61,6 +64,7 @@ import {
   recipeCatalog,
   recipePath,
   slugify,
+  type BlockContract,
   type ComponentContract,
 } from "./catalog-model";
 
@@ -481,6 +485,8 @@ const componentShowroomGroupDefinitions: Record<
         "Toggle Button",
         "Toggle Button Group",
         "Split Button",
+        "Speed Dial",
+        "Drag Handle",
       ],
     },
   ],
@@ -511,6 +517,9 @@ const componentShowroomGroupDefinitions: Record<
         "Activity Feed",
         "Record Summary",
         "Revision Diff",
+        "Conversation Thread",
+        "Citation List",
+        "Tool Call Card",
       ],
     },
     {
@@ -547,6 +556,8 @@ const componentShowroomGroupDefinitions: Record<
         "Search Input",
         "Password Input",
         "Textarea",
+        "Editor Surface",
+        "Prompt Composer",
         "Field",
         "Label",
         "Field Description",
@@ -576,6 +587,9 @@ const componentShowroomGroupDefinitions: Record<
         "Combobox",
         "Multi Select",
         "Hierarchy Picker",
+        "Transfer",
+        "Color Picker",
+        "Tags Input",
         "Checkbox",
         "Checkbox Group",
         "Radio",
@@ -603,6 +617,8 @@ const componentShowroomGroupDefinitions: Record<
         "Mobile Sidebar",
         "Breadcrumb",
         "Section Navigation",
+        "Bottom Navigation",
+        "Navigation Rail",
       ],
     },
     {
@@ -617,7 +633,37 @@ const componentShowroomGroupDefinitions: Record<
         "Pagination",
         "Tab Panel",
         "Carousel",
+        "Tree View",
       ],
+    },
+  ],
+  layout: [
+    {
+      description:
+        "Constrain and compose route content with predictable rails.",
+      label: "Content and workspace layout",
+      names: [
+        "Container",
+        "Stack",
+        "Split Pane",
+        "Scroll Area",
+        "Separator",
+        "Section",
+        "Section Header",
+        "Toolbar",
+        "Action Bar",
+        "Page Header",
+        "Builder Canvas",
+        "Property Inspector",
+      ],
+    },
+  ],
+  file: [
+    {
+      description:
+        "Keep file selection, preview, and metadata in one contract family.",
+      label: "File surfaces",
+      names: ["File Upload", "File Item", "File List", "File Preview"],
     },
   ],
   overlay: [
@@ -1462,7 +1508,7 @@ export function ComponentLabExplorer() {
               className="component-lab-context-signals"
               aria-label="Lab signals"
             >
-              <span>6 sections</span>
+              <span>10 sections</span>
               <span>client-side</span>
               <span>local proof</span>
             </div>
@@ -1471,11 +1517,24 @@ export function ComponentLabExplorer() {
             className="component-lab-section-navigation"
             items={[
               { id: "component-lab-forms-feedback", label: "Forms" },
+              {
+                id: "component-lab-core-layout-actions",
+                label: "Core",
+              },
               { id: "component-lab-data-signals", label: "Data" },
               { id: "component-lab-overlays", label: "Overlays" },
               { id: "component-lab-surfaces", label: "Surfaces" },
               { id: "component-lab-charts", label: "Charts" },
               { id: "component-lab-navigation", label: "Flow" },
+              { id: "component-lab-workflow", label: "Workflow" },
+              {
+                id: "component-lab-editors-builders-ai",
+                label: "Advanced",
+              },
+              {
+                id: "component-lab-u10-advanced-interactions",
+                label: "U10 canary",
+              },
             ]}
             label="Component Lab sections"
             sticky
@@ -1752,6 +1811,7 @@ export function IconsExplorer() {
         className="library-section iconify-curated-section"
         data-iconify-count={IconifyCuratedIconCount}
         data-iconify-family="ten4seven-curated"
+        data-iconify-style="solar-bold-duotone"
       >
         <div className="library-section-heading">
           <div>
@@ -1759,17 +1819,17 @@ export function IconsExplorer() {
               Curated farm &amp; operations
             </Typography>
             <Typography typeRole="body-sm">
-              A small, governed Iconify extension for farm nouns, money, and
-              directional controls. Every glyph is bundled locally, normalized
-              to the 24px canvas, and rendered with theme-aware paints.
+              Governed farm and operations aliases with the same Solar Bold
+              Duotone language as the main library. Bodies stay local, fit the
+              shared 24px canvas, and use theme-aware primary and accent paints.
             </Typography>
           </div>
-          <Typography className="icon-registry-proof" typeRole="caption">
-            {IconifyCuratedIconCount} curated glyphs
-          </Typography>
+          <span className="iconify-family-count">
+            Solar Bold Duotone · {IconifyCuratedIconCount} aliases
+          </span>
         </div>
         <div
-          aria-label="Curated farm and operations icons"
+          aria-label="Solar curated farm and operations icons"
           className="library-icon-grid iconify-icon-grid"
         >
           {IconifyCuratedIconNames.map((name) => (
@@ -1896,6 +1956,7 @@ export function RecipesExplorer({
         overline="Library · composition recipes"
         title="Recipes"
       />
+      <CompositionShowcase mode="recipes" />
       <Input
         aria-label="Search recipes"
         className="library-search"
@@ -2342,6 +2403,161 @@ function BlockCatalogMedia({ variant = "signal" }: { variant?: string }) {
   );
 }
 
+function Q12PreviewCard({
+  detail,
+  label,
+  title,
+}: {
+  detail: string;
+  label: string;
+  title: string;
+}) {
+  return (
+    <Card className="q12-preview-card">
+      <CardContent>
+        <Typography typeRole="overline">{label}</Typography>
+        <Typography as="h3" typeRole="heading-md">
+          {title}
+        </Typography>
+        <Typography typeRole="caption">{detail}</Typography>
+      </CardContent>
+    </Card>
+  );
+}
+
+function Q12BlockPreview({ block }: { block: BlockContract }) {
+  const family = (block.family ?? "Public / marketing") as Q12BlockFamily;
+  const previewClass = `q12-block-preview-body q12-block-preview-body--${slugify(family)}`;
+  let body: ReactNode;
+
+  switch (family) {
+    case "Admin / application":
+      body = (
+        <div className="q12-preview-metrics">
+          {[
+            ["Ready", "92%", "within target"],
+            ["Review", "18", "open items"],
+            ["Next", "03", "actions due"],
+          ].map(([label, value, detail]) => (
+            <Q12PreviewCard
+              detail={detail}
+              key={label}
+              label={label}
+              title={value}
+            />
+          ))}
+        </div>
+      );
+      break;
+    case "Commerce":
+      body = (
+        <div className="q12-preview-commerce-grid">
+          <Q12PreviewCard
+            detail="Clear anatomy keeps selection and price visible."
+            label="Product"
+            title="Considered offer"
+          />
+          <Q12PreviewCard
+            detail="Summary remains adjacent to the next action."
+            label="Summary"
+            title="Ready to continue"
+          />
+        </div>
+      );
+      break;
+    case "Workflow / productivity":
+      body = (
+        <>
+          <div className="q12-preview-flow">
+            {["Context", "Review", "Next action"].map((step, index) => (
+              <div className="q12-preview-flow-step" key={step}>
+                <span aria-hidden="true">{index + 1}</span>
+                <Typography typeRole="label">{step}</Typography>
+              </div>
+            ))}
+          </div>
+          <Button size="sm">Continue review</Button>
+        </>
+      );
+      break;
+    case "Data management":
+      body = (
+        <div className="q12-preview-data-grid">
+          <ChartPanel
+            description="Bounded signal preview"
+            title="Data quality"
+            chart={
+              <LineChart
+                ariaLabel="Q12 data block preview"
+                labels={["A", "B", "C", "D"]}
+                series={[
+                  { id: "quality", label: "Quality", values: [34, 42, 38, 51] },
+                ]}
+              />
+            }
+          />
+          <Q12PreviewCard
+            detail="Column, filter, and row contracts stay discoverable."
+            label="View"
+            title="Readable data"
+          />
+        </div>
+      );
+      break;
+    case "AI / conversation":
+      body = (
+        <div className="q12-preview-conversation">
+          <Q12PreviewCard
+            detail="Prompt context remains visible before generation."
+            label="Prompt"
+            title="What should happen next?"
+          />
+          <Q12PreviewCard
+            detail="Sources and handoff stay attached to the answer."
+            label="Response"
+            title="Grounded and reviewable"
+          />
+        </div>
+      );
+      break;
+    case "Public / marketing":
+    default:
+      body = (
+        <div className="q12-preview-public-grid">
+          <Q12PreviewCard
+            detail="One proposition, one supporting proof surface."
+            label="Lead"
+            title="A clear starting point"
+          />
+          <div className="q12-preview-public-action">
+            <Button size="sm">Explore composition</Button>
+            <Typography typeRole="caption">
+              {block.variants.slice(0, 2).join(" · ")}
+            </Typography>
+          </div>
+        </div>
+      );
+      break;
+  }
+
+  return (
+    <Q12BlockComposition
+      className={previewClass}
+      description={block.purpose}
+      eyebrow={family}
+      family={family}
+      title={block.displayName}
+    >
+      <div className="q12-block-preview-content">
+        {body}
+        <Typography className="q12-preview-variants" typeRole="caption">
+          Variants · {block.variants.join(" · ")}
+        </Typography>
+      </div>
+    </Q12BlockComposition>
+  );
+}
+
 function BlockPreview({ slug }: { slug: string }) {
   switch (slug) {
     case "hero-split":
@@ -2560,6 +2776,9 @@ function BlockPreview({ slug }: { slug: string }) {
         />
       );
     default:
+      if (blockCatalog[slug]?.family) {
+        return <Q12BlockPreview block={blockCatalog[slug]} />;
+      }
       return (
         <Card>
           <CardContent>
@@ -2577,8 +2796,17 @@ export function BlocksExplorer({
 }: {
   onNavigatePath: (path: string) => void;
 }) {
+  const [activeFamily, setActiveFamily] = useState("All");
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
+  const families = [
+    "All",
+    ...new Set(
+      Object.values(blockCatalog)
+        .map((block) => block.family)
+        .filter((family): family is string => Boolean(family)),
+    ),
+  ];
   const categories = [
     "All",
     ...new Set(Object.values(blockCatalog).map((block) => block.category)),
@@ -2587,19 +2815,28 @@ export function BlocksExplorer({
   const entries = Object.entries(blockCatalog).filter(([slug, block]) => {
     const categoryMatches =
       activeCategory === "All" || block.category === activeCategory;
+    const familyMatches =
+      activeFamily === "All" || block.family === activeFamily;
     const queryMatches =
       !normalizedQuery ||
-      [slug, block.displayName, block.category, block.purpose, ...block.useWhen]
+      [
+        slug,
+        block.displayName,
+        block.category,
+        block.family ?? "",
+        block.purpose,
+        ...block.useWhen,
+      ]
         .join(" ")
         .toLowerCase()
         .includes(normalizedQuery);
-    return categoryMatches && queryMatches;
+    return familyMatches && categoryMatches && queryMatches;
   });
 
   return (
     <div className="library-page blocks-explorer-page">
       <LibraryPageHeader
-        count={`${catalogCounts.blocks} expressive block families`}
+        count={`${catalogCounts.blocks} expressive blocks · ${catalogCounts.blockFamilies} families`}
         description="Reusable page-level compositions for public, content, commerce, and product surfaces. Blocks compose canonical contracts; they do not replace them."
         icon="components"
         overline="Library · expressive composition"
@@ -2626,6 +2863,7 @@ export function BlocksExplorer({
           </CatalogLink>
         ))}
       </nav>
+      <CompositionShowcase mode="blocks" />
 
       <Input
         aria-label="Search expressive blocks"
@@ -2636,6 +2874,23 @@ export function BlocksExplorer({
         placeholder="Hero, testimonials, carousel…"
         value={query}
       />
+      <div
+        aria-label="Block families"
+        className="catalog-filter-tabs block-family-filter-tabs"
+        role="group"
+      >
+        {families.map((family) => (
+          <button
+            aria-pressed={activeFamily === family}
+            className="catalog-filter-tab"
+            key={family}
+            onClick={() => setActiveFamily(family)}
+            type="button"
+          >
+            {family}
+          </button>
+        ))}
+      </div>
       <div
         aria-label="Block categories"
         className="catalog-filter-tabs"
@@ -2659,7 +2914,11 @@ export function BlocksExplorer({
           <article className="block-catalog-card" key={slug}>
             <div className="block-catalog-card-heading">
               <div>
-                <Typography typeRole="overline">{block.category}</Typography>
+                <Typography typeRole="overline">
+                  {block.family
+                    ? `${block.family} · ${block.category}`
+                    : block.category}
+                </Typography>
                 <Typography as="h2" typeRole="heading-md">
                   {block.displayName}
                 </Typography>
@@ -2712,7 +2971,7 @@ export function BlockDetailExplorer({
   return (
     <div className="library-page block-detail-page">
       <LibraryPageHeader
-        count={`${block.category} · ${block.variants.length} variants`}
+        count={`${block.family ? `${block.family} · ` : ""}${block.category} · ${block.variants.length} variants`}
         description={block.purpose}
         icon="components"
         overline="Blocks · composition contract"

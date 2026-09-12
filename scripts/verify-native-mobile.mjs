@@ -7,6 +7,7 @@ import {
   NATIVE_SYNC_STATES,
   NATIVE_COLOR_ROLES,
   NATIVE_COMPONENT_IDS,
+  DEVICE_SOURCE_CONTRACTS,
 } from "../packages/contracts/src/index.ts";
 import {
   createFarmDailyOperationProof,
@@ -16,7 +17,12 @@ import {
   createNativeInput,
   createNativeSyncStatus,
   resolveNativeIcon,
+  resolveNativeComponentContract,
+  resolveNativeInputContract,
+  resolveNativeInputSource,
   resolveNativeTheme,
+  NATIVE_DATA_COLLECTION_CANARY,
+  resolveNativeDataCollection,
 } from "../packages/native/src/index.ts";
 
 const repoRoot = path.resolve(import.meta.dirname, "..");
@@ -100,6 +106,23 @@ assert.equal(
   "native touch target must use the shared component token",
 );
 assert.deepEqual(
+  NATIVE_MOBILE_CONTRACT.resolvedProjection,
+  {
+    sourceOfTruth: "packages/tokens/src/theme.ts",
+    format: "typed-js",
+    colors: "opaque-srgb-hex",
+    dimensions: "number-px",
+    durations: "number-ms",
+    cssIndependent: true,
+  },
+  "native theme projection must be a CSS-independent typed data contract",
+);
+assert.doesNotMatch(
+  nativeSource,
+  /buildThemeVariables|hslToHex|--t7-|var\s*\(/,
+  "native adapter must consume the resolved token data projection, not CSS",
+);
+assert.deepEqual(
   Object.keys(NATIVE_MOBILE_CONTRACT.tokenReferences.brand),
   ["primary", "accent", "highlight", "surface", "text"],
   "native brand role mapping drifted",
@@ -159,6 +182,76 @@ assert.equal(
   button.minTouchTargetToken,
   "component.interaction.touchTarget.minimum",
 );
+
+const buttonContract = resolveNativeComponentContract(
+  readJson("generated/components/Button.json"),
+);
+assert.equal(buttonContract.id, "Button");
+assert.equal(buttonContract.platform, "BOTH");
+assert.equal(buttonContract.status, "planned");
+assert.equal(buttonContract.presentation, "native-pressable");
+assert.ok(buttonContract.tokenFamilies.includes("color"));
+assert.ok(buttonContract.layoutIntents.includes("touch-target-minimum"));
+assert.ok(buttonContract.accessibilityObligations.includes("actionable-role"));
+
+const inputCanaries = [
+  ["Input", "native-platform-control", "control"],
+  ["Checkbox", "native-platform-control", "control"],
+  ["Select", "native-picker", "control"],
+  ["DatePicker", "native-picker", "control"],
+  ["FileUpload", "native-document-picker", "content"],
+];
+for (const [name, presentation, measure] of inputCanaries) {
+  const input = resolveNativeInputContract(
+    name,
+    readJson(`generated/components/${name}.json`),
+  );
+  assert.equal(input.id, name);
+  assert.equal(input.nativeStatus, "planned");
+  assert.equal(input.presentation, presentation);
+  assert.equal(input.measure, measure);
+  assert.ok(input.tokenRoles.length > 0);
+  assert.ok(input.states.includes("disabled"));
+  assert.ok(input.accessibility.length > 0);
+  assert.ok(input.dataBoundary);
+}
+
+assert.deepEqual(
+  Object.keys(NATIVE_DATA_COLLECTION_CANARY),
+  ["List", "DescriptionList", "SelectableList", "DataTable", "Tree"],
+  "native U07 data collection canary set drifted",
+);
+const listCanary = resolveNativeDataCollection("List");
+assert.equal(listCanary.primitive, "FlatList");
+assert.equal(listCanary.presentation, "native-collection");
+assert.equal(listCanary.accessibilityRole, "list");
+assert.ok(listCanary.states.includes("loading"));
+assert.ok(listCanary.states.includes("filteredEmpty"));
+const descriptionCanary = resolveNativeDataCollection("DescriptionList");
+assert.equal(descriptionCanary.primitive, "ScrollView");
+assert.equal(descriptionCanary.accessibilityRole, "summary");
+const dataTableCanary = resolveNativeDataCollection("DataTable");
+assert.equal(dataTableCanary.primitive, "FlatList");
+assert.equal(dataTableCanary.presentation, "native-list-detail");
+assert.ok(dataTableCanary.adaptiveStrategy.includes("priority-columns-to-detail"));
+const treeCanary = resolveNativeDataCollection("Tree");
+assert.equal(treeCanary.primitive, "SectionList");
+assert.equal(treeCanary.presentation, "native-list-detail");
+assert.ok(treeCanary.adaptiveStrategy.includes("native-drill-down"));
+
+const imageSource = resolveNativeInputSource("ImagePicker");
+assert.deepEqual(
+  Object.keys(DEVICE_SOURCE_CONTRACTS),
+  ["DocumentPicker", "ImagePicker", "CameraCapture"],
+  "native input source canary set drifted",
+);
+assert.equal(imageSource.classification, "NATIVE_ONLY");
+assert.equal(imageSource.status, "planned");
+assert.equal(imageSource.presentation, "native-picker");
+assert.equal(imageSource.webAlternativeComponent, "FileUpload");
+assert.ok(imageSource.capabilities.includes("photo-library.read"));
+assert.ok(imageSource.metadata.includes("uri"));
+assert.ok(imageSource.metadata.includes("permissionState"));
 
 const invalidInput = createNativeInput({
   id: "operation-date",

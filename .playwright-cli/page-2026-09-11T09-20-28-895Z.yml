@@ -1,0 +1,382 @@
+- generic [ref=e3]:
+  - generic [ref=e1175]:
+    - complementary [ref=e1176]:
+      - img "ten4seven UI system" [ref=e1179]:
+        - generic [ref=e1192]:
+          - generic [aria-hidden] [ref=e1193]: ten4seven
+          - generic [aria-hidden] [ref=e1194]: UI system
+      - navigation "ten4seven UI navigation" [ref=e1196]:
+        - generic [ref=e1197]:
+          - group "Studio" [ref=e1198]:
+            - button "Theme Studio" [ref=e1200] [cursor=pointer]
+            - button "Component Lab" [ref=e1213] [cursor=pointer]
+          - group "Library" [ref=e1221]:
+            - button "Tokens" [ref=e1223] [cursor=pointer]
+            - button "Components" [ref=e1232] [cursor=pointer]
+            - button "Blocks" [ref=e1240] [cursor=pointer]
+            - button "Icons" [ref=e1248] [cursor=pointer]
+            - button "Recipes" [ref=e1255] [cursor=pointer]
+            - generic "Library menu" [ref=e1263]:
+              - button "Browse library…" [ref=e1264] [cursor=pointer]
+          - group "Reference" [ref=e1272]:
+            - button "Publishing Store" [ref=e1274] [cursor=pointer]
+          - group "Labs / Proofs" [ref=e1282]:
+            - button "Operations Tracker" [ref=e1284] [cursor=pointer]
+            - button "Operational Patterns" [ref=e1292] [cursor=pointer]
+            - button "SaaS Control Plane" [ref=e1298] [cursor=pointer]
+            - button "ERP Density Reference" [ref=e1305] [cursor=pointer]
+            - button "Farm P1 Reference" [ref=e1313] [cursor=pointer]
+            - button "Public Showcase" [ref=e1319] [cursor=pointer]
+            - button "Farm Synthetic" [ref=e1325] [cursor=pointer]
+            - button "Auth · Neutral" [ref=e1331] [cursor=pointer]
+            - button "Auth · AAPM Academy" [ref=e1338] [cursor=pointer]:
+              - generic [ref=e1345]: Auth · Academy
+            - generic [ref=e1346]: "Canonical identity: AAPM Academy."
+      - generic [ref=e1347]:
+        - generic [ref=e1348]: Explore
+        - paragraph [ref=e1349]: Canonical UI surfaces, recipes, and practical previews.
+        - generic [ref=e1350]: Ten4Seven UI
+    - main [active] [ref=e1351]:
+      - generic [ref=e1352]:
+        - generic [ref=e1354]:
+          - generic [ref=e1355]: ten4seven UI
+          - strong [ref=e1370]: Theme Studio
+        - generic [ref=e1371]:
+          - button "Search ten4seven catalog" [ref=e1372] [cursor=pointer]:
+            - generic [ref=e1379]: Search catalogCtrl K
+          - generic "Live preview status" [ref=e1380]:
+            - button "Live" [ref=e1381] [cursor=pointer]
+          - button "Open settings" [ref=e1386] [cursor=pointer]
+          - generic "ten4seven workspace menu" [ref=e1391]:
+            - button "ten4seven workspace ten4seven UI workspace" [ref=e1392] [cursor=pointer]:
+              - img "ten4seven workspace" [ref=e1393]:
+                - generic [aria-hidden] [ref=e1394]: T
+              - generic [ref=e1395]:
+                - strong [ref=e1396]: ten4seven
+                - generic [ref=e1397]: UI workspace
+      - generic [ref=e1400]:
+        - generic [ref=e1402]:
+          - generic [ref=e1403]: Theme workbench · live token preview
+          - heading "Theme Studio" [level=1] [ref=e1404]
+          - paragraph [ref=e1405]: Tune shared tokens and preview their effect.
+          - generic [ref=e1406]: Local preview · live tokens
+        - region "Theme recipe, runtime preferences, and live preview" [ref=e1408]:
+          - region [ref=e1410]:
+            - generic [ref=e1411]:
+              - generic [ref=e1425]:
+                - strong [ref=e1426]: Live sandbox
+                - generic [ref=e1427]: Preview tokens in context.
+              - paragraph [ref=e1428]: Theme recipe
+              - heading "Choose a recipe" [level=2] [ref=e1429]
+              - paragraph [ref=e1430]: Start with a preset, then tune runtime preferences.
+            - generic "Theme recipes" [ref=e1431]:
+              - generic "Curated theme recipes" [ref=e1432]:
+                - button "Enterprise" [ref=e1433] [cursor=pointer]:
+                  - generic [ref=e1439]:
+                    - strong [ref=e1440]: Enterprise
+                    - generic [ref=e1441]: Quiet operational surfaces
+                - button "Product" [ref=e1442] [cursor=pointer]:
+                  - generic [ref=e1450]:
+                    - strong [ref=e1451]: Product
+                    - generic [ref=e1452]: Balanced application rhythm
+                - button "Editorial" [ref=e1453] [cursor=pointer]:
+                  - generic [ref=e1461]:
+                    - strong [ref=e1462]: Editorial
+                    - generic [ref=e1463]: Reading-led hierarchy
+                - button "Commerce" [ref=e1464] [cursor=pointer]:
+                  - generic [ref=e1473]:
+                    - strong [ref=e1474]: Commerce
+                    - generic [ref=e1475]: Discovery and buying clarity
+              - generic [ref=e1476]:
+                - generic [ref=e1477]: Custom
+                - button "Custom" [pressed] [ref=e1478] [cursor=pointer]
+            - generic "Runtime preferences" [ref=e1491]:
+              - group "Appearance" [ref=e1492]:
+                - generic [ref=e1508]:
+                  - button "System" [pressed] [ref=e1509] [cursor=pointer]
+                  - button "Light" [ref=e1515] [cursor=pointer]
+                  - button "Dark" [ref=e1526] [cursor=pointer]
+              - group "Density" [ref=e1533]:
+                - generic [ref=e1542]:
+                  - button "Dense" [ref=e1543] [cursor=pointer]
+                  - button "Compact" [ref=e1549] [cursor=pointer]
+                  - button "Regular" [pressed] [ref=e1557] [cursor=pointer]
+                  - button "Comfortable" [ref=e1563] [cursor=pointer]
+              - group "Contrast" [ref=e1571]:
+                - generic [ref=e1580]:
+                  - button "Standard" [pressed] [ref=e1581] [cursor=pointer]
+                  - button "More" [ref=e1587] [cursor=pointer]
+              - group "Motion" [ref=e1593]:
+                - generic [ref=e1600]:
+                  - button "Full" [pressed] [ref=e1601] [cursor=pointer]
+                  - button "Reduced" [ref=e1607] [cursor=pointer]
+            - group "Surface treatment" [ref=e1611]:
+              - paragraph [ref=e1613]: Container chrome for dense surfaces.
+              - group "Surface treatment" [ref=e1614]:
+                - button "Quiet canvas Soft tonal separation" [ref=e1615] [cursor=pointer]:
+                  - generic [ref=e1621]:
+                    - strong [ref=e1622]: Quiet canvas
+                    - generic [ref=e1623]: Soft tonal separation
+                - button "Low contrast Subtle field edges" [ref=e1624] [cursor=pointer]:
+                  - generic [ref=e1633]:
+                    - strong [ref=e1634]: Low contrast
+                    - generic [ref=e1635]: Subtle field edges
+                - button "Outlined regions Clear region edges" [pressed] [ref=e1636] [cursor=pointer]:
+                  - generic [ref=e1644]:
+                    - strong [ref=e1645]: Outlined regions
+                    - generic [ref=e1646]: Clear region edges
+            - generic [ref=e1647]: Custom recipe · no preset selected
+          - complementary [ref=e1648]:
+            - region [ref=e1649]:
+              - generic [ref=e1650]:
+                - generic [ref=e1651]:
+                  - heading "Live visual preview" [level=2] [ref=e1652]
+                  - paragraph [ref=e1653]: One compact surface for the active theme.
+                - generic "Live. Ready to preview" [ref=e1654]:
+                  - generic [ref=e1655]: Live
+                  - generic [ref=e1657]: Ready to preview
+              - generic [ref=e1659]:
+                - generic [ref=e1660]:
+                  - generic [ref=e1661]:
+                    - generic [ref=e1662]: Customer workspace
+                    - heading "Release readiness" [level=3] [ref=e1663]
+                    - paragraph [ref=e1664]: Actions, status, form, and data in one surface.
+                  - generic [ref=e1665]: Healthy
+                - generic [ref=e1667]:
+                  - button "Apply" [ref=e1668] [cursor=pointer]
+                  - button "Review" [ref=e1672] [cursor=pointer]
+                - generic [ref=e1675]:
+                  - generic [ref=e1676]: Release note
+                  - textbox "Live theme preview field" [ref=e1678]: Ready
+                - generic [ref=e1679]:
+                  - generic [ref=e1680]:
+                    - generic [ref=e1681]:
+                      - generic [ref=e1682]: Canvas surface
+                      - strong [ref=e1683]: balanced
+                    - generic [ref=e1684]:
+                      - generic [ref=e1685]: soft
+                      - generic [ref=e1686]: radius
+                  - generic [ref=e1687]:
+                    - generic [ref=e1688]: Chart colorway
+                    - 'img "Chart preview: spectrum colorway" [ref=e1689]'
+                - table "Previewed component health" [ref=e1696]:
+                  - rowgroup [ref=e1697]:
+                    - row [ref=e1698]:
+                      - columnheader "Surface" [ref=e1699]
+                      - columnheader "Layer" [ref=e1700]
+                      - columnheader "Status" [ref=e1701]
+                  - rowgroup [ref=e1702]:
+                    - row [ref=e1703]:
+                      - cell "Semantic tokens" [ref=e1704]
+                      - cell "L1 foundation" [ref=e1705]
+                      - cell "Ready" [ref=e1706]
+                    - row [ref=e1709]:
+                      - cell "Button" [ref=e1710]
+                      - cell "L4 canonical" [ref=e1711]
+                      - cell "Ready" [ref=e1712]
+              - group [ref=e1715]:
+                - generic "Semantic diagnostics" [ref=e1716] [cursor=pointer]
+              - generic [ref=e1717]:
+                - generic "Inverse theme scope proof" [ref=e1718]:
+                  - generic [ref=e1719]:
+                    - generic [ref=e1720]: Inverse ThemeScope
+                    - generic [ref=e1721]: Nested contrast · shared contract
+                  - button "Scoped action" [ref=e1722] [cursor=pointer]
+                  - generic [ref=e1724]: ThemeScope · inverse
+                  - generic "Nested ThemeScope composition proof" [ref=e1725]: Nested inverse returns to the parent contrast contract.
+                - generic "Editorial recipe scope proof" [ref=e1726]:
+                  - generic [ref=e1727]:
+                    - generic [ref=e1728]: Recipe scope
+                    - generic [ref=e1729]: Authored geometry and type
+                  - button "Scoped editorial action" [ref=e1730] [cursor=pointer]
+                  - generic [ref=e1732]:
+                    - generic [ref=e1733]: Editorial scoped options
+                    - generic [ref=e1734]:
+                      - combobox [aria-hidden] [ref=e1735]
+                      - button "Editorial scoped options" [ref=e1736] [cursor=pointer]:
+                        - generic [ref=e1737]: Authored editorial context
+                  - generic [ref=e1740]: ThemeScope · editorial
+        - button "AAPM profile adapter One brand source · six product expressions" [ref=e1742] [cursor=pointer]:
+          - generic [ref=e1744]:
+            - generic [ref=e1745]: AAPM profile adapter
+            - generic [ref=e1746]: One brand source · six product expressions
+        - region "Responsive shell and module-state contracts" [ref=e1749]:
+          - generic [ref=e1750]:
+            - generic [ref=e1751]:
+              - generic [ref=e1752]: Q04 · presentation contracts
+              - heading "Responsive shell & module states" [level=2] [ref=e1753]
+              - paragraph [ref=e1754]: Generated behavior metadata keeps shell, narrow layouts, and module-state presentation aligned across private app surfaces.
+            - generic [ref=e1755]:
+              - generic [ref=e1756]: Generated · v
+              - generic [ref=e1757]: "0.1"
+          - generic [ref=e1758]:
+            - generic [ref=e1759]:
+              - strong [ref=e1760]: "3"
+              - generic [ref=e1761]: viewport bands
+            - generic [ref=e1762]:
+              - strong [ref=e1763]: "9"
+              - generic [ref=e1764]: behavior contracts
+            - generic [ref=e1765]:
+              - strong [ref=e1766]: "11"
+              - generic [ref=e1767]: module states
+            - generic [ref=e1768]:
+              - strong [ref=e1769]: "1"
+              - generic [ref=e1770]: shared shell grammar
+          - button "Viewport & component behavior One matrix for desktop, tablet, and mobile" [ref=e1772] [cursor=pointer]:
+            - generic [ref=e1774]:
+              - generic [ref=e1775]: Viewport & component behavior
+              - generic [ref=e1776]: One matrix for desktop, tablet, and mobile
+          - button "Module-state presentation Rendering only · consumer owns meaning and actions" [ref=e1780] [cursor=pointer]:
+            - generic [ref=e1782]:
+              - generic [ref=e1783]: Module-state presentation
+              - generic [ref=e1784]: Rendering only · consumer owns meaning and actions
+        - button "Advanced theme authoring Shared token controls" [ref=e1788] [cursor=pointer]:
+          - generic [ref=e1790]:
+            - generic [ref=e1791]: Advanced theme authoring
+            - generic [ref=e1792]: Shared token controls
+        - button "Developer delivery CSS-first selector proof" [ref=e1796] [cursor=pointer]:
+          - generic [ref=e1798]:
+            - generic [ref=e1799]: Developer delivery
+            - generic [ref=e1800]: CSS-first selector proof
+        - generic [ref=e1803]:
+          - generic [ref=e1804]:
+            - generic [ref=e1805]:
+              - heading "Typography specimen" [level=2] [ref=e1806]
+              - paragraph [ref=e1807]: One live hierarchy, resolved from the active typography preset.
+            - generic [ref=e1808]: Modern · 22 roles
+          - generic [ref=e1810]:
+            - generic [ref=e1811]:
+              - generic [ref=e1812]:
+                - generic [ref=e1813]: Display
+                - heading "Make the system legible." [level=2] [ref=e1814]
+                - paragraph [ref=e1815]: Hierarchy is scale, space, and limited emphasis.
+              - generic [ref=e1816]:
+                - generic [ref=e1817]: Active type system
+                - strong [ref=e1818]: Role-led hierarchy
+                - generic [ref=e1819]: Optical sizing enabled
+                - generic [ref=e1820]: Inter · balanced UI + display · opsz auto
+            - generic [ref=e1821]:
+              - generic [ref=e1822]:
+                - generic [ref=e1823]: Heading roles
+                - heading "Section title" [level=3] [ref=e1824]
+                - heading "Card title" [level=3] [ref=e1825]
+                - heading "Supporting heading" [level=3] [ref=e1826]
+              - generic [ref=e1827]:
+                - generic [ref=e1828]: Reading roles
+                - paragraph [ref=e1829]: Calm body text for the default UI size.
+                - paragraph [ref=e1830]: Supporting context without competition.
+                - generic [ref=e1831]: Form label
+                - generic [ref=e1832]: Helper text
+              - generic [ref=e1833]:
+                - generic [ref=e1834]: Controls
+                - generic [ref=e1835]:
+                  - button "Primary action" [ref=e1836] [cursor=pointer]
+                  - button "Secondary" [ref=e1838] [cursor=pointer]
+                - generic "Typography tab sample" [ref=e1840]:
+                  - generic [ref=e1841]: Overview
+                  - generic [ref=e1842]: Activity
+                  - generic [ref=e1843]: Settings
+                - button "Navigation item" [ref=e1844] [cursor=pointer]
+              - generic [ref=e1857]:
+                - generic [ref=e1858]: Data roles
+                - generic [ref=e1859]:
+                  - generic [ref=e1860]:
+                    - generic [ref=e1861]: Amount
+                    - generic [ref=e1862]: $48,920.00
+                  - generic [ref=e1863]:
+                    - generic [ref=e1864]: Change
+                    - generic [ref=e1865]: +18.4%
+                  - generic [ref=e1866]:
+                    - generic [ref=e1867]: Updated
+                    - generic [ref=e1868]: Aug 26, 2026
+            - generic "Additional typography roles" [ref=e1869]:
+              - generic [ref=e1870]:
+                - generic [ref=e1871]: Metric
+                - generic [ref=e1879]: 12,480
+                - generic [ref=e1880]: metric-lg
+              - generic [ref=e1881]:
+                - generic [ref=e1882]: Navigation
+                - generic [ref=e1888]: Operations tracker
+                - generic [ref=e1889]: nav
+              - generic [ref=e1890]:
+                - generic [ref=e1891]: Input
+                - generic [ref=e1897]: Search records…
+                - generic [ref=e1898]: input
+              - generic [ref=e1899]:
+                - generic [ref=e1900]: Code
+                - code [ref=e1906]: "--t7-focus-hsl"
+                - generic [ref=e1907]: mono family
+        - generic [ref=e1908]:
+          - generic [ref=e1909]:
+            - heading "Component proof" [level=2] [ref=e1910]
+            - paragraph [ref=e1911]: A compact set of canonical controls for visual checks.
+          - generic [ref=e1912]: 6 surfaces / 10 axes
+        - generic [ref=e1913]:
+          - generic [ref=e1914]:
+            - generic [ref=e1916]:
+              - heading "Button" [level=3] [ref=e1917]
+              - paragraph [ref=e1918]: Intent and size share one height.
+            - generic [ref=e1925]:
+              - button "Create recipe" [ref=e1926] [cursor=pointer]
+              - button "Inspect API" [ref=e1930] [cursor=pointer]
+              - button "Quiet action" [ref=e1932] [cursor=pointer]
+          - generic [ref=e1934]:
+            - generic [ref=e1936]:
+              - heading "Input" [level=3] [ref=e1937]
+              - paragraph [ref=e1938]: Focus follows the semantic ring.
+            - generic [ref=e1946]:
+              - generic [ref=e1947]: Search components
+              - textbox "Search components Semantic field / local value" [ref=e1949]: DataTable
+              - generic [ref=e1950]: Semantic field / local value
+          - generic [ref=e1951]:
+            - generic [ref=e1953]:
+              - heading "Card" [level=3] [ref=e1954]
+              - paragraph [ref=e1955]: Elevation follows the active profile.
+            - generic [ref=e1959]:
+              - generic [ref=e1960]: Tokens indexed
+              - strong [ref=e1961]: "476"
+              - generic [ref=e1962]: Ready for extraction
+          - generic [ref=e1965]:
+            - generic [ref=e1967]:
+              - heading "DataTable row" [level=3] [ref=e1968]
+              - paragraph [ref=e1969]: Density changes rows, not readability.
+            - table [ref=e1978]:
+              - rowgroup [ref=e1979]:
+                - row [ref=e1980]:
+                  - columnheader "Surface" [ref=e1981]
+                  - columnheader "Layer" [ref=e1982]
+                  - columnheader "Status" [ref=e1983]
+              - rowgroup [ref=e1984]:
+                - row [ref=e1985]:
+                  - cell "Semantic tokens" [ref=e1986]
+                  - cell "L1 foundation" [ref=e1987]
+                  - cell "Ready" [ref=e1988]
+                - row [ref=e1991]:
+                  - cell "Button" [ref=e1992]
+                  - cell "L4 canonical" [ref=e1993]
+                  - cell "Ready" [ref=e1994]
+                - row [ref=e1997]:
+                  - cell "DataTable" [ref=e1998]
+                  - cell "L4 canonical" [ref=e1999]
+                  - cell "In review" [ref=e2000]
+          - generic [ref=e2003]:
+            - generic [ref=e2005]:
+              - heading "Modal" [level=3] [ref=e2006]
+              - paragraph [ref=e2007]: Radius and elevation stay shared.
+            - generic [ref=e2017]:
+              - button "Open dialog" [ref=e2018] [cursor=pointer]
+              - generic [ref=e2029]: Closed
+          - generic [ref=e2030]:
+            - generic [ref=e2032]:
+              - heading "Sidebar item" [level=3] [ref=e2033]
+              - paragraph [ref=e2034]: State uses semantic foregrounds.
+            - generic [ref=e2039]:
+              - button "Theme Studio" [ref=e2040] [cursor=pointer]
+              - button "Components" [ref=e2053] [cursor=pointer]
+        - generic [ref=e2061]:
+          - generic [ref=e2062]:
+            - strong [ref=e2065]: System coherence verified
+            - generic [ref=e2066]: Review the live specimen, then save a local proof snapshot for this experiment.
+          - button "Save local proof" [ref=e2067] [cursor=pointer]
+  - button "Open ten4seven reference QA controls" [ref=e1166] [cursor=pointer]:
+    - generic [ref=e1173]: QA

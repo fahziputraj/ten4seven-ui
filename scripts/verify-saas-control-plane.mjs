@@ -75,7 +75,9 @@ for (const symbol of [
   "FileUpload",
 ])
   assert.match(
-    symbol === "Sidebar" ? `${routeSource}\n${sharedChromeSource}` : routeSource,
+    symbol === "Sidebar"
+      ? `${routeSource}\n${sharedChromeSource}`
+      : routeSource,
     new RegExp(`\\b${symbol}\\b`),
     `Q05 reference route or shared shell is missing ${symbol}`,
   );
@@ -115,7 +117,10 @@ for (const forbidden of [
     `Q05 reference route must not own ${forbidden}`,
   );
 
-assert.match(routeMapSource, /"SaaS Control Plane": "\/saas-control-plane"/);
+assert.match(
+  routeMapSource,
+  /"SaaS Control Plane": \{[\s\S]*?path: "\/saas-control-plane"/,
+);
 assert.match(appSource, /SaasControlPlaneReference/);
 
 const queries = new Map([

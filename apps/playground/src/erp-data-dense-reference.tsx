@@ -55,6 +55,7 @@ import {
 } from "@ten4seven/ui";
 
 import { PlaygroundSidebar, PlaygroundTopbar } from "./playground-chrome";
+import { playgroundRoutePaths } from "./playground-routes";
 
 type ErpRecordStatus = "Ready" | "Review" | "Blocked";
 
@@ -549,7 +550,7 @@ export function ErpDataDenseReference({
 
   const sidebar = (
     <PlaygroundSidebar
-      activePath="/erp-reference"
+      activePath={playgroundRoutePaths["ERP Density Reference"]}
       localNavigation={[
         {
           key: "erp-density",
@@ -860,7 +861,7 @@ export function ErpDataDenseReference({
                   <T7Icon aria-hidden="true" name="edit" size={21} />
                 </CardHeader>
                 <CardContent>
-                  <FormGrid columns={2}>
+                  <FormGrid columns={2} data-t7-rail="form">
                     <Input
                       error={formAccount ? undefined : "Account is required."}
                       label="Account"

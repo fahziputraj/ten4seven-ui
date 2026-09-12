@@ -522,3 +522,235 @@ export function HierarchyPicker({
     </div>
   );
 }
+
+export interface TreeViewProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "children" | "onChange" | "title"
+> {
+  defaultExpandedIds?: string[];
+  defaultSelectedId?: string;
+  description?: ReactNode;
+  disabled?: boolean;
+  emptyMessage?: string;
+  expandedIds?: string[];
+  items: HierarchyItem[];
+  label?: string;
+  onExpandedIdsChange?: (ids: string[]) => void;
+  onSelectedIdChange?: (id: string | undefined) => void;
+  selectedId?: string;
+  selectionMode?: "none" | "single";
+}
+
+/** A navigation-oriented tree; unlike HierarchyPicker it has single selection and no bulk semantics. */
+export function TreeView({
+  className,
+  defaultExpandedIds,
+  defaultSelectedId,
+  description,
+  disabled = false,
+  emptyMessage = "No tree items.",
+  expandedIds,
+  items,
+  label = "Tree view",
+  onExpandedIdsChange,
+  onSelectedIdChange,
+  selectedId,
+  selectionMode = "single",
+  ...props
+}: TreeViewProps) {
+  const index = useMemo(() => createTreeIndex(items), [items]);
+  const [internalExpandedIds, setInternalExpandedIds] = useState<string[]>(
+    defaultExpandedIds ?? defaultExpandedFor(items),
+  );
+  const [internalSelectedId, setInternalSelectedId] = useState<
+    string | undefined
+  >(defaultSelectedId);
+  const [focusedId, setFocusedId] = useState<string | undefined>();
+  const nodeRefs = useRef(new Map<string, HTMLDivElement>());
+  const shouldFocusNext = useRef(false);
+  const treeId = useId();
+  const labelId = `${treeId}-label`;
+  const descriptionId = `${treeId}-description`;
+  const rawExpandedIds = expandedIds ?? internalExpandedIds;
+  const expanded = useMemo(() => new Set(rawExpandedIds), [rawExpandedIds]);
+  const resolvedSelectedId = selectedId ?? internalSelectedId;
+  const visibleNodes = useMemo(
+    () => flattenVisible(items, index, "", expanded),
+    [expanded, index, items],
+  );
+  const visibleIds = useMemo(
+    () => visibleNodes.map((node) => node.item.id),
+    [visibleNodes],
+  );
+  const activeId =
+    focusedId && visibleIds.includes(focusedId)
+      ? focusedId
+      : visibleNodes[0]?.item.id;
+
+  useEffect(() => {
+    if (activeId && focusedId !== activeId) setFocusedId(activeId);
+  }, [activeId, focusedId]);
+
+  useEffect(() => {
+    if (!shouldFocusNext.current || !focusedId) return;
+    shouldFocusNext.current = false;
+    nodeRefs.current.get(focusedId)?.focus();
+  }, [focusedId]);
+
+  function focusNode(id: string | undefined) {
+    if (!id) return;
+    shouldFocusNext.current = true;
+    setFocusedId(id);
+  }
+
+  function commitExpanded(next: Set<string>) {
+    const values = [...next];
+    if (expandedIds === undefined) setInternalExpandedIds(values);
+    onExpandedIdsChange?.(values);
+  }
+
+  function toggleExpanded(id: string) {
+    if (disabled) return;
+    const next = new Set(expanded);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    commitExpanded(next);
+  }
+
+  function selectNode(id: string) {
+    if (
+      disabled ||
+      selectionMode === "none" ||
+      index.byId.get(id)?.item.disabled
+    )
+      return;
+    if (selectedId === undefined) setInternalSelectedId(id);
+    onSelectedIdChange?.(id);
+  }
+
+  function handleNodeKeyDown(
+    event: KeyboardEvent<HTMLDivElement>,
+    node: VisibleTreeNode,
+  ) {
+    const currentIndex = visibleIds.indexOf(node.item.id);
+    if (currentIndex < 0) return;
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      const offset = event.key === "ArrowDown" ? 1 : -1;
+      focusNode(
+        visibleIds[
+          (currentIndex + offset + visibleIds.length) % visibleIds.length
+        ],
+      );
+    } else if (event.key === "Home" || event.key === "End") {
+      event.preventDefault();
+      focusNode(visibleIds[event.key === "Home" ? 0 : visibleIds.length - 1]);
+    } else if (event.key === "ArrowRight") {
+      if (node.hasChildren && !node.isExpanded) {
+        event.preventDefault();
+        toggleExpanded(node.item.id);
+      } else if (visibleNodes[currentIndex + 1]?.parentId === node.item.id) {
+        event.preventDefault();
+        focusNode(visibleNodes[currentIndex + 1]?.item.id);
+      }
+    } else if (event.key === "ArrowLeft") {
+      if (node.hasChildren && node.isExpanded) {
+        event.preventDefault();
+        toggleExpanded(node.item.id);
+      } else if (node.parentId) {
+        event.preventDefault();
+        focusNode(node.parentId);
+      }
+    } else if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      selectNode(node.item.id);
+    }
+  }
+
+  return (
+    <div
+      {...props}
+      className={cx("t7-tree-view", className)}
+      data-disabled={disabled || undefined}
+    >
+      <span className="t7-field-label" id={labelId}>
+        {label}
+      </span>
+      {description ? (
+        <span className="t7-field-hint" id={descriptionId}>
+          {description}
+        </span>
+      ) : null}
+      <div
+        aria-describedby={description ? descriptionId : undefined}
+        aria-labelledby={labelId}
+        className="t7-tree-view-tree"
+        role="tree"
+      >
+        {visibleNodes.length ? (
+          visibleNodes.map((node) => {
+            const selected = resolvedSelectedId === node.item.id;
+            return (
+              <div
+                aria-disabled={node.item.disabled || disabled || undefined}
+                aria-expanded={node.hasChildren ? node.isExpanded : undefined}
+                aria-level={node.level}
+                aria-posinset={node.position}
+                aria-selected={selectionMode === "none" ? undefined : selected}
+                className="t7-tree-view-node"
+                data-active={activeId === node.item.id || undefined}
+                data-selected={selected || undefined}
+                key={node.item.id}
+                onClick={() => selectNode(node.item.id)}
+                onKeyDown={(event) => handleNodeKeyDown(event, node)}
+                ref={(element) => {
+                  if (element) nodeRefs.current.set(node.item.id, element);
+                  else nodeRefs.current.delete(node.item.id);
+                }}
+                role="treeitem"
+                tabIndex={activeId === node.item.id ? 0 : -1}
+              >
+                {node.hasChildren ? (
+                  <button
+                    aria-label={`${node.isExpanded ? "Collapse" : "Expand"} ${node.item.label}`}
+                    className="t7-tree-view-expander"
+                    disabled={disabled || node.item.disabled}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      toggleExpanded(node.item.id);
+                    }}
+                    tabIndex={-1}
+                    type="button"
+                  >
+                    <T7Icon
+                      aria-hidden="true"
+                      name={node.isExpanded ? "chevronDown" : "chevronRight"}
+                      size={15}
+                    />
+                  </button>
+                ) : (
+                  <span
+                    aria-hidden="true"
+                    className="t7-tree-view-expander-spacer"
+                  />
+                )}
+                <span className="t7-tree-view-copy">
+                  <span className="t7-tree-view-label">{node.item.label}</span>
+                  {node.item.description ? (
+                    <span className="t7-tree-view-description">
+                      {node.item.description}
+                    </span>
+                  ) : null}
+                </span>
+              </div>
+            );
+          })
+        ) : (
+          <span className="t7-tree-view-empty" role="status">
+            {emptyMessage}
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}

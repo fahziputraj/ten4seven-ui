@@ -62,7 +62,19 @@
       "Button",
       "Card"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "UTILITY_OR_PROVIDER",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "composition"
+    ],
+    "interactionModel": "composition",
+    "inputModalities": [
+      "screenReader"
+    ]
   },
   "Typography": {
     "id": "Typography",
@@ -115,6 +127,18 @@
     "usedByPatterns": [
       "content-detail",
       "ebook-reader"
+    ],
+    "kind": "FOUNDATION",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "composition"
+    ],
+    "interactionModel": "composition",
+    "inputModalities": [
+      "screenReader"
     ]
   },
   "T7Icon": {
@@ -169,7 +193,19 @@
       "IconButton",
       "NavItem"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "FOUNDATION",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "media"
+    ],
+    "interactionModel": "display",
+    "inputModalities": [
+      "screenReader"
+    ]
   },
   "Button": {
     "id": "Button",
@@ -230,6 +266,21 @@
     "usedByPatterns": [
       "marketing-home",
       "cart"
+    ],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "SAME_INTENT",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "action"
+    ],
+    "interactionModel": "activation",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader"
     ]
   },
   "IconButton": {
@@ -286,7 +337,22 @@
       "Tooltip",
       "DropdownMenu"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "SAME_INTENT",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "action"
+    ],
+    "interactionModel": "activation",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader"
+    ]
   },
   "ButtonGroup": {
     "id": "ButtonGroup",
@@ -340,7 +406,22 @@
       "Button",
       "ToggleButtonGroup"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "SAME_INTENT",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "action"
+    ],
+    "interactionModel": "activation",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader"
+    ]
   },
   "ToggleButton": {
     "id": "ToggleButton",
@@ -395,7 +476,22 @@
       "ToggleButtonGroup",
       "Tabs"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "SAME_INTENT",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "action"
+    ],
+    "interactionModel": "activation",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader"
+    ]
   },
   "ToggleButtonGroup": {
     "id": "ToggleButtonGroup",
@@ -449,7 +545,22 @@
       "ToggleButton",
       "Tabs"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "SAME_INTENT",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "action"
+    ],
+    "interactionModel": "activation",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader"
+    ]
   },
   "SplitButton": {
     "id": "SplitButton",
@@ -504,7 +615,22 @@
       "Button",
       "DropdownMenu"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "SAME_INTENT",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "action"
+    ],
+    "interactionModel": "activation",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader"
+    ]
   },
   "Input": {
     "id": "Input",
@@ -526,6 +652,7 @@
       "hint",
       "error",
       "leadingIcon",
+      "measure",
       "value",
       "onChange"
     ],
@@ -571,6 +698,27 @@
       "settings",
       "checkout",
       "auth"
+    ],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "Input"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "input"
+    ],
+    "interactionModel": "field",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
     ]
   },
   "SearchInput": {
@@ -631,6 +779,37 @@
     "usedByPatterns": [
       "catalog",
       "content-list"
+    ],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "SearchInput"
+    },
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "SearchInput",
+      "patterns": [
+        "WorkQueue",
+        "Inbox",
+        "Kanban",
+        "CommandPalette"
+      ]
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "input"
+    ],
+    "interactionModel": "field",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
     ]
   },
   "PasswordInput": {
@@ -689,6 +868,27 @@
     ],
     "usedByPatterns": [
       "auth"
+    ],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "PasswordInput"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "input"
+    ],
+    "interactionModel": "field",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
     ]
   },
   "Textarea": {
@@ -708,6 +908,7 @@
       "label",
       "hint",
       "error",
+      "measure",
       "rows",
       "value",
       "onChange"
@@ -747,7 +948,28 @@
       "Input",
       "Field"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "Textarea"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "input"
+    ],
+    "interactionModel": "field",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ]
   },
   "NumberInput": {
     "id": "NumberInput",
@@ -804,7 +1026,28 @@
       "CurrencyInput",
       "PercentInput"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "NumberInput"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "input"
+    ],
+    "interactionModel": "field",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ]
   },
   "CurrencyInput": {
     "id": "CurrencyInput",
@@ -861,7 +1104,28 @@
       "NumberInput",
       "Price"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "CurrencyInput"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "input"
+    ],
+    "interactionModel": "field",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ]
   },
   "PercentInput": {
     "id": "PercentInput",
@@ -918,7 +1182,28 @@
       "NumberInput",
       "TrendIndicator"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "PercentInput"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "input"
+    ],
+    "interactionModel": "field",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ]
   },
   "Select": {
     "id": "Select",
@@ -988,7 +1273,31 @@
       "settings",
       "catalog",
       "checkout"
-    ]
+    ],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "Select"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "selection",
+      "data-entry"
+    ],
+    "interactionModel": "selection",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ],
+    "adaptivePattern": "selector",
+    "nativeAlternative": "selector-sheet"
   },
   "NativeSelect": {
     "id": "NativeSelect",
@@ -1045,7 +1354,31 @@
       "Select",
       "Field"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "NativeSelect"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "selection",
+      "data-entry"
+    ],
+    "interactionModel": "selection",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ],
+    "adaptivePattern": "selector",
+    "nativeAlternative": "selector-sheet"
   },
   "Combobox": {
     "id": "Combobox",
@@ -1065,7 +1398,8 @@
       "value",
       "onValueChange",
       "loading",
-      "emptyMessage"
+      "emptyMessage",
+      "measure"
     ],
     "states": [
       "idle",
@@ -1105,7 +1439,31 @@
     ],
     "usedByPatterns": [
       "entity-form"
-    ]
+    ],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "Combobox"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "selection",
+      "data-entry"
+    ],
+    "interactionModel": "selection",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ],
+    "adaptivePattern": "selector",
+    "nativeAlternative": "selector-sheet"
   },
   "MultiSelect": {
     "id": "MultiSelect",
@@ -1127,7 +1485,8 @@
       "onValueChange",
       "label",
       "loading",
-      "error"
+      "error",
+      "measure"
     ],
     "states": [
       "collapsed",
@@ -1166,7 +1525,31 @@
       "CheckboxGroup",
       "Combobox"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "MultiSelect"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "selection",
+      "data-entry"
+    ],
+    "interactionModel": "selection",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ],
+    "adaptivePattern": "selector",
+    "nativeAlternative": "selector-sheet"
   },
   "HierarchyPicker": {
     "id": "HierarchyPicker",
@@ -1233,7 +1616,35 @@
       "Checkbox",
       "Collapsible"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "HierarchyPicker"
+    },
+    "dataCollectionRef": {
+      "path": "data-collections.json",
+      "id": "HierarchyPicker"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "selection",
+      "data-entry"
+    ],
+    "interactionModel": "selection",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ],
+    "adaptivePattern": "hierarchy",
+    "nativeAlternative": "hierarchy-list"
   },
   "Checkbox": {
     "id": "Checkbox",
@@ -1297,6 +1708,27 @@
     "usedByPatterns": [
       "checkout",
       "auth"
+    ],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "Checkbox"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "input"
+    ],
+    "interactionModel": "field",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
     ]
   },
   "CheckboxGroup": {
@@ -1356,6 +1788,27 @@
     ],
     "usedByPatterns": [
       "catalog"
+    ],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "CheckboxGroup"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "input"
+    ],
+    "interactionModel": "field",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
     ]
   },
   "Radio": {
@@ -1415,7 +1868,28 @@
       "RadioGroup",
       "Select"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "Radio"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "input"
+    ],
+    "interactionModel": "field",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ]
   },
   "RadioGroup": {
     "id": "RadioGroup",
@@ -1474,6 +1948,27 @@
     ],
     "usedByPatterns": [
       "catalog"
+    ],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "RadioGroup"
+    },
+    "kind": "ALIAS",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "input"
+    ],
+    "interactionModel": "field",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
     ]
   },
   "Switch": {
@@ -1535,6 +2030,27 @@
     ],
     "usedByPatterns": [
       "settings"
+    ],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "Switch"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "input"
+    ],
+    "interactionModel": "field",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
     ]
   },
   "Slider": {
@@ -1594,6 +2110,27 @@
     ],
     "usedByPatterns": [
       "ebook-reader"
+    ],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "Slider"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "input"
+    ],
+    "interactionModel": "field",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
     ]
   },
   "RangeSlider": {
@@ -1651,7 +2188,28 @@
       "Slider",
       "NumberInput"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "RangeSlider"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "input"
+    ],
+    "interactionModel": "field",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ]
   },
   "OtpInput": {
     "id": "OtpInput",
@@ -1708,6 +2266,27 @@
     ],
     "usedByPatterns": [
       "auth"
+    ],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "OtpInput"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "input"
+    ],
+    "interactionModel": "field",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
     ]
   },
   "Field": {
@@ -1771,6 +2350,27 @@
     ],
     "usedByPatterns": [
       "entity-form"
+    ],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "Field"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "input"
+    ],
+    "interactionModel": "field",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
     ]
   },
   "Label": {
@@ -1828,7 +2428,28 @@
       "FieldDescription",
       "FieldError"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "Label"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "input"
+    ],
+    "interactionModel": "field",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ]
   },
   "FieldGroup": {
     "id": "FieldGroup",
@@ -1884,7 +2505,28 @@
       "CheckboxGroup",
       "RadioGroup"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "FieldGroup"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "input"
+    ],
+    "interactionModel": "field",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ]
   },
   "FormSection": {
     "id": "FormSection",
@@ -1945,6 +2587,27 @@
       "entity-form",
       "settings",
       "checkout"
+    ],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "FormSection"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "input"
+    ],
+    "interactionModel": "field",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
     ]
   },
   "FormGrid": {
@@ -2003,6 +2666,27 @@
     "usedByPatterns": [
       "entity-form",
       "settings"
+    ],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "FormGrid"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "input"
+    ],
+    "interactionModel": "field",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
     ]
   },
   "FormActions": {
@@ -2055,7 +2739,28 @@
       "ActionFooter",
       "Button"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "FormActions"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "input"
+    ],
+    "interactionModel": "field",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ]
   },
   "Calendar": {
     "id": "Calendar",
@@ -2110,7 +2815,125 @@
       "DatePicker",
       "DateRangePicker"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "Calendar"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-entry",
+      "selection"
+    ],
+    "interactionModel": "selection",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ],
+    "adaptivePattern": "date-time",
+    "nativeAlternative": "native-date-time-control"
+  },
+  "Cascader": {
+    "id": "Cascader",
+    "displayName": "Cascader",
+    "status": "implemented",
+    "category": "form",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Select a final value through a bounded hierarchy of related options.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "entity-form",
+      "settings",
+      "catalog"
+    ],
+    "importantProps": [
+      "options",
+      "value",
+      "onValueChange",
+      "label",
+      "disabled",
+      "measure"
+    ],
+    "states": [
+      "default",
+      "branch open",
+      "leaf selected",
+      "focused",
+      "disabled",
+      "invalid"
+    ],
+    "responsive": [
+      "Keeps each hierarchy level bounded and allows horizontal scrolling when the path is deep.",
+      "Retains shared control geometry and touch-target minimums on narrow screens."
+    ],
+    "motion": [
+      "Uses the shared floating-surface transition.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "surface-raised",
+      "selected",
+      "radius-control",
+      "radius-panel",
+      "shadow-popover",
+      "focus-ring",
+      "control-height"
+    ],
+    "relatedComponents": [
+      "Select",
+      "HierarchyPicker",
+      "Combobox"
+    ],
+    "alternativeTo": [
+      "Select",
+      "HierarchyPicker"
+    ],
+    "composesWith": [
+      "Field",
+      "Select",
+      "HierarchyPicker",
+      "Combobox"
+    ],
+    "usedByPatterns": [
+      "entity-form",
+      "settings",
+      "catalog"
+    ],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "Cascader"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "selection",
+      "data-entry"
+    ],
+    "interactionModel": "selection",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ],
+    "adaptivePattern": "hierarchy",
+    "nativeAlternative": "hierarchy-list"
   },
   "DatePicker": {
     "id": "DatePicker",
@@ -2166,7 +2989,31 @@
     ],
     "usedByPatterns": [
       "entity-form"
-    ]
+    ],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "DatePicker"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-entry",
+      "selection"
+    ],
+    "interactionModel": "selection",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ],
+    "adaptivePattern": "date-time",
+    "nativeAlternative": "native-date-time-control"
   },
   "DateRangePicker": {
     "id": "DateRangePicker",
@@ -2222,7 +3069,31 @@
     ],
     "usedByPatterns": [
       "report"
-    ]
+    ],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "DateRangePicker"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-entry",
+      "selection"
+    ],
+    "interactionModel": "selection",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ],
+    "adaptivePattern": "date-time",
+    "nativeAlternative": "native-date-time-control"
   },
   "TimeInput": {
     "id": "TimeInput",
@@ -2271,7 +3142,27 @@
     "composesWith": [
       "NativeTimeInput"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "ALIAS",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-entry",
+      "selection"
+    ],
+    "interactionModel": "selection",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ],
+    "adaptivePattern": "date-time",
+    "nativeAlternative": "native-date-time-control"
   },
   "NativeTimeInput": {
     "id": "NativeTimeInput",
@@ -2322,7 +3213,31 @@
     "composesWith": [
       "DateTimeInput"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "NativeTimeInput"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-entry",
+      "selection"
+    ],
+    "interactionModel": "selection",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ],
+    "adaptivePattern": "date-time",
+    "nativeAlternative": "native-date-time-control"
   },
   "TimePicker": {
     "id": "TimePicker",
@@ -2382,7 +3297,31 @@
     ],
     "usedByPatterns": [
       "entity-form"
-    ]
+    ],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "TimePicker"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-entry",
+      "selection"
+    ],
+    "interactionModel": "selection",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ],
+    "adaptivePattern": "date-time",
+    "nativeAlternative": "native-date-time-control"
   },
   "DateTimeInput": {
     "id": "DateTimeInput",
@@ -2435,7 +3374,31 @@
       "DatePicker",
       "TimePicker"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "DateTimeInput"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-entry",
+      "selection"
+    ],
+    "interactionModel": "selection",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ],
+    "adaptivePattern": "date-time",
+    "nativeAlternative": "native-date-time-control"
   },
   "FileUpload": {
     "id": "FileUpload",
@@ -2492,7 +3455,30 @@
     ],
     "usedByPatterns": [
       "entity-form"
-    ]
+    ],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "FileUpload"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-entry",
+      "media"
+    ],
+    "interactionModel": "file-provision",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "files",
+    "nativeAlternative": "document-picker"
   },
   "FileItem": {
     "id": "FileItem",
@@ -2547,7 +3533,30 @@
       "Progress",
       "StatusChip"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "FileItem"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-entry",
+      "media"
+    ],
+    "interactionModel": "file-provision",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "files",
+    "nativeAlternative": "document-picker"
   },
   "FileList": {
     "id": "FileList",
@@ -2595,7 +3604,30 @@
       "FileItem",
       "FileUpload"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "FileList"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-entry",
+      "media"
+    ],
+    "interactionModel": "file-provision",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "files",
+    "nativeAlternative": "document-picker"
   },
   "AppShell": {
     "id": "AppShell",
@@ -2654,7 +3686,33 @@
       "master-detail",
       "catalog",
       "cart"
-    ]
+    ],
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "AppShell",
+      "patterns": [
+        "AppShell"
+      ]
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "navigation",
+      "composition"
+    ],
+    "interactionModel": "composition",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "navigation-shell",
+    "nativeAlternative": "navigation-drawer"
   },
   "Sidebar": {
     "id": "Sidebar",
@@ -2716,7 +3774,36 @@
       "entity-list",
       "master-detail",
       "settings"
-    ]
+    ],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "Sidebar"
+    },
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "Sidebar",
+      "patterns": [
+        "AppShell"
+      ]
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "navigation"
+    ],
+    "interactionModel": "navigation",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "sidebar",
+    "nativeAlternative": "navigation-drawer"
   },
   "SidebarGroup": {
     "id": "SidebarGroup",
@@ -2769,7 +3856,28 @@
       "Sidebar",
       "Collapsible"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "SidebarGroup"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "navigation"
+    ],
+    "interactionModel": "navigation",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "navigation-shell"
   },
   "NavItem": {
     "id": "NavItem",
@@ -2823,7 +3931,24 @@
       "Sidebar",
       "TopNavigation"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "navigation"
+    ],
+    "interactionModel": "navigation",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "navigation-shell"
   },
   "NavigationMenu": {
     "id": "NavigationMenu",
@@ -2884,7 +4009,29 @@
     "usedByPatterns": [
       "catalog",
       "marketing-home"
-    ]
+    ],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "NavigationMenu"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "navigation"
+    ],
+    "interactionModel": "navigation",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "navigation-shell",
+    "nativeAlternative": "navigation-tabs"
   },
   "TopNavigation": {
     "id": "TopNavigation",
@@ -2942,7 +4089,29 @@
       "catalog",
       "ebook-reader",
       "cart"
-    ]
+    ],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "TopNavigation"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "navigation"
+    ],
+    "interactionModel": "navigation",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "navigation-shell",
+    "nativeAlternative": "navigation-tabs"
   },
   "MobileSidebar": {
     "id": "MobileSidebar",
@@ -2995,7 +4164,36 @@
       "Drawer",
       "Sidebar"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "MobileSidebar"
+    },
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "MobileSidebar",
+      "patterns": [
+        "AppShell"
+      ]
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "navigation"
+    ],
+    "interactionModel": "navigation",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "sidebar",
+    "nativeAlternative": "navigation-drawer"
   },
   "Breadcrumb": {
     "id": "Breadcrumb",
@@ -3047,7 +4245,29 @@
       "PageHeader",
       "TopNavigation"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "Breadcrumb"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "navigation"
+    ],
+    "interactionModel": "navigation",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "navigation-shell",
+    "nativeAlternative": "stack-detail"
   },
   "SectionNavigation": {
     "id": "SectionNavigation",
@@ -3103,7 +4323,29 @@
       "PageHeader",
       "Tabs"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "SectionNavigation"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "navigation"
+    ],
+    "interactionModel": "navigation",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "navigation-shell",
+    "nativeAlternative": "navigation-tabs"
   },
   "Tabs": {
     "id": "Tabs",
@@ -3162,6 +4404,26 @@
     ],
     "usedByPatterns": [
       "ebook-reader"
+    ],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "Tabs"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "SAME_INTENT",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "navigation"
+    ],
+    "interactionModel": "navigation",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
     ]
   },
   "Accordion": {
@@ -3215,7 +4477,27 @@
       "Collapsible",
       "Tabs"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "Accordion"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "SAME_INTENT",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "navigation"
+    ],
+    "interactionModel": "disclosure",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
   },
   "Collapsible": {
     "id": "Collapsible",
@@ -3234,6 +4516,7 @@
       "title",
       "open",
       "defaultOpen",
+      "disabled",
       "onOpenChange"
     ],
     "states": [
@@ -3268,7 +4551,27 @@
       "Accordion",
       "SidebarGroup"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "Collapsible"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "SAME_INTENT",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "composition"
+    ],
+    "interactionModel": "disclosure",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
   },
   "Stepper": {
     "id": "Stepper",
@@ -3320,7 +4623,35 @@
       "Progress",
       "ActionFooter"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "Stepper"
+    },
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "Stepper",
+      "patterns": [
+        "Wizard"
+      ]
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "SAME_INTENT",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "navigation",
+      "data-display"
+    ],
+    "interactionModel": "navigation",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
   },
   "MilestoneTracker": {
     "id": "MilestoneTracker",
@@ -3394,7 +4725,38 @@
       "entity-list",
       "master-detail",
       "report"
-    ]
+    ],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "MilestoneTracker"
+    },
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "MilestoneTracker",
+      "patterns": [
+        "LifecycleTracker"
+      ]
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "navigation",
+      "data-display",
+      "feedback"
+    ],
+    "interactionModel": "navigation",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "master-detail",
+    "nativeAlternative": "stack-detail"
   },
   "CommandMenu": {
     "id": "CommandMenu",
@@ -3449,7 +4811,40 @@
       "Input",
       "DropdownMenu"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "CommandMenu"
+    },
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "CommandMenu",
+      "patterns": [
+        "CommandPalette",
+        "QuickActions"
+      ]
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "action",
+      "navigation",
+      "selection"
+    ],
+    "interactionModel": "selection",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ],
+    "adaptivePattern": "command-surface",
+    "nativeAlternative": "search-action-surface"
   },
   "Pagination": {
     "id": "Pagination",
@@ -3512,7 +4907,34 @@
       "report",
       "catalog",
       "content-list"
-    ]
+    ],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "Pagination"
+    },
+    "dataCollectionRef": {
+      "path": "data-collections.json",
+      "id": "Pagination"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "navigation",
+      "data-display"
+    ],
+    "interactionModel": "navigation",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "collection",
+    "nativeAlternative": "collection-paging"
   },
   "Card": {
     "id": "Card",
@@ -3571,6 +4993,28 @@
     "usedByPatterns": [
       "content-list",
       "marketing-home"
+    ],
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "Card",
+      "patterns": [
+        "Kanban",
+        "TaskBoard",
+        "Workboard"
+      ]
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "composition"
+    ],
+    "interactionModel": "composition",
+    "inputModalities": [
+      "screenReader",
+      "focus"
     ]
   },
   "CardHeader": {
@@ -3622,7 +5066,20 @@
       "CardTitle",
       "CardDescription"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "composition"
+    ],
+    "interactionModel": "composition",
+    "inputModalities": [
+      "screenReader",
+      "focus"
+    ]
   },
   "CardContent": {
     "id": "CardContent",
@@ -3672,7 +5129,20 @@
       "CardHeader",
       "CardFooter"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "composition"
+    ],
+    "interactionModel": "composition",
+    "inputModalities": [
+      "screenReader",
+      "focus"
+    ]
   },
   "CardFooter": {
     "id": "CardFooter",
@@ -3721,7 +5191,20 @@
       "Card",
       "Button"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "composition"
+    ],
+    "interactionModel": "composition",
+    "inputModalities": [
+      "screenReader",
+      "focus"
+    ]
   },
   "Surface": {
     "id": "Surface",
@@ -3781,6 +5264,19 @@
     "usedByPatterns": [
       "auth",
       "marketing-home"
+    ],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "composition"
+    ],
+    "interactionModel": "composition",
+    "inputModalities": [
+      "screenReader",
+      "focus"
     ]
   },
   "Panel": {
@@ -3832,7 +5328,20 @@
       "Surface",
       "Card"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "composition"
+    ],
+    "interactionModel": "composition",
+    "inputModalities": [
+      "screenReader",
+      "focus"
+    ]
   },
   "Section": {
     "id": "Section",
@@ -3884,7 +5393,23 @@
       "SectionHeader",
       "Separator"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "layout"
+    ],
+    "interactionModel": "layout",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
   },
   "Separator": {
     "id": "Separator",
@@ -3931,7 +5456,23 @@
       "Section",
       "Panel"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "layout"
+    ],
+    "interactionModel": "layout",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
   },
   "ScrollArea": {
     "id": "ScrollArea",
@@ -3980,7 +5521,23 @@
       "Panel",
       "Drawer"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "layout"
+    ],
+    "interactionModel": "layout",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
   },
   "PageHeader": {
     "id": "PageHeader",
@@ -4052,6 +5609,29 @@
       "content-list",
       "content-detail",
       "marketing-home"
+    ],
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "PageHeader",
+      "patterns": [
+        "PageHeader"
+      ]
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "layout"
+    ],
+    "interactionModel": "layout",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
     ]
   },
   "SectionHeader": {
@@ -4104,7 +5684,23 @@
       "Section",
       "PageHeader"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "layout"
+    ],
+    "interactionModel": "layout",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
   },
   "Toolbar": {
     "id": "Toolbar",
@@ -4154,7 +5750,32 @@
       "ActionBar",
       "FilterToolbar"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "Toolbar",
+      "patterns": [
+        "QuickActions",
+        "WorkQueue",
+        "Kanban"
+      ]
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "layout"
+    ],
+    "interactionModel": "layout",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
   },
   "ActionBar": {
     "id": "ActionBar",
@@ -4205,6 +5826,30 @@
     ],
     "usedByPatterns": [
       "ebook-reader"
+    ],
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "ActionBar",
+      "patterns": [
+        "QuickActions",
+        "DecisionWorkspace"
+      ]
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "layout"
+    ],
+    "interactionModel": "layout",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
     ]
   },
   "Table": {
@@ -4269,7 +5914,30 @@
       "report",
       "content-detail",
       "catalog"
-    ]
+    ],
+    "dataCollectionRef": {
+      "path": "data-collections.json",
+      "id": "Table"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display",
+      "selection"
+    ],
+    "interactionModel": "data-comparison",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "data-table",
+    "nativeAlternative": "data-list-detail"
   },
   "TableHeader": {
     "id": "TableHeader",
@@ -4320,7 +5988,25 @@
       "report",
       "content-detail",
       "catalog"
-    ]
+    ],
+    "kind": "WEB_ONLY",
+    "platform": "WEB",
+    "rendererStrategy": "NOT_APPLICABLE",
+    "webStatus": "implemented",
+    "nativeStatus": "not-applicable",
+    "semanticIntent": [
+      "data-display",
+      "selection"
+    ],
+    "interactionModel": "data-comparison",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "nativeAlternative": "data-list-detail"
   },
   "TableBody": {
     "id": "TableBody",
@@ -4372,7 +6058,25 @@
       "report",
       "content-detail",
       "catalog"
-    ]
+    ],
+    "kind": "WEB_ONLY",
+    "platform": "WEB",
+    "rendererStrategy": "NOT_APPLICABLE",
+    "webStatus": "implemented",
+    "nativeStatus": "not-applicable",
+    "semanticIntent": [
+      "data-display",
+      "selection"
+    ],
+    "interactionModel": "data-comparison",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "nativeAlternative": "data-list-detail"
   },
   "TableRow": {
     "id": "TableRow",
@@ -4427,7 +6131,25 @@
       "report",
       "content-detail",
       "catalog"
-    ]
+    ],
+    "kind": "WEB_ONLY",
+    "platform": "WEB",
+    "rendererStrategy": "NOT_APPLICABLE",
+    "webStatus": "implemented",
+    "nativeStatus": "not-applicable",
+    "semanticIntent": [
+      "data-display",
+      "selection"
+    ],
+    "interactionModel": "data-comparison",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "nativeAlternative": "data-list-detail"
   },
   "TableHead": {
     "id": "TableHead",
@@ -4486,7 +6208,25 @@
       "report",
       "content-detail",
       "catalog"
-    ]
+    ],
+    "kind": "WEB_ONLY",
+    "platform": "WEB",
+    "rendererStrategy": "NOT_APPLICABLE",
+    "webStatus": "implemented",
+    "nativeStatus": "not-applicable",
+    "semanticIntent": [
+      "data-display",
+      "selection"
+    ],
+    "interactionModel": "data-comparison",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "nativeAlternative": "data-list-detail"
   },
   "TableCell": {
     "id": "TableCell",
@@ -4544,7 +6284,25 @@
       "report",
       "content-detail",
       "catalog"
-    ]
+    ],
+    "kind": "WEB_ONLY",
+    "platform": "WEB",
+    "rendererStrategy": "NOT_APPLICABLE",
+    "webStatus": "implemented",
+    "nativeStatus": "not-applicable",
+    "semanticIntent": [
+      "data-display",
+      "selection"
+    ],
+    "interactionModel": "data-comparison",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "nativeAlternative": "data-list-detail"
   },
   "DataTable": {
     "id": "DataTable",
@@ -4565,13 +6323,21 @@
       "columns",
       "rows",
       "rowKey",
+      "caption",
+      "rowLabel",
       "columnVisibility",
       "density",
       "responsive",
       "selectable",
+      "selectionMode",
       "sort",
       "loading",
-      "error"
+      "error",
+      "hasActiveFilter",
+      "filteredEmptyMessage",
+      "loadingMore",
+      "endOfResults",
+      "footer"
     ],
     "states": [
       "loading",
@@ -4616,7 +6382,39 @@
       "master-detail",
       "approval-queue",
       "report"
-    ]
+    ],
+    "dataCollectionRef": {
+      "path": "data-collections.json",
+      "id": "DataTable"
+    },
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "DataTable",
+      "patterns": [
+        "WorkQueue",
+        "Inbox",
+        "QueueDetailWorkspace"
+      ]
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display",
+      "selection"
+    ],
+    "interactionModel": "data-comparison",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "data-table",
+    "nativeAlternative": "data-list-detail"
   },
   "AdvancedDataGrid": {
     "id": "AdvancedDataGrid",
@@ -4695,7 +6493,29 @@
       "BulkActionBar",
       "Pagination"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "dataCollectionRef": {
+      "path": "data-collections.json",
+      "id": "AdvancedDataGrid"
+    },
+    "kind": "WEB_ONLY",
+    "platform": "WEB",
+    "rendererStrategy": "NOT_APPLICABLE",
+    "webStatus": "implemented",
+    "nativeStatus": "not-applicable",
+    "semanticIntent": [
+      "data-display",
+      "selection"
+    ],
+    "interactionModel": "data-comparison",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "nativeAlternative": "data-list-detail"
   },
   "DataTableColumnPicker": {
     "id": "DataTableColumnPicker",
@@ -4747,7 +6567,30 @@
       "DataTable",
       "Checkbox"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "dataCollectionRef": {
+      "path": "data-collections.json",
+      "id": "DataTableColumnPicker"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display",
+      "selection"
+    ],
+    "interactionModel": "data-comparison",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "filtering",
+    "nativeAlternative": "native-sheet"
   },
   "Badge": {
     "id": "Badge",
@@ -4802,6 +6645,22 @@
       "content-list",
       "content-detail",
       "marketing-home"
+    ],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "display",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
     ]
   },
   "StatusChip": {
@@ -4858,6 +6717,32 @@
     "usedByPatterns": [
       "entity-list",
       "entity-detail"
+    ],
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "StatusChip",
+      "patterns": [
+        "LifecycleTracker",
+        "Kanban",
+        "TaskBoard",
+        "Workboard"
+      ]
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "display",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
     ]
   },
   "Avatar": {
@@ -4911,7 +6796,23 @@
       "AvatarGroup",
       "ActivityFeed"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "display",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
   },
   "AvatarGroup": {
     "id": "AvatarGroup",
@@ -4962,7 +6863,135 @@
       "Avatar",
       "ActivityFeed"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "display",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
+  },
+  "List": {
+    "id": "List",
+    "displayName": "List",
+    "status": "implemented",
+    "category": "data",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Render an ordered collection with optional single or multiple selection while leaving data and row meaning to the consumer.",
+    "source": "packages/ui/src/collections.tsx",
+    "recipes": [
+      "entity-list",
+      "content-list",
+      "master-detail"
+    ],
+    "importantProps": [
+      "items",
+      "rowKey",
+      "renderItem",
+      "selectionMode",
+      "interactionMode",
+      "selectedRowKeys",
+      "onSelectionChange",
+      "onItemActivate",
+      "loading",
+      "error",
+      "hasActiveFilter",
+      "loadingMore"
+    ],
+    "states": [
+      "loading",
+      "ready",
+      "empty",
+      "filtered empty",
+      "error",
+      "partial",
+      "loading more",
+      "end of results",
+      "selected",
+      "disabled"
+    ],
+    "responsive": [
+      "Rows reflow within a bounded collection surface without changing item meaning.",
+      "The semantic contract can map to native rows, cards, or list/detail without a mobile-only component.",
+      "Large collections require a renderer or approved engine adapter to own measurement and windowing."
+    ],
+    "motion": [
+      "Uses shared state and interaction transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "selected",
+      "selected-hover",
+      "row-height",
+      "focus-ring",
+      "muted-foreground",
+      "touch-target-min"
+    ],
+    "relatedComponents": [
+      "DataTable",
+      "BulkActionBar",
+      "Pagination",
+      "DetailDrawer"
+    ],
+    "alternativeTo": [
+      "DataTable"
+    ],
+    "composesWith": [
+      "BulkActionBar",
+      "Pagination",
+      "DetailDrawer"
+    ],
+    "usedByPatterns": [
+      "entity-list",
+      "content-list",
+      "master-detail"
+    ],
+    "dataCollectionRef": {
+      "path": "data-collections.json",
+      "id": "List"
+    },
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "List",
+      "patterns": [
+        "WorkQueue",
+        "Inbox",
+        "QueueDetailWorkspace",
+        "Kanban"
+      ]
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display",
+      "selection"
+    ],
+    "interactionModel": "collection",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "collection",
+    "nativeAlternative": "data-list-detail"
   },
   "KeyValueList": {
     "id": "KeyValueList",
@@ -5016,6 +7045,26 @@
     "usedByPatterns": [
       "entity-detail",
       "master-detail"
+    ],
+    "dataCollectionRef": {
+      "path": "data-collections.json",
+      "id": "KeyValueList"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "display",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
     ]
   },
   "MetricCard": {
@@ -5088,6 +7137,26 @@
     ],
     "usedByPatterns": [
       "dashboard"
+    ],
+    "dataCollectionRef": {
+      "path": "data-collections.json",
+      "id": "MetricCard"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "display",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
     ]
   },
   "KPICluster": {
@@ -5164,7 +7233,25 @@
       "entity-list",
       "approval-queue",
       "report"
-    ]
+    ],
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "collection",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "collection",
+    "nativeAlternative": "list-detail"
   },
   "ActivityFeed": {
     "id": "ActivityFeed",
@@ -5217,6 +7304,34 @@
     "usedByPatterns": [
       "entity-detail",
       "content-detail"
+    ],
+    "dataCollectionRef": {
+      "path": "data-collections.json",
+      "id": "ActivityFeed"
+    },
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "ActivityFeed",
+      "patterns": [
+        "ActivityFeed",
+        "DecisionWorkspace"
+      ]
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "display",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
     ]
   },
   "RecordSummary": {
@@ -5281,6 +7396,31 @@
       "product-detail",
       "checkout",
       "content-detail"
+    ],
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "RecordSummary",
+      "patterns": [
+        "DecisionWorkspace",
+        "QueueDetailWorkspace",
+        "MasterDetailWorkspace"
+      ]
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "display",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
     ]
   },
   "RevisionDiff": {
@@ -5335,7 +7475,23 @@
       "StatusChip",
       "Table"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "display",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
   },
   "ProductCard": {
     "id": "ProductCard",
@@ -5396,7 +7552,25 @@
     ],
     "usedByPatterns": [
       "catalog"
-    ]
+    ],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "display",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "gesture"
+    ],
+    "nativeAlternative": "list-detail"
   },
   "ProductGrid": {
     "id": "ProductGrid",
@@ -5412,6 +7586,7 @@
       "content-list"
     ],
     "importantProps": [
+      "minItemMeasure",
       "minCardWidth",
       "children"
     ],
@@ -5451,7 +7626,26 @@
     "usedByPatterns": [
       "catalog",
       "content-list"
-    ]
+    ],
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "collection",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "gesture"
+    ],
+    "adaptivePattern": "commerce",
+    "nativeAlternative": "list-detail"
   },
   "Price": {
     "id": "Price",
@@ -5509,7 +7703,25 @@
     "usedByPatterns": [
       "catalog",
       "product-detail"
-    ]
+    ],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "display",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "gesture"
+    ],
+    "nativeAlternative": "list-detail"
   },
   "Rating": {
     "id": "Rating",
@@ -5565,7 +7777,26 @@
     "usedByPatterns": [
       "catalog",
       "product-detail"
-    ]
+    ],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display",
+      "selection"
+    ],
+    "interactionModel": "selection",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "gesture"
+    ],
+    "nativeAlternative": "list-detail"
   },
   "ProductMeta": {
     "id": "ProductMeta",
@@ -5618,7 +7849,25 @@
     ],
     "usedByPatterns": [
       "product-detail"
-    ]
+    ],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "display",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "gesture"
+    ],
+    "nativeAlternative": "list-detail"
   },
   "FilterToolbar": {
     "id": "FilterToolbar",
@@ -5681,7 +7930,37 @@
       "approval-queue",
       "report",
       "content-list"
-    ]
+    ],
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "FilterToolbar",
+      "patterns": [
+        "WorkQueue",
+        "Inbox",
+        "Kanban",
+        "Workboard"
+      ]
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "selection",
+      "data-display"
+    ],
+    "interactionModel": "filtering",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ],
+    "adaptivePattern": "filtering",
+    "nativeAlternative": "native-sheet"
   },
   "FilterChip": {
     "id": "FilterChip",
@@ -5733,7 +8012,27 @@
       "AppliedFilters",
       "FilterToolbar"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "selection",
+      "data-display"
+    ],
+    "interactionModel": "filtering",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ],
+    "adaptivePattern": "filtering",
+    "nativeAlternative": "native-sheet"
   },
   "AppliedFilters": {
     "id": "AppliedFilters",
@@ -5790,7 +8089,27 @@
     "usedByPatterns": [
       "entity-list",
       "catalog"
-    ]
+    ],
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "selection",
+      "data-display"
+    ],
+    "interactionModel": "filtering",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ],
+    "adaptivePattern": "filtering",
+    "nativeAlternative": "native-sheet"
   },
   "FilterDrawer": {
     "id": "FilterDrawer",
@@ -5850,7 +8169,27 @@
     "usedByPatterns": [
       "entity-list",
       "catalog"
-    ]
+    ],
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "selection",
+      "data-display"
+    ],
+    "interactionModel": "filtering",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ],
+    "adaptivePattern": "drawer",
+    "nativeAlternative": "native-sheet"
   },
   "BulkActionBar": {
     "id": "BulkActionBar",
@@ -5907,7 +8246,127 @@
     "usedByPatterns": [
       "entity-list",
       "approval-queue"
-    ]
+    ],
+    "dataCollectionRef": {
+      "path": "data-collections.json",
+      "id": "BulkActionBar"
+    },
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "BulkActionBar",
+      "patterns": [
+        "WorkQueue",
+        "Inbox"
+      ]
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "selection",
+      "data-display"
+    ],
+    "interactionModel": "filtering",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ],
+    "adaptivePattern": "filtering",
+    "nativeAlternative": "native-sheet"
+  },
+  "Dialog": {
+    "id": "Dialog",
+    "displayName": "Dialog",
+    "status": "implemented",
+    "category": "overlay",
+    "level": "component",
+    "maturity": "polished",
+    "purpose": "Present focused content through the canonical adaptive dialog contract.",
+    "source": "packages/ui/src/components.tsx",
+    "recipes": [
+      "entity-form",
+      "auth",
+      "catalog"
+    ],
+    "importantProps": [
+      "open",
+      "title",
+      "description",
+      "onClose",
+      "initialFocus",
+      "size",
+      "closeLabel",
+      "dismissible"
+    ],
+    "states": [
+      "closed",
+      "open with focus",
+      "Escape dismissal",
+      "non-dismissible task"
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-overlay",
+      "shadow-modal",
+      "scrim",
+      "motion"
+    ],
+    "relatedComponents": [
+      "AlertDialog",
+      "Modal",
+      "CommandMenu",
+      "Drawer"
+    ],
+    "alternativeTo": [
+      "Drawer"
+    ],
+    "composesWith": [
+      "AlertDialog",
+      "CommandMenu",
+      "Drawer"
+    ],
+    "usedByPatterns": [
+      "entity-detail",
+      "approval-queue",
+      "checkout",
+      "ebook-reader"
+    ],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "Dialog"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "overlay"
+    ],
+    "interactionModel": "overlay",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "hardwareBack"
+    ],
+    "adaptivePattern": "dialog",
+    "nativeAlternative": "native-modal"
   },
   "Modal": {
     "id": "Modal",
@@ -5918,6 +8377,7 @@
     "maturity": "polished",
     "purpose": "Present focused short content or confirmation through a native modal dialog.",
     "source": "packages/ui/src/components.tsx",
+    "aliasOf": "Dialog",
     "recipes": [
       "entity-form",
       "auth",
@@ -5952,6 +8412,7 @@
       "motion"
     ],
     "relatedComponents": [
+      "Dialog",
       "AlertDialog",
       "CommandMenu",
       "Drawer"
@@ -5960,6 +8421,7 @@
       "Drawer"
     ],
     "composesWith": [
+      "Dialog",
       "AlertDialog",
       "CommandMenu",
       "Drawer"
@@ -5969,7 +8431,26 @@
       "approval-queue",
       "checkout",
       "ebook-reader"
-    ]
+    ],
+    "kind": "ALIAS",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "overlay"
+    ],
+    "interactionModel": "overlay",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "hardwareBack"
+    ],
+    "adaptivePattern": "dialog",
+    "nativeAlternative": "native-modal"
   },
   "Drawer": {
     "id": "Drawer",
@@ -6024,7 +8505,30 @@
       "FilterDrawer",
       "MobileSidebar"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "Drawer"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "overlay"
+    ],
+    "interactionModel": "overlay",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "hardwareBack"
+    ],
+    "adaptivePattern": "drawer",
+    "nativeAlternative": "native-sheet"
   },
   "DetailDrawer": {
     "id": "DetailDrawer",
@@ -6086,7 +8590,42 @@
       "entity-list",
       "master-detail",
       "catalog"
-    ]
+    ],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "DetailDrawer"
+    },
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "DetailDrawer",
+      "patterns": [
+        "WorkQueue",
+        "Inbox",
+        "DecisionWorkspace",
+        "QueueDetailWorkspace",
+        "MasterDetailWorkspace",
+        "Kanban"
+      ]
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "overlay"
+    ],
+    "interactionModel": "overlay",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "hardwareBack"
+    ],
+    "adaptivePattern": "drawer",
+    "nativeAlternative": "native-sheet"
   },
   "AlertDialog": {
     "id": "AlertDialog",
@@ -6145,7 +8684,30 @@
       "entity-list",
       "entity-form",
       "approval-queue"
-    ]
+    ],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "AlertDialog"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "overlay"
+    ],
+    "interactionModel": "overlay",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "hardwareBack"
+    ],
+    "adaptivePattern": "dialog",
+    "nativeAlternative": "native-modal"
   },
   "Popover": {
     "id": "Popover",
@@ -6199,7 +8761,30 @@
       "Tooltip",
       "DropdownMenu"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "Popover"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "overlay"
+    ],
+    "interactionModel": "overlay",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "hardwareBack"
+    ],
+    "adaptivePattern": "dialog",
+    "nativeAlternative": "native-sheet"
   },
   "Tooltip": {
     "id": "Tooltip",
@@ -6249,7 +8834,28 @@
       "IconButton",
       "Popover"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "Tooltip"
+    },
+    "kind": "WEB_ONLY",
+    "platform": "WEB",
+    "rendererStrategy": "NOT_APPLICABLE",
+    "webStatus": "implemented",
+    "nativeStatus": "not-applicable",
+    "semanticIntent": [
+      "overlay"
+    ],
+    "interactionModel": "overlay",
+    "inputModalities": [
+      "pointer",
+      "hover",
+      "keyboard",
+      "screenReader",
+      "focus"
+    ],
+    "nativeAlternative": "contextual-help"
   },
   "DropdownMenu": {
     "id": "DropdownMenu",
@@ -6305,7 +8911,30 @@
       "SplitButton",
       "IconButton"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "DropdownMenu"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "overlay"
+    ],
+    "interactionModel": "overlay",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "hardwareBack"
+    ],
+    "adaptivePattern": "dialog",
+    "nativeAlternative": "native-sheet"
   },
   "ActionMenu": {
     "id": "ActionMenu",
@@ -6358,7 +8987,26 @@
     ],
     "usedByPatterns": [
       "entity-list"
-    ]
+    ],
+    "kind": "ALIAS",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "overlay"
+    ],
+    "interactionModel": "overlay",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "hardwareBack"
+    ],
+    "adaptivePattern": "dialog",
+    "nativeAlternative": "native-modal"
   },
   "ContextMenu": {
     "id": "ContextMenu",
@@ -6409,7 +9057,31 @@
       "DropdownMenu",
       "ActionMenu"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "ContextMenu"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "overlay"
+    ],
+    "interactionModel": "overlay",
+    "inputModalities": [
+      "pointer",
+      "touch",
+      "gesture",
+      "keyboard",
+      "screenReader",
+      "focus",
+      "hardwareBack"
+    ],
+    "adaptivePattern": "dialog",
+    "nativeAlternative": "native-sheet"
   },
   "Alert": {
     "id": "Alert",
@@ -6472,7 +9144,264 @@
       "product-detail",
       "checkout",
       "auth"
+    ],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "Alert"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "feedback"
+    ],
+    "interactionModel": "feedback",
+    "inputModalities": [
+      "screenReader",
+      "focus"
     ]
+  },
+  "Banner": {
+    "id": "Banner",
+    "displayName": "Banner",
+    "status": "implemented",
+    "category": "feedback",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Show page or shell-level feedback with an explicit urgency and dismissal contract.",
+    "source": "packages/ui/src/feedback.tsx",
+    "recipes": [
+      "auth",
+      "settings",
+      "catalog"
+    ],
+    "importantProps": [
+      "tone",
+      "urgency",
+      "title",
+      "description",
+      "action",
+      "onDismiss"
+    ],
+    "states": [
+      "polite",
+      "assertive",
+      "consumer-controlled",
+      "dismissible"
+    ],
+    "responsive": [
+      "Reflows action content below the message at narrow widths.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-raised",
+      "border",
+      "success",
+      "warning",
+      "danger",
+      "info",
+      "motion"
+    ],
+    "relatedComponents": [
+      "Alert",
+      "Toast",
+      "StateView"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Alert",
+      "Toast",
+      "StateView"
+    ],
+    "usedByPatterns": [
+      "settings",
+      "auth",
+      "catalog"
+    ],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "Banner"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "feedback"
+    ],
+    "interactionModel": "feedback",
+    "inputModalities": [
+      "screenReader",
+      "focus"
+    ]
+  },
+  "Notification": {
+    "id": "Notification",
+    "displayName": "Notification",
+    "status": "implemented",
+    "category": "feedback",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Render one persisted or inspectable notification item without owning transport or storage.",
+    "source": "packages/ui/src/feedback.tsx",
+    "recipes": [
+      "all"
+    ],
+    "importantProps": [
+      "notification",
+      "onMarkRead",
+      "onDismiss",
+      "onSelect"
+    ],
+    "states": [
+      "unread",
+      "read",
+      "with action",
+      "dismissible",
+      "selected"
+    ],
+    "responsive": [
+      "Allows long notification content to wrap without horizontal clipping.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-subtle",
+      "border",
+      "primary",
+      "muted-foreground",
+      "motion"
+    ],
+    "relatedComponents": [
+      "NotificationCenter",
+      "Toast",
+      "Alert",
+      "ActivityFeed"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "NotificationCenter",
+      "Toast",
+      "Alert"
+    ],
+    "usedByPatterns": [],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "Notification"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "feedback"
+    ],
+    "interactionModel": "feedback",
+    "inputModalities": [
+      "screenReader",
+      "focus"
+    ]
+  },
+  "NotificationCenter": {
+    "id": "NotificationCenter",
+    "displayName": "Notification Center",
+    "status": "implemented",
+    "category": "feedback",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Present a bounded inspectable notification history with consumer-owned read and dismissal actions.",
+    "source": "packages/ui/src/feedback.tsx",
+    "recipes": [
+      "all"
+    ],
+    "importantProps": [
+      "items",
+      "label",
+      "maxVisible",
+      "onMarkAllRead",
+      "onClear",
+      "onMarkRead",
+      "onDismiss",
+      "onSelect"
+    ],
+    "states": [
+      "empty",
+      "unread items",
+      "all read",
+      "bounded list",
+      "mobile sheet host"
+    ],
+    "responsive": [
+      "Can render in a bounded panel or adapt into a native sheet host without changing item intent.",
+      "Keeps header actions usable when the list narrows."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-raised",
+      "surface-subtle",
+      "border",
+      "primary",
+      "motion"
+    ],
+    "relatedComponents": [
+      "Notification",
+      "Toast",
+      "Drawer",
+      "ActivityFeed"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Notification",
+      "Toast",
+      "Drawer"
+    ],
+    "usedByPatterns": [],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "NotificationCenter"
+    },
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "NotificationCenter",
+      "patterns": [
+        "NotificationCenter"
+      ]
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "feedback",
+      "data-display",
+      "overlay"
+    ],
+    "interactionModel": "collection",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "hardwareBack"
+    ],
+    "adaptivePattern": "notification-center",
+    "nativeAlternative": "native-sheet"
   },
   "ToastProvider": {
     "id": "ToastProvider",
@@ -6524,7 +9453,24 @@
       "Toast",
       "Alert"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "ToastProvider"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "feedback"
+    ],
+    "interactionModel": "feedback",
+    "inputModalities": [
+      "screenReader",
+      "focus"
+    ]
   },
   "Toaster": {
     "id": "Toaster",
@@ -6574,7 +9520,24 @@
       "ToastProvider",
       "Toast"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "Toaster"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "feedback"
+    ],
+    "interactionModel": "feedback",
+    "inputModalities": [
+      "screenReader",
+      "focus"
+    ]
   },
   "Toast": {
     "id": "Toast",
@@ -6626,7 +9589,24 @@
       "Toaster",
       "Alert"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "Toast"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "feedback"
+    ],
+    "interactionModel": "feedback",
+    "inputModalities": [
+      "screenReader",
+      "focus"
+    ]
   },
   "EmptyState": {
     "id": "EmptyState",
@@ -6683,6 +9663,34 @@
     "usedByPatterns": [
       "content-list",
       "cart"
+    ],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "EmptyState"
+    },
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "EmptyState",
+      "patterns": [
+        "WorkQueue",
+        "Inbox",
+        "QueueDetailWorkspace",
+        "Kanban",
+        "Wizard"
+      ]
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "feedback"
+    ],
+    "interactionModel": "feedback",
+    "inputModalities": [
+      "screenReader",
+      "focus"
     ]
   },
   "StateView": {
@@ -6738,7 +9746,33 @@
       "EmptyState",
       "Alert"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "StateView"
+    },
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "StateView",
+      "patterns": [
+        "WorkQueue",
+        "DecisionWorkspace",
+        "Wizard"
+      ]
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "feedback"
+    ],
+    "interactionModel": "feedback",
+    "inputModalities": [
+      "screenReader",
+      "focus"
+    ]
   },
   "ModuleState": {
     "id": "ModuleState",
@@ -6813,6 +9847,19 @@
       "entity-detail",
       "entity-form",
       "master-detail"
+    ],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "feedback"
+    ],
+    "interactionModel": "feedback",
+    "inputModalities": [
+      "screenReader",
+      "focus"
     ]
   },
   "Skeleton": {
@@ -6865,7 +9912,24 @@
       "Spinner",
       "StateView"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "Skeleton"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "feedback"
+    ],
+    "interactionModel": "feedback",
+    "inputModalities": [
+      "screenReader",
+      "focus"
+    ]
   },
   "Spinner": {
     "id": "Spinner",
@@ -6915,7 +9979,24 @@
       "Progress",
       "Skeleton"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "Spinner"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "feedback"
+    ],
+    "interactionModel": "feedback",
+    "inputModalities": [
+      "screenReader",
+      "focus"
+    ]
   },
   "Progress": {
     "id": "Progress",
@@ -6971,6 +10052,31 @@
     ],
     "usedByPatterns": [
       "ebook-reader"
+    ],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "Progress"
+    },
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "Progress",
+      "patterns": [
+        "LifecycleTracker",
+        "Wizard"
+      ]
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "feedback"
+    ],
+    "interactionModel": "feedback",
+    "inputModalities": [
+      "screenReader",
+      "focus"
     ]
   },
   "CircularProgress": {
@@ -7024,7 +10130,24 @@
       "Progress",
       "MetricCard"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "CircularProgress"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "feedback"
+    ],
+    "interactionModel": "feedback",
+    "inputModalities": [
+      "screenReader",
+      "focus"
+    ]
   },
   "TrendIndicator": {
     "id": "TrendIndicator",
@@ -7086,7 +10209,26 @@
       "MetricCard",
       "Sparkline"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "visualizationRef": {
+      "path": "visualization-scheduling-maps.json",
+      "id": "TrendIndicator"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "visualization",
+    "inputModalities": [
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
   },
   "Sparkline": {
     "id": "Sparkline",
@@ -7105,7 +10247,9 @@
       "values",
       "label",
       "colorway",
-      "tone"
+      "tone",
+      "state",
+      "accessibleSummary"
     ],
     "states": [
       "default",
@@ -7145,7 +10289,26 @@
       "TrendIndicator",
       "LineChart"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "visualizationRef": {
+      "path": "visualization-scheduling-maps.json",
+      "id": "Sparkline"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "visualization",
+    "inputModalities": [
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
   },
   "LineChart": {
     "id": "LineChart",
@@ -7154,7 +10317,7 @@
     "category": "chart",
     "level": "component",
     "maturity": "implemented",
-    "purpose": "Render one or more ordered SVG data series with labels, legend, and token chart palette.",
+    "purpose": "Render one or more ordered SVG data series with labels, legend, token chart palette, lifecycle states, and accessible fallback text.",
     "source": "packages/ui/src/charts.tsx",
     "recipes": [
       "dashboard",
@@ -7165,7 +10328,9 @@
       "series",
       "title",
       "valueFormatter",
-      "height"
+      "height",
+      "state",
+      "accessibleSummary"
     ],
     "states": [
       "default",
@@ -7188,6 +10353,11 @@
       "chart-3",
       "chart-4",
       "chart-5",
+      "chart-comparison",
+      "chart-threshold",
+      "chart-positive",
+      "chart-negative",
+      "chart-no-data",
       "surface",
       "border"
     ],
@@ -7203,6 +10373,25 @@
     "usedByPatterns": [
       "dashboard",
       "report"
+    ],
+    "visualizationRef": {
+      "path": "visualization-scheduling-maps.json",
+      "id": "LineChart"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "visualization",
+    "inputModalities": [
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
     ]
   },
   "BarChart": {
@@ -7212,7 +10401,7 @@
     "category": "chart",
     "level": "component",
     "maturity": "implemented",
-    "purpose": "Render comparable categorical magnitudes as a token-colored SVG bar chart.",
+    "purpose": "Render comparable categorical magnitudes as a token-colored SVG bar chart with semantic series tones and lifecycle states.",
     "source": "packages/ui/src/charts.tsx",
     "recipes": [
       "dashboard",
@@ -7222,7 +10411,9 @@
       "data",
       "title",
       "valueFormatter",
-      "height"
+      "height",
+      "state",
+      "accessibleSummary"
     ],
     "states": [
       "default",
@@ -7245,6 +10436,11 @@
       "chart-3",
       "chart-4",
       "chart-5",
+      "chart-comparison",
+      "chart-threshold",
+      "chart-positive",
+      "chart-negative",
+      "chart-no-data",
       "surface",
       "border"
     ],
@@ -7260,6 +10456,25 @@
     "usedByPatterns": [
       "dashboard",
       "report"
+    ],
+    "visualizationRef": {
+      "path": "visualization-scheduling-maps.json",
+      "id": "BarChart"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "visualization",
+    "inputModalities": [
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
     ]
   },
   "DonutChart": {
@@ -7269,7 +10484,7 @@
     "category": "chart",
     "level": "component",
     "maturity": "implemented",
-    "purpose": "Render a small whole-to-part distribution with token-based segments and legend.",
+    "purpose": "Render a small whole-to-part distribution with token-based categorical or semantic segments, lifecycle states, and legend.",
     "source": "packages/ui/src/charts.tsx",
     "recipes": [
       "dashboard",
@@ -7279,7 +10494,9 @@
       "segments",
       "centerLabel",
       "title",
-      "valueFormatter"
+      "valueFormatter",
+      "state",
+      "accessibleSummary"
     ],
     "states": [
       "default",
@@ -7302,6 +10519,11 @@
       "chart-3",
       "chart-4",
       "chart-5",
+      "chart-comparison",
+      "chart-threshold",
+      "chart-positive",
+      "chart-negative",
+      "chart-no-data",
       "surface",
       "border"
     ],
@@ -7316,6 +10538,25 @@
     ],
     "usedByPatterns": [
       "report"
+    ],
+    "visualizationRef": {
+      "path": "visualization-scheduling-maps.json",
+      "id": "DonutChart"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "visualization",
+    "inputModalities": [
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
     ]
   },
   "AspectRatio": {
@@ -7366,7 +10607,22 @@
       "MediaFrame",
       "Image"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "media"
+    ],
+    "interactionModel": "media",
+    "inputModalities": [
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
   },
   "MediaFrame": {
     "id": "MediaFrame",
@@ -7424,6 +10680,21 @@
       "product-detail",
       "content-detail",
       "marketing-home"
+    ],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "media"
+    ],
+    "interactionModel": "media",
+    "inputModalities": [
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
     ]
   },
   "Image": {
@@ -7475,7 +10746,22 @@
       "MediaFrame",
       "AspectRatio"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "media"
+    ],
+    "interactionModel": "media",
+    "inputModalities": [
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
   },
   "QrCode": {
     "id": "QrCode",
@@ -7532,7 +10818,22 @@
       "MediaFrame",
       "Button"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "media"
+    ],
+    "interactionModel": "media",
+    "inputModalities": [
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
   },
   "ApprovalPanel": {
     "id": "ApprovalPanel",
@@ -7587,6 +10888,31 @@
     ],
     "usedByPatterns": [
       "approval-queue"
+    ],
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "ApprovalPanel",
+      "patterns": [
+        "DecisionWorkspace"
+      ]
+    },
+    "kind": "COMPOSITE_BLOCK",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display",
+      "action",
+      "feedback"
+    ],
+    "interactionModel": "composition",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
     ]
   },
   "ActionFooter": {
@@ -7652,6 +10978,31 @@
       "content-detail",
       "auth",
       "marketing-home"
+    ],
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "ActionFooter",
+      "patterns": [
+        "DecisionWorkspace",
+        "Wizard"
+      ]
+    },
+    "kind": "COMPOSITE_BLOCK",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "action",
+      "composition"
+    ],
+    "interactionModel": "composition",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
     ]
   },
   "CardTitle": {
@@ -7703,7 +11054,20 @@
       "CardHeader",
       "CardDescription"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "composition"
+    ],
+    "interactionModel": "composition",
+    "inputModalities": [
+      "screenReader",
+      "focus"
+    ]
   },
   "CardDescription": {
     "id": "CardDescription",
@@ -7754,7 +11118,20 @@
       "CardHeader",
       "CardTitle"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "composition"
+    ],
+    "interactionModel": "composition",
+    "inputModalities": [
+      "screenReader",
+      "focus"
+    ]
   },
   "FieldDescription": {
     "id": "FieldDescription",
@@ -7811,7 +11188,28 @@
       "Label",
       "FieldError"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "FieldDescription"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "input"
+    ],
+    "interactionModel": "field",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ]
   },
   "FieldError": {
     "id": "FieldError",
@@ -7868,7 +11266,28 @@
       "Label",
       "FieldDescription"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "FieldError"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "input"
+    ],
+    "interactionModel": "field",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ]
   },
   "TabPanel": {
     "id": "TabPanel",
@@ -7921,7 +11340,23 @@
       "Tabs",
       "Accordion"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "SAME_INTENT",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "composition"
+    ],
+    "interactionModel": "composition",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
   },
   "CommandPalette": {
     "id": "CommandPalette",
@@ -7976,7 +11411,24 @@
       "CommandMenu",
       "Modal"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "ALIAS",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "navigation"
+    ],
+    "interactionModel": "navigation",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "navigation-shell"
   },
   "DescriptionList": {
     "id": "DescriptionList",
@@ -8028,7 +11480,23 @@
       "KeyValueList",
       "RecordSummary"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "ALIAS",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "display",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
   },
   "Timeline": {
     "id": "Timeline",
@@ -8080,7 +11548,23 @@
       "ActivityFeed",
       "RecordSummary"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "kind": "ALIAS",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "display",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
   },
   "ChartLegend": {
     "id": "ChartLegend",
@@ -8133,7 +11617,26 @@
       "BarChart",
       "DonutChart"
     ],
-    "usedByPatterns": []
+    "usedByPatterns": [],
+    "visualizationRef": {
+      "path": "visualization-scheduling-maps.json",
+      "id": "ChartLegend"
+    },
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "visualization",
+    "inputModalities": [
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
   },
   "QuantityControl": {
     "id": "QuantityControl",
@@ -8196,7 +11699,26 @@
       "catalog",
       "checkout",
       "cart"
-    ]
+    ],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "SAME_INTENT",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-entry",
+      "action"
+    ],
+    "interactionModel": "selection",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ],
+    "nativeAlternative": "list-detail"
   },
   "CartTrigger": {
     "id": "CartTrigger",
@@ -8256,7 +11778,27 @@
     "usedByPatterns": [
       "catalog",
       "cart"
-    ]
+    ],
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "action",
+      "navigation"
+    ],
+    "interactionModel": "activation",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "gesture"
+    ],
+    "adaptivePattern": "commerce",
+    "nativeAlternative": "navigation-drawer"
   },
   "CartLineItem": {
     "id": "CartLineItem",
@@ -8318,7 +11860,28 @@
     "usedByPatterns": [
       "catalog",
       "cart"
-    ]
+    ],
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display",
+      "data-entry",
+      "action"
+    ],
+    "interactionModel": "commerce",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "gesture"
+    ],
+    "adaptivePattern": "commerce",
+    "nativeAlternative": "list-detail"
   },
   "CartPanel": {
     "id": "CartPanel",
@@ -8380,7 +11943,27 @@
       "catalog",
       "checkout",
       "cart"
-    ]
+    ],
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display",
+      "action",
+      "composition"
+    ],
+    "interactionModel": "commerce",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "commerce",
+    "nativeAlternative": "list-detail"
   },
   "OrderSummary": {
     "id": "OrderSummary",
@@ -8436,6 +12019,22 @@
     "usedByPatterns": [
       "checkout",
       "cart"
+    ],
+    "kind": "COMPOSITE_BLOCK",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "display",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
     ]
   },
   "Carousel": {
@@ -8496,7 +12095,27 @@
       "marketing-home",
       "catalog",
       "content-list"
-    ]
+    ],
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "composition",
+      "media"
+    ],
+    "interactionModel": "collection",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "gesture",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "carousel",
+    "nativeAlternative": "swipe-surface"
   },
   "PublicShell": {
     "id": "PublicShell",
@@ -8553,7 +12172,26 @@
       "marketing-home",
       "catalog",
       "content-list"
-    ]
+    ],
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "navigation",
+      "composition"
+    ],
+    "interactionModel": "composition",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "navigation-shell",
+    "nativeAlternative": "navigation-tabs"
   },
   "ChartPanel": {
     "id": "ChartPanel",
@@ -8613,6 +12251,1734 @@
       "dashboard",
       "report",
       "marketing-home"
+    ],
+    "visualizationRef": {
+      "path": "visualization-scheduling-maps.json",
+      "id": "ChartPanel"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "visualization",
+    "inputModalities": [
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "collection",
+    "nativeAlternative": "list-detail"
+  },
+  "Kbd": {
+    "id": "Kbd",
+    "displayName": "Kbd",
+    "status": "implemented",
+    "category": "foundation",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Present a compact keyboard key or shortcut label using the shared control geometry.",
+    "source": "packages/ui/src/core.tsx",
+    "recipes": [
+      "entity-list",
+      "settings"
+    ],
+    "importantProps": [
+      "children",
+      "className"
+    ],
+    "states": [
+      "default",
+      "focused by surrounding control",
+      "high contrast"
+    ],
+    "responsive": [
+      "Keeps shortcut labels compact and allows the surrounding layout to wrap.",
+      "Uses shared caption typography and control spacing across density modes."
+    ],
+    "motion": [
+      "Has no required motion; surrounding interactive states use shared transition tokens.",
+      "Respects prefers-reduced-motion through the global component contract."
+    ],
+    "tokens": [
+      "surface-subtle",
+      "border-strong",
+      "radius-control",
+      "shadow-card",
+      "muted-foreground"
+    ],
+    "relatedComponents": [
+      "CommandMenu",
+      "Tooltip"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "CommandMenu",
+      "Tooltip"
+    ],
+    "usedByPatterns": [],
+    "kind": "WEB_ONLY",
+    "platform": "WEB",
+    "rendererStrategy": "NOT_APPLICABLE",
+    "webStatus": "implemented",
+    "nativeStatus": "not-applicable",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "display",
+    "inputModalities": [
+      "keyboard",
+      "screenReader"
+    ],
+    "nativeAlternative": "none"
+  },
+  "Link": {
+    "id": "Link",
+    "displayName": "Link",
+    "status": "implemented",
+    "category": "foundation",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Provide a semantic, token-driven anchor with consistent focus and optional external-link behavior.",
+    "source": "packages/ui/src/core.tsx",
+    "recipes": [
+      "entity-list",
+      "content-detail",
+      "catalog"
+    ],
+    "importantProps": [
+      "href",
+      "children",
+      "external"
+    ],
+    "states": [
+      "default",
+      "hover",
+      "focus-visible",
+      "visited",
+      "disabled by consumer"
+    ],
+    "responsive": [
+      "Wraps long labels without changing link semantics.",
+      "Uses the same control radius and focus geometry at every viewport."
+    ],
+    "motion": [
+      "Limits interaction feedback to shared color and decoration transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "primary",
+      "primary-hover",
+      "focus-ring",
+      "radius-control",
+      "font-ui"
+    ],
+    "relatedComponents": [
+      "Button",
+      "Breadcrumb",
+      "NavigationMenu"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Button",
+      "Breadcrumb",
+      "NavigationMenu"
+    ],
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "navigation"
+    ],
+    "interactionModel": "navigation",
+    "inputModalities": [
+      "screenReader"
     ]
+  },
+  "Container": {
+    "id": "Container",
+    "displayName": "Container",
+    "status": "implemented",
+    "category": "layout",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Constrain meaningful content to a canonical reading, form, application, data, or full rail.",
+    "source": "packages/ui/src/layout.tsx",
+    "recipes": [
+      "entity-list",
+      "entity-form",
+      "entity-detail",
+      "dashboard"
+    ],
+    "importantProps": [
+      "size",
+      "measure",
+      "as",
+      "children"
+    ],
+    "states": [
+      "reading rail",
+      "form rail",
+      "application rail",
+      "data rail",
+      "full width"
+    ],
+    "responsive": [
+      "Uses the shared rail tokens and remains fluid below the configured maximum.",
+      "Keeps shell gutters separate from content width."
+    ],
+    "motion": [
+      "Has no layout animation by default.",
+      "Respects prefers-reduced-motion when composed with animated content."
+    ],
+    "tokens": [
+      "content-rail",
+      "gutter",
+      "surface"
+    ],
+    "relatedComponents": [
+      "AppShell",
+      "PageHeader",
+      "Panel",
+      "Stack"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "AppShell",
+      "PageHeader",
+      "Panel",
+      "Stack"
+    ],
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "layout"
+    ],
+    "interactionModel": "layout",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
+  },
+  "Stack": {
+    "id": "Stack",
+    "displayName": "Stack",
+    "status": "implemented",
+    "category": "layout",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Compose related content with shared spacing, alignment, direction, and wrapping rules.",
+    "source": "packages/ui/src/layout.tsx",
+    "recipes": [
+      "entity-form",
+      "entity-detail",
+      "settings"
+    ],
+    "importantProps": [
+      "direction",
+      "gap",
+      "align",
+      "justify",
+      "wrap"
+    ],
+    "states": [
+      "row",
+      "column",
+      "wrapped",
+      "aligned",
+      "distributed"
+    ],
+    "responsive": [
+      "Can wrap row compositions and remains width-safe inside bounded rails.",
+      "Uses the same spacing scale across density modes."
+    ],
+    "motion": [
+      "Has no required motion; children own state transitions.",
+      "Respects prefers-reduced-motion through composed children."
+    ],
+    "tokens": [
+      "ref-space",
+      "surface"
+    ],
+    "relatedComponents": [
+      "Container",
+      "Section",
+      "FormActions",
+      "ButtonGroup"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Container",
+      "Section",
+      "FormActions",
+      "ButtonGroup"
+    ],
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "layout"
+    ],
+    "interactionModel": "layout",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
+  },
+  "SplitPane": {
+    "id": "SplitPane",
+    "displayName": "Split Pane",
+    "status": "implemented",
+    "category": "layout",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Provide a bounded two-pane workspace with pointer and keyboard resizing.",
+    "source": "packages/ui/src/layout.tsx",
+    "recipes": [
+      "master-detail",
+      "entity-detail"
+    ],
+    "importantProps": [
+      "children",
+      "split",
+      "minStart",
+      "minEnd",
+      "orientation",
+      "minPaneMeasure"
+    ],
+    "states": [
+      "default",
+      "dragging",
+      "focused separator",
+      "keyboard resizing",
+      "constrained"
+    ],
+    "responsive": [
+      "Clamps both panes to minimum percentages and supports vertical orientation.",
+      "Allows the consumer to switch to a stacked composition at a narrow breakpoint."
+    ],
+    "motion": [
+      "Divider feedback uses shared transitions only; resizing is direct manipulation.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "border",
+      "surface",
+      "surface-subtle",
+      "radius-panel",
+      "shadow-card",
+      "touch-target-min",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Container",
+      "Panel",
+      "ScrollArea",
+      "DetailDrawer"
+    ],
+    "alternativeTo": [
+      "DetailDrawer"
+    ],
+    "composesWith": [
+      "Container",
+      "Panel",
+      "ScrollArea",
+      "DetailDrawer"
+    ],
+    "usedByPatterns": [],
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "SplitPane",
+      "patterns": [
+        "QueueDetailWorkspace",
+        "MasterDetailWorkspace"
+      ]
+    },
+    "kind": "WEB_ONLY",
+    "platform": "WEB",
+    "rendererStrategy": "NOT_APPLICABLE",
+    "webStatus": "implemented",
+    "nativeStatus": "not-applicable",
+    "semanticIntent": [
+      "layout",
+      "composition"
+    ],
+    "interactionModel": "layout",
+    "inputModalities": [
+      "pointer",
+      "keyboard",
+      "screenReader",
+      "focus"
+    ],
+    "nativeAlternative": "list-detail"
+  },
+  "SpeedDial": {
+    "id": "SpeedDial",
+    "displayName": "Speed Dial",
+    "status": "implemented",
+    "category": "action",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Reveal a bounded cluster of related quick actions from one compact trigger.",
+    "source": "packages/ui/src/actions.tsx",
+    "recipes": [
+      "entity-list",
+      "entity-detail"
+    ],
+    "importantProps": [
+      "actions",
+      "open",
+      "placement",
+      "triggerLabel"
+    ],
+    "states": [
+      "closed",
+      "open",
+      "focused action",
+      "disabled action",
+      "keyboard navigation"
+    ],
+    "responsive": [
+      "Uses a placement contract and hides redundant labels when the cluster becomes space constrained.",
+      "Keeps each action on the shared touch-target geometry."
+    ],
+    "motion": [
+      "Uses the shared enter role for revealing the action group.",
+      "Disables the reveal animation under prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-overlay",
+      "border",
+      "shadow-popover",
+      "radius-control",
+      "z-sticky",
+      "motion-enter"
+    ],
+    "relatedComponents": [
+      "IconButton",
+      "ButtonGroup",
+      "DropdownMenu",
+      "ActionBar"
+    ],
+    "alternativeTo": [
+      "DropdownMenu"
+    ],
+    "composesWith": [
+      "IconButton",
+      "ButtonGroup",
+      "DropdownMenu",
+      "ActionBar"
+    ],
+    "usedByPatterns": [],
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "action",
+      "composition"
+    ],
+    "interactionModel": "activation",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "gesture"
+    ],
+    "adaptivePattern": "navigation-shell",
+    "nativeAlternative": "navigation-drawer"
+  },
+  "DragHandle": {
+    "id": "DragHandle",
+    "displayName": "Drag Handle",
+    "status": "implemented",
+    "category": "action",
+    "level": "primitive",
+    "maturity": "implemented",
+    "purpose": "Expose a compact, keyboard-focusable affordance for consumer-owned reordering.",
+    "source": "packages/ui/src/actions.tsx",
+    "recipes": [
+      "entity-list",
+      "entity-form"
+    ],
+    "importantProps": [
+      "label",
+      "disabled",
+      "onPointerDown"
+    ],
+    "states": [
+      "default",
+      "hover",
+      "focused",
+      "pressed",
+      "disabled"
+    ],
+    "responsive": [
+      "Retains the shared touch target in dense rows and narrow layouts.",
+      "Can be placed in a Stack without changing row semantics."
+    ],
+    "motion": [
+      "Uses shared button press feedback.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "control-height",
+      "touch-target-min",
+      "focus-ring",
+      "radius-control"
+    ],
+    "relatedComponents": [
+      "IconButton",
+      "DataTable",
+      "Stack"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "IconButton",
+      "DataTable",
+      "Stack"
+    ],
+    "usedByPatterns": [],
+    "workflowProductivityRef": {
+      "path": "workflow-productivity.json",
+      "component": "DragHandle",
+      "patterns": [
+        "Kanban",
+        "TaskBoard"
+      ]
+    },
+    "kind": "WEB_ONLY",
+    "platform": "WEB",
+    "rendererStrategy": "NOT_APPLICABLE",
+    "webStatus": "implemented",
+    "nativeStatus": "not-applicable",
+    "semanticIntent": [
+      "layout"
+    ],
+    "interactionModel": "layout",
+    "inputModalities": [
+      "pointer",
+      "keyboard",
+      "screenReader",
+      "focus"
+    ],
+    "nativeAlternative": "none"
+  },
+  "BottomNavigation": {
+    "id": "BottomNavigation",
+    "displayName": "Bottom Navigation",
+    "status": "implemented",
+    "category": "navigation",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Present a small set of primary mobile destinations with shared active and safe-area geometry.",
+    "source": "packages/ui/src/navigation.tsx",
+    "recipes": [
+      "ebook-reader",
+      "catalog"
+    ],
+    "importantProps": [
+      "items",
+      "value",
+      "onValueChange",
+      "position"
+    ],
+    "states": [
+      "default",
+      "active destination",
+      "focused",
+      "disabled",
+      "fixed position"
+    ],
+    "responsive": [
+      "Includes safe-area padding and touch-target minimums for mobile surfaces.",
+      "Can remain static in a bounded specimen or become fixed for an application shell."
+    ],
+    "motion": [
+      "Active feedback uses shared surface transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-overlay",
+      "border",
+      "selected",
+      "touch-target-min",
+      "safe-area",
+      "z-sticky"
+    ],
+    "relatedComponents": [
+      "TopNavigation",
+      "MobileSidebar",
+      "NavigationRail"
+    ],
+    "alternativeTo": [
+      "TopNavigation",
+      "MobileSidebar"
+    ],
+    "composesWith": [
+      "TopNavigation",
+      "MobileSidebar",
+      "NavigationRail"
+    ],
+    "usedByPatterns": [],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "BottomNavigation"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "navigation"
+    ],
+    "interactionModel": "navigation",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "sidebar",
+    "nativeAlternative": "navigation-tabs"
+  },
+  "NavigationRail": {
+    "id": "NavigationRail",
+    "displayName": "Navigation Rail",
+    "status": "implemented",
+    "category": "navigation",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Provide a vertical icon-led route or tool navigation surface with optional labels.",
+    "source": "packages/ui/src/navigation.tsx",
+    "recipes": [
+      "entity-list",
+      "dashboard"
+    ],
+    "importantProps": [
+      "items",
+      "value",
+      "expanded",
+      "onValueChange"
+    ],
+    "states": [
+      "collapsed",
+      "expanded",
+      "active",
+      "focused",
+      "disabled"
+    ],
+    "responsive": [
+      "Supports collapsed icon-only and expanded label modes without changing destinations.",
+      "Keeps touch-target minimums and long labels clipped inside the rail."
+    ],
+    "motion": [
+      "Expansion is consumer-controlled; item feedback uses shared transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "selected",
+      "radius-control",
+      "touch-target-min",
+      "content-rail"
+    ],
+    "relatedComponents": [
+      "Sidebar",
+      "BottomNavigation",
+      "NavigationMenu",
+      "NavItem"
+    ],
+    "alternativeTo": [
+      "Sidebar",
+      "BottomNavigation"
+    ],
+    "composesWith": [
+      "Sidebar",
+      "BottomNavigation",
+      "NavigationMenu",
+      "NavItem"
+    ],
+    "usedByPatterns": [],
+    "navigationOverlayFeedbackRef": {
+      "path": "navigation-overlay-feedback.json",
+      "id": "NavigationRail"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "navigation"
+    ],
+    "interactionModel": "navigation",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "sidebar",
+    "nativeAlternative": "navigation-drawer"
+  },
+  "Transfer": {
+    "id": "Transfer",
+    "displayName": "Transfer",
+    "status": "implemented",
+    "category": "form",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Move bounded options between available and selected listbox regions.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "entity-form",
+      "settings"
+    ],
+    "importantProps": [
+      "options",
+      "value",
+      "onValueChange",
+      "searchable"
+    ],
+    "states": [
+      "default",
+      "option selected",
+      "empty list",
+      "searching",
+      "disabled option"
+    ],
+    "responsive": [
+      "Stacks the two listboxes and action controls on narrow screens.",
+      "Each list remains a bounded scroll owner instead of expanding the page indefinitely."
+    ],
+    "motion": [
+      "Uses shared control transitions for selection feedback.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-raised",
+      "border",
+      "selected",
+      "selected-hover",
+      "radius-panel",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "MultiSelect",
+      "Combobox",
+      "Button",
+      "Input"
+    ],
+    "alternativeTo": [
+      "MultiSelect",
+      "Combobox"
+    ],
+    "composesWith": [
+      "MultiSelect",
+      "Combobox",
+      "Button",
+      "Input"
+    ],
+    "usedByPatterns": [],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "Transfer"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "selection",
+      "data-display"
+    ],
+    "interactionModel": "collection",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ],
+    "adaptivePattern": "collection",
+    "nativeAlternative": "list-detail"
+  },
+  "ColorPicker": {
+    "id": "ColorPicker",
+    "displayName": "Color Picker",
+    "status": "implemented",
+    "category": "form",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Capture a color with the platform-native color affordance, readable value field, and optional presets.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "settings",
+      "entity-form"
+    ],
+    "importantProps": [
+      "value",
+      "onValueChange",
+      "presets",
+      "disabled",
+      "measure"
+    ],
+    "states": [
+      "default",
+      "focused",
+      "preset selected",
+      "disabled",
+      "invalid text value"
+    ],
+    "responsive": [
+      "Keeps the native swatch and value field in one flexible control row.",
+      "Preset swatches wrap without changing the color contract."
+    ],
+    "motion": [
+      "Uses shared focus transitions only.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-focus-border",
+      "control-height",
+      "radius-control",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Input",
+      "Select",
+      "Typography"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Input",
+      "Select",
+      "Typography"
+    ],
+    "usedByPatterns": [],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "ColorPicker"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "selection",
+      "data-entry"
+    ],
+    "interactionModel": "selection",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ],
+    "adaptivePattern": "selector",
+    "nativeAlternative": "native-picker"
+  },
+  "TagsInput": {
+    "id": "TagsInput",
+    "displayName": "Tags Input",
+    "status": "implemented",
+    "category": "form",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Collect a bounded or open set of normalized text tags with keyboard commit and removal.",
+    "source": "packages/ui/src/forms.tsx",
+    "recipes": [
+      "entity-form",
+      "settings",
+      "catalog"
+    ],
+    "importantProps": [
+      "value",
+      "onValueChange",
+      "maxTags",
+      "placeholder",
+      "measure",
+      "disabled",
+      "readOnly",
+      "error"
+    ],
+    "states": [
+      "empty",
+      "editing",
+      "tag added",
+      "tag removed",
+      "maximum reached",
+      "disabled",
+      "read-only",
+      "invalid"
+    ],
+    "responsive": [
+      "Tokens wrap inside the field without forcing a minimum page width.",
+      "Retains shared control height and field focus treatment."
+    ],
+    "motion": [
+      "Uses shared focus and control transitions only.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "surface-subtle",
+      "border",
+      "radius-control",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "Input",
+      "MultiSelect",
+      "Badge"
+    ],
+    "alternativeTo": [
+      "MultiSelect"
+    ],
+    "composesWith": [
+      "Input",
+      "MultiSelect",
+      "Badge"
+    ],
+    "usedByPatterns": [],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "TagsInput"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "selection",
+      "data-entry"
+    ],
+    "interactionModel": "selection",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ],
+    "adaptivePattern": "selector",
+    "nativeAlternative": "selector-sheet"
+  },
+  "TreeView": {
+    "id": "TreeView",
+    "displayName": "Tree View",
+    "status": "implemented",
+    "category": "navigation",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Navigate or select one item in a visible hierarchy with tree keyboard semantics.",
+    "source": "packages/ui/src/hierarchy.tsx",
+    "recipes": [
+      "entity-list",
+      "settings",
+      "entity-detail"
+    ],
+    "importantProps": [
+      "items",
+      "selectedId",
+      "onSelectedIdChange",
+      "expandedIds"
+    ],
+    "states": [
+      "collapsed branches",
+      "expanded branches",
+      "selected node",
+      "focused node",
+      "disabled node",
+      "empty"
+    ],
+    "responsive": [
+      "Keeps long hierarchies in a bounded scroll owner.",
+      "Labels wrap and rows retain touch-target geometry on narrow screens."
+    ],
+    "motion": [
+      "Uses shared transitions for selection and focus feedback.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-raised",
+      "border",
+      "selected",
+      "focus-ring",
+      "touch-target-min",
+      "radius-control",
+      "muted-foreground"
+    ],
+    "relatedComponents": [
+      "HierarchyPicker",
+      "Sidebar",
+      "Collapsible",
+      "ScrollArea"
+    ],
+    "alternativeTo": [
+      "HierarchyPicker",
+      "Sidebar"
+    ],
+    "composesWith": [
+      "HierarchyPicker",
+      "Sidebar",
+      "Collapsible",
+      "ScrollArea"
+    ],
+    "usedByPatterns": [],
+    "dataCollectionRef": {
+      "path": "data-collections.json",
+      "id": "TreeView"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "navigation",
+      "selection"
+    ],
+    "interactionModel": "navigation",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "hierarchy",
+    "nativeAlternative": "hierarchy-list"
+  },
+  "FilePreview": {
+    "id": "FilePreview",
+    "displayName": "File Preview",
+    "status": "implemented",
+    "category": "file",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Show one file's bounded preview, metadata, processing state, and optional actions.",
+    "source": "packages/ui/src/files.tsx",
+    "recipes": [
+      "entity-form",
+      "content-detail",
+      "catalog"
+    ],
+    "importantProps": [
+      "name",
+      "src",
+      "type",
+      "status",
+      "onPreview",
+      "onDownload"
+    ],
+    "states": [
+      "ready",
+      "processing",
+      "error",
+      "image preview",
+      "metadata only",
+      "actions available"
+    ],
+    "responsive": [
+      "Reflows metadata, status, and actions inside a bounded record surface.",
+      "Long file names stay readable through ellipsis without changing the accessible name."
+    ],
+    "motion": [
+      "Uses the shared card lift transition for interactive preview records.",
+      "Disables lift animation under prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-raised",
+      "surface-subtle",
+      "border",
+      "shadow-card",
+      "radius-panel",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "FileUpload",
+      "FileItem",
+      "MediaFrame",
+      "IconButton"
+    ],
+    "alternativeTo": [
+      "FileItem",
+      "MediaFrame"
+    ],
+    "composesWith": [
+      "FileUpload",
+      "FileItem",
+      "MediaFrame",
+      "IconButton"
+    ],
+    "usedByPatterns": [],
+    "inputContractRef": {
+      "path": "input-contracts.json",
+      "id": "FilePreview"
+    },
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-entry",
+      "media"
+    ],
+    "interactionModel": "file-provision",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "files",
+    "nativeAlternative": "document-picker"
+  },
+  "EditorSurface": {
+    "id": "EditorSurface",
+    "displayName": "Editor Surface",
+    "status": "implemented",
+    "category": "form",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Provide a token-led editing frame for plain, Markdown, code, or JSON content while leaving parsing, history, and engine ownership to the consumer.",
+    "source": "packages/ui/src/advanced.tsx",
+    "recipes": [],
+    "importantProps": [
+      "content",
+      "language",
+      "title",
+      "toolbar",
+      "status",
+      "footer"
+    ],
+    "states": [
+      "plain",
+      "markdown",
+      "code",
+      "json",
+      "focused",
+      "read-only",
+      "pending or unavailable when applicable"
+    ],
+    "responsive": [
+      "Keeps the editor content inside a bounded scroll or resize owner.",
+      "Lets tool and footer regions wrap without shrinking the editing control below readable geometry."
+    ],
+    "motion": [
+      "Uses shared surface transitions for focus and state changes.",
+      "Does not require animation for editing or content meaning."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "border",
+      "radius-panel",
+      "radius-control",
+      "shadow-card",
+      "focus-ring",
+      "muted-foreground"
+    ],
+    "relatedComponents": [
+      "Textarea",
+      "Toolbar",
+      "Kbd"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Textarea",
+      "Toolbar",
+      "Kbd"
+    ],
+    "usedByPatterns": [],
+    "kind": "WEB_ONLY",
+    "platform": "WEB",
+    "rendererStrategy": "NOT_APPLICABLE",
+    "webStatus": "implemented",
+    "nativeStatus": "not-applicable",
+    "semanticIntent": [
+      "data-entry",
+      "composition"
+    ],
+    "interactionModel": "data-entry",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "screenReader",
+      "focus"
+    ],
+    "nativeAlternative": "none"
+  },
+  "PropertyInspector": {
+    "id": "PropertyInspector",
+    "displayName": "Property Inspector",
+    "status": "implemented",
+    "category": "layout",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Present grouped consumer-owned properties in keyboard-accessible disclosure sections beside a builder or detail surface.",
+    "source": "packages/ui/src/advanced.tsx",
+    "recipes": [
+      "master-detail",
+      "entity-detail"
+    ],
+    "importantProps": [
+      "sections",
+      "title",
+      "summary"
+    ],
+    "states": [
+      "default",
+      "expanded sections",
+      "collapsed sections",
+      "focused",
+      "empty"
+    ],
+    "responsive": [
+      "Retains a bounded rail beside a builder on wide screens.",
+      "Stacks below the stage when the available width cannot support a readable inspector."
+    ],
+    "motion": [
+      "Uses shared transitions for disclosure feedback only.",
+      "Preserves section meaning when reduced motion is requested."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "border",
+      "selected",
+      "focus-ring",
+      "touch-target-min",
+      "radius-panel"
+    ],
+    "relatedComponents": [
+      "BuilderCanvas",
+      "Accordion",
+      "FormGrid",
+      "DetailDrawer"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "BuilderCanvas",
+      "Accordion",
+      "FormGrid",
+      "DetailDrawer"
+    ],
+    "usedByPatterns": [],
+    "kind": "WEB_ONLY",
+    "platform": "WEB",
+    "rendererStrategy": "NOT_APPLICABLE",
+    "webStatus": "implemented",
+    "nativeStatus": "not-applicable",
+    "semanticIntent": [
+      "data-display",
+      "data-entry"
+    ],
+    "interactionModel": "data-entry",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "screenReader",
+      "focus"
+    ],
+    "nativeAlternative": "list-detail"
+  },
+  "BuilderCanvas": {
+    "id": "BuilderCanvas",
+    "displayName": "Builder Canvas",
+    "status": "implemented",
+    "category": "layout",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Compose a bounded builder stage with optional toolbar, status, and property rail without owning a document model, drag/drop mutation, or serialization.",
+    "source": "packages/ui/src/advanced.tsx",
+    "recipes": [
+      "master-detail",
+      "entity-detail"
+    ],
+    "importantProps": [
+      "children",
+      "inspector",
+      "toolbar",
+      "status",
+      "emptyState"
+    ],
+    "states": [
+      "ready",
+      "empty",
+      "selected content",
+      "constrained",
+      "read-only",
+      "adapter unavailable"
+    ],
+    "responsive": [
+      "Keeps stage and inspector in bounded columns on desktop and tablet.",
+      "Stacks the inspector below the stage at compact widths without changing content ownership."
+    ],
+    "motion": [
+      "Uses shared surface transitions; direct manipulation remains direct.",
+      "Does not animate document meaning or selection without consumer direction."
+    ],
+    "tokens": [
+      "surface",
+      "surface-subtle",
+      "border",
+      "selected",
+      "focus-ring",
+      "radius-panel",
+      "shadow-card"
+    ],
+    "relatedComponents": [
+      "PropertyInspector",
+      "SplitPane",
+      "Toolbar",
+      "DragHandle"
+    ],
+    "alternativeTo": [
+      "SplitPane"
+    ],
+    "composesWith": [
+      "PropertyInspector",
+      "SplitPane",
+      "Toolbar",
+      "DragHandle"
+    ],
+    "usedByPatterns": [],
+    "kind": "WEB_ONLY",
+    "platform": "WEB",
+    "rendererStrategy": "NOT_APPLICABLE",
+    "webStatus": "implemented",
+    "nativeStatus": "not-applicable",
+    "semanticIntent": [
+      "composition",
+      "layout"
+    ],
+    "interactionModel": "layout",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "screenReader",
+      "focus"
+    ],
+    "nativeAlternative": "none"
+  },
+  "PromptComposer": {
+    "id": "PromptComposer",
+    "displayName": "Prompt Composer",
+    "status": "implemented",
+    "category": "form",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Collect and submit a consumer-owned prompt with shared textarea, action, attachment, and status geometry.",
+    "source": "packages/ui/src/advanced.tsx",
+    "recipes": [
+      "content-detail",
+      "entity-detail"
+    ],
+    "importantProps": [
+      "value",
+      "onValueChange",
+      "onSubmit",
+      "toolbar",
+      "attachments",
+      "status"
+    ],
+    "states": [
+      "empty",
+      "draft",
+      "focused",
+      "disabled",
+      "submitting",
+      "status or error"
+    ],
+    "responsive": [
+      "Wraps prompt tools and submit action while preserving the input label and readable width.",
+      "Retains touch-safe action geometry at compact widths."
+    ],
+    "motion": [
+      "Uses shared control transitions only.",
+      "Does not require streaming animation to communicate submission state."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "focus-ring",
+      "control-height",
+      "control-gap",
+      "surface-raised",
+      "border"
+    ],
+    "relatedComponents": [
+      "Textarea",
+      "Button",
+      "CommandMenu",
+      "ConversationThread"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "Textarea",
+      "Button",
+      "CommandMenu",
+      "ConversationThread"
+    ],
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-entry",
+      "action"
+    ],
+    "interactionModel": "field",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus",
+      "virtualKeyboard"
+    ]
+  },
+  "ConversationThread": {
+    "id": "ConversationThread",
+    "displayName": "Conversation Thread",
+    "status": "implemented",
+    "category": "data",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Render an ordered, status-aware message thread for consumer-owned conversations without owning persistence, streaming transport, or model policy.",
+    "source": "packages/ui/src/advanced.tsx",
+    "recipes": [
+      "content-detail",
+      "entity-detail"
+    ],
+    "importantProps": [
+      "messages",
+      "emptyMessage",
+      "aria-label"
+    ],
+    "states": [
+      "empty",
+      "user message",
+      "assistant message",
+      "system message",
+      "tool message",
+      "streaming",
+      "error"
+    ],
+    "responsive": [
+      "Wraps message content inside a bounded scroll owner.",
+      "Allows message actions and metadata to wrap without changing message order."
+    ],
+    "motion": [
+      "Uses shared transitions for message surface feedback.",
+      "Does not require token streaming or animated typing to communicate content."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "border",
+      "muted-foreground",
+      "radius-control",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "PromptComposer",
+      "CitationList",
+      "ToolCallCard",
+      "Badge"
+    ],
+    "alternativeTo": [
+      "ActivityFeed"
+    ],
+    "composesWith": [
+      "PromptComposer",
+      "CitationList",
+      "ToolCallCard",
+      "Badge"
+    ],
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "display",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
+  },
+  "CitationList": {
+    "id": "CitationList",
+    "displayName": "Citation List",
+    "status": "implemented",
+    "category": "data",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Present consumer-supplied sources and excerpts in a readable ordered list without owning retrieval, ranking, or trust policy.",
+    "source": "packages/ui/src/advanced.tsx",
+    "recipes": [
+      "content-detail",
+      "entity-detail"
+    ],
+    "importantProps": [
+      "citations",
+      "title",
+      "emptyMessage",
+      "aria-label"
+    ],
+    "states": [
+      "ready",
+      "empty",
+      "source with excerpt",
+      "source without link",
+      "unavailable when applicable"
+    ],
+    "responsive": [
+      "Wraps long source labels and excerpts inside the content rail.",
+      "Retains ordered source relationships at compact widths."
+    ],
+    "motion": [
+      "Has no required motion; link feedback uses shared transitions.",
+      "Respects reduced motion through canonical link treatment."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "muted-foreground",
+      "radius-control",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "ConversationThread",
+      "Link",
+      "Tooltip"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "ConversationThread",
+      "Link",
+      "Tooltip"
+    ],
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "display",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
+  },
+  "ToolCallCard": {
+    "id": "ToolCallCard",
+    "displayName": "Tool Call Card",
+    "status": "implemented",
+    "category": "data",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Present consumer-supplied tool invocation input, output, status, and actions without executing or authorizing the tool.",
+    "source": "packages/ui/src/advanced.tsx",
+    "recipes": [
+      "content-detail",
+      "entity-detail"
+    ],
+    "importantProps": [
+      "name",
+      "status",
+      "summary",
+      "input",
+      "output",
+      "actions"
+    ],
+    "states": [
+      "pending",
+      "running",
+      "completed",
+      "failed",
+      "input only",
+      "output available"
+    ],
+    "responsive": [
+      "Wraps tool names, status, and action rows within bounded cards.",
+      "Allows long structured input or output to scroll without widening the route."
+    ],
+    "motion": [
+      "Uses shared state transitions for status feedback.",
+      "Does not require animated execution or progress to convey state."
+    ],
+    "tokens": [
+      "surface-raised",
+      "surface",
+      "border",
+      "muted-foreground",
+      "radius-panel",
+      "focus-ring"
+    ],
+    "relatedComponents": [
+      "ConversationThread",
+      "StatusChip",
+      "Badge",
+      "Button"
+    ],
+    "alternativeTo": [],
+    "composesWith": [
+      "ConversationThread",
+      "StatusChip",
+      "Badge",
+      "Button"
+    ],
+    "usedByPatterns": [],
+    "kind": "CANONICAL_COMPONENT",
+    "platform": "BOTH",
+    "rendererStrategy": "NATIVE_RENDERER",
+    "webStatus": "implemented",
+    "nativeStatus": "planned",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "display",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "touch",
+      "screenReader",
+      "focus"
+    ]
+  },
+  "DiffViewer": {
+    "id": "DiffViewer",
+    "displayName": "Diff Viewer",
+    "status": "implemented",
+    "category": "data",
+    "level": "component",
+    "maturity": "implemented",
+    "purpose": "Present consumer-supplied before/after comparison rows without computing diff meaning or owning audit policy.",
+    "source": "packages/ui/src/advanced.tsx",
+    "recipes": [
+      "content-detail",
+      "entity-detail"
+    ],
+    "importantProps": [
+      "lines",
+      "mode",
+      "title",
+      "emptyMessage"
+    ],
+    "states": [
+      "ready",
+      "empty",
+      "loading by consumer",
+      "error by consumer",
+      "read-only"
+    ],
+    "responsive": [
+      "Supports inline and split presentations so consumers can choose a readable narrow layout.",
+      "Allows long values to wrap or scroll without widening the route."
+    ],
+    "motion": [
+      "Has no required motion; state transitions remain readable without animation.",
+      "Respects reduced motion through the shared token contract."
+    ],
+    "tokens": [
+      "surface",
+      "surface-subtle",
+      "border",
+      "selected",
+      "focus-ring",
+      "radius-panel",
+      "shadow-card"
+    ],
+    "relatedComponents": [
+      "EditorSurface",
+      "RevisionDiff",
+      "Table",
+      "ScrollArea",
+      "StateView"
+    ],
+    "alternativeTo": [
+      "RevisionDiff"
+    ],
+    "composesWith": [
+      "EditorSurface",
+      "Table",
+      "ScrollArea",
+      "StateView"
+    ],
+    "usedByPatterns": [],
+    "kind": "WEB_ONLY",
+    "platform": "WEB",
+    "rendererStrategy": "NOT_APPLICABLE",
+    "webStatus": "implemented",
+    "nativeStatus": "not-applicable",
+    "semanticIntent": [
+      "data-display"
+    ],
+    "interactionModel": "data-comparison",
+    "inputModalities": [
+      "keyboard",
+      "pointer",
+      "screenReader",
+      "focus"
+    ],
+    "nativeAlternative": "none"
   }
 }

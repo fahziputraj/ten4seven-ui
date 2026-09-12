@@ -120,7 +120,7 @@ function FarmContextCard({
         <Badge tone="success">Authorized</Badge>
       </CardHeader>
       <CardContent>
-        <div className="farm-proof-controls">
+        <div className="farm-proof-controls" data-t7-rail="form">
           <Select
             id="farm-context-selector"
             label="Farm context selector"

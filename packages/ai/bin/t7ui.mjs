@@ -30,6 +30,10 @@ const recipes = selectiveIndex.recipes
   : readJson("packages/ai/catalog/recipes.json");
 const saasControlPlane = readJson("generated/saas-control-plane.json");
 const erpDensity = readJson("generated/erp-density.json");
+const composition = readJson("generated/composition.json");
+const componentIndex = readJson("generated/components.compact.json");
+const editorBuilderAi = readJson("generated/editor-builder-ai.json");
+const nativeExpo = readJson("generated/native-expo.json");
 const packageInfo = readJson("package.json");
 const {
   composeBrandExpression,
@@ -52,6 +56,14 @@ function readBlocks() {
 
 function readIcons() {
   return readJson("packages/ai/catalog/icons.json");
+}
+
+function readComponentContract(name) {
+  const compact = componentIndex[name];
+  const shardPath = `generated/components/${name}.json`;
+  return fs.existsSync(path.join(repoRoot, shardPath))
+    ? { ...compact, ...readJson(shardPath) }
+    : compact;
 }
 
 function printInfo() {
@@ -184,6 +196,220 @@ function findErpDensityPattern(query) {
     )[0]?.patternId;
 }
 
+const finalComponentIntentHints = [
+  ["single primary action", ["Button"]],
+  ["searchable selection", ["Combobox"]],
+  ["choose one option on android", ["Select"]],
+  ["choose one option on ios", ["Select"]],
+  ["hierarchical selection", ["Cascader"]],
+  ["show tabular financial records", ["DataTable"]],
+  ["100k interactive records", ["AdvancedDataGrid"]],
+  ["records on phone", ["List"]],
+  ["temporary action feedback", ["Toast"]],
+  ["persistent event history", ["NotificationCenter"]],
+  ["context help on android", ["Popover"]],
+  ["desktop resize workspace", ["SplitPane"]],
+  ["chat interface", ["ConversationThread", "PromptComposer"]],
+  ["ai source evidence", ["CitationList"]],
+  ["show product price", ["Price"]],
+];
+
+const finalCapabilityIntentHints = [
+  ["capture qr code on native", "qrScanner"],
+  ["photo input on ios", "photoLibrary"],
+];
+
+const finalEditorIntentHints = [
+  ["edit rich formatted content", "RICH_TEXT"],
+  ["write source code", "CODE"],
+];
+
+function findFinalIntent(query) {
+  const normalized = query.toLowerCase().trim();
+  const componentHint = finalComponentIntentHints.find(([phrase]) =>
+    normalized.includes(phrase),
+  );
+  if (componentHint) return { kind: "component", components: componentHint[1] };
+
+  const capabilityHint = finalCapabilityIntentHints.find(([phrase]) =>
+    normalized.includes(phrase),
+  );
+  if (capabilityHint) return { kind: "capability", id: capabilityHint[1] };
+
+  const editorHint = finalEditorIntentHints.find(([phrase]) =>
+    normalized.includes(phrase),
+  );
+  if (editorHint) return { kind: "editor", id: editorHint[1] };
+
+  if (
+    normalized.includes("approve or reject") &&
+    normalized.includes("evidence")
+  )
+    return { kind: "composition", id: "approval-review" };
+
+  if (normalized.includes("reorder") || normalized.includes("move item"))
+    return { kind: "reorder" };
+
+  return undefined;
+}
+
+function printComponentRecommendation(query, names) {
+  console.log("Query: " + query);
+  console.log("Recommendations:");
+  for (const name of names) {
+    const component = readComponentContract(name);
+    if (!component) continue;
+    console.log("- " + name + ": " + component.purpose);
+    console.log("  Import: " + component.publicApi.package);
+    console.log("  Export: " + component.publicApi.export);
+    if (component.publicApi.nativePackage)
+      console.log("  Native import: " + component.publicApi.nativePackage);
+    console.log(
+      "  Platform: " +
+        component.platform +
+        "; renderer: " +
+        component.rendererStrategy,
+    );
+    console.log(
+      "  Web: " + component.webStatus + "; Native: " + component.nativeStatus,
+    );
+    if (component.nativeAlternative)
+      console.log("  Native alternative: " + component.nativeAlternative);
+    if (component.useWhen?.length)
+      console.log("  Use when: " + component.useWhen.join("; "));
+    if (component.avoidWhen?.length)
+      console.log("  Avoid when: " + component.avoidWhen.join("; "));
+    console.log("  Tokens: " + component.tokens.join(", "));
+    console.log("  States: " + component.states.join(", "));
+  }
+  console.log("Contract: generated/components.compact.json");
+}
+
+function printCapabilityRecommendation(query, id) {
+  const capability = nativeExpo.deviceCapabilities[id];
+  console.log("Query: " + query);
+  console.log("Native capability: " + id);
+  console.log("Primitive/adapter: " + capability.primitive);
+  console.log("Execution mode: " + capability.executionMode);
+  console.log("Platform: " + capability.platform);
+  console.log("States: " + capability.states.join(", "));
+  console.log("Native alternative boundary: " + capability.presentation);
+  console.log("Consumer owns: " + capability.consumerOwns.join(", "));
+  console.log("Contract: generated/native-expo.json");
+}
+
+function printEditorRecommendation(query, id) {
+  const editor = editorBuilderAi.editorTaxonomy[id];
+  console.log("Query: " + query);
+  console.log("Editor intent: " + id);
+  console.log("Canonical component: " + editor.canonicalComponent);
+  console.log("Import: @ten4seven/ui");
+  console.log("Platform: " + editor.platform);
+  console.log("Web: " + editor.webStrategy);
+  console.log("Native: " + editor.nativeStrategy);
+  console.log("Engine boundary: " + editor.adapterBoundary);
+  console.log("Use when: " + editor.capability);
+  console.log("Contract: generated/editor-builder-ai.json");
+}
+
+function printReorderRecommendation(query) {
+  const dnd = editorBuilderAi.dragDrop;
+  const native = editorBuilderAi.nativeCanary.reorder;
+  console.log("Query: " + query);
+  console.log("Intent: reorder/move");
+  console.log("Web contract: DND intent + DragHandle");
+  console.log(
+    "Platform: " + dnd.platform + "; strategy: " + dnd.nativeStrategy,
+  );
+  console.log("Web: " + dnd.webStrategy);
+  console.log("Native alternative: " + native.presentation);
+  console.log("Native actions: " + native.touchSafeActions);
+  console.log("Accessibility: " + dnd.accessibility.join("; "));
+  console.log("Contract: generated/editor-builder-ai.json");
+}
+
+function findComposition(query) {
+  const normalized = query.toLowerCase().trim();
+  const directHints = [
+    ["approval review", "approval-review"],
+    ["approve or reject", "approval-review"],
+    ["decision review", "decision-review"],
+    ["queue detail", "queue-detail"],
+    ["list detail", "list-detail"],
+    ["master detail", "master-detail"],
+    ["public landing", "public-landing"],
+    ["authentication", "auth"],
+    ["login", "auth"],
+    ["mobile field", "mobile-field"],
+    ["ai assistant", "ai-assistant"],
+    ["kpi", "kpi-dashboard"],
+    ["empty state", "empty-error-onboarding"],
+    ["error state", "empty-error-onboarding"],
+  ];
+  const hinted = directHints.find(([term]) => normalized.includes(term))?.[1];
+  if (hinted)
+    return composition.recipes[hinted]
+      ? { kind: "recipe", id: hinted, entry: composition.recipes[hinted] }
+      : composition.blocks[hinted]
+        ? { kind: "block", id: hinted, entry: composition.blocks[hinted] }
+        : undefined;
+  for (const kind of ["blocks", "recipes"]) {
+    if (composition[kind][normalized])
+      return {
+        kind: kind === "blocks" ? "block" : "recipe",
+        id: normalized,
+        entry: composition[kind][normalized],
+      };
+  }
+  return Object.entries(composition.blocks)
+    .concat(Object.entries(composition.recipes))
+    .map(([id, entry]) => ({
+      kind: composition.blocks[id] ? "block" : "recipe",
+      id,
+      entry,
+      score: flatten({ id, ...entry }).split(normalized).length - 1,
+    }))
+    .sort(
+      (left, right) =>
+        right.score - left.score || left.id.localeCompare(right.id),
+    )[0];
+}
+
+function printCompositionFind(query) {
+  const match = findComposition(query);
+  if (!match || !match.entry) {
+    console.error(`Unknown composition: ${query}`);
+    process.exitCode = 1;
+    return;
+  }
+  const { entry } = match;
+  console.log(`Query: ${query}`);
+  console.log(
+    `${match.kind === "block" ? "Block" : "Recipe"}: ${entry.displayName} (${match.id})`,
+  );
+  console.log(`Family: ${entry.family}`);
+  console.log(
+    `Platform: ${entry.platform}; native strategy: ${entry.nativeStrategy}`,
+  );
+  console.log(`Profiles: ${entry.profileCompatibility.join(", ")}`);
+  if (match.kind === "recipe") {
+    for (const role of ["required", "recommended", "optional"]) {
+      const names = entry.blockRoles?.[role] ?? [];
+      if (names.length)
+        console.log(
+          `${role[0].toUpperCase()}${role.slice(1)} blocks: ${names.join(", ")}`,
+        );
+    }
+  }
+  console.log(
+    `Components: ${[...entry.requiredComponents, ...entry.optionalComponents].join(", ")}`,
+  );
+  console.log(`Responsive: ${entry.responsive.mobile}`);
+  console.log(`Native: ${entry.responsive.native}`);
+  console.log(`Business boundary: ${entry.ai.businessBoundary}`);
+  console.log("Contract: generated/composition.json");
+}
+
 function findIcons(query) {
   const normalized = query.toLowerCase();
   const icons = readIcons();
@@ -290,6 +516,18 @@ function findIcons(query) {
 }
 
 function printFind(query) {
+  const finalIntent = findFinalIntent(query);
+  if (finalIntent) {
+    if (finalIntent.kind === "component")
+      return printComponentRecommendation(query, finalIntent.components);
+    if (finalIntent.kind === "capability")
+      return printCapabilityRecommendation(query, finalIntent.id);
+    if (finalIntent.kind === "editor")
+      return printEditorRecommendation(query, finalIntent.id);
+    if (finalIntent.kind === "reorder")
+      return printReorderRecommendation(query);
+    if (finalIntent.kind === "composition") return printCompositionFind(query);
+  }
   const directRecipeName = findRecipe(query, { fallback: false });
   const erpDensityPatternId = findErpDensityPattern(query);
   if (erpDensityPatternId && !directRecipeName) {
@@ -301,10 +539,7 @@ function printFind(query) {
     console.log("Contract: generated/erp-density.json");
     console.log(`Reference: ${pattern.reference}`);
     console.log("Components:");
-    for (const name of [
-      ...pattern.components,
-      ...pattern.optionalComponents,
-    ])
+    for (const name of [...pattern.components, ...pattern.optionalComponents])
       console.log(`- ${name}`);
     console.log(`States: ${pattern.states.join(", ")}`);
     console.log(
@@ -565,13 +800,21 @@ switch (command) {
       process.exitCode = 1;
     }
     break;
+  case "composition":
+    if (args[0] === "find")
+      printCompositionFind(args.slice(1).join(" ").trim() || "dashboard");
+    else {
+      console.error("Usage: t7ui composition find <query>");
+      process.exitCode = 1;
+    }
+    break;
   case "agents":
     if (args[0] === "init") initAgents();
     else console.error("Usage: t7ui agents init");
     break;
   default:
     console.log(
-      "Usage: t7ui info | t7ui find <query> | t7ui show <Component> | t7ui recipe inspect entity-list | t7ui compose entity-list [options] | t7ui brand resolve auth [--profile=neutral-product|aapm-academy] | t7ui brand compose auth [--profile=neutral-product|aapm-academy] | t7ui agents init",
+      "Usage: t7ui info | t7ui find <query> | t7ui show <Component> | t7ui recipe inspect entity-list | t7ui compose entity-list [options] | t7ui composition find <query> | t7ui brand resolve auth [--profile=neutral-product|aapm-academy] | t7ui brand compose auth [--profile=neutral-product|aapm-academy] | t7ui agents init",
     );
     process.exitCode = command ? 1 : 0;
 }

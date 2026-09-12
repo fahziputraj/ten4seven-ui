@@ -1,0 +1,2614 @@
+{
+  "schemaVersion": "0.1",
+  "id": "workflow-productivity",
+  "displayName": "Workflow, productivity and application patterns",
+  "purpose": "Normalize reusable queues, workspaces, lifecycle projections, boards, process steps, actions, activity, and application-shell intent for Web and native renderers without moving business authority into Ten4Seven.",
+  "sourceOfTruth": "packages/contracts/src/workflow-productivity.ts",
+  "platformSourceOfTruth": "packages/contracts/src/component-platform.ts",
+  "tokenSourceOfTruth": "packages/contracts/src/foundation.ts and packages/tokens/src/theme.ts",
+  "resolverOrder": [
+    "SYSTEM_DEFAULTS",
+    "BASE_RECIPE",
+    "PRODUCT_PROFILE",
+    "THEME_OVERRIDE",
+    "SCOPED_OVERRIDE",
+    "COMPONENT_STATE"
+  ],
+  "platform": "ADAPTIVE",
+  "nativeStrategy": "ALTERNATE_PATTERN",
+  "taxonomy": {
+    "families": [
+      "WORK_QUEUE",
+      "WORKSPACE",
+      "PROCESS",
+      "BOARD",
+      "PRODUCTIVITY",
+      "ACTIVITY",
+      "APPLICATION_SHELL"
+    ],
+    "classifications": [
+      "FOUNDATION",
+      "CANONICAL_COMPONENT",
+      "COMPONENT_VARIANT",
+      "UTILITY_OR_PROVIDER",
+      "COMPOSITE_BLOCK",
+      "RECIPE_OR_PATTERN",
+      "ENGINE_ADAPTER",
+      "DOMAIN_COMPOSITION",
+      "ALIAS",
+      "WEB_ONLY",
+      "NATIVE_ONLY",
+      "ADAPTIVE",
+      "DEFERRED",
+      "REJECTED_DUPLICATE"
+    ],
+    "inventoryStatuses": [
+      "EXISTING_STABLE",
+      "EXISTING_NEEDS_HARDENING",
+      "MISSING_CANONICAL",
+      "VARIANT",
+      "BLOCK",
+      "RECIPE",
+      "ENGINE_ADAPTER",
+      "WEB_ONLY",
+      "NATIVE_ONLY",
+      "ADAPTIVE",
+      "DEFERRED",
+      "REJECTED_DUPLICATE"
+    ],
+    "patternIds": [
+      "WorkQueue",
+      "Inbox",
+      "NotificationCenter",
+      "DecisionWorkspace",
+      "QueueDetailWorkspace",
+      "MasterDetailWorkspace",
+      "LifecycleTracker",
+      "Wizard",
+      "Kanban",
+      "TaskBoard",
+      "Workboard",
+      "CommandPalette",
+      "QuickActions",
+      "ActivityFeed",
+      "CommentThread",
+      "AppShell",
+      "PageHeader"
+    ]
+  },
+  "ownership": {
+    "system": [
+      "semantic pattern intent and composition grammar",
+      "state presentation vocabulary and accessible structure",
+      "selection, focus, keyboard, press, and dismissal behavior",
+      "responsive and adaptive recomposition guidance",
+      "token-family and density intent",
+      "renderer-neutral action and movement seams"
+    ],
+    "consumer": [
+      "business data, record meaning, status labels, and priority mapping",
+      "allowed transitions, validation, authorization, and entitlements",
+      "assignment, SLA, escalation, and notification policy",
+      "fetching, filtering, sorting, pagination, persistence, and sync truth",
+      "action handlers, side effects, routing, and decision authority",
+      "drag/drop legality, reorder persistence, and conflict resolution",
+      "comment, audit, history, and collaboration backends"
+    ],
+    "renderer": [
+      "DOM or native primitives and platform semantics",
+      "popup versus sheet, list/detail, and safe-area presentation",
+      "measurement, scrolling, focus/press feedback, and reduced-motion execution",
+      "optional windowing or gesture engines behind an approved adapter boundary"
+    ]
+  },
+  "businessBoundary": {
+    "renderInputs": [
+      "stable item or record identity",
+      "consumer-defined labels, descriptions, state, timestamp, actor, and metadata",
+      "consumer-defined available actions and disabled/hidden state",
+      "consumer-defined evidence, notes, criteria, and decision result"
+    ],
+    "neverOwnedByTen4Seven": [
+      "workflow state machine, transition legality, guards, or side effects",
+      "business status, priority, urgency, SLA, escalation, or assignment truth",
+      "permission, authorization, entitlement, or approval authority",
+      "fetching, persistence, synchronization, conflict resolution, or audit truth",
+      "comment/chat backend, notification delivery, or domain routing"
+    ],
+    "priorityVocabulary": "No global low/normal/high/urgent enum is introduced; consumers map their domain priority to semantic presentation and text."
+  },
+  "dnd": {
+    "status": "OPTIONAL_RENDERER_CAPABILITY",
+    "movementIntent": "A board may emit a renderer-neutral move intent containing stable item identity and destination identity; the consumer decides legality and persistence.",
+    "nonDndAlternative": "Every task-critical move has an explicit focusable action such as Move to lane, Move before, or Move after.",
+    "keyboard": "Keyboard and screen-reader users never depend on drag or hover.",
+    "advancedEngine": "DEFERRED_TO_U10"
+  },
+  "componentCount": 27,
+  "components": [
+    "AppShell",
+    "PageHeader",
+    "Sidebar",
+    "MobileSidebar",
+    "List",
+    "DataTable",
+    "SearchInput",
+    "Card",
+    "EmptyState",
+    "StateView",
+    "Stepper",
+    "MilestoneTracker",
+    "Progress",
+    "StatusChip",
+    "ActivityFeed",
+    "NotificationCenter",
+    "RecordSummary",
+    "ApprovalPanel",
+    "Toolbar",
+    "ActionBar",
+    "ActionFooter",
+    "FilterToolbar",
+    "BulkActionBar",
+    "DetailDrawer",
+    "SplitPane",
+    "DragHandle",
+    "CommandMenu"
+  ],
+  "componentPatternLinks": {
+    "AppShell": [
+      "AppShell"
+    ],
+    "PageHeader": [
+      "PageHeader"
+    ],
+    "Sidebar": [
+      "AppShell"
+    ],
+    "MobileSidebar": [
+      "AppShell"
+    ],
+    "List": [
+      "WorkQueue",
+      "Inbox",
+      "QueueDetailWorkspace",
+      "Kanban"
+    ],
+    "DataTable": [
+      "WorkQueue",
+      "Inbox",
+      "QueueDetailWorkspace"
+    ],
+    "SearchInput": [
+      "WorkQueue",
+      "Inbox",
+      "Kanban",
+      "CommandPalette"
+    ],
+    "Card": [
+      "Kanban",
+      "TaskBoard",
+      "Workboard"
+    ],
+    "EmptyState": [
+      "WorkQueue",
+      "Inbox",
+      "QueueDetailWorkspace",
+      "Kanban",
+      "Wizard"
+    ],
+    "StateView": [
+      "WorkQueue",
+      "DecisionWorkspace",
+      "Wizard"
+    ],
+    "Stepper": [
+      "Wizard"
+    ],
+    "MilestoneTracker": [
+      "LifecycleTracker"
+    ],
+    "Progress": [
+      "LifecycleTracker",
+      "Wizard"
+    ],
+    "StatusChip": [
+      "LifecycleTracker",
+      "Kanban",
+      "TaskBoard",
+      "Workboard"
+    ],
+    "ActivityFeed": [
+      "ActivityFeed",
+      "DecisionWorkspace"
+    ],
+    "NotificationCenter": [
+      "NotificationCenter"
+    ],
+    "RecordSummary": [
+      "DecisionWorkspace",
+      "QueueDetailWorkspace",
+      "MasterDetailWorkspace"
+    ],
+    "ApprovalPanel": [
+      "DecisionWorkspace"
+    ],
+    "Toolbar": [
+      "QuickActions",
+      "WorkQueue",
+      "Kanban"
+    ],
+    "ActionBar": [
+      "QuickActions",
+      "DecisionWorkspace"
+    ],
+    "ActionFooter": [
+      "DecisionWorkspace",
+      "Wizard"
+    ],
+    "FilterToolbar": [
+      "WorkQueue",
+      "Inbox",
+      "Kanban",
+      "Workboard"
+    ],
+    "BulkActionBar": [
+      "WorkQueue",
+      "Inbox"
+    ],
+    "DetailDrawer": [
+      "WorkQueue",
+      "Inbox",
+      "DecisionWorkspace",
+      "QueueDetailWorkspace",
+      "MasterDetailWorkspace",
+      "Kanban"
+    ],
+    "SplitPane": [
+      "QueueDetailWorkspace",
+      "MasterDetailWorkspace"
+    ],
+    "DragHandle": [
+      "Kanban",
+      "TaskBoard"
+    ],
+    "CommandMenu": [
+      "CommandPalette",
+      "QuickActions"
+    ]
+  },
+  "patterns": {
+    "WorkQueue": {
+      "id": "WorkQueue",
+      "displayName": "Work Queue",
+      "family": "WORK_QUEUE",
+      "classification": "RECIPE_OR_PATTERN",
+      "inventoryStatus": "RECIPE",
+      "platform": "ADAPTIVE",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "intent": "Present operational records awaiting work, with a clear next action and bounded collection controls.",
+      "canonicalComponents": [
+        "List",
+        "DataTable",
+        "SearchInput",
+        "FilterToolbar",
+        "BulkActionBar",
+        "DetailDrawer",
+        "EmptyState",
+        "StateView"
+      ],
+      "recipeRefs": [
+        "entity-list",
+        "exception-queue"
+      ],
+      "blockRefs": [
+        "exception-queue-summary"
+      ],
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "disabled",
+        "readOnly",
+        "stale",
+        "filteredEmpty",
+        "selected",
+        "pendingSync"
+      ],
+      "interactionModel": [
+        "filtering",
+        "selection",
+        "row activation",
+        "contextual detail",
+        "bulk intent"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "non-color-status",
+        "empty-state",
+        "loading-state",
+        "focus-or-press-feedback",
+        "selection-state",
+        "keyboard-navigation",
+        "focus-return",
+        "table-context"
+      ],
+      "useWhen": [
+        "records are available for operational processing",
+        "the consumer can supply a stable next action and record context"
+      ],
+      "avoidWhen": [
+        "the surface is informational notification history",
+        "one record's lifecycle is the primary task"
+      ],
+      "responsive": {
+        "desktop": "Use a bounded collection with visible filters, selection, status, and optional contextual detail beside or in a drawer.",
+        "tablet": "Preserve primary identity and next-action columns; move secondary context into detail before shrinking controls below their useful measure.",
+        "mobile": "Render a readable list, then list-to-detail navigation and a safe action surface; do not squeeze a desktop table into the viewport.",
+        "native": "Use a native collection and list-to-detail presentation with touch-safe rows and hardware-back return."
+      },
+      "consumerOwns": [
+        "record membership, query, filter, sort, selection, and permissions",
+        "record status, priority mapping, owner, next action, and persistence"
+      ],
+      "ten4sevenOwns": [
+        "collection anatomy, state presentation, density, selection semantics, and focus behavior",
+        "detail presentation and adaptive list/detail/action composition"
+      ],
+      "rendererOwns": [
+        "semantic table/list primitives, scrolling, and platform-specific detail surface"
+      ],
+      "tokenFamilies": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "density",
+        "measure",
+        "motion"
+      ],
+      "layoutIntents": [
+        "measure-wide",
+        "measure-content",
+        "bounded-scroll-owner",
+        "priority-order",
+        "density-adaptive",
+        "minimum-useful-surface"
+      ],
+      "motionRoles": [
+        "interaction",
+        "state",
+        "reveal"
+      ],
+      "alternatives": [
+        "QueueDetailWorkspace",
+        "Inbox",
+        "NotificationCenter"
+      ],
+      "decisionBoundary": "Queue membership and the meaning of work remain consumer-owned; the pattern only renders supplied records and action intents.",
+      "ai": {
+        "retrievalTerms": [
+          "queue",
+          "operational records",
+          "next action",
+          "work list"
+        ],
+        "complexity": "composed",
+        "composesWith": [
+          "entity-list",
+          "DetailDrawer",
+          "FilterToolbar",
+          "DataTable"
+        ],
+        "platformNotes": "Adaptive: dense Web collection becomes native list/detail.",
+        "avoidDomainNaming": "Do not create domain-specific queue primitives."
+      }
+    },
+    "Inbox": {
+      "id": "Inbox",
+      "displayName": "Inbox / Attention Work",
+      "family": "WORK_QUEUE",
+      "classification": "RECIPE_OR_PATTERN",
+      "inventoryStatus": "RECIPE",
+      "platform": "ADAPTIVE",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "intent": "Present items requiring a person's attention or review without implying that all operational records belong in an inbox.",
+      "canonicalComponents": [
+        "List",
+        "DataTable",
+        "SearchInput",
+        "FilterToolbar",
+        "DetailDrawer",
+        "EmptyState"
+      ],
+      "recipeRefs": [
+        "entity-list",
+        "exception-queue"
+      ],
+      "blockRefs": [
+        "exception-queue-summary",
+        "approval-queue-summary"
+      ],
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "disabled",
+        "readOnly",
+        "stale",
+        "filteredEmpty",
+        "selected",
+        "unread"
+      ],
+      "interactionModel": [
+        "attention selection",
+        "review",
+        "filtering",
+        "row activation"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "non-color-status",
+        "empty-state",
+        "loading-state",
+        "focus-or-press-feedback",
+        "selection-state",
+        "status-announcement",
+        "focus-return",
+        "ordered-structure"
+      ],
+      "useWhen": [
+        "attention, review, or unread work is the primary organizing meaning",
+        "the consumer can explain why an item needs attention"
+      ],
+      "avoidWhen": [
+        "the collection is an operational backlog with no attention semantics",
+        "the surface is durable informational notification history"
+      ],
+      "responsive": {
+        "desktop": "Use a bounded collection with visible filters, selection, status, and optional contextual detail beside or in a drawer.",
+        "tablet": "Preserve primary identity and next-action columns; move secondary context into detail before shrinking controls below their useful measure.",
+        "mobile": "Render a readable list, then list-to-detail navigation and a safe action surface; do not squeeze a desktop table into the viewport.",
+        "native": "Use a native collection and list-to-detail presentation with touch-safe rows and hardware-back return."
+      },
+      "consumerOwns": [
+        "attention/unread truth, assignment, priority mapping, review policy, and query state",
+        "permissions, acknowledgment, dismissal, persistence, and follow-up actions"
+      ],
+      "ten4sevenOwns": [
+        "attention hierarchy, accessible selected/unread presentation, and adaptive collection anatomy"
+      ],
+      "rendererOwns": [
+        "list/table semantics, focus/press feedback, and native list/detail presentation"
+      ],
+      "tokenFamilies": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "density",
+        "measure",
+        "motion"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "priority-order",
+        "density-adaptive",
+        "minimum-useful-surface"
+      ],
+      "motionRoles": [
+        "interaction",
+        "state",
+        "reveal"
+      ],
+      "alternatives": [
+        "WorkQueue",
+        "NotificationCenter",
+        "DecisionWorkspace"
+      ],
+      "decisionBoundary": "The consumer defines attention and unread semantics; Ten4Seven does not infer urgency from color, age, or a numeric priority.",
+      "ai": {
+        "retrievalTerms": [
+          "inbox",
+          "attention",
+          "review",
+          "unread",
+          "exception"
+        ],
+        "complexity": "composed",
+        "composesWith": [
+          "entity-list",
+          "FilterToolbar",
+          "DetailDrawer",
+          "StatusChip"
+        ],
+        "platformNotes": "Adaptive: use native list/detail and safe action presentation.",
+        "avoidDomainNaming": "Do not create ApprovalInbox, FarmInbox, or another domain primitive."
+      }
+    },
+    "NotificationCenter": {
+      "id": "NotificationCenter",
+      "displayName": "Notification Center",
+      "family": "ACTIVITY",
+      "classification": "CANONICAL_COMPONENT",
+      "inventoryStatus": "EXISTING_STABLE",
+      "platform": "ADAPTIVE",
+      "nativeStrategy": "NATIVE_RENDERER",
+      "intent": "Present informational notification history and delivery state, distinct from records awaiting operational work.",
+      "canonicalComponents": [
+        "NotificationCenter"
+      ],
+      "recipeRefs": [],
+      "blockRefs": [],
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "disabled",
+        "readOnly",
+        "stale",
+        "unread",
+        "dismissed"
+      ],
+      "interactionModel": [
+        "disclosure",
+        "selection",
+        "dismissal",
+        "navigation"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "non-color-status",
+        "empty-state",
+        "loading-state",
+        "focus-or-press-feedback",
+        "status-announcement",
+        "dismissal",
+        "focus-return"
+      ],
+      "useWhen": [
+        "the user needs informational history or delivery status"
+      ],
+      "avoidWhen": [
+        "the user must process operational records or make a decision"
+      ],
+      "responsive": {
+        "desktop": "Use a bounded notification surface anchored to application navigation or an explicit page.",
+        "tablet": "Keep notification identity and unread status visible while reducing secondary metadata.",
+        "mobile": "Use a full-width list or sheet with explicit dismiss/read actions.",
+        "native": "Use a native notification list or sheet with clear read/dismiss semantics."
+      },
+      "consumerOwns": [
+        "notification delivery, read/dismiss persistence, routing, and permission policy"
+      ],
+      "ten4sevenOwns": [
+        "notification grouping, status presentation, focus, and responsive surface geometry"
+      ],
+      "rendererOwns": [
+        "popup/sheet/list semantics and platform dismissal behavior"
+      ],
+      "tokenFamilies": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "density",
+        "measure",
+        "motion"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "priority-order",
+        "minimum-useful-surface"
+      ],
+      "motionRoles": [
+        "interaction",
+        "state",
+        "reveal"
+      ],
+      "alternatives": [
+        "Inbox",
+        "ActivityFeed"
+      ],
+      "decisionBoundary": "Informational notification history must not silently become an operational queue or an authorization channel.",
+      "ai": {
+        "retrievalTerms": [
+          "notification",
+          "notification center",
+          "informational history",
+          "unread"
+        ],
+        "complexity": "bounded",
+        "composesWith": [
+          "List",
+          "Drawer",
+          "Badge"
+        ],
+        "platformNotes": "Adaptive: anchored Web surface may become a native list or sheet.",
+        "avoidDomainNaming": "Do not use NotificationCenter as a substitute for a domain work queue."
+      }
+    },
+    "DecisionWorkspace": {
+      "id": "DecisionWorkspace",
+      "displayName": "Decision Workspace",
+      "family": "WORKSPACE",
+      "classification": "RECIPE_OR_PATTERN",
+      "inventoryStatus": "RECIPE",
+      "platform": "ADAPTIVE",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "intent": "Present context, evidence, history, criteria, notes, and consumer-defined decision actions in one bounded task surface.",
+      "canonicalComponents": [
+        "RecordSummary",
+        "ActivityFeed",
+        "ApprovalPanel",
+        "ActionFooter",
+        "DetailDrawer",
+        "StateView"
+      ],
+      "recipeRefs": [
+        "decision-workspace",
+        "entity-detail"
+      ],
+      "blockRefs": [
+        "decision-workspace-evidence",
+        "approval-queue-summary"
+      ],
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "pending",
+        "invalid",
+        "decided",
+        "disabled",
+        "readOnly"
+      ],
+      "interactionModel": [
+        "evidence review",
+        "selection",
+        "notes",
+        "decision intent",
+        "contextual detail"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "labelled-surface",
+        "ordered-structure",
+        "non-color-status",
+        "actionable-role",
+        "focus-return",
+        "status-announcement"
+      ],
+      "useWhen": [
+        "a decision needs evidence and context in the same task flow"
+      ],
+      "avoidWhen": [
+        "the surface only displays status or only collects a simple field"
+      ],
+      "responsive": {
+        "desktop": "Use a bounded master/detail or evidence/detail composition with persistent context only when the task needs comparison.",
+        "tablet": "Keep the active record and next action visible while collapsing secondary context into a drawer or stacked region.",
+        "mobile": "Use list to detail to action/sheet progression; return focus or navigation to the originating record after dismissal.",
+        "native": "Use a native list/detail stack, scroll surface, or sheet while preserving record identity, evidence order, and action reachability."
+      },
+      "consumerOwns": [
+        "criteria, evidence truth, notes persistence, decision options, authorization, validation, and outcome",
+        "available actions, transition legality, audit record, and side effects"
+      ],
+      "ten4sevenOwns": [
+        "evidence hierarchy, action grouping, decision-state presentation, focus, and adaptive composition"
+      ],
+      "rendererOwns": [
+        "semantic regions, scroll ownership, sticky/safe-area action presentation, and native stack/sheet"
+      ],
+      "tokenFamilies": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "density",
+        "measure",
+        "motion"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "measure-reading",
+        "single-column",
+        "split-panes",
+        "safe-area-inset",
+        "priority-order"
+      ],
+      "motionRoles": [
+        "interaction",
+        "state",
+        "reveal"
+      ],
+      "alternatives": [
+        "QueueDetailWorkspace",
+        "MasterDetailWorkspace",
+        "WorkQueue"
+      ],
+      "decisionBoundary": "Generic action slots may be labelled by the consumer; the library must not expose ApproveButton, RejectButton, or decision policy.",
+      "ai": {
+        "retrievalTerms": [
+          "decision",
+          "evidence",
+          "approval",
+          "review workspace",
+          "criteria"
+        ],
+        "complexity": "composed",
+        "composesWith": [
+          "RecordSummary",
+          "ActivityFeed",
+          "ApprovalPanel",
+          "ActionFooter"
+        ],
+        "platformNotes": "Adaptive: preserve evidence order and sticky actions in a single-column native surface.",
+        "avoidDomainNaming": "Do not encode approval authority or domain-specific decision names in the pattern."
+      }
+    },
+    "QueueDetailWorkspace": {
+      "id": "QueueDetailWorkspace",
+      "displayName": "Queue Detail Workspace",
+      "family": "WORKSPACE",
+      "classification": "RECIPE_OR_PATTERN",
+      "inventoryStatus": "RECIPE",
+      "platform": "ADAPTIVE",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "intent": "Connect a bounded work collection to contextual record detail without duplicating queue and detail state.",
+      "canonicalComponents": [
+        "List",
+        "DataTable",
+        "FilterToolbar",
+        "SplitPane",
+        "DetailDrawer",
+        "PageHeader"
+      ],
+      "recipeRefs": [
+        "entity-list",
+        "entity-detail"
+      ],
+      "blockRefs": [],
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "disabled",
+        "readOnly",
+        "stale",
+        "filteredEmpty",
+        "selected",
+        "pendingSync"
+      ],
+      "interactionModel": [
+        "collection selection",
+        "detail navigation",
+        "filtering",
+        "contextual action"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "selection-state",
+        "navigation-role",
+        "focus-return",
+        "focus-or-press-feedback",
+        "empty-state"
+      ],
+      "useWhen": [
+        "a queue item needs inspection without losing the collection context"
+      ],
+      "avoidWhen": [
+        "detail is a standalone page or the collection is not task-bearing"
+      ],
+      "responsive": {
+        "desktop": "Use a bounded master/detail or evidence/detail composition with persistent context only when the task needs comparison.",
+        "tablet": "Keep the active record and next action visible while collapsing secondary context into a drawer or stacked region.",
+        "mobile": "Use list to detail to action/sheet progression; return focus or navigation to the originating record after dismissal.",
+        "native": "Use a native list/detail stack, scroll surface, or sheet while preserving record identity, evidence order, and action reachability."
+      },
+      "consumerOwns": [
+        "record query, selection, detail routing, data loading, permissions, and actions"
+      ],
+      "ten4sevenOwns": [
+        "master/detail geometry, selection semantics, focus return, and adaptive list/detail transition"
+      ],
+      "rendererOwns": [
+        "split-pane, drawer, list, and native navigation presentation"
+      ],
+      "tokenFamilies": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "density",
+        "measure",
+        "motion"
+      ],
+      "layoutIntents": [
+        "measure-wide",
+        "measure-content",
+        "split-panes",
+        "stacked-detail",
+        "bounded-scroll-owner"
+      ],
+      "motionRoles": [
+        "interaction",
+        "state",
+        "reveal"
+      ],
+      "alternatives": [
+        "MasterDetailWorkspace",
+        "WorkQueue",
+        "DecisionWorkspace"
+      ],
+      "decisionBoundary": "Selection and record routing are consumer-controlled; the workspace only coordinates presentation seams.",
+      "ai": {
+        "retrievalTerms": [
+          "queue detail",
+          "master detail",
+          "list detail",
+          "record inspector"
+        ],
+        "complexity": "composed",
+        "composesWith": [
+          "entity-list",
+          "entity-detail",
+          "SplitPane",
+          "DetailDrawer"
+        ],
+        "platformNotes": "Adaptive: desktop split/detail becomes mobile list-detail navigation.",
+        "avoidDomainNaming": "Do not create OrderWorkspace, FarmWorkspace, or another domain-specific shell."
+      }
+    },
+    "MasterDetailWorkspace": {
+      "id": "MasterDetailWorkspace",
+      "displayName": "Master / Detail Workspace",
+      "family": "WORKSPACE",
+      "classification": "RECIPE_OR_PATTERN",
+      "inventoryStatus": "RECIPE",
+      "platform": "ADAPTIVE",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "intent": "Coordinate a collection and a focused detail surface for comparison or inspection tasks.",
+      "canonicalComponents": [
+        "List",
+        "DataTable",
+        "SplitPane",
+        "DetailDrawer",
+        "RecordSummary",
+        "PageHeader"
+      ],
+      "recipeRefs": [
+        "entity-list",
+        "entity-detail"
+      ],
+      "blockRefs": [],
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "disabled",
+        "readOnly",
+        "stale",
+        "filteredEmpty",
+        "selected",
+        "pendingSync"
+      ],
+      "interactionModel": [
+        "selection",
+        "navigation",
+        "comparison",
+        "contextual detail"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "selection-state",
+        "navigation-role",
+        "focus-return",
+        "structure-order",
+        "empty-state"
+      ],
+      "useWhen": [
+        "a focused record and its collection must remain related"
+      ],
+      "avoidWhen": [
+        "a full-page detail route is sufficient or the task needs a decision-specific evidence layout"
+      ],
+      "responsive": {
+        "desktop": "Use a bounded master/detail or evidence/detail composition with persistent context only when the task needs comparison.",
+        "tablet": "Keep the active record and next action visible while collapsing secondary context into a drawer or stacked region.",
+        "mobile": "Use list to detail to action/sheet progression; return focus or navigation to the originating record after dismissal.",
+        "native": "Use a native list/detail stack, scroll surface, or sheet while preserving record identity, evidence order, and action reachability."
+      },
+      "consumerOwns": [
+        "collection membership, selected record, route/history, data, permissions, and persistence"
+      ],
+      "ten4sevenOwns": [
+        "layout coordination, responsive recomposition, selection/focus contract, and scroll ownership"
+      ],
+      "rendererOwns": [
+        "desktop panes, contextual drawers, and native stack/detail navigation"
+      ],
+      "tokenFamilies": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "density",
+        "measure",
+        "motion"
+      ],
+      "layoutIntents": [
+        "measure-wide",
+        "measure-content",
+        "split-panes",
+        "stacked-detail",
+        "bounded-scroll-owner"
+      ],
+      "motionRoles": [
+        "interaction",
+        "reveal"
+      ],
+      "alternatives": [
+        "QueueDetailWorkspace",
+        "DecisionWorkspace"
+      ],
+      "decisionBoundary": "The workspace does not infer selection authority or mutate the record when detail is viewed.",
+      "ai": {
+        "retrievalTerms": [
+          "master detail",
+          "inspector",
+          "record workspace",
+          "split pane"
+        ],
+        "complexity": "composed",
+        "composesWith": [
+          "entity-list",
+          "entity-detail",
+          "SplitPane",
+          "DetailDrawer"
+        ],
+        "platformNotes": "Adaptive: native uses a stack/detail route rather than compressing two panes.",
+        "avoidDomainNaming": "Keep the workspace domain-neutral and route/permission agnostic."
+      }
+    },
+    "LifecycleTracker": {
+      "id": "LifecycleTracker",
+      "displayName": "Lifecycle Tracker",
+      "family": "PROCESS",
+      "classification": "COMPONENT_VARIANT",
+      "inventoryStatus": "VARIANT",
+      "platform": "ADAPTIVE",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "intent": "Present a consumer-supplied ordered stage projection for one bounded process or record.",
+      "canonicalComponents": [
+        "MilestoneTracker",
+        "Progress",
+        "StatusChip",
+        "DetailDrawer"
+      ],
+      "recipeRefs": [
+        "process-workspace"
+      ],
+      "blockRefs": [],
+      "states": [
+        "complete",
+        "current",
+        "upcoming",
+        "blocked",
+        "failed",
+        "canceled",
+        "loading",
+        "empty",
+        "error"
+      ],
+      "interactionModel": [
+        "ordered navigation",
+        "stage selection",
+        "contextual detail"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "ordered-structure",
+        "selected-state",
+        "non-color-status",
+        "keyboard-navigation",
+        "focus-return"
+      ],
+      "useWhen": [
+        "one bounded lifecycle needs stage context and progress presentation"
+      ],
+      "avoidWhen": [
+        "the user needs a queue of many records or a state-machine editor"
+      ],
+      "responsive": {
+        "desktop": "Use a bounded master/detail or evidence/detail composition with persistent context only when the task needs comparison.",
+        "tablet": "Keep the active record and next action visible while collapsing secondary context into a drawer or stacked region.",
+        "mobile": "Use list to detail to action/sheet progression; return focus or navigation to the originating record after dismissal.",
+        "native": "Use a native list/detail stack, scroll surface, or sheet while preserving record identity, evidence order, and action reachability."
+      },
+      "consumerOwns": [
+        "stage meaning, transition legality, timestamps, actor, completion truth, and persistence"
+      ],
+      "ten4sevenOwns": [
+        "ordered stage presentation, keyboard navigation, state labels, and detail adaptation"
+      ],
+      "rendererOwns": [
+        "ordered/list semantics, focus behavior, drawer/sheet, and native stack presentation"
+      ],
+      "tokenFamilies": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "density",
+        "measure",
+        "motion"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "measure-reading",
+        "single-column",
+        "priority-order"
+      ],
+      "motionRoles": [
+        "interaction",
+        "state",
+        "reveal"
+      ],
+      "alternatives": [
+        "Wizard",
+        "WorkQueue",
+        "DecisionWorkspace"
+      ],
+      "decisionBoundary": "MilestoneTracker is a projection and does not expose transitions, guards, or business workflow mutation.",
+      "ai": {
+        "retrievalTerms": [
+          "lifecycle",
+          "milestones",
+          "stages",
+          "progress",
+          "process status"
+        ],
+        "complexity": "bounded",
+        "composesWith": [
+          "MilestoneTracker",
+          "Progress",
+          "DetailDrawer"
+        ],
+        "platformNotes": "Adaptive: native presents a compact ordered stack/detail projection.",
+        "avoidDomainNaming": "Do not turn lifecycle stages into a domain-specific state engine."
+      }
+    },
+    "Wizard": {
+      "id": "Wizard",
+      "displayName": "Wizard / Process Steps",
+      "family": "PROCESS",
+      "classification": "RECIPE_OR_PATTERN",
+      "inventoryStatus": "RECIPE",
+      "platform": "ADAPTIVE",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "intent": "Present sequential task steps with explicit navigation while the consumer owns validation and completion rules.",
+      "canonicalComponents": [
+        "Stepper",
+        "ActionFooter",
+        "Progress",
+        "StateView"
+      ],
+      "recipeRefs": [
+        "process-workspace"
+      ],
+      "blockRefs": [
+        "onboarding-stepper"
+      ],
+      "states": [
+        "ready",
+        "loading",
+        "invalid",
+        "complete",
+        "error",
+        "disabled",
+        "readOnly"
+      ],
+      "interactionModel": [
+        "step navigation",
+        "validation feedback",
+        "next/back",
+        "completion intent"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "ordered-structure",
+        "selected-state",
+        "keyboard-navigation",
+        "error-association",
+        "status-announcement"
+      ],
+      "useWhen": [
+        "the task is intentionally sequential and each step has a bounded purpose"
+      ],
+      "avoidWhen": [
+        "stages are merely a record lifecycle or users need free navigation across a collection"
+      ],
+      "responsive": {
+        "desktop": "Use a visible stepper with bounded content and a stable action footer.",
+        "tablet": "Keep current step and next/back actions visible while reducing secondary step descriptions.",
+        "mobile": "Use compact progress plus one step at a time and keyboard/assistive-technology-readable navigation.",
+        "native": "Use a compact progress header and a single scroll-owned step surface with safe-area actions."
+      },
+      "consumerOwns": [
+        "step validation, completion rules, persistence, resume policy, permissions, and side effects"
+      ],
+      "ten4sevenOwns": [
+        "step anatomy, navigation semantics, invalid/loading presentation, and responsive action layout"
+      ],
+      "rendererOwns": [
+        "focus movement, scroll ownership, native keyboard avoidance, and safe-area action presentation"
+      ],
+      "tokenFamilies": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "density",
+        "measure",
+        "motion"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "measure-reading",
+        "single-column",
+        "safe-area-inset",
+        "priority-order"
+      ],
+      "motionRoles": [
+        "interaction",
+        "state",
+        "reveal"
+      ],
+      "alternatives": [
+        "LifecycleTracker",
+        "DecisionWorkspace"
+      ],
+      "decisionBoundary": "Stepper navigation is not validation authority; invalid or complete states are supplied by the consumer.",
+      "ai": {
+        "retrievalTerms": [
+          "wizard",
+          "stepper",
+          "process steps",
+          "onboarding",
+          "next back"
+        ],
+        "complexity": "composed",
+        "composesWith": [
+          "Stepper",
+          "ActionFooter",
+          "StateView"
+        ],
+        "platformNotes": "Adaptive: compact progress and single-step native surface.",
+        "avoidDomainNaming": "Do not create domain-specific wizard primitives or hide validation policy in the library."
+      }
+    },
+    "Kanban": {
+      "id": "Kanban",
+      "displayName": "Kanban Board",
+      "family": "BOARD",
+      "classification": "RECIPE_OR_PATTERN",
+      "inventoryStatus": "RECIPE",
+      "platform": "ADAPTIVE",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "intent": "Present generic lanes and cards for many work items with explicit non-DnD movement paths.",
+      "canonicalComponents": [
+        "Card",
+        "List",
+        "StatusChip",
+        "SearchInput",
+        "FilterToolbar",
+        "DetailDrawer"
+      ],
+      "recipeRefs": [
+        "operational-kanban"
+      ],
+      "blockRefs": [
+        "workflow-board-preview"
+      ],
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "disabled",
+        "readOnly",
+        "stale",
+        "filteredEmpty",
+        "selected",
+        "moving",
+        "moveRejected"
+      ],
+      "interactionModel": [
+        "lane selection",
+        "card selection",
+        "filtering",
+        "move intent",
+        "contextual detail"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "ordered-structure",
+        "selection-state",
+        "non-color-status",
+        "keyboard-navigation",
+        "focus-return",
+        "empty-state"
+      ],
+      "useWhen": [
+        "many items are compared by work stage and lane context adds value"
+      ],
+      "avoidWhen": [
+        "one object's lifecycle is the task or a dense comparison table is more useful"
+      ],
+      "responsive": {
+        "desktop": "Show bounded lanes with readable cards and lane-level context; horizontal scrolling is allowed only when lane count and task justify it.",
+        "tablet": "Reduce simultaneous lane density or move lane selection into a bounded navigation surface before reducing card anatomy.",
+        "mobile": "Use lane tabs or a lane selector plus a vertical card list; never render five squeezed lanes as the primary task surface.",
+        "native": "Use a lane selector and native list/section list; movement uses explicit actions unless a separate gesture contract is approved."
+      },
+      "consumerOwns": [
+        "lanes, cards, stage meaning, WIP policy, permissions, movement legality, persistence, and conflicts"
+      ],
+      "ten4sevenOwns": [
+        "lane/card anatomy, selected/moving/error states, keyboard alternative, density, and adaptive lane presentation"
+      ],
+      "rendererOwns": [
+        "layout, scrolling, pointer/touch feedback, and any separately approved DnD engine adapter"
+      ],
+      "tokenFamilies": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "density",
+        "measure",
+        "motion"
+      ],
+      "layoutIntents": [
+        "measure-compact",
+        "measure-content",
+        "bounded-scroll-owner",
+        "density-adaptive",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "interaction",
+        "state",
+        "reveal"
+      ],
+      "alternatives": [
+        "TaskBoard",
+        "Workboard",
+        "WorkQueue"
+      ],
+      "decisionBoundary": "Move emits intent only; a board is not a transition engine and DnD is not a completion requirement.",
+      "ai": {
+        "retrievalTerms": [
+          "kanban",
+          "board",
+          "lanes",
+          "cards",
+          "stage movement"
+        ],
+        "complexity": "composed",
+        "composesWith": [
+          "Card",
+          "List",
+          "StatusChip",
+          "FilterToolbar",
+          "DetailDrawer"
+        ],
+        "platformNotes": "Adaptive: desktop lanes become mobile lane selection plus a vertical list.",
+        "avoidDomainNaming": "Do not create domain boards or expose a donor DnD API as the Ten4Seven contract."
+      }
+    },
+    "TaskBoard": {
+      "id": "TaskBoard",
+      "displayName": "Task Board",
+      "family": "BOARD",
+      "classification": "COMPONENT_VARIANT",
+      "inventoryStatus": "VARIANT",
+      "platform": "ADAPTIVE",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "intent": "A task-oriented Kanban composition with next-action and ownership emphasis, not a new board primitive.",
+      "canonicalComponents": [
+        "Card",
+        "List",
+        "StatusChip",
+        "DetailDrawer",
+        "ActionBar"
+      ],
+      "recipeRefs": [
+        "operational-kanban"
+      ],
+      "blockRefs": [
+        "task-handoff"
+      ],
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "disabled",
+        "readOnly",
+        "stale",
+        "selected",
+        "moving",
+        "moveRejected"
+      ],
+      "interactionModel": [
+        "task selection",
+        "next action",
+        "lane selection",
+        "move intent"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "ordered-structure",
+        "selection-state",
+        "non-color-status",
+        "keyboard-navigation",
+        "focus-return"
+      ],
+      "useWhen": [
+        "the card anatomy is explicitly task-oriented and the Kanban contract already fits"
+      ],
+      "avoidWhen": [
+        "a new task primitive would duplicate Card, List, or ActionBar"
+      ],
+      "responsive": {
+        "desktop": "Show bounded lanes with readable cards and lane-level context; horizontal scrolling is allowed only when lane count and task justify it.",
+        "tablet": "Reduce simultaneous lane density or move lane selection into a bounded navigation surface before reducing card anatomy.",
+        "mobile": "Use lane tabs or a lane selector plus a vertical card list; never render five squeezed lanes as the primary task surface.",
+        "native": "Use a lane selector and native list/section list; movement uses explicit actions unless a separate gesture contract is approved."
+      },
+      "consumerOwns": [
+        "task truth, assignee, priority mapping, due dates, transitions, permissions, and persistence"
+      ],
+      "ten4sevenOwns": [
+        "variant anatomy, state styling, action reachability, keyboard movement path, and adaptive composition"
+      ],
+      "rendererOwns": [
+        "lane/list layout and optional approved gesture/drag implementation"
+      ],
+      "tokenFamilies": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "density",
+        "measure",
+        "motion"
+      ],
+      "layoutIntents": [
+        "measure-compact",
+        "measure-content",
+        "priority-order",
+        "density-adaptive",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "interaction",
+        "state"
+      ],
+      "alternatives": [
+        "Kanban",
+        "WorkQueue"
+      ],
+      "decisionBoundary": "Task semantics are consumer-supplied; TaskBoard is a variant decision, not a task database or transition API.",
+      "ai": {
+        "retrievalTerms": [
+          "task board",
+          "task kanban",
+          "next action",
+          "assignee"
+        ],
+        "complexity": "composed",
+        "composesWith": [
+          "Kanban",
+          "Card",
+          "ActionBar",
+          "DetailDrawer"
+        ],
+        "platformNotes": "Adaptive: use lane selector/list on native.",
+        "avoidDomainNaming": "Do not add project-specific TaskBoard variants to the primitive catalog."
+      }
+    },
+    "Workboard": {
+      "id": "Workboard",
+      "displayName": "Workboard",
+      "family": "BOARD",
+      "classification": "COMPOSITE_BLOCK",
+      "inventoryStatus": "BLOCK",
+      "platform": "ADAPTIVE",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "intent": "Compose board, queue, summary, and detail blocks for an operational work surface without becoming a monster component.",
+      "canonicalComponents": [
+        "Card",
+        "List",
+        "DataTable",
+        "FilterToolbar",
+        "DetailDrawer",
+        "StatusChip"
+      ],
+      "recipeRefs": [
+        "operational-kanban",
+        "entity-list"
+      ],
+      "blockRefs": [
+        "workflow-board-preview",
+        "exception-queue-summary"
+      ],
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "disabled",
+        "readOnly",
+        "stale",
+        "filteredEmpty",
+        "selected",
+        "moving",
+        "moveRejected"
+      ],
+      "interactionModel": [
+        "composition",
+        "filtering",
+        "selection",
+        "lane selection",
+        "detail"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "structure-order",
+        "non-color-status",
+        "selection-state",
+        "empty-state",
+        "focus-return"
+      ],
+      "useWhen": [
+        "a product surface needs multiple bounded workflow compositions"
+      ],
+      "avoidWhen": [
+        "a single queue or board recipe is sufficient"
+      ],
+      "responsive": {
+        "desktop": "Show bounded lanes with readable cards and lane-level context; horizontal scrolling is allowed only when lane count and task justify it.",
+        "tablet": "Reduce simultaneous lane density or move lane selection into a bounded navigation surface before reducing card anatomy.",
+        "mobile": "Use lane tabs or a lane selector plus a vertical card list; never render five squeezed lanes as the primary task surface.",
+        "native": "Use a lane selector and native list/section list; movement uses explicit actions unless a separate gesture contract is approved."
+      },
+      "consumerOwns": [
+        "which business blocks appear, data, permissions, query state, action meaning, and persistence"
+      ],
+      "ten4sevenOwns": [
+        "block composition grammar, responsive prioritization, shared tokens, and cross-block focus conventions"
+      ],
+      "rendererOwns": [
+        "layout, list/table, sheet/drawer, and native lane/list composition"
+      ],
+      "tokenFamilies": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "density",
+        "measure",
+        "motion"
+      ],
+      "layoutIntents": [
+        "measure-wide",
+        "measure-content",
+        "priority-order",
+        "density-adaptive",
+        "bounded-scroll-owner"
+      ],
+      "motionRoles": [
+        "interaction",
+        "state",
+        "reveal"
+      ],
+      "alternatives": [
+        "Kanban",
+        "WorkQueue",
+        "MasterDetailWorkspace"
+      ],
+      "decisionBoundary": "Workboard is a block composition and never owns a product's workflow model, routing, or persistence.",
+      "ai": {
+        "retrievalTerms": [
+          "workboard",
+          "operations board",
+          "control surface",
+          "workflow dashboard"
+        ],
+        "complexity": "advanced",
+        "composesWith": [
+          "Kanban",
+          "WorkQueue",
+          "MasterDetailWorkspace",
+          "KPICluster"
+        ],
+        "platformNotes": "Adaptive: prioritize one work surface and move secondary blocks below or into navigation on native.",
+        "avoidDomainNaming": "Do not build a monolithic Workboard primitive with domain data or permission logic."
+      }
+    },
+    "CommandPalette": {
+      "id": "CommandPalette",
+      "displayName": "Command Palette",
+      "family": "PRODUCTIVITY",
+      "classification": "ALIAS",
+      "inventoryStatus": "REJECTED_DUPLICATE",
+      "platform": "ADAPTIVE",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "intent": "Compatibility alias for CommandMenu's generic search and action discovery surface.",
+      "canonicalComponents": [
+        "CommandMenu"
+      ],
+      "recipeRefs": [],
+      "blockRefs": [
+        "command-shortcuts"
+      ],
+      "states": [
+        "closed",
+        "open",
+        "loading",
+        "empty",
+        "error",
+        "disabled",
+        "selected"
+      ],
+      "interactionModel": [
+        "search",
+        "keyboard navigation",
+        "selection",
+        "dismissal"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "actionable-role",
+        "keyboard-navigation",
+        "focus-containment",
+        "focus-return",
+        "empty-state",
+        "dismissal"
+      ],
+      "useWhen": [
+        "existing consumers use the CommandPalette name"
+      ],
+      "avoidWhen": [
+        "adding a second command implementation or exposing a browser-only shortcut on native"
+      ],
+      "responsive": {
+        "desktop": "Use the canonical CommandMenu keyboard-first overlay with explicit trigger and focus return.",
+        "tablet": "Use the same command surface with a touch-safe trigger and bounded result list.",
+        "mobile": "Use a search/action screen or sheet; do not require Cmd/Ctrl+K.",
+        "native": "Resolve to a native search/action surface or bottom sheet with hardware-back dismissal."
+      },
+      "consumerOwns": [
+        "command registry, labels, permissions, availability, search ranking, and command handlers"
+      ],
+      "ten4sevenOwns": [
+        "search/result anatomy, keyboard/focus behavior, dismissal, and adaptive presentation intent"
+      ],
+      "rendererOwns": [
+        "Web overlay versus native screen/sheet and platform keyboard/back behavior"
+      ],
+      "tokenFamilies": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "density",
+        "measure",
+        "motion"
+      ],
+      "layoutIntents": [
+        "measure-control",
+        "measure-content",
+        "minimum-useful-surface",
+        "safe-area-inset"
+      ],
+      "motionRoles": [
+        "interaction",
+        "enter",
+        "exit"
+      ],
+      "alternatives": [
+        "QuickActions",
+        "NotificationCenter"
+      ],
+      "decisionBoundary": "Command execution and availability are consumer-owned; CommandPalette is only the legacy alias of CommandMenu.",
+      "ai": {
+        "retrievalTerms": [
+          "command palette",
+          "command menu",
+          "keyboard actions",
+          "quick search"
+        ],
+        "complexity": "bounded",
+        "composesWith": [
+          "CommandMenu",
+          "SearchInput",
+          "ActionBar"
+        ],
+        "platformNotes": "Adaptive: Web popup becomes native search/action screen or sheet.",
+        "avoidDomainNaming": "Use CommandMenu in new code; do not expose CommandPalette as a second canonical primitive."
+      }
+    },
+    "QuickActions": {
+      "id": "QuickActions",
+      "displayName": "Quick Actions",
+      "family": "PRODUCTIVITY",
+      "classification": "COMPONENT_VARIANT",
+      "inventoryStatus": "VARIANT",
+      "platform": "ADAPTIVE",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "intent": "Present a bounded set of context-appropriate actions through existing action and toolbar primitives.",
+      "canonicalComponents": [
+        "ActionBar",
+        "Toolbar",
+        "ActionFooter",
+        "CommandMenu"
+      ],
+      "recipeRefs": [],
+      "blockRefs": [
+        "task-handoff",
+        "command-shortcuts"
+      ],
+      "states": [
+        "ready",
+        "loading",
+        "disabled",
+        "error",
+        "expanded",
+        "collapsed"
+      ],
+      "interactionModel": [
+        "activation",
+        "disclosure",
+        "keyboard navigation",
+        "press"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "actionable-role",
+        "disabled-state",
+        "keyboard-navigation",
+        "focus-or-press-feedback",
+        "non-hover-alternative"
+      ],
+      "useWhen": [
+        "a route or record has a small bounded action set"
+      ],
+      "avoidWhen": [
+        "actions need a full workflow workspace, a business-specific action component, or an unbounded command registry"
+      ],
+      "responsive": {
+        "desktop": "Use a bounded master/detail or evidence/detail composition with persistent context only when the task needs comparison.",
+        "tablet": "Keep the active record and next action visible while collapsing secondary context into a drawer or stacked region.",
+        "mobile": "Use list to detail to action/sheet progression; return focus or navigation to the originating record after dismissal.",
+        "native": "Use a native list/detail stack, scroll surface, or sheet while preserving record identity, evidence order, and action reachability."
+      },
+      "consumerOwns": [
+        "action availability, labels, ordering, permissions, handlers, and side effects"
+      ],
+      "ten4sevenOwns": [
+        "action grouping, disclosure, focus, keyboard path, and adaptive action placement"
+      ],
+      "rendererOwns": [
+        "toolbar/footer/overflow presentation and native sheet or press feedback"
+      ],
+      "tokenFamilies": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "density",
+        "measure",
+        "motion"
+      ],
+      "layoutIntents": [
+        "measure-control",
+        "priority-order",
+        "touch-target-minimum",
+        "safe-area-inset"
+      ],
+      "motionRoles": [
+        "interaction",
+        "state",
+        "enter",
+        "exit"
+      ],
+      "alternatives": [
+        "CommandPalette",
+        "DecisionWorkspace",
+        "Wizard"
+      ],
+      "decisionBoundary": "QuickActions presents action slots and never infers permission or runs a business action itself.",
+      "ai": {
+        "retrievalTerms": [
+          "quick actions",
+          "action bar",
+          "toolbar",
+          "record actions"
+        ],
+        "complexity": "bounded",
+        "composesWith": [
+          "ActionBar",
+          "Toolbar",
+          "ActionFooter",
+          "CommandMenu"
+        ],
+        "platformNotes": "Adaptive: action bar/footer may become native sheet or bottom action region.",
+        "avoidDomainNaming": "Do not create ApproveButton, FarmActions, or another domain action primitive."
+      }
+    },
+    "ActivityFeed": {
+      "id": "ActivityFeed",
+      "displayName": "Activity Feed",
+      "family": "ACTIVITY",
+      "classification": "CANONICAL_COMPONENT",
+      "inventoryStatus": "EXISTING_STABLE",
+      "platform": "BOTH",
+      "nativeStrategy": "NATIVE_RENDERER",
+      "intent": "Present actor/action-oriented chronological activity supplied by a consumer.",
+      "canonicalComponents": [
+        "ActivityFeed"
+      ],
+      "recipeRefs": [
+        "activity-audit"
+      ],
+      "blockRefs": [
+        "activity-audit-stream"
+      ],
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "stale",
+        "loadingMore",
+        "endOfResults"
+      ],
+      "interactionModel": [
+        "chronological display",
+        "optional activation",
+        "incremental loading"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "ordered-structure",
+        "non-color-status",
+        "empty-state",
+        "loading-state"
+      ],
+      "useWhen": [
+        "actor/action history or chronological operational events matter"
+      ],
+      "avoidWhen": [
+        "comments/chat, durable audit exploration, or cross-record comparison is the primary task"
+      ],
+      "responsive": {
+        "desktop": "Use a readable ordered activity region beside or below the primary task context.",
+        "tablet": "Preserve actor, action, and time before secondary metadata.",
+        "mobile": "Use a single ordered feed with optional detail activation and explicit loading/empty states.",
+        "native": "Use a native ordered list with accessible actor/action/time text and optional detail navigation."
+      },
+      "consumerOwns": [
+        "event order, actor, timestamp, action meaning, loading policy, and persistence"
+      ],
+      "ten4sevenOwns": [
+        "ordered hierarchy, state presentation, readable measure, and platform-neutral activity anatomy"
+      ],
+      "rendererOwns": [
+        "list semantics, scrolling, and native list/detail presentation"
+      ],
+      "tokenFamilies": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "density",
+        "measure",
+        "motion"
+      ],
+      "layoutIntents": [
+        "measure-reading",
+        "measure-content",
+        "single-column",
+        "density-adaptive"
+      ],
+      "motionRoles": [
+        "state",
+        "reveal"
+      ],
+      "alternatives": [
+        "NotificationCenter",
+        "CommentThread"
+      ],
+      "decisionBoundary": "Activity display is not an audit store, comment backend, notification delivery system, or state machine.",
+      "ai": {
+        "retrievalTerms": [
+          "activity feed",
+          "timeline",
+          "audit stream",
+          "actor action history"
+        ],
+        "complexity": "bounded",
+        "composesWith": [
+          "RecordSummary",
+          "DecisionWorkspace",
+          "List"
+        ],
+        "platformNotes": "Both: native renderer uses the same activity intent as an ordered list.",
+        "avoidDomainNaming": "Timeline remains an alias/intent name; do not create a domain-specific feed primitive."
+      }
+    },
+    "CommentThread": {
+      "id": "CommentThread",
+      "displayName": "Comment Thread",
+      "family": "ACTIVITY",
+      "classification": "DEFERRED",
+      "inventoryStatus": "DEFERRED",
+      "platform": "ADAPTIVE",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "intent": "Deferred collaboration composition requiring an explicit authoring, moderation, mention, and persistence contract.",
+      "canonicalComponents": [],
+      "recipeRefs": [],
+      "blockRefs": [],
+      "states": [
+        "empty",
+        "loading",
+        "ready",
+        "error",
+        "disabled",
+        "readOnly",
+        "pendingSync",
+        "conflict"
+      ],
+      "interactionModel": [
+        "comment authoring",
+        "thread disclosure",
+        "mention",
+        "reply"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "ordered-structure",
+        "input-role",
+        "error-association",
+        "status-announcement"
+      ],
+      "useWhen": [
+        "a future consumer provides the complete collaboration and moderation boundary"
+      ],
+      "avoidWhen": [
+        "an activity feed or read-only audit stream is sufficient"
+      ],
+      "responsive": {
+        "desktop": "Use a bounded master/detail or evidence/detail composition with persistent context only when the task needs comparison.",
+        "tablet": "Keep the active record and next action visible while collapsing secondary context into a drawer or stacked region.",
+        "mobile": "Use list to detail to action/sheet progression; return focus or navigation to the originating record after dismissal.",
+        "native": "Use a native list/detail stack, scroll surface, or sheet while preserving record identity, evidence order, and action reachability."
+      },
+      "consumerOwns": [
+        "authors, content, moderation, mentions, threading, persistence, sync, and conflict handling"
+      ],
+      "ten4sevenOwns": [
+        "future generic thread anatomy after the contract is approved"
+      ],
+      "rendererOwns": [
+        "text input, keyboard avoidance, native list, and safe-area presentation"
+      ],
+      "tokenFamilies": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "density",
+        "measure",
+        "motion"
+      ],
+      "layoutIntents": [
+        "measure-reading",
+        "single-column",
+        "safe-area-inset"
+      ],
+      "motionRoles": [
+        "interaction",
+        "state",
+        "reveal"
+      ],
+      "alternatives": [
+        "ActivityFeed",
+        "DecisionWorkspace"
+      ],
+      "decisionBoundary": "No generic comments API or chat backend is created in U09.",
+      "ai": {
+        "retrievalTerms": [
+          "comments",
+          "thread",
+          "collaboration",
+          "mentions"
+        ],
+        "complexity": "deferred",
+        "composesWith": [],
+        "platformNotes": "Deferred for both platforms until collaboration semantics are approved.",
+        "avoidDomainNaming": "Do not approximate comments with an ActivityFeed and do not add a local thread primitive."
+      }
+    },
+    "AppShell": {
+      "id": "AppShell",
+      "displayName": "Application Shell",
+      "family": "APPLICATION_SHELL",
+      "classification": "CANONICAL_COMPONENT",
+      "inventoryStatus": "EXISTING_STABLE",
+      "platform": "ADAPTIVE",
+      "nativeStrategy": "ALTERNATE_PATTERN",
+      "intent": "Coordinate application navigation, header, content, and responsive utility regions without owning business routing.",
+      "canonicalComponents": [
+        "AppShell",
+        "PageHeader",
+        "Sidebar",
+        "MobileSidebar"
+      ],
+      "recipeRefs": [],
+      "blockRefs": [
+        "public-shell-navigation"
+      ],
+      "states": [
+        "ready",
+        "loading",
+        "error",
+        "disabled",
+        "readOnly"
+      ],
+      "interactionModel": [
+        "navigation",
+        "disclosure",
+        "responsive composition",
+        "focus management"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "navigation-role",
+        "structure-order",
+        "focus-return",
+        "focus-or-press-feedback"
+      ],
+      "useWhen": [
+        "private or operational application surfaces need coordinated navigation and content geometry"
+      ],
+      "avoidWhen": [
+        "a public/marketing surface needs PublicShell or a flat navigation context"
+      ],
+      "responsive": {
+        "desktop": "Use the application shell grammar with sidebar/topbar/content and a bounded route content region.",
+        "tablet": "Collapse secondary navigation and preserve page header/action hierarchy.",
+        "mobile": "Use mobile navigation disclosure and keep route content single-column with safe-area-aware actions.",
+        "native": "Map the shell intent to native navigation, drawer, header, and stack/detail primitives."
+      },
+      "consumerOwns": [
+        "routing, navigation model, permissions, entitlements, active route, and route content"
+      ],
+      "ten4sevenOwns": [
+        "shell geometry, navigation semantics, page header anatomy, focus, and responsive/adaptive composition"
+      ],
+      "rendererOwns": [
+        "DOM/native navigation primitives, drawer/back behavior, and viewport/safe-area handling"
+      ],
+      "tokenFamilies": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "density",
+        "measure",
+        "motion"
+      ],
+      "layoutIntents": [
+        "content-max",
+        "page-gutter",
+        "section-rhythm",
+        "measure-wide",
+        "safe-area-inset",
+        "touch-target-minimum"
+      ],
+      "motionRoles": [
+        "interaction",
+        "enter",
+        "exit"
+      ],
+      "alternatives": [
+        "PageHeader",
+        "MasterDetailWorkspace"
+      ],
+      "decisionBoundary": "AppShell coordinates presentation and never becomes an application router, permission gate, or business workflow host.",
+      "ai": {
+        "retrievalTerms": [
+          "application shell",
+          "app shell",
+          "ERP shell",
+          "operations navigation"
+        ],
+        "complexity": "composed",
+        "composesWith": [
+          "Sidebar",
+          "PageHeader",
+          "MobileSidebar",
+          "DetailDrawer"
+        ],
+        "platformNotes": "Adaptive: desktop navigation maps to native navigation/drawer/stack presentation.",
+        "avoidDomainNaming": "Keep shell generic; consumers supply route and permission truth."
+      }
+    },
+    "PageHeader": {
+      "id": "PageHeader",
+      "displayName": "Page Header",
+      "family": "APPLICATION_SHELL",
+      "classification": "CANONICAL_COMPONENT",
+      "inventoryStatus": "EXISTING_STABLE",
+      "platform": "ADAPTIVE",
+      "nativeStrategy": "SAME_INTENT",
+      "intent": "Provide route-level title, summary, metadata, breadcrumbs, tabs, and primary action hierarchy.",
+      "canonicalComponents": [
+        "PageHeader"
+      ],
+      "recipeRefs": [],
+      "blockRefs": [],
+      "states": [
+        "ready",
+        "loading",
+        "error",
+        "disabled",
+        "readOnly"
+      ],
+      "interactionModel": [
+        "navigation",
+        "activation",
+        "status display"
+      ],
+      "accessibility": [
+        "accessible-name",
+        "structure-order",
+        "actionable-role",
+        "non-color-status"
+      ],
+      "useWhen": [
+        "a route needs one authoritative heading and action region"
+      ],
+      "avoidWhen": [
+        "a nested card or block needs a local heading"
+      ],
+      "responsive": {
+        "desktop": "Keep title, summary, metadata, and primary action in a readable route-level region.",
+        "tablet": "Prioritize title and primary action before optional metadata or tabs.",
+        "mobile": "Stack title and actions while preserving heading order and touch-safe controls.",
+        "native": "Use the native navigation header or a top content header with the same title/action intent."
+      },
+      "consumerOwns": [
+        "title meaning, breadcrumbs, route actions, status truth, and navigation state"
+      ],
+      "ten4sevenOwns": [
+        "heading hierarchy, layout, action grouping, and responsive stacking"
+      ],
+      "rendererOwns": [
+        "DOM heading/navigation semantics or native navigation header"
+      ],
+      "tokenFamilies": [
+        "color",
+        "typography",
+        "spacing",
+        "radius",
+        "focus",
+        "density",
+        "measure",
+        "motion"
+      ],
+      "layoutIntents": [
+        "measure-content",
+        "content-max",
+        "page-gutter",
+        "section-rhythm",
+        "priority-order"
+      ],
+      "motionRoles": [
+        "state"
+      ],
+      "alternatives": [
+        "AppShell",
+        "DecisionWorkspace"
+      ],
+      "decisionBoundary": "PageHeader presents route metadata and actions; it does not resolve routing or authorization.",
+      "ai": {
+        "retrievalTerms": [
+          "page header",
+          "route header",
+          "title summary action"
+        ],
+        "complexity": "bounded",
+        "composesWith": [
+          "AppShell",
+          "Breadcrumb",
+          "ActionBar"
+        ],
+        "platformNotes": "Same intent: native navigation header or top content header.",
+        "avoidDomainNaming": "Do not create route-specific header primitives."
+      }
+    }
+  },
+  "recipes": {
+    "entity-list": {
+      "id": "entity-list",
+      "source": "packages/contracts/src/entity-list.ts",
+      "canonicalPatterns": [
+        "WorkQueue",
+        "Inbox",
+        "QueueDetailWorkspace"
+      ],
+      "note": "Canonical bounded collection scaffold; the consumer supplies record meaning, query state, and row actions."
+    },
+    "entity-detail": {
+      "id": "entity-detail",
+      "source": "packages/contracts/src/entity-detail.ts",
+      "canonicalPatterns": [
+        "QueueDetailWorkspace",
+        "MasterDetailWorkspace",
+        "DecisionWorkspace"
+      ],
+      "note": "Canonical detail scaffold; it does not turn record status into a business transition."
+    },
+    "process-workspace": {
+      "id": "process-workspace",
+      "source": "packages/contracts/src/operational-patterns.ts",
+      "canonicalPatterns": [
+        "MasterDetailWorkspace",
+        "LifecycleTracker",
+        "Wizard"
+      ],
+      "note": "Existing operational recipe linked as a process composition, not a generic workflow engine."
+    },
+    "decision-workspace": {
+      "id": "decision-workspace",
+      "source": "packages/contracts/src/operational-patterns.ts",
+      "canonicalPatterns": [
+        "DecisionWorkspace",
+        "QueueDetailWorkspace"
+      ],
+      "note": "Existing evidence and decision composition; decision authority remains consumer-owned."
+    },
+    "activity-audit": {
+      "id": "activity-audit",
+      "source": "packages/contracts/src/operational-patterns.ts",
+      "canonicalPatterns": [
+        "ActivityFeed",
+        "DecisionWorkspace"
+      ],
+      "note": "Existing activity/audit composition; persisted audit truth and filtering remain consumer-owned."
+    },
+    "operational-kanban": {
+      "id": "operational-kanban",
+      "source": "packages/contracts/src/operational-patterns.ts",
+      "canonicalPatterns": [
+        "Kanban",
+        "TaskBoard",
+        "Workboard"
+      ],
+      "note": "Existing generic operational board recipe; movement is an intent seam, not library-owned persistence."
+    },
+    "exception-queue": {
+      "id": "exception-queue",
+      "source": "packages/contracts/src/operational-patterns.ts",
+      "canonicalPatterns": [
+        "Inbox",
+        "WorkQueue",
+        "DecisionWorkspace"
+      ],
+      "note": "Attention-first operational recipe; it is not the definition of every inbox or notification center."
+    }
+  },
+  "blocks": {
+    "public-shell-navigation": {
+      "id": "public-shell-navigation",
+      "source": "packages/ui/src/blocks.tsx",
+      "canonicalPatterns": [
+        "AppShell",
+        "PageHeader"
+      ],
+      "note": "Compatibility shell block; public surfaces still use PublicShell and do not inherit private navigation by default."
+    },
+    "workflow-board-preview": {
+      "id": "workflow-board-preview",
+      "source": "packages/ui/src/blocks.tsx",
+      "canonicalPatterns": [
+        "Workboard",
+        "Kanban"
+      ],
+      "note": "Catalogued block composition for board preview; it does not own lane data or DnD."
+    },
+    "exception-queue-summary": {
+      "id": "exception-queue-summary",
+      "source": "packages/ui/src/blocks.tsx",
+      "canonicalPatterns": [
+        "Inbox",
+        "WorkQueue"
+      ],
+      "note": "Summary block for attention work; a full queue remains a consumer-composed collection."
+    },
+    "decision-workspace-evidence": {
+      "id": "decision-workspace-evidence",
+      "source": "packages/ui/src/blocks.tsx",
+      "canonicalPatterns": [
+        "DecisionWorkspace"
+      ],
+      "note": "Evidence block; it presents supplied evidence and does not authorize a decision."
+    },
+    "activity-audit-stream": {
+      "id": "activity-audit-stream",
+      "source": "packages/ui/src/blocks.tsx",
+      "canonicalPatterns": [
+        "ActivityFeed"
+      ],
+      "note": "Activity stream composition; comments, audit persistence, and event truth remain separate."
+    },
+    "approval-queue-summary": {
+      "id": "approval-queue-summary",
+      "source": "packages/ui/src/blocks.tsx",
+      "canonicalPatterns": [
+        "Inbox",
+        "DecisionWorkspace"
+      ],
+      "note": "Approval-oriented summary; it does not create an ApproveButton or approval policy."
+    },
+    "onboarding-stepper": {
+      "id": "onboarding-stepper",
+      "source": "packages/ui/src/blocks.tsx",
+      "canonicalPatterns": [
+        "Wizard"
+      ],
+      "note": "Stepper composition; validation and completion rules remain consumer-owned."
+    },
+    "task-handoff": {
+      "id": "task-handoff",
+      "source": "packages/ui/src/blocks.tsx",
+      "canonicalPatterns": [
+        "QuickActions",
+        "DecisionWorkspace"
+      ],
+      "note": "Handoff composition; assignment, permission, and persistence remain consumer-owned."
+    },
+    "command-shortcuts": {
+      "id": "command-shortcuts",
+      "source": "packages/ui/src/blocks.tsx",
+      "canonicalPatterns": [
+        "CommandPalette",
+        "QuickActions"
+      ],
+      "note": "Command discovery composition; command execution remains consumer-owned."
+    }
+  },
+  "nativeCanary": {
+    "workQueue": {
+      "id": "workQueue",
+      "sourcePattern": "WorkQueue",
+      "presentation": "native-collection",
+      "strategy": "ALTERNATE_PATTERN",
+      "primitive": "FlatList",
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "selected",
+        "disabled",
+        "stale"
+      ],
+      "semanticInputs": [
+        "stable record key",
+        "primary identity",
+        "next action",
+        "consumer-defined status and priority text"
+      ],
+      "adaptiveStrategy": [
+        "native list",
+        "list-to-detail",
+        "safe action sheet"
+      ],
+      "accessibilityAlternative": "Each row exposes identity, status, next action, and selection; detail is a separate accessible route or sheet.",
+      "consumerOwns": [
+        "query, filtering, permissions, record actions, detail routing, and persistence"
+      ]
+    },
+    "queueDetail": {
+      "id": "queueDetail",
+      "sourcePattern": "QueueDetailWorkspace",
+      "presentation": "native-list-detail",
+      "strategy": "ALTERNATE_PATTERN",
+      "primitive": "NavigationStack",
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "selected",
+        "disabled",
+        "stale"
+      ],
+      "semanticInputs": [
+        "collection identity",
+        "selected record",
+        "detail sections",
+        "available action intents"
+      ],
+      "adaptiveStrategy": [
+        "list screen",
+        "detail screen",
+        "action sheet",
+        "hardware-back return"
+      ],
+      "accessibilityAlternative": "The selected record and route position are announced; returning from detail restores list context.",
+      "consumerOwns": [
+        "selection, route state, data loading, permissions, actions, and persistence"
+      ]
+    },
+    "decisionWorkspace": {
+      "id": "decisionWorkspace",
+      "sourcePattern": "DecisionWorkspace",
+      "presentation": "native-decision-surface",
+      "strategy": "ALTERNATE_PATTERN",
+      "primitive": "ScrollView",
+      "states": [
+        "loading",
+        "ready",
+        "pending",
+        "invalid",
+        "error",
+        "decided",
+        "disabled",
+        "readOnly"
+      ],
+      "semanticInputs": [
+        "record context",
+        "evidence order",
+        "criteria",
+        "notes",
+        "consumer-defined decision actions"
+      ],
+      "adaptiveStrategy": [
+        "single-column evidence",
+        "sticky safe-area actions",
+        "focused detail sheet"
+      ],
+      "accessibilityAlternative": "Evidence, criteria, result, and action labels are exposed in reading order; outcome is stated as text.",
+      "consumerOwns": [
+        "decision authority, validation, permissions, notes, outcome, audit, and side effects"
+      ]
+    },
+    "kanban": {
+      "id": "kanban",
+      "sourcePattern": "Kanban",
+      "presentation": "native-lane-list",
+      "strategy": "ALTERNATE_PATTERN",
+      "primitive": "SectionList",
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "selected",
+        "moving",
+        "moveRejected"
+      ],
+      "semanticInputs": [
+        "lane identity",
+        "card identity",
+        "card status text",
+        "available move intents"
+      ],
+      "adaptiveStrategy": [
+        "lane selector",
+        "section/list cards",
+        "explicit Move to lane action"
+      ],
+      "accessibilityAlternative": "A lane selector and ordered card list replace simultaneous lanes; movement is available as a labelled action.",
+      "consumerOwns": [
+        "lane data, card data, movement legality, permissions, persistence, and conflicts"
+      ]
+    },
+    "wizard": {
+      "id": "wizard",
+      "sourcePattern": "Wizard",
+      "presentation": "native-step-surface",
+      "strategy": "ALTERNATE_PATTERN",
+      "primitive": "ScrollView",
+      "states": [
+        "ready",
+        "loading",
+        "invalid",
+        "complete",
+        "error",
+        "disabled",
+        "readOnly"
+      ],
+      "semanticInputs": [
+        "step identity",
+        "current step",
+        "validation state",
+        "next/back/finish action intents"
+      ],
+      "adaptiveStrategy": [
+        "compact progress",
+        "single step",
+        "keyboard avoidance",
+        "safe-area footer"
+      ],
+      "accessibilityAlternative": "Current step, position, validation message, and next/back actions are announced in order.",
+      "consumerOwns": [
+        "validation, completion, resume, persistence, permissions, and side effects"
+      ]
+    },
+    "commandPalette": {
+      "id": "commandPalette",
+      "sourcePattern": "CommandPalette",
+      "presentation": "native-search-action-surface",
+      "strategy": "ALTERNATE_PATTERN",
+      "primitive": "BottomSheet",
+      "states": [
+        "closed",
+        "open",
+        "loading",
+        "empty",
+        "error",
+        "disabled",
+        "selected"
+      ],
+      "semanticInputs": [
+        "query",
+        "command identity",
+        "command label",
+        "availability and description"
+      ],
+      "adaptiveStrategy": [
+        "search/action screen",
+        "bottom sheet",
+        "hardware-back dismissal",
+        "no Cmd/Ctrl shortcut requirement"
+      ],
+      "accessibilityAlternative": "Search field and result actions have explicit labels, descriptions, selected state, and dismissal semantics.",
+      "consumerOwns": [
+        "command registry, ranking, availability, permissions, and command handlers"
+      ]
+    }
+  },
+  "consumerOwns": [
+    "business data, record meaning, status labels, and priority mapping",
+    "allowed transitions, validation, authorization, and entitlements",
+    "assignment, SLA, escalation, and notification policy",
+    "fetching, filtering, sorting, pagination, persistence, and sync truth",
+    "action handlers, side effects, routing, and decision authority",
+    "drag/drop legality, reorder persistence, and conflict resolution",
+    "comment, audit, history, and collaboration backends"
+  ],
+  "ten4sevenOwns": [
+    "semantic pattern intent and composition grammar",
+    "state presentation vocabulary and accessible structure",
+    "selection, focus, keyboard, press, and dismissal behavior",
+    "responsive and adaptive recomposition guidance",
+    "token-family and density intent",
+    "renderer-neutral action and movement seams"
+  ],
+  "dragDrop": {
+    "rule": "Drag/drop is an optional renderer affordance and is never the only path for a task-critical reorder or stage change.",
+    "keyboardAlternative": "Every task-critical move has an explicit focusable action such as Move to lane, Move before, or Move after."
+  },
+  "responsive": {
+    "desktop": "Use bounded collections, explicit workspaces, readable lanes, and visible action/status regions according to task focus.",
+    "tablet": "Preserve primary identity, evidence, controls, and next action; move secondary context before shrinking below useful measure.",
+    "mobile": "Use list/detail, lane selector/list, single-step, sheet, and safe-area patterns instead of compressing desktop compositions.",
+    "native": "Native renderers consume the same semantic intent and states through platform-appropriate lists, stacks, sheets, and navigation."
+  },
+  "accessibility": [
+    "Every workflow region has an accessible name and a meaningful structure order.",
+    "Selection, current stage, status, progress, unread, and decision result are text-readable and never color-only.",
+    "Focus returns from drawers, sheets, and command surfaces; native alternatives preserve press, back, and safe-area feedback.",
+    "Keyboard and assistive technology users have explicit alternatives to drag, hover, and motion.",
+    "Loading, empty, error, disabled, read-only, stale, and pending-sync states remain distinguishable where the pattern needs them."
+  ],
+  "themeStudio": {
+    "compatibility": "All workflow patterns resolve through the same Ten4SevenProvider theme axes, density, contrast, and reduced-motion preferences exercised by Theme Studio.",
+    "noLocalPalette": "Workflow compositions do not introduce feature-local colors, radii, shadows, control heights, or motion durations."
+  },
+  "aiMetadata": {
+    "retrieval": "Retrieve this typed plane before selecting a workflow pattern; use implemented canonical components and linked recipes/blocks rather than inventing a domain primitive.",
+    "aliases": [
+      "workflow UI",
+      "productivity patterns",
+      "work queue",
+      "inbox",
+      "master detail workspace",
+      "command palette",
+      "application shell"
+    ],
+    "compositionGuidance": "Choose WorkQueue for operational records, Inbox for attention work, NotificationCenter for informational history, LifecycleTracker for one bounded lifecycle, Wizard for sequential steps, and Kanban/Workboard only when lanes add value."
+  },
+  "showrooms": [
+    "/component-lab#component-lab-workflow",
+    "/components",
+    "/theme-studio",
+    "/operational-patterns"
+  ],
+  "compatibility": [
+    "The typed U09 plane is the only workflow/productivity decision source; generated/workflow-productivity.json and packages/agent/generated/workflow-productivity.json are derived projections.",
+    "Existing operational recipes remain compatibility surfaces and are linked here; their business semantics do not migrate into generic components.",
+    "CommandPalette remains the alias of CommandMenu. New code should use CommandMenu; the alias does not increase canonical component count.",
+    "Timeline remains the existing ActivityFeed alias/intent. ActivityFeed is not CommentThread, NotificationCenter, or a durable audit store.",
+    "TaskBoard is a Kanban-oriented variant and Workboard is a block composition; neither creates a parallel primitive family.",
+    "Priority, urgency, SLA, assignment, escalation, and unread vocabularies remain consumer-owned mappings; no universal business enum is introduced.",
+    "Web CSS variables, native JS/TS values, AI metadata, and documentation are projections of the typed contract and never competing authorities.",
+    "U09 adds no DnD, workflow, comments, scheduler, editor, or native UI engine dependency."
+  ],
+  "deferred": [
+    "Advanced DnD, touch gestures, keyboard reorder engine, collision strategy, and virtualization coordination are deferred to U10 after the move-intent seam is consumed.",
+    "CommentThread remains deferred until authoring, moderation, mention, sync, conflict, and persistence contracts are approved.",
+    "Domain workflow engines, approval policy, assignment/SLA/escalation systems, notification delivery, and audit stores remain consumer/domain work.",
+    "Additional native components are not created in U09; native canaries remain descriptors for a future renderer."
+  ],
+  "tokens": [
+    "surface",
+    "surface-raised",
+    "surface-subtle",
+    "border",
+    "selected",
+    "focus-ring",
+    "primary",
+    "success",
+    "warning",
+    "danger",
+    "muted-foreground",
+    "control-height",
+    "control-gap",
+    "radius-panel",
+    "shadow-card",
+    "transition-standard"
+  ],
+  "webProjection": {
+    "authority": "derived",
+    "format": "CSS custom properties and semantic DOM attributes",
+    "source": "typed contract and resolved theme values"
+  },
+  "nativeProjection": {
+    "authority": "derived",
+    "format": "resolved JS/TS semantic values and renderer descriptors",
+    "source": "typed contract and resolved theme values",
+    "cssParsing": false
+  }
+}

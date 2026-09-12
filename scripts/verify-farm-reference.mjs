@@ -14,21 +14,26 @@ const dataSource = read("apps/playground/src/farm-p1-reference-data.ts");
 const stylesSource = read("apps/playground/src/app.css");
 
 assert.match(routeSource, /"Farm P1 Reference"/);
-assert.match(routeSource, /farmP1ReferencePath = "\/farm-reference"/);
+assert.match(routeSource, /path: "\/farm-p1-reference"/);
 assert.match(routeSource, /kind: "farm-reference"/);
-for (const pathName of [
-  "/farm-reference/overview",
-  "/farm-reference/daily-operations",
-  "/farm-reference/context",
-  "/farm-reference/flocks",
-  "/farm-reference/inventory",
-]) {
+for (const view of [
+  "overview",
+  "daily-operations",
+  "context",
+  "flocks",
+  "inventory",
+])
   assert.match(
     routeSource,
-    new RegExp(pathName.replaceAll("/", "\\/")),
-    "Q06 child route missing: " + pathName,
+    new RegExp(
+      (view.includes("-") ? `"${view}"` : view) +
+        ": \\x60\\$\\{farmP1ReferencePath\\}\\/" +
+        view +
+        "\\x60",
+    ),
+    "Q06 canonical child route missing: " + view,
   );
-}
+assert.match(routeSource, /"\/farm-reference": \{[\s\S]*?Farm P1 Reference/);
 
 assert.match(appSource, /FarmP1Reference/);
 assert.match(appSource, /routeMatch\.kind === "farm-reference"/);

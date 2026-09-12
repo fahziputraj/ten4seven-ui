@@ -1,8 +1,11 @@
 import { expect, test } from "@playwright/test";
 
 const familyRoutes = [
-  { count: 6, heading: "Actions", path: "/components/actions" },
-  { count: 27, heading: "Forms", path: "/components/forms" },
+  { count: 8, heading: "Actions", path: "/components/actions" },
+  { count: 33, heading: "Forms", path: "/components/forms" },
+  { count: 12, heading: "Layout", path: "/components/layout" },
+  { count: 4, heading: "Files", path: "/components/files" },
+  { count: 19, heading: "Navigation", path: "/components/navigation" },
   {
     count: 7,
     heading: "Charts & Data Visualization",
@@ -56,11 +59,11 @@ test.describe("Q11 canonical human library", () => {
     await page.goto("/components");
 
     const indexLinks = page.locator(".component-index-links a");
-    await expect(indexLinks).toHaveCount(145);
+    await expect(indexLinks).toHaveCount(167);
     const hrefs = await indexLinks.evaluateAll((links) =>
       links.map((link) => link.getAttribute("href")),
     );
-    expect(new Set(hrefs).size).toBe(145);
+    expect(new Set(hrefs).size).toBe(167);
     expect(hrefs.every((href) => href?.startsWith("/components/"))).toBe(true);
   });
 

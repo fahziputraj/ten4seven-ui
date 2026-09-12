@@ -1156,6 +1156,63 @@ export function ChartPanel({
   );
 }
 
+export type Q12BlockFamily =
+  | "Public / marketing"
+  | "Admin / application"
+  | "Commerce"
+  | "Workflow / productivity"
+  | "Data management"
+  | "AI / conversation";
+
+export interface Q12BlockCompositionProps extends BlockSectionAttributes {
+  children: ReactNode;
+  description?: ReactNode;
+  eyebrow?: ReactNode;
+  family?: Q12BlockFamily;
+  title: ReactNode;
+}
+
+/**
+ * Shared Q12 block shell for normalized page-level compositions.
+ *
+ * The shell owns hierarchy and tokenized surface treatment only. The
+ * consumer still owns content, data, persistence, and business behavior.
+ */
+export function Q12BlockComposition({
+  children,
+  className,
+  description,
+  eyebrow,
+  family,
+  title,
+  ...props
+}: Q12BlockCompositionProps) {
+  const headingId = useId();
+  return (
+    <section
+      {...props}
+      aria-labelledby={headingId}
+      className={cx("t7-q12-block-composition", className)}
+      data-family={family}
+    >
+      <header className="t7-q12-block-heading">
+        {eyebrow ? (
+          <Typography typeRole="overline">{eyebrow}</Typography>
+        ) : null}
+        <Typography as="h2" id={headingId} typeRole="heading-lg">
+          {title}
+        </Typography>
+        {description ? (
+          <Typography as="p" typeRole="body-sm">
+            {description}
+          </Typography>
+        ) : null}
+      </header>
+      <div className="t7-q12-block-content">{children}</div>
+    </section>
+  );
+}
+
 export interface PublicShellProps extends HTMLAttributes<HTMLDivElement> {
   actions?: ReactNode;
   brand: ReactNode;

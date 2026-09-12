@@ -1,10 +1,13 @@
 import { MODULE_STATE_IDS, type ModuleStateId } from "./module-state.ts";
+import { MEASURE_NAMES, type MeasureName } from "./foundation.ts";
 import {
   CONTRACT_SCHEMA_VERSION,
   type Appearance,
   type BrandProfileId,
   type BrandProfileRoleSlot,
+  type ChartPaletteName,
   type DensityName,
+  type ElevationName,
   type InteractionState,
   type MotionPreference,
   type MotionProfileName,
@@ -154,7 +157,7 @@ export const NATIVE_COMPONENT_IDS = [
 ] as const;
 export type NativeComponentId = (typeof NATIVE_COMPONENT_IDS)[number];
 
-export type NativeTokenLayer = "semantic" | "component" | "behavior";
+export type NativeTokenLayer = "semantic" | "layout" | "component" | "behavior";
 
 export interface NativeTokenReference {
   readonly layer: NativeTokenLayer;
@@ -189,6 +192,76 @@ export interface NativeIconSemanticContract {
   readonly meaning: string;
 }
 
+/**
+ * Renderer-neutral values emitted by the shared token runtime. The native
+ * renderer consumes this data directly; it does not read CSS custom
+ * properties, CSS unit strings, or Web provider output.
+ */
+export type NativeFontWeight = "400" | "500" | "600" | "700";
+export type NativeFontFamilyRole = "ui" | "display" | "mono";
+
+export interface NativeTypographyToken {
+  readonly fontSize: number;
+  readonly lineHeight: number;
+  readonly fontWeight: NativeFontWeight;
+  readonly letterSpacingPx: number;
+  readonly familyRole: NativeFontFamilyRole;
+}
+
+/** Numeric layout bounds for native renderers; no CSS unit parsing required. */
+export interface NativeResolvedMeasure {
+  readonly minimumPx: number;
+  readonly preferredPx: number | null;
+  readonly maximumPx: number | null;
+  readonly fluid: boolean;
+}
+
+export interface NativeResolvedThemeVariant {
+  readonly appearance: Exclude<Appearance, "system">;
+  readonly colors: Readonly<Record<NativeColorRole, string>>;
+  readonly typography: Readonly<
+    Record<NativeTypographyIntent, NativeTypographyToken>
+  >;
+  readonly layout: {
+    readonly measures: Readonly<Record<MeasureName, NativeResolvedMeasure>>;
+  };
+  readonly spacing: Readonly<Record<NativeSpacingRole, number>>;
+  readonly radius: Readonly<Record<NativeRadiusRole, number>>;
+  readonly elevation: {
+    readonly preset: ElevationName;
+    readonly surface: NativeElevationLevel;
+    readonly raised: NativeElevationLevel;
+    readonly modal: NativeElevationLevel;
+  };
+  readonly chart: {
+    readonly palette: ChartPaletteName;
+    readonly colors: readonly string[];
+  };
+  readonly motion: {
+    readonly enabled: boolean;
+    readonly rolesMs: Readonly<Record<NativeMotionRole, number>>;
+  };
+  readonly touchTarget: number;
+  readonly density: DensityName;
+}
+
+/** Numeric shadow/elevation values for native renderers; no CSS shadow parsing. */
+export interface NativeElevationLevel {
+  readonly androidElevation: number;
+  readonly shadowOffsetY: number;
+  readonly shadowRadius: number;
+  readonly shadowOpacity: number;
+}
+
+export interface NativeResolvedProjectionContract {
+  readonly sourceOfTruth: "packages/tokens/src/theme.ts";
+  readonly format: "typed-js";
+  readonly colors: "opaque-srgb-hex";
+  readonly dimensions: "number-px";
+  readonly durations: "number-ms";
+  readonly cssIndependent: true;
+}
+
 export interface NativeMobileContract {
   readonly schemaVersion: typeof CONTRACT_SCHEMA_VERSION;
   readonly id: "native-mobile";
@@ -206,11 +279,13 @@ export interface NativeMobileContract {
     readonly typography: Readonly<
       Record<NativeTypographyIntent, NativeTokenReference>
     >;
+    readonly layout: Readonly<Record<MeasureName, NativeTokenReference>>;
     readonly spacing: Readonly<Record<NativeSpacingRole, NativeTokenReference>>;
     readonly radius: Readonly<Record<NativeRadiusRole, NativeTokenReference>>;
     readonly motion: Readonly<Record<NativeMotionRole, NativeTokenReference>>;
     readonly touchTarget: NativeTokenReference;
   };
+  readonly resolvedProjection: NativeResolvedProjectionContract;
   readonly actionIntents: Readonly<
     Record<NativeActionIntent, NativeActionIntentContract>
   >;
@@ -244,6 +319,11 @@ const semanticColor = (path: string): NativeTokenReference => ({
 
 const componentToken = (path: string): NativeTokenReference => ({
   layer: "component",
+  path,
+});
+
+const layoutToken = (path: string): NativeTokenReference => ({
+  layer: "layout",
   path,
 });
 
@@ -297,6 +377,9 @@ export const NATIVE_MOBILE_TOKEN_REFERENCES = {
     button: semanticColor("semantic.typography.button"),
     metric: semanticColor("semantic.typography.metric-lg"),
   },
+  layout: Object.fromEntries(
+    MEASURE_NAMES.map((name) => [name, layoutToken(`layout.measure.${name}`)]),
+  ) as Record<MeasureName, NativeTokenReference>,
   spacing: {
     control: componentToken("component.geometry.control.height"),
     row: componentToken("component.geometry.row.height"),
@@ -331,6 +414,7 @@ export const NATIVE_MOBILE_CONTRACT = {
     shared: [
       "semantic intents, presentation states, interaction states, and ownership",
       "theme profiles, brand profiles, density, typography, and motion roles",
+      "named layout measures and minimum useful surface intent",
       "semantic icon names and meaning",
     ],
     web: [
@@ -350,6 +434,14 @@ export const NATIVE_MOBILE_CONTRACT = {
     ],
   },
   tokenReferences: NATIVE_MOBILE_TOKEN_REFERENCES,
+  resolvedProjection: {
+    sourceOfTruth: "packages/tokens/src/theme.ts",
+    format: "typed-js",
+    colors: "opaque-srgb-hex",
+    dimensions: "number-px",
+    durations: "number-ms",
+    cssIndependent: true,
+  },
   actionIntents: {
     primary: {
       colorRole: "actionPrimary",

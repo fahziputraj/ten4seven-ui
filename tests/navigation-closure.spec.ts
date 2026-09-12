@@ -1,5 +1,12 @@
 import { expect, test } from "@playwright/test";
 
+import {
+  adoptionProofNavigationLabels,
+  adoptionProofRoutePaths,
+  playgroundNavigationGroups,
+  playgroundRoutePaths,
+} from "../apps/playground/src/playground-routes";
+
 type NavigationRoute = {
   accessibleLabel?: string;
   label: string;
@@ -10,49 +17,21 @@ const navigationGroups: Array<{
   label: string;
   maturity: string;
   routes: NavigationRoute[];
-}> = [
-  {
-    label: "Studio",
-    maturity: "PRIMARY",
-    routes: [
-      { label: "Theme Studio", path: "/theme-studio" },
-      { label: "Component Lab", path: "/component-lab" },
-    ],
-  },
-  {
-    label: "Library",
-    maturity: "PRIMARY",
-    routes: [
-      { label: "Tokens", path: "/tokens" },
-      { label: "Components", path: "/components" },
-      { label: "Blocks", path: "/blocks" },
-      { label: "Icons", path: "/icons" },
-      { label: "Recipes", path: "/recipes" },
-    ],
-  },
-  {
-    label: "Reference",
-    maturity: "QUALITY_REFERENCE",
-    routes: [{ label: "Publishing Store", path: "/ebook-store" }],
-  },
-  {
-    label: "Labs / Proofs",
-    maturity: "LAB_PROOF",
-    routes: [
-      { label: "Operations Tracker", path: "/operations-tracker" },
-      { label: "Operational Patterns", path: "/operational-patterns" },
-      { label: "ERP Density Reference", path: "/erp-reference" },
-      { label: "Public Showcase", path: "/public-showcase" },
-      { label: "Farm Synthetic", path: "/farm-synthetic-proof" },
-      { label: "Auth · Neutral", path: "/brand-proof/auth-neutral" },
-      {
-        accessibleLabel: "Auth · AAPM Academy",
-        label: "Auth · Academy",
-        path: "/brand-proof/auth-aapm-academy",
-      },
-    ],
-  },
-];
+}> = playgroundNavigationGroups.map((group) => ({
+  label: group.label,
+  maturity: group.maturity,
+  routes: [
+    ...group.routes.map((route) => ({
+      label: route,
+      path: playgroundRoutePaths[route],
+    })),
+    ...(group.adoptionProofRoutes ?? []).map((route) => ({
+      accessibleLabel: route,
+      label: adoptionProofNavigationLabels[route],
+      path: adoptionProofRoutePaths[route],
+    })),
+  ],
+}));
 
 const escapeRegExp = (value: string) =>
   value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");

@@ -1,3 +1,9 @@
+import {
+  MEASURE_CONTRACT,
+  MEASURE_NAMES,
+  resolveTokenLayers,
+  type MeasureName,
+} from "../../contracts/src/foundation.ts";
 import { resolveMotionRoles } from "../../contracts/src/theme-profile.ts";
 import { exactColor, isExactColorSource } from "../../contracts/src/types.ts";
 import type {
@@ -6,6 +12,13 @@ import type {
   SurfaceTreatment,
   ThemeColorSource,
 } from "../../contracts/src/types.ts";
+import type {
+  NativeColorRole,
+  NativeFontWeight,
+  NativeResolvedMeasure,
+  NativeResolvedThemeVariant,
+  NativeTypographyIntent,
+} from "../../contracts/src/native-mobile.ts";
 
 export { exactColor, isExactColorSource } from "../../contracts/src/types.ts";
 export type {
@@ -119,6 +132,8 @@ export interface ThemeConfig {
   density?: DensityName;
   /** Authored choreography anchor in seconds; interaction roles use a bounded multiplier. */
   motionDuration?: number;
+  /** Optional authored motion role profile retained by the provider bridge. */
+  motionProfile?: MotionProfileName;
   typography?: TypographySetting;
   elevation?: ElevationName;
 }
@@ -164,6 +179,40 @@ export interface ThemeVariableOptions {
     pageGutter: string;
     sectionGap: string;
   };
+}
+
+export type ThemeResolutionLayers =
+  import("../../contracts/src/foundation.ts").TokenLayerValues<ThemeConfig>;
+
+/**
+ * Build one normalized config from the contract-plane order. The resolver is
+ * shallow by design: each top-level theme axis is one semantic value, while
+ * component state remains a renderer-level semantic overlay.
+ */
+export function resolveThemeConfigLayers(
+  layers: ThemeResolutionLayers = {},
+): ThemeConfig {
+  const defaults: ThemeConfig = {
+    appearance: defaultTheme.appearance,
+    palette: defaultTheme.palette,
+    primary: defaultTheme.primarySource,
+    accent: defaultTheme.accentSource,
+    canvas: defaultTheme.canvas,
+    surfaceTreatment: defaultTheme.surfaceTreatment,
+    chartPalette: defaultTheme.chartPalette,
+    radius: defaultTheme.radius,
+    radiusValue: defaultTheme.radiusValue,
+    density: defaultTheme.density,
+    motionDuration: defaultTheme.motionDuration,
+    motionProfile: "balanced",
+    typography: defaultTheme.typography,
+    elevation: defaultTheme.elevation,
+  };
+
+  return resolveTokenLayers({
+    ...layers,
+    SYSTEM_DEFAULTS: { ...defaults, ...layers.SYSTEM_DEFAULTS },
+  }) as ThemeConfig;
 }
 
 type PaletteProfile = {
@@ -848,6 +897,9 @@ export const referenceSpace = Object.freeze({
   12: "48px",
 });
 
+/** Fixed accessibility floor shared by Web and future native renderers. */
+const minimumTouchTargetPx = 44;
+
 /** Bounded layout roles; recipe-authored application/reading rails still win. */
 export const layoutGeometry = Object.freeze({
   gutter: Object.freeze({
@@ -862,6 +914,25 @@ export const layoutGeometry = Object.freeze({
   asideWidth: "320px",
   focusClearance: referenceSpace[1],
 });
+
+/**
+ * Project the typed measure contract into Web custom properties. The contract
+ * owns the bounds; this helper only chooses the Web representation.
+ */
+function buildMeasureVariables(): Record<string, string> {
+  return Object.fromEntries(
+    MEASURE_NAMES.flatMap((name) => {
+      const measure = MEASURE_CONTRACT[name];
+      return [
+        [
+          `--t7-measure-${name}`,
+          measure.maximumPx === null ? "100%" : `${measure.maximumPx}px`,
+        ],
+        [`--t7-measure-${name}-min`, `${measure.minimumPx}px`],
+      ];
+    }),
+  );
+}
 
 /** Optical roles retain the existing icon family, with no second icon runtime. */
 export const iconGeometry = Object.freeze({
@@ -1396,7 +1467,10 @@ function resolveColorProfile(
 }
 
 export function resolveTheme(config: ThemeConfig = {}): ResolvedTheme {
-  const typographySetting = config.typography;
+  const resolvedConfig = resolveThemeConfigLayers({
+    THEME_OVERRIDE: config,
+  });
+  const typographySetting = resolvedConfig.typography;
   const typographyOverrides =
     typographySetting !== null && typeof typographySetting === "object"
       ? typographySetting
@@ -1409,55 +1483,57 @@ export function resolveTheme(config: ThemeConfig = {}): ResolvedTheme {
   );
   const typographyProfile = typographyProfiles[resolvedTypographyName];
   const palette = resolveProfileName(
-    config.palette,
+    resolvedConfig.palette,
     paletteProfiles,
     defaultTheme.palette,
   );
-  const primarySource = resolveColorSource(config.primary, palette);
-  const accentSource = resolveColorSource(config.accent, palette);
+  const primarySource = resolveColorSource(resolvedConfig.primary, palette);
+  const accentSource = resolveColorSource(resolvedConfig.accent, palette);
   const primary = isExactColorSource(primarySource) ? palette : primarySource;
   const accent = isExactColorSource(accentSource) ? palette : accentSource;
   const canvas = resolveProfileName(
-    config.canvas,
+    resolvedConfig.canvas,
     canvasProfiles,
     defaultTheme.canvas,
   );
   const surfaceTreatment = resolveProfileName(
-    config.surfaceTreatment,
+    resolvedConfig.surfaceTreatment,
     { quiet: true, "low-contrast": true, outlined: true },
     defaultTheme.surfaceTreatment,
   );
   const chartPalette = resolveProfileName(
-    config.chartPalette,
+    resolvedConfig.chartPalette,
     { spectrum: true, four: true, monochrome: true },
     defaultTheme.chartPalette,
   );
   const radius = resolveProfileName(
-    config.radius,
+    resolvedConfig.radius,
     radiusProfiles,
     defaultTheme.radius,
   );
   const density = resolveProfileName(
-    config.density,
+    resolvedConfig.density,
     densityProfiles,
     defaultTheme.density,
   );
   const elevation = resolveProfileName(
-    config.elevation,
+    resolvedConfig.elevation,
     { flat: true, soft: true, standard: true },
     defaultTheme.elevation,
   );
   const radiusValue =
-    typeof config.radiusValue !== "number" ||
-    !Number.isFinite(config.radiusValue)
+    typeof resolvedConfig.radiusValue !== "number" ||
+    !Number.isFinite(resolvedConfig.radiusValue)
       ? undefined
-      : normalizeRadiusValue(config.radiusValue);
+      : normalizeRadiusValue(resolvedConfig.radiusValue);
   const motionDuration = normalizeMotionDuration(
-    config.motionDuration ?? defaultTheme.motionDuration,
+    resolvedConfig.motionDuration ?? defaultTheme.motionDuration,
   );
 
   return {
-    appearance: resolveAppearance(config.appearance ?? defaultTheme.appearance),
+    appearance: resolveAppearance(
+      resolvedConfig.appearance ?? defaultTheme.appearance,
+    ),
     palette,
     primary,
     primarySource,
@@ -1483,10 +1559,48 @@ export function resolveTheme(config: ThemeConfig = {}): ResolvedTheme {
   };
 }
 
-export function buildThemeVariables(
+interface ResolvedThemeColorTokens {
+  readonly primaryPalette: PaletteProfile;
+  readonly accentPalette: PaletteProfile;
+  readonly neutrals: NeutralProfile;
+  readonly chartColors: readonly string[];
+  readonly chartSurfaceColors: readonly string[];
+  readonly semantic: {
+    readonly success: string;
+    readonly successForeground: string;
+    readonly warning: string;
+    readonly danger: string;
+    readonly dangerText: string;
+    readonly info: string;
+  };
+  readonly surfaceEmphasis: {
+    readonly inverse: string;
+    readonly inverseForeground: string;
+    readonly inverseMutedForeground: string;
+    readonly inverseBorder: string;
+    readonly softAlpha: string;
+    readonly softBorderAlpha: string;
+    readonly solid: string;
+    readonly solidSuccess: string;
+    readonly solidWarning: string;
+    readonly solidDanger: string;
+    readonly solidInfo: string;
+  };
+  readonly highContrast: boolean;
+  readonly borderHsl: string;
+  readonly borderStrongHsl: string;
+  readonly borderSubtleHsl: string;
+  readonly surfaceHsl: string;
+  readonly focusHsl: string;
+  readonly formBorderHsl: string;
+  readonly tableBorderHsl: string;
+}
+
+/** Resolve semantic roles once so every renderer consumes the same values. */
+function resolveThemeColorTokens(
   theme: ResolvedTheme,
-  options: ThemeVariableOptions = {},
-): Record<string, string> {
+  options: ThemeVariableOptions,
+): ResolvedThemeColorTokens {
   const primaryPalette = resolveColorProfile(
     theme.primarySource,
     theme.primary,
@@ -1507,6 +1621,118 @@ export function buildThemeVariables(
         : categoricalChartColors
   ).map((value) => colorToChartMark(value, theme.appearance));
   const chartSurfaceColors = chartColors.map(colorToSolidSurface);
+  const highContrast = options.contrast === "more";
+  const semantic = {
+    success: "128 42% 30%",
+    successForeground:
+      theme.appearance === "dark" ? "128 42% 72%" : "128 52% 24%",
+    warning: "38 92% 50%",
+    danger: "0 72% 51%",
+    dangerText: theme.appearance === "dark" ? "0 92% 76%" : "0 72% 42%",
+    info: "199 89% 48%",
+  };
+  const surfaceEmphasis = {
+    inverse: theme.appearance === "dark" ? "0 0% 96%" : "0 0% 13%",
+    inverseForeground: theme.appearance === "dark" ? "0 0% 10%" : "0 0% 98%",
+    inverseMutedForeground:
+      theme.appearance === "dark" ? "0 0% 33%" : "0 0% 76%",
+    inverseBorder: theme.appearance === "dark" ? "0 0% 78%" : "0 0% 28%",
+    softAlpha: theme.appearance === "dark" ? "0.18" : "0.08",
+    softBorderAlpha: theme.appearance === "dark" ? "0.46" : "0.28",
+    solid: colorToSolidSurface(primaryPalette.primary),
+    solidSuccess: colorToSolidSurface(semantic.success),
+    solidWarning: colorToSolidSurface(semantic.warning),
+    solidDanger: colorToSolidSurface(semantic.danger),
+    solidInfo: colorToSolidSurface(semantic.info),
+  };
+  const borderHsl =
+    theme.surfaceTreatment === "quiet"
+      ? highContrast
+        ? neutrals.borderContrast
+        : neutrals.surface
+      : theme.surfaceTreatment === "low-contrast"
+        ? highContrast
+          ? neutrals.borderContrast
+          : neutrals.border
+        : highContrast
+          ? neutrals.borderContrast
+          : neutrals.border;
+  const borderStrongHsl =
+    theme.surfaceTreatment === "quiet"
+      ? highContrast
+        ? neutrals.borderStrong
+        : neutrals.border
+      : theme.surfaceTreatment === "low-contrast"
+        ? highContrast
+          ? neutrals.borderStrong
+          : neutrals.border
+        : neutrals.borderStrong;
+  const borderSubtleHsl = highContrast
+    ? neutrals.border
+    : neutrals.surfaceMuted;
+  const surfaceHsl =
+    theme.surfaceTreatment === "quiet"
+      ? highContrast
+        ? neutrals.surfaceMuted
+        : neutrals.surfaceSubtle
+      : neutrals.surface;
+  const focusHsl = resolveFocusColor(
+    primaryPalette.primary,
+    neutrals.surface,
+    theme.appearance,
+  );
+  const formBorderHsl =
+    theme.surfaceTreatment === "outlined"
+      ? neutrals.borderStrong
+      : highContrast
+        ? neutrals.borderStrong
+        : neutrals.border;
+  const tableBorderHsl = highContrast
+    ? neutrals.borderContrast
+    : theme.surfaceTreatment === "quiet"
+      ? neutrals.border
+      : borderHsl;
+
+  return {
+    primaryPalette,
+    accentPalette,
+    neutrals,
+    chartColors,
+    chartSurfaceColors,
+    semantic,
+    surfaceEmphasis,
+    highContrast,
+    borderHsl,
+    borderStrongHsl,
+    borderSubtleHsl,
+    surfaceHsl,
+    focusHsl,
+    formBorderHsl,
+    tableBorderHsl,
+  };
+}
+
+export function buildThemeVariables(
+  theme: ResolvedTheme,
+  options: ThemeVariableOptions = {},
+): Record<string, string> {
+  const {
+    primaryPalette,
+    accentPalette,
+    neutrals,
+    chartColors,
+    chartSurfaceColors,
+    semantic,
+    surfaceEmphasis,
+    highContrast,
+    borderHsl,
+    borderStrongHsl,
+    borderSubtleHsl,
+    surfaceHsl,
+    focusHsl,
+    formBorderHsl,
+    tableBorderHsl,
+  } = resolveThemeColorTokens(theme, options);
   const radius =
     theme.radiusValue === undefined
       ? radiusProfiles[theme.radius]
@@ -1595,30 +1821,6 @@ export function buildThemeVariables(
     4,
   );
 
-  const semantic = {
-    success: "128 42% 30%",
-    successForeground:
-      theme.appearance === "dark" ? "128 42% 72%" : "128 52% 24%",
-    warning: "38 92% 50%",
-    danger: "0 72% 51%",
-    dangerText: theme.appearance === "dark" ? "0 92% 76%" : "0 72% 42%",
-    info: "199 89% 48%",
-  };
-  const surfaceEmphasis = {
-    inverse: theme.appearance === "dark" ? "0 0% 96%" : "0 0% 13%",
-    inverseForeground: theme.appearance === "dark" ? "0 0% 10%" : "0 0% 98%",
-    inverseMutedForeground:
-      theme.appearance === "dark" ? "0 0% 33%" : "0 0% 76%",
-    inverseBorder: theme.appearance === "dark" ? "0 0% 78%" : "0 0% 28%",
-    softAlpha: theme.appearance === "dark" ? "0.18" : "0.08",
-    softBorderAlpha: theme.appearance === "dark" ? "0.46" : "0.28",
-    solid: colorToSolidSurface(primaryPalette.primary),
-    solidSuccess: colorToSolidSurface(semantic.success),
-    solidWarning: colorToSolidSurface(semantic.warning),
-    solidDanger: colorToSolidSurface(semantic.danger),
-    solidInfo: colorToSolidSurface(semantic.info),
-  };
-
   const typographyVariables = Object.entries(typography.roles).reduce<
     Record<string, string>
   >((variables, [role, spec]) => {
@@ -1629,7 +1831,6 @@ export function buildThemeVariables(
     variables[`--t7-type-${role}-family`] = `var(--t7-font-${spec.family})`;
     return variables;
   }, {});
-  const highContrast = options.contrast === "more";
   const focusRingAlpha = highContrast ? "1" : "0.72";
   const focusGlowAlpha = highContrast ? "0.3" : "0.18";
   const composition = options.composition ?? {
@@ -1638,57 +1839,6 @@ export function buildThemeVariables(
     pageGutter: "clamp(24px, 3vw, 44px)",
     sectionGap: "clamp(24px, 3vw, 44px)",
   };
-  const borderHsl =
-    theme.surfaceTreatment === "quiet"
-      ? highContrast
-        ? neutrals.borderContrast
-        : neutrals.surface
-      : theme.surfaceTreatment === "low-contrast"
-        ? highContrast
-          ? neutrals.borderContrast
-          : neutrals.border
-        : highContrast
-          ? neutrals.borderContrast
-          : neutrals.border;
-  const borderStrongHsl =
-    theme.surfaceTreatment === "quiet"
-      ? highContrast
-        ? neutrals.borderStrong
-        : neutrals.border
-      : theme.surfaceTreatment === "low-contrast"
-        ? highContrast
-          ? neutrals.borderStrong
-          : neutrals.border
-        : neutrals.borderStrong;
-  const borderSubtleHsl = highContrast
-    ? neutrals.border
-    : neutrals.surfaceMuted;
-  const surfaceHsl =
-    theme.surfaceTreatment === "quiet"
-      ? highContrast
-        ? neutrals.surfaceMuted
-        : neutrals.surfaceSubtle
-      : neutrals.surface;
-  const focusHsl = resolveFocusColor(
-    primaryPalette.primary,
-    neutrals.surface,
-    theme.appearance,
-  );
-  const formBorderHsl =
-    theme.surfaceTreatment === "outlined"
-      ? neutrals.borderStrong
-      : highContrast
-        ? neutrals.borderStrong
-        : neutrals.border;
-  // Quiet canvas intentionally softens generic container borders. Tables are
-  // a comparison surface, so keep their neutral boundary and row dividers
-  // visible without introducing semantic hue or a second grid treatment.
-  const tableBorderHsl = highContrast
-    ? neutrals.borderContrast
-    : theme.surfaceTreatment === "quiet"
-      ? neutrals.border
-      : borderHsl;
-
   return {
     "--t7-theme-recipe": options.recipe ?? "custom",
     "--t7-expression": options.expression ?? "neutral",
@@ -2003,11 +2153,12 @@ export function buildThemeVariables(
     "--t7-overlay-dialog-md": overlayGeometry.dialog.md,
     "--t7-overlay-dialog-lg": overlayGeometry.dialog.lg,
     "--t7-overlay-drawer-max": overlayGeometry.drawerMax,
-    "--t7-touch-target-min": "44px",
+    "--t7-touch-target-min": `${minimumTouchTargetPx}px`,
     "--t7-bottom-navigation-height": "64px",
     "--t7-content-max": composition.contentMax,
     "--t7-sidebar-width": layoutGeometry.sidebarWidth,
     "--t7-aside-width": layoutGeometry.asideWidth,
+    ...buildMeasureVariables(),
     "--t7-grid-gap": density.sectionGap,
     "--t7-safe-area-top": "env(safe-area-inset-top, 0px)",
     "--t7-safe-area-right": "env(safe-area-inset-right, 0px)",
@@ -2116,6 +2267,257 @@ export function buildThemeVariables(
   };
 }
 
+export type NativeThemeProjectionOptions = Pick<
+  ThemeVariableOptions,
+  "contrast" | "motion" | "motionProfile"
+>;
+
+const nativeTypographyRoles: Readonly<
+  Record<NativeTypographyIntent, TypographyRole>
+> = {
+  screenTitle: "heading-lg",
+  sectionHeading: "heading-md",
+  body: "body",
+  label: "label",
+  caption: "caption",
+  button: "button",
+  metric: "metric-lg",
+};
+
+function resolveNativePixels(value: string, token: string): number {
+  const match = /^(\-?\d+(?:\.\d+)?)px$/.exec(value.trim());
+  if (!match)
+    throw new Error(
+      `${token} must resolve to a concrete px value, received ${value}`,
+    );
+  const result = Number(match[1]);
+  if (!Number.isFinite(result)) throw new Error(`${token} is not finite`);
+  return result;
+}
+
+function resolveNativeTracking(
+  value: string,
+  fontSize: number,
+  token: string,
+): number {
+  const normalized = value.trim();
+  if (normalized === "0") return 0;
+  if (normalized.endsWith("px")) return resolveNativePixels(normalized, token);
+  if (normalized.endsWith("em")) {
+    const amount = Number(normalized.slice(0, -2));
+    if (Number.isFinite(amount)) return amount * fontSize;
+  }
+  throw new Error(`${token} must resolve to px or em, received ${value}`);
+}
+
+function resolveNativeWeight(value: string, token: string): NativeFontWeight {
+  const weight = Number(value);
+  if (!Number.isFinite(weight)) throw new Error(`${token} is not numeric`);
+  if (weight <= 450) return "400";
+  if (weight <= 575) return "500";
+  if (weight <= 625) return "600";
+  return "700";
+}
+
+/**
+ * Project the same resolved semantic roles into renderer-neutral JS data.
+ * This is deliberately separate from the Web CSS projection: Native receives
+ * concrete colors, dimensions, and durations without parsing CSS variables.
+ */
+export function buildNativeThemeSnapshot(
+  theme: ResolvedTheme,
+  options: NativeThemeProjectionOptions = {},
+): NativeResolvedThemeVariant {
+  const colorTokens = resolveThemeColorTokens(theme, options);
+  const nativeHsl: Record<NativeColorRole, string> = {
+    canvas: colorTokens.neutrals.background,
+    surface: colorTokens.surfaceHsl,
+    surfaceRaised: colorTokens.neutrals.surfaceRaised,
+    textPrimary: colorTokens.neutrals.foreground,
+    textMuted:
+      options.contrast === "more"
+        ? colorTokens.neutrals.mutedForegroundStrong
+        : colorTokens.neutrals.mutedForeground,
+    border: colorTokens.borderSubtleHsl,
+    borderStrong: colorTokens.borderStrongHsl,
+    focus: colorTokens.focusHsl,
+    actionPrimary: colorTokens.primaryPalette.primary,
+    actionPrimaryForeground: colorTokens.primaryPalette.primaryForeground,
+    accent: colorTokens.accentPalette.accent,
+    actionSecondary: colorTokens.neutrals.surface,
+    actionSecondaryForeground: colorTokens.neutrals.foreground,
+    actionQuiet:
+      options.contrast === "more"
+        ? colorTokens.neutrals.mutedForegroundStrong
+        : colorTokens.neutrals.mutedForeground,
+    actionDanger: colorTokens.semantic.danger,
+    actionDangerForeground: solidSurfaceForeground,
+    statusSuccess: colorTokens.semantic.success,
+    statusWarning: colorTokens.semantic.warning,
+    statusDanger: colorTokens.semantic.danger,
+    statusInfo: colorTokens.semantic.info,
+  };
+  const colors = Object.fromEntries(
+    Object.entries(nativeHsl).map(([role, value]) => [role, hslToHex(value)]),
+  ) as NativeResolvedThemeVariant["colors"];
+
+  const typographyProfile = typographyProfiles[theme.typography];
+  const typography = Object.fromEntries(
+    Object.entries(nativeTypographyRoles).map(([intent, role]) => {
+      const token = typographyProfile.roles[role];
+      const fontSize = resolveNativePixels(
+        token.size,
+        `semantic.typography.${role}.size`,
+      );
+      return [
+        intent,
+        {
+          fontSize,
+          lineHeight: resolveNativePixels(
+            token.lineHeight,
+            `semantic.typography.${role}.lineHeight`,
+          ),
+          fontWeight: resolveNativeWeight(
+            token.weight,
+            `semantic.typography.${role}.weight`,
+          ),
+          letterSpacingPx: resolveNativeTracking(
+            token.tracking,
+            fontSize,
+            `semantic.typography.${role}.tracking`,
+          ),
+          familyRole: token.family,
+        },
+      ];
+    }),
+  ) as NativeResolvedThemeVariant["typography"];
+
+  const density = densityProfiles[theme.density];
+  const spacing = {
+    control: resolveNativePixels(
+      density.control,
+      "component.geometry.control.height",
+    ),
+    row: resolveNativePixels(density.row, "component.geometry.row.height"),
+    cardPadding: resolveNativePixels(
+      density.cardPadding,
+      "component.geometry.card.padding",
+    ),
+    sectionGap: resolveNativePixels(
+      density.sectionGap,
+      "component.geometry.section.gap",
+    ),
+    controlGap: resolveNativePixels(
+      density.controlGap,
+      "component.geometry.control.gap",
+    ),
+    fieldGap: resolveNativePixels(
+      density.fieldGap,
+      "component.geometry.field.gap",
+    ),
+    touchTarget: minimumTouchTargetPx,
+  } as NativeResolvedThemeVariant["spacing"];
+
+  const radiusSource =
+    theme.radiusValue === undefined
+      ? radiusProfiles[theme.radius]
+      : buildRadiusProfile(theme.radiusValue);
+  const radius = {
+    control: resolveNativePixels(
+      radiusSource.control,
+      "component.radius.control",
+    ),
+    card: resolveNativePixels(radiusSource.card, "component.radius.card"),
+    panel: resolveNativePixels(radiusSource.panel, "component.radius.panel"),
+  } as NativeResolvedThemeVariant["radius"];
+
+  const elevationLevel = (
+    kind: "surface" | "raised" | "modal",
+  ): NativeResolvedThemeVariant["elevation"]["surface"] => {
+    if (theme.elevation === "flat") {
+      return {
+        androidElevation: 0,
+        shadowOffsetY: 0,
+        shadowRadius: 0,
+        shadowOpacity: 0,
+      };
+    }
+    if (kind === "modal") {
+      return {
+        androidElevation: theme.elevation === "standard" ? 12 : 8,
+        shadowOffsetY: theme.elevation === "standard" ? 28 : 18,
+        shadowRadius: theme.elevation === "standard" ? 40 : 28,
+        shadowOpacity: theme.elevation === "standard" ? 0.56 : 0.48,
+      };
+    }
+    if (kind === "raised") {
+      return {
+        androidElevation: theme.elevation === "standard" ? 7 : 4,
+        shadowOffsetY: theme.elevation === "standard" ? 10 : 6,
+        shadowRadius: theme.elevation === "standard" ? 28 : 20,
+        shadowOpacity: theme.elevation === "standard" ? 0.34 : 0.24,
+      };
+    }
+    return {
+      androidElevation: theme.elevation === "standard" ? 3 : 1,
+      shadowOffsetY: theme.elevation === "standard" ? 1 : 1,
+      shadowRadius: theme.elevation === "standard" ? 2 : 2,
+      shadowOpacity: theme.elevation === "standard" ? 0.12 : 0.08,
+    };
+  };
+
+  const motionRoles = resolveMotionRoles(
+    options.motionProfile,
+    theme.motionDuration,
+  );
+  const rolesMs = Object.fromEntries(
+    Object.entries(motionRoles).map(([role, seconds]) => [
+      role,
+      options.motion === "reduced" ? 0.01 : Math.round(seconds * 1000),
+    ]),
+  ) as NativeResolvedThemeVariant["motion"]["rolesMs"];
+
+  const measures = Object.fromEntries(
+    MEASURE_NAMES.map((name) => {
+      const measure = MEASURE_CONTRACT[name];
+      return [
+        name,
+        {
+          minimumPx: measure.minimumPx,
+          preferredPx: measure.preferredPx,
+          maximumPx: measure.maximumPx,
+          fluid: measure.mode === "fluid",
+        },
+      ];
+    }),
+  ) as Record<MeasureName, NativeResolvedMeasure>;
+
+  return {
+    appearance: theme.appearance,
+    colors,
+    typography,
+    layout: { measures },
+    spacing,
+    radius,
+    elevation: {
+      preset: theme.elevation,
+      surface: elevationLevel("surface"),
+      raised: elevationLevel("raised"),
+      modal: elevationLevel("modal"),
+    },
+    chart: {
+      palette: theme.chartPalette,
+      colors: colorTokens.chartColors.map((value) => hslToHex(value)),
+    },
+    motion: {
+      enabled: options.motion !== "reduced",
+      rolesMs,
+    },
+    touchTarget: minimumTouchTargetPx,
+    density: theme.density,
+  };
+}
+
 /**
  * Produce a deterministic DTCG-shaped semantic snapshot for one resolved
  * runtime configuration. Static recipe exports intentionally remain free of
@@ -2127,18 +2529,16 @@ export function buildDtcgThemeSnapshot(
   options: ThemeVariableOptions = {},
 ) {
   const theme = resolveTheme(config);
-  const variables = buildThemeVariables(theme, options);
+  const colorTokens = resolveThemeColorTokens(theme, options);
   const action = {
-    primary: dtcgColor(variables["--t7-action-primary-hsl"]),
-    primaryHover: dtcgColor(variables["--t7-action-primary-hover-hsl"]),
-    primaryPressed: dtcgColor(variables["--t7-action-primary-pressed-hsl"]),
-    primaryForeground: dtcgColor(
-      variables["--t7-action-primary-foreground-hsl"],
-    ),
-    accent: dtcgColor(variables["--t7-accent-hsl"]),
-    accentHover: dtcgColor(variables["--t7-accent-hover-hsl"]),
-    accentPressed: dtcgColor(variables["--t7-accent-pressed-hsl"]),
-    accentForeground: dtcgColor(variables["--t7-accent-foreground-hsl"]),
+    primary: dtcgColor(colorTokens.primaryPalette.primary),
+    primaryHover: dtcgColor(colorTokens.primaryPalette.primaryHover),
+    primaryPressed: dtcgColor(colorTokens.primaryPalette.primaryActive),
+    primaryForeground: dtcgColor(colorTokens.primaryPalette.primaryForeground),
+    accent: dtcgColor(colorTokens.accentPalette.accent),
+    accentHover: dtcgColor(colorTokens.accentPalette.primaryHover),
+    accentPressed: dtcgColor(colorTokens.accentPalette.primaryActive),
+    accentForeground: dtcgColor(colorTokens.accentPalette.accentForeground),
   };
 
   return {
@@ -2156,17 +2556,17 @@ export function buildDtcgThemeSnapshot(
     semantic: {
       color: {
         action,
-        focus: dtcgColor(variables["--t7-focus-hsl"]),
+        focus: dtcgColor(colorTokens.focusHsl),
         status: {
-          success: dtcgColor(variables["--t7-success-hsl"]),
-          warning: dtcgColor(variables["--t7-warning-hsl"]),
-          danger: dtcgColor(variables["--t7-danger-hsl"]),
-          info: dtcgColor(variables["--t7-info-hsl"]),
+          success: dtcgColor(colorTokens.semantic.success),
+          warning: dtcgColor(colorTokens.semantic.warning),
+          danger: dtcgColor(colorTokens.semantic.danger),
+          info: dtcgColor(colorTokens.semantic.info),
         },
         chart: Object.fromEntries(
           [1, 2, 3, 4, 5].map((index) => [
             index,
-            dtcgColor(variables[`--t7-chart-${index}-hsl`]),
+            dtcgColor(colorTokens.chartColors[index - 1]),
           ]),
         ),
       },
