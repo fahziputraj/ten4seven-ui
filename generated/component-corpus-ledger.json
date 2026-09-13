@@ -134,13 +134,13 @@
     "canonicalAfterU13": 172,
     "platformCounts": {
       "canonical": {
-        "ADAPTIVE": 60,
-        "BOTH": 98,
+        "ADAPTIVE": 61,
+        "BOTH": 97,
         "WEB": 14
       },
       "catalogIncludingAliases": {
-        "ADAPTIVE": 64,
-        "BOTH": 101,
+        "ADAPTIVE": 65,
+        "BOTH": 100,
         "WEB": 14
       }
     },
@@ -168,9 +168,9 @@
         "reason": "Potentially distinct roving-focus and submenu behavior, but its public contract and multi-surface demand are not approved separately from NavigationMenu and DropdownMenu."
       }
     ],
-    "u12PrerequisiteGate": "FAIL / BLOCKED",
-    "u13Gate": "FAIL / BLOCKED",
-    "stopReason": "U12 prerequisite is FAIL / BLOCKED; U13-B through U13-H cannot start. TARGET NOT JUSTIFIABLE FROM CORPUS."
+    "u12PrerequisiteGate": "PASS FOR U13",
+    "u13Gate": "PASS FOR U14",
+    "stopReason": "TARGET NOT JUSTIFIABLE FROM CORPUS; no U13-B through U13-H implementation batches were started."
   },
   "normalizedDuplicateGroups": [
     {
@@ -6678,8 +6678,8 @@
       "normalizedIntent": "Visually bind closely related peer actions without inventing new button variants.",
       "reason": "The source name resolves to an existing implemented Ten4Seven catalog contract; no net-new component is admitted.",
       "accessibility": [
-        "Expose a stable accessible name and use the semantic element for the interaction.",
-        "Preserve visible focus, keyboard reachability, and disabled or pending state semantics."
+        "Expose a stable group name and preserve the ordered relationship between peer actions.",
+        "Keep actionable semantics on each child; do not use ButtonGroup as a selection control."
       ],
       "tokens": [
         "accent",
@@ -71817,14 +71817,14 @@
       "currentT7Equivalent": "SplitButton",
       "complexity": "L1",
       "family": "action",
-      "platform": "BOTH",
-      "nativeStrategy": "SAME_INTENT",
+      "platform": "ADAPTIVE",
+      "nativeStrategy": "ALTERNATE_PATTERN",
       "implementationStatus": "existing-canonical",
       "normalizedIntent": "Pair one primary action with a canonical overflow menu.",
       "reason": "The source name resolves to an existing implemented Ten4Seven catalog contract; no net-new component is admitted.",
       "accessibility": [
-        "Expose a stable accessible name and use the semantic element for the interaction.",
-        "Preserve visible focus, keyboard reachability, and disabled or pending state semantics."
+        "Expose the primary action name and a separately named alternatives trigger with expanded state.",
+        "Preserve keyboard reachability, focus feedback, and disabled semantics for both action segments."
       ],
       "tokens": [
         "accent",
@@ -76610,8 +76610,8 @@
       "normalizedIntent": "Expose a pressed state for a compact reversible view or option control.",
       "reason": "The source name resolves to an existing implemented Ten4Seven catalog contract; no net-new component is admitted.",
       "accessibility": [
-        "Expose a stable accessible name and use the semantic element for the interaction.",
-        "Preserve visible focus, keyboard reachability, and disabled or pending state semantics."
+        "Expose a stable accessible name and the committed pressed state through the semantic button contract.",
+        "Preserve visible focus, keyboard reachability, and state changes without relying on color alone."
       ],
       "tokens": [
         "accent",
@@ -76652,8 +76652,8 @@
       "normalizedIntent": "Coordinate single or multiple ToggleButton values.",
       "reason": "The source name resolves to an existing implemented Ten4Seven catalog contract; no net-new component is admitted.",
       "accessibility": [
-        "Expose a stable accessible name and use the semantic element for the interaction.",
-        "Preserve visible focus, keyboard reachability, and disabled or pending state semantics."
+        "Expose a stable group name and the committed single or multiple selection state.",
+        "Keep each ToggleButton keyboard reachable with its pressed state available to assistive technology."
       ],
       "tokens": [
         "accent",

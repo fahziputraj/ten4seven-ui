@@ -8,25 +8,25 @@
 - Scope: U10 advanced interaction contracts, adapters, projections, Web canaries, native-ready metadata, tests, and evidence only.
 - Prerequisite: the U09 workflow/productivity contract gate was already available and passed in the final repository test chain.
 - Branch: `codex/icons-curated-solar-style`
-- HEAD at final verification: `e582cfcfbe0f077d1a5832d86db9da1898487fd3`
-- Working tree: 631 status entries were present before this evidence file was added. The tree contained existing and earlier-queue work; it was not reset, cleaned, normalized, committed, pushed, merged, published, or deployed.
+- HEAD at final verification: `6d3a8b6647a43cea4c7b09686cd0e0dd50420d9d`
+- Starting U10 status: 82 status entries were already present before the scoped U10 verification. The tree contained existing and earlier-queue work; it was not reset, cleaned, normalized, committed, pushed, merged, published, or deployed. The two U10 rendered proof refreshes and this evidence refresh are the only U10-specific working-tree additions from this execution; final status is recorded after verification below.
 - U11 and U12 were not executed. The ledgers in sections 32 and 33 are explicitly provisional inputs for their later gates.
 
 The exact final gate for this queue is recorded in section 34.
 
 ## 2. Inventory before
 
-The pre-U10 discovery state was a provisional advanced-interaction plane from the skipped U10/U11 lineage: seven advanced surface entries and seven corresponding Web proof surfaces existed, but there was no normalized U10 taxonomy covering editor families, engine complexity, semantic DnD intent, command scopes, AI safety boundaries, or native canary descriptors.
+The starting audit found the normalized U10 advanced-interaction plane already present in the accepted HEAD: the typed editor/builder/AI contract, generated projections, 11 advanced decisions, five Web canary keys, six CSS-independent native canary descriptors, and the catalog entry for `DiffViewer`. This execution therefore verified the existing bounded plane and refreshed evidence; it did not treat a stale evidence artifact as authority or add a second decision source.
 
-Existing canonical evidence included `EditorSurface`, `PropertyInspector`, `BuilderCanvas`, `PromptComposer`, `ConversationThread`, `CitationList`, `ToolCallCard`, `ApprovalPanel`, `CommandMenu`, `DragHandle`, `TreeView`, and `RevisionDiff`. The gap was contract normalization and cross-platform ownership, not permission to create parallel primitives. `DiffViewer` did not exist as a canonical catalog component before U10.
+Existing canonical evidence included `EditorSurface`, `PropertyInspector`, `BuilderCanvas`, `PromptComposer`, `ConversationThread`, `CitationList`, `ToolCallCard`, `ApprovalPanel`, `CommandMenu`, `DragHandle`, `TreeView`, `RevisionDiff`, and the U10-lineage `DiffViewer`. The bounded audit confirmed the gap was contract/projection/runtime-proof agreement and cross-platform ownership—not permission to create parallel primitives. `DiffViewer` is the one justified generic line-level comparison addition in the U10 lineage and was already present in the accepted starting HEAD.
 
 Representative consumer surfaces were used as drift evidence only: Theme Studio, Component Lab, Auth, Public Showcase, Publishing Store, Operations, and Farm. The audit confirmed that harness surfaces, public surfaces, commerce/content surfaces, and operational/data-dense surfaces need the same semantic contracts with different composition and platform strategies. No consumer route was broadly rewritten in U10, and no consumer became the owner of a new primitive.
 
-The before-state therefore had three concrete risks:
+The starting audit therefore focused on three concrete risks:
 
-- advanced surfaces were discoverable as implementation shells without one explicit classification and engine boundary;
-- DnD and AI behavior could otherwise be inferred from product-specific callbacks or provider terminology;
-- native intent was not represented as a CSS-independent contract that a future renderer could consume.
+- advanced surfaces needed agreement between typed classification, generated projections, catalog metadata, and renderer proof;
+- DnD and AI behavior needed to remain semantic intent rather than product callbacks, provider terminology, or autonomous mutation;
+- native intent needed to remain CSS-independent metadata without implying a native renderer that does not exist.
 
 ## 3. Complexity classification
 
@@ -34,7 +34,7 @@ The typed U10 contract defines the universal classification vocabulary exactly o
 
 `FOUNDATION`, `CANONICAL_COMPONENT`, `COMPONENT_VARIANT`, `UTILITY_OR_PROVIDER`, `COMPOSITE_BLOCK`, `RECIPE_OR_PATTERN`, `ENGINE_ADAPTER`, `DOMAIN_COMPOSITION`, `ALIAS`, `WEB_ONLY`, `NATIVE_ONLY`, `ADAPTIVE`, `DEFERRED`, and `REJECTED_DUPLICATE`.
 
-Classification is separate from inventory status. Inventory status records whether an existing canonical surface needs hardening, a canonical surface is missing, a variant/alias is being rejected, or work is deferred. In the final U10 plane, ten normalized advanced components were existing stable contracts and the single net-new canonical component, `DiffViewer`, is `MISSING_CANONICAL`.
+Classification is separate from inventory status. Inventory status records whether an existing canonical surface needs hardening, a canonical surface is missing, a variant/alias is being rejected, or work is deferred. In the typed U10 lineage, ten normalized advanced components are `EXISTING_STABLE` and the single justified `DiffViewer` addition is recorded as `MISSING_CANONICAL`; the accepted starting HEAD already contains its implementation, catalog metadata, and generated projections.
 
 The final typed decision counts are:
 
@@ -195,11 +195,11 @@ Fixtures and canaries use synthetic content and safe summaries. The UI does not 
 
 ## 19. Components hardened
 
-The U10 plane normalizes and exports platform, strategy, complexity, classification, inventory status, states, accessibility, tokens, composition, alternatives, and engine boundary for these 11 surfaces:
+The accepted U10 plane normalizes and exports platform, strategy, complexity, classification, inventory status, states, accessibility, tokens, composition, alternatives, and engine boundary for these 11 surfaces. This execution revalidated those contracts and did not change component source:
 
 `EditorSurface`, `PropertyInspector`, `BuilderCanvas`, `PromptComposer`, `ConversationThread`, `CitationList`, `ToolCallCard`, `ApprovalPanel`, `CommandMenu`, `DragHandle`, and `DiffViewer`.
 
-Bounded implementation hardening included:
+The bounded hardening present in the starting U10 plane and revalidated here included:
 
 - `EditorSurface` state/read-only metadata and readable editing status;
 - `PromptComposer` state, busy behavior, send/stop intent, and stop label;
@@ -212,7 +212,7 @@ Existing working behavior was preserved. U10 did not replace editor engines, bui
 
 ## 20. Net-new canonical components
 
-U10 adds exactly one net-new canonical component: `DiffViewer`.
+The U10 contract lineage has exactly one justified net-new canonical component: `DiffViewer`. It was already present in the accepted starting HEAD; this bounded audit added no additional canonical component.
 
 `DiffViewer` is a bounded Web presentation surface for consumer-supplied line/context rows in inline or split mode. It uses accessible table structure, text change-kind labels, empty/loading/error/read-only states, and token-led surface/border/focus styling. It performs no diff computation.
 
@@ -243,13 +243,13 @@ The existing provisional U11 composition projection contains 27 blocks, 19 recip
 | `RevisionDiff` replacement                | Rejected; it is a different field-level audit/provenance contract                         |
 | AI-specific Button/Input/Field families   | Reuse canonical action/form/file primitives                                               |
 
-These decisions preserve the universal taxonomy and ensure variants and aliases do not increase canonical primitive count except for the justified line-level `DiffViewer` gap.
+These decisions preserve the universal taxonomy and ensure variants and aliases do not increase canonical primitive count. The only justified U10-lineage addition is the line-level `DiffViewer` gap described above; no new primitive was added during this execution.
 
 ## 23. Web canaries
 
 The deterministic Web canary is available at:
 
-`http://localhost:4173/component-lab#component-lab-u10-advanced-interactions`
+`http://127.0.0.1:4173/component-lab#component-lab-u10-advanced-interactions`
 
 It contains five typed canary families:
 
@@ -295,14 +295,14 @@ The rendered browser proof ran the U10 Playwright suite with a local Vite server
 - tablet: 768×1024;
 - mobile: 390×844.
 
-The suite asserts all five Web canaries, the DiffViewer/TreeView/PropertyInspector/CitationList surfaces, waiting-approval text, approval text, DnD Move before/after/Cancel paths, local prompt Send/Stop, command search/open/select, and `scrollWidth <= clientWidth + 1` at each viewport. Final result: `6 passed (20.5s)`.
+The suite asserts all five Web canaries, the DiffViewer/TreeView/PropertyInspector/CitationList surfaces, waiting-approval text, approval text, DnD Move before/after/Cancel paths, local prompt Send/Stop, command search/open/select, and `scrollWidth <= clientWidth + 1` at each viewport. Final result: `6 passed (19.2s)`.
 
 Rendered screenshots:
 
 - [U10 desktop 1440×900](D:/SA/ten4seven-ui/output/playwright/u10-advanced-desktop-1440x900.png)
 - [U10 mobile 390×844](D:/SA/ten4seven-ui/output/playwright/u10-advanced-mobile-390x844.png)
 
-The desktop proof showed separated editor heading and supporting copy after a token-led layout correction; the mobile proof remained within the viewport with no horizontal overflow.
+The desktop proof captures separated editor heading and supporting copy; the mobile proof remained within the viewport with no horizontal overflow.
 
 ## 27. AI/catalog projection
 
@@ -329,33 +329,40 @@ Ownership and projection order are explicit:
 
 ## 28. Tests
 
-Final validation from the corrected U10 source state:
+Final validation from the accepted U10 source state and this bounded re-audit:
 
-| Command                                                                     | Result                                                                                                                                                         |
-| --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm contracts:generate`                                                   | PASS — 233 contract projections and deterministic theme/DTCG projections regenerated                                                                           |
-| `pnpm test:advanced-interactions`                                           | PASS — 11 components, 6 editor families, 6 native canaries, no engine dependencies                                                                             |
-| `pnpm test`                                                                 | PASS — complete repository chain, including U01–U09, provisional U11 composition verification, U10, package, catalog, contrast, token, brand, and bridge gates |
-| `pnpm typecheck`                                                            | PASS — contracts, native, agent, and playground                                                                                                                |
-| `pnpm package:build`                                                        | PASS — `@ten4seven/ui@1.0.0` and `@ten4seven/agent@0.1.0` artifacts built                                                                                      |
-| `pnpm build`                                                                | PASS — playground production build; existing large-chunk warning recorded in section 29                                                                        |
-| `pnpm test:contracts`                                                       | PASS — typed contracts, theme/profile round-trip, resolver order, and generated retrieval                                                                      |
-| `pnpm test:native-mobile`                                                   | PASS — native-ready contract and descriptor boundary without native renderer dependency                                                                        |
-| `pnpm test:ai`                                                              | PASS — 29 recipes, 179 components, 60 blocks, 122 semantic icons, zero donor reads                                                                             |
-| `pnpm test:component-system`                                                | PASS — 172 canonical components, 7 aliases, singular Select model, explicit taxonomy/relations                                                                 |
-| `pnpm exec playwright test tests/q10-editors-builders-dnd-ai-power.spec.ts` | PASS — 6 tests across four viewports, local rendered browser proof                                                                                             |
-| targeted `pnpm exec prettier --check`                                       | PASS — all U10 source, catalog, verifier, test, and package files checked                                                                                      |
-| `git diff --check`                                                          | PASS — no whitespace errors; existing CRLF normalization warnings only                                                                                         |
-| `pnpm format:check`                                                         | FAIL / baseline debt — repository-wide check reports 357 files; no broad formatter rewrite was performed                                                       |
-| `pnpm test:component-system` expected-count update                          | PASS — catalog intentionally moved from 171/178 to 172/179 for the single justified `DiffViewer` addition                                                      |
+| Command                                                                     | Result                                                                                                                           |
+| --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm contracts:generate`                                                   | PASS — 234 contract projections and deterministic theme/DTCG projections regenerated                                             |
+| `pnpm test:advanced-interactions`                                           | PASS — 11 components, 6 editor families, 6 native canaries, no engine dependencies                                               |
+| `pnpm test`                                                                 | NOT RUN — bounded U10 execution; the aggregate command enters U11+ and later queue verification, so it was intentionally not run |
+| `pnpm typecheck`                                                            | PASS — contracts, native, agent, and playground                                                                                  |
+| `pnpm package:build`                                                        | PASS — `@ten4seven/ui@1.0.0` and `@ten4seven/agent@0.1.0` artifacts built                                                        |
+| `pnpm package:verify`                                                       | PASS — `@ten4seven/ui@1.0.0`; root exports, bundled tokens/icons/motion, and self-contained styles verified                      |
+| `pnpm build`                                                                | PASS — playground production build; existing large-chunk warning recorded in section 29                                          |
+| `pnpm test:contracts`                                                       | PASS — typed contracts, theme/profile round-trip, resolver order, and generated retrieval                                        |
+| `pnpm test:native-mobile`                                                   | PASS — native-ready contract and descriptor boundary without native renderer dependency                                          |
+| `pnpm test:native-expo`                                                     | PASS — 7 profiles, 18 capability contracts, 179 derived maturity rows, CSS-independent boundary, Expo Lab source                 |
+| `pnpm test:ai`                                                              | PASS — 29 recipes, 179 components, 60 blocks, 122 semantic icons, zero donor reads                                               |
+| `pnpm test:component-system`                                                | PASS — 172 canonical components, 7 aliases, singular Select model, explicit taxonomy/relations                                   |
+| `pnpm test:consistency`                                                     | PASS — canonical consistency across 28 UI source files                                                                           |
+| `pnpm test:token-governance`                                                | PASS — 25 component modules, 16 core semantic variables, no ungoverned component colors/timing                                   |
+| `pnpm test:component-coverage`                                              | PASS — 7 high-impact selector families; 1000 raw-pixel occurrences tracked as explicit migration debt                            |
+| `pnpm test:contrast`                                                        | PASS — 284 recipe/mode pairs at WCAG AA; lowest exact-source light standard accent foreground 4.67:1                             |
+| `pnpm test:dtcg`                                                            | PASS — 3 deterministic DTCG-compatible token exports                                                                             |
+| `pnpm exec playwright test tests/q10-editors-builders-dnd-ai-power.spec.ts` | PASS — 6 tests across four viewports, local rendered browser proof                                                               |
+| targeted `pnpm exec prettier --check`                                       | PASS — all U10 source, catalog, verifier, test, package, and evidence files checked                                              |
+| `git diff --check`                                                          | PASS — no whitespace errors; existing CRLF normalization warnings only                                                           |
+| `pnpm format:check`                                                         | FAIL / baseline debt — repository-wide check reports 501 files; no broad formatter rewrite was performed                         |
+| `pnpm test:component-system` expected-count update                          | PASS — current catalog is intentionally 172 canonical / 179 total, including the accepted U10-lineage `DiffViewer` addition      |
 
-The full test chain also verified semantic contrast (284 recipe/mode pairs at WCAG AA), token governance, component token coverage (1003 tracked raw-pixel occurrences), package self-containment, and the Tailwind bridge.
+The scoped contract checks also verified semantic contrast (284 recipe/mode pairs at WCAG AA), token governance, component token coverage (1000 tracked raw-pixel occurrences), package self-containment, and the Tailwind bridge. The repository aggregate `pnpm test` was intentionally omitted because it crosses the U10 boundary into later queues.
 
 ## 29. Performance / bundle implications
 
 U10 adds no editor, syntax, JSON-schema, diff, DnD, canvas, model, transport, or virtualization engine dependency to the base runtime. The base package contains only semantic presentation shells and the small precomputed-row DiffViewer. Consumers may lazy-load optional engines behind the documented adapter boundary.
 
-The final package build reported approximately 11,405.05 kB uncompressed ESM and 11,089.66 kB uncompressed CJS for the existing package bundle; no new advanced-engine runtime was bundled. The playground production build reported approximately 22,624.62 kB JavaScript and 713.63 kB CSS and retained the existing greater-than-500 kB chunk warning. The warning is recorded, not silently reclassified as a U10 pass.
+The final package build reported approximately 11,418.72 kB uncompressed ESM and 11,100.85 kB uncompressed CJS for the existing package bundle; no new advanced-engine runtime was bundled. The playground production build reported approximately 22,625.49 kB JavaScript and 713.91 kB CSS and retained the existing greater-than-500 kB chunk warning. The warning is recorded, not silently reclassified as a U10 pass.
 
 Large editor engines, syntax/language packages, diff computation, canvas runtimes, DnD sensors, and long-transcript virtualization remain lazy consumer or separately approved adapter dependencies. A canonical loading state is required when a client-only adapter is loaded.
 
@@ -363,9 +370,9 @@ Large editor engines, syntax/language packages, diff computation, canvas runtime
 
 The following baseline conditions remain intentionally untouched:
 
-- `pnpm format:check` reports 357 repository files needing formatting; U10 targeted files pass and the repository was not mass-formatted;
-- token governance tracks 1003 raw-pixel occurrences as explicit migration debt;
-- the working tree was already materially dirty (631 status entries before this report), including unrelated and earlier-queue artifacts;
+- `pnpm format:check` reports 501 repository files needing formatting; U10 source files remain bounded and the repository was not mass-formatted;
+- token governance tracks 1000 raw-pixel occurrences as explicit migration debt;
+- the working tree was already materially dirty (82 status entries at U10 start), including unrelated and earlier-queue artifacts; U10-specific proof outputs and this evidence file were preserved without touching those files. Final status after the scoped refresh is 85 entries (82 inherited entries plus two rendered proof refreshes and this evidence file);
 - `git diff --check` reports existing CRLF-to-LF warnings for unrelated files but no whitespace errors;
 - the playground retains a large-chunk build warning;
 - no branch lifecycle or publication operation was performed.

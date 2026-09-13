@@ -8,15 +8,15 @@
 - Parent: `T7-UNIVERSAL-HARDENING-001`
 - Queue scope: Navigation + Disclosure + Menus + Overlays + Feedback enrichment only.
 - Branch: `codex/icons-curated-solar-style`
-- Baseline SHA at queue start: `e582cfcfbe0f077d1a5832d86db9da1898487fd3`
+- Baseline SHA at queue start: `6d3a8b6647a43cea4c7b09686cd0e0dd50420d9d`
 - Execution boundary: no commit, push, pull request, merge, tag, publish, deploy, or U07+ implementation.
 - Evidence levels used here: `SOURCE` means statically verified in the repository; `GENERATED` means verified against typed-source projections; `RUNTIME` means verified in the local browser; `UNVERIFIED` means intentionally outside this queue.
 
-The worktree already contained extensive changes from earlier bounded queues. Those changes were preserved. U06 did not reset, clean, normalize, or opportunistically rewrite unrelated files.
+The worktree already contained extensive changes from earlier bounded queues. Those changes were preserved. U06 did not reset, clean, normalize, or opportunistically rewrite unrelated files. At queue start, the accepted U06 Web implementations and typed navigation/overlay/feedback plane were already present; this bounded execution revalidated them and corrected only the scoped renderer-neutral platform metadata plus its regression assertions. No U05 or U07+ source work was performed.
 
 ## 2. Inventory before
 
-`SOURCE` inventory found the following existing coverage before U06 hardening:
+`SOURCE` inventory at the U06 queue boundary found the following coverage:
 
 - Navigation: `Sidebar`, `SidebarGroup`, `NavItem`, `NavigationMenu`, `TopNavigation`, `MobileSidebar`, `Breadcrumb`, `SectionNavigation`, `Tabs`, `BottomNavigation`, `NavigationRail`, `Pagination`, `Stepper`, and `CommandMenu`.
 - Disclosure: `Accordion` and `Collapsible`; hierarchy-specific `TreeView` remained the tree contract.
@@ -25,9 +25,9 @@ The worktree already contained extensive changes from earlier bounded queues. Th
 - Feedback: `Alert`, `ToastProvider`, `Toaster`, `Toast`, `EmptyState`, `StateView`, `Skeleton`, `Spinner`, `Progress`, and `CircularProgress`.
 - Existing overlay behavior was centralized in `packages/ui/src/overlay.ts` through `useNativeDialog`, floating positioning, portals, exclusivity, and body-scroll locking.
 - Existing semantic z-index variables already existed in `packages/ui/src/styles.css`; U06 normalized their ownership into the typed U06 layer-role projection instead of creating another scale.
-- There was no canonical `Dialog` catalog entry, no page/shell `Banner`, no persisted `Notification`, and no `NotificationCenter`.
-- `Drawer` accepted only left/right presentation in its Web implementation even though the catalog contract already described top/bottom adaptive use.
-- `Modal` was an independently described catalog entry even though its behavior was the generic dialog behavior; it is now a compatibility alias of canonical `Dialog`.
+- The accepted U06 implementation already contained canonical `Dialog`, page/shell `Banner`, persisted/inspectable `Notification`, and bounded `NotificationCenter` entries; this execution did not recreate them.
+- The accepted Drawer contract includes left/right/top/bottom Web presentation and a Native sheet alternative; the renderer-neutral matrix now states that edge-surface intent explicitly.
+- `Modal` remains a compatibility alias of canonical `Dialog`, rather than a parallel generic modal contract.
 
 Representative consumer evidence was limited to source/catalog inspection and the Component Lab harness. No route, permission, business-data, persistence, transport, or product workflow was migrated in U06. `Theme Studio`, public/catalog previews, and the Component Lab remain system/harness surfaces; Auth, Publishing Store, Operations, and Farm consumer adoption remain outside this queue.
 
@@ -39,7 +39,7 @@ Navigation intent is owned by Ten4Seven; route truth, permission truth, selectio
 | ------------------------------ | --------------------- | -------- | ---------------------------------------------- | --------------------------------------------- |
 | Sidebar / SidebarGroup         | canonical             | ADAPTIVE | persistent, collapsible application navigation | drawer, rail, or native navigation shell      |
 | NavigationMenu / TopNavigation | canonical             | ADAPTIVE | public or application destination navigation   | tabs/navigation shell                         |
-| BottomNavigation               | canonical             | ADAPTIVE | bounded primary destination set                | native tab/navigation shell                   |
+| BottomNavigation               | canonical             | ADAPTIVE | bounded primary destination slot               | native tab/navigation with safe-area handling |
 | NavigationRail / MobileSidebar | canonical             | ADAPTIVE | rail or mobile navigation presentation         | drawer/navigation shell                       |
 | Breadcrumb / SectionNavigation | canonical             | ADAPTIVE | route context and section context              | stack-detail or native tab context            |
 | Tabs                           | canonical             | BOTH     | same-intent tab collection                     | same intent with platform controls            |
@@ -52,8 +52,8 @@ Navigation does not own routing, permissions, data fetching, or domain state. `B
 
 ## 4. Disclosure taxonomy
 
-- `Accordion`: canonical collection disclosure, `BOTH`, with collection semantics and independently addressable panels.
-- `Collapsible`: canonical single disclosure, `BOTH`, with consumer-controlled open state and no implied collection relationship.
+- `Accordion`: `CANONICAL_COMPONENT`, collection disclosure, `BOTH`, with collection semantics and independently addressable panels.
+- `Collapsible`: `CANONICAL_COMPONENT`, single disclosure, `BOTH`, with consumer-controlled open state and no implied collection relationship.
 - `Disclosure`: `COMPONENT_VARIANT`, mapped to `Collapsible`; no parallel generic primitive was added.
 - `TreeDisclosure`: `COMPONENT_VARIANT`, mapped to `TreeView`; hierarchy-specific keyboard and parent/child semantics remain in the tree contract.
 - Existing keyboard, controlled/uncontrolled, open/close, and panel association behavior is preserved. U06 does not add a second disclosure runtime.
@@ -71,15 +71,15 @@ The U06 plane keeps activation, selection, focus, dismissal, and action ownershi
 
 ## 6. Overlay taxonomy
 
-| Contract     | Intent                                  | Platform                | Presentation strategy                                     |
-| ------------ | --------------------------------------- | ----------------------- | --------------------------------------------------------- |
-| Dialog       | focused task or short content           | ADAPTIVE                | Web native modal dialog; Native modal alternative         |
-| AlertDialog  | consequential/irreversible confirmation | ADAPTIVE                | explicit actions; no backdrop/Escape dismissal            |
-| Drawer       | contextual edge-attached surface        | ADAPTIVE                | Web side drawer or bottom sheet; Native sheet             |
-| DetailDrawer | record inspection composition           | ADAPTIVE                | Drawer renderer with detail content                       |
-| Popover      | anchored interactive context            | ADAPTIVE                | Web anchored popover; Native sheet alternative            |
-| Tooltip      | supplemental non-interactive help       | WEB                     | contextual help; Native alternative is press/help context |
-| Modal        | compatibility alias                     | ADAPTIVE through Dialog | old API retained, canonical intent is Dialog              |
+| Contract     | Intent                                  | Platform                | Presentation strategy                                 |
+| ------------ | --------------------------------------- | ----------------------- | ----------------------------------------------------- |
+| Dialog       | focused task or short content           | ADAPTIVE                | Web modal dialog; Native modal alternative            |
+| AlertDialog  | consequential/irreversible confirmation | ADAPTIVE                | explicit actions; no backdrop/Escape dismissal        |
+| Drawer       | contextual edge-attached surface        | ADAPTIVE                | Web edge drawer/bottom sheet; Native sheet            |
+| DetailDrawer | record inspection composition           | ADAPTIVE                | Web edge drawer; Native sheet with detail content     |
+| Popover      | anchored interactive context            | ADAPTIVE                | Web anchored popup; Native sheet alternative          |
+| Tooltip      | supplemental non-interactive help       | WEB                     | Web contextual help; Native alternative is press/help |
+| Modal        | compatibility alias                     | ADAPTIVE through Dialog | old API retained, canonical intent is Dialog          |
 
 `Sheet` and `BottomSheet` are variants of `Drawer`. `HoverCard` is deferred until a deliberate press alternative exists. Dialog, alert-dialog, drawer, and anchored surfaces share the existing overlay engine rather than creating independent z-index, focus, dismissal, or scroll-lock systems.
 
@@ -98,7 +98,7 @@ The U06 plane keeps activation, selection, focus, dismissal, and action ownershi
 
 ## 8. Hardened existing components
 
-The bounded implementation changes were:
+The accepted U06 implementation was present at the queue boundary and was revalidated. Its bounded hardening includes:
 
 1. `Dialog` was introduced as the canonical generic modal task surface. `Modal` now delegates to it and remains a compatibility export.
 2. `AlertDialog` now composes `Dialog` with `dismissible={false}` and focuses the explicit cancel action. Backdrop and Escape cannot bypass confirmation; Cancel and Confirm remain consumer callbacks.
@@ -108,9 +108,16 @@ The bounded implementation changes were:
 6. `Banner`, `Notification`, and `NotificationCenter` were added to the feedback module using existing `Button`, `IconButton`, and `T7Icon` contracts. No raw color, radius, shadow, or local motion runtime was introduced.
 7. The inherited Component Lab “Modal proof” was corrected from an accidental `AlertDialog` use to canonical `Dialog`; this preserves the existing dismissible modal proof while keeping AlertDialog strict.
 
+This execution added only the following U06-scoped contract-plane correction:
+
+- `component-platform.ts` now gives `BottomNavigation` a distinct `bottom-navigation` adaptive pattern instead of conflating it with `Sidebar`.
+- `DropdownMenu` and `ContextMenu` now resolve through the shared `menu` pattern; `Popover` resolves through the shared anchored `popover` pattern.
+- `Drawer` and `DetailDrawer` explicitly project to `web-edge-surface` and `native-sheet`; `Tabs`, disclosure controls, `Stepper`, `CommandMenu`, and `Pagination` now expose renderer-appropriate semantic presentations.
+- `verify-contracts.mjs` asserts those distinctions against the generated matrix. No UI component API, route, business callback, or consumer behavior changed in this execution.
+
 ## 9. Net-new canonical components
 
-All four entries are represented in the typed U06 plane, catalog, generated shards, Web exports, and Component Lab/catalog previews.
+The legitimate U06 canonical set is four entries. They were already present in the current checkout at this queue's starting coordinate, so this bounded execution added **0 new component source files** and did not duplicate them. The four entries remain represented in the typed U06 plane, catalog, generated shards, Web exports, and Component Lab/catalog previews.
 
 | Component            | Distinct intent / classification                        | Platform and adaptive strategy                    | Accessibility                                                                                       | Motion and layout                                                               | Token ownership                                                                     |
 | -------------------- | ------------------------------------------------------- | ------------------------------------------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
@@ -138,7 +145,7 @@ The typed contract records persistence, urgency, dismissal, focus, state vocabul
 | Menubar                                     | DEFERRED               | Web-only candidate; no current normalized contract            |
 | InfiniteScroll                              | DEFERRED               | U07+ collection/loading contract; Pagination remains explicit |
 
-Variants and aliases do not increase canonical primitive count. The catalog gate reports 170 canonical components, 7 aliases, and 177 total entries.
+Variants and aliases do not increase canonical primitive count. The current generated catalog gate reports 172 canonical components, 7 aliases, and 179 total entries. The two-count increase from the stale prior evidence is inherited from the accepted U04/U05 worktree state, not a new U06 duplicate.
 
 ## 11. Layer/z-index ownership
 
@@ -172,26 +179,26 @@ U06 owns the semantic layer vocabulary; the token system owns values and the Web
 
 ## 13. Web/Native adaptive matrix
 
-| Family              | Web renderer                                 | Native renderer strategy                                | Contract owner                                         |
-| ------------------- | -------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------ |
-| navigation          | DOM navigation links, tabs, rail, drawer     | native navigation shell, tabs, drawer, or stack context | Ten4Seven intent; consumer routes/permissions          |
-| disclosure          | buttons/panels with keyboard disclosure      | same intent using native disclosure controls            | Ten4Seven state/a11y contract                          |
-| menu                | roving menu, context menu, anchored dropdown | native menu or sheet                                    | Ten4Seven interaction intent; consumer actions         |
-| dialog              | native `<dialog>` with labelled content      | native modal                                            | Ten4Seven semantic contract                            |
-| drawer              | edge drawer or bottom sheet                  | native sheet/drawer                                     | Ten4Seven intent; consumer content                     |
-| popover             | anchored portal                              | sheet/contextual surface                                | Ten4Seven intent; consumer content                     |
-| tooltip             | hover/focus contextual help                  | press/help alternative                                  | Web-first contract; no fake hover-only Native behavior |
-| alert/banner        | semantic status/alert surface                | native status/feedback surface                          | Ten4Seven urgency and state; consumer recovery         |
-| toast               | portal queue with timeout/explicit action    | native transient feedback                               | Ten4Seven lifecycle; consumer event truth              |
-| notification center | bounded collection/panel                     | sheet or native feedback screen                         | Ten4Seven item semantics; consumer persistence         |
+| Family              | Web renderer                                       | Native renderer strategy                                | Contract owner                                         |
+| ------------------- | -------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------ |
+| navigation          | DOM links, tabs, rail, drawer, bounded bottom slot | native navigation shell, tabs, drawer, or stack context | Ten4Seven intent; consumer routes/permissions          |
+| disclosure          | buttons/panels with keyboard disclosure            | same intent using native disclosure controls            | Ten4Seven state/a11y contract                          |
+| menu                | roving menu, context menu, anchored dropdown       | native menu or sheet                                    | Ten4Seven interaction intent; consumer actions         |
+| dialog              | native `<dialog>` with labelled content            | native modal                                            | Ten4Seven semantic contract                            |
+| drawer              | edge drawer or bottom sheet                        | native sheet/drawer                                     | Ten4Seven intent; consumer content                     |
+| popover             | anchored portal with collision/dismissal           | sheet/contextual surface                                | Ten4Seven intent; consumer content                     |
+| tooltip             | hover/focus contextual help                        | press/help alternative                                  | Web-first contract; no fake hover-only Native behavior |
+| alert/banner        | semantic status/alert surface                      | native status/feedback surface                          | Ten4Seven urgency and state; consumer recovery         |
+| toast               | portal queue with timeout/explicit action          | native transient feedback                               | Ten4Seven lifecycle; consumer event truth              |
+| notification center | bounded collection/panel                           | sheet or native feedback screen                         | Ten4Seven item semantics; consumer persistence         |
 
-The matrix is explicit in `packages/contracts/src/component-platform.ts` and enriched by the U06 plane. No `@ten4seven/native` components were created.
+The matrix is explicit in `packages/contracts/src/component-platform.ts` and enriched by the U06 plane. Native status remains `planned`: no `@ten4seven/native` components were created, and no Native runtime claim is made from metadata alone.
 
 ## 14. Native canary proof
 
 `SOURCE`: `packages/native/src/index.ts` exports `resolveNativeNavigationOverlayFeedbackContract` and `nativeNavigationOverlayFeedbackLayerRoles`. It accepts the resolved typed component contract and returns semantic intent, platform, renderer strategy, native status/presentation, alternative presentation, states, accessibility, token roles, layout intents, motion roles, persistence, urgency, and focus/dismissal metadata.
 
-`RUNTIME/TYPECHECK`: `pnpm --filter @ten4seven/native typecheck` passed. A direct canary invocation for `NotificationCenter` returned:
+`SOURCE/TYPECHECK`: `pnpm --filter @ten4seven/native typecheck` passed as part of the aggregate typecheck, and `pnpm test:native-mobile` plus `pnpm test:native-expo` passed. A direct canary invocation for `NotificationCenter` returned:
 
 ```text
 id=NotificationCenter
@@ -200,6 +207,12 @@ nativeStatus=planned
 presentation=native-feedback-surface
 nativeAlternative=native-sheet
 tokenRoles=color, typography, spacing, radius, elevation, focus, motion, touch-target, measure
+layoutIntents=measure-content, minimum-useful-surface, bounded-scroll-owner, touch-target-minimum
+motionRoles=state, enter, exit, reveal
+dismissModel=explicit-or-system-back
+focusModel=initial-focus-and-containment
+persistence=inspectable-history
+urgency=consumer-controlled
 ```
 
 The canary reads the typed component contract and never parses `styles.css`. `planned` is intentional: U06 establishes the renderer-neutral contract and Native projection, not Native component implementation.
@@ -228,7 +241,7 @@ The inherited “Modal proof” was also corrected to use `Dialog`, while the se
 
 ## 17. AI/catalog projection
 
-`GENERATED`: `pnpm contracts:generate` produced the U06 projection and synchronized both `generated/` and `packages/agent/generated/`.
+`GENERATED`: `pnpm contracts:generate` produced 234 deterministic contract projections and synchronized both `generated/` and `packages/agent/generated/`.
 
 - Typed source: `packages/contracts/src/navigation-overlay-feedback.ts`.
 - Platform source: `packages/contracts/src/component-platform.ts`.
@@ -237,7 +250,8 @@ The inherited “Modal proof” was also corrected to use `Dialog`, while the se
 - Compact component projections contain `navigationOverlayFeedbackRef` for U06 components.
 - Catalog entries for `Dialog`, `Banner`, `Notification`, and `NotificationCenter` are `implemented`.
 - `Modal` is catalogued as `aliasOf: "Dialog"` and remains source/export compatible.
-- `pnpm test:contracts`, `pnpm test:ai`, and `pnpm test:component-system` pass with 170 canonical, 7 aliases, 177 components, 29 recipes, 60 blocks, and 122 semantic icons.
+- The generated platform contract contains 20 adaptive patterns, including distinct `sidebar`, `bottom-navigation`, `menu`, and `popover` patterns.
+- `pnpm test:contracts`, `pnpm test:ai`, and `pnpm test:component-system` pass with 172 canonical, 7 aliases, 179 catalog entries, 29 recipes, 60 blocks, and 122 semantic icons. The U06 projection contains 37 implemented definitions and 13 explicit gap decisions.
 
 ## 18. Tests
 
@@ -255,19 +269,23 @@ The following bounded validations passed:
 - `pnpm test:contracts`
 - `pnpm test:component-system`
 - `pnpm test:native-mobile`
+- `pnpm test:native-expo`
 - `pnpm exec playwright test tests/q06-navigation-overlay-feedback.spec.ts --project=chromium` → 4 passed
-- `pnpm exec playwright test tests/public-interactions.spec.ts tests/q06-navigation-overlay-feedback.spec.ts --project=chromium` → 8 passed
-- `pnpm exec playwright test tests/overlay-keyboard-hardening.spec.ts tests/public-interactions.spec.ts --project=chromium` → 8 passed after correcting the inherited harness proof
-- `git diff --check` completed without diff errors; Git reported existing CRLF normalization warnings only.
+- `pnpm exec playwright test tests/overlay-keyboard-hardening.spec.ts --project=chromium` → 5 passed
+- Filtered cross-queue browser smoke (`overlay-keyboard-hardening`, `q04-core-layout-actions`, `q05-navigation-disclosure-search`, and `public-interactions`) → 10 passed, 1 inherited failure: the Q05 command-menu locator sees two existing `Open command menu` harness triggers. The duplicate is outside U06 and was not changed.
+- Direct local route proof → HTTP 200 with expected headings for `/components/dialog`, `/components/banner`, `/components/notification`, and `/components/notification-center`.
+- `git diff --check` completed without whitespace errors after the evidence update.
 
 The U06 browser test covers Dialog focus/escape/return, AlertDialog explicit dismissal, narrow bottom-sheet geometry, Banner urgency/dismissal, NotificationCenter unread/mark-all-read/clear, and empty-state live feedback.
 
 ## 19. Baseline debt
 
-- `pnpm format:check` remains red because the pre-existing dirty worktree contains 355 formatter warnings across broad application, documentation, generated, fixture, and Playwright files. No broad formatter rewrite was performed. The U06-touched source set passes targeted Prettier checks after formatting the two U06 verifier scripts.
-- The component-token coverage report was regenerated with `pnpm tokens:coverage` after the bounded stylesheet additions. The final full test chain reports 996 tracked raw-pixel occurrences as migration debt; the report is derived and does not change token ownership.
+- `pnpm format:check` remains red because the pre-existing dirty worktree contains 501 formatter warnings across broad application, documentation, generated, fixture, and Playwright files. No broad formatter rewrite was performed. The U06 source/test/evidence subset passes targeted Prettier checks; the already-drifting `scripts/verify-contracts.mjs` remains a targeted warning outside the new assertion block.
+- The final full test chain reports 1000 tracked raw-pixel occurrences as migration debt; the report is derived and does not change token ownership.
 - `pnpm build` reports the existing large bundle warning (>500 kB chunk); the build still succeeds.
 - Native renderer status for the new adaptive contracts is `planned` by design. U06 does not create Native components.
+- One first aggregate typecheck attempt encountered stale local `@ten4seven/ui` package declarations after the full verification sequence; rebuilding `@ten4seven/ui` regenerated `dist/index.d.ts`, and the rerun of both playground and aggregate typecheck passed. No unrelated source was modified for that artifact condition.
+- The broader browser run also exposed an inherited Q09 board `aria-required-parent` axe violation; it is out of scope for U06 and was not changed.
 - No DB, transport, persistence, route, permission, product profile, or business-behavior changes were in scope; those areas are `UNVERIFIED` for U06 adoption.
 
 ## 20. Deferred items for U07+

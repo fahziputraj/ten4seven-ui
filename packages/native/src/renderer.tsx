@@ -1,11 +1,13 @@
 import React, {
   createContext,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from "react";
 import {
+  AccessibilityInfo,
   ActivityIndicator,
   FlatList,
   KeyboardAvoidingView,
@@ -40,7 +42,7 @@ import {
   NATIVE_MOBILE_CONTRACT,
   type NativeCapabilityState,
   type NativeDeviceCapabilityId,
-  type NativeHapticIntent,
+  type NativeHapticIntent as NativeHapticIntentContract,
   type NativeIconSemanticName,
   type NativeTypographyIntent,
   type OfflineSyncPresentationState,
@@ -59,6 +61,7 @@ export type NativeTextTone =
 
 interface NativeThemeContextValue {
   readonly adapter: NativeThemeAdapterResult;
+  readonly styles: ReturnType<typeof buildNativeStyles>;
   readonly theme: NativeThemeVariant;
   readonly appearance: "light" | "dark";
 }
@@ -78,12 +81,34 @@ export function NativeThemeProvider({
   profile = "aapm-farm",
   appearance = "system",
   density,
-  motion = "full",
+  motion,
 }: NativeThemeProviderProps) {
   const systemAppearance = useColorScheme();
+  const [systemReducedMotion, setSystemReducedMotion] = useState(false);
+  useEffect(() => {
+    let active = true;
+    void AccessibilityInfo.isReduceMotionEnabled().then((value) => {
+      if (active) setSystemReducedMotion(value);
+    });
+    const subscription = AccessibilityInfo.addEventListener(
+      "reduceMotionChanged",
+      setSystemReducedMotion,
+    );
+    return () => {
+      active = false;
+      subscription.remove();
+    };
+  }, []);
+  const resolvedMotion = motion ?? (systemReducedMotion ? "reduced" : "full");
   const adapter = useMemo(
-    () => resolveNativeTheme({ profile, appearance, density, motion }),
-    [appearance, density, motion, profile],
+    () =>
+      resolveNativeTheme({
+        profile,
+        appearance,
+        density,
+        motion: resolvedMotion,
+      }),
+    [appearance, density, resolvedMotion, profile],
   );
   const resolvedAppearance =
     appearance === "system"
@@ -93,7 +118,12 @@ export function NativeThemeProvider({
       : appearance;
   const theme = adapter.variants[resolvedAppearance];
   const value = useMemo(
-    () => ({ adapter, theme, appearance: resolvedAppearance }),
+    () => ({
+      adapter,
+      theme,
+      styles: buildNativeStyles(theme),
+      appearance: resolvedAppearance,
+    }),
     [adapter, resolvedAppearance, theme],
   );
 
@@ -127,7 +157,7 @@ export function NativeScreen({
   style,
   testID,
 }: NativeScreenProps) {
-  const { theme } = useNativeTheme();
+  const { theme, styles } = useNativeTheme();
   const insets = useSafeAreaInsets();
   const padding = {
     paddingTop: edges.includes("top") ? insets.top : 0,
@@ -262,7 +292,7 @@ export function NativeStack({
   style,
   testID,
 }: NativeStackProps) {
-  const { theme } = useNativeTheme();
+  const { theme, styles } = useNativeTheme();
   return (
     <View
       testID={testID}
@@ -286,7 +316,7 @@ export function NativeInline({
   style,
   testID,
 }: NativeInlineProps) {
-  const { theme } = useNativeTheme();
+  const { theme, styles } = useNativeTheme();
   return (
     <View
       testID={testID}
@@ -317,14 +347,14 @@ export function NativeContainer({
   measure = "content",
   style,
 }: NativeContainerProps) {
-  const { theme } = useNativeTheme();
+  const { theme, styles } = useNativeTheme();
   const bounds = theme.layout.measures[measure];
   return (
     <View
       style={[
         styles.container,
         {
-          minWidth: bounds.minimumPx,
+          minWidth: 0,
           maxWidth: bounds.maximumPx ?? undefined,
         },
         style,
@@ -354,7 +384,7 @@ export function NativeSurface({
   accessibilityLabel,
   testID,
 }: NativeSurfaceProps) {
-  const { theme } = useNativeTheme();
+  const { theme, styles } = useNativeTheme();
   const backgroundColor =
     tone === "canvas"
       ? theme.colors.canvas
@@ -415,7 +445,7 @@ export function NativeButton({
   style,
   testID,
 }: NativeButtonProps) {
-  const { theme } = useNativeTheme();
+  const { theme, styles } = useNativeTheme();
   const colors = {
     primary: [theme.colors.actionPrimary, theme.colors.actionPrimaryForeground],
     secondary: [
@@ -441,7 +471,11 @@ export function NativeButton({
           minHeight: theme.spacing.touchTarget,
           backgroundColor: colors[0],
           borderColor: intent === "quiet" ? theme.colors.border : colors[0],
-          opacity: pressed ? 0.78 : isDisabled ? 0.52 : 1,
+          opacity: isDisabled
+            ? theme.feedback.disabledOpacity
+            : pressed
+              ? theme.feedback.pressedOpacity
+              : 1,
         },
         style,
       ]}
@@ -474,7 +508,7 @@ export function NativeIconButton({
   style,
   testID,
 }: NativeIconButtonProps) {
-  const { theme } = useNativeTheme();
+  const { theme, styles } = useNativeTheme();
   return (
     <Pressable
       testID={testID}
@@ -488,7 +522,11 @@ export function NativeIconButton({
         {
           minWidth: theme.spacing.touchTarget,
           minHeight: theme.spacing.touchTarget,
-          opacity: pressed ? 0.7 : disabled ? 0.45 : 1,
+          opacity: disabled
+            ? theme.feedback.disabledOpacity
+            : pressed
+              ? theme.feedback.pressedOpacity
+              : 1,
         },
         style,
       ]}
@@ -520,7 +558,7 @@ export function NativeField({
   editable,
   ...props
 }: NativeFieldProps) {
-  const { theme } = useNativeTheme();
+  const { theme, styles } = useNativeTheme();
   const [focused, setFocused] = useState(false);
   const invalid = state === "invalid";
   const disabled = state === "disabled";
@@ -559,7 +597,7 @@ export function NativeField({
             backgroundColor: theme.colors.surface,
             borderColor,
             borderRadius: theme.radius.control,
-            opacity: disabled ? 0.52 : 1,
+            opacity: disabled ? theme.feedback.disabledOpacity : 1,
           },
           style,
         ]}
@@ -616,7 +654,7 @@ export function NativeCheckbox({
   disabled = false,
   testID,
 }: NativeCheckboxProps) {
-  const { theme } = useNativeTheme();
+  const { theme, styles } = useNativeTheme();
   return (
     <Pressable
       testID={testID}
@@ -629,7 +667,11 @@ export function NativeCheckbox({
         styles.choice,
         {
           minHeight: theme.spacing.touchTarget,
-          opacity: pressed ? 0.72 : disabled ? 0.5 : 1,
+          opacity: disabled
+            ? theme.feedback.disabledOpacity
+            : pressed
+              ? theme.feedback.pressedOpacity
+              : 1,
         },
       ]}
     >
@@ -662,7 +704,7 @@ export interface NativeRadioProps extends NativeCheckboxProps {
 }
 
 export function NativeRadio(props: NativeRadioProps) {
-  const { theme } = useNativeTheme();
+  const { theme, styles } = useNativeTheme();
   return (
     <Pressable
       testID={props.testID}
@@ -678,7 +720,7 @@ export function NativeRadio(props: NativeRadioProps) {
         styles.choice,
         {
           minHeight: theme.spacing.touchTarget,
-          opacity: props.disabled ? 0.5 : 1,
+          opacity: props.disabled ? theme.feedback.disabledOpacity : 1,
         },
       ]}
     >
@@ -721,13 +763,16 @@ export function NativeSwitch({
   disabled = false,
   testID,
 }: NativeSwitchProps) {
-  const { theme } = useNativeTheme();
+  const { theme, styles } = useNativeTheme();
   return (
     <View
       testID={testID}
       style={[
         styles.choice,
-        { minHeight: theme.spacing.touchTarget, opacity: disabled ? 0.5 : 1 },
+        {
+          minHeight: theme.spacing.touchTarget,
+          opacity: disabled ? theme.feedback.disabledOpacity : 1,
+        },
       ]}
     >
       <NativeText style={styles.flex}>{label}</NativeText>
@@ -775,7 +820,7 @@ export function NativeSelect({
   emptyLabel = "No options available",
   testID,
 }: NativeSelectProps) {
-  const { theme } = useNativeTheme();
+  const { theme, styles } = useNativeTheme();
   const insets = useSafeAreaInsets();
   const [open, setOpen] = useState(false);
   const selected = options.find((option) => option.value === value);
@@ -796,7 +841,11 @@ export function NativeSelect({
             minHeight: theme.spacing.control,
             borderColor: theme.colors.border,
             backgroundColor: theme.colors.surface,
-            opacity: pressed ? 0.75 : disabled ? 0.5 : 1,
+            opacity: disabled
+              ? theme.feedback.disabledOpacity
+              : pressed
+                ? theme.feedback.pressedOpacity
+                : 1,
           },
         ]}
       >
@@ -808,12 +857,21 @@ export function NativeSelect({
       <Modal
         visible={open}
         transparent
-        animationType="slide"
+        animationType={theme.motion.enabled ? "slide" : "none"}
         onRequestClose={() => setOpen(false)}
         accessibilityViewIsModal
       >
         <View
-          style={[styles.modalScrim, { backgroundColor: "rgba(0,0,0,0.42)" }]}
+          style={[
+            styles.modalScrim,
+            {
+              backgroundColor: `${theme.colors.scrim}${Math.round(
+                theme.feedback.scrimOpacity * 255,
+              )
+                .toString(16)
+                .padStart(2, "0")}`,
+            },
+          ]}
         >
           <View
             style={[
@@ -866,7 +924,11 @@ export function NativeSelect({
                         item.value === value
                           ? theme.colors.surfaceRaised
                           : theme.colors.surface,
-                      opacity: pressed ? 0.72 : item.disabled ? 0.45 : 1,
+                      opacity: item.disabled
+                        ? theme.feedback.disabledOpacity
+                        : pressed
+                          ? theme.feedback.pressedOpacity
+                          : 1,
                     },
                   ]}
                 >
@@ -903,19 +965,28 @@ export function NativeSheet({
   onDismiss,
   testID,
 }: NativeSheetProps) {
-  const { theme } = useNativeTheme();
+  const { theme, styles } = useNativeTheme();
   const insets = useSafeAreaInsets();
   return (
     <Modal
       testID={testID}
       visible={visible}
       transparent
-      animationType="slide"
+      animationType={theme.motion.enabled ? "slide" : "none"}
       onRequestClose={onDismiss}
       accessibilityViewIsModal
     >
       <View
-        style={[styles.modalScrim, { backgroundColor: "rgba(0,0,0,0.42)" }]}
+        style={[
+          styles.modalScrim,
+          {
+            backgroundColor: `${theme.colors.scrim}${Math.round(
+              theme.feedback.scrimOpacity * 255,
+            )
+              .toString(16)
+              .padStart(2, "0")}`,
+          },
+        ]}
       >
         <View
           style={[
@@ -967,7 +1038,7 @@ export function NativeTabs({
   onChange,
   testID,
 }: NativeTabsProps) {
-  const { theme } = useNativeTheme();
+  const { theme, styles } = useNativeTheme();
   return (
     <ScrollView
       testID={testID}
@@ -996,7 +1067,11 @@ export function NativeTabs({
                 borderBottomColor: selected
                   ? theme.colors.actionPrimary
                   : "transparent",
-                opacity: pressed ? 0.72 : item.disabled ? 0.45 : 1,
+                opacity: item.disabled
+                  ? theme.feedback.disabledOpacity
+                  : pressed
+                    ? theme.feedback.pressedOpacity
+                    : 1,
               },
             ]}
           >
@@ -1051,7 +1126,7 @@ export function NativeList<T>({
   loading = false,
   ...props
 }: NativeListProps<T>) {
-  const { theme } = useNativeTheme();
+  const { theme, styles } = useNativeTheme();
   if (loading) {
     return (
       <View style={[styles.centered, { minHeight: theme.spacing.row }]}>
@@ -1100,7 +1175,7 @@ export function NativeSyncBanner({
   onRetry,
   testID,
 }: NativeSyncBannerProps) {
-  const { theme } = useNativeTheme();
+  const { theme, styles } = useNativeTheme();
   const tone =
     state === "online"
       ? "success"
@@ -1174,7 +1249,7 @@ export function NativeCapabilityStateCard({
   actionLabel,
   testID,
 }: NativeCapabilityStateCardProps) {
-  const { theme } = useNativeTheme();
+  const { theme, styles } = useNativeTheme();
   const contract = NATIVE_DEVICE_CAPABILITY_CONTRACTS[capability];
   const isError =
     state === "denied" ||
@@ -1237,7 +1312,7 @@ export function NativeMasterDetail<T extends NativeMasterDetailItem>({
   testID,
 }: NativeMasterDetailProps<T>) {
   const { width } = useWindowDimensions();
-  const { theme } = useNativeTheme();
+  const { theme, styles } = useNativeTheme();
   const selected = items.find((item) => item.id === selectedId);
   const wide = width >= 720;
   return (
@@ -1271,7 +1346,7 @@ export function NativeMasterDetail<T extends NativeMasterDetailItem>({
                     item.id === selectedId
                       ? theme.colors.surfaceRaised
                       : theme.colors.surface,
-                  opacity: pressed ? 0.72 : 1,
+                  opacity: pressed ? theme.feedback.pressedOpacity : 1,
                 },
               ]}
             >
@@ -1368,7 +1443,7 @@ export function NativePromptComposer({
   placeholder = "Ask a question",
   testID,
 }: NativePromptComposerProps) {
-  const { theme } = useNativeTheme();
+  const { theme, styles } = useNativeTheme();
   return (
     <KeyboardAvoidingView
       testID={testID}
@@ -1429,6 +1504,7 @@ export function NativeToolCallCard({
   readonly status: string;
   readonly detail?: string;
 }) {
+  const { styles } = useNativeTheme();
   return (
     <NativeSurface accessibilityLabel={`${name}: ${status}`}>
       <NativeStack gap={8}>
@@ -1480,7 +1556,7 @@ export function NativeProgress({
   readonly value?: number;
   readonly label?: string;
 }) {
-  const { theme } = useNativeTheme();
+  const { theme, styles } = useNativeTheme();
   const bounded =
     value === undefined ? undefined : Math.max(0, Math.min(1, value));
   return (
@@ -1521,7 +1597,7 @@ export function NativeProgress({
 export function NativeHapticIntent({
   intent,
 }: {
-  readonly intent: NativeHapticIntent;
+  readonly intent: NativeHapticIntentContract;
 }) {
   return (
     <NativeText
@@ -1547,98 +1623,122 @@ export const nativeRendererMetadata = Object.freeze({
   usesSystemBackDismissal: true,
 });
 
-const styles = StyleSheet.create({
-  flex: { flex: 1 },
-  stack: { flexDirection: "column" },
-  inline: { flexDirection: "row" },
-  container: { width: "100%", alignSelf: "center", padding: 16 },
-  surface: {
-    borderWidth: StyleSheet.hairlineWidth,
-    borderRadius: 12,
-    padding: 16,
-  },
-  button: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 16,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderRadius: 10,
-  },
-  iconButton: {
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 10,
-  },
-  fieldGroup: { gap: 8 },
-  input: {
-    borderWidth: StyleSheet.hairlineWidth,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-  },
-  selectTrigger: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  choice: { flexDirection: "row", alignItems: "center", gap: 12 },
-  choiceMark: {
-    width: 22,
-    height: 22,
-    borderWidth: 2,
-    borderRadius: 5,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  radioMark: {
-    width: 22,
-    height: 22,
-    borderWidth: 2,
-    borderRadius: 11,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  radioDot: { width: 10, height: 10, borderRadius: 5 },
-  modalScrim: { flex: 1, justifyContent: "flex-end" },
-  sheet: {
-    maxHeight: "88%",
-    borderTopLeftRadius: 18,
-    borderTopRightRadius: 18,
-    borderWidth: StyleSheet.hairlineWidth,
-    padding: 16,
-    gap: 16,
-  },
-  option: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 12,
-    borderRadius: 8,
-  },
-  tabBar: { flexGrow: 1, gap: 4, borderBottomWidth: StyleSheet.hairlineWidth },
-  tab: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-    paddingHorizontal: 12,
-    borderBottomWidth: 2,
-  },
-  centered: {
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 20,
-    gap: 8,
-  },
-  listContent: { gap: 8, paddingVertical: 8 },
-  listRow: { padding: 12, borderRadius: 8, gap: 4 },
-  masterDetail: { flex: 1 },
-  masterDetailWide: { flexDirection: "row" },
-  master: { minHeight: 120 },
-  detail: { padding: 16, gap: 12 },
-  progressTrack: {
-    minHeight: 8,
-    borderRadius: 4,
-    overflow: "hidden",
-    justifyContent: "center",
-  },
-  progressFill: { height: 8, borderRadius: 4 },
-});
+/** Geometry derives from shared density/radius roles. Flex, percentages and round
+ * indicator anatomy are renderer/composition constants, not theme scales. */
+function buildNativeStyles(theme: NativeThemeVariant) {
+  const { spacing, radius } = theme;
+  return StyleSheet.create({
+    flex: { flex: 1 },
+    stack: { flexDirection: "column" },
+    inline: { flexDirection: "row" },
+    container: {
+      width: "100%",
+      alignSelf: "center",
+      padding: spacing.cardPadding,
+    },
+    surface: {
+      borderWidth: StyleSheet.hairlineWidth,
+      borderRadius: radius.card,
+      padding: spacing.cardPadding,
+    },
+    button: {
+      alignItems: "center",
+      justifyContent: "center",
+      paddingHorizontal: spacing.controlGap,
+      borderWidth: StyleSheet.hairlineWidth,
+      borderRadius: radius.control,
+    },
+    iconButton: {
+      alignItems: "center",
+      justifyContent: "center",
+      borderRadius: radius.control,
+    },
+    fieldGroup: { gap: spacing.fieldGap },
+    input: {
+      borderWidth: StyleSheet.hairlineWidth,
+      paddingHorizontal: spacing.controlGap,
+      paddingVertical: spacing.fieldGap,
+    },
+    selectTrigger: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+    },
+    choice: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: spacing.controlGap,
+    },
+    choiceMark: {
+      width: 22,
+      height: 22,
+      borderWidth: 2,
+      borderRadius: radius.control / 2,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    radioMark: {
+      width: 22,
+      height: 22,
+      borderWidth: 2,
+      borderRadius: 11,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    radioDot: { width: 10, height: 10, borderRadius: 5 },
+    modalScrim: { flex: 1, justifyContent: "flex-end" },
+    sheet: {
+      maxHeight: "88%",
+      borderTopLeftRadius: radius.panel,
+      borderTopRightRadius: radius.panel,
+      borderWidth: StyleSheet.hairlineWidth,
+      padding: spacing.cardPadding,
+      gap: spacing.sectionGap,
+    },
+    option: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingHorizontal: spacing.controlGap,
+      borderRadius: radius.control,
+    },
+    tabBar: {
+      flexGrow: 1,
+      gap: spacing.fieldGap / 2,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+    },
+    tab: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: spacing.fieldGap,
+      paddingHorizontal: spacing.controlGap,
+      borderBottomWidth: 2,
+    },
+    centered: {
+      alignItems: "center",
+      justifyContent: "center",
+      padding: spacing.cardPadding,
+      gap: spacing.fieldGap,
+    },
+    listContent: { gap: spacing.fieldGap, paddingVertical: spacing.fieldGap },
+    listRow: {
+      padding: spacing.controlGap,
+      borderRadius: radius.control,
+      gap: spacing.fieldGap / 2,
+    },
+    masterDetail: { flex: 1 },
+    masterDetailWide: { flexDirection: "row" },
+    master: { minHeight: 120 },
+    detail: { padding: spacing.cardPadding, gap: spacing.controlGap },
+    progressTrack: {
+      minHeight: spacing.fieldGap,
+      borderRadius: spacing.fieldGap / 2,
+      overflow: "hidden",
+      justifyContent: "center",
+    },
+    progressFill: {
+      height: spacing.fieldGap,
+      borderRadius: spacing.fieldGap / 2,
+    },
+  });
+}

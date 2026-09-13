@@ -193,11 +193,14 @@ assert.ok(
 );
 
 const nativeManifest = readJson("packages/native/package.json");
-assert.equal(nativeManifest.exports["./renderer"], "./src/renderer.tsx");
-assert.deepEqual(Object.keys(nativeManifest.dependencies).sort(), [
-  "@ten4seven/contracts",
-  "@ten4seven/tokens",
-]);
+assert.equal(nativeManifest.exports["./renderer"].import, "./dist/renderer.js");
+assert.equal(
+  nativeManifest.exports["./renderer"].types,
+  "./dist/renderer.d.ts",
+);
+assert.deepEqual(Object.keys(nativeManifest.dependencies ?? {}).sort(), []);
+assert.ok(nativeManifest.devDependencies["@ten4seven/contracts"]);
+assert.ok(nativeManifest.devDependencies["@ten4seven/tokens"]);
 for (const dependency of [
   "react",
   "react-native",
@@ -251,6 +254,20 @@ for (const marker of [
   );
 
 const labManifest = readJson("apps/native-lab/package.json");
+assert.doesNotMatch(
+  read("packages/native/src/renderer.tsx"),
+  /rgba?\(|#[0-9a-f]{6}/i,
+  "Native colors must come from the shared token projection",
+);
+assert.equal(
+  (
+    read("packages/native/src/renderer.tsx").match(
+      /animationType=\{theme\.motion\.enabled \? "slide" : "none"\}/g,
+    ) ?? []
+  ).length,
+  2,
+  "Select and Sheet must honor resolved reduced motion",
+);
 const labConfig = readJson("apps/native-lab/app.json");
 assert.equal(labManifest.main, "expo/AppEntry");
 assert.equal(labConfig.expo.web.output, "single");

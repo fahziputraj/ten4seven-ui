@@ -7,41 +7,44 @@
 | Repository             | `fahziputraj/ten4seven-ui`                                        |
 | Working directory      | `D:\\SA\\ten4seven-ui`                                            |
 | Branch                 | `codex/icons-curated-solar-style`                                 |
-| HEAD at U08 validation | `e582cfcfbe0f077d1a5832d86db9da1898487fd3`                        |
+| HEAD at U08 validation | `6d3a8b6647a43cea4c7b09686cd0e0dd50420d9d`                        |
 | Parent work item       | `T7-UNIVERSAL-HARDENING-001`                                      |
 | Queue executed         | `T7-UNIVERSAL-HARDENING-U08` only                                 |
-| Date                   | 2026-09-12, Asia/Jakarta                                          |
+| Date                   | 2026-09-13, Asia/Jakarta                                          |
 | Prerequisite gate      | U07 evidence records `PASS FOR U08`                               |
 | Stop boundary          | U09/U10/U11 work was not started                                  |
 | Publication boundary   | No commit, push, PR, merge, tag, publish, or deploy was performed |
 
-The worktree was already substantially dirty from prior bounded queues and
-existing local artifacts. U08 preserved that state: it did not reset, clean,
-delete, or normalize unrelated work. The current post-validation status contains
-611 entries, including pre-existing U01–U07 and unrelated changes; this count is
-not treated as an U08 change count.
+The worktree was already dirty from prior bounded queues and existing local
+artifacts. U08 preserved that state: it did not reset, clean, delete, or
+normalize unrelated work. The U08 contract, bounded chart renderer, native
+descriptor canary, verifier, and browser proof were already present in the
+starting HEAD, so this execution re-verified and refreshed their evidence rather
+than duplicating them. The status snapshot during validation contained 79 dirty
+entries, including pre-existing U04–U07 projections and unrelated changes; this
+count is not treated as an U08 change count.
 
 ## 2. Inventory before
 
 The inventory was read from the typed contracts, UI source, AI catalog,
 generated projections, token source, and representative playground consumers.
 
-| Area                                                | Before U08                                                                                                                   | Classification / finding                                                              |
-| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| `LineChart`, `BarChart`, `DonutChart`, `Sparkline`  | Existing token-led bounded SVG family with lifecycle message, summaries, focus/hover inspection, tooltip, and reduced motion | `EXISTING_STABLE`; `EXISTING_NEEDS_HARDENING` for missing-versus-zero and annotations |
-| `TrendIndicator`, `ChartLegend`, `ChartPanel`       | Existing support/component/block contracts and playground/catalog usage                                                      | Existing stable support; `ChartPanel` remains a composite block, not a new primitive  |
-| Chart tooltip                                       | Internal shared implementation in `packages/ui/src/charts.tsx`; not a separate public primitive                              | Support contract needed; no donor tooltip API adopted                                 |
-| Chart palette and motion                            | Existing semantic chart CSS variables and token-backed motion roles                                                          | Reused; no second palette, color source, or motion runtime introduced                 |
-| `Calendar`                                          | Existing date-selection month-grid component in `packages/ui/src/date-time.tsx`                                              | Date-selection contract; not a scheduler                                              |
-| Scheduler / resource scheduler / timeline scheduler | No current scheduler placement engine or canonical scheduling plane                                                          | Missing; bounded as `ENGINE_ADAPTER`/`DEFERRED` rather than reimplemented             |
-| Maps / geospatial layers                            | No map renderer, tile provider, projection, clustering, or geolocation integration                                           | Missing; bounded as adaptive engine adapters; geolocation remains outside scope       |
-| Typed U08 projection                                | No dedicated visualization/scheduling/maps projection before this queue                                                      | Implemented as `packages/contracts/src/visualization.ts` → generated projection       |
-| Native U08 boundary                                 | Existing native theme and component/data/input canaries, but no visualization canary                                         | Implemented as metadata/descriptors only; no native components or engine dependency   |
-| Theme Studio                                        | Exposes the shared active palette, chart roles, density, contrast, and motion state                                          | Evidence consumer; not a chart engine or second token source                          |
-| Component Lab                                       | Existing chart showroom with line, bar, and donut proof                                                                      | Hardened with partial-data, threshold, zero, and unavailable fixtures                 |
-| Auth / Publishing Store / Farm route families       | No direct advanced chart/scheduler/map engine imports found in the inspected route code                                      | No consumer rewrite in U08; business consumers remain outside the bounded scope       |
-| Public Showcase                                     | Uses the existing `ChartPanel` + `LineChart` composition                                                                     | Consumer evidence; it continues to consume canonical chart intent                     |
-| Operations                                          | Uses the existing `Sparkline` metric composition                                                                             | Consumer evidence; no operations-specific chart primitive was created                 |
+| Area                                                | Start state                                                                                                                  | Classification / finding                                                                                          |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `LineChart`, `BarChart`, `DonutChart`, `Sparkline`  | Existing token-led bounded SVG family with lifecycle message, summaries, focus/hover inspection, tooltip, and reduced motion | `EXISTING_STABLE`; current accepted hardening re-verified for missing-versus-zero and annotations                 |
+| `TrendIndicator`, `ChartLegend`, `ChartPanel`       | Existing support/component/block contracts and playground/catalog usage                                                      | Existing stable support; `ChartPanel` remains a composite block, not a new primitive                              |
+| Chart tooltip                                       | Internal shared implementation in `packages/ui/src/charts.tsx`; not a separate public primitive                              | Support contract needed; no donor tooltip API adopted                                                             |
+| Chart palette and motion                            | Existing semantic chart CSS variables and token-backed motion roles                                                          | Reused; no second palette, color source, or motion runtime introduced                                             |
+| `Calendar`                                          | Existing date-selection month-grid component in `packages/ui/src/date-time.tsx`                                              | Date-selection contract; not a scheduler                                                                          |
+| Scheduler / resource scheduler / timeline scheduler | No current scheduler placement engine or canonical scheduling plane                                                          | Missing; bounded as `ENGINE_ADAPTER`/`DEFERRED` rather than reimplemented                                         |
+| Maps / geospatial layers                            | No map renderer, tile provider, projection, clustering, or geolocation integration                                           | Missing; bounded as adaptive engine adapters; geolocation remains outside scope                                   |
+| Typed U08 projection                                | Present in the starting checkout and linked to the canonical registry, compact catalog, and agent index                      | Re-verified from `packages/contracts/src/visualization.ts` → generated projection; no duplicate source introduced |
+| Native U08 boundary                                 | Existing CSS-independent visualization descriptor canary                                                                     | Re-verified as metadata/descriptors only; no native components or engine dependency                               |
+| Theme Studio                                        | Exposes the shared active palette, chart roles, density, contrast, and motion state                                          | Evidence consumer; not a chart engine or second token source                                                      |
+| Component Lab                                       | Existing chart showroom with line, bar, and donut proof plus U08 stress fixtures                                             | Re-verified partial-data, threshold, zero, unavailable, narrow, and axe coverage                                  |
+| Auth / Publishing Store / Farm route families       | No direct advanced chart/scheduler/map engine imports found in the inspected route code                                      | No consumer rewrite in U08; business consumers remain outside the bounded scope                                   |
+| Public Showcase                                     | Uses the existing `ChartPanel` + `LineChart` composition                                                                     | Consumer evidence; it continues to consume canonical chart intent                                                 |
+| Operations                                          | Uses the existing `Sparkline` metric composition                                                                             | Consumer evidence; no operations-specific chart primitive was created                                             |
 
 ## 3. Chart taxonomy
 
@@ -174,24 +177,25 @@ no vendor options.
 
 ## 9. Components hardened
 
-The following bounded corrections were implemented without rewriting business
-consumers:
+The starting HEAD already contained the following bounded U08 corrections. This
+execution verified their current behavior and did not rewrite business
+consumers or add a parallel implementation:
 
-1. `packages/contracts/src/visualization.ts` now owns the U08 semantic plane,
+1. `packages/contracts/src/visualization.ts` owns the U08 semantic plane,
    chart taxonomy, state/value classifiers, annotation contract, scheduler and
    map taxonomies, ownership rules, token mapping, engine decisions, AI
    metadata, and native canary metadata.
-2. `packages/ui/src/charts.tsx` now resolves `noData`, `filteredEmpty`, and
+2. `packages/ui/src/charts.tsx` resolves `noData`, `filteredEmpty`, and
    `partialData`; distinguishes zero from missing; skips invalid geometry;
    labels unavailable bar/donut values; renders token-driven threshold
    annotations; and preserves existing focus, hover, tooltip, summary, and
    reduced-motion behavior.
-3. `packages/ui/src/styles.css` adds only semantic chart annotation and
+3. `packages/ui/src/styles.css` contains only semantic chart annotation and
    unavailable-state selectors using existing chart token variables.
-4. `apps/playground/src/component-proofs.tsx` adds a bounded Component Lab
+4. `apps/playground/src/component-proofs.tsx` provides a bounded Component Lab
    proof for partial series, a threshold annotation, zero, and unavailable
    category data.
-5. `packages/native/src/index.ts` adds `resolveNativeVisualization()` and a
+5. `packages/native/src/index.ts` exposes `resolveNativeVisualization()` and a
    CSS-independent descriptor canary. It does not add a native component or
    native dependency.
 6. `scripts/generate-contract-projections.mjs` projects the typed plane and
@@ -200,8 +204,10 @@ consumers:
 
 ## 10. Net-new canonical contracts
 
-The net-new canonical contract is the U08 typed plane, not a collection of
-unimplemented components:
+The net-new canonical contract surface for the parent U08 implementation is the
+typed U08 plane, not a collection of unimplemented components. That plane was
+already present in the starting HEAD; this execution did not create a second
+contract source or promote deferred capabilities:
 
 - Seven linked definitions: `LineChart`, `BarChart`, `DonutChart`, `Sparkline`,
   `TrendIndicator`, `ChartLegend`, and `ChartPanel`.
@@ -375,6 +381,10 @@ validated.
 The typed contract is projected by the existing generator; no second decision
 manifest was introduced.
 
+The current generator emitted 234 deterministic projections. The canonical
+component plane remains 172 components plus 7 aliases, while the U08 plane
+links seven existing catalog entries without adding a new public primitive.
+
 | Projection               | Evidence                                                                                                         |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------- |
 | Typed source             | `packages/contracts/src/visualization.ts`                                                                        |
@@ -395,23 +405,29 @@ promote deferred scheduler/map entries to implemented APIs.
 
 ## 20. Tests
 
-| Command                                                                     | Result                                                                                                                                                    |
-| --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm contracts:generate`                                                   | PASS — 230 deterministic contract projections; token/theme/DTCG projections regenerated                                                                   |
-| `pnpm typecheck`                                                            | PASS — contracts, native, agent, UI package build/typecheck, playground                                                                                   |
-| `pnpm test`                                                                 | PASS — full repository test chain, including `test:visualization`                                                                                         |
-| `pnpm test:visualization`                                                   | PASS — 7 linked components, 4 engine boundaries, 3 native canaries                                                                                        |
-| `pnpm test:native-mobile`                                                   | PASS — existing native boundary plus U08-safe source checks                                                                                               |
-| `pnpm test:ai`                                                              | PASS — AI catalog and cold-start retrieval; 0 donor reads                                                                                                 |
-| `pnpm test:consistency`                                                     | PASS — canonical consistency across 28 UI source files                                                                                                    |
-| `pnpm test:token-governance`                                                | PASS — no raw component colors/palette dependencies/ungoverned timing                                                                                     |
-| `pnpm build`                                                                | PASS — playground production build; existing chunk-size advisory remains                                                                                  |
-| `pnpm package:build`                                                        | PASS — `@ten4seven/ui@1.0.0`                                                                                                                              |
-| `pnpm package:verify`                                                       | PASS — 17 root exports and self-contained styles                                                                                                          |
-| `pnpm exec playwright test tests/u08-visualization-scheduling-maps.spec.ts` | PASS — 2 rendered local-browser tests                                                                                                                     |
-| Targeted Prettier check/write for U08 source, script, and test files        | PASS                                                                                                                                                      |
-| `git diff --check`                                                          | PASS; Git reported only existing CRLF-to-LF warnings on unrelated dirty files                                                                             |
-| `pnpm format:check`                                                         | FAIL / baseline debt — 357 pre-existing/unrelated files are reported by the repository-wide check; U08-touched source/test files pass targeted formatting |
+| Command                                                                                        | Result                                                                                                                                                     |
+| ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm contracts:generate`                                                                      | PASS — 234 deterministic contract projections; token/theme/DTCG projections regenerated                                                                    |
+| `pnpm typecheck`                                                                               | PASS — contracts, native, agent, UI package build/typecheck, playground                                                                                    |
+| `pnpm test`                                                                                    | NOT RUN — the root chain enters U09+ verifiers; bounded U08 checks below were run to honor the execute-only queue boundary                                 |
+| `pnpm test:visualization`                                                                      | PASS — 7 linked components, 4 engine boundaries, 3 native canaries                                                                                         |
+| `pnpm test:native-mobile`                                                                      | PASS — shared native boundary, token resolution, icons, accessibility descriptors, and Farm presentation proof                                             |
+| `pnpm test:native-expo`                                                                        | PASS — 7 profiles, 18 capability contracts, 179 component maturity rows, and CSS-independent renderer boundary                                             |
+| `pnpm test:ai`                                                                                 | PASS — 29 recipes, 179 components, 60 blocks, 122 semantic icons; cold-start retrieval has 0 donor reads                                                   |
+| `pnpm test:consistency`                                                                        | PASS — canonical consistency across 28 UI source files                                                                                                     |
+| `pnpm test:token-governance`                                                                   | PASS — 25 component modules, no raw component colors/palette dependencies/ungoverned timing                                                                |
+| `pnpm test:contrast`                                                                           | PASS — 284 recipe/mode pairs at WCAG AA 4.5:1; lowest exact-source light standard accent foreground 4.67:1                                                 |
+| `pnpm test:dtcg`                                                                               | PASS — 3 deterministic DTCG outputs and exact-source runtime snapshots                                                                                     |
+| `pnpm test:component-coverage`                                                                 | PASS — 7 high-impact selector families; 1,000 raw-pixel occurrences remain tracked migration debt                                                          |
+| `pnpm test:component-system`                                                                   | PASS — 172 canonical components, 7 aliases, 29 recipes, and 60 expressive blocks                                                                           |
+| `pnpm test:tailwind-bridge`                                                                    | PASS — 6 semantic utilities compiled from published theme.css and tailwind.css                                                                             |
+| `pnpm build`                                                                                   | PASS — playground production build; existing chunk-size advisory; output JS 22.63 MB and CSS 713.91 kB                                                     |
+| `pnpm package:build`                                                                           | PASS — `@ten4seven/ui@1.0.0`                                                                                                                               |
+| `pnpm package:verify`                                                                          | PASS — 24 root exports and self-contained styles                                                                                                           |
+| `pnpm exec playwright test tests/u08-visualization-scheduling-maps.spec.ts --project=chromium` | PASS — 2 rendered local-browser tests (7.9s)                                                                                                               |
+| Targeted Prettier check/write for U08 source, script, test, and evidence files                 | PASS                                                                                                                                                       |
+| `git diff --check`                                                                             | PASS — no whitespace errors                                                                                                                                |
+| `pnpm format:check`                                                                            | FAIL / baseline debt — 501 pre-existing/unrelated files are reported by the repository-wide check; U08 source/test/evidence files pass targeted formatting |
 
 The format failure is recorded as baseline debt rather than “fixed” by a mass
 rewrite. It does not change the U08 semantic, type, package, test, or browser
@@ -433,7 +449,7 @@ The following remain deliberately outside U08:
   stacked charts remain gap decisions rather than partial engines.
 - Existing legacy catalog fields and consumer compositions remain compatibility
   surfaces; U08 did not rewrite every consumer to new optional props.
-- The repository-wide Prettier baseline reports 357 files and was not mass
+- The repository-wide Prettier baseline reports 501 files and was not mass
   reformatted.
 - The current published Web bundle already carries a large existing chart/UI
   bundle; U08 added no heavy visualization dependency or provider package.

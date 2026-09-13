@@ -1,239 +1,220 @@
 # T7-UNIVERSAL-HARDENING-U13 — Corpus Normalization + Large Canonical Component Enrichment
 
-Status: FAIL / BLOCKED  
-Execution date: 2026-09-13  
-Execution boundary: U13 only; U14 was not started.
+Status: `PASS FOR U14` through the U13 target-exception path.
 
-This evidence records the bounded U13-A normalization result. The U13 DWO
-requires stopping before broad implementation when the hard target is not
-justifiable from the corpus. That stop rule was reached. The U12 prerequisite
-also remains FAIL / BLOCKED, so the later internal U13 batches were not
-started.
+U13 executed only the normalization checkpoint (`U13-A`). The owner corpus was
+reconciled against the current Ten4Seven registry before any implementation
+batch. It contains no legitimate net-new canonical component gaps that can
+be admitted without manufacturing count, so U13-B through U13-H were not
+started. U14 was not started.
 
 Evidence labels:
 
-- SOURCE — read directly from the repository, the owner corpus, or a command
-  output.
-- REGISTRY — read from the current catalog or a generated registry projection.
-- GENERATED — produced by the canonical corpus generator from those sources.
-- TEST — deterministic automated verification.
-- OBSERVED — rendered or inspected in a local runtime.
-- UNKNOWN / UNVERIFIED — not proven by this bounded queue.
+- `SOURCE` — read from a repository source, typed contract, owner corpus, or configuration.
+- `REGISTRY` — read from the current catalog or a generated registry projection.
+- `GENERATED` — produced by the canonical corpus generator.
+- `TEST` — deterministic automated verification.
+- `BROWSER` — rendered local Web surface observed through browser automation.
+- `EMULATOR` — Android emulator evidence; it is not physical-device evidence.
+- `UNVERIFIED` — the required platform or device proof was unavailable.
+- `INHERITED / ENVIRONMENT` — a pre-existing or host/toolchain limitation, not a U13 component defect.
 
 ## 1. Coordinates
 
-| Field                    | Value                                                                                    |
-| ------------------------ | ---------------------------------------------------------------------------------------- |
-| Repository               | fahziputraj/ten4seven-ui                                                                 |
-| Workspace                | D:/SA/ten4seven-ui                                                                       |
-| Parent                   | T7-UNIVERSAL-HARDENING-001                                                               |
-| Work item                | T7-UNIVERSAL-HARDENING-U13                                                               |
-| DWO                      | T7-UNIVERSAL-HARDENING-U13 — Corpus Normalization + Large Canonical Component Enrichment |
-| Execution mode           | BOUNDED-WIDE / CONTROLLED EXPANSION                                                      |
-| Risk                     | R2 — shared design-system foundation                                                     |
-| Branch                   | codex/icons-curated-solar-style                                                          |
-| HEAD at evidence capture | e582cfcfbe0f077d1a5832d86db9da1898487fd3                                                 |
-| U12 prerequisite         | docs/aapm/T7-UNIVERSAL-HARDENING-U12-NATIVE-EXPO-PARITY-EVIDENCE.md — FAIL / BLOCKED     |
-| U13 work executed        | U13-A corpus normalization and gap ledger only                                           |
-| U13 work not executed    | U13-B through U13-H                                                                      |
-| U14                      | Not started                                                                              |
+| Field               | Value                                                                                             |
+| ------------------- | ------------------------------------------------------------------------------------------------- |
+| Repository          | `fahziputraj/ten4seven-ui`                                                                        |
+| Workspace           | `D:\\SA\\ten4seven-ui`                                                                            |
+| Parent              | `T7-UNIVERSAL-HARDENING-001`                                                                      |
+| Work item           | `T7-UNIVERSAL-HARDENING-U13`                                                                      |
+| Execution mode      | `BOUNDED-WIDE / CONTROLLED EXPANSION`                                                             |
+| Risk                | `R2 — broad shared design-system capability expansion`                                            |
+| Branch              | `codex/icons-curated-solar-style`                                                                 |
+| HEAD at U13 start   | `6d3a8b6647a43cea4c7b09686cd0e0dd50420d9d`                                                        |
+| U12 prerequisite    | `PASS FOR U13`, recorded in `docs/aapm/T7-UNIVERSAL-HARDENING-U12-NATIVE-EXPO-PARITY-EVIDENCE.md` |
+| Runtime             | Node `v22.23.2`, pnpm `11.22.0`, Windows host                                                     |
+| Starting worktree   | 90 existing dirty status entries from the user-owned U01-U12 worktree                             |
+| U13 execution       | U13-A normalization, reconciliation, generator/verifier alignment, and evidence only              |
+| U13-B through U13-H | Not started because the target-exception stop rule was reached                                    |
+| U14                 | Not started                                                                                       |
 
-No reset, clean, stash, commit, push, pull request, merge, tag, publish,
-release, or deploy was performed. The existing dirty worktree was preserved.
+No reset, clean, stash, mass-format, commit, push, pull request, merge, tag,
+publish, release, or deploy was performed. Existing user-owned changes were
+preserved.
 
 ## 2. Starting canonical inventory
 
-REGISTRY — the current repository inventory before U13-A implementation was
-already populated by the prior queues:
+`REGISTRY` — the starting inventory is derived from the current catalog and
+typed platform projection, not from the number of donor names.
 
-| Inventory                            | Count | Authority / interpretation                                                                        |
+| Inventory                            | Count | Interpretation                                                                                    |
 | ------------------------------------ | ----: | ------------------------------------------------------------------------------------------------- |
-| Component catalog entries            |   179 | packages/ai/catalog/components.json                                                               |
-| Canonical catalog entries            |   172 | Implemented entries with aliasOf absent; the repository component-system verifier uses this count |
-| Current public compatibility aliases |     7 | RadioGroup, TimeInput, Modal, ActionMenu, CommandPalette, DescriptionList, Timeline               |
-| Component families                   |    17 | Current catalog taxonomy                                                                          |
-| Expressive blocks                    |    60 | packages/ai/catalog/blocks.json; composition layer, not primitive count                           |
-| Recipes                              |    29 | packages/ai/catalog/recipes.json; recipe layer, not primitive count                               |
-| Semantic icons                       |   122 | packages/ai/catalog/icons.json                                                                    |
+| Component catalog entries            |   179 | `packages/ai/catalog/components.json`                                                             |
+| Canonical components before U13      |   172 | `status=implemented` entries with no `aliasOf`                                                    |
+| Current public compatibility aliases |     7 | `RadioGroup`, `TimeInput`, `Modal`, `ActionMenu`, `CommandPalette`, `DescriptionList`, `Timeline` |
+| Component families                   |    17 | Current canonical taxonomy                                                                        |
+| Existing expressive blocks           |    60 | Composition layer; not canonical component count                                                  |
+| Existing recipes                     |    29 | Recipe/pattern layer; not canonical component count                                               |
+| Semantic icons                       |   122 | `packages/ai/catalog/icons.json`                                                                  |
+| Existing explicit engine boundaries  |    13 | Engine-capable contracts already in the registry                                                  |
 
-Canonical platform counts from generated/component-contract-plane.json,
-excluding aliases:
-
-| Platform | Canonical count |
-| -------- | --------------: |
-| BOTH     |              98 |
-| WEB      |              14 |
-| NATIVE   |               0 |
-| ADAPTIVE |              60 |
-| Total    |             172 |
-
-The current catalog, typed platform overlay, and generated projections remain
-the authority for existing component contracts. U13-A did not promote a raw
-corpus name to the catalog.
+The 179-entry compact projection was read from `generated/components.compact.json`.
+The agent retrieval order and source-of-truth paths were read from
+`generated/agent-index.json` before corpus work.
 
 ## 3. Corpus sources
 
-SOURCE — the owner corpus was read from
-C:/Users/user/Downloads/CORPUS. The generator accepts the same location
-through the task-specific T7_COMPONENT_CORPUS_ROOT environment variable.
+`SOURCE` — the owner corpus root was `C:\\Users\\user\\Downloads\\CORPUS`.
+The generator reads only the four source lists below. `00_INDEX.md` and
+`06-CORPUS-NORMALIZATION-RULES.md` were inspected as owner guidance;
+`05_ALL_UNIQUE_NAMES.md` was used only as a derived cross-check and not as a
+second source.
 
-The four source lists are the only raw corpus inputs:
+| Source                      |  Bytes | Raw entries | SHA-256                                                            |
+| --------------------------- | -----: | ----------: | ------------------------------------------------------------------ |
+| `01_COMPONENTS_CORE.md`     | 15,659 |         972 | `ecd2dce317de8176faa5dbb13229ec97a2856a31ce99cc9677866b64184668d4` |
+| `02_PUBLIC_SHELL_BLOCKS.md` |  5,398 |         264 | `c1fbdc7ad1bec72107a90dda581d958941b590828286ec5f2402fb6abced2e55` |
+| `03_ADMIN_PANEL_BLOCKS.md`  |  4,562 |         218 | `7cd3058b282f0ddd5383fef9cb90d86a176dffa1670ceeccb365b759af058f99` |
+| `04_HERO_BLOCKS.md`         | 19,388 |         767 | `8d9f4c9929628a47b18df63b45e5f60d3e5033e4f8c14bb50a48aa69c3aab71a` |
 
-| Source                    | Raw entries | SHA-256                                                          |
-| ------------------------- | ----------: | ---------------------------------------------------------------- |
-| 01_COMPONENTS_CORE.md     |         972 | ecd2dce317de8176faa5dbb13229ec97a2856a31ce99cc9677866b64184668d4 |
-| 02_PUBLIC_SHELL_BLOCKS.md |         264 | c1fbdc7ad1bec72107a90dda581d958941b590828286ecf2402fb6abced2e55  |
-| 03_ADMIN_PANEL_BLOCKS.md  |         218 | 7cd3058b282f0ddd5383fef9cb90d86a176dffa1670ceeccb365b759af058f99 |
-| 04_HERO_BLOCKS.md         |         767 | 8d9f4c9929628a47b18df63b45e5f60d3e5033e4f8c14bb50a48aa69c3aab71a |
-
-The owner 00_INDEX.md and 06-CORPUS-NORMALIZATION-RULES.md were also
-inspected. 05_ALL_UNIQUE_NAMES.md is treated as a derived cross-check only,
-not as a second source.
-
-The corpus names coverage concepts associated with Radix UI, shadcn/ui,
-Material UI / MUI X, Ant Design, HeroUI, Flowbite / Blocks, Tailwind Plus,
-and Tremor-style analytics. Those systems are evidence of coverage and
-interaction vocabulary only. No donor CSS, theme, brand, token scale, public
-API, or runtime dependency was adopted.
+The source lists cover the existing Ten4Seven inventory plus donor/reference
+vocabulary associated with Radix UI, shadcn/ui, MUI/MUI X, Ant Design,
+HeroUI, Flowbite/Blocks, Tailwind Plus, and Tremor-style analytics. Donors
+were used as capability evidence only. No donor CSS, theme, brand, token
+scale, public API, or runtime dependency was adopted.
 
 ## 4. Raw corpus size
 
-GENERATED — scripts/component-corpus-ledger.mjs parses only unordered list
-items in the four source lists and records the source file and line for every
-normalized row.
+`GENERATED` — `pnpm corpus:generate` reproduced the ledger from the four
+owner source lists.
 
-| Measure                         | Count | Meaning                                              |
-| ------------------------------- | ----: | ---------------------------------------------------- |
-| Raw bullet candidates           | 2,221 | 972 + 264 + 218 + 767                                |
-| Exact-folded candidates         | 2,075 | NFKC, lowercase, repeated whitespace folding         |
-| Normalized candidates           | 2,073 | Exact fold plus dash punctuation folding             |
-| Historical Q03 normalized count | 2,073 | Prior evidence cross-check                           |
-| Normalization delta             |     0 | Current parser reproduces the prior normalized count |
-| Normalized duplicate groups     |     2 | Punctuation variants retained as provenance groups   |
+| Measure                         | Count | Meaning                                                      |
+| ------------------------------- | ----: | ------------------------------------------------------------ |
+| Raw bullet candidates           | 2,221 | 972 + 264 + 218 + 767                                        |
+| Exact-folded unique candidates  | 2,075 | NFKC, lowercase, repeated-whitespace folding                 |
+| Normalized candidates           | 2,073 | Exact fold plus dash-punctuation folding                     |
+| Historical Q03 normalized count | 2,073 | Prior normalization cross-check                              |
+| Normalization delta             |     0 | Current generator reproduces the historical normalized count |
+| Normalized duplicate groups     |     2 | Punctuation variants retained as provenance groups           |
 
-The complete machine-readable analysis view is:
+The generated ledger contains 2,073 row-level records. Its generated copies
+are byte-identical:
 
-- generated/component-corpus-ledger.json
-- packages/agent/generated/component-corpus-ledger.json
+- `generated/component-corpus-ledger.json`
+- `packages/agent/generated/component-corpus-ledger.json`
 
-Both generated files are byte-identical. Their observed size is 2,444,792
-bytes and their SHA-256 is
-db0351f68eb1147689c8d1dbff61a56c9ad49383562d4de7a42b3116580aad64.
+Current generated ledger size is 2,444,856 bytes with SHA-256
+`d913859fdd990a4431b8580a3a1ede86cfbf1e45101a3f2af3b4fe09c9b22bcc`.
 
 ## 5. Normalization methodology
 
-The generator applies one deterministic resolution pipeline:
+The reproducible `scripts/component-corpus-ledger.mjs` pipeline is an
+analysis projection. It does not write the human component catalog and does
+not create a second hand-maintained decision manifest.
 
-1. Parse the four owner source lists and retain source provenance.
-2. Fold Unicode form, casing, and repeated whitespace for the exact-union
-   count.
-3. Fold dash punctuation for the normalized working set while retaining word
-   boundaries.
-4. Resolve a normalized name against the existing Ten4Seven catalog and typed
-   platform contract.
-5. Resolve only explicit common-term aliases whose canonical target already
-   exists.
-6. Retain conditional candidates for review without treating them as
-   canonical.
-7. Classify domain compositions, engine-scale capabilities, blocks, recipes,
-   variants, utilities, and rejected duplicates.
-8. Count only a new implemented typed contract as a net-new canonical
-   component.
+1. Parse Markdown unordered-list items from the four owner source lists and retain source file/line provenance.
+2. Fold Unicode form, casing, and repeated whitespace for the exact-union count.
+3. Fold dash punctuation while retaining word boundaries for the normalized working set.
+4. Resolve names against the existing Ten4Seven catalog and typed platform contract.
+5. Resolve only explicit common-term aliases whose canonical target already exists.
+6. Retain conditional candidates for explicit review without treating them as canonical.
+7. Classify domains, engine-scale capabilities, blocks, recipes, variants, utilities, and rejected duplicates.
+8. Count a net-new component only when a new implemented typed contract and all applicable admission evidence exist.
 
-The canonical admission test is the U13 DWO test:
-
-distinct reusable user intent + distinct interaction semantics + reusable
-public typed contract + accessibility contract + useful multi-surface value.
-
-The generator is an analysis projection. It does not write
-packages/ai/catalog/components.json and does not create a second component
-decision manifest. The current catalog and packages/contracts/src remain the
-contract authority.
+The admission test is: distinct reusable user intent, distinct interaction
+semantics, reusable public typed contract, accessibility contract, useful
+multi-surface value, token ownership, measure/responsive behavior, explicit
+platform strategy, and Web/Native proof appropriate to the classification.
 
 ## 6. Classification methodology
 
-The normalized ledger uses the U13 vocabulary:
+Every normalized row receives exactly one primary decision from the shared
+U13 vocabulary:
 
-FOUNDATION, CANONICAL_COMPONENT, COMPONENT_VARIANT, UTILITY_OR_PROVIDER,
-COMPOSITE_BLOCK, RECIPE_OR_PATTERN, ENGINE_ADAPTER, DOMAIN_COMPOSITION,
-ALIAS, WEB_ONLY, NATIVE_ONLY, ADAPTIVE, DEFERRED, and REJECTED_DUPLICATE.
+`FOUNDATION`, `CANONICAL_COMPONENT`, `COMPONENT_VARIANT`,
+`UTILITY_OR_PROVIDER`, `COMPOSITE_BLOCK`, `RECIPE_OR_PATTERN`,
+`ENGINE_ADAPTER`, `DOMAIN_COMPOSITION`, `ALIAS`, `WEB_ONLY`, `NATIVE_ONLY`,
+`ADAPTIVE`, `DEFERRED`, or `REJECTED_DUPLICATE`.
 
-Classification is distinct from platform metadata. A current catalog row
-resolves through packages/contracts/src/component-platform.ts to BOTH, WEB,
-NATIVE, or ADAPTIVE plus an explicit renderer strategy. An unadmitted corpus
-row may retain a proposed platform only when the source concept makes that
-strategy meaningful; a null platform means no canonical contract was admitted.
+Classification is separate from platform metadata. Platform metadata is one
+of `BOTH`, `WEB`, `NATIVE`, or `ADAPTIVE`; renderer strategy is one of
+`SAME_INTENT`, `NATIVE_RENDERER`, `ALTERNATE_PATTERN`, or
+`NOT_APPLICABLE`.
 
-The generator resolution order is:
+The deterministic resolution order is:
 
-existing catalog canonical or alias → explicit terminology alias →
-conditional review candidate → domain composition → complex-engine deferral →
-block or recipe separation → component variant → utility/provider →
-rejected duplicate.
+`existing catalog canonical or alias` → `explicit terminology alias` →
+`conditional review candidate` → `domain composition` → `complex engine
+deferral` → `block or recipe separation` → `component variant` → `utility or
+provider` → `rejected duplicate`.
 
-This order prevents a domain card, hero treatment, or engine name from
-becoming a new primitive merely because its source label is unique.
+This order prevents a distinct donor label, product surface, hero treatment,
+or engine name from becoming a canonical primitive without a distinct
+Ten4Seven contract.
 
 ## 7. Duplicate normalization
 
-The two normalized collision groups are:
+The two normalized collision groups retain all source provenance but represent
+one intent each:
 
-| Normalized key         | Source names                                   | Treatment                                                       |
-| ---------------------- | ---------------------------------------------- | --------------------------------------------------------------- |
-| master detail layout   | Master Detail Layout; Master-Detail Layout     | One provenance row; composition candidate, not two components   |
-| save and continue form | Save And Continue Form; Save-and-Continue Form | One provenance row; form/recipe composition, not two components |
+| Normalized key           | Source names                                       | Treatment                                                       |
+| ------------------------ | -------------------------------------------------- | --------------------------------------------------------------- |
+| `master detail layout`   | `Master Detail Layout`; `Master-Detail Layout`     | One provenance row; composition concept, not two components     |
+| `save and continue form` | `Save And Continue Form`; `Save-and-Continue Form` | One provenance row; form/recipe arrangement, not two components |
 
-The duplicate groups are included in the generated ledger with both source
-names and source file/line references. They do not increase any canonical
-count.
+The ledger contains 430 additional `REJECTED_DUPLICATE` rows where existing
+Ten4Seven semantics already cover the candidate. Source corpus rows were not
+deleted; rejection is a generated decision with source provenance.
 
 ## 8. Variant normalization
 
-The ledger contains 91 COMPONENT_VARIANT rows. Examples include primary,
-secondary, ghost, outline, loading, save, download, action, icon, compact,
-dense, mobile, desktop, sticky, centered, editable, sortable, selectable,
-grouped, and column/row presentation terms.
+The ledger contains 91 `COMPONENT_VARIANT` rows. Representative variant
+dimensions include primary, secondary, ghost, outline, danger, loading, save,
+download, action, icon, compact, dense, mobile, desktop, sticky, centered,
+editable, sortable, selectable, grouped, filtered, and column/row
+presentation.
 
-These rows retain the current Ten4Seven equivalent where a safe nearest
-contract is known, such as Button, Input, Select, Slider, DataTable, Card,
-Panel, or Carousel. They do not create Button-purpose variants, mobile-only
-primitive families, or donor-shaped public props.
-
-No variant was added during U13. Variants are not net-new canonical
-components.
+Examples such as `PrimaryButton`, `DangerButton`, `SmallInput`,
+`DenseTable`, `SuccessAlert`, `LeftDrawer`, `HorizontalStepper`, and
+`VerticalStepper` do not create new canonical components. They resolve to
+existing component variants or arrangement properties. No variant was added
+or promoted during U13.
 
 ## 9. Block / Recipe separation
 
-The normalized owner corpus contains:
+The normalized corpus contains 869 `COMPOSITE_BLOCK` rows and 71
+`RECIPE_OR_PATTERN` rows. The current repository contains 60 blocks and 29
+recipes.
 
-| Disposition       | Normalized rows | U13 treatment                                                                   |
-| ----------------- | --------------: | ------------------------------------------------------------------------------- |
-| COMPOSITE_BLOCK   |             869 | Public/application sections remain block-layer compositions                     |
-| RECIPE_OR_PATTERN |              71 | Page, shell, workflow, wizard, and arrangement concepts remain recipes/patterns |
+| Candidate shape                                                          | U13 decision                                        |
+| ------------------------------------------------------------------------ | --------------------------------------------------- |
+| Dashboard, pricing, hero, catalog, checkout, settings page, workboard    | Block or recipe; not a primitive                    |
+| Auth flow, import wizard, approval workspace, product detail flow        | Recipe/pattern; domain truth remains consumer-owned |
+| Repeated expressive section with slots                                   | Block; compose canonical components                 |
+| Component-shaped row whose difference is only layout or visual treatment | Variant or composition                              |
 
-The current repository already owns 60 expressive blocks and 29 recipes.
-U13-A did not add a block or recipe. A hero, dashboard, checkout stepper,
-pricing comparison, or import wizard does not become a primitive solely
-because it has a distinct marketing or product name.
+No block or recipe was added during U13. A name does not move into the
+canonical component layer merely because a donor system lists it as a
+component.
 
 ## 10. Domain rejection
 
-The ledger contains 234 DOMAIN_COMPOSITION rows. Examples include Farm,
-warehouse, invoice, inventory, customer, order, payment, route, shipment,
-approval, audit, course, publisher, product, pricing, subscription, and
-workflow-specific surfaces.
+The ledger contains 234 `DOMAIN_COMPOSITION` rows. Domain vocabulary includes
+Farm, warehouse, invoice, inventory, shipment, route, purchase, cash,
+journal, ledger, customer, tenant, permission, entitlement, subscription,
+order, checkout, product, publisher, course, patient, employee, CRM,
+approval, exception, audit, resource, shift, event, and booking surfaces.
 
-These concepts may be valuable consumer compositions, but their business
-meaning, data, permissions, calculations, persistence, and routing remain
-consumer-owned. The shared package may expose generic anatomy and state
-contracts; it does not canonize domain names such as FarmPermission,
-InvoiceApprovalState, WarehouseStatus, or CustomerEntitlement.
-
-No domain composition was added to the canonical component layer during U13.
+These remain consumer-owned because business meaning, data truth, permission,
+calculation, persistence, routing, and workflow legality are outside the
+shared component layer. Generic anatomy can be reused, but names such as
+`FarmPermission`, `InvoiceApprovalState`, `WarehouseStatus`, and
+`CustomerEntitlement` are not canonical Ten4Seven components. No domain
+composition was added.
 
 ## 11. Complexity distribution
 
-GENERATED — the normalized corpus complexity distribution is:
+`GENERATED` — complexity is a review signal, not a delivery promise.
 
 | Complexity |  Rows | Interpretation                                                    |
 | ---------- | ----: | ----------------------------------------------------------------- |
@@ -246,409 +227,381 @@ GENERATED — the normalized corpus complexity distribution is:
 | L6         |   234 | Domain composition vocabulary                                     |
 | Total      | 2,073 | Exactly one complexity value per normalized row                   |
 
-Complexity is not a delivery promise. It is a review signal used with
-platform, accessibility, engine, token, measure, and ownership evidence.
+Only L0-L4 candidates with a distinct reusable contract can be admitted as
+components. L5 generally belongs to Blocks/Recipes; L6 remains
+consumer-owned.
 
 ## 12. Platform distribution
 
-REGISTRY — current canonical platform distribution, excluding aliases:
+`REGISTRY` — current canonical platform distribution excludes the seven
+compatibility aliases.
 
-| Platform | Canonical rows | Renderer strategy                                          |
-| -------- | -------------: | ---------------------------------------------------------- |
-| BOTH     |             98 | Shared semantic intent with a native renderer strategy     |
-| WEB      |             14 | Web renderer; native strategy is not applicable            |
-| NATIVE   |              0 | No Native-only canonical component is currently registered |
-| ADAPTIVE |             60 | Explicit Web/native alternate presentation strategy        |
-| Total    |            172 | Existing canonical registry                                |
+| Platform | Canonical count | Renderer strategy                                    |
+| -------- | --------------: | ---------------------------------------------------- |
+| BOTH     |              97 | Shared semantic intent with Native renderer strategy |
+| WEB      |              14 | Web renderer; Native is not applicable               |
+| NATIVE   |               0 | No Native-only canonical component is registered     |
+| ADAPTIVE |              61 | Explicit Web/native alternate presentation strategy  |
+| Total    |             172 | Existing canonical registry                          |
 
-Including the seven compatibility aliases, the generated catalog matrix is
-101 BOTH, 14 WEB, 0 NATIVE, and 64 ADAPTIVE for 179 entries.
-
-The corpus does not promote any row to Native implementation. U12 remains
-the authority for native renderer maturity and its evidence is
-FAIL / BLOCKED. No candidate is labelled native: future without an explicit
-strategy.
+Including aliases, the catalog matrix is 100 `BOTH`, 14 `WEB`, 0 `NATIVE`,
+and 65 `ADAPTIVE`. No corpus row was promoted to a new platform contract.
+The U12 Native renderer maturity and Android emulator evidence remain the
+authority for existing Native coverage; U13 did not claim mature parity for
+all catalog rows.
 
 ## 13. Legitimate gap ledger
 
-The full row-level ledger is the generated artifact
-generated/component-corpus-ledger.json. It contains candidate, raw source
-names, source files and lines, normalized intent, current T7 equivalent,
-decision, complexity, platform, Native strategy, reason, accessibility
-obligations, token families, and implementation status.
+The full machine-readable analysis view is `generated/component-corpus-ledger.json`.
+It contains the candidate, raw source names, source files and lines,
+normalized intent, current T7 equivalent, decision, complexity, platform,
+Native strategy, reason, accessibility obligations, token families, and
+implementation status.
 
-The U13-A result is:
+| Gap measure                              | Count | Treatment                                                                           |
+| ---------------------------------------- | ----: | ----------------------------------------------------------------------------------- |
+| Legitimate net-new canonical gaps        |     0 | No candidate satisfies the full admission test with an approved implementation path |
+| Conditional candidates                   |     3 | Deferred for explicit owner/API/engine decision; not counted                        |
+| Net-new canonical components implemented |     0 | No candidate admitted or implemented                                                |
+| Existing components hardened             |     0 | U13-A changed no component behavior or public component API                         |
 
-| Gap measure                              | Count | Treatment                                                                          |
-| ---------------------------------------- | ----: | ---------------------------------------------------------------------------------- |
-| Legitimate net-new canonical gaps        |     0 | No candidate satisfies the admission test with an approved implementation/API path |
-| Conditional candidates                   |     3 | Deferred for explicit owner/API/engine decision; not counted                       |
-| Net-new canonical components implemented |     0 | U13-B through U13-H were not started                                               |
+The three conditional rows are:
 
-The three conditional review rows are:
+| Candidate     | Current T7 equivalent             | Complexity | Platform | Native strategy   | Blocking question                                                                  |
+| ------------- | --------------------------------- | ---------- | -------- | ----------------- | ---------------------------------------------------------------------------------- |
+| `Menubar`     | `NavigationMenu` / `DropdownMenu` | L3         | ADAPTIVE | ALTERNATE_PATTERN | Is roving-focus/submenu behavior distinct enough for a separate public contract?   |
+| `Knob`        | `Slider` / `RangeSlider`          | L3         | BOTH     | NATIVE_RENDERER   | Is a rotary value, keyboard, screen-reader, touch, and renderer contract required? |
+| `Gauge Chart` | `Progress` / `DonutChart`         | L4         | ADAPTIVE | ALTERNATE_PATTERN | Are data summary, accessibility, bundle, engine, and Native boundaries resolved?   |
 
-| Candidate   | Family     | Complexity | Current T7 equivalent | Platform | Native strategy   | Why not admitted                                                                      |
-| ----------- | ---------- | ---------- | --------------------- | -------- | ----------------- | ------------------------------------------------------------------------------------- |
-| Menubar     | navigation | L3         | NavigationMenu        | ADAPTIVE | ALTERNATE_PATTERN | Roving-focus/submenu distinction and multi-surface demand are not approved separately |
-| Knob        | form       | L3         | Slider                | BOTH     | NATIVE_RENDERER   | Separate rotary value, keyboard, screen-reader, and touch contract is not approved    |
-| Gauge Chart | chart      | L4         | Progress              | ADAPTIVE | ALTERNATE_PATTERN | Data, summary, bundle, and Native boundaries are unresolved                           |
-
-The earlier 15 high-confidence gap candidates from the prior corpus
-normalization are already represented in the current catalog, including Kbd,
-Link, Container, Stack, SpeedDial, DragHandle, BottomNavigation,
-NavigationRail, Transfer, Cascader, ColorPicker, TagsInput, TreeView,
-FilePreview, and SplitPane. They therefore cannot be counted as U13
-net-new work.
+The previous high-confidence candidates are already in the current catalog,
+including `Kbd`, `Link`, `Container`, `Stack`, `SpeedDial`, `DragHandle`,
+`BottomNavigation`, `NavigationRail`, `Transfer`, `Cascader`, `ColorPicker`,
+`TagsInput`, `TreeView`, `FilePreview`, and `SplitPane`.
 
 ## 14. U13-A result
 
-U13-A completed with:
+`U13-A` completed before any implementation batch with:
 
+```text
 TARGET NOT JUSTIFIABLE FROM CORPUS
+```
 
-The raw corpus is large, but its normalized disposition is predominantly
-blocks, recipes, domain compositions, variants, aliases, utilities, rejected
-duplicates, and deferred engines. The current catalog already contains the
-previously approved high-confidence generic gaps. Adding 100 names would
-require promoting names without approved typed APIs, implementation,
-accessibility, responsive/measure behavior, token ownership, platform
-strategy, tests, and showroom proof. That would violate the U13 DWO.
+The corpus is broad, but its normalized rows are existing canonical matches,
+aliases, variants, blocks, recipes, domain compositions, utilities, rejected
+duplicates, or engine-scale/deferred candidates. The owner evidence does not
+support 100 additional distinct, typed, accessible, token-governed,
+responsive, platform-classified, exported, tested, catalogued, showroom-
+proved components. Promoting names solely to meet the numeric target would
+violate U13 counting discipline.
 
-The U13-A stop rule was applied before U13-B. The U12 prerequisite is also
-FAIL / BLOCKED because Native Lab Android compilation failed before APK
-creation and iOS/Expo Go/device runtime proof was unavailable.
+The DWO explicitly permits this target-exception stop. Since U12 is now
+`PASS FOR U13`, the generated ledger records `u13Gate=PASS FOR U14` and the
+later U13 batches remain intentionally unopened.
 
-## 15. U13-B — Foundations, actions, and forms
+## 15. Batch U13-B — Foundations, actions, and forms
 
-NOT STARTED.
+`NOT STARTED` by the U13-A stop rule.
 
-U13-B was intentionally not executed. U13-A found zero legitimate net-new
-canonical gaps and the U12 prerequisite is FAIL / BLOCKED. No foundation,
-action, form, selection, date/time, file, or input component was created,
-renamed, promoted, or widened in this queue.
+No foundation, action, form, selection, date/time, or file component was
+created, renamed, promoted, widened, or reimplemented. Existing U01-U05
+contracts remain the authority. Corpus names such as transfer, cascader,
+color picker, tags input, tree view, and file preview were already represented
+or were classified as non-admitted candidates.
 
-The current catalog remains the authority for these families. Corpus names
-such as button-purpose variants, transfer, cascader, color picker, tags input,
-tree view, and file preview were either already represented, classified as a
-variant/alias, or retained as a non-admitted review row.
+## 16. Batch U13-C — Navigation, layout, feedback, overlays, and communication
 
-## 16. U13-C — Navigation, layout, feedback, overlays, and communication
-
-NOT STARTED.
+`NOT STARTED` by the U13-A stop rule.
 
 No navigation, layout, feedback, overlay, notification, tooltip, popover,
-modal, drawer, menubar, navigation rail, or bottom-navigation component was
-implemented during U13. Menubar remains one of the three conditional review
-rows; it is not a new canonical contract.
+modal, drawer, menubar, rail, or bottom-navigation component was added.
+Existing U06 contracts and their Web/native adaptive strategies were preserved.
 
-No Web/native presentation claim was added for this batch. The existing
-NavigationMenu, Drawer, Dialog/Modal alias, Toast, and related contracts were
-preserved.
+## 17. Batch U13-D — Data display, collections, media, and advanced data
 
-## 17. U13-D — Data display, collections, media, and advanced data
+`NOT STARTED` by the U13-A stop rule.
 
-NOT STARTED.
+No table, list, tree, collection, media, upload-preview, virtualization, or
+advanced-data component was promoted from corpus vocabulary. Existing U07 and
+U12 DataTable/list-detail boundaries remain in force; data fetching, sorting,
+filtering, pagination, and persistence remain consumer-owned.
 
-No data display, collection, table, list, tree, media, upload-preview, or
-virtualization component was implemented during U13. Data-heavy and
-performance-sensitive names remain classified in the generated ledger rather
-than being promoted from vocabulary to public API.
+## 18. Batch U13-E — Commerce, productivity, and operational application patterns
 
-The existing Table/DataTable, collection, chart, media, and file contracts
-were not rewritten. No donor engine, virtualization implementation, or
-consumer-specific data surface was added.
-
-## 18. U13-E — Commerce, productivity, and operational application patterns
-
-NOT STARTED.
+`NOT STARTED` by the U13-A stop rule.
 
 No commerce, productivity, operations, ERP, warehouse, approval, invoice,
 order, cart, checkout, command, or application-shell component was added.
-Domain and arrangement concepts remain consumer-owned compositions or
-repository recipes/blocks.
+Existing U09/U11 compositions and consumer domain boundaries were preserved.
 
-The current commerce primitives and recipe layer were not duplicated. A
-domain label in the owner corpus is not evidence of a shared canonical
-component without a distinct generic interaction contract.
+## 19. Batch U13-F — Editors, builders, drag and drop, and AI
 
-## 19. U13-F — Editors, builders, drag and drop, and AI
-
-NOT STARTED.
+`NOT STARTED` by the U13-A stop rule.
 
 No editor, builder, canvas, property inspector, prompt composer, AI
 suggestion, diff, drag-and-drop, or workflow-authoring implementation was
-added. Existing engine boundaries remain explicit in the current catalog and
-are not converted into new primitives by name matching.
+added. Existing engine boundaries remain explicit; no donor editor, parser,
+DnD runtime, or AI provider was imported.
 
-No donor editor, DnD, parser, or AI runtime was imported. The corpus ledger
-records the concepts and their deferral/rejection reason only.
+## 20. Batch U13-G — Native, adaptive, and alternate renderer coverage
 
-## 20. U13-G — Native, adaptive, and alternate renderer coverage
+`NOT STARTED` by the U13-A stop rule.
 
-NOT STARTED.
+No Native component, Expo component, React Native renderer, platform adapter,
+or alternate mobile composition was created in U13. Existing U12 Native
+coverage remains valid and is reported separately in Section 24. U13 did not
+claim Native implementation for a corpus name merely from metadata.
 
-No Native component package, Expo component, React Native renderer, native
-adapter, platform-specific implementation, or alternate mobile composition
-was created. U13 does not create @ten4seven/native components.
+## 21. Net-new canonical component table
 
-The absence of Native implementation is an intentional bounded-queue result,
-not a claim that Web and Native runtime parity is complete. The U12 runtime
-gate remains FAIL / BLOCKED.
+There are no net-new canonical components to register.
 
-## 21. Net-new canonical component register
-
-None.
-
-The U13-A ledger contains zero rows that are both legitimate net-new gaps and
-implemented canonical contracts. Consequently, there is no U13 component
-name, API, platform contract, token contract, showroom route, or regression
-test to register as a new canonical component.
+| Canonical name | Family | Contract / platform / Native strategy | Implementation / proof                                       |
+| -------------- | ------ | ------------------------------------- | ------------------------------------------------------------ |
+| None           | None   | No new contract admitted              | No new export, registry row, AI row, showroom proof, or test |
 
 This is a controlled stop, not an empty audit. The generated ledger retains
-all 2,073 normalized candidates, their source provenance, their proposed
-classification, their current equivalent, and their implementation status.
+all 2,073 normalized candidates and their provenance and decision metadata.
 
-## 22. Hardened existing contracts
+## 22. Hardened existing components
 
-Hardened existing contracts: 0.
+Hardened existing components: `0`.
 
-U13-A was an inventory and normalization boundary. It did not alter the
-behavior or public contract of existing components. The additive U13 files
-are limited to the reproducible ledger, its verifier, package scripts, and
-generated discovery links:
+U13-A did not alter existing component behavior or public APIs. The only
+current-queue source corrections are analysis safeguards:
 
-| Area             | File                                                  | Purpose                                                 |
-| ---------------- | ----------------------------------------------------- | ------------------------------------------------------- |
-| Generator        | scripts/component-corpus-ledger.mjs                   | Parse and classify the owner corpus                     |
-| Verifier         | scripts/verify-component-corpus.mjs                   | Assert counts, vocabulary, references, and gates        |
-| Command          | package.json                                          | Expose corpus:generate and include the verifier in test |
-| Discovery        | scripts/generate-contract-projections.mjs             | Link the ledger into agent/index projections            |
-| Generated        | generated/component-corpus-ledger.json                | Repository ledger projection                            |
-| Agent projection | packages/agent/generated/component-corpus-ledger.json | Byte-identical agent-facing ledger                      |
+| File                                                    | Change                                                                                                   |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `scripts/component-corpus-ledger.mjs`                   | Recognizes a satisfied U12 prerequisite and emits `PASS FOR U14` for the valid U13 target-exception stop |
+| `scripts/verify-component-corpus.mjs`                   | Reconciles current 97/14/0/61 platform counts and the satisfied U12/U13 gate state                       |
+| `generated/component-corpus-ledger.json`                | Generated U13-A analysis projection                                                                      |
+| `packages/agent/generated/component-corpus-ledger.json` | Byte-identical agent-facing generated projection                                                         |
 
-The existing catalog, contracts, renderers, and consumer source were not
-rewritten for U13.
+No canonical component was renamed, split, forked, or visually redesigned.
 
 ## 23. Engine-adapter boundary
 
-New engine adapters: 0.
+New engine adapters: `0`.
 
-The repository already has 13 explicit engine-boundary entries. They remain
-optional consumer-engine or consumer-engine contracts and were not expanded:
+The current registry already carries 13 explicit engine-boundary entries:
 
-AdvancedDataGrid, BarChart, BuilderCanvas, ChartLegend, ChartPanel, DiffViewer,
-DonutChart, EditorSurface, LineChart, PromptComposer, PropertyInspector,
-Sparkline, and TrendIndicator.
+`AdvancedDataGrid`, `BarChart`, `BuilderCanvas`, `ChartLegend`, `ChartPanel`,
+`DiffViewer`, `DonutChart`, `EditorSurface`, `LineChart`, `PromptComposer`,
+`PropertyInspector`, `Sparkline`, and `TrendIndicator`.
 
-The ledger classifies 218 normalized rows as deferred engine-scale work. That
-classification is not adoption, implementation, or a donor dependency. Any
-future admission must separately establish the Ten4Seven contract, token
-mapping, accessibility behavior, renderer strategy, engine boundary, tests,
-and package export.
+The ledger classifies 218 normalized rows as `DEFERRED`, including
+performance-sensitive and engine-scale concepts such as rich text, code,
+spreadsheet, pivot, scheduler, map, diagram, flow, canvas, virtualization,
+chart, audio/video, crop/zoom, and signature capabilities. This is a
+decision boundary, not implementation.
 
-## 24. Native-ready projection contract
+Any future admission must hide the vendor behind a normalized Ten4Seven
+contract, own tokens and accessibility semantics, define Web/Native
+strategy, isolate bundle/SSR impact, provide tests and showroom proof, and
+keep data/business truth consumer-owned. No engine was added in U13.
 
-No Native runtime implementation was added. The U13 artifact is nevertheless
-renderer-neutral at the analysis contract level:
+## 24. Native coverage
 
-- candidate decisions are stored as structured JSON rather than CSS;
-- proposed platform values use BOTH, WEB, NATIVE, or ADAPTIVE;
-- Native strategy is carried separately as SAME_INTENT, NATIVE_RENDERER,
-  ALTERNATE_PATTERN, or NOT_APPLICABLE;
-- token, accessibility, complexity, and implementation fields are plain data;
-- the generated agent projection is consumable without parsing CSS variables.
+No U13 Native additions exist. Existing U12 coverage is retained honestly:
 
-Current canonical platform registry, excluding aliases:
+- `@ten4seven/native` remains a separate React Native renderer boundary.
+- Native resolves shared semantic values through JS/TS snapshots and does not parse CSS.
+- The deterministic Native Lab covers Foundations, Forms, Navigation, Data, Workflow, AI / Power, and Device state presentation.
+- Android AVD development-client + Metro evidence exists for existing renderer families, Select, overlays, navigation, forms/IME, list/detail, AI Composer, and profile/appearance controls.
+- iOS simulator/device, Expo Go launch, physical-device, TalkBack/VoiceOver, and platform API evidence remain `UNVERIFIED`.
 
-| Platform | Count | U13 change |
-| -------- | ----: | ---------- |
-| BOTH     |    98 | 0          |
-| WEB      |    14 | 0          |
-| NATIVE   |     0 | 0          |
-| ADAPTIVE |    60 | 0          |
+Because U13 admitted zero components, there is no applicable new-family
+Native Lab proof to add. The existing U12 Native maturity remains partial
+renderer plus bounded functional canary, not mature all-family parity.
 
-SOURCE/TEST — the U12 source-level native contract verifier passes as part of
-the existing test chain, but Android build/runtime proof and iOS/Expo
-Go/device proof remain UNKNOWN / UNVERIFIED. A source projection is not a
-Native runtime pass.
+## 25. Web coverage
 
-## 25. Web coverage and showroom boundary
+No new Web component or Web renderer implementation was added in U13-A, so
+there is no new U13 component route or story to claim. Existing Web coverage
+remains available through the canonical taxonomy, Component Lab, Theme Studio,
+Blocks, Recipes, and product reference surfaces.
 
-No new Web component or Web renderer implementation was added in U13-A. No
-new route, catalog card, story, fixture, or browser proof was required for
-the stopped batch.
+The current local runtime checks returned HTTP 200 for:
 
-The existing Theme Studio, Component Lab, public showcase, operations,
-publishing, Farm reference, and other route evidence remains prior-queue
-evidence. It is not relabelled as fresh U13 component proof. Because no
-canonical component was implemented, there is no U13-specific rendered
-component state to verify for loading, empty, error, disabled, readonly,
-keyboard, focus, reduced-motion, responsive, or adaptive behavior.
+- `/theme-studio`
+- `/component-lab`
+- `/components`
+- `/operations-tracker`
+
+The fresh Component Lab browser proof is recorded in Section 27. It showed
+the canonical Lab sections, existing component contracts, state controls, and
+no captured error/warning logs. This is regression evidence, not new U13
+component proof.
 
 ## 26. Catalog, AI, and projection metadata
 
-The current catalog remains unchanged at 179 entries and 172 canonical
-entries. No row was promoted to status implemented by U13-A, and no existing
-catalog row was downgraded.
+The current catalog remains 179 entries / 172 canonical components / 7 public
+aliases. No row was promoted to `implemented` by U13-A. The analysis ledger
+is generated from the owner corpus and current typed/catalog sources; it does
+not replace `packages/contracts/src`, `packages/ai/catalog/components.json`,
+or the registry.
 
-The corpus ledger is an analysis projection generated from the owner corpus
-and the current catalog/contracts. It is discoverable from the generated
-agent/index surfaces:
+| Projection                                              | Source / generator                    | Result                               |
+| ------------------------------------------------------- | ------------------------------------- | ------------------------------------ |
+| `generated/component-corpus-ledger.json`                | `scripts/component-corpus-ledger.mjs` | Generated                            |
+| `packages/agent/generated/component-corpus-ledger.json` | Same generator                        | Byte-identical                       |
+| `generated/agent-index.json`                            | Existing contract projection          | Points to `componentCorpusLedger`    |
+| `generated/index.json`                                  | Existing contract projection          | Points to component corpus discovery |
+| AI component catalog                                    | `packages/ai/catalog/components.json` | Unchanged at 179 entries             |
 
-| Projection                                            | Source / generator                  | Result                 |
-| ----------------------------------------------------- | ----------------------------------- | ---------------------- |
-| generated/component-corpus-ledger.json                | scripts/component-corpus-ledger.mjs | Generated              |
-| packages/agent/generated/component-corpus-ledger.json | Same generator                      | Byte-identical         |
-| generated/agent-index.json                            | contracts projection generator      | Links component-corpus |
-| generated/index.json                                  | contracts projection generator      | Links componentCorpus  |
+The corpus generator and verifier now agree that the satisfied U12
+prerequisite plus a legitimate target-exception stop yields `PASS FOR U14`.
+No donor alias is exposed as a new Ten4Seven public API.
 
-TEST — test:ai and the contract projection freshness check pass. The ledger
-does not replace packages/contracts/src, the typed component contracts, or
-the human catalogs. No second hand-maintained component manifest was
-introduced, and no new AI metadata was claimed for an unimplemented
-component.
+## 27. Showroom coverage
 
-## 27. Showroom and proof boundary
+New U13 showroom cards/routes: `0`, because U13 admitted no new components.
 
-New U13 showroom cards/routes: 0.
+`BROWSER` — a fresh local Component Lab tab at
+`http://127.0.0.1:4173/component-lab` loaded with title
+`ten4seven UI — Component Lab`. The accessibility tree exposed the existing
+Forms, Core, Data, Overlays, Surfaces, Charts, Flow, Workflow, Advanced, and
+U10 canary sections, including existing canonical fields, tables, overlays,
+workflow, editor/builder, AI, and commerce proofs. Browser console inspection
+returned no error or warning entries for the tab.
 
-The U13 DWO requires a new canonical component to have a showroom proof and
-state coverage. Since U13-A admitted zero new canonical components, no
-showroom surface was created and no fixture was added to a product route.
-This prevents a raw corpus name from being presented as a supported Ten4Seven
-API before its implementation and proof obligations exist.
+No new U13 state proof is claimed because no new component exists. Existing
+showroom/Lab responsibilities remain separate: showroom for human browsing,
+Component Lab for stress/regression, and Native Lab for actual Native
+renderer/device proof.
 
-## 28. Validation and regression evidence
+## 28. Consumer regression
 
-The following bounded checks were run after generating the ledger. PASS means
-the command completed successfully for its stated contract; it does not
-override the U12 native runtime gate or the inherited failures listed below.
+No product consumer source, business logic, routing, permissions, persistence,
+data fetching, validation, workflow transition, domain composition, or donor
+integration was changed in U13.
 
-| Check                                                                             | Result           | Evidence                                                                                                                 |
-| --------------------------------------------------------------------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| pnpm corpus:generate                                                              | PASS             | Reproduced the normalized ledger                                                                                         |
-| pnpm test:component-corpus                                                        | PASS             | Ledger copies, counts, vocabulary, references, and gates verified                                                        |
-| node --experimental-strip-types scripts/generate-contract-projections.mjs --check | PASS             | Generated contract projections are fresh                                                                                 |
-| pnpm test:contracts                                                               | PASS             | Typed contract checks                                                                                                    |
-| pnpm test:ai                                                                      | PASS             | AI/catalog contract checks                                                                                               |
-| pnpm test:consistency                                                             | PASS             | Cross-surface consistency checks                                                                                         |
-| pnpm test:token-governance                                                        | PASS             | Token ownership checks                                                                                                   |
-| pnpm test:component-system                                                        | PASS             | Component taxonomy and contract checks                                                                                   |
-| pnpm typecheck                                                                    | PASS             | Repository TypeScript checks                                                                                             |
-| pnpm test                                                                         | PASS             | Full configured test chain, including corpus verification                                                                |
-| pnpm package:build                                                                | PASS             | Package build                                                                                                            |
-| pnpm package:verify                                                               | PASS             | Package verification                                                                                                     |
-| git diff --check                                                                  | PASS             | No whitespace errors reported                                                                                            |
-| pnpm format:check                                                                 | FAIL / INHERITED | Existing checkout reports 504 paths; no mass formatting was performed                                                    |
-| pnpm build                                                                        | FAIL / INHERITED | Already-modified apps/playground/src/brand-expression.tsx imports @ten4seven/agent/core without an available declaration |
+`TEST` consumer/system signals:
 
-No consumer route source, business logic, permissions, data fetching,
-validation, or product composition was changed by U13. Therefore no new
-consumer regression is claimed. The inherited build and formatter failures
-are recorded rather than silently attributed to the corpus ledger.
+- `pnpm test:consistency` passed across 28 UI source files.
+- `pnpm test:component-system` passed with 172 canonical components, 7 aliases, 29 recipes, and 60 blocks.
+- `pnpm test:ai` passed with the current 179-component, 60-block, 29-recipe catalog.
+- `pnpm build` passed for the Playground.
+- Fresh Component Lab browser health passed as recorded in Section 27.
+
+This is a regression result for existing surfaces, not evidence that a
+consumer product has adopted new components.
 
 ## 29. Count reconciliation
 
-The generated ledger and current registries reconcile as follows:
+The generated ledger and current registry reconcile exactly:
 
-| Measure                          | Count | Interpretation                                         |
-| -------------------------------- | ----: | ------------------------------------------------------ |
-| Canonical components before U13  |   172 | Current implemented catalog entries without aliasOf    |
-| U13 net-new canonical components |     0 | No admitted implementation                             |
-| Canonical components after U13   |   172 | No catalog promotion                                   |
-| Hardened existing components     |     0 | No component behavior/API changed                      |
-| Current public aliases           |     7 | Existing compatibility aliases                         |
-| Corpus alias rows                |    11 | Common-term aliases resolved by the ledger             |
-| Corpus variant rows              |    91 | COMPONENT_VARIANT; not canonical count                 |
-| Current blocks                   |    60 | Existing composition inventory                         |
-| Corpus block rows                |   869 | COMPOSITE_BLOCK; not primitive count                   |
-| Current recipes                  |    29 | Existing recipe inventory                              |
-| Corpus recipe rows               |    71 | RECIPE_OR_PATTERN; not primitive count                 |
-| New engine adapters              |     0 | 13 existing explicit engine boundaries preserved       |
-| Deferred rows                    |   218 | Conditional or engine-scale review, not implementation |
-| Rejected duplicate rows          |   430 | Existing intent/semantics already cover the name       |
-| Domain composition rows          |   234 | Consumer-owned business compositions                   |
-| Current canonical BOTH           |    98 | Excluding aliases                                      |
-| Current canonical WEB            |    14 | Excluding aliases                                      |
-| Current canonical NATIVE         |     0 | Excluding aliases                                      |
-| Current canonical ADAPTIVE       |    60 | Excluding aliases                                      |
+| Measure                         | Count | Interpretation                                   |
+| ------------------------------- | ----: | ------------------------------------------------ |
+| Canonical components before U13 |   172 | Implemented catalog entries without `aliasOf`    |
+| Net-new canonical components    |     0 | No admitted implementation                       |
+| Canonical components after U13  |   172 | No catalog promotion                             |
+| Existing components hardened    |     0 | No component behavior/API change                 |
+| Current public aliases          |     7 | Compatibility aliases in the catalog             |
+| Corpus alias rows               |    11 | Common-term aliases resolved by the ledger       |
+| Corpus variant rows             |    91 | `COMPONENT_VARIANT`; not canonical               |
+| Current blocks                  |    60 | Existing composition inventory                   |
+| Corpus block rows               |   869 | `COMPOSITE_BLOCK`; not canonical                 |
+| Current recipes                 |    29 | Existing recipe inventory                        |
+| Corpus recipe rows              |    71 | `RECIPE_OR_PATTERN`; not canonical               |
+| New engine adapters             |     0 | Existing 13 boundaries preserved                 |
+| Deferred rows                   |   218 | Conditional or engine-scale review               |
+| Rejected duplicate rows         |   430 | Existing intent/semantics already cover the name |
+| Domain composition rows         |   234 | Consumer-owned business compositions             |
+| WEB                             |    14 | Current canonical platform count                 |
+| NATIVE                          |     0 | Current canonical platform count                 |
+| BOTH                            |    97 | Current canonical platform count                 |
+| ADAPTIVE                        |    61 | Current canonical platform count                 |
 
 Disposition arithmetic is exact:
 
-118 existing canonical/contract matches + 11 aliases + 91 variants + 869
-blocks + 71 recipes + 234 domain compositions + 218 deferred + 31
-utilities/providers + 430 rejected duplicates = 2,073 normalized rows.
+```text
+118 existing canonical matches
++ 11 aliases
++ 91 variants
++ 869 blocks
++ 71 recipes
++ 234 domain compositions
++ 218 deferred
++ 31 utilities/providers
++ 430 rejected duplicates
+= 2,073 normalized rows
+```
 
-No number in that reconciliation is used to inflate the canonical component
-count. In particular, variants, aliases, blocks, recipes, domain surfaces,
-and deferred engine concepts do not satisfy the U13 net-new requirement.
+No alias, variant, block, recipe, engine boundary, domain composition, or
+deferred candidate is included in the net-new canonical count.
 
-## 30. Deferred and conditional review queue
+## 30. Deferred legitimate candidates
 
-The ledger retains three explicit conditional candidates:
+Three candidates remain conditional rather than admitted:
 
-| Candidate   | Blocking decision                                                                        |
-| ----------- | ---------------------------------------------------------------------------------------- |
-| Menubar     | Requires an approved distinct roving-focus/submenu contract and multi-surface demand     |
-| Knob        | Requires an approved rotary value, keyboard, screen-reader, touch, and renderer contract |
-| Gauge Chart | Requires resolved data, summary, bundle, accessibility, and Native boundaries            |
+| Candidate     | Required next decision                                                                                           |
+| ------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `Menubar`     | Approve a distinct roving-focus/submenu contract and prove demand beyond NavigationMenu/DropdownMenu             |
+| `Knob`        | Approve a distinct rotary value, keyboard, screen-reader, touch, and renderer contract beyond Slider/RangeSlider |
+| `Gauge Chart` | Resolve data semantics, textual summary, accessibility, engine/package boundary, and Native alternate strategy   |
 
 The remaining 215 deferred rows are engine-scale or performance-sensitive
-concepts. They require a separate engine-adapter decision and are not
-legitimate U13 canonical admissions by corpus name alone. No donor engine or
-donor public API was adopted.
+review candidates. They are not legitimate U13 admissions by corpus name
+alone. No donor engine was adopted and no candidate was manufactured to hit 100.
 
 ## 31. Rejected duplicate evidence
 
-The ledger contains 430 REJECTED_DUPLICATE rows. Representative mappings are:
+The ledger contains 430 `REJECTED_DUPLICATE` rows. Representative mappings:
 
-| Corpus vocabulary                                     | Existing Ten4Seven coverage                            | Result                |
-| ----------------------------------------------------- | ------------------------------------------------------ | --------------------- |
-| action button, icon button, save button, close button | Button contract and variants                           | Duplicate/variant     |
-| card, panel, surface, content panel                   | Card/Panel/Surface contracts                           | Duplicate/variant     |
-| advanced filter, filter bar, filter panel             | Existing filtering and bulk-action contracts           | Duplicate/composition |
-| account menu, action menu, command palette            | Existing DropdownMenu/CommandMenu contracts or aliases | Duplicate/alias       |
-| loader, loading indicator, spinner, snackbar          | Existing Spinner/Progress/Toast contracts or aliases   | Duplicate/alias       |
-| table variants, data grid variants, list variants     | Table/DataTable/collection contracts                   | Duplicate/variant     |
+| Corpus vocabulary                                     | Existing Ten4Seven coverage                    | Result                           |
+| ----------------------------------------------------- | ---------------------------------------------- | -------------------------------- |
+| action button, icon button, save button, close button | `Button` plus canonical variants               | Duplicate/variant                |
+| card, panel, surface, content panel                   | `Card`, `Panel`, `Surface`                     | Duplicate/covered surface intent |
+| advanced filter, filter bar, filter panel             | Filtering and bulk-action contracts            | Duplicate/composition            |
+| account menu, action menu, command palette            | `DropdownMenu`, `CommandMenu`, and aliases     | Duplicate/alias                  |
+| loader, loading indicator, spinner, snackbar          | `Spinner`, `Progress`, `Toast`, and aliases    | Duplicate/alias                  |
+| table, grid, list, collection variants                | `Table`, `DataTable`, and collection contracts | Duplicate/variant                |
 
-No source corpus row was deleted. Rejection is a deterministic disposition
-in the generated analysis ledger, with source provenance retained for audit.
-It does not modify or erase a donor source, the current catalog, or a
-consumer-owned composition.
+The source corpus remains intact. Rejection is a generated normalization
+decision with source provenance and does not erase donor evidence.
 
-## 32. Baseline debt and inherited blockers
+## 32. Baseline debt
 
-The checkout was already materially dirty before the U13 evidence additions.
-The baseline capture recorded 646 status entries. Existing generated
-projections, Native Lab artifacts, and prior queue changes were preserved.
-No reset, clean, stash, or opportunistic normalization was used.
+The worktree was already materially dirty at U13 start with 90 status entries,
+including accepted U01-U12 evidence, generated projections, package sources,
+research outputs, tests, and screenshots. These were preserved.
 
-The following remain outside the bounded U13-A correction:
+U13 current-queue mutations are limited to the generated corpus ledgers, the
+corpus generator/verifier gate reconciliation, and this evidence artifact.
+No component/product source was broadened.
 
-- U12 is FAIL / BLOCKED because Native Lab Android compilation failed before
-  APK creation and iOS/Expo Go/device runtime proof was unavailable.
-- pnpm format:check reports 504 paths in the existing checkout.
-- pnpm build fails on the already-modified playground brand-expression
-  import/declaration boundary.
-- Native runtime and device proof remain UNKNOWN / UNVERIFIED.
-
-U13 did not modify product business logic, donor styling, donor themes, donor
-tokens, Native components, a Native package, or an application-local
-primitive library.
+Repository-wide `pnpm format:check` remains an inherited failure on 529 files
+across unrelated docs, tests, configuration, generated outputs, and older
+surfaces. Targeted U13 source/evidence files were formatted. `git diff --check`
+passes. No mass-format or unrelated baseline repair was performed.
 
 ## 33. U14 readiness
 
-U14 is not ready to pass from this queue. U13-A improves corpus discovery and
-reconciliation, but it does not clear the hard prerequisite or establish
-the runtime and broad component proof required by the program.
+| Readiness question                                                                                         | Result                                                                                                              |
+| ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Can a developer/AI discover the typed source of truth?                                                     | Yes — `generated/agent-index.json` and compact projections point to typed contracts and the generated corpus ledger |
+| Can the current catalog distinguish canonical components from aliases?                                     | Yes — 172 canonical entries and 7 aliases reconcile through the registry                                            |
+| Can the corpus be regenerated deterministically?                                                           | Yes — 2,221 raw entries, 2,073 normalized rows, byte-identical generated copies                                     |
+| Can AI distinguish existing components, aliases, variants, blocks, recipes, domains, and deferred engines? | Yes at the current catalog/ledger metadata boundary; no new unimplemented AI row was added                          |
+| Are platform and Native strategies explicit?                                                               | Yes for current canonical rows and ledger candidates; Native runtime maturity remains honest from U12               |
+| Is a Web showroom available?                                                                               | Yes — existing Component Lab/Theme Studio/library surfaces; no new U13 card was required                            |
+| Is applicable Native Lab proof available?                                                                  | Yes for existing U12 families; no new U13 family was admitted                                                       |
+| Is the 100-component target met?                                                                           | No, and the DWO target exception is satisfied because exhaustive normalization found zero legitimate gaps           |
+| Is U14 ready to begin?                                                                                     | Yes, subject to the owner gate and without treating the target exception as fabricated component expansion          |
 
-Before a later queue can claim a positive expansion gate, the owner must
-resolve the U12 native runtime evidence, decide whether any conditional
-candidate has a distinct approved contract, and provide a bounded target
-whose implementation, accessibility, token, renderer, test, AI metadata,
-and showroom obligations can all be satisfied. U13-B through U13-H were not
-started, and U14 was not started.
+U13 is complete through the explicit target-exception path. A future queue may
+revisit the three conditional candidates only with approved contracts and
+evidence; it must not treat the 2,073-row corpus as an automatic backlog of
+canonical components.
 
 ## 34. Gate
 
-FAIL / BLOCKED
+The corpus was normalized before implementation. Duplicate, variant, alias,
+block, recipe, engine, deferred, and domain classifications are separately
+auditable. The current registry/projections reconcile, no donor visual/API
+leakage was introduced, no component count was manufactured, and the U12
+Native prerequisite is satisfied.
+
+**PASS FOR U14**
+
+U14 was not started.

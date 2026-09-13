@@ -1,24 +1,30 @@
 # T7-UNIVERSAL-HARDENING-U05 — Forms, Selection, Date/Time & Files Evidence
 
+Status: U05 implementation was already present in the current HEAD and was
+revalidated in this bounded execution. No additional U05 component family or
+U06+ implementation was started.
+
 ## 1. Coordinates
 
-| Field                    | Evidence                                                                                                                                                                             |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Repository               | `fahziputraj/ten4seven-ui` · `D:\\SA\\ten4seven-ui`                                                                                                                                  |
-| Queue                    | `T7-UNIVERSAL-HARDENING-U05` — Forms + Selection + Date/Time + Files Enrichment                                                                                                      |
-| Branch                   | `codex/icons-curated-solar-style`                                                                                                                                                    |
-| HEAD at evidence capture | `e582cfcfbe0f077d1a5832d86db9da1898487fd3`                                                                                                                                           |
-| Date                     | 2026-09-12, Asia/Jakarta                                                                                                                                                             |
-| U01 prerequisite         | `PASS FOR U02` — `docs/aapm/T7-UNIVERSAL-HARDENING-U01-TOKEN-FOUNDATION-EVIDENCE.md`                                                                                                 |
-| U02 prerequisite         | `PASS FOR U03` — `docs/aapm/T7-UNIVERSAL-HARDENING-U02-INTRINSIC-LAYOUT-EVIDENCE.md`                                                                                                 |
-| U03 prerequisite         | `PASS FOR U04` — `docs/aapm/T7-UNIVERSAL-HARDENING-U03-CROSS-PLATFORM-CONTRACT-EVIDENCE.md`                                                                                          |
-| U04 prerequisite         | Carried from the prior core layout/actions queue: `docs/aapm/T7-COMP-EXP-Q04-CORE-LAYOUT-ACTIONS-EVIDENCE.md`, `PASS WITH CONSTRAINTS FOR Q05`. No U04 redesign was reopened in U05. |
-| Scope                    | U05 only. No U06+ implementation was started.                                                                                                                                        |
-| Publication boundary     | No commit, push, PR, merge, tag, publish, or deploy was performed.                                                                                                                   |
+| Field                    | Evidence                                                                                                                            |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Repository               | `fahziputraj/ten4seven-ui` · `D:\\SA\\ten4seven-ui`                                                                                 |
+| Queue                    | `T7-UNIVERSAL-HARDENING-U05` — Forms + Selection + Date/Time + Files Enrichment                                                     |
+| Branch                   | `codex/icons-curated-solar-style`                                                                                                   |
+| HEAD at evidence capture | `6d3a8b6647a43cea4c7b09686cd0e0dd50420d9d`                                                                                          |
+| Date                     | 2026-09-13, Asia/Jakarta                                                                                                            |
+| U01 prerequisite         | `PASS FOR U02` — `docs/aapm/T7-UNIVERSAL-HARDENING-U01-TOKEN-FOUNDATION-EVIDENCE.md`                                                |
+| U02 prerequisite         | `PASS FOR U03` — `docs/aapm/T7-UNIVERSAL-HARDENING-U02-INTRINSIC-LAYOUT-EVIDENCE.md`                                                |
+| U03 prerequisite         | `PASS FOR U04` — `docs/aapm/T7-UNIVERSAL-HARDENING-U03-CROSS-PLATFORM-CONTRACT-EVIDENCE.md`                                         |
+| U04 prerequisite         | `docs/aapm/T7-UNIVERSAL-HARDENING-U04-FOUNDATIONS-LAYOUT-ACTIONS-EVIDENCE.md`, `PASS FOR U05`. No U04 redesign was reopened in U05. |
+| Scope                    | U05 only. No U06+ implementation was started.                                                                                       |
+| Publication boundary     | No commit, push, PR, merge, tag, publish, or deploy was performed.                                                                  |
 
 The worktree was already materially dirty before this queue. Existing user-owned,
 previous-queue, generated, and unrelated changes were preserved; no reset, clean,
-mass formatting pass, or broad consumer migration was performed.
+mass formatting pass, or broad consumer migration was performed. The current
+execution revalidated the existing U05 implementation in HEAD and did not
+overwrite the dirty U04 artifacts.
 
 The authoritative U05 source is the typed contract plane in
 `packages/contracts/src/input-contracts.ts`. It enriches the existing component
@@ -358,7 +364,7 @@ Current generated projection facts:
 | Platform count        | 23 `BOTH`, 19 `ADAPTIVE`; Web status implemented for all 42; Native status planned for all 42                                                                  |
 | Agent retrieval       | `generated/input-contracts.json` is in `defaultRetrieval` and has an `input-contracts` entry point referencing `/components/forms`.                            |
 | Compact retrieval     | Each input component has `inputContractRef: { path: "input-contracts.json", id: ... }`; the compact component projection does not duplicate the full contract. |
-| Catalog validation    | `pnpm test:ai` passed: 29 recipes, 173 components, 60 expressive blocks, 122 semantic icons, and 0 donor reads in cold-start verification.                     |
+| Catalog validation    | `pnpm test:ai` passed: 29 recipes, 179 components, 60 expressive blocks, 122 semantic icons, and 0 donor reads in cold-start verification.                     |
 
 The human catalog remains a compatibility/documentation surface. No second input
 manifest, native decision manifest, platform map, or consumer-local primitive
@@ -368,44 +374,45 @@ library was created.
 
 ### U05-focused and affected checks
 
-| Command                                                                      | Gate | Evidence                                                                                                                                                           |
-| ---------------------------------------------------------------------------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `pnpm contracts:generate`                                                    | PASS | 222 deterministic contract projections, theme CSS, and 3 DTCG exports generated.                                                                                   |
-| `pnpm test:contracts`                                                        | PASS | Typed/generated parity, ownership/taxonomy/resolution checks, input projection, gap decisions, device sources; compact retrieval `277083/377838` bytes.            |
-| `pnpm test:ai`                                                               | PASS | Input contract refs and full projection metadata verified; cold-start retrieval passed with 0 donor reads.                                                         |
-| `pnpm --filter @ten4seven/contracts typecheck`                               | PASS | Typed U05 contract plane compiles.                                                                                                                                 |
-| `pnpm typecheck`                                                             | PASS | Contracts, Native, Agent, Agent build, and Playground typecheck completed after the final U05 correction.                                                          |
-| `pnpm --filter @ten4seven/tokens test`                                       | PASS | 2 files, 34 tests; defaults, recipe/profile/override/scope/component state, light/dark, contrast, full/reduced motion, and Web/native numeric projection coverage. |
-| `pnpm test:native-mobile`                                                    | PASS | Shared Native boundary and CSS-independent projection remain valid without a native renderer dependency.                                                           |
-| `pnpm test:consistency`                                                      | PASS | Canonical consistency verified across 27 UI source files.                                                                                                          |
-| `pnpm test:token-governance`                                                 | PASS | 24 component modules; no raw component colors, palette dependencies, or ungoverned timing.                                                                         |
-| `pnpm test:component-system`                                                 | PASS | 167 canonical components, 6 aliases, 29 recipes, singular Select model, taxonomy/relations.                                                                        |
-| `pnpm test:dtcg`                                                             | PASS | 3 deterministic DTCG-compatible outputs and exact-source snapshots.                                                                                                |
-| `pnpm test:contrast`                                                         | PASS | 284 recipe/mode pairs at WCAG AA 4.5:1; lowest exact-source result 4.67:1.                                                                                         |
-| `pnpm package:build`                                                         | PASS | `@ten4seven/ui` rebuilt in ESM/CJS forms so the local showroom consumed the new file states.                                                                       |
-| `pnpm package:verify`                                                        | PASS | 17 root exports, bundled tokens/icons/motion, and self-contained styles.                                                                                           |
-| `pnpm build`                                                                 | PASS | Playground TypeScript and Vite production build; existing large-chunk advisory only.                                                                               |
-| `pnpm exec playwright test tests/q05-input-contracts.spec.ts`                | PASS | 2/2 U05 tests passed, including Component Lab stress and Forms/Date & Time/Files showroom routes.                                                                  |
-| `pnpm exec playwright test tests/q06-forms-selection-datetime-files.spec.ts` | PASS | 3/3 inherited Q06 regression tests passed.                                                                                                                         |
-| Targeted Prettier check on all U05-touched source/scripts/catalog/test files | PASS | All matched files use Prettier code style.                                                                                                                         |
-| `git diff --check`                                                           | PASS | Exit code 0; only existing CRLF-to-LF warnings in unrelated dirty files.                                                                                           |
+| Command                                                                      | Gate | Evidence                                                                                                                                                               |
+| ---------------------------------------------------------------------------- | ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm contracts:generate`                                                    | PASS | 234 deterministic contract projections, theme CSS, and 3 DTCG exports generated.                                                                                       |
+| `pnpm test:contracts`                                                        | PASS | Typed/generated parity, ownership/taxonomy/resolution checks, input projection, gap decisions, device sources; compact retrieval `294209/394391` bytes.                |
+| `pnpm test:ai`                                                               | PASS | Input contract refs and full projection metadata verified; cold-start retrieval passed with 0 donor reads.                                                             |
+| `pnpm --filter @ten4seven/contracts typecheck`                               | PASS | Typed U05 contract plane compiles.                                                                                                                                     |
+| `pnpm typecheck`                                                             | PASS | Contracts, Native, Agent, Agent build, and Playground typecheck completed sequentially after package artifacts were stable.                                            |
+| `pnpm --filter @ten4seven/tokens test`                                       | PASS | 2 files, 34 tests; defaults, recipe/profile/override/scope/component state, light/dark, contrast, full/reduced motion, and Web/native numeric projection coverage.     |
+| `pnpm test:native-mobile`                                                    | PASS | Shared Native boundary and CSS-independent projection remain valid without a native renderer dependency.                                                               |
+| `pnpm test:native-expo`                                                      | PASS | Seven profiles, 18 capability contracts, 179 derived component maturity rows, and the CSS-independent Expo boundary remain valid; device runtime is separate evidence. |
+| `pnpm test:consistency`                                                      | PASS | Canonical consistency verified across 28 UI source files.                                                                                                              |
+| `pnpm test:token-governance`                                                 | PASS | 25 component modules; no raw component colors, palette dependencies, or ungoverned timing.                                                                             |
+| `pnpm test:component-system`                                                 | PASS | 172 canonical components, 7 aliases, 29 recipes, singular Select model, taxonomy/relations.                                                                            |
+| `pnpm test:dtcg`                                                             | PASS | 3 deterministic DTCG-compatible outputs and exact-source snapshots.                                                                                                    |
+| `pnpm test:contrast`                                                         | PASS | 284 recipe/mode pairs at WCAG AA 4.5:1; lowest exact-source result 4.67:1.                                                                                             |
+| `pnpm package:build`                                                         | PASS | `@ten4seven/ui` rebuilt in ESM/CJS forms so the local showroom consumed the new file states.                                                                           |
+| `pnpm package:verify`                                                        | PASS | 24 root exports, bundled tokens/icons/motion, and self-contained styles.                                                                                               |
+| `pnpm build`                                                                 | PASS | Playground TypeScript and Vite production build; existing large-chunk advisory only.                                                                                   |
+| `pnpm exec playwright test tests/q05-input-contracts.spec.ts`                | PASS | 2/2 U05 tests passed, including Component Lab stress and Forms/Date & Time/Files showroom routes.                                                                      |
+| `pnpm exec playwright test tests/q06-forms-selection-datetime-files.spec.ts` | PASS | 3/3 inherited Q06 regression tests passed.                                                                                                                             |
+| Targeted Prettier check on U05 source/catalog/tests/evidence                 | PASS | All matched U05-scoped files use Prettier code style; unrelated repository files were not mass-formatted.                                                              |
+| `git diff --check`                                                           | PASS | Exit code 0; only existing CRLF-to-LF warnings in unrelated dirty files.                                                                                               |
 
 ## 17. Baseline debt
 
 The required repository-wide checks are recorded here as a bounded baseline,
 separate from the U05-focused test passes above.
 
-| Command             | Result                                 | Classification                                                                                                                                                                                                                                                                     |
-| ------------------- | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm test`         | FAIL at `pnpm test:component-coverage` | **INHERITED BASELINE**, not a U05 contract failure. The verifier computes 962 stylesheet literal pixel measurements while the tracked report still records 976. All chained gates before that point passed. `pnpm tokens:coverage` was not run and the report was not overwritten. |
-| `pnpm format:check` | FAIL; 354 files reported               | **INHERITED BASELINE**, broad repository/app/research/generated drift. U05 used targeted formatting checks and did not mass-format unrelated files.                                                                                                                                |
+| Command             | Result                   | Classification                                                                                                                                                             |
+| ------------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm test`         | PASS                     | Full repository static/package chain passed, including the U05 input contracts and existing later-queue verification scripts; no later queue implementation was performed. |
+| `pnpm format:check` | FAIL; 501 files reported | **INHERITED BASELINE**, broad repository/app/research/generated drift. U05 used targeted formatting checks and did not mass-format unrelated files.                        |
 
 ## 18. Deferred gaps for U06/U07+
 
 The following remain explicitly outside U05:
 
-- the stale repository-wide component-token coverage report (`962` actual versus
-  `976` tracked) and broad formatting drift;
+- the repository-wide component-token coverage debt: 1000 raw-pixel occurrences
+  remain explicitly tracked, plus broad formatting drift;
 - an Expo/React Native/Android/iOS renderer package and platform components;
 - native sheet/picker implementations and platform permission prompts;
 - remote async option loading, caching, persistence, and virtualization engines;

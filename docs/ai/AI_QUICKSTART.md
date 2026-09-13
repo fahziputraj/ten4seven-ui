@@ -2,7 +2,10 @@
 
 ## 1. What ten4seven UI is
 
-ten4seven UI is a token-driven React UI system. It gives an agent a small public language: `Ten4SevenProvider`, semantic typography/theme roles, canonical primitives, and semantic `T7Icon` names. It is the authority for UI implementation; donor folders are research only.
+Ten4Seven is a token-driven universal design system with a React Web renderer
+and a partial Expo/React Native renderer over one semantic contract plane.
+Start with the [installation and support matrix](../../README.md). Its public
+language includes semantic components, tokens, Blocks, Recipes, and icon intent.
 
 ## 2. Detect an existing installation
 
@@ -59,7 +62,11 @@ import {
   NativeThemeProvider,
 } from "@ten4seven/native/renderer";
 
-<NativeThemeProvider profile="aapm-farm" appearance="system" density="default">
+<NativeThemeProvider
+  profile="neutral-product"
+  appearance="system"
+  density="default"
+>
   <NativeScreen>
     <NativeButton onPress={save}>Save</NativeButton>
   </NativeScreen>
@@ -70,10 +77,12 @@ The native adapter resolves the same semantic profile into JS/TS values for
 React Native. Use the native package's documented renderer exports and keep
 platform presentation explicit: popups may become sheets, dense tables may
 become list/detail surfaces, and touch-safe move actions may accompany or
-replace drag. `@ten4seven/native` is currently a private source-workspace
-package with a bounded partial renderer; the Native Lab Web export is not
-Android/iOS device proof, and no native publication or parity claim should be
-inferred until the U12 runtime gate is passed.
+replace drag. `@ten4seven/native` is a private locally packable package with a
+bounded partial renderer. Its runtime and declarations bundle the shared
+contract and token inputs, while React Native remains a peer dependency. The
+Native Lab Web export is not Android/iOS device proof, and no native
+publication or complete parity claim should be inferred from the local
+package or Web export.
 
 ## 4. Select a page recipe
 

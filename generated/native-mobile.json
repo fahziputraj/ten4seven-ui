@@ -60,6 +60,10 @@
         "layer": "semantic",
         "path": "semantic.color.surface.raised"
       },
+      "scrim": {
+        "layer": "semantic",
+        "path": "semantic.color.scrim"
+      },
       "textPrimary": {
         "layer": "semantic",
         "path": "semantic.color.text.primary"

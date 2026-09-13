@@ -21,6 +21,47 @@ import { PLATFORM_NEUTRAL_OWNERSHIP } from "./platform-neutral.ts";
  */
 
 export type ComponentPlatform = TokenPlatform;
+
+/** Deterministic intent retrieval; projected for agents and the catalog CLI. */
+export const AI_SELECTION_INTENTS = {
+  components: [
+    ["single primary action", ["Button"]],
+    ["toggle a persistent selected state", ["ToggleButton"]],
+    ["toggle button", ["ToggleButton"]],
+    ["searchable selection", ["Combobox"]],
+    ["choose one option on android", ["Select"]],
+    ["choose one option on ios", ["Select"]],
+    ["choose one fixed option", ["Select"]],
+    ["hierarchical selection", ["Cascader"]],
+    ["confirm irreversible delete", ["AlertDialog"]],
+    ["confirm destructive action", ["AlertDialog"]],
+    ["focused modal task", ["Dialog"]],
+    ["simple comparison table", ["Table"]],
+    ["read only comparison", ["Table"]],
+    ["show tabular financial records", ["DataTable"]],
+    ["sortable selectable table", ["DataTable"]],
+    ["100k interactive records", ["AdvancedDataGrid"]],
+    ["editable data grid", ["AdvancedDataGrid"]],
+    ["records on phone", ["List"]],
+    ["temporary action feedback", ["Toast"]],
+    ["persistent event history", ["NotificationCenter"]],
+    ["context help on android", ["Popover"]],
+    ["desktop hover help", ["Tooltip"]],
+    ["plain multiline text", ["Textarea"]],
+    ["desktop resize workspace", ["SplitPane"]],
+    ["chat interface", ["ConversationThread", "PromptComposer"]],
+    ["ai source evidence", ["CitationList"]],
+    ["show product price", ["Price"]],
+  ],
+  capabilities: [
+    ["capture qr code on native", "qrScanner"],
+    ["photo input on ios", "photoLibrary"],
+  ],
+  editors: [
+    ["edit rich formatted content", "RICH_TEXT"],
+    ["write source code", "CODE"],
+  ],
+} as const;
 export type ComponentRendererStrategy = NativeTokenStrategy;
 
 export const COMPONENT_PLATFORM_CLASSES = Object.freeze([
@@ -286,11 +327,16 @@ export type AdaptivePatternId =
   | "dialog"
   | "drawer"
   | "sidebar"
+  | "bottom-navigation"
+  | "menu"
+  | "popover"
+  | "semantic-table"
   | "data-table"
   | "master-detail"
   | "date-time"
   | "files"
   | "command-surface"
+  | "split-action"
   | "notification-center"
   | "navigation-shell"
   | "filtering"
@@ -552,6 +598,66 @@ export const ADAPTIVE_PATTERN_CONTRACTS = {
     },
     ["routing", "permissions", "handlers", "principal-context"],
   ),
+  "bottom-navigation": adaptive(
+    "bottom-navigation",
+    ["navigation"],
+    "ALTERNATE_PATTERN",
+    {
+      presentation: "web-persistent-navigation",
+      inputModalities: [
+        "keyboard",
+        "pointer",
+        "touch",
+        "screenReader",
+        "focus",
+      ],
+      notes:
+        "Bounded primary destinations may render as a static or fixed mobile navigation slot; this is not a desktop sidebar or rail.",
+    },
+    {
+      presentation: "native-navigation",
+      inputModalities: ["touch", "screenReader", "focus", "hardwareBack"],
+      notes:
+        "Native tab/navigation treatment preserves a small destination set, active state, touch targets, and renderer-resolved safe-area insets.",
+    },
+    ["routing", "permissions", "handlers", "principal-context"],
+  ),
+  menu: adaptive(
+    "menu",
+    ["action", "selection"],
+    "ALTERNATE_PATTERN",
+    {
+      presentation: "web-popup-list",
+      inputModalities: ["keyboard", "pointer", "screenReader", "focus"],
+      notes:
+        "Bounded actions or choices use one trigger-owned popup with keyboard navigation and focus return.",
+    },
+    {
+      presentation: "native-sheet",
+      inputModalities: ["touch", "screenReader", "focus", "hardwareBack"],
+      notes:
+        "Native menus may use a platform menu or action sheet while preserving item intent, selection, and dismissal semantics.",
+    },
+    ["business-data", "handlers", "permissions"],
+  ),
+  popover: adaptive(
+    "popover",
+    ["overlay"],
+    "ALTERNATE_PATTERN",
+    {
+      presentation: "web-popup-list",
+      inputModalities: ["keyboard", "pointer", "screenReader", "focus"],
+      notes:
+        "Anchored interactive content uses viewport collision handling, scoped focus behavior, and outside/Escape dismissal.",
+    },
+    {
+      presentation: "native-sheet",
+      inputModalities: ["touch", "screenReader", "focus", "hardwareBack"],
+      notes:
+        "Native renderers may present the same contextual content as a sheet or modal without inventing hover-only behavior.",
+    },
+    ["business-data", "handlers", "permissions"],
+  ),
   "data-table": adaptive(
     "data-table",
     ["data-display", "selection", "data-entry"],
@@ -569,6 +675,24 @@ export const ADAPTIVE_PATTERN_CONTRACTS = {
         "Usually list/detail, cards/rows, or intentionally horizontally scrollable data when comparison justifies it.",
     },
     ["business-data", "handlers", "permissions", "persistence"],
+  ),
+  "semantic-table": adaptive(
+    "semantic-table",
+    ["data-display"],
+    "ALTERNATE_PATTERN",
+    {
+      presentation: "web-table",
+      inputModalities: ["keyboard", "pointer", "screenReader", "focus"],
+      notes:
+        "Readable tabular comparison keeps native table semantics without query, selection, or cell-editing behavior.",
+    },
+    {
+      presentation: "native-list-detail",
+      inputModalities: ["touch", "screenReader", "focus", "hardwareBack"],
+      notes:
+        "Native renderers may present the same bounded comparison as a readable record list or detail surface.",
+    },
+    ["business-data"],
   ),
   "master-detail": adaptive(
     "master-detail",
@@ -652,6 +776,24 @@ export const ADAPTIVE_PATTERN_CONTRACTS = {
         "Search/action surface reachable from the native shell without assuming browser shortcuts.",
     },
     ["business-data", "handlers", "routing", "permissions"],
+  ),
+  "split-action": adaptive(
+    "split-action",
+    ["action"],
+    "ALTERNATE_PATTERN",
+    {
+      presentation: "web-semantic-control",
+      inputModalities: ["keyboard", "pointer", "screenReader", "focus"],
+      notes:
+        "Keep one primary action direct while exposing tightly related alternatives through the canonical overlay trigger.",
+    },
+    {
+      presentation: "native-sheet",
+      inputModalities: ["touch", "screenReader", "focus", "hardwareBack"],
+      notes:
+        "Keep the primary press direct and present alternatives in a platform menu or sheet without changing the action intent.",
+    },
+    ["business-data", "handlers", "permissions"],
   ),
   "notification-center": adaptive(
     "notification-center",
@@ -1584,6 +1726,87 @@ const selectionOverride: ComponentPlatformRuleOverrides = {
   motionRoles: ["interaction", "enter", "exit", "state"],
 };
 
+const buttonGroupOverride: ComponentPlatformRuleOverrides = {
+  ...bothActionOverride,
+  semanticIntent: ["action", "composition"],
+  interactionModel: "composition",
+  criticalStates: ["ready", "focus", "constrained"],
+  accessibilityObligations: [
+    "accessible-name",
+    "ordered-structure",
+    "structure-order",
+  ],
+  responsiveBehavior: ["reflow", "touch-targets"],
+  layoutIntents: ["measure-control", "touch-target-minimum", "priority-order"],
+  dependencies: ["tokens"],
+};
+
+const toggleButtonOverride: ComponentPlatformRuleOverrides = {
+  ...bothActionOverride,
+  semanticIntent: ["action", "selection"],
+  interactionModel: "selection",
+  criticalStates: ["idle", "focus", "pressed", "selected", "disabled"],
+  accessibilityObligations: [
+    "accessible-name",
+    "actionable-role",
+    "selection-state",
+    "disabled-state",
+    "focus-or-press-feedback",
+    "keyboard-navigation",
+  ],
+  responsiveBehavior: ["reflow", "touch-targets"],
+  layoutIntents: ["measure-control", "touch-target-minimum"],
+};
+
+const toggleButtonGroupOverride: ComponentPlatformRuleOverrides = {
+  ...bothActionOverride,
+  semanticIntent: ["selection"],
+  interactionModel: "selection",
+  criticalStates: ["ready", "focus", "selected", "disabled", "constrained"],
+  accessibilityObligations: [
+    "accessible-name",
+    "selection-state",
+    "ordered-structure",
+    "structure-order",
+    "focus-or-press-feedback",
+    "keyboard-navigation",
+  ],
+  responsiveBehavior: ["reflow", "touch-targets"],
+  layoutIntents: ["measure-control", "touch-target-minimum", "priority-order"],
+  dependencies: ["tokens"],
+};
+
+const splitButtonOverride: ComponentPlatformRuleOverrides = {
+  platform: "ADAPTIVE",
+  rendererStrategy: "ALTERNATE_PATTERN",
+  semanticIntent: ["action"],
+  interactionModel: "activation",
+  criticalStates: ["idle", "focus", "pressed", "expanded", "disabled"],
+  webPresentation: "web-semantic-control",
+  nativePresentation: "native-sheet",
+  inputModalities: ["keyboard", "pointer", "touch", "screenReader", "focus"],
+  accessibilityObligations: [
+    "accessible-name",
+    "actionable-role",
+    "expanded-state",
+    "disabled-state",
+    "focus-or-press-feedback",
+    "keyboard-navigation",
+  ],
+  responsiveBehavior: ["reflow", "priority-order", "touch-targets"],
+  adaptivePattern: "split-action",
+  layoutIntents: ["measure-control", "priority-order", "touch-target-minimum"],
+  motionRoles: ["fast", "interaction", "state", "enter", "exit"],
+  nativeAlternative: "native-sheet",
+  engineBoundary: "renderer-implementation",
+  dependencies: [
+    "tokens",
+    "semantic-icons",
+    "browser-overlay",
+    "responsive-contract",
+  ],
+};
+
 const componentPlatformOverrides = {
   Ten4SevenProvider: {
     platform: "BOTH",
@@ -1633,6 +1856,10 @@ const componentPlatformOverrides = {
     accessibilityObligations: ["accessible-name", "focus-or-press-feedback"],
     dependencies: ["tokens", "consumer-routing"],
   },
+  ButtonGroup: buttonGroupOverride,
+  ToggleButton: toggleButtonOverride,
+  ToggleButtonGroup: toggleButtonGroupOverride,
+  SplitButton: splitButtonOverride,
   SpeedDial: {
     platform: "ADAPTIVE",
     rendererStrategy: "ALTERNATE_PATTERN",
@@ -1771,7 +1998,7 @@ const componentPlatformOverrides = {
   },
   BottomNavigation: {
     platform: "ADAPTIVE",
-    adaptivePattern: "sidebar",
+    adaptivePattern: "bottom-navigation",
     nativeAlternative: "navigation-tabs",
   },
   NavigationRail: {
@@ -1794,6 +2021,8 @@ const componentPlatformOverrides = {
     semanticIntent: ["navigation"],
     interactionModel: "navigation",
     criticalStates: commonNavigationStates,
+    webPresentation: "web-semantic-control",
+    nativePresentation: "native-platform-control",
     accessibilityObligations: [
       "accessible-name",
       "selected-state",
@@ -1807,9 +2036,11 @@ const componentPlatformOverrides = {
   },
   Accordion: {
     ...bothActionOverride,
-    semanticIntent: ["navigation"],
+    semanticIntent: ["composition"],
     interactionModel: "disclosure",
-    criticalStates: commonNavigationStates,
+    criticalStates: ["idle", "focus", "expanded", "collapsed", "disabled"],
+    webPresentation: "web-semantic-control",
+    nativePresentation: "native-pressable",
     accessibilityObligations: [
       "accessible-name",
       "expanded-state",
@@ -1817,24 +2048,37 @@ const componentPlatformOverrides = {
       "focus-or-press-feedback",
     ],
     inputModalities: ["keyboard", "pointer", "touch", "screenReader", "focus"],
+    responsiveBehavior: ["reflow", "touch-targets"],
+    layoutIntents: ["measure-content", "touch-target-minimum"],
+    motionRoles: ["interaction", "state", "reveal"],
+    dependencies: ["tokens", "semantic-icons"],
   },
   Collapsible: {
     ...bothActionOverride,
     semanticIntent: ["composition"],
     interactionModel: "disclosure",
     criticalStates: ["idle", "focus", "expanded", "collapsed", "disabled"],
+    webPresentation: "web-semantic-control",
+    nativePresentation: "native-pressable",
     accessibilityObligations: [
       "accessible-name",
       "expanded-state",
+      "keyboard-navigation",
       "focus-or-press-feedback",
     ],
     inputModalities: ["keyboard", "pointer", "touch", "screenReader", "focus"],
+    responsiveBehavior: ["reflow", "touch-targets"],
+    layoutIntents: ["measure-content", "touch-target-minimum"],
+    motionRoles: ["interaction", "state", "reveal"],
+    dependencies: ["tokens", "semantic-icons"],
   },
   Stepper: {
     ...bothActionOverride,
     semanticIntent: ["navigation", "data-display"],
     interactionModel: "navigation",
     criticalStates: commonNavigationStates,
+    webPresentation: "web-semantic-control",
+    nativePresentation: "native-platform-control",
     accessibilityObligations: [
       "accessible-name",
       "ordered-structure",
@@ -1842,6 +2086,9 @@ const componentPlatformOverrides = {
       "focus-or-press-feedback",
     ],
     inputModalities: ["keyboard", "pointer", "touch", "screenReader", "focus"],
+    responsiveBehavior: ["reflow", "touch-targets"],
+    layoutIntents: ["measure-content", "touch-target-minimum"],
+    motionRoles: ["interaction", "state"],
   },
   TabPanel: {
     ...bothActionOverride,
@@ -1856,6 +2103,8 @@ const componentPlatformOverrides = {
     interactionModel: "selection",
     adaptivePattern: "command-surface",
     nativeAlternative: "search-action-surface",
+    webPresentation: "web-command-surface",
+    nativePresentation: "native-command-surface",
     inputModalities: [
       "keyboard",
       "pointer",
@@ -1887,6 +2136,8 @@ const componentPlatformOverrides = {
     interactionModel: "navigation",
     adaptivePattern: "collection",
     nativeAlternative: "collection-paging",
+    webPresentation: "web-collection",
+    nativePresentation: "native-collection",
     accessibilityObligations: [
       "accessible-name",
       "navigation-role",
@@ -2138,8 +2389,47 @@ const componentPlatformOverrides = {
   Table: {
     platform: "ADAPTIVE",
     rendererStrategy: "ALTERNATE_PATTERN",
-    adaptivePattern: "data-table",
+    semanticIntent: ["data-display"],
+    interactionModel: "data-comparison",
+    criticalStates: ["ready", "loading", "empty", "error"],
+    webPresentation: "web-table",
+    nativePresentation: "native-list-detail",
+    inputModalities: ["keyboard", "pointer", "touch", "screenReader", "focus"],
+    accessibilityObligations: [
+      "accessible-name",
+      "table-context",
+      "empty-state",
+      "loading-state",
+      "focus-or-press-feedback",
+    ],
+    responsiveBehavior: [
+      "reflow",
+      "scroll",
+      "stack",
+      "touch-targets",
+      "density-adaptive",
+    ],
+    adaptivePattern: "semantic-table",
+    tokenFamilies: [
+      "color",
+      "typography",
+      "spacing",
+      "radius",
+      "focus",
+      "motion",
+      "density",
+      "measure",
+    ],
+    layoutIntents: [
+      "measure-wide",
+      "bounded-scroll-owner",
+      "density-adaptive",
+      "minimum-useful-surface",
+    ],
+    motionRoles: ["state"],
     nativeAlternative: "data-list-detail",
+    engineBoundary: "renderer-implementation",
+    dependencies: ["tokens", "responsive-contract", "consumer-data"],
   },
   TableHeader: {
     platform: "WEB",
@@ -2147,7 +2437,7 @@ const componentPlatformOverrides = {
     webPresentation: "web-table",
     nativePresentation: "not-applicable",
     adaptivePattern: undefined,
-    nativeAlternative: "data-list-detail",
+    nativeAlternative: "none",
   },
   TableBody: {
     platform: "WEB",
@@ -2155,7 +2445,7 @@ const componentPlatformOverrides = {
     webPresentation: "web-table",
     nativePresentation: "not-applicable",
     adaptivePattern: undefined,
-    nativeAlternative: "data-list-detail",
+    nativeAlternative: "none",
   },
   TableRow: {
     platform: "WEB",
@@ -2163,7 +2453,7 @@ const componentPlatformOverrides = {
     webPresentation: "web-table",
     nativePresentation: "not-applicable",
     adaptivePattern: undefined,
-    nativeAlternative: "data-list-detail",
+    nativeAlternative: "none",
   },
   TableHead: {
     platform: "WEB",
@@ -2171,7 +2461,7 @@ const componentPlatformOverrides = {
     webPresentation: "web-table",
     nativePresentation: "not-applicable",
     adaptivePattern: undefined,
-    nativeAlternative: "data-list-detail",
+    nativeAlternative: "none",
   },
   TableCell: {
     platform: "WEB",
@@ -2179,13 +2469,66 @@ const componentPlatformOverrides = {
     webPresentation: "web-table",
     nativePresentation: "not-applicable",
     adaptivePattern: undefined,
-    nativeAlternative: "data-list-detail",
+    nativeAlternative: "none",
   },
   DataTable: {
     platform: "ADAPTIVE",
     rendererStrategy: "ALTERNATE_PATTERN",
+    semanticIntent: ["data-display", "selection"],
+    interactionModel: "collection",
+    criticalStates: [
+      "ready",
+      "loading",
+      "empty",
+      "error",
+      "selected",
+      "focus",
+      "disabled",
+      "stale",
+    ],
+    webPresentation: "web-table",
+    nativePresentation: "native-list-detail",
+    inputModalities: ["keyboard", "pointer", "touch", "screenReader", "focus"],
+    accessibilityObligations: [
+      "accessible-name",
+      "table-context",
+      "sort-state",
+      "selection-state",
+      "empty-state",
+      "loading-state",
+      "focus-or-press-feedback",
+    ],
+    responsiveBehavior: [
+      "reflow",
+      "scroll",
+      "stack",
+      "touch-targets",
+      "density-adaptive",
+    ],
     adaptivePattern: "data-table",
+    tokenFamilies: [
+      "color",
+      "typography",
+      "spacing",
+      "radius",
+      "focus",
+      "motion",
+      "density",
+      "measure",
+      "touch-target",
+    ],
+    layoutIntents: [
+      "measure-wide",
+      "bounded-scroll-owner",
+      "priority-order",
+      "stacked-detail",
+      "density-adaptive",
+      "minimum-useful-surface",
+    ],
+    motionRoles: ["interaction", "state", "reveal"],
     nativeAlternative: "data-list-detail",
+    engineBoundary: "renderer-implementation",
+    dependencies: ["tokens", "responsive-contract", "consumer-data"],
   },
   AdvancedDataGrid: {
     platform: "WEB",
@@ -2193,15 +2536,90 @@ const componentPlatformOverrides = {
     webPresentation: "web-data-grid",
     nativePresentation: "not-applicable",
     adaptivePattern: undefined,
-    nativeAlternative: "data-list-detail",
+    semanticIntent: ["data-display", "selection", "data-entry"],
+    interactionModel: "data-entry",
+    criticalStates: [
+      "ready",
+      "loading",
+      "empty",
+      "error",
+      "selected",
+      "focus",
+      "disabled",
+      "stale",
+    ],
+    inputModalities: ["keyboard", "pointer", "screenReader", "focus"],
+    accessibilityObligations: [
+      "accessible-name",
+      "table-context",
+      "selection-state",
+      "error-association",
+      "keyboard-navigation",
+      "focus-or-press-feedback",
+      "loading-state",
+    ],
+    responsiveBehavior: [
+      "reflow",
+      "scroll",
+      "stack",
+      "touch-targets",
+      "density-adaptive",
+    ],
+    tokenFamilies: [
+      "color",
+      "typography",
+      "spacing",
+      "radius",
+      "focus",
+      "motion",
+      "density",
+      "measure",
+    ],
+    layoutIntents: [
+      "measure-wide",
+      "bounded-scroll-owner",
+      "density-adaptive",
+      "minimum-useful-surface",
+    ],
+    motionRoles: ["interaction", "state"],
+    nativeAlternative: "none",
     engineBoundary: "optional-consumer-engine",
     dependencies: ["tokens", "consumer-data", "consumer-engine"],
   },
   DataTableColumnPicker: {
     platform: "ADAPTIVE",
     rendererStrategy: "ALTERNATE_PATTERN",
+    semanticIntent: ["selection", "data-display"],
+    interactionModel: "selection",
+    criticalStates: ["ready", "loading", "selected", "disabled"],
+    webPresentation: "web-collection",
+    nativePresentation: "native-sheet",
+    inputModalities: ["keyboard", "pointer", "touch", "screenReader", "focus"],
+    accessibilityObligations: [
+      "accessible-name",
+      "selection-state",
+      "focus-or-press-feedback",
+    ],
+    responsiveBehavior: ["reflow", "collapse", "drawer", "touch-targets"],
     adaptivePattern: "filtering",
+    tokenFamilies: [
+      "color",
+      "typography",
+      "spacing",
+      "radius",
+      "focus",
+      "density",
+      "measure",
+    ],
+    layoutIntents: [
+      "measure-control",
+      "priority-order",
+      "touch-target-minimum",
+    ],
+    motionRoles: ["interaction", "state"],
     nativeAlternative: "native-sheet",
+    engineBoundary: "renderer-implementation",
+    dependencies: ["tokens", "responsive-contract", "consumer-data"],
   },
   Modal: {
     platform: "ADAPTIVE",
@@ -2220,12 +2638,16 @@ const componentPlatformOverrides = {
     rendererStrategy: "ALTERNATE_PATTERN",
     adaptivePattern: "drawer",
     nativeAlternative: "native-sheet",
+    webPresentation: "web-edge-surface",
+    nativePresentation: "native-sheet",
   },
   DetailDrawer: {
     platform: "ADAPTIVE",
     rendererStrategy: "ALTERNATE_PATTERN",
     adaptivePattern: "drawer",
     nativeAlternative: "native-sheet",
+    webPresentation: "web-edge-surface",
+    nativePresentation: "native-sheet",
   },
   FilterDrawer: {
     platform: "ADAPTIVE",
@@ -2236,15 +2658,19 @@ const componentPlatformOverrides = {
   Popover: {
     platform: "ADAPTIVE",
     rendererStrategy: "ALTERNATE_PATTERN",
-    adaptivePattern: "dialog",
+    adaptivePattern: "popover",
     nativeAlternative: "native-sheet",
+    webPresentation: "web-popup-list",
+    nativePresentation: "native-sheet",
+    interactionModel: "overlay",
+    semanticIntent: ["overlay"],
   },
   Tooltip: {
     platform: "WEB",
     rendererStrategy: "NOT_APPLICABLE",
     semanticIntent: ["overlay"],
     interactionModel: "overlay",
-    webPresentation: "web-modal",
+    webPresentation: "web-semantic-element",
     nativePresentation: "not-applicable",
     inputModalities: ["pointer", "hover", "keyboard", "screenReader", "focus"],
     accessibilityObligations: [
@@ -2260,14 +2686,57 @@ const componentPlatformOverrides = {
   DropdownMenu: {
     platform: "ADAPTIVE",
     rendererStrategy: "ALTERNATE_PATTERN",
-    adaptivePattern: "dialog",
+    adaptivePattern: "menu",
     nativeAlternative: "native-sheet",
+    webPresentation: "web-popup-list",
+    nativePresentation: "native-sheet",
+    semanticIntent: ["action", "selection"],
+    interactionModel: "selection",
+    criticalStates: ["idle", "focus", "selected", "expanded", "disabled"],
+    accessibilityObligations: [
+      "accessible-name",
+      "actionable-role",
+      "selected-state",
+      "keyboard-navigation",
+      "focus-return",
+      "dismissal",
+    ],
+    inputModalities: ["keyboard", "pointer", "screenReader", "focus"],
+    responsiveBehavior: ["reflow", "touch-targets"],
+    layoutIntents: [
+      "measure-compact",
+      "minimum-useful-surface",
+      "touch-target-minimum",
+    ],
+    motionRoles: ["interaction", "enter", "exit"],
+    dependencies: ["tokens", "semantic-icons", "browser-overlay"],
   },
   ContextMenu: {
     platform: "ADAPTIVE",
     rendererStrategy: "ALTERNATE_PATTERN",
-    adaptivePattern: "dialog",
+    adaptivePattern: "menu",
     nativeAlternative: "native-sheet",
+    webPresentation: "web-popup-list",
+    nativePresentation: "native-sheet",
+    semanticIntent: ["action", "selection"],
+    interactionModel: "selection",
+    criticalStates: ["idle", "focus", "selected", "expanded", "disabled"],
+    accessibilityObligations: [
+      "accessible-name",
+      "actionable-role",
+      "selected-state",
+      "keyboard-navigation",
+      "focus-return",
+      "dismissal",
+    ],
+    responsiveBehavior: ["reflow", "touch-targets"],
+    layoutIntents: [
+      "measure-compact",
+      "minimum-useful-surface",
+      "touch-target-minimum",
+    ],
+    motionRoles: ["interaction", "enter", "exit"],
+    dependencies: ["tokens", "semantic-icons", "browser-overlay"],
     inputModalities: [
       "pointer",
       "touch",

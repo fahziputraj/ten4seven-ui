@@ -5,25 +5,25 @@
 - Repository: `fahziputraj/ten4seven-ui`
 - Checkout: `D:\SA\ten4seven-ui`
 - Branch: `codex/icons-curated-solar-style`
-- HEAD at U09 execution: `e582cfcfbe0f077d1a5832d86db9da1898487fd3`
+- HEAD at U09 execution: `6d3a8b6647a43cea4c7b09686cd0e0dd50420d9d`
 - Queue executed: `T7-UNIVERSAL-HARDENING-U09` only
 - DWO: `C:\Users\user\.codex\attachments\2f3ee4e3-7796-423a-b6f4-16dbacd83983\pasted-text.txt`
 - Execution boundary: no U10/U11/U12 implementation, no commit, push, PR, merge, tag, publish, or deploy.
-- Worktree boundary: the checkout was already heavily dirty from the preceding hardening queues. No reset, clean, branch deletion, unrelated-file normalization, or opportunistic staging was performed.
+- Worktree boundary: the checkout was already heavily dirty from the preceding hardening queues. The starting `git status --short` count was 80 entries. No reset, clean, branch deletion, unrelated-file normalization, or opportunistic staging was performed. The final count is 82 after the scoped U09 test-selector correction and evidence refresh.
 
 ## 2. Inventory before
 
 The pre-U09 inventory was read from the existing typed contracts, component-platform decisions, catalogs, showroom, and generated projections.
 
-| Inventory                                              | Before U09 | Evidence / interpretation                                                                                                                                      |
-| ------------------------------------------------------ | ---------: | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Compatibility component catalog entries                |        178 | `packages/ai/catalog/components.json`; only `implemented` entries are eligible for composition.                                                                |
-| Compatibility recipe entries                           |         29 | `packages/ai/catalog/recipes.json`; typed operational recipes remain compatibility surfaces.                                                                   |
-| Compatibility block entries                            |         60 | `packages/ai/catalog/blocks.json`; blocks compose canonical components and are not a primitive library.                                                        |
-| Typed operational patterns                             |         12 | `packages/contracts/src/operational-patterns.ts`; existing process, decision, activity, and operational compositions.                                          |
-| Existing U09 workflow component links                  |         16 | The existing `workflow-productivity.ts` was a small placeholder with component ownership and deferred notes but no complete pattern taxonomy or native canary. |
-| Generic WorkQueue / Inbox / Kanban / Wizard components |          0 | Existing collection, action, milestone, shell, and overlay components were available; no parallel generic workflow primitive was added.                        |
-| Native workflow descriptors                            |          0 | U08 had data-collection and visualization canaries, but no U09 workflow/productivity canary set.                                                               |
+| Inventory                                              | Before U09 | Evidence / interpretation                                                                                                                                                                                                                                                                    |
+| ------------------------------------------------------ | ---------: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Compatibility component catalog entries                |        179 | `packages/ai/catalog/components.json`; only `implemented` entries are eligible for composition.                                                                                                                                                                                              |
+| Compatibility recipe entries                           |         29 | `packages/ai/catalog/recipes.json`; typed operational recipes remain compatibility surfaces.                                                                                                                                                                                                 |
+| Compatibility block entries                            |         60 | `packages/ai/catalog/blocks.json`; blocks compose canonical components and are not a primitive library.                                                                                                                                                                                      |
+| Typed operational patterns                             |         12 | `packages/contracts/src/operational-patterns.ts`; existing process, decision, activity, and operational compositions.                                                                                                                                                                        |
+| Existing U09 workflow component links                  |         27 | The accepted baseline already contains the complete typed U09 pattern taxonomy, linked implemented components, generated projections, verifier, native canaries, showroom proof, and browser test. This execution re-audited and re-verified that plane rather than creating a parallel one. |
+| Generic WorkQueue / Inbox / Kanban / Wizard components |          0 | Existing collection, action, milestone, shell, and overlay components were available; no parallel generic workflow primitive was added.                                                                                                                                                      |
+| Native workflow descriptors                            |          6 | CSS-independent descriptors already present for the U09 canary intents; no `@ten4seven/native` components or renderer were created.                                                                                                                                                          |
 
 Representative existing evidence included `MilestoneTracker`, `ActivityFeed`, `AppShell`, `PageHeader`, `DetailDrawer`, `SplitPane`, `Stepper`, `CommandMenu`, `DataTable`, `List`, `FilterToolbar`, `BulkActionBar`, and the typed operational recipes. Representative consumer-shaped surfaces already existed for Theme Studio, Component Lab, authentication, Public Showcase, Publishing Store, Operations Tracker, and Farm P1 Reference. These were used as drift evidence, not as invitations to rewrite every consumer.
 
@@ -117,17 +117,17 @@ The Web presentation is a keyboard-first popup with search, listbox results, foc
 
 ## 10. Components hardened
 
-The typed plane links 27 existing implemented components to the pattern decisions and exports the metadata from `@ten4seven/ui`:
+The accepted U09 typed plane links 27 existing implemented components to the pattern decisions and exports the metadata from `@ten4seven/ui`:
 
 `AppShell`, `PageHeader`, `Sidebar`, `MobileSidebar`, `List`, `DataTable`, `SearchInput`, `Card`, `EmptyState`, `StateView`, `Stepper`, `MilestoneTracker`, `Progress`, `StatusChip`, `ActivityFeed`, `NotificationCenter`, `RecordSummary`, `ApprovalPanel`, `Toolbar`, `ActionBar`, `ActionFooter`, `FilterToolbar`, `BulkActionBar`, `DetailDrawer`, `SplitPane`, `DragHandle`, and `CommandMenu`.
 
-The linked list is validated against `packages/ai/catalog/components.json`; every linked entry remains `implemented`. No consumer-specific component was promoted into this list.
+The linked list is validated against `packages/ai/catalog/components.json`; every linked entry remains `implemented`. This execution also hardened the U09 browser proof by scoping its CommandMenu trigger to the canonical overlay group, avoiding a strict-mode collision with the separately rendered U10 power-user canary. No consumer-specific component was promoted into this list.
 
 ## 11. Net-new components
 
 Net-new canonical UI components: **0**.
 
-U09 adds no `WorkQueue`, `Inbox`, `Kanban`, `TaskBoard`, `Wizard`, `DecisionWorkspace`, `Workboard`, `CommentThread`, or domain-specific workflow primitive. The new items are typed pattern metadata, generated projections, a native descriptor canary, and a showroom/test proof over existing components.
+No net-new canonical UI component was required in this execution. The accepted baseline already contains the typed pattern metadata, generated projections, native descriptor canaries, and showroom/test proof over existing components; the bounded correction was test-proof isolation only. U09 adds no `WorkQueue`, `Inbox`, `Kanban`, `TaskBoard`, `Wizard`, `DecisionWorkspace`, `Workboard`, `CommentThread`, or domain-specific workflow primitive.
 
 No `@ten4seven/native` component was created. `packages/native/src/index.ts` contains descriptors and resolvers only.
 
@@ -223,7 +223,8 @@ No product route was converted into a fixture-heavy workflow shell. Existing The
 - mobile viewport `390 × 844`: stacked collection, one-column board lanes, visible Wizard, and document overflow check;
 - `prefers-reduced-motion: reduce`: exercised in the mobile scenario;
 - document horizontal overflow: measured as `<= 1px` in the mobile scenario;
-- queue movement and command dismissal are exercised through real rendered controls.
+- queue movement and command dismissal are exercised through real rendered controls;
+- the command-menu locator is scoped to the canonical overlay group so the proof remains deterministic when the separate U10 canary is also mounted.
 
 Result: **2 U09 tests passed**.
 
@@ -245,23 +246,26 @@ The projection generator is `scripts/generate-contract-projections.mjs`; the U09
 
 ## 20. Tests
 
-| Check                                                               | Result               | Evidence                                                                                                                      |
-| ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm contracts:generate`                                           | PASS                 | Regenerated 230 contract projections plus token/DTCG projections.                                                             |
-| `pnpm test:workflow-productivity`                                   | PASS                 | 17 patterns, 27 linked components, 6 native canaries; deterministic source/projection/native checks.                          |
-| `pnpm test:contracts`                                               | PASS                 | Canonical registry, generated projection, aliases, operational parity, and existing contract gates.                           |
-| `pnpm typecheck`                                                    | PASS                 | Contracts, native, agent build, and Playground typecheck.                                                                     |
-| `pnpm test`                                                         | PASS                 | Full repository test chain, including U09 verifier and prior U01–U08 gates.                                                   |
-| `pnpm test:ai`                                                      | PASS                 | 29 recipes, 178 components, 60 blocks, 122 semantic icons, and cold-start retrieval.                                          |
-| `pnpm test:consistency`                                             | PASS                 | Canonical consistency across 28 UI source files.                                                                              |
-| `pnpm test:token-governance`                                        | PASS                 | Token governance and no ungoverned component color/timing regression.                                                         |
-| `pnpm exec playwright test tests/u09-workflow-productivity.spec.ts` | PASS                 | 2 rendered Chromium tests.                                                                                                    |
-| `pnpm build`                                                        | PASS                 | Playground production build; existing large-chunk warning recorded below.                                                     |
-| `pnpm package:build`                                                | PASS                 | `@ten4seven/ui@1.0.0` package build.                                                                                          |
-| `pnpm package:verify`                                               | PASS                 | 17 root exports and bundled token/icon/motion package boundary.                                                               |
-| Targeted Prettier check                                             | PASS                 | All U09-touched source, test, and evidence files match Prettier.                                                              |
-| `git diff --check`                                                  | PASS                 | No whitespace errors; Git reported inherited CRLF conversion warnings on unrelated dirty files.                               |
-| `pnpm format:check`                                                 | FAIL / BASELINE DEBT | Full repository check reports 356 pre-existing/unrelated files; U08 baseline recorded 357. U09 files pass the targeted check. |
+| Check                                                               | Result               | Evidence                                                                                                         |
+| ------------------------------------------------------------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `pnpm contracts:generate`                                           | PASS                 | Regenerated 234 contract projections plus token/DTCG projections.                                                |
+| `pnpm test:workflow-productivity`                                   | PASS                 | 17 patterns, 27 linked components, 6 native canaries; deterministic source/projection/native checks.             |
+| `pnpm test:native-mobile`                                           | PASS                 | Shared native contract, token resolution, semantic icon, accessibility, and Farm presentation checks.            |
+| `pnpm test:native-expo`                                             | PASS                 | 7 profiles, 18 capability contracts, 179 derived component maturity rows, and CSS-independent renderer boundary. |
+| `pnpm test:contracts`                                               | PASS                 | Canonical registry, generated projection, aliases, operational parity, and existing contract gates.              |
+| `pnpm typecheck`                                                    | PASS                 | Contracts, native, agent build, and Playground typecheck.                                                        |
+| `pnpm test`                                                         | NOT RUN — BOUNDARY   | The aggregate chain enters U10/U11/U12/U13/U14 checks; it was not run because this execution is U09-only.        |
+| `pnpm test:ai`                                                      | PASS                 | 29 recipes, 179 components, 60 blocks, 122 semantic icons, and cold-start retrieval.                             |
+| `pnpm test:consistency`                                             | PASS                 | Canonical consistency across 28 UI source files.                                                                 |
+| `pnpm test:token-governance`                                        | PASS                 | Token governance and no ungoverned component color/timing regression.                                            |
+| `pnpm test:component-system`                                        | PASS                 | 172 canonical components, 7 aliases, 29 recipes, 60 expressive blocks, and singular Select/taxonomy checks.      |
+| `pnpm exec playwright test tests/u09-workflow-productivity.spec.ts` | PASS                 | 2 rendered Chromium tests.                                                                                       |
+| `pnpm build`                                                        | PASS                 | Playground production build; existing large-chunk warning recorded below.                                        |
+| `pnpm package:build`                                                | PASS                 | `@ten4seven/ui@1.0.0` package build.                                                                             |
+| `pnpm package:verify`                                               | PASS                 | 24 root exports and bundled token/icon/motion package boundary.                                                  |
+| Targeted Prettier check                                             | PASS                 | All U09-touched source, test, and evidence files match Prettier.                                                 |
+| `git diff --check`                                                  | PASS                 | No whitespace errors; Git reported inherited CRLF conversion warnings on unrelated dirty files.                  |
+| `pnpm format:check`                                                 | FAIL / BASELINE DEBT | Full repository check reports 501 pre-existing/unrelated files. U09 files pass the targeted check.               |
 
 The format result is not treated as a U09 source regression because the failing files include inherited `.playwright-cli` captures, existing docs, catalogs, and unrelated source files. No mass formatting pass was performed.
 
@@ -276,7 +280,7 @@ The format result is not treated as a U09 source regression because the failing 
 ## 22. Baseline debt
 
 - The worktree was already non-clean and remains non-clean by design; unrelated U01–U08 changes and pre-existing artifacts were preserved.
-- The repository-wide Prettier gate currently reports 356 files. The U08 execution record reported 357 inherited files. The count is not used as a reason to rewrite unrelated files.
+- The repository-wide Prettier gate currently reports 501 files. The count includes inherited `.playwright-cli` captures, generated/native build artifacts, docs, catalogs, and unrelated source; it is not used as a reason to rewrite unrelated files.
 - The production Playground build reports large chunks; no U09 code-splitting or dependency expansion was introduced.
 - Pre-existing Q10-labelled workflow proof/test/evidence artifacts were not deleted. The shared proof keeps its existing compatibility CSS class while its semantic contract-plane label is U09.
 - Git’s `diff --check` emitted line-ending conversion warnings for inherited dirty files; it found no whitespace errors.

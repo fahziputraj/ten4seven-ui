@@ -1,21 +1,22 @@
 # T7-UNIVERSAL-HARDENING-U11 — Blocks, Recipes + Product Profiles Evidence
 
-## 1 Coordinates
+## 1. Coordinates
 
 - Program: T7-UNIVERSAL-HARDENING-001
 - DWO: T7-UNIVERSAL-HARDENING-U11
 - Repository: fahziputraj/ten4seven-ui
 - Workspace: D:\SA\ten4seven-ui
 - Branch: codex/icons-curated-solar-style
-- HEAD at evidence capture: e582cfcfbe0f077d1a5832d86db9da1898487fd3
-- Execution date: 2026-09-12, Asia/Jakarta
+- HEAD at evidence capture: 6d3a8b6647a43cea4c7b09686cd0e0dd50420d9d
+- Execution date: 2026-09-13, Asia/Jakarta
 - Boundary: U11 only. U12 and later queues were not executed.
 - Mutation boundary: no commit, push, pull request, merge, tag, publish, or deploy was performed.
 
 The worktree was already dirty when U11 started. Existing changes were preserved
-without reset, clean, broad formatting, or opportunistic staging. The final
-status snapshot contains 623 entries and includes unrelated work. In particular,
-the pre-existing U12 artifacts
+without reset, clean, broad formatting, or opportunistic staging. The starting
+status snapshot contained 85 entries and included unrelated and earlier-queue
+work. The final status after the scoped evidence refresh contains 86 entries.
+In particular, the pre-existing U12 artifacts
 docs/aapm/T7-COMP-EXP-Q12-BLOCKS-EVIDENCE.md and
 tests/q12-block-expansion.spec.ts were not edited or executed as U11 work.
 
@@ -27,24 +28,25 @@ Evidence labels used below:
 - OBSERVED: evidence from a representative consumer or showroom surface.
 - UNKNOWN / UNVERIFIED: intentionally outside the U11 boundary.
 
-## 2 Inventory before
+## 2. Inventory before
 
 SOURCE inspection established the following starting point:
 
 - packages/contracts/src already owned normalized brand profiles, theme recipes,
-  theme resolution, foundation tokens, motion roles, responsive contracts, and
-  native-adapter contracts.
-- The contract plane did not yet have one typed Blocks + Recipes + Product
-  Profiles composition contract. The legacy human catalogs remained the
-  compatibility source for 60 blocks, 29 recipes, 178 components, and 122
-  semantic icons.
+  theme resolution, foundation tokens, motion roles, responsive contracts,
+  native-adapter contracts, and the typed U11 composition plane in
+  packages/contracts/src/composition.ts.
+- The accepted starting HEAD already contained one typed Blocks + Recipes +
+  Product Profiles composition contract covering 27 blocks, 19 recipes, and 7
+  profiles. The legacy human catalogs remained compatibility sources for 60
+  blocks, 29 recipes, 179 components, and 122 semantic icons.
 - Brand profiles already exposed seven canonical profile IDs:
   neutral-product, aapm-core, aapm-farm, aapm-operations, aapm-erp,
   aapm-academy, and aapm-public.
 - Theme Studio, Component Lab, the Blocks and Recipes library surfaces, and
-  the existing package/native checks already provided harness evidence. U11
-  adds the typed composition projection and showroom proof; it does not
-  replace those existing contracts.
+  the existing package/native checks already provided harness evidence. The
+  U11 typed projection and showroom were present at the start and were
+  revalidated here; this execution did not replace those existing contracts.
 - Representative consumer evidence was inspected for Theme Studio, Component
   Lab, Auth, Public Showcase, Publishing Store, Operations Tracker, SaaS
   Control Plane, ERP Density, and Farm reference surfaces. This was evidence
@@ -53,11 +55,12 @@ SOURCE inspection established the following starting point:
 The main duplication/drift risk was architectural rather than a single visual
 defect: a legacy catalog could be treated as an implementation authority,
 product-profile decisions could be repeated in consumers, and a future native
-renderer could be forced to infer intent from Web CSS. U11 addresses that risk
-with a typed composition source and generated projections while retaining the
-legacy catalogs as compatibility surfaces.
+renderer could be forced to infer intent from Web CSS. The accepted U11 plane
+addresses that risk with one typed composition source and generated projections
+while retaining the legacy catalogs as compatibility surfaces. This execution
+reverified that boundary and did not introduce a second source.
 
-## 3 Block taxonomy
+## 3. Block taxonomy
 
 The typed source is packages/contracts/src/composition.ts. Every composition
 block is classified as COMPOSITE_BLOCK and has an explicit level, family,
@@ -96,7 +99,7 @@ typed count is a composition-contract count, not a claim that all legacy
 catalog entries are canonical product APIs. Variants and aliases do not
 increase canonical component count.
 
-## 4 Recipe taxonomy
+## 4. Recipe taxonomy
 
 The typed source classifies every recipe as RECIPE_OR_PATTERN. A recipe owns a
 reusable arrangement, block-role relationships, composition guidance, platform
@@ -129,7 +132,7 @@ The 14 existing recipes retain their legacy catalog IDs through provenance.
 Typed alternatives are normalized to typed IDs and are validated by the
 generator; no second recipe manifest was introduced.
 
-## 5 Product Profile model
+## 5. Product Profile model
 
 Product profiles are presentation capabilities derived from the existing
 canonical brand-profile.ts and theme-recipe.ts sources. They select semantic
@@ -152,7 +155,7 @@ source. U11 did not introduce a competing brand palette or new profile-specific
 component family. The profile capability projection is generated from the
 existing profile and recipe contracts.
 
-## 6 Resolver/ownership model
+## 6. Resolver/ownership model
 
 The composition resolver preserves the U01 order exactly:
 
@@ -191,7 +194,7 @@ the authority. The native projection is direct resolved JS/TS data and is
 explicitly marked cssParsing=false; it does not parse CSS variables or depend
 on a Web stylesheet.
 
-## 7 Blocks hardened
+## 7. Blocks hardened
 
 The stable public and commerce blocks are carried into the typed contract with
 normalized provenance:
@@ -216,9 +219,11 @@ All of these contracts use canonical component names and token families. No
 consumer handler, data fetch, permission check, domain status, or persistence
 implementation was moved into the block layer.
 
-## 8 Net-new Blocks
+## 8. Net-new Blocks
 
-The following are typed composition contracts, not new primitive components:
+The following are typed composition contracts, not new primitive components. In
+the U11 lineage they are the three justified typed Block additions already
+present in the accepted starting HEAD:
 
 - table-workbench: a bounded data-workbench anatomy around the existing
   readable Table/DataTable families.
@@ -234,7 +239,7 @@ inventing a legacy compatibility mapping.
 
 No @ten4seven/native component library was created in U11.
 
-## 9 Recipes hardened
+## 9. Recipes hardened
 
 The following existing recipe identities were normalized into the typed plane
 and retain legacy provenance:
@@ -258,7 +263,7 @@ The compatibility mapping keeps existing catalog consumers readable while
 making family, platform, native strategy, block roles, boundaries, and AI
 guidance explicit in typed source.
 
-## 10 Net-new Recipes
+## 10. Net-new Recipes
 
 The following typed recipes have no legacy catalog ID and are available as
 composition guidance only:
@@ -275,21 +280,21 @@ These recipes do not expose a domain entity API or a finished product screen.
 Their required, recommended, and optional block roles are checked during
 projection generation.
 
-## 11 Profiles hardened/created
+## 11. Profiles hardened / created
 
-U11 created the typed PRODUCT_PROFILE capability projection; it did not create
-a parallel profile source. All seven existing canonical profile IDs are
-represented, including Neutral, AAPM, Farm, Operations, ERP, Academy, and
-Publishing. Each profile has Web and native support flags and
+The accepted U11 plane exposes the typed PRODUCT_PROFILE capability projection;
+it did not create a parallel profile source. All seven existing canonical
+profile IDs are represented, including Neutral, AAPM, Farm, Operations, ERP,
+Academy, and Publishing. Each profile has Web and native support flags and
 SAME_INTENT profile strategy. Profile-level expression is resolved through the
 existing theme recipe/profile source and then projected to composition
-consumers.
+consumers. This execution revalidated the projection and added no profile.
 
 The profile model is therefore additive and compatibility-safe: it gives
 blocks, recipes, showrooms, native canaries, and AI retrieval one normalized
 profile contract without forking the existing visual language.
 
-## 12 Rejected domain candidates
+## 12. Rejected domain-specific candidates
 
 The following candidates were deliberately not promoted into Blocks, Recipes,
 or Product Profiles:
@@ -310,7 +315,7 @@ or Product Profiles:
 These remain consumer/domain or engine-adapter concerns. A rejected candidate
 is not a missing canonical component merely because a product route uses it.
 
-## 13 Web/Native adaptive matrix
+## 13. Web/Native adaptive matrix
 
 | Intent            | Web renderer                                               | Native renderer                                                                   | Strategy          |
 | ----------------- | ---------------------------------------------------------- | --------------------------------------------------------------------------------- | ----------------- |
@@ -327,7 +332,7 @@ The U11 responsive viewport matrix is 1440×900, 1024×768, 768×1024, and
 390×844. Responsive intent is semantic order and re-composition; it is not a
 promise that a native renderer will reproduce Web DOM layout.
 
-## 14 Profile comparison proof
+## 14. Profile comparison proof
 
 RUNTIME proof is provided on the normalized /blocks showroom. It renders seven
 ThemeScope-wrapped profile cards for Neutral, AAPM, Farm, Operations, ERP,
@@ -337,12 +342,13 @@ structure. The visible comparison changes profile expression metadata and
 resolver context, not the component contract or business action.
 
 The browser assertion data-testid=u11-profile-comparison confirms seven
-profile cards, and the profile-card assertions confirm the same action label
-across all profiles at all four viewport sizes. This proves profile
+profile cards and the profile-card assertions confirm the same action label
+across all profiles at the desktop viewport. All four viewport sizes retain the
+comparison surface and remain horizontally safe. This proves profile
 comparison through the existing ThemeScope mechanism rather than a second
 profile runtime.
 
-## 15 Native block canary
+## 15. Native block canary
 
 SOURCE and TEST proof use resolveNativeBlockComposition and the exported
 NATIVE_COMPOSITION_CANARY. The six block canaries are:
@@ -360,7 +366,7 @@ Every canary is marked cssParsing=false, has semantic order, safe-area
 guidance, and labelled touch-safe action guidance. This is a renderer-neutral
 contract proof, not an implementation of native components.
 
-## 16 Native recipe canary
+## 16. Native recipe canary
 
 SOURCE and TEST proof use resolveNativeRecipeComposition for:
 
@@ -375,7 +381,7 @@ reading order, expose safe-area and labelled-press obligations, and have
 cssParsing=false. The canaries demonstrate that native consumes the resolved
 contract directly; they do not claim a native renderer package is complete.
 
-## 17 Consumer proof mapping
+## 17. Consumer proof mapping
 
 | Representative surface         | U11 composition evidence                                        | Boundary                                                                       |
 | ------------------------------ | --------------------------------------------------------------- | ------------------------------------------------------------------------------ |
@@ -393,7 +399,7 @@ OBSERVED route proof was used to map representative consumers to reusable
 composition intent. U11 did not claim that every mapped route has been
 migrated to the new typed contract, and did not change its business behavior.
 
-## 18 AI/catalog projection
+## 18. AI/catalog projection
 
 The typed composition source is projected by
 scripts/generate-contract-projections.mjs. The generator writes:
@@ -417,62 +423,91 @@ a second typed decision manifest. Generator validation rejects missing
 component references, invalid compatibility IDs, unresolved alternatives,
 missing metadata, or non-implemented required canonical components.
 
-## 19 Tests
+## 19. Tests
 
-The following U11 and repository checks were run from D:\SA\ten4seven-ui:
+The following applicable U11 checks were run from the repository root. The
+queue-scoped checks passed; the repository aggregate was intentionally not run
+because it enters later-queue verification beyond U11:
 
-- TEST PASS: pnpm contracts:generate.
-- TEST PASS: pnpm exec node --experimental-strip-types
-  scripts/generate-contract-projections.mjs --check.
-- TEST PASS: pnpm test:composition.
-  Result: U11 composition plane verified: 27 blocks, 19 recipes, 7 profiles,
-  9 native canaries.
-- TEST PASS: pnpm typecheck.
-- TEST PASS: pnpm --filter @ten4seven/native typecheck.
-- TEST PASS: pnpm package:build.
-- TEST PASS: pnpm package:verify.
-  Result: @ten4seven/ui@1.0.0, 24 root exports, bundled tokens/icons/motion,
-  and self-contained styles.
-- TEST PASS: pnpm test:ai.
-- TEST PASS: pnpm test:consistency.
-- TEST PASS: pnpm test:token-governance.
-- TEST PASS: pnpm test. The full chain passed, including contract,
-  responsive/layout, native, visualization, workflow, U11 composition,
-  ERP/DTCG/contrast/token governance, package, brand/profile, recipe family,
-  token, AI, component-system, and Tailwind bridge checks.
-- TEST PASS: pnpm build. Playground production build completed; the only
-  noted output was the existing emitted chunk-size warning.
-- RUNTIME PASS: pnpm exec playwright test
-  tests/u11-blocks-recipes-profiles.spec.ts.
-  Result: 2 passed in 17.4s across 1440×900, 1024×768, 768×1024, and 390×844.
-  Assertions covered the typed plane, representative block, seven profile
-  cards, identical profile action labels, adaptive recipe/native canary
-  metadata, cssParsing=false, and viewport-safe rendering.
-- TEST PASS: git diff --check. Existing CRLF normalization warnings were
-  reported for already-dirty files; no whitespace error was introduced by the
-  U11 additions.
+- TEST PASS: `pnpm contracts:generate` — 234 deterministic contract
+  projections plus theme and DTCG projections regenerated.
+- TEST PASS: `pnpm exec node --experimental-strip-types
+scripts/generate-contract-projections.mjs --check` — generated projections
+  match the typed source.
+- TEST PASS: `pnpm test:composition` — 27 blocks, 19 recipes, 7 profiles, and
+  9 Native composition canaries.
+- TEST PASS: `pnpm test:contracts` — typed contract, resolver, profile
+  round-trip, and compact retrieval checks.
+- TEST PASS: `pnpm test:ai` — 29 recipes, 179 components, 60 blocks, 122
+  semantic icons, and zero donor reads.
+- TEST PASS: `pnpm test:consistency` — canonical consistency across 28 UI
+  source files.
+- TEST PASS: `pnpm test:token-governance` — 25 component modules and 16 core
+  semantic variables with no ungoverned component colors or timing.
+- TEST PASS: `pnpm test:component-coverage` — 7 high-impact selector families;
+  1000 raw-pixel occurrences tracked as explicit migration debt.
+- TEST PASS: `pnpm test:component-system` — 172 canonical components, 7
+  aliases, 29 recipes, 60 expressive blocks, singular Select model, and
+  explicit taxonomy/relations.
+- TEST PASS: `pnpm test:brand-expression` and `pnpm test:brand-profiles` —
+  canonical AAPM Brand Core/profile isolation and generated projections.
+- TEST PASS: `pnpm test:recipe-family` — shared recipe kernel and selective
+  recipe retrieval remain deterministic.
+- TEST PASS: `pnpm test:native-mobile` and `pnpm test:native-expo` — direct
+  token/descriptor boundary, 7 profile rows, and CSS-independent Native
+  metadata; device runtime remains a separate evidence class.
+- TEST PASS: `pnpm test:contrast` and `pnpm test:dtcg` — 284 WCAG-AA recipe /
+  mode pairs and 3 deterministic DTCG-compatible exports.
+- TEST PASS: `pnpm typecheck` — contracts, native, agent, and playground.
+- TEST PASS: `pnpm package:build` — `@ten4seven/ui@1.0.0` package built.
+- TEST PASS: `pnpm package:verify` — 24 root exports, bundled tokens/icons/
+  motion, and self-contained styles.
+- TEST PASS: `pnpm build` — playground production build completed with the
+  existing large-chunk warning recorded as baseline debt.
+- TEST PASS: `pnpm t7ui composition find "approval review"` — normalized
+  `approval-review` recipe, family, profiles, block roles, components,
+  responsive/native strategy, and business boundary retrieved from
+  `generated/composition.json`.
+- RUNTIME PASS: `pnpm exec playwright test
+tests/u11-blocks-recipes-profiles.spec.ts --project=chromium` — 2 passed in
+  15.6s across 1440×900, 1024×768, 768×1024, and 390×844. Assertions covered
+  the typed plane, representative block/recipe, seven profile cards, stable
+  profile action labels, adaptive/native canary metadata, `cssParsing=false`,
+  and viewport safety.
+- TEST PASS: targeted Prettier check for U11 composition source, Native
+  descriptor exports, generator/verifier, showroom, U11 test, catalogs, and
+  this evidence file. Three pre-existing non-scope files (`brand-profile.ts`,
+  `aapm-profile-workbench.tsx`, and the legacy recipe catalog) remain
+  unformatted and were not changed.
+- TEST PASS: `git diff --check` — no whitespace errors.
+- NOT RUN / OUT OF SCOPE: `pnpm test` — the aggregate command crosses the U11
+  boundary into later verification; no U12+ execution was performed.
 
-The first browser run exposed one missing selector in the new test, not a
-runtime composition defect. Adding the explicit test ID and rerunning produced
-the RUNTIME PASS above.
-
-## 20 Baseline debt
+## 20. Baseline debt
 
 The required repository formatter check was run:
 
-- TEST BASELINE DEBT: pnpm format:check exits 1 with
-  Code style issues found in 359 files.
+- TEST BASELINE DEBT: `pnpm format:check` exits 1 with code-style issues found
+  in 501 files.
 
-The formatter result is repository-wide pre-existing drift. The new U11 source,
-generator, verifier, showroom, and test files were formatted individually;
-the dirty worktree was not mass-formatted because that would overwrite or
-normalize unrelated user work. This baseline debt is recorded and is not
+The formatter result is repository-wide pre-existing drift. U11 composition
+source, generator/verifier, showroom, test, and evidence files pass the scoped
+check; the dirty worktree was not mass-formatted because that would overwrite
+or normalize unrelated user work. This baseline debt is recorded and is not
 silently represented as a U11 PASS.
 
 Additional bounded debt:
 
 - The legacy human catalogs remain compatibility surfaces until their
   decisions are migrated to typed contracts.
+- Component token coverage tracks 1000 raw-pixel occurrences as explicit
+  migration debt.
+- The final status snapshot contains 86 entries: 85 inherited entries at U11
+  start plus this refreshed evidence artifact. No inherited or unrelated file
+  was reset, cleaned, staged, or reformatted.
+- The package build remains approximately 11,418.72 kB ESM and 11,100.85 kB
+  CJS uncompressed; the playground remains approximately 22,625.49 kB
+  JavaScript and 713.91 kB CSS with the existing greater-than-500 kB warning.
 - Native block/recipe canaries are contract descriptors and direct-value
   projections; a full @ten4seven/native component implementation is outside
   U11.
@@ -480,7 +515,7 @@ Additional bounded debt:
   route-by-route adoption migration is outside U11.
 - The pre-existing U12 evidence/test artifacts were left untouched.
 
-## 21 True component gaps deferred to U13
+## 21. True component gaps deferred to U13
 
 U11 did not inflate the canonical component count to satisfy composition
 needs. The following real implementation gaps remain deferred:
@@ -498,7 +533,7 @@ needs. The following real implementation gaps remain deferred:
 These are future gap events. U11 records them without creating parallel
 primitive libraries or executing U12/U13 work.
 
-## 22 U12 readiness
+## 22. U12 readiness
 
 U11 provides the contract plane U12 can consume:
 
@@ -517,6 +552,6 @@ U11 provides the contract plane U12 can consume:
 U12 was not executed. The separate pre-existing U12 artifacts listed in
 Coordinates remain outside this gate.
 
-## 23 Gate
+## 23. Gate
 
 PASS FOR U12

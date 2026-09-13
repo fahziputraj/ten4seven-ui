@@ -1,4 +1,5 @@
 import {
+  INTERACTION_FEEDBACK,
   MEASURE_CONTRACT,
   MEASURE_NAMES,
   resolveTokenLayers,
@@ -2257,6 +2258,9 @@ export function buildThemeVariables(
     "--t7-doc-sticky-offset":
       "calc(var(--t7-header-height) + var(--t7-ref-space-2))",
     "--t7-scrim-hsl": neutrals.scrim,
+    "--t7-opacity-pressed": `${INTERACTION_FEEDBACK.pressedOpacity}`,
+    "--t7-opacity-disabled": `${INTERACTION_FEEDBACK.disabledOpacity}`,
+    "--t7-opacity-scrim": `${INTERACTION_FEEDBACK.scrimOpacity}`,
     ...Object.fromEntries(
       Object.entries(referenceSpace).map(([step, value]) => [
         `--t7-ref-space-${step}`,
@@ -2333,6 +2337,7 @@ export function buildNativeThemeSnapshot(
     canvas: colorTokens.neutrals.background,
     surface: colorTokens.surfaceHsl,
     surfaceRaised: colorTokens.neutrals.surfaceRaised,
+    scrim: colorTokens.neutrals.scrim,
     textPrimary: colorTokens.neutrals.foreground,
     textMuted:
       options.contrast === "more"
@@ -2495,6 +2500,7 @@ export function buildNativeThemeSnapshot(
   return {
     appearance: theme.appearance,
     colors,
+    feedback: INTERACTION_FEEDBACK,
     typography,
     layout: { measures },
     spacing,

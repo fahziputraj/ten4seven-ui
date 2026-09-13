@@ -26,7 +26,6 @@ import {
   NativeIconButton,
   NativeInline,
   NativeList,
-  NativeMasterDetail,
   NativePasswordInput,
   NativeProgress,
   NativePromptComposer,
@@ -312,47 +311,76 @@ function NavigationFamily() {
   );
 }
 
-function DataFamily() {
+function DataFamily({ chrome }: { chrome: React.ReactNode }) {
   const [selectedId, setSelectedId] = useState<string>();
+  const selected = records.find((record) => record.id === selectedId);
+  // NativeMasterDetail remains the canonical renderer contract. This Lab
+  // canary keeps the virtualized NativeList as the owning scroll surface so
+  // the list/detail proof is not nested inside the Lab's former ScrollView.
   return (
-    <NativeStack>
-      <LabSection
-        title="Collection and master/detail"
-        description="DataTable intent maps to a touch-safe native list/detail surface. Long content uses FlatList and pull-to-refresh can be supplied by the consumer."
-      >
-        <NativeMasterDetail
-          testID="native-lab-master-detail"
-          items={records}
-          selectedId={selectedId}
-          onSelect={setSelectedId}
-          renderDetail={(record) => (
-            <NativeSurface tone="raised">
-              <NativeStack>
-                <NativeText intent="sectionHeading">{record.title}</NativeText>
-                <NativeText>{record.summary}</NativeText>
-                <NativeButton intent="quiet">Record action</NativeButton>
-              </NativeStack>
-            </NativeSurface>
-          )}
-        />
-        <NativeList
-          data={records}
-          keyExtractor={(record) => record.id}
-          renderItem={({ item }) => (
-            <NativeSurface tone="surface">
-              <NativeInline>
-                <NativeText style={{ flex: 1 }}>{item.title}</NativeText>
-                <NativeText tone="muted">{item.summary}</NativeText>
-              </NativeInline>
-            </NativeSurface>
-          )}
-          ListHeaderComponent={
-            <NativeText intent="label">FlatList fixture</NativeText>
-          }
-        />
-        <NativeProgress value={0.64} label="Synthetic completion" />
-      </LabSection>
-    </NativeStack>
+    <NativeList
+      testID="native-lab-data-list"
+      data={records}
+      keyExtractor={(record) => record.id}
+      contentContainerStyle={{ padding: 16, gap: 16 }}
+      ListHeaderComponent={
+        <NativeContainer
+          measure="wide"
+          style={{
+            minWidth: 0,
+            maxWidth: "100%",
+            alignSelf: "stretch",
+            padding: 0,
+          }}
+        >
+          <NativeStack>
+            {chrome}
+            <LabSection
+              title="Collection and master/detail"
+              description="DataTable intent maps to a touch-safe native list/detail surface. The virtualized list owns scrolling on this canary so it is not nested inside a parent ScrollView."
+            >
+              {selected ? (
+                <NativeSurface tone="raised" testID="native-lab-record-detail">
+                  <NativeStack>
+                    <NativeText intent="sectionHeading">
+                      {selected.title}
+                    </NativeText>
+                    <NativeText>{selected.summary}</NativeText>
+                    <NativeButton
+                      intent="quiet"
+                      onPress={() => setSelectedId(undefined)}
+                    >
+                      Back to list
+                    </NativeButton>
+                  </NativeStack>
+                </NativeSurface>
+              ) : (
+                <NativeText tone="muted">
+                  Select a record to open its narrow-surface detail.
+                </NativeText>
+              )}
+            </LabSection>
+          </NativeStack>
+        </NativeContainer>
+      }
+      renderItem={({ item }) => (
+        <NativeSurface tone={item.id === selectedId ? "raised" : "surface"}>
+          <NativeStack>
+            <NativeText intent="label">{item.title}</NativeText>
+            <NativeText tone="muted">{item.summary}</NativeText>
+            <NativeButton intent="quiet" onPress={() => setSelectedId(item.id)}>
+              Open record
+            </NativeButton>
+          </NativeStack>
+        </NativeSurface>
+      )}
+      ListFooterComponent={
+        <NativeStack>
+          <NativeText intent="label">FlatList fixture</NativeText>
+          <NativeProgress value={0.64} label="Synthetic completion" />
+        </NativeStack>
+      }
+    />
   );
 }
 
@@ -538,110 +566,116 @@ function NativeLab({
   family: FamilyId;
   setFamily: (value: FamilyId) => void;
 }) {
+  const labChrome = (
+    <>
+      <NativeInline align="flex-start">
+        <NativeStack gap={6} style={{ flex: 1 }}>
+          <NativeText intent="screenTitle">Ten4Seven Native Lab</NativeText>
+          <NativeText tone="muted">
+            Expo / React Native renderer proof surface · synthetic fixtures only
+          </NativeText>
+        </NativeStack>
+        <NativeIconButton icon="info" label="About this lab" />
+      </NativeInline>
+      <LabSection
+        title="Renderer controls"
+        description="Change the same shared profile, appearance, density, motion, and family dimensions used by the native contract."
+      >
+        <NativeSelect
+          label="Product profile"
+          value={profile}
+          onChange={(value) => setProfile(value as BrandProfileId)}
+          options={PROFILE_OPTIONS.map((value) => ({
+            value,
+            label: value,
+          }))}
+        />
+        <NativeTabs
+          items={[
+            { id: "system", label: "System" },
+            { id: "light", label: "Light" },
+            { id: "dark", label: "Dark" },
+          ]}
+          value={appearance}
+          onChange={(value) => setAppearance(value as Appearance)}
+        />
+        <NativeInline wrap>
+          {(["comfortable", "default", "compact", "dense"] as const).map(
+            (value) => (
+              <NativeButton
+                key={value}
+                intent={value === density ? "primary" : "quiet"}
+                onPress={() => setDensity(value)}
+              >
+                {value}
+              </NativeButton>
+            ),
+          )}
+          <NativeButton
+            intent={motion === "full" ? "primary" : "quiet"}
+            onPress={() => setMotion("full")}
+          >
+            Motion
+          </NativeButton>
+          <NativeButton
+            intent={motion === "reduced" ? "primary" : "quiet"}
+            onPress={() => setMotion("reduced")}
+          >
+            Reduced motion
+          </NativeButton>
+        </NativeInline>
+        <NativeTabs
+          testID="native-lab-family-tabs"
+          items={FAMILY_OPTIONS}
+          value={family}
+          onChange={(value) => setFamily(value as FamilyId)}
+        />
+      </LabSection>
+    </>
+  );
+
   return (
     <NativeScreen testID="native-lab-screen">
-      <ScrollView
-        contentContainerStyle={{ padding: 16, gap: 16 }}
-        keyboardShouldPersistTaps="handled"
-      >
-        <NativeContainer
-          measure="wide"
-          style={{
-            minWidth: 0,
-            maxWidth: "100%",
-            alignSelf: "stretch",
-            padding: 0,
-          }}
+      {family === "data" ? (
+        <DataFamily chrome={labChrome} />
+      ) : (
+        <ScrollView
+          contentContainerStyle={{ padding: 16, gap: 16 }}
+          keyboardShouldPersistTaps="handled"
         >
-          <NativeStack>
-            <NativeInline align="flex-start">
-              <NativeStack gap={6} style={{ flex: 1 }}>
-                <NativeText intent="screenTitle">
-                  Ten4Seven Native Lab
-                </NativeText>
-                <NativeText tone="muted">
-                  Expo / React Native renderer proof surface · synthetic
-                  fixtures only
-                </NativeText>
-              </NativeStack>
-              <NativeIconButton icon="info" label="About this lab" />
-            </NativeInline>
-            <LabSection
-              title="Renderer controls"
-              description="Change the same shared profile, appearance, density, motion, and family dimensions used by the native contract."
-            >
-              <NativeSelect
-                label="Product profile"
-                value={profile}
-                onChange={(value) => setProfile(value as BrandProfileId)}
-                options={PROFILE_OPTIONS.map((value) => ({
-                  value,
-                  label: value,
-                }))}
-              />
-              <NativeTabs
-                items={[
-                  { id: "system", label: "System" },
-                  { id: "light", label: "Light" },
-                  { id: "dark", label: "Dark" },
-                ]}
-                value={appearance}
-                onChange={(value) => setAppearance(value as Appearance)}
-              />
-              <NativeInline wrap>
-                {(["comfortable", "default", "compact", "dense"] as const).map(
-                  (value) => (
-                    <NativeButton
-                      key={value}
-                      intent={value === density ? "primary" : "quiet"}
-                      onPress={() => setDensity(value)}
-                    >
-                      {value}
-                    </NativeButton>
-                  ),
-                )}
-                <NativeButton
-                  intent={motion === "full" ? "primary" : "quiet"}
-                  onPress={() => setMotion("full")}
-                >
-                  Motion
-                </NativeButton>
-                <NativeButton
-                  intent={motion === "reduced" ? "primary" : "quiet"}
-                  onPress={() => setMotion("reduced")}
-                >
-                  Reduced motion
-                </NativeButton>
-              </NativeInline>
-              <NativeTabs
-                testID="native-lab-family-tabs"
-                items={FAMILY_OPTIONS}
-                value={family}
-                onChange={(value) => setFamily(value as FamilyId)}
-              />
-            </LabSection>
-            {family === "foundations" ? (
-              <FoundationsFamily
-                profile={profile}
-                appearance={appearance}
-                density={density}
-                motion={motion}
-              />
-            ) : null}
-            {family === "forms" ? <FormsFamily /> : null}
-            {family === "navigation" ? <NavigationFamily /> : null}
-            {family === "data" ? <DataFamily /> : null}
-            {family === "workflow" ? <WorkflowFamily /> : null}
-            {family === "ai" ? <AiFamily /> : null}
-            {family === "device" ? <DeviceFamily /> : null}
-            <NativeText intent="caption" tone="muted">
-              No API, authentication, persistence, upload, camera, location,
-              push, secure-storage, or background-task implementation is bundled
-              in this lab.
-            </NativeText>
-          </NativeStack>
-        </NativeContainer>
-      </ScrollView>
+          <NativeContainer
+            measure="wide"
+            style={{
+              minWidth: 0,
+              maxWidth: "100%",
+              alignSelf: "stretch",
+              padding: 0,
+            }}
+          >
+            <NativeStack>
+              {labChrome}
+              {family === "foundations" ? (
+                <FoundationsFamily
+                  profile={profile}
+                  appearance={appearance}
+                  density={density}
+                  motion={motion}
+                />
+              ) : null}
+              {family === "forms" ? <FormsFamily /> : null}
+              {family === "navigation" ? <NavigationFamily /> : null}
+              {family === "workflow" ? <WorkflowFamily /> : null}
+              {family === "ai" ? <AiFamily /> : null}
+              {family === "device" ? <DeviceFamily /> : null}
+              <NativeText intent="caption" tone="muted">
+                No API, authentication, persistence, upload, camera, location,
+                push, secure-storage, or background-task implementation is
+                bundled in this lab.
+              </NativeText>
+            </NativeStack>
+          </NativeContainer>
+        </ScrollView>
+      )}
     </NativeScreen>
   );
 }

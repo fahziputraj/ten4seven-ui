@@ -478,8 +478,6 @@
       "accessibility": [
         "accessible-name",
         "table-context",
-        "sort-state",
-        "selection-state",
         "empty-state",
         "loading-state",
         "focus-or-press-feedback"
@@ -542,7 +540,7 @@
         "status": "planned",
         "presentation": "native-list-detail"
       },
-      "adaptivePattern": "data-table",
+      "adaptivePattern": "semantic-table",
       "nativeAlternative": "data-list-detail"
     },
     "DataTable": {
@@ -737,7 +735,7 @@
         "status": "not-applicable",
         "presentation": "not-applicable"
       },
-      "nativeAlternative": "data-list-detail"
+      "nativeAlternative": "none"
     },
     "DataTableColumnPicker": {
       "canonicalComponent": "DataTableColumnPicker",
@@ -810,11 +808,11 @@
       "rendererStrategy": "ALTERNATE_PATTERN",
       "web": {
         "status": "implemented",
-        "presentation": "web-table"
+        "presentation": "web-collection"
       },
       "native": {
         "status": "planned",
-        "presentation": "native-list-detail"
+        "presentation": "native-sheet"
       },
       "adaptivePattern": "filtering",
       "nativeAlternative": "native-sheet"
@@ -979,11 +977,11 @@
       "rendererStrategy": "ALTERNATE_PATTERN",
       "web": {
         "status": "implemented",
-        "presentation": "web-persistent-navigation"
+        "presentation": "web-collection"
       },
       "native": {
         "status": "planned",
-        "presentation": "native-navigation"
+        "presentation": "native-collection"
       },
       "adaptivePattern": "collection",
       "nativeAlternative": "collection-paging"

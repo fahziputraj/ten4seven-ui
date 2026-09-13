@@ -132,8 +132,8 @@ for (const forbidden of [
 assert.equal(uiPackage.private, true);
 assert.equal(uiPackage.license, "UNLICENSED");
 assert.equal(uiPackage.exports["./server"], undefined);
-assert.equal(nativePackage.dependencies["@ten4seven/ui"], undefined);
-assert.equal(nativePackage.dependencies["@ten4seven/icons"], undefined);
+assert.equal(nativePackage.dependencies?.["@ten4seven/ui"], undefined);
+assert.equal(nativePackage.dependencies?.["@ten4seven/icons"], undefined);
 
 const cliOutput = execFileSync(
   process.execPath,

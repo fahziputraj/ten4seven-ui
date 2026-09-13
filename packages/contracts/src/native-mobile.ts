@@ -23,6 +23,7 @@ export const NATIVE_COLOR_ROLES = [
   "canvas",
   "surface",
   "surfaceRaised",
+  "scrim",
   "textPrimary",
   "textMuted",
   "border",
@@ -219,6 +220,11 @@ export interface NativeResolvedMeasure {
 export interface NativeResolvedThemeVariant {
   readonly appearance: Exclude<Appearance, "system">;
   readonly colors: Readonly<Record<NativeColorRole, string>>;
+  readonly feedback: {
+    readonly pressedOpacity: number;
+    readonly disabledOpacity: number;
+    readonly scrimOpacity: number;
+  };
   readonly typography: Readonly<
     Record<NativeTypographyIntent, NativeTypographyToken>
   >;
@@ -344,6 +350,7 @@ export const NATIVE_MOBILE_TOKEN_REFERENCES = {
     canvas: semanticColor("semantic.color.canvas.background"),
     surface: semanticColor("semantic.color.surface.default"),
     surfaceRaised: semanticColor("semantic.color.surface.raised"),
+    scrim: semanticColor("semantic.color.scrim"),
     textPrimary: semanticColor("semantic.color.text.primary"),
     textMuted: semanticColor("semantic.color.text.muted"),
     border: semanticColor("semantic.color.border.subtle"),

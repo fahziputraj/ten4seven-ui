@@ -226,6 +226,14 @@ const tableAccessibility = [
   "focus-or-press-feedback",
 ] as const satisfies readonly AccessibilityObligationId[];
 
+const semanticTableAccessibility = [
+  "accessible-name",
+  "table-context",
+  "empty-state",
+  "loading-state",
+  "focus-or-press-feedback",
+] as const satisfies readonly AccessibilityObligationId[];
+
 const treeAccessibility = [
   "accessible-name",
   "navigation-role",
@@ -468,7 +476,7 @@ export const DATA_COLLECTION_DEFINITIONS = {
       "Present semantic tabular data for readable comparison without owning data interaction logic.",
     interactionModel: "data-comparison",
     states: ["ready", "empty", "loading", "error"],
-    accessibility: tableAccessibility,
+    accessibility: semanticTableAccessibility,
     useWhen: ["headers and comparable cells are the primary meaning"],
     avoidWhen: [
       "row selection, sorting, pagination, or column management is part of the contract",

@@ -510,7 +510,7 @@
       },
       "webPresentation": "web-persistent-navigation",
       "nativePresentation": "native-navigation",
-      "adaptivePattern": "sidebar",
+      "adaptivePattern": "bottom-navigation",
       "nativeAlternative": "navigation-tabs"
     },
     "NavigationRail": {
@@ -897,14 +897,14 @@
       "rendererStrategy": "SAME_INTENT",
       "web": {
         "status": "implemented",
-        "presentation": "web-persistent-navigation"
+        "presentation": "web-semantic-control"
       },
       "native": {
         "status": "planned",
-        "presentation": "native-navigation"
+        "presentation": "native-platform-control"
       },
-      "webPresentation": "web-persistent-navigation",
-      "nativePresentation": "native-navigation"
+      "webPresentation": "web-semantic-control",
+      "nativePresentation": "native-platform-control"
     },
     "Pagination": {
       "classification": "ADAPTIVE",
@@ -973,14 +973,14 @@
       "rendererStrategy": "ALTERNATE_PATTERN",
       "web": {
         "status": "implemented",
-        "presentation": "web-persistent-navigation"
+        "presentation": "web-collection"
       },
       "native": {
         "status": "planned",
-        "presentation": "native-navigation"
+        "presentation": "native-collection"
       },
-      "webPresentation": "web-persistent-navigation",
-      "nativePresentation": "native-navigation",
+      "webPresentation": "web-collection",
+      "nativePresentation": "native-collection",
       "adaptivePattern": "collection",
       "nativeAlternative": "collection-paging"
     },
@@ -1052,14 +1052,14 @@
       "rendererStrategy": "SAME_INTENT",
       "web": {
         "status": "implemented",
-        "presentation": "web-persistent-navigation"
+        "presentation": "web-semantic-control"
       },
       "native": {
         "status": "planned",
-        "presentation": "native-navigation"
+        "presentation": "native-platform-control"
       },
-      "webPresentation": "web-persistent-navigation",
-      "nativePresentation": "native-navigation"
+      "webPresentation": "web-semantic-control",
+      "nativePresentation": "native-platform-control"
     },
     "MilestoneTracker": {
       "classification": "ADAPTIVE",
@@ -1208,14 +1208,14 @@
       "rendererStrategy": "ALTERNATE_PATTERN",
       "web": {
         "status": "implemented",
-        "presentation": "web-persistent-navigation"
+        "presentation": "web-command-surface"
       },
       "native": {
         "status": "planned",
-        "presentation": "native-navigation"
+        "presentation": "native-command-surface"
       },
-      "webPresentation": "web-persistent-navigation",
-      "nativePresentation": "native-navigation",
+      "webPresentation": "web-command-surface",
+      "nativePresentation": "native-command-surface",
       "adaptivePattern": "command-surface",
       "nativeAlternative": "search-action-surface"
     },
@@ -1281,14 +1281,14 @@
       "rendererStrategy": "SAME_INTENT",
       "web": {
         "status": "implemented",
-        "presentation": "web-persistent-navigation"
+        "presentation": "web-semantic-control"
       },
       "native": {
         "status": "planned",
-        "presentation": "native-navigation"
+        "presentation": "native-pressable"
       },
-      "webPresentation": "web-persistent-navigation",
-      "nativePresentation": "native-navigation"
+      "webPresentation": "web-semantic-control",
+      "nativePresentation": "native-pressable"
     },
     "Collapsible": {
       "classification": "CANONICAL_COMPONENT",
@@ -1352,14 +1352,14 @@
       "rendererStrategy": "SAME_INTENT",
       "web": {
         "status": "implemented",
-        "presentation": "web-persistent-navigation"
+        "presentation": "web-semantic-control"
       },
       "native": {
         "status": "planned",
-        "presentation": "native-navigation"
+        "presentation": "native-pressable"
       },
-      "webPresentation": "web-persistent-navigation",
-      "nativePresentation": "native-navigation"
+      "webPresentation": "web-semantic-control",
+      "nativePresentation": "native-pressable"
     },
     "DropdownMenu": {
       "classification": "ADAPTIVE",
@@ -1424,15 +1424,15 @@
       "rendererStrategy": "ALTERNATE_PATTERN",
       "web": {
         "status": "implemented",
-        "presentation": "web-modal"
+        "presentation": "web-popup-list"
       },
       "native": {
         "status": "planned",
-        "presentation": "native-modal"
+        "presentation": "native-sheet"
       },
-      "webPresentation": "web-modal",
-      "nativePresentation": "native-modal",
-      "adaptivePattern": "dialog",
+      "webPresentation": "web-popup-list",
+      "nativePresentation": "native-sheet",
+      "adaptivePattern": "menu",
       "nativeAlternative": "native-sheet"
     },
     "ContextMenu": {
@@ -1498,15 +1498,15 @@
       "rendererStrategy": "ALTERNATE_PATTERN",
       "web": {
         "status": "implemented",
-        "presentation": "web-modal"
+        "presentation": "web-popup-list"
       },
       "native": {
         "status": "planned",
-        "presentation": "native-modal"
+        "presentation": "native-sheet"
       },
-      "webPresentation": "web-modal",
-      "nativePresentation": "native-modal",
-      "adaptivePattern": "dialog",
+      "webPresentation": "web-popup-list",
+      "nativePresentation": "native-sheet",
+      "adaptivePattern": "menu",
       "nativeAlternative": "native-sheet"
     },
     "Dialog": {
@@ -1730,14 +1730,14 @@
       "rendererStrategy": "ALTERNATE_PATTERN",
       "web": {
         "status": "implemented",
-        "presentation": "web-modal"
+        "presentation": "web-edge-surface"
       },
       "native": {
         "status": "planned",
-        "presentation": "native-modal"
+        "presentation": "native-sheet"
       },
-      "webPresentation": "web-modal",
-      "nativePresentation": "native-modal",
+      "webPresentation": "web-edge-surface",
+      "nativePresentation": "native-sheet",
       "adaptivePattern": "drawer",
       "nativeAlternative": "native-sheet"
     },
@@ -1807,14 +1807,14 @@
       "rendererStrategy": "ALTERNATE_PATTERN",
       "web": {
         "status": "implemented",
-        "presentation": "web-modal"
+        "presentation": "web-edge-surface"
       },
       "native": {
         "status": "planned",
-        "presentation": "native-modal"
+        "presentation": "native-sheet"
       },
-      "webPresentation": "web-modal",
-      "nativePresentation": "native-modal",
+      "webPresentation": "web-edge-surface",
+      "nativePresentation": "native-sheet",
       "adaptivePattern": "drawer",
       "nativeAlternative": "native-sheet"
     },
@@ -1884,15 +1884,15 @@
       "rendererStrategy": "ALTERNATE_PATTERN",
       "web": {
         "status": "implemented",
-        "presentation": "web-modal"
+        "presentation": "web-popup-list"
       },
       "native": {
         "status": "planned",
-        "presentation": "native-modal"
+        "presentation": "native-sheet"
       },
-      "webPresentation": "web-modal",
-      "nativePresentation": "native-modal",
-      "adaptivePattern": "dialog",
+      "webPresentation": "web-popup-list",
+      "nativePresentation": "native-sheet",
+      "adaptivePattern": "popover",
       "nativeAlternative": "native-sheet"
     },
     "Tooltip": {
@@ -1959,13 +1959,13 @@
       "rendererStrategy": "NOT_APPLICABLE",
       "web": {
         "status": "implemented",
-        "presentation": "web-modal"
+        "presentation": "web-semantic-element"
       },
       "native": {
         "status": "not-applicable",
         "presentation": "not-applicable"
       },
-      "webPresentation": "web-modal",
+      "webPresentation": "web-semantic-element",
       "nativePresentation": "not-applicable",
       "nativeAlternative": "contextual-help"
     },

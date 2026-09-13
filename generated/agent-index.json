@@ -1,5 +1,192 @@
 {
   "schemaVersion": "0.1",
+  "selectionIntents": {
+    "components": [
+      [
+        "single primary action",
+        [
+          "Button"
+        ]
+      ],
+      [
+        "toggle a persistent selected state",
+        [
+          "ToggleButton"
+        ]
+      ],
+      [
+        "toggle button",
+        [
+          "ToggleButton"
+        ]
+      ],
+      [
+        "searchable selection",
+        [
+          "Combobox"
+        ]
+      ],
+      [
+        "choose one option on android",
+        [
+          "Select"
+        ]
+      ],
+      [
+        "choose one option on ios",
+        [
+          "Select"
+        ]
+      ],
+      [
+        "choose one fixed option",
+        [
+          "Select"
+        ]
+      ],
+      [
+        "hierarchical selection",
+        [
+          "Cascader"
+        ]
+      ],
+      [
+        "confirm irreversible delete",
+        [
+          "AlertDialog"
+        ]
+      ],
+      [
+        "confirm destructive action",
+        [
+          "AlertDialog"
+        ]
+      ],
+      [
+        "focused modal task",
+        [
+          "Dialog"
+        ]
+      ],
+      [
+        "simple comparison table",
+        [
+          "Table"
+        ]
+      ],
+      [
+        "read only comparison",
+        [
+          "Table"
+        ]
+      ],
+      [
+        "show tabular financial records",
+        [
+          "DataTable"
+        ]
+      ],
+      [
+        "sortable selectable table",
+        [
+          "DataTable"
+        ]
+      ],
+      [
+        "100k interactive records",
+        [
+          "AdvancedDataGrid"
+        ]
+      ],
+      [
+        "editable data grid",
+        [
+          "AdvancedDataGrid"
+        ]
+      ],
+      [
+        "records on phone",
+        [
+          "List"
+        ]
+      ],
+      [
+        "temporary action feedback",
+        [
+          "Toast"
+        ]
+      ],
+      [
+        "persistent event history",
+        [
+          "NotificationCenter"
+        ]
+      ],
+      [
+        "context help on android",
+        [
+          "Popover"
+        ]
+      ],
+      [
+        "desktop hover help",
+        [
+          "Tooltip"
+        ]
+      ],
+      [
+        "plain multiline text",
+        [
+          "Textarea"
+        ]
+      ],
+      [
+        "desktop resize workspace",
+        [
+          "SplitPane"
+        ]
+      ],
+      [
+        "chat interface",
+        [
+          "ConversationThread",
+          "PromptComposer"
+        ]
+      ],
+      [
+        "ai source evidence",
+        [
+          "CitationList"
+        ]
+      ],
+      [
+        "show product price",
+        [
+          "Price"
+        ]
+      ]
+    ],
+    "capabilities": [
+      [
+        "capture qr code on native",
+        "qrScanner"
+      ],
+      [
+        "photo input on ios",
+        "photoLibrary"
+      ]
+    ],
+    "editors": [
+      [
+        "edit rich formatted content",
+        "RICH_TEXT"
+      ],
+      [
+        "write source code",
+        "CODE"
+      ]
+    ]
+  },
   "sourceOfTruth": {
     "typedContracts": "packages/contracts/src",
     "themeProfile": "packages/contracts/src/theme-profile.ts",
@@ -186,9 +373,9 @@
     }
   },
   "metrics": {
-    "fullCatalogBytes": 394398,
-    "compactProjectionBytes": 294181,
+    "fullCatalogBytes": 394391,
+    "compactProjectionBytes": 294129,
     "selectiveRecipeShardBytes": 43720,
-    "selectiveComponentShardBytes": 743125
+    "selectiveComponentShardBytes": 743871
   }
 }

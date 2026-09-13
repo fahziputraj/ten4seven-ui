@@ -423,6 +423,9 @@
   --t7-z-command: 100;
   --t7-doc-sticky-offset: calc(var(--t7-header-height) + var(--t7-ref-space-2));
   --t7-scrim-hsl: 0 0% 12%;
+  --t7-opacity-pressed: 0.72;
+  --t7-opacity-disabled: 0.5;
+  --t7-opacity-scrim: 0.42;
   --t7-ref-space-0: 0px;
   --t7-ref-space-1: 4px;
   --t7-ref-space-2: 8px;

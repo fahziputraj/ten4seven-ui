@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { FOUNDATION_CONTRACT } from "../packages/contracts/src/foundation.ts";
 import {
+  AI_SELECTION_INTENTS,
   COMPONENT_CONTRACT_PLANE,
   resolveComponentPlatformContract,
 } from "../packages/contracts/src/component-platform.ts";
@@ -38,6 +39,7 @@ import {
 } from "../packages/contracts/src/composition.ts";
 import {
   NATIVE_ALTERNATE_COMPONENT_IDS,
+  NATIVE_PUBLIC_COMPONENT_EXPORTS,
   NATIVE_EXPO_CONTRACT,
   NATIVE_RENDERER_COMPONENT_IDS,
 } from "../packages/contracts/src/native-expo.ts";
@@ -85,6 +87,9 @@ function projectComponentPublicApi(name, platform) {
   return {
     package: "@ten4seven/ui",
     export: name,
+    ...(NATIVE_PUBLIC_COMPONENT_EXPORTS[name]
+      ? { nativeExport: NATIVE_PUBLIC_COMPONENT_EXPORTS[name] }
+      : {}),
     ...(platform.platform === "WEB"
       ? {}
       : { nativePackage: "@ten4seven/native/renderer" }),
@@ -784,6 +789,7 @@ export async function buildProjections() {
   const outputs = {
     "agent-index.json": {
       schemaVersion: CANONICAL_CONTRACTS.schemaVersion,
+      selectionIntents: AI_SELECTION_INTENTS,
       sourceOfTruth: {
         typedContracts: "packages/contracts/src",
         themeProfile: "packages/contracts/src/theme-profile.ts",

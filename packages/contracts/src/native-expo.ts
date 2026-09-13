@@ -559,6 +559,40 @@ export const NATIVE_ALTERNATE_COMPONENT_IDS = [
   "BuilderCanvas",
 ] as const;
 
+/** Actual public renderer exports; absent entries remain intent/alternate-only. */
+export const NATIVE_PUBLIC_COMPONENT_EXPORTS: Readonly<Record<string, string>> =
+  {
+    Ten4SevenProvider: "NativeThemeProvider",
+    Typography: "NativeText",
+    T7Icon: "NativeIcon",
+    Surface: "NativeSurface",
+    Stack: "NativeStack",
+    Container: "NativeContainer",
+    Button: "NativeButton",
+    IconButton: "NativeIconButton",
+    Input: "NativeField",
+    PasswordInput: "NativePasswordInput",
+    Textarea: "NativeTextarea",
+    Checkbox: "NativeCheckbox",
+    Radio: "NativeRadio",
+    Switch: "NativeSwitch",
+    Select: "NativeSelect",
+    Tabs: "NativeTabs",
+    BottomNavigation: "NativeBottomNavigation",
+    Dialog: "NativeDialog",
+    AlertDialog: "NativeAlertDialog",
+    Drawer: "NativeSheet",
+    Popover: "NativeSheet",
+    Progress: "NativeProgress",
+    List: "NativeList",
+    DataTable: "NativeMasterDetail",
+    ConversationThread: "NativeConversation",
+    PromptComposer: "NativePromptComposer",
+    CitationList: "NativeCitationList",
+    ToolCallCard: "NativeToolCallCard",
+    ApprovalPanel: "NativeApprovalPanel",
+  };
+
 export const NATIVE_FAMILY_PARITY = {
   foundations: {
     web: "FULL",
@@ -908,6 +942,7 @@ export const NATIVE_EXPO_CONTRACT = {
       "preserve valid Web API; add renderer extension instead of deleting Web capability",
   },
   nativeRendererComponentIds: NATIVE_RENDERER_COMPONENT_IDS,
+  publicComponentExports: NATIVE_PUBLIC_COMPONENT_EXPORTS,
   nativeAlternateComponentIds: NATIVE_ALTERNATE_COMPONENT_IDS,
   dependencyPolicy: {
     noUniversalNativeUiLibrary: true,

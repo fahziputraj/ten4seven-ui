@@ -99,6 +99,16 @@ describe("theme engine", () => {
           hslToHex(css["--t7-action-primary-hsl"]),
         );
         expect(native.colors.surface).toBe(hslToHex(css["--t7-surface-hsl"]));
+        expect(native.colors.scrim).toBe(hslToHex(css["--t7-scrim-hsl"]));
+        expect(native.feedback.disabledOpacity).toBe(
+          Number(css["--t7-opacity-disabled"]),
+        );
+        expect(native.feedback.pressedOpacity).toBe(
+          Number(css["--t7-opacity-pressed"]),
+        );
+        expect(native.feedback.scrimOpacity).toBe(
+          Number(css["--t7-opacity-scrim"]),
+        );
         expect(native.colors.borderStrong).toBe(
           hslToHex(css["--t7-border-strong-hsl"]),
         );

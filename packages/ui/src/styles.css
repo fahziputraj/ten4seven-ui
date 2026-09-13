@@ -3017,6 +3017,8 @@
   display: inline-grid;
   width: 34px;
   height: 34px;
+  min-width: var(--t7-touch-target-min);
+  min-height: var(--t7-touch-target-min);
   place-items: center;
   border: 1px solid hsl(var(--t7-border-hsl));
   border-radius: var(--t7-radius-control);
@@ -3505,14 +3507,14 @@
 }
 .t7-toggle-button {
   display: inline-flex;
-  min-height: var(--t7-control-height);
+  min-height: max(var(--t7-control-height), var(--t7-touch-target-min));
   align-items: center;
   justify-content: center;
-  gap: 7px;
+  gap: var(--t7-control-gap);
   border: 1px solid hsl(var(--t7-border-strong-hsl));
   border-radius: var(--t7-radius-control);
   background: hsl(var(--t7-surface-hsl));
-  padding: 0 12px;
+  padding: 0 var(--t7-control-padding-inline);
   color: hsl(var(--t7-muted-foreground-hsl));
   cursor: pointer;
   font: inherit;
@@ -4647,14 +4649,15 @@
 .t7-split-button > .t7-button {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+  min-height: max(var(--t7-control-height), var(--t7-touch-target-min));
 }
 .t7-split-button > .t7-menu-root {
   margin-left: -1px;
 }
 .t7-split-button-trigger {
   display: grid;
-  min-height: var(--t7-control-height);
-  min-width: 34px;
+  min-height: max(var(--t7-control-height), var(--t7-touch-target-min));
+  min-width: var(--t7-touch-target-min);
   place-items: center;
   border: 1px solid hsl(var(--t7-primary-hsl));
   border-radius: 0 var(--t7-radius-control) var(--t7-radius-control) 0;

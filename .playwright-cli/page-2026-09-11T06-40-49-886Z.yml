@@ -1,7 +1,0 @@
-- main [ref=f2e4]:
-  - paragraph [ref=f2e11]: 404 · Route not found
-  - heading "This playground route does not exist." [level=1] [ref=f2e12]
-  - paragraph [ref=f2e13]:
-    - code [ref=f2e14]: /brand-proof/neutral
-    - text: is not a registered ten4seven UI route.
-  - button "Return to Theme Studio" [ref=f2e15] [cursor=pointer]

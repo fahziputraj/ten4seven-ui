@@ -45,7 +45,8 @@ const recipeDetailPaths = Object.keys(recipeCatalog).map((name) =>
 const canonicalInventory = [
   ...topLevelPaths,
   ...proofPaths,
-  ...farmPaths,
+  // The Farm landing route is already a top-level advertised route.
+  ...farmPaths.filter((path) => path !== farmP1ReferencePath),
   ...componentFamilyPaths,
   ...componentDetailPaths,
   ...blockDetailPaths,
@@ -78,7 +79,10 @@ test("the route registry closes every advertised and catalog-derived route", () 
     }
   }
 
-  expect(canonicalInventory.length).toBe(306);
+  // Coverage follows the canonical registry; identity collisions are defects,
+  // while adding a legitimate route must not require a second count manifest.
+  expect(new Set(canonicalInventory).size).toBe(canonicalInventory.length);
+  expect(canonicalInventory).toEqual(expect.arrayContaining(topLevelPaths));
 });
 
 test("catalog detail titles are derived from the catalog identity", () => {

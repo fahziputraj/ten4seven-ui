@@ -68,17 +68,25 @@ for (const forbidden of [
 
 const packageManifest = readJson("packages/native/package.json");
 assert.deepEqual(
-  Object.keys(packageManifest.dependencies).sort(),
-  ["@ten4seven/contracts", "@ten4seven/tokens"],
-  "native adapter must depend only on shared contracts and tokens",
+  Object.keys(packageManifest.dependencies ?? {}).sort(),
+  [],
+  "native runtime package must not require workspace dependencies",
+);
+assert.ok(
+  packageManifest.devDependencies?.["@ten4seven/contracts"],
+  "native build must resolve shared contracts as a build-time input",
+);
+assert.ok(
+  packageManifest.devDependencies?.["@ten4seven/tokens"],
+  "native build must resolve shared tokens as a build-time input",
 );
 assert.equal(
-  packageManifest.dependencies.react,
+  packageManifest.dependencies?.react,
   undefined,
   "native adapter must not make React a dependency",
 );
 assert.equal(
-  packageManifest.dependencies["react-native"],
+  packageManifest.dependencies?.["react-native"],
   undefined,
   "native adapter must not make React Native a dependency",
 );
@@ -233,7 +241,9 @@ assert.equal(descriptionCanary.accessibilityRole, "summary");
 const dataTableCanary = resolveNativeDataCollection("DataTable");
 assert.equal(dataTableCanary.primitive, "FlatList");
 assert.equal(dataTableCanary.presentation, "native-list-detail");
-assert.ok(dataTableCanary.adaptiveStrategy.includes("priority-columns-to-detail"));
+assert.ok(
+  dataTableCanary.adaptiveStrategy.includes("priority-columns-to-detail"),
+);
 const treeCanary = resolveNativeDataCollection("Tree");
 assert.equal(treeCanary.primitive, "SectionList");
 assert.equal(treeCanary.presentation, "native-list-detail");

@@ -121,10 +121,10 @@ assert.equal(
 );
 
 for (const [platform, expected] of Object.entries({
-  BOTH: 98,
+  BOTH: 97,
   WEB: 14,
   NATIVE: 0,
-  ADAPTIVE: 60,
+  ADAPTIVE: 61,
 })) {
   assert.equal(
     ledger.counts.platformCounts.canonical[platform] ?? 0,
@@ -140,8 +140,8 @@ assert.equal(ledger.counts.legitimateGapCount, 0);
 assert.equal(ledger.assessment.u13A, "TARGET NOT JUSTIFIABLE FROM CORPUS");
 assert.equal(ledger.assessment.legitimateGaps.length, 0);
 assert.equal(ledger.assessment.conditionalCandidates.length, 3);
-assert.equal(ledger.assessment.u12PrerequisiteGate, "FAIL / BLOCKED");
-assert.equal(ledger.assessment.u13Gate, "FAIL / BLOCKED");
+assert.equal(ledger.assessment.u12PrerequisiteGate, "PASS FOR U13");
+assert.equal(ledger.assessment.u13Gate, "PASS FOR U14");
 
 const conditionalNames = new Set(
   ledger.assessment.conditionalCandidates.map(

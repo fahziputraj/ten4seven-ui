@@ -34,6 +34,9 @@ const composition = readJson("generated/composition.json");
 const componentIndex = readJson("generated/components.compact.json");
 const editorBuilderAi = readJson("generated/editor-builder-ai.json");
 const nativeExpo = readJson("generated/native-expo.json");
+const selectionIntents = readJson(
+  "generated/agent-index.json",
+).selectionIntents;
 const packageInfo = readJson("package.json");
 const {
   composeBrandExpression,
@@ -196,33 +199,9 @@ function findErpDensityPattern(query) {
     )[0]?.patternId;
 }
 
-const finalComponentIntentHints = [
-  ["single primary action", ["Button"]],
-  ["searchable selection", ["Combobox"]],
-  ["choose one option on android", ["Select"]],
-  ["choose one option on ios", ["Select"]],
-  ["hierarchical selection", ["Cascader"]],
-  ["show tabular financial records", ["DataTable"]],
-  ["100k interactive records", ["AdvancedDataGrid"]],
-  ["records on phone", ["List"]],
-  ["temporary action feedback", ["Toast"]],
-  ["persistent event history", ["NotificationCenter"]],
-  ["context help on android", ["Popover"]],
-  ["desktop resize workspace", ["SplitPane"]],
-  ["chat interface", ["ConversationThread", "PromptComposer"]],
-  ["ai source evidence", ["CitationList"]],
-  ["show product price", ["Price"]],
-];
-
-const finalCapabilityIntentHints = [
-  ["capture qr code on native", "qrScanner"],
-  ["photo input on ios", "photoLibrary"],
-];
-
-const finalEditorIntentHints = [
-  ["edit rich formatted content", "RICH_TEXT"],
-  ["write source code", "CODE"],
-];
+const finalComponentIntentHints = selectionIntents.components;
+const finalCapabilityIntentHints = selectionIntents.capabilities;
+const finalEditorIntentHints = selectionIntents.editors;
 
 function findFinalIntent(query) {
   const normalized = query.toLowerCase().trim();
@@ -262,8 +241,16 @@ function printComponentRecommendation(query, names) {
     console.log("- " + name + ": " + component.purpose);
     console.log("  Import: " + component.publicApi.package);
     console.log("  Export: " + component.publicApi.export);
-    if (component.publicApi.nativePackage)
+    if (component.publicApi.nativeExport) {
       console.log("  Native import: " + component.publicApi.nativePackage);
+      console.log(
+        "  Native export (adaptive API): " + component.publicApi.nativeExport,
+      );
+    } else if (component.publicApi.nativePackage) {
+      console.log(
+        "  Native: intent/alternative only; no direct renderer export advertised.",
+      );
+    }
     console.log(
       "  Platform: " +
         component.platform +

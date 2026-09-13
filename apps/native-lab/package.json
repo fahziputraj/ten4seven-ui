@@ -10,22 +10,22 @@
     "web": "expo start --web",
     "export:web": "expo export --platform web",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "doctor": "expo doctor"
+    "doctor": "expo install --check"
   },
   "dependencies": {
     "@ten4seven/contracts": "workspace:*",
     "@ten4seven/native": "workspace:*",
     "@ten4seven/tokens": "workspace:*",
-    "@expo/metro-runtime": "^6.1.0",
+    "@expo/metro-runtime": "^57.0.15",
     "expo": "57.0.22",
-    "react": "19.2.8",
-    "react-dom": "19.2.8",
-    "react-native": "0.81.5",
-    "react-native-safe-area-context": "5.6.2",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-safe-area-context": "5.7.0",
     "react-native-web": "^0.21.2"
   },
   "devDependencies": {
     "@types/react": "^19.2.14",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   }
 }

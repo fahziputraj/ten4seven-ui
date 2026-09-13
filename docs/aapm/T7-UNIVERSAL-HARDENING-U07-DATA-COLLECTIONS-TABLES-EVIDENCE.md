@@ -11,7 +11,7 @@ start U08, U09, or U10 implementation work.
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
 | Repository               | `D:\\SA\\ten4seven-ui`                                                                                                     |
 | Branch                   | `codex/icons-curated-solar-style`                                                                                          |
-| HEAD at evidence capture | `e582cfcfbe0f077d1a5832d86db9da1898487fd3`                                                                                 |
+| HEAD at evidence capture | `6d3a8b6647a43cea4c7b09686cd0e0dd50420d9d`                                                                                 |
 | Parent                   | `T7-UNIVERSAL-HARDENING-001`                                                                                               |
 | Queue                    | `T7-UNIVERSAL-HARDENING-U07`                                                                                               |
 | Risk                     | `R2 — shared canonical data/collection contracts`                                                                          |
@@ -22,23 +22,28 @@ start U08, U09, or U10 implementation work.
 
 The checkout was already materially dirty from preceding bounded queues and
 existing work. Those changes, generated assets, snapshots, and unrelated
-consumer work were preserved. The only new evidence document for this queue is
-this file.
+consumer work were preserved. The U07 implementation and its earlier evidence
+record were already present at this coordinate, so this bounded execution
+audited and corrected the remaining U07 contract drift and refreshed this
+single evidence document. No U07 component source file was newly created in
+this execution.
 
 ## 2. Inventory before
 
-The pre-U07 inventory showed useful canonical coverage but a missing normalized
-data/collection contract plane:
+At the start of this bounded execution, the prior U07 implementation already
+provided useful canonical coverage and a generated data/collection plane. The
+audit therefore treated the source and component implementations as existing
+inventory and concentrated on stale evidence plus platform-contract drift:
 
-| Area            | Existing before U07                                                                                                                                                            | Gap or drift observed                                                                                                                                                                    |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Data display    | `KeyValueList` (DescriptionList intent), `MetricCard` (Metric/Stat intent), `ActivityFeed` (Timeline/Feed intent), tags/status and identity primitives                         | Synonyms were not represented together in a typed U07 taxonomy; no new display primitive was justified                                                                                   |
-| Collections     | List was an inventory candidate, but there was no dedicated canonical `List` implementation/catalog entry/export; selection and grouping were spread across existing consumers | `SelectableList`, `GridList`, and `GroupedList` could otherwise become parallel names; large/infinite behavior lacked an explicit boundary                                               |
-| Tables          | Semantic `Table` family, interactive `DataTable`, `DataTableColumnPicker`, `BulkActionBar`, and `Pagination`                                                                   | DataTable needed explicit selection modes, column priority, filtered-empty/loading-more/end states, and responsive metadata                                                              |
-| Advanced grid   | Existing bounded editable `AdvancedDataGrid`                                                                                                                                   | It needed an explicit non-virtualized/Web-only boundary so it would not imply MUI X/AG Grid or spreadsheet parity                                                                        |
-| Hierarchy       | Existing `TreeView` and `HierarchyPicker`                                                                                                                                      | `Tree`, `TreeGrid`, `TreeSelect`, nested lists, and outline terminology needed distinct decisions; the Tree View showroom branch was incorrectly nested under the form preview condition |
-| Native boundary | `packages/native` already exposed CSS-independent contract adapters for earlier queues                                                                                         | No U07 data-collection canary set existed; no native components were created in U07                                                                                                      |
-| AI/catalog      | Existing human catalog and generated component projections                                                                                                                     | There was no generated data-collection retrieval plane linking the catalog to taxonomy, ownership, adaptive strategy, and engine boundaries                                              |
+| Area            | Existing before U07                                                                                                                                    | Gap or drift observed                                                                                                                                           |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Data display    | `KeyValueList` (DescriptionList intent), `MetricCard` (Metric/Stat intent), `ActivityFeed` (Timeline/Feed intent), tags/status and identity primitives | The typed plane needed a final semantic-table accessibility distinction; no new display primitive was justified                                                 |
+| Collections     | Canonical `List`, selection variants, state vocabulary, and generated U07 projection already existed                                                   | Revalidated that `SelectableList`, `GridList`, and `GroupedList` remain variants; large/infinite behavior stays behind explicit boundaries                      |
+| Tables          | Semantic `Table`, interactive `DataTable`, `DataTableColumnPicker`, `BulkActionBar`, `Pagination`, and bounded `AdvancedDataGrid`                      | `Table` had inherited interactive metadata; `DataTable` and the grid needed explicit platform/state/engine distinctions                                         |
+| Advanced grid   | Existing bounded editable `AdvancedDataGrid`                                                                                                           | Its native alternative was corrected to `none`; Web-only and non-virtualized boundaries remain explicit                                                         |
+| Hierarchy       | Existing `TreeView` and `HierarchyPicker`                                                                                                              | `Tree`, `TreeGrid`, `TreeSelect`, nested lists, and outline terminology remain distinct; the Tree View showroom branch is covered by the existing fixture proof |
+| Native boundary | `packages/native` already exposed CSS-independent U07 contract adapters                                                                                | Revalidated the five U07 canaries; no native components or React Native dependency were created                                                                 |
+| AI/catalog      | Existing human catalog and generated component projections plus `generated/data-collections.json`                                                      | Regenerated the projection after source corrections; no duplicate AI/catalog authority was introduced                                                           |
 
 Representative consumer inspection confirmed that the existing product surfaces
 already use the canonical families rather than needing product-local primitives:
@@ -79,21 +84,26 @@ Data display is not collapsed into a table. A single record's facts use a
 description-list contract; cross-record comparison uses a table; actor/action
 history uses a feed/timeline contract.
 
+The semantic `Table` now carries table context, empty/loading communication,
+and focus/press obligations without inheriting sort or selection obligations;
+those remain specific to `DataTable` and the bounded editor/grid contract.
+
 ## 4. Collection taxonomy
 
-`List` is the only net-new canonical collection component. It is a generic
-ordered collection, not a domain list and not a virtualization engine.
+`List` is the canonical generic ordered collection already present at the
+start of this execution. It is not a domain list and not a virtualization
+engine. No second collection primitive was added.
 
-| Candidate                                         | Decision                                           | Classification                                            | Canonical target/boundary                                                                      |
-| ------------------------------------------------- | -------------------------------------------------- | --------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `List`                                            | Implemented generic ordered collection             | `ADAPTIVE` / `EXISTING_STABLE` in the U07 inventory plane | `packages/ui/src/collections.tsx` and `@ten4seven/ui` export                                   |
-| `SelectableList`                                  | Selection mode of List                             | `COMPONENT_VARIANT` / `VARIANT`                           | `List selectionMode="single"` or `"multiple"`                                                  |
-| `GridList`                                        | Spatial recipe/layout of List                      | `COMPONENT_VARIANT` / `VARIANT`                           | Use List or a product block/recipe; no styling-only primitive                                  |
-| `GroupedList`                                     | Grouped composition around one collection contract | `COMPONENT_VARIANT` / `VARIANT`                           | Compose grouped sections; preserve one selection model                                         |
-| `VirtualList`                                     | Windowing/measurement adapter boundary             | `ENGINE_ADAPTER`                                          | Consumer/renderer chooses an approved vendor-neutral adapter                                   |
-| `InfiniteList`                                    | Incremental loading behavior                       | `DEFERRED`                                                | Use List `loadingMore` and `endOfResults`; keep it distinct from virtualization and Pagination |
-| `Feed`                                            | Display intent                                     | Existing `ActivityFeed` contract                          | No second feed primitive                                                                       |
-| `UserList`, `InvoiceList`, `FarmList`, `TaskList` | Domain composition                                 | `DOMAIN_COMPOSITION`                                      | Product recipes own domain anatomy; they do not enter the canonical primitive count            |
+| Candidate                                         | Decision                                                                     | Classification                                            | Canonical target/boundary                                                                      |
+| ------------------------------------------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `List`                                            | Existing canonical generic ordered collection, revalidated in this execution | `ADAPTIVE` / `EXISTING_STABLE` in the U07 inventory plane | `packages/ui/src/collections.tsx` and `@ten4seven/ui` export                                   |
+| `SelectableList`                                  | Selection mode of List                                                       | `COMPONENT_VARIANT` / `VARIANT`                           | `List selectionMode="single"` or `"multiple"`                                                  |
+| `GridList`                                        | Spatial recipe/layout of List                                                | `COMPONENT_VARIANT` / `VARIANT`                           | Use List or a product block/recipe; no styling-only primitive                                  |
+| `GroupedList`                                     | Grouped composition around one collection contract                           | `COMPONENT_VARIANT` / `VARIANT`                           | Compose grouped sections; preserve one selection model                                         |
+| `VirtualList`                                     | Windowing/measurement adapter boundary                                       | `ENGINE_ADAPTER`                                          | Consumer/renderer chooses an approved vendor-neutral adapter                                   |
+| `InfiniteList`                                    | Incremental loading behavior                                                 | `DEFERRED`                                                | Use List `loadingMore` and `endOfResults`; keep it distinct from virtualization and Pagination |
+| `Feed`                                            | Display intent                                                               | Existing `ActivityFeed` contract                          | No second feed primitive                                                                       |
+| `UserList`, `InvoiceList`, `FarmList`, `TaskList` | Domain composition                                                           | `DOMAIN_COMPOSITION`                                      | Product recipes own domain anatomy; they do not enter the canonical primitive count            |
 
 The shared collection state vocabulary is generated from the typed plane:
 `ready`, `loading`, `empty`, `filteredEmpty`, `searchEmpty`, `error`, `partial`,
@@ -102,19 +112,20 @@ The shared collection state vocabulary is generated from the typed plane:
 
 ## 5. Table/DataTable/DataGrid taxonomy
 
-| Contract                                                         | Meaning                                                   | Interaction level                                                                                         | Platform/engine boundary                                                                   |
-| ---------------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `Table`                                                          | Semantic tabular comparison with headers, rows, and cells | Readable comparison; no query/selection engine                                                            | Adaptive presentation; bounded horizontal scroll or cards as the consumer/recipe requires  |
-| `DataTable`                                                      | Interactive business table                                | Sorting, filtering slots/state, selection, pagination slots, row actions, visibility, loading/empty/error | Adaptive: Web semantic table; Native record-list/detail or justified horizontal comparison |
-| `AdvancedDataGrid`                                               | Existing bounded editable repeated-line-item surface      | Cell editors, row state, keyboard traversal, save/cancel actions                                          | Web-only bounded presentation; not virtualized and not an engine                           |
-| `DataGrid`                                                       | High-volume/spreadsheet-like contract                     | Virtualization, resize, pinning, grouping, large row counts, advanced editing                             | `ENGINE_ADAPTER`; no implementation in U07                                                 |
-| `TreeGrid`                                                       | Hierarchical tabular data                                 | Tree plus cell navigation                                                                                 | `ENGINE_ADAPTER`; never simulated by nested Tables inside TreeView                         |
-| `ResponsiveTable`, `CompactTable`, `MobileTable`, `DesktopTable` | Presentation variants                                     | Layout only                                                                                               | Rejected as separate canonical components; use Table/DataTable plus an adaptive pattern    |
+| Contract                                                         | Meaning                                                   | Interaction level                                                                                         | Platform/engine boundary                                                                              |
+| ---------------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `Table`                                                          | Semantic tabular comparison with headers, rows, and cells | Readable comparison; no query, selection, sorting, pagination, or editing engine                          | Adaptive `semantic-table` pattern; bounded horizontal scroll or cards as the consumer/recipe requires |
+| `DataTable`                                                      | Interactive business table                                | Sorting, filtering slots/state, selection, pagination slots, row actions, visibility, loading/empty/error | Adaptive: Web semantic table; Native record-list/detail or justified horizontal comparison            |
+| `AdvancedDataGrid`                                               | Existing bounded editable repeated-line-item surface      | Cell editors, row state, keyboard traversal, save/cancel actions                                          | Web-only bounded presentation; no native alternative, not virtualized, and not an engine              |
+| `DataGrid`                                                       | High-volume/spreadsheet-like contract                     | Virtualization, resize, pinning, grouping, large row counts, advanced editing                             | `ENGINE_ADAPTER`; no implementation in U07                                                            |
+| `TreeGrid`                                                       | Hierarchical tabular data                                 | Tree plus cell navigation                                                                                 | `ENGINE_ADAPTER`; never simulated by nested Tables inside TreeView                                    |
+| `ResponsiveTable`, `CompactTable`, `MobileTable`, `DesktopTable` | Presentation variants                                     | Layout only                                                                                               | Rejected as separate canonical components; use Table/DataTable plus an adaptive pattern               |
 
 The implementation keeps semantic `table` markup for `Table` and `DataTable`.
 It does not add `role="grid"` to a simple or business table. Grid semantics
 remain reserved for a future contract whose cell-level interaction truly
-requires them.
+requires them. The component-platform projection now preserves this same
+distinction instead of making both table contracts look interactive.
 
 ## 6. Hierarchy taxonomy
 
@@ -144,7 +155,7 @@ density, and adaptive strategy. The renderer owns DOM versus native primitives.
 | DescriptionList  | Existing KeyValueList semantic label/value presentation                                                 | Scrollable summary surface with label/value reading order                                     | `ADAPTIVE`/natural stack, `NATIVE_RENDERER` canary |
 | SelectableList   | List selection mode; no separate renderer contract                                                      | List canary with touch-safe selection and native list/detail                                  | Variant of List                                    |
 | DataTable        | Semantic `table`; stacked record-list pattern or bounded horizontal scroll selected by the route/recipe | Native record list/detail; priority fields become summary and remaining fields move to detail | `ADAPTIVE`, `ALTERNATE_PATTERN`                    |
-| AdvancedDataGrid | Bounded native table/editor surface                                                                     | No native renderer in U07                                                                     | `WEB_ONLY`, not applicable to native               |
+| AdvancedDataGrid | Bounded Web table/editor surface; no native renderer                                                    | Not applicable; no native alternative is advertised in U07                                    | `WEB_ONLY`, not applicable to native               |
 | TreeView         | `tree`/`treeitem`, keyboard expansion/selection                                                         | Native list/detail or drill-down path; hardware-back is part of the alternative               | `ADAPTIVE`, `ALTERNATE_PATTERN`                    |
 
 The four reusable table recomposition patterns are represented in the typed
@@ -155,24 +166,29 @@ Scroll, and Table → Cards. There is no global “mobile table” component.
 
 ### Typed contract and registry
 
-- Added `packages/contracts/src/data-collections.ts` as the single U07 typed
-  source for five families: `DATA_DISPLAY`, `COLLECTION`, `TABLE`,
+- Revalidated `packages/contracts/src/data-collections.ts` as the single U07
+  typed source for five families: `DATA_DISPLAY`, `COLLECTION`, `TABLE`,
   `HIERARCHY`, and `COLLECTION_STATE`.
-- Registered the plane in `packages/contracts/src/canonical.ts` and exported
-  it through `packages/contracts/src/index.ts`.
+- Preserved the plane registration in `packages/contracts/src/canonical.ts`
+  and its export through `packages/contracts/src/index.ts`.
 - Added explicit ownership for system, consumer, and renderer responsibilities.
   The system owns semantic intent, state vocabulary, density/responsive
   strategy, accessibility obligations, and the virtualization boundary. The
   consumer owns data/query/filter/sort/page authority, permissions, row
   actions, persistence, and detail routing. The renderer owns DOM/native
   primitives and any approved windowing implementation.
-- Added 11 explicit gap decisions, including variant, adapter, deferred,
+- Revalidated 11 explicit gap decisions, including variant, adapter, deferred,
   native-only, recipe, and rejected-duplicate decisions.
+- Added the `semantic-table` adaptive pattern and explicit U07 overrides so
+  `Table`, `DataTable`, `AdvancedDataGrid`, and the column picker no longer
+  inherit misleading family defaults.
+- Added contract assertions for the Table/DataTable distinction and the
+  Web-only/native-not-applicable AdvancedDataGrid boundary.
 
 ### List
 
-- Added the generic `List<Row>` component in
-  `packages/ui/src/collections.tsx` and exported it from `@ten4seven/ui`.
+- Revalidated the existing generic `List<Row>` component in
+  `packages/ui/src/collections.tsx` and its `@ten4seven/ui` export.
 - The consumer supplies stable keys and row content. The component owns
   ordered collection semantics, controlled selection exposure, explicit
   selection/activation policy, focus/keyboard movement, loading/empty/error,
@@ -186,29 +202,31 @@ Scroll, and Table → Cards. There is no global “mobile table” component.
 
 ### DataTable
 
-- Added `DataTableColumn.priority` with `primary`, `secondary`, `tertiary`,
-  and `detailOnly` values for adaptive field ordering.
-- Added explicit `selectionMode` (`none`, `single`, `multiple`) while
+- Revalidated the existing `DataTableColumn.priority` values — `primary`,
+  `secondary`, `tertiary`, and `detailOnly` — for adaptive field ordering.
+- Revalidated explicit `selectionMode` (`none`, `single`, `multiple`) while
   preserving the existing `selectable` compatibility prop. Single selection
   uses grouped radio inputs; multiple selection uses checkboxes and a
   visible-record select-all model.
-- Added `filteredEmptyMessage`, `hasActiveFilter`, `loadingMore`,
-  `endOfResults`, `endOfResultsMessage`, and `footer` state/slot contracts.
-- Projected priority metadata to table headers/cells and stacked mobile fields.
+- Revalidated the existing `filteredEmptyMessage`, `hasActiveFilter`,
+  `loadingMore`, `endOfResults`, `endOfResultsMessage`, and `footer` state/slot
+  contracts.
+- Revalidated priority metadata on table headers/cells and stacked mobile
+  fields.
 - Preserved semantic `table` markup and kept the stacked record-list
   presentation as an adaptive alternative; no ARIA grid was introduced.
 
 ### Catalog, native boundary, and showroom
 
-- Added the implemented `List` catalog entry with intent, use/avoid guidance,
-  API, state, accessibility, responsive, motion, token, relationship, and
-  recipe metadata.
-- Added U07 references to generated compact component projections and the
-  agent retrieval index.
-- Added CSS-independent native descriptors only. No `@ten4seven/native`
-  component or React Native dependency was created.
-- Added deterministic List/DataTable/Tree previews to Component Lab and moved
-  the Tree View preview to its correct navigation branch.
+- Revalidated the implemented `List` catalog entry and its intent, use/avoid
+  guidance, API, state, accessibility, responsive, motion, token, relationship,
+  and recipe metadata.
+- Regenerated U07 references in compact component projections and the agent
+  retrieval index from the typed sources.
+- Revalidated CSS-independent native descriptors only. No
+  `@ten4seven/native` component or React Native dependency was created.
+- Revalidated deterministic List/DataTable/Tree previews in Component Lab and
+  the existing Tree View navigation branch.
 
 U07 does not create product-profile-specific data colors or domain collection
 tokens. The data plane points to the existing foundation/theme token source and
@@ -219,11 +237,14 @@ primitive family through this queue.
 
 ## 9. Net-new canonical components
 
-Only one net-new canonical component was added.
+No public canonical component was created during this bounded execution. The
+U07 canonical set was already present at the starting coordinate and was
+revalidated through source, registry, projection, package, native-canary, and
+browser checks.
 
-| Component | Intent                                                                                                                                      | Complexity level                                               | Platform   | Adaptive strategy                                                                                    | Accessibility                                                                                                                                                                     | Density                                                                        | Performance/virtualization boundary                                                                                                                                        |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `List`    | Render a generic ordered collection with optional selection while leaving data, row meaning, fetching, and business actions to the consumer | Catalog `level: component`; semantic collection, not an engine | `ADAPTIVE` | Web collection → native collection or list/detail; consumer chooses recipe-level record presentation | Accessible name, ordered structure, listbox/option selection semantics when applicable, disabled/selected state, keyboard movement, loading/empty announcements, non-color status | `compact`, `regular`, `comfortable`; row geometry reads semantic density roles | Bounded/medium collections are supported directly. Large counts require consumer-owned windowing behind the normalized adapter boundary; U07 makes no virtualization claim |
+| Component | Intent                                                                                                                                      | Complexity level                                                        | Platform   | Adaptive strategy                                                                                    | Accessibility                                                                                                                                                                     | Density                                                                        | Performance/virtualization boundary                                                                                                                                        |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `List`    | Render a generic ordered collection with optional selection while leaving data, row meaning, fetching, and business actions to the consumer | Existing catalog `level: component`; semantic collection, not an engine | `ADAPTIVE` | Web collection → native collection or list/detail; consumer chooses recipe-level record presentation | Accessible name, ordered structure, listbox/option selection semantics when applicable, disabled/selected state, keyboard movement, loading/empty announcements, non-color status | `compact`, `regular`, `comfortable`; row geometry reads semantic density roles | Bounded/medium collections are supported directly. Large counts require consumer-owned windowing behind the normalized adapter boundary; U07 makes no virtualization claim |
 
 `ListItem` was not added as a second public primitive. `renderItem` receives a
 small typed context (`index`, `selected`, `disabled`) so product row anatomy
@@ -231,7 +252,8 @@ remains consumer-owned without recreating a primitive library.
 
 `DataTable`, `TreeView`, `KeyValueList`, `MetricCard`, `ActivityFeed`, and the
 other entries in the U07 plane are existing canonical components that were
-classified, linked, or hardened; they are not additional canonical count.
+classified, linked, or hardened; they are not additional canonical count. The
+legitimate net-new count for this execution is therefore zero.
 
 ## 10. Engine adapter decisions
 
@@ -241,7 +263,7 @@ classified, linked, or hardened; they are not additional canonical count.
 | `VirtualList`                 | `ENGINE_ADAPTER`                                                             | Use List semantics plus an approved adapter when row count/measurement requires it                       |
 | `DataGrid`                    | `ENGINE_ADAPTER`                                                             | DataTable remains the bounded business-table contract; a grid engine must sit behind a Ten4Seven adapter |
 | `TreeGrid`                    | `ENGINE_ADAPTER`                                                             | Do not simulate hierarchy-plus-cell navigation with nested tables                                        |
-| Existing AdvancedDataGrid     | Harden bounded editor semantics only                                         | Explicit Web-only, non-virtualized, non-MUI-X/AG-Grid parity boundary                                    |
+| Existing AdvancedDataGrid     | Harden bounded editor semantics only                                         | Explicit Web-only, native-not-applicable, non-virtualized, non-MUI-X/AG-Grid parity boundary             |
 | Column resize/pinning/reorder | Reorder is deferred; pinning/resizing remain engine territory                | No new handles or DnD runtime in U07                                                                     |
 | Swipe actions                 | Native-only gap decision                                                     | Essential actions stay visible; destructive gesture needs an explicit confirmation/undo contract         |
 
@@ -263,9 +285,10 @@ introduced.
 - Domain names such as `UserList`, `InvoiceList`, `FarmList`, and `TaskList`
   remain domain compositions/recipes.
 
-The generated component count is therefore disciplined: 171 canonical
-components and 178 catalog entries after adding the one implemented List entry;
-variants and aliases do not inflate canonical component count.
+The generated component count is therefore disciplined: 172 canonical
+components, 7 aliases, and 179 catalog entries at this coordinate. Variants
+and aliases do not inflate canonical component count; the current execution
+added no catalog component.
 
 ## 12. Bulk-selection/action model
 
@@ -377,7 +400,7 @@ Browser proof was run against the final package build:
   completed, including typed editors, validation, save action, selection,
   keyboard traversal, and mobile scroll ownership. Its two unrelated visual
   snapshot assertions remain stale against the inherited baseline (desktop
-  4% pixel difference; mobile 3% pixel difference). U07 did not change that
+  5% pixel difference; mobile 3% pixel difference). U07 did not change that
   visual surface, so snapshots were not rewritten.
 
 The U07 browser proof directly covers the final List/Tree/DataTable canaries in
@@ -405,9 +428,15 @@ The projection source and retrieval boundary are explicit:
 The generated U07 projection contains 12 canonical data/collection definitions,
 11 gap decisions, five taxonomy families, the exact five-item native canary,
 ownership, state, density, responsive, and virtualization vocabularies. The
-AI catalog remains at 171 canonical components/178 catalog entries, with List
-at `status: implemented`, `level: component`, source
+AI catalog is at 172 canonical components, 7 aliases, and 179 catalog entries,
+with List at `status: implemented`, `level: component`, source
 `packages/ui/src/collections.tsx`, and explicit alternatives to DataTable.
+
+The deterministic resolved values prove the core distinction: `Table` has
+`selection: none`, `sorting: none`, `paging: none`, and adaptive pattern
+`semantic-table`; `DataTable` has `interactionModel: collection`,
+`selection: consumer-controlled`, `sorting: single-column`, and
+`paging: consumer-controlled`.
 
 The AI guidance distinguishes:
 
@@ -424,39 +453,46 @@ introduced.
 
 ## 19. Tests
 
-| Command                                                                                                                                           | Result/evidence                                                                                                                                                   |
-| ------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm contracts:generate`                                                                                                                         | PASS — 229 contract projections generated; theme CSS and three DTCG exports regenerated from existing typed sources                                               |
-| `pnpm --filter @ten4seven/contracts typecheck`                                                                                                    | PASS                                                                                                                                                              |
-| `pnpm package:build`                                                                                                                              | PASS — `@ten4seven/ui@1.0.0` built with the new List export                                                                                                       |
-| `pnpm typecheck`                                                                                                                                  | PASS — contracts, native, agent, and playground typechecks/builds                                                                                                 |
-| `pnpm test:contracts`                                                                                                                             | PASS — typed registry, U07 taxonomy/ownership/native projection, and generated parity                                                                             |
-| `pnpm test:ai`                                                                                                                                    | PASS — 29 recipes, 178 components, 60 blocks, 122 icons; cold-start references verified                                                                           |
-| `pnpm test:consistency`                                                                                                                           | PASS — 28 UI source files                                                                                                                                         |
-| `pnpm test:token-governance`                                                                                                                      | PASS — no raw component colors/palette dependencies/ungoverned timing                                                                                             |
-| `pnpm test:native-mobile`                                                                                                                         | PASS — CSS-independent native canary and platform metadata                                                                                                        |
-| `pnpm test:component-system`                                                                                                                      | PASS — 171 canonical components, 7 aliases, taxonomy/relations                                                                                                    |
-| `pnpm test`                                                                                                                                       | PASS — full repository test chain; token coverage reports 1000 existing raw-pixel occurrences as migration debt                                                   |
-| `pnpm build`                                                                                                                                      | PASS — playground production build; existing large-chunk warning remains                                                                                          |
-| `pnpm package:verify`                                                                                                                             | PASS — 17 root exports, bundled tokens/icons/motion, self-contained styles                                                                                        |
-| `pnpm exec playwright test tests/q07-data-collections-tables.spec.ts tests/q08-tables-datagrid-virtualization.spec.ts --project=chromium`         | PASS — 6/6 tests                                                                                                                                                  |
-| `pnpm exec playwright test tests/canonical-component-a11y-hardening.spec.ts --project=chromium --grep "DataTable rows activate"`                  | PASS — 1/1 test                                                                                                                                                   |
-| `pnpm exec prettier --check packages/contracts/src/data-collections.ts packages/ui/src/collections.tsx tests/q07-data-collections-tables.spec.ts` | PASS — all new U07 contract/component/canary tests formatted                                                                                                      |
-| `git diff --check`                                                                                                                                | PASS — only existing CRLF normalization warnings; no whitespace errors                                                                                            |
-| `pnpm format:check`                                                                                                                               | FAIL against the dirty repository baseline — Prettier reported 358 files. The three new U07 files above pass targeted formatting; no broad reformat was performed |
+| Command                                                                                                                                                                                                                                                                                  | Result/evidence                                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `pnpm contracts:generate`                                                                                                                                                                                                                                                                | PASS — 234 contract projections generated; component-platform and data-collection projections plus theme CSS and three DTCG exports regenerated from typed sources |
+| `pnpm --filter @ten4seven/contracts typecheck`                                                                                                                                                                                                                                           | PASS                                                                                                                                                               |
+| `pnpm package:build`                                                                                                                                                                                                                                                                     | PASS — `@ten4seven/ui@1.0.0` built with the existing canonical export set                                                                                          |
+| `pnpm typecheck`                                                                                                                                                                                                                                                                         | PASS — contracts, native, agent, and playground typechecks/builds                                                                                                  |
+| `pnpm test:contracts`                                                                                                                                                                                                                                                                    | PASS — typed registry, U07 taxonomy/ownership/native projection, and generated parity                                                                              |
+| `pnpm test:ai`                                                                                                                                                                                                                                                                           | PASS — 29 recipes, 179 components, 60 blocks, 122 icons; cold-start references verified; 0 donor reads                                                             |
+| `pnpm test:consistency`                                                                                                                                                                                                                                                                  | PASS — 28 UI source files                                                                                                                                          |
+| `pnpm test:token-governance`                                                                                                                                                                                                                                                             | PASS — no raw component colors/palette dependencies/ungoverned timing                                                                                              |
+| `pnpm test:native-mobile`                                                                                                                                                                                                                                                                | PASS — CSS-independent native canary and platform metadata                                                                                                         |
+| `pnpm test:native-expo`                                                                                                                                                                                                                                                                  | PASS — 7 profiles, 18 capability contracts, 179 derived component maturity rows; device runtime remains a separate evidence class                                  |
+| `pnpm test:component-system`                                                                                                                                                                                                                                                             | PASS — 172 canonical components, 7 aliases, taxonomy/relations                                                                                                     |
+| `pnpm test:component-corpus`                                                                                                                                                                                                                                                             | PASS — 2221 raw entries, 2073 normalized candidates, 172 canonical catalog entries, deterministic corpus stop evidence                                             |
+| `pnpm test`                                                                                                                                                                                                                                                                              | BOUNDARY STOP — aggregate chain began invoking later-queue verifiers, so it was stopped and not used as the U07 gate; no later-queue source was changed            |
+| `pnpm build`                                                                                                                                                                                                                                                                             | PASS — playground production build; existing large-chunk warning remains                                                                                           |
+| `pnpm package:verify`                                                                                                                                                                                                                                                                    | PASS — 24 root exports, bundled tokens/icons/motion, self-contained styles                                                                                         |
+| `pnpm exec playwright test tests/q07-data-collections-tables.spec.ts tests/q08-tables-datagrid-virtualization.spec.ts --project=chromium`                                                                                                                                                | PASS — 6/6 tests                                                                                                                                                   |
+| `pnpm exec playwright test tests/canonical-component-a11y-hardening.spec.ts --project=chromium --grep "DataTable rows activate"`                                                                                                                                                         | PASS — 1/1 test                                                                                                                                                    |
+| `pnpm exec prettier --check packages/contracts/src/data-collections.ts packages/contracts/src/component-platform.ts tests/q07-data-collections-tables.spec.ts tests/q08-tables-datagrid-virtualization.spec.ts docs/aapm/T7-UNIVERSAL-HARDENING-U07-DATA-COLLECTIONS-TABLES-EVIDENCE.md` | PASS — U07 source, browser tests, and evidence use repository formatting; the verifier file retains an older unrelated formatting difference                       |
+| `git diff --check`                                                                                                                                                                                                                                                                       | PASS — no whitespace errors                                                                                                                                        |
+| `pnpm format:check`                                                                                                                                                                                                                                                                      | FAIL against the dirty repository baseline — Prettier reported 501 files. No broad reformat was performed                                                          |
 
 ## 20. Baseline debt
 
 - The worktree contains substantial pre-existing edits and generated outputs;
   U07 preserved them and did not reset, clean, or normalize the checkout.
-- Repository-wide Prettier remains non-green at 358 files. This is broader than
-  the U07 change set; the targeted new U07 files are formatted.
+- Repository-wide Prettier remains non-green at 501 files. This is broader than
+  the U07 change set; the U07 source, browser tests, and evidence are formatted.
 - Token coverage reports 1000 raw-pixel occurrences as tracked migration debt.
   U07 adds no new raw palette, radius, shadow, or timing source.
 - The production build retains the existing chunk-size warning (>500 kB). It
   is not a U07 data/collection correctness failure.
 - AdvancedDataGrid visual snapshots remain an inherited baseline mismatch. The
-  U07 semantic/bounds canary passes; no unrelated snapshot was updated.
+  U07 semantic/bounds canary passes; current desktop and mobile diffs are 5%
+  and 3%, respectively. No unrelated snapshot was updated.
+- The repository aggregate `pnpm test` is not a valid U07-only gate because its
+  script invokes later-queue verifiers. That run was stopped after the later
+  contract checks began; queue-scoped U07 checks above are the authoritative
+  verification for this evidence record.
 - U07 performance proof is intentionally bounded. There is no evidence to claim
   virtualization, large-volume frame time, or engine parity.
 - Full consumer migration is not part of U07. Operations, Farm, Publishing,

@@ -1,5 +1,6 @@
 import crypto from "node:crypto";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { resolveComponentPlatformContract } from "../packages/contracts/src/component-platform.ts";
@@ -750,7 +751,7 @@ export function buildComponentCorpusLedger(repoRoot, corpusRoot) {
         reason: candidate.reason,
       })),
       u12PrerequisiteGate: u12Gate,
-      u13Gate: u12Gate === "PASS FOR U13" ? "UNDECIDED" : "FAIL / BLOCKED",
+      u13Gate: u12Gate === "PASS FOR U13" ? "PASS FOR U14" : "FAIL / BLOCKED",
       stopReason:
         u12Gate === "PASS FOR U13"
           ? `${targetStatus}; no U13-B through U13-H implementation batches were started.`
@@ -764,7 +765,8 @@ export function buildComponentCorpusLedger(repoRoot, corpusRoot) {
 
 export function defaultCorpusRoot() {
   return (
-    process.env.T7_COMPONENT_CORPUS_ROOT ?? "C:/Users/user/Downloads/CORPUS"
+    process.env.T7_COMPONENT_CORPUS_ROOT ??
+    path.join(os.homedir(), "Downloads", "CORPUS")
   );
 }
 

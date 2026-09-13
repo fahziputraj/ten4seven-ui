@@ -47,9 +47,9 @@ test.describe("U09 workflow, productivity, and application patterns", () => {
       "Move intent requested",
     );
 
-    const commandTrigger = page.getByRole("button", {
-      name: "Open command menu",
-    });
+    const commandTrigger = page
+      .getByLabel("Overlays")
+      .getByRole("button", { name: "Open command menu" });
     await commandTrigger.click();
     const commandSearch = page.getByRole("combobox", {
       name: "Search commands",

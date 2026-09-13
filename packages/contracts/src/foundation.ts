@@ -21,6 +21,13 @@ export type TokenPlatform = "BOTH" | "WEB" | "NATIVE" | "ADAPTIVE";
 export type NativeTokenStrategy =
   "SAME_INTENT" | "NATIVE_RENDERER" | "ALTERNATE_PATTERN" | "NOT_APPLICABLE";
 
+/** Fixed system feedback semantics shared by renderer projections. */
+export const INTERACTION_FEEDBACK = Object.freeze({
+  pressedOpacity: 0.72,
+  disabledOpacity: 0.5,
+  scrimOpacity: 0.42,
+});
+
 export type TokenResolutionStage =
   | "SYSTEM_DEFAULTS"
   | "BASE_RECIPE"

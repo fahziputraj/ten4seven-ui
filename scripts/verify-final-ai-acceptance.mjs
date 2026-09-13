@@ -12,6 +12,14 @@ const components = readJson("generated/components.compact.json");
 const agentIndex = readJson("generated/agent-index.json");
 const generatedIndex = readJson("generated/index.json");
 const nativeExpo = readJson("generated/native-expo.json");
+const nativeRendererSource = fs.readFileSync(
+  path.join(repoRoot, "packages/native/src/renderer.tsx"),
+  "utf8",
+);
+for (const [, names] of agentIndex.selectionIntents.components) {
+  for (const name of names)
+    assert.ok(components[name], `Unknown typed selection target: ${name}`);
+}
 
 assert.equal(Object.keys(components).length, 179);
 for (const component of Object.values(components)) {
@@ -20,6 +28,16 @@ for (const component of Object.values(components)) {
   assert.equal(shard.publicApi.export, component.id);
   assert.ok(Array.isArray(shard.useWhen));
   assert.ok(Array.isArray(shard.avoidWhen));
+  if (shard.publicApi.nativeExport) {
+    assert.equal(shard.publicApi.nativePackage, "@ten4seven/native/renderer");
+    assert.match(
+      nativeRendererSource,
+      new RegExp(
+        `export (?:function|const) ${shard.publicApi.nativeExport}\\b`,
+      ),
+      `Advertised Native export is absent: ${shard.publicApi.nativeExport}`,
+    );
+  }
 }
 assert.equal(agentIndex.sourceOfTruth.typedContracts, "packages/contracts/src");
 assert.ok(agentIndex.entryPoints["component-corpus"]);
@@ -49,8 +67,36 @@ function expects(query, required, forbidden = [], cwd = repoRoot) {
 }
 
 expects("single primary action", ["Button", "Import: @ten4seven/ui"]);
+expects(
+  "toggle a persistent selected state",
+  ["Export: ToggleButton"],
+  ["Export: Button", "Native import:"],
+);
+expects(
+  "confirm irreversible delete",
+  ["Export: AlertDialog"],
+  ["  Export: Dialog"],
+);
+expects("focused modal task", ["Export: Dialog"], ["Export: AlertDialog"]);
+expects("simple comparison table", ["Export: Table"], ["Export: DataTable"]);
+expects(
+  "sortable selectable table",
+  ["Export: DataTable"],
+  ["  Export: Table"],
+);
+expects("editable data grid", ["Export: AdvancedDataGrid"]);
+expects(
+  "plain multiline text",
+  ["Export: Textarea"],
+  ["EditorSurface", "RichTextEditor"],
+);
+expects("desktop hover help", ["Export: Tooltip"], ["Native import:"]);
 expects("searchable selection", ["Combobox", "Platform: ADAPTIVE"]);
-expects("choose one option on Android", ["Select", "Native import"]);
+expects("choose one option on Android", [
+  "Select",
+  "Native import",
+  "Native export \\(adaptive API\\): NativeSelect",
+]);
 expects("hierarchical selection", ["Cascader", "Native alternative"]);
 expects("show tabular financial records", ["DataTable"]);
 expects("100k interactive records", ["AdvancedDataGrid"], ["^- DataTable"]);

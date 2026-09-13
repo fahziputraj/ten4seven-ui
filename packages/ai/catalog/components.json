@@ -486,17 +486,16 @@
     "states": [
       "default",
       "focused",
-      "disabled",
-      "loading or pending when applicable",
-      "empty or unavailable when applicable"
+      "constrained or wrapping",
+      "disabled or loading descendant when applicable"
     ],
     "accessibility": [
-      "Expose a stable accessible name and use the semantic element for the interaction.",
-      "Preserve visible focus, keyboard reachability, and disabled or pending state semantics."
+      "Expose a stable group name and preserve the ordered relationship between peer actions.",
+      "Keep actionable semantics on each child; do not use ButtonGroup as a selection control."
     ],
     "responsive": [
-      "Reflows within constrained containers without changing the content contract.",
-      "Retains shared control geometry and touch-target minimums."
+      "Wrap or reflow peer actions according to priority without changing their action meaning.",
+      "Retains shared control geometry and touch-target minimums for every child action."
     ],
     "motion": [
       "Uses shared duration and easing variables for state transitions.",
@@ -552,16 +551,10 @@
     "displayName": "Toggle Button",
     "level": "primitive",
     "maturity": "implemented",
-    "states": [
-      "default",
-      "focused",
-      "disabled",
-      "loading or pending when applicable",
-      "empty or unavailable when applicable"
-    ],
+    "states": ["default", "focused", "pressed or selected", "disabled"],
     "accessibility": [
-      "Expose a stable accessible name and use the semantic element for the interaction.",
-      "Preserve visible focus, keyboard reachability, and disabled or pending state semantics."
+      "Expose a stable accessible name and the committed pressed state through the semantic button contract.",
+      "Preserve visible focus, keyboard reachability, and state changes without relying on color alone."
     ],
     "responsive": [
       "Reflows within constrained containers without changing the content contract.",
@@ -631,13 +624,13 @@
     "states": [
       "default",
       "focused",
+      "selected",
       "disabled",
-      "loading or pending when applicable",
-      "empty or unavailable when applicable"
+      "constrained or wrapping"
     ],
     "accessibility": [
-      "Expose a stable accessible name and use the semantic element for the interaction.",
-      "Preserve visible focus, keyboard reachability, and disabled or pending state semantics."
+      "Expose a stable group name and the committed single or multiple selection state.",
+      "Keep each ToggleButton keyboard reachable with its pressed state available to assistive technology."
     ],
     "responsive": [
       "Reflows within constrained containers without changing the content contract.",
@@ -704,20 +697,14 @@
     "displayName": "Split Button",
     "level": "primitive",
     "maturity": "implemented",
-    "states": [
-      "default",
-      "focused",
-      "disabled",
-      "loading or pending when applicable",
-      "empty or unavailable when applicable"
-    ],
+    "states": ["default", "focused", "pressed", "expanded", "disabled"],
     "accessibility": [
-      "Expose a stable accessible name and use the semantic element for the interaction.",
-      "Preserve visible focus, keyboard reachability, and disabled or pending state semantics."
+      "Expose the primary action name and a separately named alternatives trigger with expanded state.",
+      "Preserve keyboard reachability, focus feedback, and disabled semantics for both action segments."
     ],
     "responsive": [
-      "Reflows within constrained containers without changing the content contract.",
-      "Retains shared control geometry and touch-target minimums."
+      "Keep the primary action direct while moving related alternatives into the canonical responsive menu surface.",
+      "Retains shared control geometry and touch-target minimums for both segments."
     ],
     "motion": [
       "Uses shared duration and easing variables for state transitions.",

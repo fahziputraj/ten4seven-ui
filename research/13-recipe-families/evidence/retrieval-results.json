@@ -34,11 +34,11 @@
       "omitted": [],
       "conditionalComponentCount": 6,
       "retrieval": {
-        "actualRetrievalBytes": 52264,
-        "taskSpecificBytes": 48838,
+        "actualRetrievalBytes": 52293,
+        "taskSpecificBytes": 48867,
         "indexBytes": 3426,
         "recipeBytes": 2866,
-        "componentContractBytes": 45972,
+        "componentContractBytes": 46001,
         "fullCatalogFallback": 0,
         "runtimeFiles": [
           {
@@ -64,7 +64,7 @@
           {
             "kind": "componentContract",
             "path": "generated/components/DataTable.json",
-            "bytes": 8391
+            "bytes": 8443
           },
           {
             "kind": "componentContract",
@@ -84,7 +84,7 @@
           {
             "kind": "componentContract",
             "path": "generated/components/Pagination.json",
-            "bytes": 6696
+            "bytes": 6652
           },
           {
             "kind": "componentContract",
@@ -94,7 +94,7 @@
           {
             "kind": "componentContract",
             "path": "generated/components/DetailDrawer.json",
-            "bytes": 5329
+            "bytes": 5350
           }
         ],
         "componentIds": [
@@ -139,11 +139,11 @@
       ],
       "conditionalComponentCount": 1,
       "retrieval": {
-        "actualRetrievalBytes": 24859,
-        "taskSpecificBytes": 21433,
+        "actualRetrievalBytes": 24911,
+        "taskSpecificBytes": 21485,
         "indexBytes": 3426,
         "recipeBytes": 2866,
-        "componentContractBytes": 18567,
+        "componentContractBytes": 18619,
         "fullCatalogFallback": 0,
         "runtimeFiles": [
           {
@@ -169,7 +169,7 @@
           {
             "kind": "componentContract",
             "path": "generated/components/DataTable.json",
-            "bytes": 8391
+            "bytes": 8443
           },
           {
             "kind": "componentContract",
@@ -214,11 +214,11 @@
       ],
       "conditionalComponentCount": 5,
       "retrieval": {
-        "actualRetrievalBytes": 47530,
-        "taskSpecificBytes": 44104,
+        "actualRetrievalBytes": 47559,
+        "taskSpecificBytes": 44133,
         "indexBytes": 3426,
         "recipeBytes": 2866,
-        "componentContractBytes": 41238,
+        "componentContractBytes": 41267,
         "fullCatalogFallback": 0,
         "runtimeFiles": [
           {
@@ -244,7 +244,7 @@
           {
             "kind": "componentContract",
             "path": "generated/components/DataTable.json",
-            "bytes": 8391
+            "bytes": 8443
           },
           {
             "kind": "componentContract",
@@ -259,7 +259,7 @@
           {
             "kind": "componentContract",
             "path": "generated/components/Pagination.json",
-            "bytes": 6696
+            "bytes": 6652
           },
           {
             "kind": "componentContract",
@@ -269,7 +269,7 @@
           {
             "kind": "componentContract",
             "path": "generated/components/DetailDrawer.json",
-            "bytes": 5329
+            "bytes": 5350
           }
         ],
         "componentIds": [
@@ -318,11 +318,11 @@
       ],
       "conditionalComponentCount": 7,
       "retrieval": {
-        "actualRetrievalBytes": 47271,
-        "taskSpecificBytes": 43845,
+        "actualRetrievalBytes": 47323,
+        "taskSpecificBytes": 43897,
         "indexBytes": 3426,
         "recipeBytes": 2878,
-        "componentContractBytes": 40967,
+        "componentContractBytes": 41019,
         "fullCatalogFallback": 0,
         "runtimeFiles": [
           {
@@ -383,7 +383,7 @@
           {
             "kind": "componentContract",
             "path": "generated/components/DataTable.json",
-            "bytes": 8391
+            "bytes": 8443
           }
         ],
         "componentIds": [
@@ -514,11 +514,11 @@
       ],
       "conditionalComponentCount": 6,
       "retrieval": {
-        "actualRetrievalBytes": 44107,
-        "taskSpecificBytes": 40681,
+        "actualRetrievalBytes": 44159,
+        "taskSpecificBytes": 40733,
         "indexBytes": 3426,
         "recipeBytes": 2878,
-        "componentContractBytes": 37803,
+        "componentContractBytes": 37855,
         "fullCatalogFallback": 0,
         "runtimeFiles": [
           {
@@ -574,7 +574,7 @@
           {
             "kind": "componentContract",
             "path": "generated/components/DataTable.json",
-            "bytes": 8391
+            "bytes": 8443
           }
         ],
         "componentIds": [

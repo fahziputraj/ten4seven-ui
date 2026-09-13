@@ -376,13 +376,12 @@
     "states": [
       "default",
       "focused",
-      "disabled",
-      "loading or pending when applicable",
-      "empty or unavailable when applicable"
+      "constrained or wrapping",
+      "disabled or loading descendant when applicable"
     ],
     "responsive": [
-      "Reflows within constrained containers without changing the content contract.",
-      "Retains shared control geometry and touch-target minimums."
+      "Wrap or reflow peer actions according to priority without changing their action meaning.",
+      "Retains shared control geometry and touch-target minimums for every child action."
     ],
     "motion": [
       "Uses shared duration and easing variables for state transitions.",
@@ -413,9 +412,10 @@
     "webStatus": "implemented",
     "nativeStatus": "planned",
     "semanticIntent": [
-      "action"
+      "action",
+      "composition"
     ],
-    "interactionModel": "activation",
+    "interactionModel": "composition",
     "inputModalities": [
       "keyboard",
       "pointer",
@@ -446,9 +446,8 @@
     "states": [
       "default",
       "focused",
-      "disabled",
-      "loading or pending when applicable",
-      "empty or unavailable when applicable"
+      "pressed or selected",
+      "disabled"
     ],
     "responsive": [
       "Reflows within constrained containers without changing the content contract.",
@@ -483,9 +482,10 @@
     "webStatus": "implemented",
     "nativeStatus": "planned",
     "semanticIntent": [
-      "action"
+      "action",
+      "selection"
     ],
-    "interactionModel": "activation",
+    "interactionModel": "selection",
     "inputModalities": [
       "keyboard",
       "pointer",
@@ -515,9 +515,9 @@
     "states": [
       "default",
       "focused",
+      "selected",
       "disabled",
-      "loading or pending when applicable",
-      "empty or unavailable when applicable"
+      "constrained or wrapping"
     ],
     "responsive": [
       "Reflows within constrained containers without changing the content contract.",
@@ -552,9 +552,9 @@
     "webStatus": "implemented",
     "nativeStatus": "planned",
     "semanticIntent": [
-      "action"
+      "selection"
     ],
-    "interactionModel": "activation",
+    "interactionModel": "selection",
     "inputModalities": [
       "keyboard",
       "pointer",
@@ -585,13 +585,13 @@
     "states": [
       "default",
       "focused",
-      "disabled",
-      "loading or pending when applicable",
-      "empty or unavailable when applicable"
+      "pressed",
+      "expanded",
+      "disabled"
     ],
     "responsive": [
-      "Reflows within constrained containers without changing the content contract.",
-      "Retains shared control geometry and touch-target minimums."
+      "Keep the primary action direct while moving related alternatives into the canonical responsive menu surface.",
+      "Retains shared control geometry and touch-target minimums for both segments."
     ],
     "motion": [
       "Uses shared duration and easing variables for state transitions.",
@@ -616,9 +616,9 @@
       "DropdownMenu"
     ],
     "usedByPatterns": [],
-    "kind": "CANONICAL_COMPONENT",
-    "platform": "BOTH",
-    "rendererStrategy": "SAME_INTENT",
+    "kind": "ADAPTIVE",
+    "platform": "ADAPTIVE",
+    "rendererStrategy": "ALTERNATE_PATTERN",
     "webStatus": "implemented",
     "nativeStatus": "planned",
     "semanticIntent": [
@@ -629,8 +629,11 @@
       "keyboard",
       "pointer",
       "touch",
-      "screenReader"
-    ]
+      "screenReader",
+      "focus"
+    ],
+    "adaptivePattern": "split-action",
+    "nativeAlternative": "native-sheet"
   },
   "Input": {
     "id": "Input",
@@ -4488,7 +4491,7 @@
     "webStatus": "implemented",
     "nativeStatus": "planned",
     "semanticIntent": [
-      "navigation"
+      "composition"
     ],
     "interactionModel": "disclosure",
     "inputModalities": [
@@ -5925,8 +5928,7 @@
     "webStatus": "implemented",
     "nativeStatus": "planned",
     "semanticIntent": [
-      "data-display",
-      "selection"
+      "data-display"
     ],
     "interactionModel": "data-comparison",
     "inputModalities": [
@@ -5936,7 +5938,7 @@
       "screenReader",
       "focus"
     ],
-    "adaptivePattern": "data-table",
+    "adaptivePattern": "semantic-table",
     "nativeAlternative": "data-list-detail"
   },
   "TableHeader": {
@@ -6006,7 +6008,7 @@
       "screenReader",
       "focus"
     ],
-    "nativeAlternative": "data-list-detail"
+    "nativeAlternative": "none"
   },
   "TableBody": {
     "id": "TableBody",
@@ -6076,7 +6078,7 @@
       "screenReader",
       "focus"
     ],
-    "nativeAlternative": "data-list-detail"
+    "nativeAlternative": "none"
   },
   "TableRow": {
     "id": "TableRow",
@@ -6149,7 +6151,7 @@
       "screenReader",
       "focus"
     ],
-    "nativeAlternative": "data-list-detail"
+    "nativeAlternative": "none"
   },
   "TableHead": {
     "id": "TableHead",
@@ -6226,7 +6228,7 @@
       "screenReader",
       "focus"
     ],
-    "nativeAlternative": "data-list-detail"
+    "nativeAlternative": "none"
   },
   "TableCell": {
     "id": "TableCell",
@@ -6302,7 +6304,7 @@
       "screenReader",
       "focus"
     ],
-    "nativeAlternative": "data-list-detail"
+    "nativeAlternative": "none"
   },
   "DataTable": {
     "id": "DataTable",
@@ -6405,7 +6407,7 @@
       "data-display",
       "selection"
     ],
-    "interactionModel": "data-comparison",
+    "interactionModel": "collection",
     "inputModalities": [
       "keyboard",
       "pointer",
@@ -6505,17 +6507,17 @@
     "nativeStatus": "not-applicable",
     "semanticIntent": [
       "data-display",
-      "selection"
+      "selection",
+      "data-entry"
     ],
-    "interactionModel": "data-comparison",
+    "interactionModel": "data-entry",
     "inputModalities": [
       "keyboard",
       "pointer",
-      "touch",
       "screenReader",
       "focus"
     ],
-    "nativeAlternative": "data-list-detail"
+    "nativeAlternative": "none"
   },
   "DataTableColumnPicker": {
     "id": "DataTableColumnPicker",
@@ -6578,10 +6580,10 @@
     "webStatus": "implemented",
     "nativeStatus": "planned",
     "semanticIntent": [
-      "data-display",
-      "selection"
+      "selection",
+      "data-display"
     ],
-    "interactionModel": "data-comparison",
+    "interactionModel": "selection",
     "inputModalities": [
       "keyboard",
       "pointer",
@@ -8783,7 +8785,7 @@
       "focus",
       "hardwareBack"
     ],
-    "adaptivePattern": "dialog",
+    "adaptivePattern": "popover",
     "nativeAlternative": "native-sheet"
   },
   "Tooltip": {
@@ -8922,18 +8924,17 @@
     "webStatus": "implemented",
     "nativeStatus": "planned",
     "semanticIntent": [
-      "overlay"
+      "action",
+      "selection"
     ],
-    "interactionModel": "overlay",
+    "interactionModel": "selection",
     "inputModalities": [
       "keyboard",
       "pointer",
-      "touch",
       "screenReader",
-      "focus",
-      "hardwareBack"
+      "focus"
     ],
-    "adaptivePattern": "dialog",
+    "adaptivePattern": "menu",
     "nativeAlternative": "native-sheet"
   },
   "ActionMenu": {
@@ -9068,9 +9069,10 @@
     "webStatus": "implemented",
     "nativeStatus": "planned",
     "semanticIntent": [
-      "overlay"
+      "action",
+      "selection"
     ],
-    "interactionModel": "overlay",
+    "interactionModel": "selection",
     "inputModalities": [
       "pointer",
       "touch",
@@ -9080,7 +9082,7 @@
       "focus",
       "hardwareBack"
     ],
-    "adaptivePattern": "dialog",
+    "adaptivePattern": "menu",
     "nativeAlternative": "native-sheet"
   },
   "Alert": {
@@ -12864,7 +12866,7 @@
       "screenReader",
       "focus"
     ],
-    "adaptivePattern": "sidebar",
+    "adaptivePattern": "bottom-navigation",
     "nativeAlternative": "navigation-tabs"
   },
   "NavigationRail": {

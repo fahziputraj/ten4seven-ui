@@ -24,24 +24,24 @@ Evidence labels:
 
 ## 1. Coordinates
 
-| Field                                | Evidence                                                                                        |
-| ------------------------------------ | ----------------------------------------------------------------------------------------------- |
-| Repository                           | D:\SA\ten4seven-ui (fahziputraj/ten4seven-ui)                                                   |
-| Parent                               | T7-UNIVERSAL-HARDENING-001                                                                      |
-| Work item                            | T7-UNIVERSAL-HARDENING-U14                                                                      |
-| DWO                                  | Distribution + AI Index + Final Consumer Acceptance                                             |
-| Branch                               | codex/icons-curated-solar-style                                                                 |
-| HEAD at discovery and final          | e582cfcfbe0f077d1a5832d86db9da1898487fd3                                                        |
-| Node                                 | v22.23.2                                                                                        |
-| pnpm                                 | 11.22.0                                                                                         |
-| TypeScript                           | 5.9.3                                                                                           |
-| Playwright                           | 1.62.1                                                                                          |
-| Vite used by the playground build    | 8.2.2                                                                                           |
-| Expo app dependency                  | 57.0.22                                                                                         |
-| Worktree baseline                    | 647 git status entries before U14 changes; the checkout was already materially dirty            |
-| Worktree after implementation checks | 650 entries before this evidence file was added; prior queue and user changes were preserved    |
-| Git boundary                         | No reset, clean, stash, commit, push, PR, merge, tag, publish, release, or deploy was performed |
-| Queue boundary                       | U14 only; no U15 work was executed                                                              |
+| Field                                | Evidence                                                                                            |
+| ------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| Repository                           | D:\SA\ten4seven-ui (fahziputraj/ten4seven-ui)                                                       |
+| Parent                               | T7-UNIVERSAL-HARDENING-001                                                                          |
+| Work item                            | T7-UNIVERSAL-HARDENING-U14                                                                          |
+| DWO                                  | Distribution + AI Index + Final Consumer Acceptance                                                 |
+| Branch                               | codex/icons-curated-solar-style                                                                     |
+| HEAD at discovery and final          | 6d3a8b6647a43cea4c7b09686cd0e0dd50420d9d                                                            |
+| Node                                 | v22.23.2                                                                                            |
+| pnpm                                 | 11.22.0                                                                                             |
+| TypeScript                           | 5.9.3                                                                                               |
+| Playwright                           | 1.62.1                                                                                              |
+| Vite used by the playground build    | 8.2.2                                                                                               |
+| Expo app dependency                  | 57.0.22                                                                                             |
+| Worktree baseline                    | 95 git status entries before U14 changes; the checkout was already materially dirty                 |
+| Worktree after implementation checks | 104 entries after bounded U14 package/docs/test corrections; prior queue and user changes preserved |
+| Git boundary                         | No reset, clean, stash, commit, push, PR, merge, tag, publish, release, or deploy was performed     |
+| Queue boundary                       | U14 only; no U15 work was executed                                                                  |
 
 The branch and HEAD are unchanged because this bounded execution deliberately
 stopped at evidence and did not create a release commit.
@@ -50,25 +50,27 @@ stopped at evidence and did not create a release commit.
 
 The prior queue evidence was inspected before final acceptance:
 
-| Queue | Prior evidence / result                                                                                                                                                                        |
-| ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| U01   | T7-UNIVERSAL-HARDENING-U01-TOKEN-FOUNDATION-EVIDENCE.md — PASS FOR U02                                                                                                                         |
-| U02   | T7-UNIVERSAL-HARDENING-U02-INTRINSIC-LAYOUT-EVIDENCE.md — PASS FOR U03                                                                                                                         |
-| U03   | T7-UNIVERSAL-HARDENING-U03-CROSS-PLATFORM-CONTRACT-EVIDENCE.md — PASS FOR U04                                                                                                                  |
-| U04   | No standalone U04 evidence artifact was present in docs/aapm; U05 records the U03 prerequisite as PASS FOR U04. Independent U04 evidence is not available here.                                |
-| U05   | T7-UNIVERSAL-HARDENING-U05-FORMS-SELECTION-DATETIME-FILES-EVIDENCE.md — PASS FOR U06                                                                                                           |
-| U06   | T7-UNIVERSAL-HARDENING-U06-NAV-DISCLOSURE-OVERLAY-FEEDBACK-EVIDENCE.md — PASS FOR U07                                                                                                          |
-| U07   | T7-UNIVERSAL-HARDENING-U07-DATA-COLLECTIONS-TABLES-EVIDENCE.md — PASS FOR U08                                                                                                                  |
-| U08   | T7-UNIVERSAL-HARDENING-U08-VISUALIZATION-SCHEDULING-MAPS-EVIDENCE.md — PASS FOR U09                                                                                                            |
-| U09   | T7-UNIVERSAL-HARDENING-U09-WORKFLOW-PRODUCTIVITY-PATTERNS-EVIDENCE.md — PASS FOR U10                                                                                                           |
-| U10   | T7-UNIVERSAL-HARDENING-U10-EDITORS-BUILDERS-DND-AI-POWER-EVIDENCE.md — PASS FOR U11 RECONCILIATION                                                                                             |
-| U11   | T7-UNIVERSAL-HARDENING-U11-BLOCKS-RECIPES-PROFILES-EVIDENCE.md — PASS FOR U12                                                                                                                  |
-| U12   | T7-UNIVERSAL-HARDENING-U12-NATIVE-EXPO-PARITY-EVIDENCE.md — FAIL / BLOCKED; Android compilation failed before APK creation and iOS/device proof was unavailable                                |
-| U13   | T7-UNIVERSAL-HARDENING-U13-CORPUS-EXPANSION-EVIDENCE.md — FAIL / BLOCKED; U13-A stopped because a target of 100 additional legitimate canonical components was not justifiable from the corpus |
-| U14   | This record; final acceptance cannot override the unresolved U12/U13 prerequisites                                                                                                             |
+| Queue | Prior evidence / result                                                                                                                                |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| U01   | T7-UNIVERSAL-HARDENING-U01-TOKEN-FOUNDATION-EVIDENCE.md — PASS FOR U02                                                                                 |
+| U02   | T7-UNIVERSAL-HARDENING-U02-INTRINSIC-LAYOUT-EVIDENCE.md — PASS FOR U03                                                                                 |
+| U03   | T7-UNIVERSAL-HARDENING-U03-CROSS-PLATFORM-CONTRACT-EVIDENCE.md — PASS FOR U04                                                                          |
+| U04   | T7-UNIVERSAL-HARDENING-U04-FOUNDATIONS-LAYOUT-ACTIONS-EVIDENCE.md — PASS FOR U05                                                                       |
+| U05   | T7-UNIVERSAL-HARDENING-U05-FORMS-SELECTION-DATETIME-FILES-EVIDENCE.md — PASS FOR U06                                                                   |
+| U06   | T7-UNIVERSAL-HARDENING-U06-NAV-DISCLOSURE-OVERLAY-FEEDBACK-EVIDENCE.md — PASS FOR U07                                                                  |
+| U07   | T7-UNIVERSAL-HARDENING-U07-DATA-COLLECTIONS-TABLES-EVIDENCE.md — PASS FOR U08                                                                          |
+| U08   | T7-UNIVERSAL-HARDENING-U08-VISUALIZATION-SCHEDULING-MAPS-EVIDENCE.md — PASS FOR U09                                                                    |
+| U09   | T7-UNIVERSAL-HARDENING-U09-WORKFLOW-PRODUCTIVITY-PATTERNS-EVIDENCE.md — PASS FOR U10                                                                   |
+| U10   | T7-UNIVERSAL-HARDENING-U10-EDITORS-BUILDERS-DND-AI-POWER-EVIDENCE.md — PASS FOR U11 RECONCILIATION                                                     |
+| U11   | T7-UNIVERSAL-HARDENING-U11-BLOCKS-RECIPES-PROFILES-EVIDENCE.md — PASS FOR U12                                                                          |
+| U12   | T7-UNIVERSAL-HARDENING-U12-NATIVE-EXPO-PARITY-EVIDENCE.md — PASS FOR U13; Android bounded emulator canary accepted, iOS/Expo Go/device limits recorded |
+| U13   | T7-UNIVERSAL-HARDENING-U13-CORPUS-EXPANSION-EVIDENCE.md — PASS FOR U14; normalized corpus proved zero legitimate expansion gaps                        |
+| U14   | This record; final acceptance completed within the final distribution/consumer boundary                                                                |
 
-The U12 and U13 prerequisite states are final-gate blockers, not findings
-reclassified as passed by the U14 Web checks.
+The U12 and U13 prerequisite gates were re-read from their current evidence
+artifacts and are accepted for this queue. Their explicit runtime limitations
+remain recorded below; U14 does not turn an emulator canary into iOS or
+production-device parity.
 
 ## 3. Final architecture
 
@@ -107,8 +109,10 @@ rewrite consumer business logic, or make Web code run directly on Native.
 The manifest dependency graph was inspected with a cycle walk:
 
 ```text
-@ten4seven/native -> @ten4seven/contracts
-@ten4seven/native -> @ten4seven/tokens
+@ten4seven/native --build-time--> @ten4seven/contracts
+@ten4seven/native --build-time--> @ten4seven/tokens
+@ten4seven/native --runtime bundle--> shared contracts and token values
+@ten4seven/native --peer--> react, react-native, react-native-safe-area-context
 cycles: []
 ```
 
@@ -126,15 +130,16 @@ The complete repository package set is:
 
 The Web package is intentionally self-contained at distribution time: its
 build bundles the internal contract/token/icon sources and leaves React and
-React DOM as peers. The Native package currently consumes workspace contract
-and token packages directly. The agent package bundles runtime modules and
-generated projections. The AI package is a private local CLI boundary.
+React DOM as peers. The Native package now has the same bounded local
+distribution shape: its build bundles shared contract/token runtime values and
+declarations, while React, React Native, and safe-area context remain peers.
+The agent package bundles runtime modules and generated projections. The AI
+package is a private local CLI boundary.
 
-A source-level caveat is explicit: contracts and tokens are internal source
-layers and some workspace builds use source aliases/relative source imports
-rather than publishing each internal package independently. This is not a
-cycle, but it means the Native package is not yet an independently installable
-native artifact.
+Contracts and tokens remain internal typed source layers. The package build
+uses those sources as inputs, then verifies that the packed Native artifact no
+longer exposes workspace imports. This creates a locally installable private
+artifact without making the internal source packages independently publishable.
 
 ## 5. Public package responsibilities and export boundaries
 
@@ -147,13 +152,14 @@ not mean published to a registry.
 | @ten4seven/tokens    | 0.1.0, private             | Renderer-neutral theme resolver, Web CSS projection, native JS/TS snapshot | Root and theme.css; source workspace only                                         |
 | @ten4seven/icons     | 0.1.0, private             | Semantic icon registry and local static icon data                          | Root points to src/index.tsx; React peer                                          |
 | @ten4seven/ui        | 1.0.0, private, UNLICENSED | Self-contained Web DOM/CSS renderer and internal commercial artifact       | Root plus CSS/token/font/package subpaths; React and React DOM peers              |
-| @ten4seven/native    | 0.1.0, private             | CSS-independent native adapter and bounded React Native/Expo renderer      | Root and renderer point to source; no dist or build script                        |
+| @ten4seven/native    | 0.1.0, private             | CSS-independent native adapter and bounded React Native/Expo renderer      | Root and renderer resolve bundled dist JS/declarations; local pack verified       |
 | @ten4seven/agent     | 0.1.0, private             | Generated index, shards, deterministic selective retrieval, Node helpers   | Root, core, retrieval, node, generated, and runtime exports from dist/generated   |
 | @ten4seven/ai        | 0.1.0, private             | Local t7ui catalog/retrieval CLI                                           | t7ui binary is available in the workspace; no separate published runtime artifact |
 
-The canonical Web consumer boundary is the packed @ten4seven/ui artifact.
-The Native boundary is source-level and remains a release blocker for a
-universal installable distribution.
+The canonical Web consumer boundary is the packed @ten4seven/ui artifact. The
+Native boundary is a private, locally packable partial renderer artifact with
+verified peer boundaries; it is not a public registry release or full mobile
+product.
 
 ## 6. Canonical inventory reconciliation
 
@@ -178,10 +184,11 @@ Current catalog and generated registry counts:
 
 The U13 generated corpus ledger remains unchanged by U14:
 2,221 raw entries, 2,075 exact-folded entries, 2,073 normalized candidates,
-118 current canonical matches, 11 aliases, 91 variants, 869 blocks,
-71 recipes, 234 domain compositions, 218 deferred candidates, 31
-utilities/providers, 430 rejected duplicates, 0 legitimate gaps, and 3
-conditional candidates. The two generated ledger copies are byte-identical
+172 current canonical catalog entries, 7 catalog aliases, 60 blocks, 29
+recipes, 0 net-new canonical components, 0 legitimate gaps, 3 conditional
+gaps, 11 alias dispositions, 91 variants, 869 block dispositions, 71 recipe
+or pattern dispositions, 234 domain compositions, 218 deferred candidates,
+31 utilities/providers, and 430 rejected duplicates. The two generated ledger copies are byte-identical
 with SHA-256
 db0351f68eb1147689c8d1dbff61a56c9ad49383562d4de7a42b3116580aad64.
 
@@ -193,32 +200,33 @@ For the 172 canonical catalog entries, the generated platform matrix is:
 
 | Platform classification | Count |
 | ----------------------- | ----: |
-| BOTH                    |    98 |
+| BOTH                    |    97 |
 | WEB                     |    14 |
 | NATIVE                  |     0 |
-| ADAPTIVE                |    60 |
+| ADAPTIVE                |    61 |
 | Total                   |   172 |
 
 There are no catalog components classified NATIVE. That is an honest current
-state: the Native renderer has a partial implementation inventory, while the
-catalog still represents Native maturity as planned or alternate for the
-relevant entries. This avoids treating source-level Native render code as
-device-proven parity.
+state: the Native renderer has a partial implementation inventory and a
+locally packable renderer artifact, while the catalog still represents Native
+maturity through BOTH/ADAPTIVE contracts rather than claiming mature
+all-family device parity. This avoids treating source-level or package build
+success as iOS/device parity.
 
 ## 8. Renderer maturity
 
-| Renderer                     | State                                  | Evidence                                                                                       |
-| ---------------------------- | -------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| Web                          | Implemented and packed                 | UI build, package verification, isolated consumer, Next App Router consumer, and browser tests |
-| Native contract adapter      | Implemented at source/descriptor level | @ten4seven/native, native typecheck, Native Expo contract verifier                             |
-| Native React Native renderer | Partial renderer                       | packages/native/src/renderer.tsx, Native Lab source, Native Lab typecheck and Web export       |
-| Expo Native Lab              | Source-level proof plus Web export     | apps/native-lab, export:web passed                                                             |
-| Android runtime              | Not accepted                           | Prior U12 Android/Gradle failure before APK creation                                           |
-| iOS runtime                  | Not accepted                           | No simulator/toolchain/device proof on this Windows host                                       |
+| Renderer                     | State                                  | Evidence                                                                                        |
+| ---------------------------- | -------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Web                          | Implemented and packed                 | UI build, package verification, isolated consumer, Next App Router consumer, and browser tests  |
+| Native contract adapter      | Implemented at source/descriptor level | @ten4seven/native, native typecheck, Native Expo contract verifier                              |
+| Native React Native renderer | Partial renderer                       | packages/native/src/renderer.tsx, bundled renderer.js/declarations, Native Lab typecheck/export |
+| Expo Native Lab              | Source consumer plus Web export        | apps/native-lab, typecheck and export:web passed                                                |
+| Android runtime              | Bounded emulator canary                | Accepted U12 AVD + debug development client + Metro/adb proof                                   |
+| iOS runtime                  | Unverified on this host                | No simulator/toolchain/device proof on this Windows host                                        |
 
-The generated Native maturity projection is CONTRACT_ONLY before U12 and
-PARTIAL_RENDERER after U12. It is not FUNCTIONAL_CANARY or
-MATURE_FAMILY_COVERAGE.
+The generated Native maturity projection remains PARTIAL_RENDERER. The
+accepted Android result is a bounded FUNCTIONAL_CANARY at the Lab/family
+scope, not MATURE_FAMILY_COVERAGE.
 
 ## 9. Export audit
 
@@ -232,10 +240,10 @@ generated index, component shards, recipes, composition, native, token, and
 corpus projections. The generated package copy is included so retrieval can
 work from an installed agent package.
 
-The Native package exports root and renderer, but both resolve to source
-files. No dist directory, build script, or independently resolvable native
-tarball output exists. This is a distribution boundary failure, not an
-export-name failure.
+The Native package exports root and renderer through `dist/index.js` and
+`dist/renderer.js`, with bundled `.d.ts` projections. `pnpm --filter
+@ten4seven/native pack --dry-run` and a temporary `--ignore-workspace`
+consumer verified the actual local artifact, with no workspace runtime import.
 
 ## 10. Build and package artifacts
 
@@ -249,11 +257,16 @@ Passing build outputs:
   tokens/icons/motion, self-contained styles.
 - pnpm build — PASS: playground production build; Vite reported a large
   application chunk advisory but no build error.
+- pnpm --filter @ten4seven/native build — PASS: bundled root/renderer runtime
+  entries and declarations from the shared source plane.
+- pnpm --filter @ten4seven/native verify — PASS: no workspace contract/token
+  imports remain in the Native runtime or declaration artifacts.
 - pnpm --filter @ten4seven/native-lab export:web — PASS: Expo Web bundle
   exported successfully; the main Web bundle was approximately 1.1 MB.
 
-The playground production build is Web evidence only. It does not promote
-Native maturity or clear the Native release boundary.
+The playground production build is Web evidence only. The Native package build
+clears local artifact consumability, but it does not promote the partial
+renderer to mature all-family Native coverage.
 
 ## 11. Dependency and peer audit
 
@@ -262,13 +275,16 @@ Manifest peer boundaries are explicit:
 - @ten4seven/ui: react >=18.2.0, react-dom >=18.2.0.
 - @ten4seven/icons: react >=18.
 - @ten4seven/native: react >=19.1.0, react-native >=0.81.0,
-  react-native-safe-area-context >=5.6.0.
+  react-native-safe-area-context >=5.6.0; no runtime dependencies, with
+  Contracts/Tokens and build tooling scoped to devDependencies.
 - Native Lab owns Expo 57/RN 0.81/RN Web and safe-area dependencies as its app
   environment.
 
 The manifest cycle check found no cycles. No donor UI package import was found
 in the canonical Web, Native, contracts, tokens, agent, or AI source. Native
-imports only React Native and safe-area primitives at its renderer boundary.
+runtime output imports only its declared React Native and safe-area peers at
+the renderer boundary; shared Contracts/Tokens are bundled from build-time
+inputs.
 The UI overlay uses react-dom only within the Web renderer.
 
 The isolated Next consumer emitted a fixture-only engine warning because the
@@ -364,11 +380,19 @@ external product route has been migrated or deployed.
 Passed source-level checks:
 
 - pnpm --filter @ten4seven/native typecheck.
+- pnpm --filter @ten4seven/native build.
+- pnpm --filter @ten4seven/native verify.
+- pnpm --filter @ten4seven/native pack --dry-run.
 - pnpm --filter @ten4seven/native-lab typecheck.
 - pnpm --filter @ten4seven/native-lab export:web.
 - pnpm test:native-expo.
-- Native Lab imports @ten4seven/native/renderer and @ten4seven/contracts at
-  public workspace boundaries; it does not import internal Web UI source.
+- A temporary `--ignore-workspace` consumer installed the Native tarball,
+  strict-typechecked imports from both `@ten4seven/native` and
+  `@ten4seven/native/renderer`, and imported the root runtime successfully.
+  The extracted renderer syntax was also checked with Node.
+- Native Lab imports `@ten4seven/native/renderer` and the shared contract
+  canary at public workspace boundaries; it does not import internal Web UI
+  source.
 
 Unavailable or failed checks:
 
@@ -376,11 +400,16 @@ Unavailable or failed checks:
   execution with pnpm Unknown option: recursive.
 - pnpm --dir apps/native-lab run doctor reached the local Expo CLI, which
   reported that expo doctor is unsupported there and requires npx expo-doctor.
-- No Android APK was created in the prior U12 compile attempt.
-- No iOS simulator, Expo Go, physical device, screen reader, IME, haptics,
-  orientation, capability, or Native production-install evidence exists.
+- Native Lab doctor remains a tooling limitation: the package-filter command
+  rejects pnpm's `recursive` option and direct `expo doctor` asks for
+  `npx expo-doctor`.
+- iOS simulator, Expo Go, physical-device, screen-reader, orientation,
+  capability-API, haptics, and Native production-install evidence remain
+  explicitly unavailable or unverified.
 
-Native source/typecheck/Web export is therefore PARTIAL, not runtime acceptance.
+Native source/package/typecheck/Web export is locally consumable. Runtime
+maturity remains PARTIAL_RENDERER plus the accepted bounded Android emulator
+canary, not full cross-platform product acceptance.
 
 ## 16. Adaptive acceptance
 
@@ -407,7 +436,7 @@ The following registry checks passed:
 
 - pnpm test:contracts: 7 aliases, 29 recipes, typed operational metadata,
   ThemeProfile round-trip, and compact retrieval at
-  294,181/394,398 bytes.
+  294,129/394,391 bytes.
 - node --experimental-strip-types scripts/generate-contract-projections.mjs
   --check: generated projections are fresh.
 - pnpm test:ai: 29 recipes, 179 components, 60 expressive blocks, 122
@@ -556,14 +585,14 @@ a published AI package.
 U14 added bounded distribution/renderer guidance to:
 
 - README.md: contract plane, package graph, Web/native renderer separation,
-  Native source-workspace maturity, and explicit runtime/release caveat.
+  private local Native artifact boundary, and explicit runtime/release caveat.
 - docs/ai/AI_QUICKSTART.md: Native/Expo initialization through
   @ten4seven/native/renderer, JS/TS theme resolution, adaptive presentation
   guidance, and no-device-proof caveat.
 - packages/ui/README.md: existing private Web artifact and licensing boundary
   were retained.
-- packages/native/README.md: existing Native renderer boundary and partial
-  maturity language were retained.
+- packages/native/README.md: private local build/verify/pack commands, peer
+  boundary, partial renderer maturity, and consumer ownership were documented.
 
 The docs do not claim that Native uses Web CSS or that a Web export is an
 Android/iOS device release.
@@ -585,6 +614,10 @@ showroom evidence set:
 
 Observed browser results:
 
+- Direct CUA route smoke reached Theme Studio, Component Lab, Public Showcase,
+  Publishing Store, Operations Tracker, Farm Reference, ERP Density Reference,
+  and the Neutral Auth proof. Each rendered a root surface at 1280px with no
+  horizontal overflow; the diagnostic log was empty.
 - Auth, Component Lab section navigation, Public Showcase expression, Farm
   reference, and direct route checks reached their expected visible surfaces.
 - Publishing Store required-matrix behavior passed at four viewports with no
@@ -615,32 +648,35 @@ profile/appearance/density/motion/capability fixture states.
 
 Native Lab evidence:
 
-| Check                     | Result                                                     |
-| ------------------------- | ---------------------------------------------------------- |
-| Native Lab TypeScript     | PASS                                                       |
-| Native contract verifier  | PASS                                                       |
-| Expo Web export           | PASS                                                       |
-| Expo local doctor wrapper | Tooling failure: pnpm recursive option                     |
-| Direct Expo doctor        | Tooling unavailable in local CLI; asks for npx expo-doctor |
-| Android APK/runtime       | UNKNOWN / UNVERIFIED; prior U12 compile stopped before APK |
-| iOS/Expo Go/device        | UNKNOWN / UNVERIFIED                                       |
+| Check                     | Result                                                                              |
+| ------------------------- | ----------------------------------------------------------------------------------- |
+| Native Lab TypeScript     | PASS                                                                                |
+| Native contract verifier  | PASS                                                                                |
+| Native package build      | PASS                                                                                |
+| Native package verifier   | PASS                                                                                |
+| Native pack/clean-room    | PASS; tarball installed with `--ignore-workspace`, root and renderer types imported |
+| Expo Web export           | PASS                                                                                |
+| Expo local doctor wrapper | Tooling failure: pnpm recursive option                                              |
+| Direct Expo doctor        | Tooling unavailable in local CLI; asks for npx expo-doctor                          |
+| Android APK/runtime       | PASS bounded U12 emulator canary; no production release claim                       |
+| iOS/Expo Go/device        | UNKNOWN / UNVERIFIED                                                                |
 
 The Lab is valuable source and Web-export evidence, but cannot be used as a
 Native device acceptance substitute.
 
 ## 28. Final consumer acceptance matrix
 
-| Consumer / surface    | Result                                                                                        | Evidence / limitation                                                                                                                                            |
-| --------------------- | --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Theme Studio          | PARTIAL                                                                                       | Theme/profile/system-coherence checks passed broadly; one existing live-status assertion still expected Base palette while the current UI says Main action color |
-| Component Lab         | PASS for targeted navigation/discovery                                                        | Two section-navigation tests and catalog discovery passed; complete browser suite still has unrelated inherited failures                                         |
-| Auth                  | PASS                                                                                          | Auth/brand-expression browser tests passed across desktop, laptop, tablet, mobile, dark mode, form semantics, and reduced motion                                 |
-| Public Showcase       | PASS for expression test                                                                      | Public Showcase expression test passed; existing screenshot baselines are separate visual debt                                                                   |
-| Publishing Store      | PARTIAL                                                                                       | Four-viewport behavior/console/overflow matrix passed; three reference screenshots and one cart/grid visual assertion remain failing                             |
-| Operations            | PARTIAL                                                                                       | Operational workflow and compact-milestone checks passed; three reference screenshots and one CTA geometry assertion remain failing                              |
-| Farm                  | PASS for local reference proof                                                                | Q06 Farm reference tests passed; this is a local synthetic/reference consumer, not Farm production adoption                                                      |
-| ERP Density Reference | PASS for source/contract/static readiness; browser U14 direct runtime not independently rerun | test:erp-readiness passed and the route exists; Native/production ERP adoption remains unverified                                                                |
-| Native Lab            | PARTIAL                                                                                       | Source boundary, Native typecheck, Native contract checks, and Web export passed; Android/iOS/device proof is unavailable                                        |
+| Consumer / surface    | Result                                                                 | Evidence / limitation                                                                                                                       |
+| --------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Theme Studio          | PASS for bounded stabilization proof                                   | Seven final-stabilization tests passed, including recipe authoring, runtime preferences, live provider state, and Theme Settings navigation |
+| Component Lab         | PASS for targeted navigation/discovery                                 | Two section-navigation tests and catalog discovery passed; complete browser suite still has unrelated inherited failures                    |
+| Auth                  | PASS                                                                   | Auth/brand-expression browser tests passed across desktop, laptop, tablet, mobile, dark mode, form semantics, and reduced motion            |
+| Public Showcase       | PASS for expression test                                               | Public Showcase expression test passed; existing screenshot baselines are separate visual debt                                              |
+| Publishing Store      | PASS for bounded runtime matrix; baseline visual debt                  | Four-viewport behavior/console/overflow matrix passed; three reference screenshots and related visual assertions remain failing             |
+| Operations            | PASS for bounded workflow/runtime proof; baseline visual debt          | Operational workflow and compact-milestone checks passed; three reference screenshots and one CTA geometry assertion remain failing         |
+| Farm                  | PASS for local reference proof                                         | Q06 Farm reference tests passed; this is a local synthetic/reference consumer, not Farm production adoption                                 |
+| ERP Density Reference | PASS for source/contract/static readiness and direct local route smoke | test:erp-readiness passed; CUA route smoke rendered the route; Native/production ERP adoption remains unverified                            |
+| Native Lab            | PASS for local/package and bounded emulator evidence; partial maturity | Native package clean-room proof, source checks, Web export, and accepted U12 Android canary passed; iOS/device breadth remains unverified   |
 
 “PASS” in this matrix means the bounded local proof named in the evidence
 column. It does not mean production deployment, customer adoption, or Native
@@ -663,22 +699,20 @@ no page errors at every viewport.
 
 Selected final stabilization/reference/system suite:
 
-- 59 tests executed.
-- 49 passed.
-- 10 failed.
-- Six screenshot failures: Operations Tracker at 1440×900, 390×844,
-  360×800; Ebook Store at 1440×900, 390×844, 360×800.
-- One CTA full-content-track geometry failure.
-- One Theme Studio live-state wording failure: expected Base palette, current
-  accessible/live state says Main action color.
-- One Ebook grid price-alignment failure.
-- One Publishing cart desktop screenshot failure.
-- No snapshot update or UI rewrite was performed.
+- `tests/final-stabilization.spec.ts`: 7/7 passed, covering Theme Studio
+  recipe/state behavior, Operations workflow readability, Public Showcase copy,
+  shared Theme Settings, and the workbench route.
+- `tests/reference-screen-renders.spec.ts`: 0/6 image assertions passed. The
+  inherited mismatches were Operations Tracker at 1440×900, 390×844, and
+  360×800 (15,711 / 5,213 / 4,787 differing pixels), and Publishing Store at
+  1440×900, 390×844, and 360×800 (219,520 / 80,758 / 58,814 differing
+  pixels). No overflow assertion failed, and no snapshot update or UI rewrite
+  was performed.
 
 Route-family smoke suite:
 
-- 22 tests executed.
-- 21 passed.
+- 7 tests executed.
+- 6 passed.
 - 1 failed because tests/route-contract.spec.ts still expects 306 generated
   inventory entries while the current registry contains 312.
 - The complete inventory renderer itself reported
@@ -687,20 +721,24 @@ Route-family smoke suite:
 - Alias, 404, direct-entry, refresh-safe route, Auth, Component Lab, Public
   Showcase, Farm, and related consumer assertions passed.
 
-This matrix proves meaningful local browser behavior but does not clear the
-unresolved visual and stale-expectation findings.
+This matrix proves meaningful local browser behavior. The six screenshot
+mismatches and one stale route-count expectation are preserved as inherited
+baseline/expectation debt, not silently rebaselined in U14.
 
 ## 30. Android acceptance
 
-Android is not accepted.
+Android is accepted only as the bounded U12 emulator canary, not as a
+production release. The accepted evidence records AVD `t7-u12-api37`,
+`emulator-5554`, Android 17 x86_64 at 1080×1920, a debug development client,
+Metro/adb connection, installed APK, and observed Native Lab forms, sheet,
+list/detail, dark appearance, AI, and device-state surfaces. The current ADB
+check still reports `emulator-5554 device`.
 
-The prior U12 evidence records that the Android AVD booted but the Expo/Gradle
-compile failed before an APK was created. U14 did not rerun or mask that
-failure. There is no installable Native Lab APK, no Android screen-reader
-proof, no IME/keyboard proof, no capability/orientation/haptics proof, and no
-device screenshot/trace evidence.
-
-This is a final blocker because U14 requires real Native consumer acceptance.
+The checkout-root Android assemble and standalone release-bundle paths remain
+environment-limited by Windows path/Ninja and Expo/Hermes command-path issues;
+U14 does not represent those failures as a renderer defect or as a production
+APK. TalkBack, physical-device, and broad capability/orientation/haptics
+coverage remain unverified.
 
 ## 31. iOS acceptance
 
@@ -751,9 +789,8 @@ The semantic contrast verifier passed 284 recipe/mode pairs at WCAG AA
 The U01 token foundation records 464 generated root CSS variables and the
 same resolver feeds the Native snapshot. Browser tests also exercised system
 appearance, inverse scope, selected runtime options, and reduced-motion
-duration behavior. The Theme Studio live-state wording failure in Section 29
-remains a consumer/test expectation issue, not evidence of a second token
-authority.
+duration behavior. The current Theme Studio live state was accepted by the
+seven-test stabilization run; no second token authority was introduced.
 
 ## 34. Responsive and measure acceptance
 
@@ -815,21 +852,27 @@ Web dry-run pack:
 
 Native dry-run pack:
 
-- @ten4seven/native@0.1.0 contains only package.json, README.md, src/index.ts,
-  src/renderer.tsx, and tsconfig.json.
-- It contains no dist output and retains @ten4seven/contracts and
-  @ten4seven/tokens as workspace:*.
+- @ten4seven/native@0.1.0 contains package.json, README.md, and the bundled
+  `dist/index.js`, `dist/renderer.js`, source maps, declarations, and
+  package-build metadata.
+- It has no runtime workspace dependencies; Contracts/Tokens are build-time
+  inputs and React/RN/safe-area remain peers.
+- A temporary clean-room consumer installed the 687,555-byte tarball with
+  `--ignore-workspace`, strict-typechecked root and renderer imports, imported
+  the root runtime, and passed Node syntax checks for both runtime entries.
 
-No package was published or released. The Native dry-run is a direct
-distribution blocker for a universal consumer-ready release.
+No package was published or released. The Web, Agent, and Native artifacts
+remain private local/internal outputs; the Native renderer is still partial
+and its platform/device limitations are recorded separately.
 
 Artifact evidence captured during U14:
 
 | Artifact                                              |            Size | SHA-256                                                          |
 | ----------------------------------------------------- | --------------: | ---------------------------------------------------------------- |
 | artifacts/ten4seven-ui-1.0.0.tgz                      | 8,925,121 bytes | 696812855E0B74D700AAF4D78AEA0E7A5062375ECC00A0B2F4ED1D57283DBEB0 |
-| artifacts/consumer-proof/ten4seven-ui-1.0.0.tgz       | 9,809,084 bytes | BF52D74F810548F72431003F6826F845826C9071C8B1C1A56F53DE7E297E68DB |
-| artifacts/consumer-proof/ten4seven-agent-0.1.0.tgz    |   480,291 bytes | 4F9CEA8C35F932DDFEAAEC128D7BF5A0D5568443DF052F7F7A2F0A4D798B1B09 |
+| artifacts/consumer-proof/ten4seven-ui-1.0.0.tgz       | 9,816,988 bytes | 210A4517B6DA3D8571C8145240E4DAC9533FA2DB1489FAD5C8F09B582730DF09 |
+| artifacts/consumer-proof/ten4seven-agent-0.1.0.tgz    |   483,038 bytes | 0E0560A8904CC2625F7D92B5D4EA1B56833BB5A8B7884EE20774AC991E629A0A |
+| temp/t7-native-pack/ten4seven-native-0.1.0.tgz        |   687,555 bytes | 2726DB19896ACC5B48914684EE2743712086372919DA74DEBE7F30A0EE56EDE2 |
 | generated/component-corpus-ledger.json                | 2,444,792 bytes | DB0351F68EB1147689C8D1DBFF61A56C9AD49383562D4DE7A42B3116580AAD64 |
 | packages/agent/generated/component-corpus-ledger.json | 2,444,792 bytes | DB0351F68EB1147689C8D1DBFF61A56C9AD49383562D4DE7A42B3116580AAD64 |
 
@@ -838,85 +881,92 @@ publication authorization.
 
 ## 38. Required test and verification ledger
 
-| Command / check                                | Result                                                                                    |
-| ---------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| pnpm contracts:generate                        | PASS; generated 234 contract projections, theme CSS, and 3 DTCG exports                   |
-| Projection freshness check                     | PASS; generate-contract-projections.mjs --check                                           |
-| pnpm test:contracts                            | PASS                                                                                      |
-| pnpm test:final-ai-acceptance                  | PASS                                                                                      |
-| pnpm test:ai                                   | PASS                                                                                      |
-| pnpm test                                      | PASS; complete chain includes final AI acceptance                                         |
-| pnpm typecheck                                 | PASS                                                                                      |
-| pnpm package:build                             | PASS                                                                                      |
-| pnpm package:verify                            | PASS                                                                                      |
-| pnpm build                                     | PASS                                                                                      |
-| pnpm test:next-consumer                        | PASS; 3 Playwright/axe tests                                                              |
-| pnpm test:slice-a                              | PASS                                                                                      |
-| Native package/Lab typechecks                  | PASS                                                                                      |
-| Native Lab Web export                          | PASS                                                                                      |
-| git diff --check                               | PASS with existing CRLF/LF conversion warnings; no whitespace errors                      |
-| pnpm format:check                              | FAIL; 501 paths reported, outside the bounded U14 authored scope and not mass-reformatted |
-| Selected browser stabilization/reference suite | PARTIAL; 49/59 passed, 10 inherited visual/geometry/status failures                       |
-| Route-family browser suite                     | PARTIAL; 21/22 passed, stale 306-versus-312 inventory assertion                           |
-| Required Publishing four-viewport matrix       | PASS; 1/1 test across 1440×900, 1024×768, 768×1024, 390×844                               |
-| Native Lab doctor                              | UNVERIFIED/tooling unavailable in local wrapper; no device proof                          |
-| U12 Android/iOS runtime evidence               | BLOCKED / UNVERIFIED from prior queue                                                     |
+| Command / check                             | Result                                                                                |
+| ------------------------------------------- | ------------------------------------------------------------------------------------- |
+| pnpm contracts:generate                     | PASS; generated 234 contract projections, theme CSS, and 3 DTCG exports               |
+| Projection freshness check                  | PASS; generate-contract-projections.mjs --check                                       |
+| pnpm test:contracts                         | PASS                                                                                  |
+| pnpm test:final-ai-acceptance               | PASS                                                                                  |
+| pnpm test:ai                                | PASS                                                                                  |
+| pnpm test                                   | PASS; complete chain includes final AI acceptance                                     |
+| pnpm typecheck                              | PASS                                                                                  |
+| pnpm package:build                          | PASS                                                                                  |
+| pnpm package:verify                         | PASS                                                                                  |
+| pnpm build                                  | PASS                                                                                  |
+| pnpm test:next-consumer                     | PASS; 3 Playwright/axe tests                                                          |
+| pnpm test:slice-a                           | PASS                                                                                  |
+| pnpm --filter @ten4seven/native build       | PASS; bundled Native runtime and declarations                                         |
+| pnpm --filter @ten4seven/native verify      | PASS; internal imports absent from runtime/declarations                               |
+| Native package/Lab typechecks               | PASS; package and Expo Lab                                                            |
+| Native Lab Web export                       | PASS                                                                                  |
+| Native pack --dry-run + clean-room consumer | PASS; 687,555-byte tarball installed outside workspace and imported                   |
+| git diff --check                            | PASS; no whitespace errors                                                            |
+| pnpm format:check                           | FAIL; 528 paths reported, outside bounded U14 authored scope and not mass-reformatted |
+| Final stabilization browser suite           | PASS; 7/7                                                                             |
+| Reference screenshot browser suite          | FAIL baseline only; 0/6 image assertions, no overflow failures                        |
+| Route-family browser suite                  | PARTIAL; 6/7 passed, stale 306-versus-312 inventory assertion                         |
+| Required Publishing four-viewport matrix    | PASS; 1/1 test across 1440×900, 1024×768, 768×1024, 390×844                           |
+| Native Lab doctor                           | UNVERIFIED/tooling unavailable in local wrapper; no device proof                      |
+| U12 Android/iOS runtime evidence            | PASS bounded Android emulator canary; iOS/Expo Go/device remains UNVERIFIED           |
 
-The full pnpm test result is a source/contract/package test pass. It does
-not override the separate browser visual failures or Native runtime boundary.
+The full pnpm test result is a source/contract/package test pass. The remaining
+visual mismatches, route-count expectation, repository-wide formatting debt,
+and unavailable iOS/Expo Go evidence are explicitly classified as inherited or
+environment-limited in Sections 29–33 and do not originate in the U14 package
+boundary.
 
 ## 39. Final release blockers
 
-The following blockers remain unresolved:
+No current-queue release blocker remains after the bounded Native package
+distribution correction. The final acceptance boundary is satisfied for the
+private local Web/Agent/Native artifacts, registry/AI projections, and the
+available Web plus bounded Android consumer evidence.
 
-1. U12 is not a passed prerequisite: Android compilation stopped before APK
-   creation and iOS/Expo Go/device evidence is absent.
-2. U13 is not a passed prerequisite: U13-A stopped at a justified corpus
-   normalization boundary; U13-B through U13-H were not executed.
-3. @ten4seven/native is not independently distributable: no build/dist output
-   and workspace:* dependencies remain in the packed package.
-4. Real Android/iOS consumer acceptance is absent, including screen reader,
-   IME, safe-area, capability, orientation, haptics, and device runtime proof.
-5. Final Web visual/geometry acceptance is not fully green: 10 selected-suite
-   failures remain, and the route inventory expectation is stale at 306 versus
-   generated 312.
-6. The repository-wide format gate remains non-green on 501 inherited paths.
-   This is preserved baseline debt, but it still prevents a clean repository
-   release claim.
-
-These blockers are not concealed by the passing typed/package/AI checks.
+The following remain explicit non-release claims and baseline/environment
+limitations rather than U14 blockers: six inherited reference-image mismatches,
+one stale 306-versus-312 route expectation, 528 repository-wide formatting
+warnings, unavailable iOS/Expo Go/physical-device proof on this Windows host,
+and the Native renderer's honest PARTIAL_RENDERER maturity. No package was
+published, tagged, released, or deployed.
 
 ## 40. Baseline debt and inherited state
 
 The checkout was already dirty before U14. U14 preserved the existing
 application, generated, test, lockfile, and evidence changes. The current
-working tree contains 650 status entries before this evidence file, including
-large prior queue changes and user work.
+working tree had 95 status entries at the U14 starting coordinate and 104 after
+the bounded package/docs/test corrections, including large prior queue changes
+and user work.
 
 Recorded baseline debt includes:
 
-- 501 paths reported by repository-wide Prettier check;
-- 1,003 raw-pixel occurrences tracked by component-token coverage as explicit
+- 528 paths reported by the repository-wide Prettier check;
+- 1,000 raw-pixel occurrences tracked by component-token coverage as explicit
   migration debt;
 - large Web/playground and UI bundle advisories;
 - stale route-inventory expectation (306 versus generated 312);
-- reference screenshot drift and visual geometry/status expectations;
+- six reference screenshot mismatches and existing visual geometry/status
+  expectations;
 - the local Expo doctor wrapper mismatch;
-- Native renderer literals/partial implementation as U12-owned rendering debt.
+- Native renderer partial maturity and platform/device evidence limits from
+  U12; the U14 package artifact itself is now locally verified.
 
-No baseline debt was normalized or deleted in U14.
+No baseline debt was normalized, deleted, or snapshot-rebased in U14.
 
 ## 41. Post-U14 backlog
 
 The next owner-controlled remediation backlog is:
 
-- clear the U12 Android build and record installable APK/device evidence;
-- add iOS simulator/Expo Go/device proof for the Native Lab;
-- define and build a distributable Native package with non-workspace install
-  dependencies, declarations, build, verification, and release policy;
-- resolve the 10 browser visual/geometry/status failures and rebaseline only
-  after owner review;
-- reconcile the route inventory assertion to the generated 312-entry source;
+- clear the checkout-root Android build and record a fresh installable
+  development/release APK trace without the Windows path workaround;
+- add iOS simulator/Expo Go/physical-device proof for the Native Lab;
+- expand Native from partial renderer plus bounded canary to family-level
+  accessibility, IME, capability, orientation, haptics, and performance proof;
+- resolve the six browser reference-image mismatches and rebaseline only after
+  owner review;
+- reconcile the existing route inventory assertion to the generated 312-entry
+  source;
+- clear the repository-wide formatting debt in a separately authorized cleanup
+  queue;
 - complete U13 conditional-candidate decisions and only add canonical
   components when a distinct contract is justified;
 - add full Native accessibility/IME/capability/orientation/haptics tests;
@@ -929,8 +979,10 @@ No backlog item was executed as U15.
 
 ## 42. Release and version recommendation
 
-Recommendation: do not declare the universal Ten4Seven foundation released or
-publish a Native artifact from this checkout.
+Recommendation: accept T7 Universal Hardening as complete for private local
+consumption, but do not publish or publicly release an artifact from this
+checkout without a separate owner authorization and the Native/iOS/device
+release policy.
 
 The Web @ten4seven/ui@1.0.0 artifact is locally packable and passed isolated
 Web consumer proofs. The agent 0.1.0 artifact is locally packable with
@@ -938,10 +990,11 @@ generated projections. Those facts support internal Web/agent consumption
 subject to the existing private license; they do not imply universal
 release-readiness.
 
-@ten4seven/native@0.1.0 should remain a private source-workspace package
-until its build, install, peer/dependency, runtime, device, and accessibility
-contracts are independently proven. No version bump, publish, release, or
-commit was authorized or performed.
+@ten4seven/native@0.1.0 remains a private locally packable partial-renderer
+artifact. Its build, install, peer/dependency, and local runtime boundaries are
+proven; full Native family/device/accessibility parity and registry publication
+remain future owner decisions. No version bump, publish, release, or commit was
+authorized or performed.
 
 ## 43. Cold-start handoff
 
@@ -954,6 +1007,9 @@ pnpm test:final-ai-acceptance
 pnpm test
 pnpm test:next-consumer
 pnpm --filter @ten4seven/native typecheck
+pnpm --filter @ten4seven/native build
+pnpm --filter @ten4seven/native verify
+pnpm --filter @ten4seven/native pack --dry-run
 pnpm --filter @ten4seven/native-lab typecheck
 pnpm --filter @ten4seven/native-lab export:web
 ```
@@ -971,14 +1027,14 @@ Source and projection entry points:
 - scripts/verify-final-ai-acceptance.mjs — deterministic final AI acceptance.
 - docs/ai/AI_QUICKSTART.md and README.md — human/agent distribution guidance.
 - docs/aapm/T7-UNIVERSAL-HARDENING-U12-NATIVE-EXPO-PARITY-EVIDENCE.md —
-  unresolved Native prerequisite.
+  accepted bounded Native/Android prerequisite and explicit device limits.
 - docs/aapm/T7-UNIVERSAL-HARDENING-U13-CORPUS-EXPANSION-EVIDENCE.md —
-  unresolved corpus prerequisite.
+  accepted normalized-corpus prerequisite and zero-gap decision.
 
-Owner gate required before any subsequent queue: resolve U12/U13 and the
-distribution/runtime/browser blockers, then make an explicit next-queue
-decision. U15 was not started by this execution.
+Owner gate required before any subsequent work: review this final evidence and
+make an explicit release/publication decision. No U15 or subsequent queue was
+started by this execution.
 
 ## 44. Gate
 
-FAIL / BLOCKED
+PASS — T7 UNIVERSAL HARDENING COMPLETE

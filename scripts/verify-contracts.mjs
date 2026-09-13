@@ -655,6 +655,40 @@ assert.equal(
   "notification-center",
   "NotificationCenter adaptive pattern drifted",
 );
+assert.equal(
+  componentPlatformMatrix.BottomNavigation.adaptiveBehavior.pattern,
+  "bottom-navigation",
+  "BottomNavigation must use its bounded mobile navigation pattern",
+);
+assert.equal(
+  componentPlatformMatrix.Tabs.native.presentation,
+  "native-platform-control",
+  "Tabs native presentation must remain a platform control",
+);
+for (const name of ["DropdownMenu", "ContextMenu"]) {
+  assert.equal(
+    componentPlatformMatrix[name].adaptiveBehavior.pattern,
+    "menu",
+    `${name} must resolve through the shared menu pattern`,
+  );
+}
+assert.equal(
+  componentPlatformMatrix.Popover.adaptiveBehavior.pattern,
+  "popover",
+  "Popover must resolve through the anchored popover pattern",
+);
+for (const name of ["Drawer", "DetailDrawer"]) {
+  assert.equal(
+    componentPlatformMatrix[name].web.presentation,
+    "web-edge-surface",
+    `${name} web presentation must remain an edge surface`,
+  );
+  assert.equal(
+    componentPlatformMatrix[name].native.presentation,
+    "native-sheet",
+    `${name} native alternative must remain a sheet surface`,
+  );
+}
 
 const dataCollectionsProjection = outputs["data-collections.json"];
 assert.ok(dataCollectionsProjection, "data collections: generated projection missing");
@@ -795,6 +829,41 @@ assert.equal(
   DATA_COLLECTION_GAP_DECISIONS.TreeSelect.canonicalComponent,
   "HierarchyPicker",
   "TreeSelect must remain a rejected duplicate of HierarchyPicker",
+);
+assert.deepEqual(
+  componentPlatformMatrix.Table.semanticIntent,
+  ["data-display"],
+  "Table must remain a display-only semantic contract",
+);
+assert.equal(
+  componentPlatformMatrix.Table.adaptiveBehavior?.pattern,
+  "semantic-table",
+  "Table must use the non-interactive semantic-table adaptive pattern",
+);
+assert.deepEqual(
+  componentPlatformMatrix.DataTable.semanticIntent,
+  ["data-display", "selection"],
+  "DataTable must expose interactive collection intent",
+);
+assert.equal(
+  componentPlatformMatrix.DataTable.interactionModel,
+  "collection",
+  "DataTable must remain a collection contract rather than a plain comparison table",
+);
+assert.equal(
+  componentPlatformMatrix.AdvancedDataGrid.platform,
+  "WEB",
+  "AdvancedDataGrid must remain Web-only",
+);
+assert.equal(
+  componentPlatformMatrix.AdvancedDataGrid.native.presentation,
+  "not-applicable",
+  "AdvancedDataGrid must not claim a native renderer",
+);
+assert.equal(
+  componentPlatformMatrix.AdvancedDataGrid.nativeAlternative,
+  "none",
+  "AdvancedDataGrid must not advertise an unimplemented native alternative",
 );
 
 assert.deepEqual(
