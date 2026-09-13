@@ -258,11 +258,12 @@ export interface NativeIconProps {
 export function NativeIcon({
   name,
   label,
-  size = 18,
+  size,
   color,
   testID,
 }: NativeIconProps) {
   const { theme } = useNativeTheme();
+  const resolvedSize = size ?? theme.icons.navigation;
   return (
     <Text
       testID={testID}
@@ -270,8 +271,8 @@ export function NativeIcon({
       accessibilityLabel={label}
       style={{
         color: color ?? theme.colors.textPrimary,
-        fontSize: size,
-        lineHeight: size + 4,
+        fontSize: resolvedSize,
+        lineHeight: resolvedSize + 4,
       }}
     >
       {iconGlyphs[name]}
@@ -1626,7 +1627,7 @@ export const nativeRendererMetadata = Object.freeze({
 /** Geometry derives from shared density/radius roles. Flex, percentages and round
  * indicator anatomy are renderer/composition constants, not theme scales. */
 function buildNativeStyles(theme: NativeThemeVariant) {
-  const { spacing, radius } = theme;
+  const { spacing, radius, marks } = theme;
   return StyleSheet.create({
     flex: { flex: 1 },
     stack: { flexDirection: "column" },
@@ -1670,22 +1671,26 @@ function buildNativeStyles(theme: NativeThemeVariant) {
       gap: spacing.controlGap,
     },
     choiceMark: {
-      width: 22,
-      height: 22,
-      borderWidth: 2,
+      width: marks.choice,
+      height: marks.choice,
+      borderWidth: marks.stroke,
       borderRadius: radius.control / 2,
       alignItems: "center",
       justifyContent: "center",
     },
     radioMark: {
-      width: 22,
-      height: 22,
-      borderWidth: 2,
-      borderRadius: 11,
+      width: marks.radio,
+      height: marks.radio,
+      borderWidth: marks.stroke,
+      borderRadius: marks.radio / 2,
       alignItems: "center",
       justifyContent: "center",
     },
-    radioDot: { width: 10, height: 10, borderRadius: 5 },
+    radioDot: {
+      width: marks.dot,
+      height: marks.dot,
+      borderRadius: marks.dot / 2,
+    },
     modalScrim: { flex: 1, justifyContent: "flex-end" },
     sheet: {
       maxHeight: "88%",
@@ -1728,7 +1733,7 @@ function buildNativeStyles(theme: NativeThemeVariant) {
     },
     masterDetail: { flex: 1 },
     masterDetailWide: { flexDirection: "row" },
-    master: { minHeight: 120 },
+    master: { minHeight: theme.layout.measures.compact.minimumPx },
     detail: { padding: spacing.cardPadding, gap: spacing.controlGap },
     progressTrack: {
       minHeight: spacing.fieldGap,

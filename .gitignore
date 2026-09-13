@@ -13,5 +13,6 @@ Thumbs.db
 .playwright-cli/
 .playwright-mcp/
 playwright-report/
+output/playwright/
 .expo/
 *.tgz

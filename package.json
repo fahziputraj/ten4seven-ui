@@ -49,6 +49,7 @@
     "test:e2e": "playwright test",
     "test:adoption": "playwright test --config=adoption.playwright.config.ts",
     "test:adoption:static": "node scripts/verify-adoption.mjs",
+    "test:public-ready": "playwright test --config=public-ready.playwright.config.ts",
     "test:visual:update": "playwright test tests/visual-regression.spec.ts --update-snapshots",
     "test:ai": "node scripts/verify-ai-catalog.mjs && node scripts/verify-reference-cold-start.mjs",
     "test:final-ai-acceptance": "node scripts/verify-final-ai-acceptance.mjs",

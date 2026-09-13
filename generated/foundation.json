@@ -625,6 +625,36 @@
       "themeScope": "re-resolves the same layers and may apply bounded semantic overrides"
     }
   },
+  "styleTokenization": {
+    "sourceOfTruth": [
+      "packages/contracts/src",
+      "packages/tokens/src/theme.ts"
+    ],
+    "layers": [
+      "primitive",
+      "semantic",
+      "component",
+      "product-profile",
+      "composition-local",
+      "renderer-projection"
+    ],
+    "exceptionClasses": [
+      "TOKEN_AUTHORITY",
+      "MECHANICAL",
+      "INTRINSIC_GEOMETRY",
+      "RUNTIME_DERIVED",
+      "MOTION_CHOREOGRAPHY",
+      "COMPOSITION_LOCAL",
+      "TEST_FIXTURE",
+      "EXTERNAL_API_REQUIREMENT"
+    ],
+    "invariants": [
+      "consumer colors reference semantic or product-profile roles",
+      "shared rhythm and measures reference canonical geometry roles",
+      "native consumes typed renderer projections and never parses Web CSS",
+      "composition exceptions remain bounded and do not define theme axes"
+    ]
+  },
   "surfaceExpressions": {
     "plain": {
       "label": "Paper",

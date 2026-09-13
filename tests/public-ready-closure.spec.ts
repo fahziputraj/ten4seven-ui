@@ -11,9 +11,13 @@ const viewports = [
   { width: 390, height: 844 },
 ];
 const surfaces = [
+  "theme-studio",
   "component-lab",
   "brand-proof/auth-neutral",
   "ebook-store",
+  "public-showcase",
+  "operations-tracker",
+  "farm-reference",
   "erp-reference",
 ];
 
@@ -30,6 +34,9 @@ for (const viewport of viewports) {
       await page.emulateMedia({ reducedMotion: "reduce" });
       const errors: string[] = [];
       page.on("pageerror", (error) => errors.push(error.message));
+      page.on("console", (message) => {
+        if (message.type() === "error") errors.push(message.text());
+      });
       await page.goto(`/${route}`);
       const match = routeFromPath(`/${route}`);
       expect(match.kind).not.toBe("not-found");
@@ -58,6 +65,9 @@ for (const viewport of viewports) {
     await page.setViewportSize(viewport);
     const errors: string[] = [];
     page.on("pageerror", (error) => errors.push(error.message));
+    page.on("console", (message) => {
+      if (message.type() === "error") errors.push(message.text());
+    });
     await page.goto("http://127.0.0.1:4175");
     await expect(
       page.getByText("Ten4Seven Native Lab", { exact: true }),
@@ -68,6 +78,9 @@ for (const viewport of viewports) {
     await page
       .getByRole("radio", { name: "neutral-product", exact: true })
       .click();
+    await expect(
+      page.getByRole("button", { name: "Close options", exact: true }),
+    ).toHaveCount(0);
     await page
       .getByRole("button", { name: "Reduced motion", exact: true })
       .click();

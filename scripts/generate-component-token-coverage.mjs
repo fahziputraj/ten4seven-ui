@@ -2,6 +2,11 @@ import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
+import {
+  buildInventory,
+  getInventoryMetrics,
+} from "./audit-hardcoded-style.mjs";
+
 const repoRoot = path.resolve(import.meta.dirname, "..");
 const stylesPath = path.join(repoRoot, "packages/ui/src/styles.css");
 const outputPath = path.join(
@@ -120,6 +125,7 @@ function renderTable(headers, rows) {
 
 export function buildComponentTokenCoverage() {
   const styles = fs.readFileSync(stylesPath, "utf8");
+  const inventoryMetrics = getInventoryMetrics(buildInventory());
   const rows = componentChecks.map((component) => {
     const selectorPresent = component.selectors.every((selector) =>
       styles.includes(selector),
@@ -133,11 +139,11 @@ export function buildComponentTokenCoverage() {
     return { component: component.name, ...result };
   });
   const rawPx = (styles.match(/\b\d+(?:\.\d+)?px\b/g) ?? []).length;
-  return { rawPx, rows };
+  return { rawPx, rows, inventoryMetrics };
 }
 
 export function renderComponentTokenCoverage() {
-  const { rawPx, rows } = buildComponentTokenCoverage();
+  const { rawPx, rows, inventoryMetrics } = buildComponentTokenCoverage();
   const table = renderTable(
     [
       "Component",
@@ -158,6 +164,56 @@ export function renderComponentTokenCoverage() {
       status(row.state),
     ]),
   );
+  const governanceTable = renderTable(
+    ["Metric", "Result"],
+    [
+      ["Raw color findings", String(inventoryMetrics.rawColorLiterals)],
+      ["Raw spacing findings", String(inventoryMetrics.rawSpacingLiterals)],
+      ["Raw padding findings", String(inventoryMetrics.rawPadding)],
+      ["Raw margin findings", String(inventoryMetrics.rawMargin)],
+      ["Raw gap findings", String(inventoryMetrics.rawGap)],
+      ["Raw size findings", String(inventoryMetrics.rawSize)],
+      ["Raw control-size findings", String(inventoryMetrics.rawControlSize)],
+      ["Raw radius findings", String(inventoryMetrics.rawRadius)],
+      ["Raw typography findings", String(inventoryMetrics.rawTypography)],
+      [
+        "Raw shadow/elevation findings",
+        String(inventoryMetrics.rawShadowElevation),
+      ],
+      ["Raw opacity findings", String(inventoryMetrics.rawOpacity)],
+      ["Raw motion findings", String(inventoryMetrics.rawMotion)],
+      ["Raw z-layer findings", String(inventoryMetrics.rawZLayer)],
+      [
+        "Raw icon/media-size findings",
+        String(inventoryMetrics.rawIconMediaSize),
+      ],
+      [
+        "Raw native style findings",
+        String(inventoryMetrics.rawNativeStyleLiterals),
+      ],
+      ["Approved exceptions", String(inventoryMetrics.approvedExceptions)],
+      [
+        "Demo/reference literals under review",
+        String(inventoryMetrics.demoReferenceHardcodedDesignLiterals),
+      ],
+      [
+        "TOKENIZABLE_UNRESOLVED",
+        String(inventoryMetrics.tokenizableUnresolved),
+      ],
+      [
+        "DEMO_LOCAL_THEME_SYSTEMS",
+        String(inventoryMetrics.demoLocalThemeSystems),
+      ],
+      [
+        "NATIVE_PARALLEL_THEME_SYSTEMS",
+        String(inventoryMetrics.nativeParallelThemeSystems),
+      ],
+      [
+        "DUPLICATE_GLOBAL_TOKEN_AUTHORITIES",
+        String(inventoryMetrics.duplicateGlobalTokenAuthorities),
+      ],
+    ],
+  );
   return `# Component token coverage report
 
 Generated from \`packages/ui/src/styles.css\` by
@@ -177,6 +233,15 @@ It is tracked as migration debt rather than treated as proof that every
 measurement is semantically governed. New generic geometry must be added to
 \`packages/tokens/src/theme.ts\` and consumed by a component before it is
 considered canonical.
+
+## Repository-wide style governance
+
+The companion hardcoded-style inventory scans active Web, Native, contract,
+playground, and consumer surfaces. It is governed by
+\`scripts/token-governance-allowlist.json\`; an exception must carry an owner,
+class, and reason rather than silently widening the token surface.
+
+${governanceTable}
 `;
 }
 

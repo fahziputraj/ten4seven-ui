@@ -3281,7 +3281,8 @@ const ebookDetailMetadata: Record<string, EbookDetailMetadata> = {
   "book-09": {
     citations: [
       {
-        excerpt: "Kriteria memilih teknologi yang sesuai dengan konteks layanan.",
+        excerpt:
+          "Kriteria memilih teknologi yang sesuai dengan konteks layanan.",
         id: "book-09-citation-1",
         label: "Ringkasan editorial Teknologi Tepat Guna",
         source: "GetPress Publishing Store proof",
@@ -3464,16 +3465,18 @@ const ebookFormatOverrides: Record<
 };
 
 function getEbookDetail(book: Ebook): EbookDetailMetadata {
-  return ebookDetailMetadata[book.id] ?? {
-    citations: [],
-    description: "Informasi editorial lokal untuk proof katalog.",
-    isbn: "Belum ditentukan",
-    language: "Bahasa Indonesia",
-    pages: 0,
-    previewLabel: "Cuplikan lokal",
-    publicationDate: "Belum ditentukan",
-    publisher: "GetPress Publishing",
-  };
+  return (
+    ebookDetailMetadata[book.id] ?? {
+      citations: [],
+      description: "Informasi editorial lokal untuk proof katalog.",
+      isbn: "Belum ditentukan",
+      language: "Bahasa Indonesia",
+      pages: 0,
+      previewLabel: "Cuplikan lokal",
+      publicationDate: "Belum ditentukan",
+      publisher: "GetPress Publishing",
+    }
+  );
 }
 
 function getEbookFormat(book: Ebook, kind: EbookFormatKind): EbookFormatOption {
@@ -3511,10 +3514,7 @@ function getEbookAccessLabel(book: Ebook, kind: EbookFormatKind) {
   return "Unavailable";
 }
 
-function getEbookMemberPrice(
-  book: Ebook,
-  kind = getDefaultEbookFormat(book),
-) {
+function getEbookMemberPrice(book: Ebook, kind = getDefaultEbookFormat(book)) {
   const option = getEbookFormat(book, kind);
   const memberPrice = getEbookDetail(book).memberPrice;
   if (
@@ -3935,10 +3935,12 @@ export function EbookStoreCatalog({
           onRemove={() => setCartQuantity(book, 0)}
           price={
             <Price
-              amount={getEbookFormat(
-                book,
-                cartFormats[book.id] ?? getDefaultEbookFormat(book),
-              ).price}
+              amount={
+                getEbookFormat(
+                  book,
+                  cartFormats[book.id] ?? getDefaultEbookFormat(book),
+                ).price
+              }
             />
           }
           quantity={quantity}
@@ -4106,7 +4108,7 @@ export function EbookStoreCatalog({
           </div>
         </div>
       }
-        className="reference-app-shell ebook-app-shell"
+      className="reference-app-shell ebook-app-shell"
       navigationMenu={[
         {
           href: "#ebook-store-top",
@@ -4157,7 +4159,7 @@ export function EbookStoreCatalog({
             ),
         },
       ]}
-        footer={storeFooter}
+      footer={storeFooter}
     >
       <div
         className="reference-page ebook-reference"
@@ -4232,10 +4234,7 @@ export function EbookStoreCatalog({
             </div>
           </div>
 
-          <aside
-            aria-label="Sorotan penerbitan"
-            className="ebook-promo-proof"
-          >
+          <aside aria-label="Sorotan penerbitan" className="ebook-promo-proof">
             <div className="ebook-promo-proof-heading">
               <div>
                 <Typography typeRole="overline">Update penerbitan</Typography>
@@ -4277,13 +4276,18 @@ export function EbookStoreCatalog({
 
         <section aria-label="Jelajah toko" className="ebook-store-intro">
           <div>
-            <Typography typeRole="overline">Temukan bacaan berikutnya</Typography>
+            <Typography typeRole="overline">
+              Temukan bacaan berikutnya
+            </Typography>
             <Typography as="p" typeRole="body-sm">
               Jelajahi judul terbaru, bandingkan format, lalu simpan bacaan yang
               paling dekat dengan pekerjaan Anda.
             </Typography>
           </div>
-          <nav aria-label="Jelajah toko cepat" className="ebook-discovery-links">
+          <nav
+            aria-label="Jelajah toko cepat"
+            className="ebook-discovery-links"
+          >
             <a href="#ebook-catalog">Semua buku</a>
             <a href="#ebook-categories">Kategori</a>
             <a href="#ebook-catalog">Buku terbaru</a>
@@ -4316,7 +4320,7 @@ export function EbookStoreCatalog({
             />
           </aside>
 
-            <section
+          <section
             aria-labelledby="ebook-results-title"
             className="ebook-results"
           >
@@ -4421,9 +4425,7 @@ export function EbookStoreCatalog({
                   <Skeleton height="12px" width="64%" />
                   <Skeleton height="12px" width="48%" />
                 </div>
-                <Typography typeRole="body-sm">
-                  Memuat koleksi buku…
-                </Typography>
+                <Typography typeRole="body-sm">Memuat koleksi buku…</Typography>
               </div>
             ) : catalogBooks.length > 0 ? (
               <ProductGrid
@@ -4436,124 +4438,124 @@ export function EbookStoreCatalog({
                   const defaultOption = getEbookFormat(book, defaultFormat);
                   const memberPrice = getEbookMemberPrice(book, defaultFormat);
                   return (
-                  <ProductCard
-                    actions={
-                      <>
-                        <Button
-                          className="ebook-details-action"
-                          intent="quiet"
-                          leadingIcon="preview"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            setSelectedBook(book);
-                          }}
-                          size="sm"
-                        >
-                          Lihat detail
-                        </Button>
-                        <Button
-                          className="ebook-primary-action"
-                          intent="primary"
-                          leadingIcon="cart"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            if (defaultOption.state === "available") {
-                              addToCart(book, defaultFormat);
-                            } else {
+                    <ProductCard
+                      actions={
+                        <>
+                          <Button
+                            className="ebook-details-action"
+                            intent="quiet"
+                            leadingIcon="preview"
+                            onClick={(event) => {
+                              event.stopPropagation();
                               setSelectedBook(book);
-                              setSelectedFormat(defaultFormat);
-                            }
-                          }}
-                          size="sm"
-                        >
-                          {defaultOption.state === "available"
-                            ? "Tambah ke keranjang"
-                            : defaultOption.state === "external"
-                              ? "Lihat akses"
-                              : "Lihat format"}
-                        </Button>
-                      </>
-                    }
-                    badge={
-                      book.badge ? (
-                        <Badge tone="primary">{book.badge}</Badge>
-                      ) : null
-                    }
-                    className="ebook-product-card"
-                    data-access={getEbookAccessLabel(book, defaultFormat)}
-                    data-book-id={book.id}
-                    data-format={defaultOption.label}
-                    data-member-price={memberPrice}
-                    data-price-state={defaultOption.state}
-                    data-standard-price={defaultOption.price}
-                    details={
-                      <ProductMeta
-                        className="ebook-product-detail-line"
-                        items={[
-                          <span className="ebook-meta-pair" key="format">
-                            <span className="ebook-meta-label">Format</span>
-                            {defaultOption.label}
-                          </span>,
-                          <span className="ebook-meta-pair" key="access">
-                            <span className="ebook-meta-label">Access</span>
-                            {getEbookAccessLabel(book, defaultFormat)}
-                          </span>,
-                          <Rating
-                            key="rating"
-                            label={`Rating ${book.rating} dari 5`}
-                            value={book.rating}
-                          />,
-                        ]}
-                      />
-                    }
-                    eyebrow={book.category}
-                    key={book.id}
-                    media={
-                      <EbookCover
-                        book={book}
-                        isFavorite={favorites.includes(book.id)}
-                        onToggleFavorite={() => toggleFavorite(book)}
-                      />
-                    }
-                    meta={
-                      <ProductMeta
-                        items={[
-                          <>
-                            <T7Icon name="author" size={14} /> {book.author}
-                          </>,
-                        ]}
-                      />
-                    }
-                    onClick={(event) => {
-                      if ((event.target as HTMLElement).closest("button"))
-                        return;
-                      setSelectedBook(book);
-                    }}
-                    price={
-                      <div className="ebook-price-stack">
-                        {defaultOption.state === "available" ? (
-                          <>
-                            <Price amount={defaultOption.price} />
-                            {memberPrice ? (
-                              <Typography typeRole="caption">
-                                Member/VIP · <Price amount={memberPrice} />
-                              </Typography>
-                            ) : null}
-                          </>
-                        ) : (
-                          <Typography
-                            className="ebook-price-state"
-                            typeRole="caption"
+                            }}
+                            size="sm"
                           >
-                            {defaultOption.state === "external"
-                              ? `Akses · ${getEbookAccessLabel(book, defaultFormat)}`
-                              : "Belum tersedia"}
-                          </Typography>
-                        )}
-                      </div>
-                    }
-                    title={book.title}
-                  />
+                            Lihat detail
+                          </Button>
+                          <Button
+                            className="ebook-primary-action"
+                            intent="primary"
+                            leadingIcon="cart"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              if (defaultOption.state === "available") {
+                                addToCart(book, defaultFormat);
+                              } else {
+                                setSelectedBook(book);
+                                setSelectedFormat(defaultFormat);
+                              }
+                            }}
+                            size="sm"
+                          >
+                            {defaultOption.state === "available"
+                              ? "Tambah ke keranjang"
+                              : defaultOption.state === "external"
+                                ? "Lihat akses"
+                                : "Lihat format"}
+                          </Button>
+                        </>
+                      }
+                      badge={
+                        book.badge ? (
+                          <Badge tone="primary">{book.badge}</Badge>
+                        ) : null
+                      }
+                      className="ebook-product-card"
+                      data-access={getEbookAccessLabel(book, defaultFormat)}
+                      data-book-id={book.id}
+                      data-format={defaultOption.label}
+                      data-member-price={memberPrice}
+                      data-price-state={defaultOption.state}
+                      data-standard-price={defaultOption.price}
+                      details={
+                        <ProductMeta
+                          className="ebook-product-detail-line"
+                          items={[
+                            <span className="ebook-meta-pair" key="format">
+                              <span className="ebook-meta-label">Format</span>
+                              {defaultOption.label}
+                            </span>,
+                            <span className="ebook-meta-pair" key="access">
+                              <span className="ebook-meta-label">Access</span>
+                              {getEbookAccessLabel(book, defaultFormat)}
+                            </span>,
+                            <Rating
+                              key="rating"
+                              label={`Rating ${book.rating} dari 5`}
+                              value={book.rating}
+                            />,
+                          ]}
+                        />
+                      }
+                      eyebrow={book.category}
+                      key={book.id}
+                      media={
+                        <EbookCover
+                          book={book}
+                          isFavorite={favorites.includes(book.id)}
+                          onToggleFavorite={() => toggleFavorite(book)}
+                        />
+                      }
+                      meta={
+                        <ProductMeta
+                          items={[
+                            <>
+                              <T7Icon name="author" size={14} /> {book.author}
+                            </>,
+                          ]}
+                        />
+                      }
+                      onClick={(event) => {
+                        if ((event.target as HTMLElement).closest("button"))
+                          return;
+                        setSelectedBook(book);
+                      }}
+                      price={
+                        <div className="ebook-price-stack">
+                          {defaultOption.state === "available" ? (
+                            <>
+                              <Price amount={defaultOption.price} />
+                              {memberPrice ? (
+                                <Typography typeRole="caption">
+                                  Member/VIP · <Price amount={memberPrice} />
+                                </Typography>
+                              ) : null}
+                            </>
+                          ) : (
+                            <Typography
+                              className="ebook-price-state"
+                              typeRole="caption"
+                            >
+                              {defaultOption.state === "external"
+                                ? `Akses · ${getEbookAccessLabel(book, defaultFormat)}`
+                                : "Belum tersedia"}
+                            </Typography>
+                          )}
+                        </div>
+                      }
+                      title={book.title}
+                    />
                   );
                 })}
               </ProductGrid>
@@ -4662,8 +4664,14 @@ export function EbookStoreCatalog({
       >
         {selectedBook ? (
           <div
+            data-access={
+              selectedBook && selectedFormatOption
+                ? getEbookAccessLabel(selectedBook, selectedFormat)
+                : undefined
+            }
             className="ebook-detail-view"
             data-book-id={selectedBook.id}
+            data-format={selectedFormatOption?.label}
             data-format-state={selectedFormatOption?.state}
           >
             <div className="ebook-detail-hero">

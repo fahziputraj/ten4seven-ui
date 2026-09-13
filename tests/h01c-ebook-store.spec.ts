@@ -1,7 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-const evidenceDir =
-  "C:\\Users\\user\\.codex\\visualizations\\2026\\09\\12\\01a0943c-2d31-7940-8681-dcd1ebde7cd1";
+const evidenceDir = process.env.T7_H01C_EVIDENCE_DIR ?? "output/playwright";
 
 async function rootOverflow(page: Page) {
   return page.evaluate(
@@ -70,6 +69,34 @@ test.describe("H01C Publishing Store / GetPress-shaped storefront", () => {
       page.getByText("Penerbitan", { exact: true }).last(),
     ).toBeVisible();
     await expect(
+      page.getByRole("navigation", { name: "Primary navigation" }),
+    ).toBeVisible();
+    await expect(
+      page
+        .getByRole("navigation", { name: "Primary navigation" })
+        .getByRole("menuitem", { name: "Toko Buku" }),
+    ).toHaveAttribute("aria-current", "page");
+    await expect(
+      page.getByRole("navigation", { name: "Jaringan publishing" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("region", {
+        name: "Promosi penerbitan dan toko buku",
+      }),
+    ).toContainText("Update penerbitan");
+    await expect(
+      page.getByRole("searchbox", { name: "Cari buku" }),
+    ).toHaveCount(1);
+    await expect(
+      page.getByRole("button", { name: "Terbitkan buku" }),
+    ).toBeVisible();
+    await expect(
+      page.locator(".t7-navigation-menu-trailing .t7-cart-trigger"),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "Masuk member" }),
+    ).toBeVisible();
+    await expect(
       page.getByText("Bantuan & akun", { exact: true }),
     ).toBeVisible();
     await page.getByRole("button", { name: "Masuk member" }).click();
@@ -79,6 +106,79 @@ test.describe("H01C Publishing Store / GetPress-shaped storefront", () => {
       .click();
     await expect(page.getByRole("status")).toContainText("layanan penerbitan");
     await expect(page).toHaveTitle("ten4seven UI — Publishing Store");
+  });
+
+  test("keeps every fixture price and format/access label semantically truthful", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/ebook-store");
+
+    const readCardSemantics = () =>
+      page.locator(".ebook-product-card").evaluateAll((cards) =>
+        cards.map((card) => ({
+          access: card.getAttribute("data-access"),
+          format: card.getAttribute("data-format"),
+          memberPrice: card.getAttribute("data-member-price"),
+          priceState: card.getAttribute("data-price-state"),
+          standardPrice: card.getAttribute("data-standard-price"),
+          text: card.textContent ?? "",
+        })),
+      );
+
+    const firstPage = await readCardSemantics();
+    await page
+      .getByRole("navigation", { name: "Pagination" })
+      .getByRole("button", { name: "Next page" })
+      .click();
+    const fixtureCards = [...firstPage, ...(await readCardSemantics())];
+
+    expect(fixtureCards).toHaveLength(10);
+    for (const card of fixtureCards) {
+      expect(card.format).toMatch(/^(Physical Book|Ebook)$/);
+      expect(card.access).toMatch(
+        /^(Local store|Google Play Books|External|Unavailable)$/,
+      );
+      expect(card.text).not.toMatch(/Ebook\s*[·•]\s*Ebook/);
+      expect(card.text).not.toMatch(/Google Play Books\s*[·•]\s*Ebook/);
+
+      const memberPrice =
+        card.memberPrice === null ? undefined : Number(card.memberPrice);
+      const standardPrice = Number(card.standardPrice);
+      if (memberPrice !== undefined) {
+        expect(memberPrice).toBeLessThanOrEqual(standardPrice);
+        expect(card.priceState).toBe("available");
+      } else {
+        expect(card.access).not.toBe("Local store");
+      }
+    }
+
+    await page.goto("/ebook-store?book=book-04");
+    const localDetail = page.locator("dialog").last();
+    await expect(localDetail.locator(".ebook-detail-view")).toHaveAttribute(
+      "data-format",
+      "Physical Book",
+    );
+    await expect(localDetail.locator(".ebook-detail-view")).toHaveAttribute(
+      "data-access",
+      "Local store",
+    );
+    await expect(localDetail).toContainText("Harga member/VIP");
+
+    await page.goto("/ebook-store?book=book-01");
+    const externalDetail = page.locator("dialog").last();
+    await expect(externalDetail.locator(".ebook-detail-view")).toHaveAttribute(
+      "data-access",
+      "Google Play Books",
+    );
+    await expect(externalDetail).toContainText("Akses · Google Play Books");
+    await expect(externalDetail).not.toContainText("Harga member/VIP");
+
+    await page.goto("/ebook-store?book=book-03");
+    const unavailableDetail = page.locator("dialog").last();
+    await expect(
+      unavailableDetail.getByRole("radio", { name: "Physical Book" }),
+    ).toBeDisabled();
   });
 
   test("searches, filters, sorts, and exposes a truthful empty state", async ({
@@ -330,6 +430,60 @@ test.describe("H01C Publishing Store / GetPress-shaped storefront", () => {
     await page.waitForTimeout(450);
     await page.screenshot({
       path: `${evidenceDir}\\h01c-after-mobile-cart.png`,
+    });
+  });
+
+  test("captures H01C-R1 shell, catalog, detail, and mobile commerce evidence", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/ebook-store");
+    await expectStoreReady(page);
+    await page.screenshot({
+      path: `${evidenceDir}\\h01c-r1-1440-first-fold.png`,
+    });
+
+    await page.locator("#ebook-catalog").scrollIntoViewIfNeeded();
+    await page.screenshot({
+      path: `${evidenceDir}\\h01c-r1-1440-catalog.png`,
+    });
+
+    await page.goto("/ebook-store?book=book-04");
+    await expect(page.locator("dialog").last()).toBeVisible();
+    await page.waitForTimeout(450);
+    await page.screenshot({
+      path: `${evidenceDir}\\h01c-r1-1440-detail.png`,
+    });
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/ebook-store");
+    await expectStoreReady(page);
+    await page.screenshot({
+      path: `${evidenceDir}\\h01c-r1-390-first-fold.png`,
+    });
+
+    await page.locator("#ebook-catalog").scrollIntoViewIfNeeded();
+    await page.screenshot({
+      path: `${evidenceDir}\\h01c-r1-390-catalog.png`,
+    });
+
+    await page.goto("/ebook-store?book=book-04");
+    await expect(page.locator("dialog").last()).toBeVisible();
+    await page.waitForTimeout(450);
+    await page.screenshot({
+      path: `${evidenceDir}\\h01c-r1-390-detail.png`,
+    });
+
+    await page.goto("/ebook-store");
+    await page
+      .getByRole("button", { name: "Tambah ke keranjang" })
+      .first()
+      .click();
+    await page.getByRole("button", { name: /item di keranjang/ }).click();
+    await expect(page.getByRole("dialog", { name: "Keranjang" })).toBeVisible();
+    await page.waitForTimeout(450);
+    await page.screenshot({
+      path: `${evidenceDir}\\h01c-r1-390-cart.png`,
     });
   });
 });

@@ -80,7 +80,7 @@ Actions`, `Overlays`, `Feedback & Progress`, `Date & Time`, `Files`,
   `OrderSummary` where their contracts fit; never create `CommerceButton`,
   `CommerceInput`, or another parallel primitive family.
 
-Start with [docs/ai/AI_QUICKSTART.md](docs/ai/AI_QUICKSTART.md). For migrations use [docs/ai/APPLY_TO_EXISTING_WEB.md](docs/ai/APPLY_TO_EXISTING_WEB.md); for greenfield work use [docs/ai/NEW_PROJECT.md](docs/ai/NEW_PROJECT.md).
+Start with [docs/ai/AI_QUICKSTART.md](docs/ai/AI_QUICKSTART.md). For migrations use [docs/ai/APPLY_TO_EXISTING_WEB.md](docs/ai/APPLY_TO_EXISTING_WEB.md); for greenfield work use [docs/ai/NEW_PROJECT.md](docs/ai/NEW_PROJECT.md). After canonical implementation choices are known, use [skills/ten4seven-design-taste/SKILL.md](skills/ten4seven-design-taste/SKILL.md) for visual proportion, hierarchy, responsive recomposition, and shared-versus-composition ownership.
 
 Before completion run `pnpm format:check`, `pnpm typecheck`, `pnpm test`, `pnpm build`, and rendered browser QA for the affected flow.
 
@@ -90,7 +90,9 @@ Reference routes:
 - Component Lab: `http://localhost:4173/component-lab`
 - SaaS Control Plane Patterns: `http://localhost:4173/saas-control-plane`
 - ERP Density Reference: `http://localhost:4173/erp-reference`
-+ Farm P1 Reference: `http://localhost:4173/farm-reference`
+
+* Farm P1 Reference: `http://localhost:4173/farm-reference`
+
 - Tokens: `http://localhost:4173/tokens`
 - Components: `http://localhost:4173/components`
 - Blocks: `http://localhost:4173/blocks`

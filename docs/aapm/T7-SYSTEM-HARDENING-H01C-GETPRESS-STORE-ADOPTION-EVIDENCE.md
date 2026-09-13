@@ -267,17 +267,19 @@ The accepted desktop/mobile cart architecture was preserved:
 
 The H01C Playwright suite explicitly exercised the required viewport matrix,
 mobile filtering, mobile cart, direct product detail, and reduced-motion route.
-The visual evidence captures are:
+The capture test writes the following deterministic filenames under
+`output/playwright/` by default; `T7_H01C_EVIDENCE_DIR` can point to an external
+evidence archive when a separate capture bundle is required:
 
-- `C:\Users\user\.codex\visualizations\2026\09\12\01a0943c-2d31-7940-8681-dcd1ebde7cd1\h01c-after-desktop-catalog.png`
-- `C:\Users\user\.codex\visualizations\2026\09\12\01a0943c-2d31-7940-8681-dcd1ebde7cd1\h01c-after-desktop-detail.png`
-- `C:\Users\user\.codex\visualizations\2026\09\12\01a0943c-2d31-7940-8681-dcd1ebde7cd1\h01c-after-desktop-cart.png`
-- `C:\Users\user\.codex\visualizations\2026\09\12\01a0943c-2d31-7940-8681-dcd1ebde7cd1\h01c-after-mobile-catalog.png`
-- `C:\Users\user\.codex\visualizations\2026\09\12\01a0943c-2d31-7940-8681-dcd1ebde7cd1\h01c-after-mobile-detail.png`
-- `C:\Users\user\.codex\visualizations\2026\09\12\01a0943c-2d31-7940-8681-dcd1ebde7cd1\h01c-after-mobile-cart.png`
+- `h01c-after-desktop-catalog.png`
+- `h01c-after-desktop-detail.png`
+- `h01c-after-desktop-cart.png`
+- `h01c-after-mobile-catalog.png`
+- `h01c-after-mobile-detail.png`
+- `h01c-after-mobile-cart.png`
 
-Screenshots were captured after the canonical overlay transition settled. They
-are outside the repository and were not committed.
+Screenshots are captured after the canonical overlay transition settles. The
+generated capture files are runtime evidence, not package source.
 
 ## 13. Accessibility and interaction evidence
 
@@ -312,18 +314,18 @@ delayed content reveal.
 
 ## 15. Tests and commands
 
-| Command / suite                                            | Result           | Evidence or classification                                                                                                                                                                                                        |
-| ---------------------------------------------------------- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm exec playwright test tests/h01c-ebook-store.spec.ts` | PASS — 10 passed | H01C shell, discovery, detail, format states, citation, cart, loading/empty, mobile filter, responsive matrix, reduced motion, and screenshots                                                                                    |
-| `pnpm typecheck`                                           | PASS             | Full workspace typecheck completed; agent package build completed as part of the script                                                                                                                                           |
-| `pnpm build`                                               | PASS             | Playground production build completed; existing large-chunk warning remains                                                                                                                                                       |
-| `git diff --check`                                         | PASS             | Only existing CRLF conversion warnings were reported; no whitespace error                                                                                                                                                         |
-| `pnpm test`                                                | FAIL / baseline  | Stops at pre-existing `test:component-coverage`: generated report expects 976 literal pixel measurements while current canonical stylesheet reports 962. H01C did not edit `packages/ui/src/styles.css` or regenerate this report |
-| `pnpm format:check`                                        | FAIL / baseline  | Broad dirty checkout reports hundreds of pre-existing formatting warnings, including unrelated files and the already-dirty `apps/playground/src/app.css` / `reference-screens.tsx`; no repository-wide formatting was performed   |
+| Command / suite                                            | Result           | Evidence or classification                                                                                                                                                                     |
+| ---------------------------------------------------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm exec playwright test tests/h01c-ebook-store.spec.ts` | PASS — 12 passed | H01C shell, discovery, detail, format states, citation, cart, loading/empty, mobile filter, responsive matrix, reduced motion, R1 semantic checks, and screenshots                             |
+| `pnpm typecheck`                                           | PASS             | Full workspace typecheck completed; agent package build completed as part of the script                                                                                                        |
+| `pnpm build`                                               | PASS             | Playground production build completed; existing large-chunk warning remains                                                                                                                    |
+| `git diff --check`                                         | PASS             | Only existing CRLF conversion warnings were reported; no whitespace error                                                                                                                      |
+| `pnpm test`                                                | PASS             | Full repository contract, package, token, AI, component, and bridge test chain completed during the R1 rerun                                                                                   |
+| `pnpm format:check`                                        | FAIL / baseline  | Broad repository check reports 288 pre-existing formatting warnings across unrelated app, docs, generated/native, package, script, and test files; no repository-wide formatting was performed |
 
-The affected H01C browser suite passes independently. The repository-wide
-`pnpm test` and `pnpm format:check` failures are baseline debt in the dirty
-checkout, not failures caused by the H01C route changes.
+The affected H01C browser suite and the repository-wide `pnpm test` pass. The
+repository-wide `pnpm format:check` failure is baseline debt in the dirty
+checkout, not a failure caused by the H01C route changes.
 
 ## 16. Files changed for H01C
 
@@ -350,6 +352,199 @@ The following remain intentionally deferred:
    or clipboard persistence.
 5. Repository-wide format and component-token coverage debt remains outside
    this bounded route correction.
+
+## H01C-R1 Shell Fidelity & Semantic Integrity
+
+Execution date: `2026-09-13` (Asia/Jakarta)
+
+### Live reference observations and current proof gap
+
+The live [GetPress Indonesia](https://getpress.co.id/) shell was rechecked as a
+composition reference. Its landing surface establishes a publishing identity
+before the bookstore: a compact ecosystem/utility layer, strong brand header,
+primary search (`Cari buku...`), public store/discovery navigation, a visible
+member entry, publishing/service routes, and editorial sections such as recent
+updates and book collections. The store is presented as one part of a broader
+publishing platform rather than as a filter sidebar followed immediately by a
+product grid.
+
+The accepted H01C implementation already had the required catalog, detail, cart,
+member, publishing, footer, loading, and empty-state behavior. Its remaining
+gap was compositional: the header was too generic/minimal, search lived only in
+the catalog toolbar, the publishing CTA did not establish enough product
+identity in the first fold, and the transition into the catalog lacked a
+promotional/editorial anchor. Fixture cards also combined source fields into
+ambiguous labels and could show a member price above the displayed default
+format price.
+
+### Before / after shell anatomy
+
+| Concern               | Before R1                                                                       | After R1                                                                                                                                                      | Result |
+| --------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| Utility layer         | No compact publishing/ecosystem strip before route content                      | `Jaringan GetPress` strip with deterministic local anchors for publishing, HKI, membership, and contact                                                       | PASS   |
+| Brand and navigation  | GetPress name existed, but the navigation read as a thin generic catalog header | Stronger bounded/pill navigation with active `Toko Buku`, `Beranda`, `Jelajahi`, `Kolaborasi`, and `Penerbitan` grouping                                      | PASS   |
+| Search                | Search was only part of the catalog toolbar                                     | One labelled `Cari buku` `SearchInput` is placed inside the upper publishing shell/promo; catalog filtering remains backed by the same query state            | PASS   |
+| Publishing prominence | `Terbitkan` existed as a header action/notice                                   | Header `Terbitkan`, upper-fold `Terbitkan buku`, publishing proof copy, and the existing service callout share the same local route path                      | PASS   |
+| Commerce utilities    | Cart and member were available but visually secondary                           | Cart and `Masuk member` are grouped beside the primary publishing CTA; canonical cart behavior is unchanged                                                   | PASS   |
+| First fold            | Page header and catalog discovery dominated the landing state                   | `ebook-store-promo` establishes publishing identity, search, CTA, local cover proof, update label, metrics, and a clear path to books before catalog controls | PASS   |
+| Catalog transition    | Store felt like a green catalog first                                           | Editorial discovery rail now follows the promo, then the existing bounded filters, results, cards, and pagination                                             | PASS   |
+
+The final composition remains:
+
+```text
+PublicShell
+├── GetPress / Publishing store brand
+├── NavigationMenu with active Toko Buku
+│   ├── Beranda
+│   ├── Toko Buku
+│   ├── Jelajahi
+│   ├── Kolaborasi
+│   └── Penerbitan
+├── grouped Terbitkan / cart / member utilities
+├── Jaringan GetPress utility strip
+├── publishing/store promo
+│   ├── PageHeader identity
+│   ├── shell-level Cari buku search
+│   ├── Jelajahi buku / Terbitkan buku actions
+│   └── local editorial cover proof and metrics
+├── discovery links
+├── existing bounded catalog and state model
+├── existing publishing-service callout
+└── PublicFooter
+```
+
+No GetPress HTML, CSS, JavaScript, proprietary asset, customer data, live API,
+or live catalog behavior was copied. The implementation uses the existing
+Ten4Seven `PublicShell`, `NavigationMenu`, `PageHeader`, `SearchInput`,
+`ProductCard`, `ProductGrid`, `DetailDrawer`, cart components, and semantic
+controls.
+
+### Brand/profile ownership and exact local exceptions
+
+The route keeps its existing `data-profile="commerce"` boundary and the
+`GetPress / Publishing store` fixture identity. No global Ten4Seven brand token
+was changed. The only publishing accent alias introduced by R1 is scoped to
+`.ebook-app-shell` and resolves through the existing semantic chart token:
+
+```css
+--ebook-publishing-accent-hsl: var(--t7-surface-emphasis-solid-chart-2-hsl);
+```
+
+The scoped rules use existing surface, foreground, border, radius, shadow,
+typography, focus, and primary-foreground tokens. They do not introduce raw
+palette colors, global product tokens, a second theme runtime, local animation
+durations, or local keyframes.
+
+The exact route-local CSS exceptions are:
+
+- `.ebook-app-shell .t7-navigation-menu` and its link/trigger selectors for the
+  stronger bounded navigation and active state;
+- `.ebook-app-shell .ebook-store-actions` for the cart/member/publishing
+  utility cluster;
+- `.ebook-reference .ebook-utility-strip` for the compact ecosystem layer;
+- `.ebook-reference .ebook-store-promo`, `.ebook-promo-copy`,
+  `.ebook-promo-proof`, and their responsive rules for the first-fold promo;
+- `.ebook-reference .ebook-shell-search` for the shell-level search measure;
+- `.ebook-reference .ebook-meta-pair`, `.ebook-meta-label`, and
+  `.ebook-price-state` for explicit format/access and acquisition semantics;
+- `.ebook-app-shell .t7-app-content:focus` to remove the non-interactive main
+  landmark outline that otherwise framed the route as a black browser-like
+  rectangle after route focus.
+
+These are composition constraints for this reference surface. A reusable
+storefront product profile or intrinsic-measure contract remains future H02 /
+H01D ownership; it was not promoted from this bounded proof.
+
+### Format/access normalization and price audit
+
+Cards and detail now expose separate roles rather than concatenating source
+fields:
+
+- `Format`: `Physical Book` or `Ebook`;
+- `Access`: `Local store`, `Google Play Books`, `External`, or `Unavailable`.
+
+The former ambiguous combinations such as `Ebook · Ebook` and
+`Google Play Books · Ebook` are no longer rendered. External-only cards show an
+access state instead of a local purchase price; unavailable formats show
+`Belum tersedia`; local formats retain the canonical standard price and only a
+legitimate lower member/VIP price.
+
+All 10 fixture books were audited through the two catalog pages. The local
+member-price set is:
+
+| Book      | Default format | Default state |  Standard | Member/VIP | Audit |
+| --------- | -------------- | ------------- | --------: | ---------: | ----- |
+| `book-02` | Physical Book  | Local store   | Rp110.000 |   Rp99.000 | PASS  |
+| `book-03` | Ebook          | Local store   |  Rp78.000 |   Rp65.000 | PASS  |
+| `book-04` | Physical Book  | Local store   | Rp125.000 |  Rp112.000 | PASS  |
+| `book-06` | Ebook          | Local store   |  Rp89.000 |   Rp79.000 | PASS  |
+| `book-08` | Ebook          | Local store   |  Rp75.000 |   Rp68.000 | PASS  |
+| `book-09` | Physical Book  | Local store   |  Rp82.000 |   Rp74.000 | PASS  |
+
+`book-01`, `book-05`, `book-07`, and `book-10` are provider-external default
+formats. Their unsupported member-price fields were removed from the fixture;
+they render `Access: Google Play Books` and do not claim a Member/VIP benefit.
+The UI helper also guards the invariant at the selected-format boundary:
+`memberPrice` is emitted only when the selected option is locally available and
+`memberPrice <= standardPrice`.
+
+### Responsive and browser proof
+
+Rendered Playwright/Chromium QA was run because the dedicated browser plugin was
+unavailable in this environment. The required route was checked at 1440×900,
+1024×768, 768×1024, and 390×844. The matrix covered first-fold readability,
+catalog transition, product detail, mobile filter/cart behavior,
+`prefers-reduced-motion`, console/page errors, and document overflow. All four
+viewports returned no console errors, no page errors, and root overflow `<= 1px`.
+
+The R1 capture set uses these filenames under `output/playwright/` by default:
+
+- `h01c-r1-1440-first-fold.png`
+- `h01c-r1-1440-catalog.png`
+- `h01c-r1-1440-detail.png`
+- `h01c-r1-390-first-fold.png`
+- `h01c-r1-390-catalog.png`
+- `h01c-r1-390-detail.png`
+- `h01c-r1-390-cart.png`
+
+The 1440 first-fold capture shows the publishing identity, public navigation,
+shell search, strong publishing actions, member/cart utilities, editorial
+cover proof, and the route into the bookstore before the catalog. The 390
+capture keeps the brand, search, publish action, member/cart cluster, useful
+promo copy, and responsive catalog path reachable without horizontal page
+overflow. Capture files remain generated evidence and are not package source.
+
+### Tests and regression evidence
+
+| Command / assertion                                                                                                               | Result           | Scope                                                                                                                                                                                    |
+| --------------------------------------------------------------------------------------------------------------------------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm exec playwright test tests/h01c-ebook-store.spec.ts --project=chromium`                                                     | PASS — 12 passed | Existing H01C behavior plus R1 shell anatomy, 10-fixture pricing/label audit, responsive matrix, reduced motion, overflow, console/page errors, and screenshots                          |
+| Shell anatomy assertions                                                                                                          | PASS             | Primary navigation, utility navigation, promo region, one shell search, publish CTA, cart trigger, member entry, active store item                                                       |
+| Fixture semantics assertions                                                                                                      | PASS             | Every fixture card has a valid format/access pair; no duplicate labels; local member prices never exceed their displayed standard price; external and unavailable states remain distinct |
+| `pnpm typecheck`                                                                                                                  | PASS             | Full workspace typecheck and agent package build                                                                                                                                         |
+| `pnpm build`                                                                                                                      | PASS             | Playground production build; existing large bundle-size warning remains                                                                                                                  |
+| `pnpm test`                                                                                                                       | PASS             | Full repository contract, package, token, AI, component, and bridge test chain                                                                                                           |
+| `pnpm exec prettier --check apps/playground/src/reference-screens.tsx apps/playground/src/app.css tests/h01c-ebook-store.spec.ts` | PASS             | All R1-touched source/test files formatted                                                                                                                                               |
+| `pnpm format:check`                                                                                                               | FAIL / baseline  | Broad repository check reports 288 pre-existing formatting warnings across unrelated app, docs, generated/native, package, script, and test files; no mass-format was run                |
+| `git diff --check`                                                                                                                | PASS             | No whitespace errors introduced by the bounded source/test/evidence changes                                                                                                              |
+
+### Baseline debt and regression statement
+
+The dedicated browser plugin remained unavailable, so this evidence uses the
+repository's Playwright Chromium path and records the fallback explicitly. The
+only repository-wide non-green check is the existing 288-file formatting debt;
+the touched route, CSS, test, and evidence files pass targeted formatting. The
+production build's large chunk warning is unchanged and does not affect the
+route runtime proof.
+
+R1 changed only the Publishing Store route composition, its route-scoped CSS,
+its bounded Playwright evidence, and this evidence addendum. It did not touch
+Component Lab, Public Showcase, Auth, Theme Studio, Q04, H01D, H02, `packages/ui`,
+global tokens, routing architecture, backend data, live GetPress integration,
+account/inventory/payment behavior, or the accepted catalog/detail/cart
+business behavior. No new animation framework or local motion runtime was
+introduced. The current route is immediately understandable at first paint and
+retains the accepted H01C functionality.
 
 ## 18. Regression statement
 

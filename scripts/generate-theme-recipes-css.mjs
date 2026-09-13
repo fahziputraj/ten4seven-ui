@@ -170,9 +170,10 @@ async function formatBaseThemeCss() {
 if (process.argv.includes("--stdout")) {
   process.stdout.write(await formatThemeRecipeCss());
 } else {
-  await Promise.all([
-    writeFile(outputPath, await formatThemeRecipeCss(), "utf8"),
-    writeFile(baseThemeCssPath, await formatBaseThemeCss(), "utf8"),
-  ]);
+  // Keep the two generated writes ordered on Windows. Both files are derived
+  // from the same resolver, and concurrent handle creation can intermittently
+  // surface as UNKNOWN for the base theme file on a dirty local checkout.
+  await writeFile(outputPath, await formatThemeRecipeCss(), "utf8");
+  await writeFile(baseThemeCssPath, await formatBaseThemeCss(), "utf8");
   console.log(`Generated ${outputPath} and ${baseThemeCssPath}`);
 }

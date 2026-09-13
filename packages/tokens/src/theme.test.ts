@@ -21,7 +21,9 @@ import {
   iconGeometry,
   kpiGeometry,
   layoutGeometry,
+  markGeometry,
   overlayGeometry,
+  referenceSpace,
   resolveThemeConfigLayers,
   resolveTheme,
   surfaceGeometry,
@@ -126,6 +128,12 @@ describe("theme engine", () => {
         );
         expect(native.touchTarget).toBe(
           Number.parseFloat(css["--t7-touch-target-min"]),
+        );
+        expect(native.icons.navigation).toBe(
+          Number.parseFloat(css["--t7-icon-navigation"]),
+        );
+        expect(native.marks.choice).toBe(
+          Number.parseFloat(css["--t7-mark-choice"]),
         );
         expect(native.motion.enabled).toBe(motion === "full");
         expect(native.motion.rolesMs.chart).toBe(
@@ -259,6 +267,33 @@ describe("theme engine", () => {
     expect(exact["--t7-field-corner-clearance"]).toBe("12px");
     expect(exact["--t7-type-body-size"]).toBe(standard["--t7-type-body-size"]);
   });
+
+  it("projects shared reference spacing, icon, and mark geometry to Web and native", () => {
+    const variables = buildThemeVariables(resolveTheme());
+    const native = buildNativeThemeSnapshot(resolveTheme());
+
+    for (const role of [
+      "micro",
+      "fine",
+      "compact",
+      "tight",
+      "quiet",
+      "inline",
+      "snug",
+      "relaxed",
+    ] as const)
+      expect(variables[`--t7-ref-space-${role}`]).toBe(referenceSpace[role]);
+
+    expect(variables["--t7-icon-navigation"]).toBe(iconGeometry.navigation);
+    expect(variables["--t7-mark-choice"]).toBe(markGeometry.choice);
+    expect(variables["--t7-mark-stroke"]).toBe(markGeometry.stroke);
+    expect(native.icons.navigation).toBe(
+      Number.parseFloat(iconGeometry.navigation),
+    );
+    expect(native.marks.choice).toBe(Number.parseFloat(markGeometry.choice));
+    expect(native.marks.stroke).toBe(Number.parseFloat(markGeometry.stroke));
+  });
+
   it("maps every global axis to semantic variables", () => {
     const theme = resolveTheme({
       appearance: "dark",

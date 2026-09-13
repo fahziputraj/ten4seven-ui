@@ -3,12 +3,14 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { THEME_RECIPES } from "../packages/contracts/src/theme-recipe.ts";
+import { INTERACTION_FEEDBACK } from "../packages/contracts/src/foundation.ts";
 import {
   densityProfiles,
   buildThemeVariables,
   resolveTheme,
   chartGeometry,
   iconGeometry,
+  markGeometry,
   kpiGeometry,
   layoutGeometry,
   motionDurationRange,
@@ -211,6 +213,12 @@ export function buildDtcgTokenExport() {
             dimension(value),
           ]),
         ),
+        mark: Object.fromEntries(
+          Object.entries(markGeometry).map(([role, value]) => [
+            role,
+            dimension(value),
+          ]),
+        ),
         control: {
           height: dimension(densityProfiles.default.control),
           paddingInline: dimension(
@@ -270,6 +278,14 @@ export function buildDtcgTokenExport() {
           donutStrokeWidth: number(chartGeometry.donutStrokeWidth),
           donutHoverStrokeWidth: number(chartGeometry.donutHoverStrokeWidth),
           tooltipOffsetY: dimension(chartGeometry.tooltipOffsetY),
+        },
+        interaction: {
+          opacity: Object.fromEntries(
+            Object.entries(INTERACTION_FEEDBACK).map(([role, value]) => [
+              role,
+              number(value),
+            ]),
+          ),
         },
         overlay: {
           menu: {
@@ -349,11 +365,11 @@ if (process.argv.includes("--stdout")) {
   process.stdout.write(renderDtcgTokenExport());
 } else {
   const output = renderDtcgTokenExport();
-  await Promise.all(
-    outputPaths.map(async (outputPath) => {
-      await mkdir(dirname(outputPath), { recursive: true });
-      await writeFile(outputPath, output, "utf8");
-    }),
-  );
+  // Keep generated writes ordered on Windows. Concurrent writes to several
+  // projections can intermittently surface as UNKNOWN from fs.promises.
+  for (const outputPath of outputPaths) {
+    await mkdir(dirname(outputPath), { recursive: true });
+    await writeFile(outputPath, output, "utf8");
+  }
   console.log(`Generated ${outputPaths.length} DTCG-compatible token exports.`);
 }

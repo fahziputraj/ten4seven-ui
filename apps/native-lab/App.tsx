@@ -132,13 +132,25 @@ function FoundationsFamily({
         description="Resolved values are JS/TS data from the shared token runtime. The renderer does not parse CSS."
       >
         <NativeInline wrap>
-          <NativeSurface tone="raised" style={{ flex: 1, minWidth: 150 }}>
+          <NativeSurface
+            tone="raised"
+            style={{
+              flex: 1,
+              minWidth: theme.layout.measures.compact.minimumPx,
+            }}
+          >
             <NativeText intent="caption" tone="muted">
               Profile
             </NativeText>
             <NativeText intent="label">{profile}</NativeText>
           </NativeSurface>
-          <NativeSurface tone="raised" style={{ flex: 1, minWidth: 150 }}>
+          <NativeSurface
+            tone="raised"
+            style={{
+              flex: 1,
+              minWidth: theme.layout.measures.compact.minimumPx,
+            }}
+          >
             <NativeText intent="caption" tone="muted">
               Appearance
             </NativeText>
@@ -146,7 +158,13 @@ function FoundationsFamily({
               {appearance} → {theme.appearance}
             </NativeText>
           </NativeSurface>
-          <NativeSurface tone="raised" style={{ flex: 1, minWidth: 150 }}>
+          <NativeSurface
+            tone="raised"
+            style={{
+              flex: 1,
+              minWidth: theme.layout.measures.compact.minimumPx,
+            }}
+          >
             <NativeText intent="caption" tone="muted">
               Density / motion
             </NativeText>
@@ -312,6 +330,7 @@ function NavigationFamily() {
 }
 
 function DataFamily({ chrome }: { chrome: React.ReactNode }) {
+  const { theme } = useNativeTheme();
   const [selectedId, setSelectedId] = useState<string>();
   const selected = records.find((record) => record.id === selectedId);
   // NativeMasterDetail remains the canonical renderer contract. This Lab
@@ -322,7 +341,10 @@ function DataFamily({ chrome }: { chrome: React.ReactNode }) {
       testID="native-lab-data-list"
       data={records}
       keyExtractor={(record) => record.id}
-      contentContainerStyle={{ padding: 16, gap: 16 }}
+      contentContainerStyle={{
+        padding: theme.spacing.cardPadding,
+        gap: theme.spacing.sectionGap,
+      }}
       ListHeaderComponent={
         <NativeContainer
           measure="wide"
@@ -566,6 +588,7 @@ function NativeLab({
   family: FamilyId;
   setFamily: (value: FamilyId) => void;
 }) {
+  const { theme } = useNativeTheme();
   const labChrome = (
     <>
       <NativeInline align="flex-start">
@@ -640,7 +663,10 @@ function NativeLab({
         <DataFamily chrome={labChrome} />
       ) : (
         <ScrollView
-          contentContainerStyle={{ padding: 16, gap: 16 }}
+          contentContainerStyle={{
+            padding: theme.spacing.cardPadding,
+            gap: theme.spacing.sectionGap,
+          }}
           keyboardShouldPersistTaps="handled"
         >
           <NativeContainer

@@ -163,6 +163,46 @@
         "path": "semantic.typography.metric-lg"
       }
     },
+    "icons": {
+      "compact": {
+        "layer": "component",
+        "path": "component.geometry.icon.compact"
+      },
+      "control": {
+        "layer": "component",
+        "path": "component.geometry.icon.control"
+      },
+      "navigation": {
+        "layer": "component",
+        "path": "component.geometry.icon.navigation"
+      },
+      "status": {
+        "layer": "component",
+        "path": "component.geometry.icon.status"
+      },
+      "feature": {
+        "layer": "component",
+        "path": "component.geometry.icon.feature"
+      }
+    },
+    "marks": {
+      "choice": {
+        "layer": "component",
+        "path": "component.geometry.mark.choice"
+      },
+      "radio": {
+        "layer": "component",
+        "path": "component.geometry.mark.radio"
+      },
+      "dot": {
+        "layer": "component",
+        "path": "component.geometry.mark.dot"
+      },
+      "stroke": {
+        "layer": "component",
+        "path": "component.geometry.mark.stroke"
+      }
+    },
     "layout": {
       "compact": {
         "layer": "layout",

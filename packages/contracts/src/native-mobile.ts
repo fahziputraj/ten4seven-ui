@@ -55,6 +55,18 @@ export const NATIVE_TYPOGRAPHY_INTENTS = [
 ] as const;
 export type NativeTypographyIntent = (typeof NATIVE_TYPOGRAPHY_INTENTS)[number];
 
+export const NATIVE_ICON_SIZE_ROLES = [
+  "compact",
+  "control",
+  "navigation",
+  "status",
+  "feature",
+] as const;
+export type NativeIconSizeRole = (typeof NATIVE_ICON_SIZE_ROLES)[number];
+
+export const NATIVE_MARK_ROLES = ["choice", "radio", "dot", "stroke"] as const;
+export type NativeMarkRole = (typeof NATIVE_MARK_ROLES)[number];
+
 export const NATIVE_SPACING_ROLES = [
   "control",
   "row",
@@ -228,6 +240,8 @@ export interface NativeResolvedThemeVariant {
   readonly typography: Readonly<
     Record<NativeTypographyIntent, NativeTypographyToken>
   >;
+  readonly icons: Readonly<Record<NativeIconSizeRole, number>>;
+  readonly marks: Readonly<Record<NativeMarkRole, number>>;
   readonly layout: {
     readonly measures: Readonly<Record<MeasureName, NativeResolvedMeasure>>;
   };
@@ -285,6 +299,8 @@ export interface NativeMobileContract {
     readonly typography: Readonly<
       Record<NativeTypographyIntent, NativeTokenReference>
     >;
+    readonly icons: Readonly<Record<NativeIconSizeRole, NativeTokenReference>>;
+    readonly marks: Readonly<Record<NativeMarkRole, NativeTokenReference>>;
     readonly layout: Readonly<Record<MeasureName, NativeTokenReference>>;
     readonly spacing: Readonly<Record<NativeSpacingRole, NativeTokenReference>>;
     readonly radius: Readonly<Record<NativeRadiusRole, NativeTokenReference>>;
@@ -383,6 +399,19 @@ export const NATIVE_MOBILE_TOKEN_REFERENCES = {
     caption: semanticColor("semantic.typography.caption"),
     button: semanticColor("semantic.typography.button"),
     metric: semanticColor("semantic.typography.metric-lg"),
+  },
+  icons: {
+    compact: componentToken("component.geometry.icon.compact"),
+    control: componentToken("component.geometry.icon.control"),
+    navigation: componentToken("component.geometry.icon.navigation"),
+    status: componentToken("component.geometry.icon.status"),
+    feature: componentToken("component.geometry.icon.feature"),
+  },
+  marks: {
+    choice: componentToken("component.geometry.mark.choice"),
+    radio: componentToken("component.geometry.mark.radio"),
+    dot: componentToken("component.geometry.mark.dot"),
+    stroke: componentToken("component.geometry.mark.stroke"),
   },
   layout: Object.fromEntries(
     MEASURE_NAMES.map((name) => [name, layoutToken(`layout.measure.${name}`)]),

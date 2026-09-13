@@ -26,6 +26,18 @@ export const INTERACTION_FEEDBACK = Object.freeze({
   pressedOpacity: 0.72,
   disabledOpacity: 0.5,
   scrimOpacity: 0.42,
+  interactiveOpacity: 0.72,
+  hoverOpacity: 0.64,
+  activeOpacity: 0.82,
+  disabledControlOpacity: 0.48,
+  choiceDisabledOpacity: 0.52,
+  optionDisabledOpacity: 0.46,
+  checkboxDisabledOpacity: 0.55,
+  disabledSubtleOpacity: 0.34,
+  chartGridOpacity: 0.82,
+  chartTrackOpacity: 0.68,
+  chartBarOpacity: 0.1,
+  detailEnterOpacity: 0.35,
 });
 
 export type TokenResolutionStage =
@@ -653,6 +665,40 @@ export const TOKEN_DIMENSION_CLASSIFICATIONS = Object.freeze([
   },
 ] as const);
 
+/**
+ * Repository-wide style governance vocabulary. This is intentionally a
+ * contract extension of the existing token ownership model, not a second
+ * token registry: raw values either resolve through the canonical token
+ * source or carry one of these bounded ownership explanations.
+ */
+export const STYLE_TOKENIZATION_CONTRACT = Object.freeze({
+  sourceOfTruth: ["packages/contracts/src", "packages/tokens/src/theme.ts"],
+  layers: [
+    "primitive",
+    "semantic",
+    "component",
+    "product-profile",
+    "composition-local",
+    "renderer-projection",
+  ],
+  exceptionClasses: [
+    "TOKEN_AUTHORITY",
+    "MECHANICAL",
+    "INTRINSIC_GEOMETRY",
+    "RUNTIME_DERIVED",
+    "MOTION_CHOREOGRAPHY",
+    "COMPOSITION_LOCAL",
+    "TEST_FIXTURE",
+    "EXTERNAL_API_REQUIREMENT",
+  ],
+  invariants: [
+    "consumer colors reference semantic or product-profile roles",
+    "shared rhythm and measures reference canonical geometry roles",
+    "native consumes typed renderer projections and never parses Web CSS",
+    "composition exceptions remain bounded and do not define theme axes",
+  ],
+} as const);
+
 export type TokenLayerValues<T extends object> = Readonly<
   Partial<Record<TokenResolutionStage, Partial<T>>>
 >;
@@ -1075,6 +1121,7 @@ export const FOUNDATION_CONTRACT = {
   measures: MEASURE_CONTRACT,
   layoutGrammar: LAYOUT_GRAMMAR_CONTRACT,
   tokenOwnership: TOKEN_OWNERSHIP_CONTRACT,
+  styleTokenization: STYLE_TOKENIZATION_CONTRACT,
   surfaceExpressions: SURFACE_EXPRESSIONS,
   canvasLabels: CANVAS_LABELS,
   componentTokenRoles: COMPONENT_TOKEN_ROLE_CONTRACT,

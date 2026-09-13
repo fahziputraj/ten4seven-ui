@@ -886,16 +886,25 @@ export const densityProfiles: Record<DensityName, DensityProfile> = {
 
 /** Stable raw/reference spacing values. Components consume semantic geometry. */
 export const referenceSpace = Object.freeze({
+  micro: "2px",
+  fine: "3px",
   0: "0px",
   1: "4px",
+  compact: "5px",
+  tight: "6px",
   2: "8px",
+  quiet: "9px",
   3: "12px",
+  inline: "11px",
   4: "16px",
   5: "20px",
   6: "24px",
+  snug: "14px",
+  hero: "28px",
   8: "32px",
   10: "40px",
   12: "48px",
+  relaxed: "18px",
 });
 
 /** Fixed accessibility floor shared by Web and future native renderers. */
@@ -942,6 +951,14 @@ export const iconGeometry = Object.freeze({
   navigation: "18px",
   status: "13px",
   feature: "24px",
+});
+
+/** Native control marks share the same canonical geometry source as Web marks. */
+export const markGeometry = Object.freeze({
+  choice: "22px",
+  radio: "22px",
+  dot: "10px",
+  stroke: "2px",
 });
 
 /**
@@ -2135,6 +2152,12 @@ export function buildThemeVariables(
         value,
       ]),
     ),
+    ...Object.fromEntries(
+      Object.entries(markGeometry).map(([role, value]) => [
+        `--t7-mark-${role}`,
+        value,
+      ]),
+    ),
     "--t7-overlay-menu-sm": overlayGeometry.menu.sm,
     "--t7-overlay-menu-md": overlayGeometry.menu.md,
     "--t7-overlay-menu-lg": overlayGeometry.menu.lg,
@@ -2261,6 +2284,18 @@ export function buildThemeVariables(
     "--t7-opacity-pressed": `${INTERACTION_FEEDBACK.pressedOpacity}`,
     "--t7-opacity-disabled": `${INTERACTION_FEEDBACK.disabledOpacity}`,
     "--t7-opacity-scrim": `${INTERACTION_FEEDBACK.scrimOpacity}`,
+    "--t7-opacity-interactive": `${INTERACTION_FEEDBACK.interactiveOpacity}`,
+    "--t7-opacity-hover": `${INTERACTION_FEEDBACK.hoverOpacity}`,
+    "--t7-opacity-active": `${INTERACTION_FEEDBACK.activeOpacity}`,
+    "--t7-opacity-disabled-control": `${INTERACTION_FEEDBACK.disabledControlOpacity}`,
+    "--t7-opacity-choice-disabled": `${INTERACTION_FEEDBACK.choiceDisabledOpacity}`,
+    "--t7-opacity-option-disabled": `${INTERACTION_FEEDBACK.optionDisabledOpacity}`,
+    "--t7-opacity-checkbox-disabled": `${INTERACTION_FEEDBACK.checkboxDisabledOpacity}`,
+    "--t7-opacity-disabled-subtle": `${INTERACTION_FEEDBACK.disabledSubtleOpacity}`,
+    "--t7-opacity-chart-grid": `${INTERACTION_FEEDBACK.chartGridOpacity}`,
+    "--t7-opacity-chart-track": `${INTERACTION_FEEDBACK.chartTrackOpacity}`,
+    "--t7-opacity-chart-bar": `${INTERACTION_FEEDBACK.chartBarOpacity}`,
+    "--t7-opacity-detail-enter": `${INTERACTION_FEEDBACK.detailEnterOpacity}`,
     ...Object.fromEntries(
       Object.entries(referenceSpace).map(([step, value]) => [
         `--t7-ref-space-${step}`,
@@ -2397,6 +2432,19 @@ export function buildNativeThemeSnapshot(
     }),
   ) as NativeResolvedThemeVariant["typography"];
 
+  const icons = Object.fromEntries(
+    Object.entries(iconGeometry).map(([role, value]) => [
+      role,
+      resolveNativePixels(value, `component.geometry.icon.${role}`),
+    ]),
+  ) as NativeResolvedThemeVariant["icons"];
+  const marks = Object.fromEntries(
+    Object.entries(markGeometry).map(([role, value]) => [
+      role,
+      resolveNativePixels(value, `component.geometry.mark.${role}`),
+    ]),
+  ) as NativeResolvedThemeVariant["marks"];
+
   const density = densityProfiles[theme.density];
   const spacing = {
     control: resolveNativePixels(
@@ -2502,6 +2550,8 @@ export function buildNativeThemeSnapshot(
     colors,
     feedback: INTERACTION_FEEDBACK,
     typography,
+    icons,
+    marks,
     layout: { measures },
     spacing,
     radius,

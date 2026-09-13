@@ -153,7 +153,10 @@ import {
   Typography,
   Link,
   List,
+  useTen4SevenTheme,
 } from "@ten4seven/ui";
+
+import { getFixtureColorPresets } from "./fixture-theme";
 
 import {
   categoryLabels,
@@ -473,6 +476,8 @@ export function ComponentPreview({
 }: {
   component: ComponentContract;
 }) {
+  const { theme } = useTen4SevenTheme();
+  const colorPresets = getFixtureColorPresets(theme);
   const [modalOpen, setModalOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
@@ -496,7 +501,7 @@ export function ComponentPreview({
     "operations",
     "delivery",
   ]);
-  const [color, setColor] = useState("#1f8a5b");
+  const [color, setColor] = useState(() => colorPresets[0]);
   const [transferValues, setTransferValues] = useState(["quality"]);
   const [treeSelection, setTreeSelection] = useState<string | undefined>(
     "inventory",
@@ -887,7 +892,7 @@ export function ComponentPreview({
           hint="Use a theme token for semantic UI state; use this for authored expression."
           label="Expression color"
           onValueChange={setColor}
-          presets={["#1f8a5b", "#287f9b", "#6e39cf", "#c02757"]}
+          presets={colorPresets}
           value={color}
         />,
       );
@@ -1735,9 +1740,7 @@ export function ComponentPreview({
                 </Typography>
                 <Typography typeRole="caption">{row.detail}</Typography>
               </div>
-              <StatusChip
-                tone={row.status === "Ready" ? "success" : "warning"}
-              >
+              <StatusChip tone={row.status === "Ready" ? "success" : "warning"}>
                 {row.status}
               </StatusChip>
             </div>

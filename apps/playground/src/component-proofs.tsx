@@ -98,8 +98,11 @@ import {
   TrendIndicator,
   Typography,
   type NotificationItem,
+  useTen4SevenTheme,
   useToast,
 } from "@ten4seven/ui";
+
+import { getFixtureColorPresets } from "./fixture-theme";
 
 function ToastAction() {
   const { toast } = useToast();
@@ -567,10 +570,12 @@ function SurfaceExpressionFixture() {
 }
 
 function Q04CoreLayoutActionsProof() {
+  const { theme } = useTen4SevenTheme();
+  const colorPresets = getFixtureColorPresets(theme);
   const [split, setSplit] = useState(54);
   const [transferValues, setTransferValues] = useState(["quality"]);
   const [tags, setTags] = useState(["core"]);
-  const [color, setColor] = useState("#1f8a5b");
+  const [color, setColor] = useState(() => colorPresets[0]);
   const [selectedNode, setSelectedNode] = useState("inventory");
   const [navigationValue, setNavigationValue] = useState("overview");
   const [dialNotice, setDialNotice] = useState("No quick action selected");
@@ -687,7 +692,7 @@ function Q04CoreLayoutActionsProof() {
                 label="Accent preview"
                 measure="compact"
                 onValueChange={setColor}
-                presets={["#1f8a5b", "#167c9c", "#6b35cf"]}
+                presets={colorPresets.slice(0, 3)}
                 value={color}
               />
               <TagsInput

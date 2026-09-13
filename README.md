@@ -144,6 +144,10 @@ that typed source. Size, density, measure, and layout remain separate axes.
 - [AI quickstart](docs/ai/AI_QUICKSTART.md),
   [new projects](docs/ai/NEW_PROJECT.md), and
   [existing applications](docs/ai/APPLY_TO_EXISTING_WEB.md).
+- [Design Taste and Uniformity](skills/ten4seven-design-taste/SKILL.md) covers
+  visual judgment, hierarchy, proportion, density, and responsive composition;
+  [contribution and governance](docs/CONTRIBUTING.md) covers canonical-layer
+  changes and release boundaries.
 - Agents start with `generated/agent-index.json`, compact projections, and
   selected shards. `pnpm t7ui find "searchable selection"` retrieves canonical
   choices. `@ten4seven/agent` distributes those generated decisions.
@@ -164,6 +168,7 @@ Recipes reuse canonical primitives; product profiles do not fork them.
 ```bash
 pnpm typecheck
 pnpm test
+pnpm test:public-ready
 pnpm build
 pnpm package:build
 pnpm package:verify
