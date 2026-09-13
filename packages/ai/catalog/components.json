@@ -68,35 +68,35 @@
         "type": "PaletteName",
         "defaultValue": "—",
         "required": false,
-        "description": "Selects the base action and accent family; categorical chart colors remain independent."
+        "description": "Configures palette for Ten4Seven Provider."
       },
       {
         "name": "primary",
         "type": "PaletteName",
-        "defaultValue": "palette",
+        "defaultValue": "—",
         "required": false,
-        "description": "Selects the independent palette source for main actions, links, and selection tokens; defaults to the base palette."
+        "description": "Configures primary for Ten4Seven Provider."
       },
       {
         "name": "accent",
         "type": "PaletteName",
-        "defaultValue": "palette",
+        "defaultValue": "—",
         "required": false,
-        "description": "Selects supporting color expression; keyboard and field focus use an independent contrast-tested role."
+        "description": "Configures accent for Ten4Seven Provider."
       },
       {
         "name": "canvas",
         "type": "CanvasName",
-        "defaultValue": "balanced",
+        "defaultValue": "—",
         "required": false,
-        "description": "Selects the shared neutral canvas and surface contrast treatment independently from hue."
+        "description": "Configures canvas for Ten4Seven Provider."
       },
       {
         "name": "chartPalette",
         "type": "ChartPaletteName",
-        "defaultValue": "spectrum",
+        "defaultValue": "—",
         "required": false,
-        "description": "Selects the data-series colorway while preserving the five-slot chart variable contract; UI roles stay unchanged."
+        "description": "Configures chart palette for Ten4Seven Provider."
       },
       {
         "name": "radius",
@@ -110,7 +110,7 @@
         "type": "number",
         "defaultValue": "—",
         "required": false,
-        "description": "Configures an exact 0–24 px base radius and derives the hierarchical radius tokens."
+        "description": "Configures radius value for Ten4Seven Provider."
       },
       {
         "name": "density",
@@ -121,10 +121,10 @@
       },
       {
         "name": "motionDuration",
-        "type": "number",
-        "defaultValue": "1.5s",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Authored anchor for motion profiles. Short interaction roles are bounded; reveal, chart and choreography roles scale independently."
+        "description": "Configures motion duration for Ten4Seven Provider."
       },
       {
         "name": "typography",
@@ -257,24 +257,24 @@
       },
       {
         "name": "primaryColor",
-        "type": "string",
-        "defaultValue": "inherited color or theme primary",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Overrides the solid icon layer with a CSS color value."
+        "description": "Configures primary color for T7 Icon."
       },
       {
         "name": "accentColor",
-        "type": "string",
-        "defaultValue": "theme accent",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Overrides the secondary duotone layer with a CSS color value."
+        "description": "Configures accent color for T7 Icon."
       },
       {
         "name": "duotone",
-        "type": "boolean",
-        "defaultValue": "provider style",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Forces or disables duotone layer routing for the selected glyph."
+        "description": "Configures duotone for T7 Icon."
       }
     ],
     "example": "<T7Icon />",
@@ -347,13 +347,6 @@
         "description": "Configures size for Button."
       },
       {
-        "name": "wrap",
-        "type": "boolean",
-        "defaultValue": "false",
-        "required": false,
-        "description": "Opt into natural CTA wrapping. Ordinary actions use a bounded single-line label with ellipsis; the full accessible name remains available."
-      },
-      {
         "name": "leadingIcon",
         "type": "IconName",
         "defaultValue": "—",
@@ -380,6 +373,13 @@
         "defaultValue": "false",
         "required": false,
         "description": "Prevents interaction while preserving the disabled state."
+      },
+      {
+        "name": "wrap",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures wrap for Button."
       }
     ],
     "example": "<Button />",
@@ -486,17 +486,16 @@
     "states": [
       "default",
       "focused",
-      "disabled",
-      "loading or pending when applicable",
-      "empty or unavailable when applicable"
+      "constrained or wrapping",
+      "disabled or loading descendant when applicable"
     ],
     "accessibility": [
-      "Expose a stable accessible name and use the semantic element for the interaction.",
-      "Preserve visible focus, keyboard reachability, and disabled or pending state semantics."
+      "Expose a stable group name and preserve the ordered relationship between peer actions.",
+      "Keep actionable semantics on each child; do not use ButtonGroup as a selection control."
     ],
     "responsive": [
-      "Reflows within constrained containers without changing the content contract.",
-      "Retains shared control geometry and touch-target minimums."
+      "Wrap or reflow peer actions according to priority without changing their action meaning.",
+      "Retains shared control geometry and touch-target minimums for every child action."
     ],
     "motion": [
       "Uses shared duration and easing variables for state transitions.",
@@ -552,16 +551,10 @@
     "displayName": "Toggle Button",
     "level": "primitive",
     "maturity": "implemented",
-    "states": [
-      "default",
-      "focused",
-      "disabled",
-      "loading or pending when applicable",
-      "empty or unavailable when applicable"
-    ],
+    "states": ["default", "focused", "pressed or selected", "disabled"],
     "accessibility": [
-      "Expose a stable accessible name and use the semantic element for the interaction.",
-      "Preserve visible focus, keyboard reachability, and disabled or pending state semantics."
+      "Expose a stable accessible name and the committed pressed state through the semantic button contract.",
+      "Preserve visible focus, keyboard reachability, and state changes without relying on color alone."
     ],
     "responsive": [
       "Reflows within constrained containers without changing the content contract.",
@@ -631,13 +624,13 @@
     "states": [
       "default",
       "focused",
+      "selected",
       "disabled",
-      "loading or pending when applicable",
-      "empty or unavailable when applicable"
+      "constrained or wrapping"
     ],
     "accessibility": [
-      "Expose a stable accessible name and use the semantic element for the interaction.",
-      "Preserve visible focus, keyboard reachability, and disabled or pending state semantics."
+      "Expose a stable group name and the committed single or multiple selection state.",
+      "Keep each ToggleButton keyboard reachable with its pressed state available to assistive technology."
     ],
     "responsive": [
       "Reflows within constrained containers without changing the content contract.",
@@ -704,20 +697,14 @@
     "displayName": "Split Button",
     "level": "primitive",
     "maturity": "implemented",
-    "states": [
-      "default",
-      "focused",
-      "disabled",
-      "loading or pending when applicable",
-      "empty or unavailable when applicable"
-    ],
+    "states": ["default", "focused", "pressed", "expanded", "disabled"],
     "accessibility": [
-      "Expose a stable accessible name and use the semantic element for the interaction.",
-      "Preserve visible focus, keyboard reachability, and disabled or pending state semantics."
+      "Expose the primary action name and a separately named alternatives trigger with expanded state.",
+      "Preserve keyboard reachability, focus feedback, and disabled semantics for both action segments."
     ],
     "responsive": [
-      "Reflows within constrained containers without changing the content contract.",
-      "Retains shared control geometry and touch-target minimums."
+      "Keep the primary action direct while moving related alternatives into the canonical responsive menu surface.",
+      "Retains shared control geometry and touch-target minimums for both segments."
     ],
     "motion": [
       "Uses shared duration and easing variables for state transitions.",
@@ -786,6 +773,7 @@
       "hint",
       "error",
       "leadingIcon",
+      "measure",
       "value",
       "onChange"
     ],
@@ -852,6 +840,13 @@
         "defaultValue": "—",
         "required": false,
         "description": "Semantic icon rendered before the label."
+      },
+      {
+        "name": "measure",
+        "type": "\"compact\" | \"default\" | \"wide\" | \"fill\"",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures measure for Input."
       },
       {
         "name": "value",
@@ -1036,7 +1031,15 @@
     "useWhen": ["notes, descriptions, or short comments"],
     "avoidWhen": ["rich-text authoring"],
     "recipes": ["entity-form", "content-detail"],
-    "importantProps": ["label", "hint", "error", "rows", "value", "onChange"],
+    "importantProps": [
+      "label",
+      "hint",
+      "error",
+      "measure",
+      "rows",
+      "value",
+      "onChange"
+    ],
     "relatedComponents": ["Input", "Field"],
     "source": "packages/ui/src/forms.tsx",
     "displayName": "Textarea",
@@ -1093,6 +1096,13 @@
         "defaultValue": "—",
         "required": false,
         "description": "Configures error for Textarea."
+      },
+      {
+        "name": "measure",
+        "type": "\"compact\" | \"default\" | \"wide\" | \"fill\"",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures measure for Textarea."
       },
       {
         "name": "rows",
@@ -1594,7 +1604,8 @@
       "value",
       "onValueChange",
       "loading",
-      "emptyMessage"
+      "emptyMessage",
+      "measure"
     ],
     "relatedComponents": ["MultiSelect", "Select"],
     "source": "packages/ui/src/forms.tsx",
@@ -1668,6 +1679,13 @@
         "defaultValue": "—",
         "required": false,
         "description": "Configures empty message for Combobox."
+      },
+      {
+        "name": "measure",
+        "type": "\"compact\" | \"default\" | \"wide\" | \"fill\"",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures measure for Combobox."
       }
     ],
     "example": "<Combobox />",
@@ -1688,7 +1706,8 @@
       "onValueChange",
       "label",
       "loading",
-      "error"
+      "error",
+      "measure"
     ],
     "relatedComponents": ["CheckboxGroup", "Combobox"],
     "source": "packages/ui/src/forms.tsx",
@@ -1762,14 +1781,21 @@
         "type": "boolean",
         "defaultValue": "false",
         "required": false,
-        "description": "Communicates pending options while preserving the trigger."
+        "description": "Communicates pending work and prevents duplicate activation."
       },
       {
         "name": "error",
-        "type": "string",
+        "type": "string | boolean",
         "defaultValue": "—",
         "required": false,
-        "description": "Explains an invalid or unavailable selection state."
+        "description": "Configures error for Multi Select."
+      },
+      {
+        "name": "measure",
+        "type": "\"compact\" | \"default\" | \"wide\" | \"fill\"",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures measure for Multi Select."
       }
     ],
     "example": "<MultiSelect />",
@@ -1848,80 +1874,45 @@
     "api": [
       {
         "name": "items",
-        "type": "HierarchyItem[]",
+        "type": "Item[]",
         "defaultValue": "—",
-        "required": true,
-        "description": "Opaque-ID hierarchy nodes with labels, optional descriptions, disabled state, and children."
+        "required": false,
+        "description": "Structured items rendered by the contract."
       },
       {
         "name": "selectedIds",
-        "type": "string[]",
+        "type": "unknown",
         "defaultValue": "—",
         "required": false,
-        "description": "Controlled selected node IDs; selected branches expand to selectable descendants."
-      },
-      {
-        "name": "defaultSelectedIds",
-        "type": "string[]",
-        "defaultValue": "[]",
-        "required": false,
-        "description": "Initial selected node IDs for uncontrolled usage."
+        "description": "Configures selected ids for Hierarchy Picker."
       },
       {
         "name": "onSelectionChange",
-        "type": "(ids) => void",
+        "type": "(value: unknown) => void",
         "defaultValue": "—",
         "required": false,
-        "description": "Callback with canonical selected IDs after a node is toggled."
+        "description": "Callback fired when selection change changes."
       },
       {
         "name": "expandedIds",
-        "type": "string[]",
+        "type": "unknown",
         "defaultValue": "—",
         "required": false,
-        "description": "Controlled expanded branch IDs."
-      },
-      {
-        "name": "defaultExpandedIds",
-        "type": "string[]",
-        "defaultValue": "root branches",
-        "required": false,
-        "description": "Initial expanded branch IDs for uncontrolled usage."
-      },
-      {
-        "name": "onExpandedIdsChange",
-        "type": "(ids) => void",
-        "defaultValue": "—",
-        "required": false,
-        "description": "Callback after a branch expansion state changes."
+        "description": "Configures expanded ids for Hierarchy Picker."
       },
       {
         "name": "searchable",
-        "type": "boolean",
-        "defaultValue": "false",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Shows a local label filter that keeps matching ancestors visible."
+        "description": "Configures searchable for Hierarchy Picker."
       },
       {
         "name": "label",
         "type": "string",
-        "defaultValue": "Resource scope",
-        "required": false,
-        "description": "Visible and accessible name for the hierarchy."
-      },
-      {
-        "name": "description",
-        "type": "ReactNode",
         "defaultValue": "—",
         "required": false,
-        "description": "Helper copy linked to the tree."
-      },
-      {
-        "name": "disabled",
-        "type": "boolean",
-        "defaultValue": "false",
-        "required": false,
-        "description": "Retains the hierarchy while preventing selection and expansion changes."
+        "description": "Visible or accessible name for the control."
       }
     ],
     "example": "<HierarchyPicker items={items} selectedIds={selectedIds} onSelectionChange={setSelectedIds} searchable />",
@@ -3160,6 +3151,113 @@
     "composesWith": ["DatePicker", "DateRangePicker"],
     "usedByPatterns": []
   },
+  "Cascader": {
+    "status": "implemented",
+    "category": "form",
+    "purpose": "Select a final value through a bounded hierarchy of related options.",
+    "useWhen": [
+      "a form needs a path through nested options before committing one leaf",
+      "hierarchical selection is clearer than a flat select or bulk tree"
+    ],
+    "avoidWhen": [
+      "the options are flat",
+      "multiple nodes must be selected at once",
+      "the hierarchy is primarily for browsing rather than selecting a path"
+    ],
+    "recipes": ["entity-form", "settings", "catalog"],
+    "importantProps": [
+      "options",
+      "value",
+      "onValueChange",
+      "label",
+      "disabled",
+      "measure"
+    ],
+    "relatedComponents": ["Select", "HierarchyPicker", "Combobox"],
+    "source": "packages/ui/src/forms.tsx",
+    "displayName": "Cascader",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "default",
+      "branch open",
+      "leaf selected",
+      "focused",
+      "disabled",
+      "invalid"
+    ],
+    "accessibility": [
+      "Uses one labelled trigger and a dialog containing menu and menuitem semantics for each hierarchy level.",
+      "Arrow keys move within a level, ArrowLeft returns to the parent level, Enter or Space commits a leaf, and Escape restores the trigger focus."
+    ],
+    "responsive": [
+      "Keeps each hierarchy level bounded and allows horizontal scrolling when the path is deep.",
+      "Retains shared control geometry and touch-target minimums on narrow screens."
+    ],
+    "motion": [
+      "Uses the shared floating-surface transition.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "surface-raised",
+      "selected",
+      "radius-control",
+      "radius-panel",
+      "shadow-popover",
+      "focus-ring",
+      "control-height"
+    ],
+    "api": [
+      {
+        "name": "options",
+        "type": "Option[]",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Finite choices rendered by the control."
+      },
+      {
+        "name": "value",
+        "type": "string | number | boolean",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Current controlled value."
+      },
+      {
+        "name": "onValueChange",
+        "type": "(value) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Callback fired with the next canonical value."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Visible or accessible name for the control."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "defaultValue": "false",
+        "required": false,
+        "description": "Prevents interaction while preserving the disabled state."
+      },
+      {
+        "name": "measure",
+        "type": "\"compact\" | \"default\" | \"wide\" | \"fill\"",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures measure for Cascader."
+      }
+    ],
+    "example": "<Cascader label=\"Workspace path\" options={options} value={path} onValueChange={setPath} />",
+    "alternativeTo": ["Select", "HierarchyPicker"],
+    "composesWith": ["Field", "Select", "HierarchyPicker", "Combobox"],
+    "usedByPatterns": ["entity-form", "settings", "catalog"]
+  },
   "DatePicker": {
     "status": "implemented",
     "category": "date-time",
@@ -3428,17 +3526,17 @@
       },
       {
         "name": "value",
-        "type": "string",
+        "type": "string | number | boolean",
         "defaultValue": "—",
         "required": false,
-        "description": "Current native time value in HH:mm form."
+        "description": "Current controlled value."
       },
       {
         "name": "onChange",
         "type": "(event) => void",
         "defaultValue": "—",
         "required": false,
-        "description": "Callback fired by the native time control."
+        "description": "Callback fired when the value or native event changes."
       }
     ],
     "example": "<NativeTimeInput label=\"Review time\" />",
@@ -3501,38 +3599,38 @@
     "api": [
       {
         "name": "value",
-        "type": "string | undefined",
+        "type": "string | number | boolean",
         "defaultValue": "—",
         "required": false,
-        "description": "Current selected time in HH:mm form."
+        "description": "Current controlled value."
       },
       {
         "name": "onValueChange",
         "type": "(value) => void",
         "defaultValue": "—",
-        "required": true,
-        "description": "Callback fired with the next selected time or undefined when cleared."
+        "required": false,
+        "description": "Callback fired with the next canonical value."
       },
       {
         "name": "minuteStep",
-        "type": "number",
-        "defaultValue": "30",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Spacing in minutes between available options."
+        "description": "Configures minute step for Time Picker."
       },
       {
         "name": "min",
-        "type": "string",
-        "defaultValue": "—",
+        "type": "number",
+        "defaultValue": "1",
         "required": false,
-        "description": "Earliest available time in HH:mm form."
+        "description": "Configures min for Time Picker."
       },
       {
         "name": "max",
-        "type": "string",
+        "type": "number",
         "defaultValue": "—",
         "required": false,
-        "description": "Latest available time in HH:mm form."
+        "description": "Configures max for Time Picker."
       },
       {
         "name": "label",
@@ -3918,7 +4016,7 @@
         "type": "ReactNode",
         "defaultValue": "—",
         "required": false,
-        "description": "Persistent navigation on desktop; presented in the canonical left Drawer at widths up to 860px, with destination dismissal and desktop restoration."
+        "description": "Configures sidebar for App Shell."
       },
       {
         "name": "topbar",
@@ -4212,7 +4310,7 @@
     ],
     "accessibility": [
       "Expose nav, menubar, menuitem, aria-haspopup, aria-expanded, and current-page semantics.",
-      "Open branches with keyboard controls, focus the first item, and dismiss on Escape or outside interaction."
+      "Use one tabbable root item with Arrow/Home/End roving focus, open branches with keyboard controls, focus the first item, and restore focus on Escape or outside interaction."
     ],
     "responsive": [
       "Keeps the link row horizontally usable on narrow public headers.",
@@ -4233,31 +4331,31 @@
     "api": [
       {
         "name": "items",
-        "type": "NavigationMenuItem[]",
+        "type": "Item[]",
         "defaultValue": "—",
-        "required": true,
-        "description": "Top-level links and one-level nested branches."
+        "required": false,
+        "description": "Structured items rendered by the contract."
       },
       {
         "name": "label",
         "type": "string",
-        "defaultValue": "Primary navigation",
+        "defaultValue": "—",
         "required": false,
-        "description": "Accessible name for the public navigation."
+        "description": "Visible or accessible name for the control."
       },
       {
         "name": "leading",
         "type": "ReactNode",
         "defaultValue": "—",
         "required": false,
-        "description": "Brand or leading content."
+        "description": "Configures leading for Navigation Menu."
       },
       {
         "name": "trailing",
         "type": "ReactNode",
         "defaultValue": "—",
         "required": false,
-        "description": "Action or account content."
+        "description": "Configures trailing for Navigation Menu."
       }
     ],
     "example": "<NavigationMenu items={[{ key: \"products\", label: \"Products\", children: [{ href: \"/books\", key: \"books\", label: \"Books\" }] }]} />",
@@ -4328,18 +4426,18 @@
         "description": "Configures trailing for Top Navigation."
       },
       {
-        "name": "placement",
-        "type": "top | bottom",
-        "defaultValue": "top",
-        "required": false,
-        "description": "Bottom reserves its measured height, respects device safe areas and supports three to five short primary destinations. Item controls/expanded connect a menu trigger to its dialog."
-      },
-      {
         "name": "label",
         "type": "string",
         "defaultValue": "—",
         "required": false,
         "description": "Visible or accessible name for the control."
+      },
+      {
+        "name": "placement",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures placement for Top Navigation."
       }
     ],
     "example": "<TopNavigation placement=\"bottom\" label=\"Mobile shortcuts\" items={items} />",
@@ -4540,45 +4638,45 @@
     "api": [
       {
         "name": "items",
-        "type": "SectionNavigationItem[]",
+        "type": "Item[]",
         "defaultValue": "—",
-        "required": true,
-        "description": "Labelled section IDs rendered as page-local anchors."
+        "required": false,
+        "description": "Structured items rendered by the contract."
       },
       {
         "name": "activeId",
-        "type": "string",
+        "type": "unknown",
         "defaultValue": "—",
         "required": false,
-        "description": "Consumer-controlled active section, such as a scroll-spy result."
+        "description": "Configures active id for Section Navigation."
       },
       {
         "name": "defaultActiveId",
-        "type": "string",
-        "defaultValue": "first item",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Initial active section for uncontrolled navigation."
+        "description": "Configures default active id for Section Navigation."
       },
       {
         "name": "onSectionChange",
-        "type": "(id: string) => void",
+        "type": "(value: unknown) => void",
         "defaultValue": "—",
         "required": false,
-        "description": "Callback after an anchor is selected; section observation remains consumer-owned."
+        "description": "Callback fired when section change changes."
       },
       {
         "name": "label",
         "type": "string",
-        "defaultValue": "Section navigation",
+        "defaultValue": "—",
         "required": false,
-        "description": "Accessible name for the page-local nav landmark."
+        "description": "Visible or accessible name for the control."
       },
       {
         "name": "sticky",
-        "type": "boolean",
-        "defaultValue": "false",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Keep the navigation below the shared document sticky offset."
+        "description": "Configures sticky for Section Navigation."
       }
     ],
     "example": "<SectionNavigation items={[{ id: \"profile\", label: \"Profile\" }]} />",
@@ -4696,7 +4794,7 @@
     ],
     "accessibility": [
       "Each trigger exposes aria-expanded and controls its panel.",
-      "Keyboard users can reach and toggle every section."
+      "Open panels expose a labelled region, and keyboard users can reach and toggle every section."
     ],
     "responsive": [
       "Reflows within constrained containers without changing the content contract.",
@@ -4756,7 +4854,13 @@
     "useWhen": ["a single optional section needs disclosure"],
     "avoidWhen": ["multi-item FAQ or sidebar grouping"],
     "recipes": ["settings", "content-detail"],
-    "importantProps": ["title", "open", "defaultOpen", "onOpenChange"],
+    "importantProps": [
+      "title",
+      "open",
+      "defaultOpen",
+      "disabled",
+      "onOpenChange"
+    ],
     "relatedComponents": ["Accordion", "SidebarGroup"],
     "source": "packages/ui/src/navigation.tsx",
     "displayName": "Collapsible",
@@ -4770,8 +4874,8 @@
       "empty or unavailable when applicable"
     ],
     "accessibility": [
-      "Expose a stable accessible name and use the semantic element for the interaction.",
-      "Preserve visible focus, keyboard reachability, and disabled or pending state semantics."
+      "The trigger exposes aria-expanded and controls a labelled region.",
+      "Preserve visible focus, keyboard reachability, and disabled semantics."
     ],
     "responsive": [
       "Reflows within constrained containers without changing the content contract.",
@@ -4810,6 +4914,13 @@
         "defaultValue": "—",
         "required": false,
         "description": "Configures default open for Collapsible."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "defaultValue": "false",
+        "required": false,
+        "description": "Prevents interaction while preserving the disabled state."
       },
       {
         "name": "onOpenChange",
@@ -4911,9 +5022,16 @@
       "percentage",
       "status",
       "selectedId",
-      "onSelectedIdChange"
+      "onSelectedIdChange",
+      "detailMode"
     ],
-    "relatedComponents": ["Progress", "Stepper", "StatusChip", "KeyValueList"],
+    "relatedComponents": [
+      "Progress",
+      "Stepper",
+      "StatusChip",
+      "KeyValueList",
+      "DetailDrawer"
+    ],
     "source": "packages/ui/src/data-display.tsx",
     "displayName": "Milestone Tracker",
     "level": "component",
@@ -4931,15 +5049,17 @@
     "accessibility": [
       "Expose the journey as a labelled navigation region with an ordered list of keyboard-reachable buttons.",
       "Expose each percentage through visible text and progressbar semantics, with the selected stage detail linked from its control.",
-      "Keep selection feedback in a labelled live detail region and preserve visible focus."
+      "Keep selection feedback in a labelled live detail region and preserve visible focus.",
+      "When detailMode is drawer, expose the selected stage through the canonical right-side DetailDrawer and restore focus to its stage control on close."
     ],
     "responsive": [
       "Keep the milestone sequence inside a bounded horizontal scroll region when the available width is narrow.",
-      "Preserve the ordered stage, state, progress, and detail contracts without introducing a mobile-only component."
+      "Preserve the ordered stage, state, progress, and detail contracts without introducing a mobile-only component.",
+      "Let the canonical DetailDrawer become full-width at compact widths while retaining its own scroll owner."
     ],
     "motion": [
       "Animate workflow-stage entry and selected detail changes with shared transition variables.",
-      "Respect prefers-reduced-motion."
+      "Use the shared overlay motion for drawer entry and exit, and respect prefers-reduced-motion."
     ],
     "tokens": [
       "surface",
@@ -4957,43 +5077,55 @@
     "api": [
       {
         "name": "items",
-        "type": "MilestoneItem[]",
+        "type": "Item[]",
         "defaultValue": "—",
-        "required": true,
-        "description": "Ordered milestones with labels, percentages, status, and optional detail content."
+        "required": false,
+        "description": "Structured items rendered by the contract."
+      },
+      {
+        "name": "percentage",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures percentage for Milestone Tracker."
+      },
+      {
+        "name": "status",
+        "type": "FileStatus",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures status for Milestone Tracker."
       },
       {
         "name": "selectedId",
-        "type": "string",
+        "type": "unknown",
         "defaultValue": "—",
         "required": false,
-        "description": "Controlled selected milestone identifier."
-      },
-      {
-        "name": "defaultSelectedId",
-        "type": "string",
-        "defaultValue": "current milestone or first item",
-        "required": false,
-        "description": "Initial selected milestone identifier for uncontrolled usage."
+        "description": "Configures selected id for Milestone Tracker."
       },
       {
         "name": "onSelectedIdChange",
-        "type": "(id: string) => void",
+        "type": "(value: unknown) => void",
         "defaultValue": "—",
         "required": false,
-        "description": "Callback fired when a milestone is selected."
+        "description": "Callback fired when selected id change changes."
       },
       {
-        "name": "label",
-        "type": "string",
-        "defaultValue": "Milestone progress",
+        "name": "detailMode",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Accessible name for the milestone navigation region."
+        "description": "Configures detail mode for Milestone Tracker."
       }
     ],
-    "example": "<MilestoneTracker items={milestones} />",
+    "example": "<MilestoneTracker detailMode=\"drawer\" items={milestones} />",
     "alternativeTo": [],
-    "composesWith": ["StatusChip", "KeyValueList", "ActivityFeed"],
+    "composesWith": [
+      "StatusChip",
+      "KeyValueList",
+      "ActivityFeed",
+      "DetailDrawer"
+    ],
     "usedByPatterns": ["entity-list", "master-detail", "report"]
   },
   "CommandMenu": {
@@ -5018,7 +5150,7 @@
     ],
     "accessibility": [
       "The command surface is reachable with the documented keyboard shortcut.",
-      "The input and results expose labelled listbox semantics and restore focus on close."
+      "The input and results expose labelled listbox semantics with active position metadata, grouped labels, and focus restoration on close."
     ],
     "responsive": [
       "Reflows within constrained containers without changing the content contract.",
@@ -5203,24 +5335,24 @@
     "api": [
       {
         "name": "emphasis",
-        "type": "plain | soft | expressive | solid | inverse",
-        "defaultValue": "plain",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Applies bounded emphasis while preserving the neutral page canvas."
+        "description": "Configures emphasis for Card."
       },
       {
         "name": "tone",
-        "type": "CardTone",
+        "type": "string",
         "defaultValue": "—",
         "required": false,
-        "description": "Selects the semantic object colour when emphasis requires it; legacy tones remain supported."
+        "description": "Configures tone for Card."
       },
       {
         "name": "colorway",
-        "type": "1 | 2 | 3 | 4 | 5",
+        "type": "unknown",
         "defaultValue": "—",
         "required": false,
-        "description": "Selects a categorical series for soft, expressive or solid emphasis. Solid uses a centrally paired foreground; tone retains semantic meaning."
+        "description": "Configures colorway for Card."
       },
       {
         "name": "children",
@@ -5444,24 +5576,24 @@
       },
       {
         "name": "emphasis",
-        "type": "plain | soft | expressive | solid | inverse",
-        "defaultValue": "plain",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Applies a bounded surface treatment without tinting the surrounding canvas."
+        "description": "Configures emphasis for Surface."
       },
       {
         "name": "tone",
         "type": "string",
         "defaultValue": "—",
         "required": false,
-        "description": "Selects the semantic colour used by a non-plain emphasis treatment."
+        "description": "Configures tone for Surface."
       },
       {
         "name": "colorway",
-        "type": "1 | 2 | 3 | 4 | 5",
+        "type": "unknown",
         "defaultValue": "—",
         "required": false,
-        "description": "Selects a categorical series for soft, expressive or solid emphasis. Solid uses a centrally paired foreground; tone retains semantic meaning."
+        "description": "Configures colorway for Surface."
       },
       {
         "name": "children",
@@ -5664,7 +5796,7 @@
     "purpose": "Constrain a scrollable region while preserving native browser scroll behavior.",
     "useWhen": ["a contained panel needs a bounded scroll region"],
     "avoidWhen": ["normal document flow can scroll"],
-    "recipes": ["master-detail", "command-menu"],
+    "recipes": ["master-detail"],
     "importantProps": ["label", "maxHeight", "children"],
     "relatedComponents": ["Panel", "Drawer"],
     "source": "packages/ui/src/layout.tsx",
@@ -6060,22 +6192,22 @@
         "name": "children",
         "type": "ReactNode",
         "defaultValue": "—",
-        "required": true,
-        "description": "Semantic table sections and rows."
+        "required": false,
+        "description": "Content rendered inside the contract."
       },
       {
         "name": "caption",
-        "type": "ReactNode",
+        "type": "unknown",
         "defaultValue": "—",
         "required": false,
-        "description": "Optional native table caption."
+        "description": "Configures caption for Table."
       },
       {
         "name": "className",
         "type": "string",
         "defaultValue": "—",
         "required": false,
-        "description": "Additional class for the semantic table."
+        "description": "Additional class hook for recipe-level layout composition."
       }
     ],
     "example": "<Table><TableHeader><TableRow><TableHead>Signal</TableHead></TableRow></TableHeader></Table>",
@@ -6117,15 +6249,15 @@
         "name": "children",
         "type": "ReactNode",
         "defaultValue": "—",
-        "required": true,
-        "description": "Table header rows."
+        "required": false,
+        "description": "Content rendered inside the contract."
       },
       {
         "name": "className",
         "type": "string",
         "defaultValue": "—",
         "required": false,
-        "description": "Additional class for the header section."
+        "description": "Additional class hook for recipe-level layout composition."
       }
     ],
     "example": "<TableHeader><TableRow><TableHead>Signal</TableHead></TableRow></TableHeader>",
@@ -6163,15 +6295,15 @@
         "name": "children",
         "type": "ReactNode",
         "defaultValue": "—",
-        "required": true,
-        "description": "Table body rows."
+        "required": false,
+        "description": "Content rendered inside the contract."
       },
       {
         "name": "className",
         "type": "string",
         "defaultValue": "—",
         "required": false,
-        "description": "Additional class for the body section."
+        "description": "Additional class hook for recipe-level layout composition."
       }
     ],
     "example": "<TableBody><TableRow><TableCell>Available</TableCell></TableRow></TableBody>",
@@ -6213,15 +6345,15 @@
         "name": "children",
         "type": "ReactNode",
         "defaultValue": "—",
-        "required": true,
-        "description": "Header or body cells."
+        "required": false,
+        "description": "Content rendered inside the contract."
       },
       {
         "name": "className",
         "type": "string",
         "defaultValue": "—",
         "required": false,
-        "description": "Additional class for the row."
+        "description": "Additional class hook for recipe-level layout composition."
       }
     ],
     "example": "<TableRow><TableCell>Available</TableCell></TableRow>",
@@ -6265,22 +6397,22 @@
         "name": "children",
         "type": "ReactNode",
         "defaultValue": "—",
-        "required": true,
-        "description": "Header label."
+        "required": false,
+        "description": "Content rendered inside the contract."
       },
       {
         "name": "scope",
-        "type": "\"col\" | \"row\"",
-        "defaultValue": "col",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Native header association scope."
+        "description": "Configures scope for Table Head."
       },
       {
         "name": "className",
         "type": "string",
         "defaultValue": "—",
         "required": false,
-        "description": "Additional class for the header cell."
+        "description": "Additional class hook for recipe-level layout composition."
       }
     ],
     "example": "<TableHead scope=\"col\">Signal</TableHead>",
@@ -6326,22 +6458,22 @@
         "name": "children",
         "type": "ReactNode",
         "defaultValue": "—",
-        "required": true,
-        "description": "Cell content."
+        "required": false,
+        "description": "Content rendered inside the contract."
       },
       {
         "name": "colSpan",
-        "type": "number",
+        "type": "unknown",
         "defaultValue": "—",
         "required": false,
-        "description": "Optional native column span."
+        "description": "Configures col span for Table Cell."
       },
       {
         "name": "className",
         "type": "string",
         "defaultValue": "—",
         "required": false,
-        "description": "Additional class for the cell."
+        "description": "Additional class hook for recipe-level layout composition."
       }
     ],
     "example": "<TableCell>48,920</TableCell>",
@@ -6360,13 +6492,21 @@
       "columns",
       "rows",
       "rowKey",
+      "caption",
+      "rowLabel",
       "columnVisibility",
       "density",
       "responsive",
       "selectable",
+      "selectionMode",
       "sort",
       "loading",
-      "error"
+      "error",
+      "hasActiveFilter",
+      "filteredEmptyMessage",
+      "loadingMore",
+      "endOfResults",
+      "footer"
     ],
     "relatedComponents": [
       "DataTableColumnPicker",
@@ -6379,8 +6519,8 @@
     "maturity": "polished",
     "states": ["loading", "ready", "empty", "error", "sorted", "selected rows"],
     "accessibility": [
-      "Use a semantic table with stable row and column context.",
-      "Sortable headers expose aria-sort and selection controls have explicit names.",
+      "Use a semantic table with a native caption and stable row and column context.",
+      "Sortable headers expose aria-sort and selection controls use readable row labels when supplied.",
       "Loading, empty, and error content remains available to assistive technology."
     ],
     "responsive": [
@@ -6406,7 +6546,7 @@
         "type": "Column[]",
         "defaultValue": "—",
         "required": true,
-        "description": "Column definitions used to render structured data; overflow optionally selects wrap, nowrap, ellipsis, or a two-line clamp. Use nowrap for numeric/action columns, and provide a detail disclosure for clipped text. Stacked records expose the full value."
+        "description": "Column definitions used to render structured data."
       },
       {
         "name": "rows",
@@ -6421,6 +6561,20 @@
         "defaultValue": "—",
         "required": true,
         "description": "Returns the stable key for each data row."
+      },
+      {
+        "name": "caption",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures caption for Data Table."
+      },
+      {
+        "name": "rowLabel",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures row label for Data Table."
       },
       {
         "name": "columnVisibility",
@@ -6438,10 +6592,17 @@
       },
       {
         "name": "responsive",
-        "type": "\"scroll\" | \"stacked\"",
-        "defaultValue": "\"scroll\"",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Chooses the narrow-screen presentation; stacked keeps every visible field readable without forcing a wide horizontal table."
+        "description": "Configures responsive for Data Table."
+      },
+      {
+        "name": "selectionMode",
+        "type": "none | single | multiple",
+        "defaultValue": "derived from selectable",
+        "required": false,
+        "description": "Makes row selection cardinality explicit while preserving selectable compatibility."
       },
       {
         "name": "selectable",
@@ -6470,9 +6631,44 @@
         "defaultValue": "—",
         "required": false,
         "description": "Configures error for Data Table."
+      },
+      {
+        "name": "hasActiveFilter",
+        "type": "boolean",
+        "defaultValue": "false",
+        "required": false,
+        "description": "Distinguishes filtered empty from no data."
+      },
+      {
+        "name": "filteredEmptyMessage",
+        "type": "ReactNode",
+        "defaultValue": "No results match the current filter.",
+        "required": false,
+        "description": "Consumer copy for a filtered empty collection."
+      },
+      {
+        "name": "loadingMore",
+        "type": "boolean",
+        "defaultValue": "false",
+        "required": false,
+        "description": "Communicates incremental loading without implying virtualization."
+      },
+      {
+        "name": "endOfResults",
+        "type": "boolean",
+        "defaultValue": "false",
+        "required": false,
+        "description": "Communicates the end of an incrementally loaded collection."
+      },
+      {
+        "name": "footer",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Consumer-owned pagination, summary, or bulk-action region."
       }
     ],
-    "example": "<DataTable columns={columns} rows={rows} rowKey={(row) => row.id} />",
+    "example": "<DataTable caption=\"Inventory records\" columns={columns} rows={rows} rowKey={(row) => row.id} />",
     "alternativeTo": [],
     "composesWith": ["DataTableColumnPicker", "BulkActionBar", "Pagination"],
     "usedByPatterns": [
@@ -6538,7 +6734,7 @@
       "selected rows"
     ],
     "accessibility": [
-      "Uses a native table with stable row and column context and labelled editors.",
+      "Uses a native table with a native caption, stable row and column context, and labelled editors.",
       "Arrow traversal, Escape cancel, and Ctrl or Meta plus Enter save keep keyboard editing bounded; row actions have explicit labels.",
       "Cell errors and row status remain textual; native input and select semantics are preserved."
     ],
@@ -6565,136 +6761,80 @@
     "api": [
       {
         "name": "caption",
-        "type": "string",
+        "type": "unknown",
         "defaultValue": "—",
-        "required": true,
-        "description": "Stable accessible name for the native table."
+        "required": false,
+        "description": "Configures caption for Advanced Data Grid."
       },
       {
         "name": "columns",
-        "type": "AdvancedDataGridColumn[]",
+        "type": "Column[]",
         "defaultValue": "—",
-        "required": true,
-        "description": "Column definitions with optional typed editors and presentation metadata."
+        "required": false,
+        "description": "Column definitions used to render structured data."
       },
       {
         "name": "rows",
         "type": "Row[]",
         "defaultValue": "—",
-        "required": true,
-        "description": "Structured records rendered by the contract."
+        "required": false,
+        "description": "Structured rows rendered by the contract."
       },
       {
         "name": "rowKey",
         "type": "(row) => string",
         "defaultValue": "—",
-        "required": true,
+        "required": false,
         "description": "Returns the stable key for each data row."
       },
       {
-        "name": "columnVisibility",
-        "type": "Record<string, boolean>",
+        "name": "onCellChange",
+        "type": "(value: unknown) => void",
         "defaultValue": "—",
         "required": false,
-        "description": "Controls optional column visibility without changing row data."
+        "description": "Callback fired when cell change changes."
       },
       {
-        "name": "density",
-        "type": "DataTableDensity",
+        "name": "rowState",
+        "type": "unknown",
         "defaultValue": "—",
         "required": false,
-        "description": "Selects the shared table row density."
+        "description": "Configures row state for Advanced Data Grid."
+      },
+      {
+        "name": "cellErrors",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures cell errors for Advanced Data Grid."
+      },
+      {
+        "name": "onRowSave",
+        "type": "(value: unknown) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Callback fired when row save changes."
+      },
+      {
+        "name": "onRowCancel",
+        "type": "(value: unknown) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Callback fired when row cancel changes."
       },
       {
         "name": "selectable",
         "type": "boolean",
-        "defaultValue": "false",
-        "required": false,
-        "description": "Adds canonical row and select-all controls."
-      },
-      {
-        "name": "selectedRowKeys",
-        "type": "string[]",
-        "defaultValue": "[]",
-        "required": false,
-        "description": "Controlled row selection keys."
-      },
-      {
-        "name": "onSelectionChange",
-        "type": "(keys) => void",
         "defaultValue": "—",
         "required": false,
-        "description": "Reports selection changes while leaving bulk action meaning to the consumer."
-      },
-      {
-        "name": "sort",
-        "type": "DataTableSort",
-        "defaultValue": "—",
-        "required": false,
-        "description": "Controlled sort state for sortable columns."
-      },
-      {
-        "name": "onSort",
-        "type": "(key) => void",
-        "defaultValue": "—",
-        "required": false,
-        "description": "Reports a requested sort key without owning data ordering."
-      },
-      {
-        "name": "onCellChange",
-        "type": "(rowKey, columnKey, value) => void",
-        "defaultValue": "—",
-        "required": false,
-        "description": "Receives an opaque editor value; validation, calculation, and persistence remain consumer-owned."
-      },
-      {
-        "name": "rowState",
-        "type": "Record<string, AdvancedDataGridRowState>",
-        "defaultValue": "—",
-        "required": false,
-        "description": "Presents consumer-supplied clean, dirty, saving, saved, or error state."
-      },
-      {
-        "name": "cellErrors",
-        "type": "Record<string, Record<string, string>>",
-        "defaultValue": "—",
-        "required": false,
-        "description": "Presents consumer-supplied inline validation feedback."
-      },
-      {
-        "name": "onRowSave",
-        "type": "(row) => void",
-        "defaultValue": "—",
-        "required": false,
-        "description": "Reports an explicit row-save intent without persisting data in the grid."
-      },
-      {
-        "name": "onRowCancel",
-        "type": "(row) => void",
-        "defaultValue": "—",
-        "required": false,
-        "description": "Reports an explicit row-cancel intent without restoring consumer data."
-      },
-      {
-        "name": "loading",
-        "type": "boolean",
-        "defaultValue": "false",
-        "required": false,
-        "description": "Communicates pending work and prevents duplicate row interaction."
-      },
-      {
-        "name": "error",
-        "type": "ReactNode",
-        "defaultValue": "—",
-        "required": false,
-        "description": "Presents a consumer-supplied table-level error."
+        "description": "Configures selectable for Advanced Data Grid."
       },
       {
         "name": "footer",
         "type": "ReactNode",
         "defaultValue": "—",
         "required": false,
-        "description": "Renders consumer-owned summary, pagination, or batch-action content below the table."
+        "description": "Configures footer for Advanced Data Grid."
       }
     ],
     "example": "<AdvancedDataGrid caption=\"Journal lines\" columns={columns} rows={rows} rowKey={(row) => row.id} onCellChange={...} />",
@@ -6731,7 +6871,7 @@
       "empty or unavailable when applicable"
     ],
     "accessibility": [
-      "Expose a stable accessible name and use the semantic element for the interaction.",
+      "Expose a labelled group for optional column controls and use semantic checkbox interactions.",
       "Preserve visible focus, keyboard reachability, and disabled or pending state semantics."
     ],
     "responsive": [
@@ -7048,6 +7188,170 @@
     "composesWith": ["Avatar", "ActivityFeed"],
     "usedByPatterns": []
   },
+  "List": {
+    "status": "implemented",
+    "category": "data",
+    "purpose": "Render an ordered collection with optional single or multiple selection while leaving data and row meaning to the consumer.",
+    "useWhen": [
+      "records are read as an ordered collection rather than compared across columns",
+      "the same row intent must adapt to Web and native list/detail presentation"
+    ],
+    "avoidWhen": [
+      "headers and cross-record comparison require a semantic Table",
+      "very large interactive data needs an approved virtualization engine"
+    ],
+    "recipes": ["entity-list", "content-list", "master-detail"],
+    "importantProps": [
+      "items",
+      "rowKey",
+      "renderItem",
+      "selectionMode",
+      "interactionMode",
+      "selectedRowKeys",
+      "onSelectionChange",
+      "onItemActivate",
+      "loading",
+      "error",
+      "hasActiveFilter",
+      "loadingMore"
+    ],
+    "relatedComponents": [
+      "DataTable",
+      "BulkActionBar",
+      "Pagination",
+      "DetailDrawer"
+    ],
+    "source": "packages/ui/src/collections.tsx",
+    "displayName": "List",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "loading",
+      "ready",
+      "empty",
+      "filtered empty",
+      "error",
+      "partial",
+      "loading more",
+      "end of results",
+      "selected",
+      "disabled"
+    ],
+    "accessibility": [
+      "Uses ul and li semantics for a simple collection and listbox/option semantics only when selection is enabled.",
+      "Selection state, disabled state, keyboard movement, and collection status remain programmatically available.",
+      "Consumers must provide an accessible label and stable row keys; row activation and selection are explicit interaction modes."
+    ],
+    "responsive": [
+      "Rows reflow within a bounded collection surface without changing item meaning.",
+      "The semantic contract can map to native rows, cards, or list/detail without a mobile-only component.",
+      "Large collections require a renderer or approved engine adapter to own measurement and windowing."
+    ],
+    "motion": [
+      "Uses shared state and interaction transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "selected",
+      "selected-hover",
+      "row-height",
+      "focus-ring",
+      "muted-foreground",
+      "touch-target-min"
+    ],
+    "api": [
+      {
+        "name": "items",
+        "type": "Row[]",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Ordered records rendered by the collection."
+      },
+      {
+        "name": "rowKey",
+        "type": "(row) => string",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Returns the stable opaque identity used for focus and selection."
+      },
+      {
+        "name": "renderItem",
+        "type": "(row, context) => ReactNode",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Renders consumer-owned row content inside the canonical list semantics."
+      },
+      {
+        "name": "selectionMode",
+        "type": "none | single | multiple",
+        "defaultValue": "none",
+        "required": false,
+        "description": "Selects the collection selection contract."
+      },
+      {
+        "name": "interactionMode",
+        "type": "select | activate | select-and-activate",
+        "defaultValue": "derived",
+        "required": false,
+        "description": "Makes row selection and row activation policy explicit."
+      },
+      {
+        "name": "selectedRowKeys",
+        "type": "string[]",
+        "defaultValue": "[]",
+        "required": false,
+        "description": "Controlled selected record keys."
+      },
+      {
+        "name": "onSelectionChange",
+        "type": "(keys) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Reports normalized selection without owning business rules."
+      },
+      {
+        "name": "onItemActivate",
+        "type": "(row) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Reports explicit row activation."
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "defaultValue": "false",
+        "required": false,
+        "description": "Communicates initial collection loading."
+      },
+      {
+        "name": "error",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Communicates a collection or refresh error."
+      },
+      {
+        "name": "hasActiveFilter",
+        "type": "boolean",
+        "defaultValue": "false",
+        "required": false,
+        "description": "Distinguishes filtered empty from no data."
+      },
+      {
+        "name": "loadingMore",
+        "type": "boolean",
+        "defaultValue": "false",
+        "required": false,
+        "description": "Communicates incremental loading without implying virtualization."
+      }
+    ],
+    "example": "<List items={records} rowKey={(row) => row.id} renderItem={(row) => row.name} />",
+    "alternativeTo": ["DataTable"],
+    "composesWith": ["BulkActionBar", "Pagination", "DetailDrawer"],
+    "usedByPatterns": ["entity-list", "content-list", "master-detail"]
+  },
   "KeyValueList": {
     "status": "implemented",
     "category": "data",
@@ -7192,52 +7496,52 @@
       },
       {
         "name": "trend",
-        "type": "ReactNode",
+        "type": "unknown",
         "defaultValue": "—",
         "required": false,
-        "description": "Dedicated directional comparison slot, normally a TrendIndicator."
+        "description": "Configures trend for Metric Card."
       },
       {
         "name": "chart",
-        "type": "ReactNode",
+        "type": "unknown",
         "defaultValue": "—",
         "required": false,
-        "description": "Compact historical cue, normally a Sparkline."
+        "description": "Configures chart for Metric Card."
       },
       {
         "name": "chartPlacement",
-        "type": "bottom | inline",
-        "defaultValue": "bottom",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Places the chart at the card base or beside the value and supporting context."
+        "description": "Configures chart placement for Metric Card."
       },
       {
         "name": "progress",
-        "type": "ReactNode",
+        "type": "number",
         "defaultValue": "—",
         "required": false,
-        "description": "Goal or capacity cue, normally the canonical Progress component."
+        "description": "Configures progress for Metric Card."
       },
       {
         "name": "action",
         "type": "ReactNode",
         "defaultValue": "—",
         "required": false,
-        "description": "Optional action aligned with the metric label and icon."
+        "description": "Configures action for Metric Card."
       },
       {
         "name": "footer",
         "type": "ReactNode",
         "defaultValue": "—",
         "required": false,
-        "description": "Separated supporting detail or link below the metric anatomy."
+        "description": "Configures footer for Metric Card."
       },
       {
         "name": "change",
         "type": "ReactNode",
         "defaultValue": "—",
         "required": false,
-        "description": "Backwards-compatible comparison slot; prefer trend for new work."
+        "description": "Configures change for Metric Card."
       },
       {
         "name": "icon",
@@ -7248,24 +7552,24 @@
       },
       {
         "name": "emphasis",
-        "type": "plain | soft | expressive | solid | inverse",
-        "defaultValue": "plain",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Applies the shared bounded surface treatment to this metric."
+        "description": "Configures emphasis for Metric Card."
       },
       {
         "name": "tone",
         "type": "string",
         "defaultValue": "—",
         "required": false,
-        "description": "Selects the semantic colour when emphasis is explicit."
+        "description": "Configures tone for Metric Card."
       },
       {
         "name": "colorway",
-        "type": "1 | 2 | 3 | 4 | 5",
+        "type": "unknown",
         "defaultValue": "—",
         "required": false,
-        "description": "Selects a categorical series for soft, expressive or solid emphasis. Solid uses a centrally paired foreground; tone retains semantic meaning."
+        "description": "Configures colorway for Metric Card."
       }
     ],
     "example": "<MetricCard />",
@@ -7348,52 +7652,52 @@
       },
       {
         "name": "items[].emphasis",
-        "type": "plain | soft | expressive | solid | inverse",
-        "defaultValue": "plain",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Applies the bounded surface treatment to one KPI item."
+        "description": "Configures items[].emphasis for KPI Cluster."
       },
       {
         "name": "items[].tone",
-        "type": "neutral | primary | accent | success | warning | danger | info",
-        "defaultValue": "neutral",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Selects the semantic status or non-status accent for an explicitly emphasized item."
+        "description": "Configures items[].tone for KPI Cluster."
       },
       {
         "name": "items[].colorway",
-        "type": "1 | 2 | 3 | 4 | 5",
+        "type": "unknown",
         "defaultValue": "—",
         "required": false,
-        "description": "Selects a categorical series for soft, expressive or solid emphasis. Solid uses a centrally paired foreground; tone retains semantic meaning."
+        "description": "Configures items[].colorway for KPI Cluster."
       },
       {
         "name": "items[].trend",
-        "type": "ReactNode",
+        "type": "unknown",
         "defaultValue": "—",
         "required": false,
-        "description": "Directional comparison slot for one KPI item."
+        "description": "Configures items[].trend for KPI Cluster."
       },
       {
         "name": "items[].chart",
-        "type": "ReactNode",
+        "type": "unknown",
         "defaultValue": "—",
         "required": false,
-        "description": "Compact historical cue for one KPI item."
+        "description": "Configures items[].chart for KPI Cluster."
       },
       {
         "name": "items[].chartPlacement",
-        "type": "bottom | inline",
-        "defaultValue": "bottom",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Places one chart at the item base or beside its value and supporting context."
+        "description": "Configures items[].chart placement for KPI Cluster."
       },
       {
         "name": "items[].progress",
-        "type": "ReactNode",
+        "type": "unknown",
         "defaultValue": "—",
         "required": false,
-        "description": "Goal or capacity cue for one KPI item."
+        "description": "Configures items[].progress for KPI Cluster."
       },
       {
         "name": "label",
@@ -7404,24 +7708,24 @@
       },
       {
         "name": "variant",
-        "type": "segmented | cards",
-        "defaultValue": "segmented",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Keeps related metrics joined or presents them as individually bounded KPI cards."
+        "description": "Configures variant for KPI Cluster."
       },
       {
         "name": "orientation",
-        "type": "horizontal | vertical",
-        "defaultValue": "horizontal",
+        "type": "\"horizontal\" | \"vertical\"",
+        "defaultValue": "\"horizontal\"",
         "required": false,
-        "description": "Chooses a horizontal responsive group or an explicit vertical stack."
+        "description": "Configures orientation for KPI Cluster."
       },
       {
         "name": "columns",
-        "type": "1 | 2 | 3 | 4 | 5",
-        "defaultValue": "derived from item count, capped at 4",
+        "type": "Column[]",
+        "defaultValue": "—",
         "required": false,
-        "description": "Sets the maximum wide-layout column count while package breakpoints retain responsive ownership."
+        "description": "Column definitions used to render structured data."
       }
     ],
     "example": "<KPICluster />",
@@ -7645,52 +7949,45 @@
     "api": [
       {
         "name": "items",
-        "type": "RevisionDiffItem[]",
+        "type": "Item[]",
         "defaultValue": "—",
-        "required": true,
-        "description": "Consumer-supplied fields with before, after, optional context, and an explicit change kind."
+        "required": false,
+        "description": "Structured items rendered by the contract."
       },
       {
         "name": "reason",
-        "type": "ReactNode",
+        "type": "unknown",
         "defaultValue": "—",
         "required": false,
-        "description": "Human-readable reason owned by the consumer."
+        "description": "Configures reason for Revision Diff."
       },
       {
         "name": "actor",
-        "type": "ReactNode",
+        "type": "unknown",
         "defaultValue": "—",
         "required": false,
-        "description": "Accountable actor associated with the revision."
+        "description": "Configures actor for Revision Diff."
       },
       {
         "name": "occurredAt",
-        "type": "ReactNode",
+        "type": "unknown",
         "defaultValue": "—",
         "required": false,
-        "description": "Consumer-supplied time at which the revision occurred."
+        "description": "Configures occurred at for Revision Diff."
       },
       {
         "name": "evidence",
-        "type": "ReactNode",
+        "type": "unknown",
         "defaultValue": "—",
         "required": false,
-        "description": "Evidence link, identifier, or source label for the revision."
+        "description": "Configures evidence for Revision Diff."
       },
       {
         "name": "title",
-        "type": "ReactNode",
-        "defaultValue": "Revision summary",
+        "type": "string",
+        "defaultValue": "—",
         "required": false,
-        "description": "Accessible heading for the revision surface."
-      },
-      {
-        "name": "emptyMessage",
-        "type": "ReactNode",
-        "defaultValue": "No field changes recorded.",
-        "required": false,
-        "description": "Message shown when the consumer supplies no changed fields."
+        "description": "Primary heading for the surface."
       }
     ],
     "example": "<RevisionDiff items={changes} reason=\"Correction approved\" actor=\"QA lead\" occurredAt=\"Sep 3 · 14:28\" evidence=\"RC-3841\" />",
@@ -7810,7 +8107,7 @@
     "useWhen": ["visual products or media are browsed as cards"],
     "avoidWhen": ["structured operational records need table comparison"],
     "recipes": ["catalog", "content-list"],
-    "importantProps": ["minCardWidth", "children"],
+    "importantProps": ["minItemMeasure", "minCardWidth", "children"],
     "relatedComponents": ["ProductCard", "Pagination"],
     "source": "packages/ui/src/commerce.tsx",
     "displayName": "Product Grid",
@@ -7845,6 +8142,13 @@
       "focus-ring"
     ],
     "api": [
+      {
+        "name": "minItemMeasure",
+        "type": "\"compact\" | \"default\" | \"wide\"",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures min item measure for Product Grid."
+      },
       {
         "name": "minCardWidth",
         "type": "number | string",
@@ -8445,10 +8749,10 @@
       },
       {
         "name": "reserveSpace",
-        "type": "boolean",
-        "defaultValue": "false",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Keeps the bar's layout slot stable when the selection is empty."
+        "description": "Configures reserve space for Bulk Action Bar."
       }
     ],
     "example": "<BulkActionBar />",
@@ -8456,7 +8760,117 @@
     "composesWith": ["DataTable", "AlertDialog"],
     "usedByPatterns": ["entity-list", "approval-queue"]
   },
+  "Dialog": {
+    "status": "implemented",
+    "category": "overlay",
+    "purpose": "Present focused content through the canonical adaptive dialog contract.",
+    "useWhen": ["short forms, acknowledgement, focused confirmation"],
+    "avoidWhen": ["long workflow needing persistent context"],
+    "recipes": ["entity-form", "auth", "catalog"],
+    "importantProps": [
+      "open",
+      "title",
+      "description",
+      "onClose",
+      "initialFocus",
+      "size",
+      "closeLabel",
+      "dismissible"
+    ],
+    "relatedComponents": ["AlertDialog", "Modal", "CommandMenu", "Drawer"],
+    "source": "packages/ui/src/components.tsx",
+    "displayName": "Dialog",
+    "level": "component",
+    "maturity": "polished",
+    "states": [
+      "closed",
+      "open with focus",
+      "Escape dismissal",
+      "non-dismissible task"
+    ],
+    "accessibility": [
+      "The native dialog has an accessible title and optional description.",
+      "Focus moves into the dialog, Escape and backdrop dismissal follow dismissible, and focus returns to the opener."
+    ],
+    "responsive": [
+      "Reflows within constrained containers without changing the content contract.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": ["surface-overlay", "shadow-modal", "scrim", "motion"],
+    "api": [
+      {
+        "name": "open",
+        "type": "boolean",
+        "defaultValue": "false",
+        "required": true,
+        "description": "Controlled visibility state."
+      },
+      {
+        "name": "title",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Accessible primary heading for the surface."
+      },
+      {
+        "name": "description",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Supporting context announced with the primary content."
+      },
+      {
+        "name": "onClose",
+        "type": "() => void",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Callback fired when the surface requests dismissal."
+      },
+      {
+        "name": "initialFocus",
+        "type": "RefObject",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Optional control to receive initial focus."
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\" | \"lg\" | \"command\"",
+        "defaultValue": "md",
+        "required": false,
+        "description": "Selects component-owned dialog geometry."
+      },
+      {
+        "name": "closeLabel",
+        "type": "string",
+        "defaultValue": "Close dialog",
+        "required": false,
+        "description": "Accessible name for the dismiss control."
+      },
+      {
+        "name": "dismissible",
+        "type": "boolean",
+        "defaultValue": "true",
+        "required": false,
+        "description": "Allows backdrop, Escape, and close-button dismissal when true."
+      }
+    ],
+    "example": "<Dialog />",
+    "alternativeTo": ["Drawer"],
+    "composesWith": ["AlertDialog", "CommandMenu", "Drawer"],
+    "usedByPatterns": [
+      "entity-detail",
+      "approval-queue",
+      "checkout",
+      "ebook-reader"
+    ]
+  },
   "Modal": {
+    "aliasOf": "Dialog",
     "status": "implemented",
     "category": "overlay",
     "purpose": "Present focused short content or confirmation through a native modal dialog.",
@@ -8470,7 +8884,7 @@
       "onClose",
       "initialFocus"
     ],
-    "relatedComponents": ["AlertDialog", "CommandMenu", "Drawer"],
+    "relatedComponents": ["Dialog", "AlertDialog", "CommandMenu", "Drawer"],
     "source": "packages/ui/src/components.tsx",
     "displayName": "Modal",
     "level": "component",
@@ -8534,7 +8948,7 @@
     ],
     "example": "<Modal />",
     "alternativeTo": ["Drawer"],
-    "composesWith": ["AlertDialog", "CommandMenu", "Drawer"],
+    "composesWith": ["Dialog", "AlertDialog", "CommandMenu", "Drawer"],
     "usedByPatterns": [
       "entity-detail",
       "approval-queue",
@@ -8597,14 +9011,14 @@
       },
       {
         "name": "title",
-        "type": "ReactNode",
+        "type": "string",
         "defaultValue": "—",
         "required": false,
         "description": "Primary heading for the surface."
       },
       {
         "name": "description",
-        "type": "ReactNode",
+        "type": "string",
         "defaultValue": "—",
         "required": false,
         "description": "Supporting context announced with the primary content."
@@ -8618,17 +9032,17 @@
       },
       {
         "name": "side",
-        "type": "\"left\" | \"right\"",
+        "type": "\"top\" | \"right\" | \"bottom\" | \"left\"",
         "defaultValue": "—",
         "required": false,
         "description": "Configures side for Drawer."
       },
       {
         "name": "initialFocus",
-        "type": "RefObject<HTMLElement>",
+        "type": "string",
         "defaultValue": "—",
         "required": false,
-        "description": "Optional element that receives focus when the drawer opens."
+        "description": "Configures initial focus for Drawer."
       }
     ],
     "example": "<Drawer />",
@@ -8696,14 +9110,14 @@
       },
       {
         "name": "title",
-        "type": "ReactNode",
+        "type": "string",
         "defaultValue": "—",
         "required": false,
         "description": "Primary heading for the surface."
       },
       {
         "name": "description",
-        "type": "ReactNode",
+        "type": "string",
         "defaultValue": "—",
         "required": false,
         "description": "Supporting context announced with the primary content."
@@ -8717,17 +9131,17 @@
       },
       {
         "name": "side",
-        "type": "\"left\" | \"right\"",
+        "type": "\"top\" | \"right\" | \"bottom\" | \"left\"",
         "defaultValue": "—",
         "required": false,
         "description": "Configures side for Detail Drawer."
       },
       {
         "name": "initialFocus",
-        "type": "RefObject<HTMLElement>",
+        "type": "string",
         "defaultValue": "—",
         "required": false,
-        "description": "Optional element that receives focus when the drawer opens."
+        "description": "Configures initial focus for Detail Drawer."
       }
     ],
     "example": "<DetailDrawer />",
@@ -9246,10 +9660,10 @@
     "api": [
       {
         "name": "emphasis",
-        "type": "plain | soft | expressive | solid | inverse",
-        "defaultValue": "soft",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Chooses the canonical callout surface treatment; soft is the normal feedback state."
+        "description": "Configures emphasis for Alert."
       },
       {
         "name": "tone",
@@ -9297,6 +9711,289 @@
       "checkout",
       "auth"
     ]
+  },
+  "Banner": {
+    "status": "implemented",
+    "category": "feedback",
+    "purpose": "Show page or shell-level feedback with an explicit urgency and dismissal contract.",
+    "useWhen": [
+      "offline, sync, service, or account-wide status needs persistent visibility"
+    ],
+    "avoidWhen": ["transient action confirmation or record-local validation"],
+    "recipes": ["auth", "settings", "catalog"],
+    "importantProps": [
+      "tone",
+      "urgency",
+      "title",
+      "description",
+      "action",
+      "onDismiss"
+    ],
+    "relatedComponents": ["Alert", "Toast", "StateView"],
+    "source": "packages/ui/src/feedback.tsx",
+    "displayName": "Banner",
+    "level": "component",
+    "maturity": "implemented",
+    "states": ["polite", "assertive", "consumer-controlled", "dismissible"],
+    "accessibility": [
+      "Uses status or alert semantics according to urgency and tone.",
+      "Keeps action and dismissal controls keyboard reachable with a visible focus treatment."
+    ],
+    "responsive": [
+      "Reflows action content below the message at narrow widths.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-raised",
+      "border",
+      "success",
+      "warning",
+      "danger",
+      "info",
+      "motion"
+    ],
+    "api": [
+      {
+        "name": "tone",
+        "type": "FeedbackTone",
+        "defaultValue": "info",
+        "required": false,
+        "description": "Semantic feedback tone."
+      },
+      {
+        "name": "urgency",
+        "type": "\"polite\" | \"assertive\" | \"consumer-controlled\"",
+        "defaultValue": "polite",
+        "required": false,
+        "description": "Controls live-region urgency."
+      },
+      {
+        "name": "title",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Primary banner message."
+      },
+      {
+        "name": "description",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Supporting context for the banner."
+      },
+      {
+        "name": "action",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Consumer-owned recovery or navigation action."
+      },
+      {
+        "name": "onDismiss",
+        "type": "() => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Dismissal callback for the banner."
+      }
+    ],
+    "example": "<Banner />",
+    "alternativeTo": [],
+    "composesWith": ["Alert", "Toast", "StateView"],
+    "usedByPatterns": ["settings", "auth", "catalog"]
+  },
+  "Notification": {
+    "status": "implemented",
+    "category": "feedback",
+    "purpose": "Render one persisted or inspectable notification item without owning transport or storage.",
+    "useWhen": [
+      "a product has a persisted event or task message with read state"
+    ],
+    "avoidWhen": ["transient action feedback or page-local validation"],
+    "recipes": ["all"],
+    "importantProps": ["notification", "onMarkRead", "onDismiss", "onSelect"],
+    "relatedComponents": [
+      "NotificationCenter",
+      "Toast",
+      "Alert",
+      "ActivityFeed"
+    ],
+    "source": "packages/ui/src/feedback.tsx",
+    "displayName": "Notification",
+    "level": "component",
+    "maturity": "implemented",
+    "states": ["unread", "read", "with action", "dismissible", "selected"],
+    "accessibility": [
+      "Exposes read state in the accessible name and retains semantic list-item structure.",
+      "Actions for viewing, marking read, and dismissing are independently keyboard reachable."
+    ],
+    "responsive": [
+      "Allows long notification content to wrap without horizontal clipping.",
+      "Retains shared control geometry and touch-target minimums."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-subtle",
+      "border",
+      "primary",
+      "muted-foreground",
+      "motion"
+    ],
+    "api": [
+      {
+        "name": "notification",
+        "type": "NotificationItem",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Consumer-owned notification data and read state."
+      },
+      {
+        "name": "onMarkRead",
+        "type": "(id: string) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Marks the item read in consumer state."
+      },
+      {
+        "name": "onDismiss",
+        "type": "(id: string) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Removes or archives the item in consumer state."
+      },
+      {
+        "name": "onSelect",
+        "type": "(id: string) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Opens the item detail in consumer state."
+      }
+    ],
+    "example": "<Notification />",
+    "alternativeTo": [],
+    "composesWith": ["NotificationCenter", "Toast", "Alert"],
+    "usedByPatterns": []
+  },
+  "NotificationCenter": {
+    "status": "implemented",
+    "category": "feedback",
+    "purpose": "Present a bounded inspectable notification history with consumer-owned read and dismissal actions.",
+    "useWhen": [
+      "a product needs a notification history surface or inbox-like panel"
+    ],
+    "avoidWhen": [
+      "transient feedback or audit/activity data with a different domain contract"
+    ],
+    "recipes": ["all"],
+    "importantProps": [
+      "items",
+      "label",
+      "maxVisible",
+      "onMarkAllRead",
+      "onClear",
+      "onMarkRead",
+      "onDismiss",
+      "onSelect"
+    ],
+    "relatedComponents": ["Notification", "Toast", "Drawer", "ActivityFeed"],
+    "source": "packages/ui/src/feedback.tsx",
+    "displayName": "Notification Center",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "empty",
+      "unread items",
+      "all read",
+      "bounded list",
+      "mobile sheet host"
+    ],
+    "accessibility": [
+      "Uses a labelled region and list semantics for inspectable notification history.",
+      "Marks read, clear, dismiss, and selection actions as explicit keyboard-reachable controls."
+    ],
+    "responsive": [
+      "Can render in a bounded panel or adapt into a native sheet host without changing item intent.",
+      "Keeps header actions usable when the list narrows."
+    ],
+    "motion": [
+      "Uses shared duration and easing variables for state transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-raised",
+      "surface-subtle",
+      "border",
+      "primary",
+      "motion"
+    ],
+    "api": [
+      {
+        "name": "items",
+        "type": "readonly NotificationItem[]",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Consumer-owned notification history."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "defaultValue": "Notification center",
+        "required": false,
+        "description": "Accessible region heading."
+      },
+      {
+        "name": "maxVisible",
+        "type": "number",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Bounds visible items without taking ownership of pagination."
+      },
+      {
+        "name": "onMarkAllRead",
+        "type": "() => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Consumer callback for marking all items read."
+      },
+      {
+        "name": "onClear",
+        "type": "() => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Consumer callback for clearing or archiving items."
+      },
+      {
+        "name": "onMarkRead",
+        "type": "(id: string) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Consumer callback for one item read state."
+      },
+      {
+        "name": "onDismiss",
+        "type": "(id: string) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Consumer callback for one item dismissal."
+      },
+      {
+        "name": "onSelect",
+        "type": "(id: string) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Consumer callback for item selection."
+      }
+    ],
+    "example": "<NotificationCenter />",
+    "alternativeTo": [],
+    "composesWith": ["Notification", "Toast", "Drawer"],
+    "usedByPatterns": []
   },
   "ToastProvider": {
     "status": "implemented",
@@ -9637,6 +10334,131 @@
     "alternativeTo": [],
     "composesWith": ["EmptyState", "Alert"],
     "usedByPatterns": []
+  },
+  "ModuleState": {
+    "status": "implemented",
+    "category": "feedback",
+    "purpose": "Render a consumer-supplied module availability, lifecycle, scope, or access state without evaluating business policy.",
+    "useWhen": [
+      "a module needs a consistent presentation for availability, setup, lifecycle, scope, or access state"
+    ],
+    "avoidWhen": [
+      "the renderer would need to fetch tenant data or decide entitlement, permission, or lifecycle transitions",
+      "a compact inline status is sufficient"
+    ],
+    "recipes": ["entity-list", "entity-detail", "entity-form", "master-detail"],
+    "importantProps": [
+      "state",
+      "title",
+      "description",
+      "details",
+      "action",
+      "secondaryAction",
+      "icon"
+    ],
+    "relatedComponents": ["StateView", "Alert", "PageHeader"],
+    "source": "packages/ui/src/module-state.tsx",
+    "displayName": "Module State",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "not-available",
+      "not-entitled",
+      "setup-required",
+      "provisioning",
+      "resuming",
+      "suspended",
+      "dependency-unavailable",
+      "permission-denied",
+      "out-of-scope",
+      "read-only",
+      "action-required"
+    ],
+    "accessibility": [
+      "Expose the state label, heading, explanation, and consumer-provided actions in document order.",
+      "Do not communicate module state with color alone.",
+      "Let the consumer control live-region behavior for asynchronous lifecycle transitions."
+    ],
+    "responsive": [
+      "Uses the shared responsive shell behavior: inline on desktop, wrapping on tablet, and stacked actions on mobile.",
+      "Keeps consumer actions at the shared touch-target minimum without adding renderer-owned handlers."
+    ],
+    "motion": [
+      "Uses shared surface transition tokens when the state changes.",
+      "Respects prefers-reduced-motion through the shared token layer."
+    ],
+    "tokens": [
+      "surface-subtle",
+      "border",
+      "radius-card",
+      "shadow-card",
+      "primary",
+      "info",
+      "warning",
+      "danger",
+      "touch-target-min",
+      "focus-ring"
+    ],
+    "api": [
+      {
+        "name": "state",
+        "type": "StateKind",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures state for Module State."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Primary heading for the surface."
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Supporting context announced with the primary content."
+      },
+      {
+        "name": "details",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures details for Module State."
+      },
+      {
+        "name": "action",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures action for Module State."
+      },
+      {
+        "name": "secondaryAction",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures secondary action for Module State."
+      },
+      {
+        "name": "icon",
+        "type": "IconName",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Semantic local icon name."
+      }
+    ],
+    "example": "<ModuleState state=\"setup-required\" action={<Button>Start setup</Button>} />",
+    "alternativeTo": [],
+    "composesWith": ["StateView", "Alert", "PageHeader"],
+    "usedByPatterns": [
+      "entity-list",
+      "entity-detail",
+      "entity-form",
+      "master-detail"
+    ]
   },
   "Skeleton": {
     "status": "implemented",
@@ -9984,10 +10806,10 @@
       },
       {
         "name": "sentiment",
-        "type": "positive | negative | neutral | warning",
-        "defaultValue": "derived from direction",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Controls semantic colour independently from the direction glyph."
+        "description": "Configures sentiment for Trend Indicator."
       },
       {
         "name": "value",
@@ -9998,17 +10820,17 @@
       },
       {
         "name": "context",
-        "type": "ReactNode",
+        "type": "unknown",
         "defaultValue": "—",
         "required": false,
-        "description": "Compact comparison window or qualifier such as vs 30d."
+        "description": "Configures context for Trend Indicator."
       },
       {
         "name": "variant",
-        "type": "plain | soft",
-        "defaultValue": "plain",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Chooses inline text or a restrained chip treatment."
+        "description": "Configures variant for Trend Indicator."
       },
       {
         "name": "label",
@@ -10030,7 +10852,14 @@
     "useWhen": ["a metric needs a small historical pattern"],
     "avoidWhen": ["axes, labels, and detailed comparison matter"],
     "recipes": ["dashboard", "report"],
-    "importantProps": ["values", "label", "colorway", "tone"],
+    "importantProps": [
+      "values",
+      "label",
+      "colorway",
+      "tone",
+      "state",
+      "accessibleSummary"
+    ],
     "relatedComponents": ["TrendIndicator", "LineChart"],
     "source": "packages/ui/src/charts.tsx",
     "displayName": "Sparkline",
@@ -10072,10 +10901,10 @@
     "api": [
       {
         "name": "values",
-        "type": "number[]",
+        "type": "string[]",
         "defaultValue": "—",
-        "required": true,
-        "description": "Ordered finite values used to calculate the compact historical path."
+        "required": false,
+        "description": "Current set of selected values."
       },
       {
         "name": "label",
@@ -10086,17 +10915,31 @@
       },
       {
         "name": "colorway",
-        "type": "1 | 2 | 3 | 4 | 5",
-        "defaultValue": "1",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Selects a categorical series for soft, expressive or solid emphasis. Solid uses a centrally paired foreground; tone retains semantic meaning."
+        "description": "Configures colorway for Sparkline."
       },
       {
         "name": "tone",
-        "type": "chart | current | success | warning | danger | info",
-        "defaultValue": "chart",
+        "type": "string",
+        "defaultValue": "—",
         "required": false,
-        "description": "Selects a semantic colour or inherits currentColor on an emphasized surface."
+        "description": "Configures tone for Sparkline."
+      },
+      {
+        "name": "state",
+        "type": "StateKind",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures state for Sparkline."
+      },
+      {
+        "name": "accessibleSummary",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures accessible summary for Sparkline."
       }
     ],
     "example": "<Sparkline />",
@@ -10107,11 +10950,19 @@
   "LineChart": {
     "status": "implemented",
     "category": "chart",
-    "purpose": "Render one or more ordered SVG data series with labels, legend, and token chart palette.",
+    "purpose": "Render one or more ordered SVG data series with labels, legend, token chart palette, lifecycle states, and accessible fallback text.",
     "useWhen": ["change across an ordered dimension matters"],
     "avoidWhen": ["few categorical magnitudes are clearer as bars"],
     "recipes": ["dashboard", "report"],
-    "importantProps": ["labels", "series", "title", "valueFormatter", "height"],
+    "importantProps": [
+      "labels",
+      "series",
+      "title",
+      "valueFormatter",
+      "height",
+      "state",
+      "accessibleSummary"
+    ],
     "relatedComponents": ["Sparkline", "ChartLegend"],
     "source": "packages/ui/src/charts.tsx",
     "displayName": "Line Chart",
@@ -10142,6 +10993,11 @@
       "chart-3",
       "chart-4",
       "chart-5",
+      "chart-comparison",
+      "chart-threshold",
+      "chart-positive",
+      "chart-negative",
+      "chart-no-data",
       "surface",
       "border"
     ],
@@ -10180,6 +11036,20 @@
         "defaultValue": "—",
         "required": false,
         "description": "Configures height for Line Chart."
+      },
+      {
+        "name": "state",
+        "type": "StateKind",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures state for Line Chart."
+      },
+      {
+        "name": "accessibleSummary",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures accessible summary for Line Chart."
       }
     ],
     "example": "<LineChart />",
@@ -10190,11 +11060,18 @@
   "BarChart": {
     "status": "implemented",
     "category": "chart",
-    "purpose": "Render comparable categorical magnitudes as a token-colored SVG bar chart.",
+    "purpose": "Render comparable categorical magnitudes as a token-colored SVG bar chart with semantic series tones and lifecycle states.",
     "useWhen": ["a small categorical comparison matters"],
     "avoidWhen": ["ordered time trend is the main question"],
     "recipes": ["dashboard", "report"],
-    "importantProps": ["data", "title", "valueFormatter", "height"],
+    "importantProps": [
+      "data",
+      "title",
+      "valueFormatter",
+      "height",
+      "state",
+      "accessibleSummary"
+    ],
     "relatedComponents": ["LineChart", "DonutChart"],
     "source": "packages/ui/src/charts.tsx",
     "displayName": "Bar Chart",
@@ -10225,6 +11102,11 @@
       "chart-3",
       "chart-4",
       "chart-5",
+      "chart-comparison",
+      "chart-threshold",
+      "chart-positive",
+      "chart-negative",
+      "chart-no-data",
       "surface",
       "border"
     ],
@@ -10256,6 +11138,20 @@
         "defaultValue": "—",
         "required": false,
         "description": "Configures height for Bar Chart."
+      },
+      {
+        "name": "state",
+        "type": "StateKind",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures state for Bar Chart."
+      },
+      {
+        "name": "accessibleSummary",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures accessible summary for Bar Chart."
       }
     ],
     "example": "<BarChart />",
@@ -10266,11 +11162,18 @@
   "DonutChart": {
     "status": "implemented",
     "category": "chart",
-    "purpose": "Render a small whole-to-part distribution with token-based segments and legend.",
+    "purpose": "Render a small whole-to-part distribution with token-based categorical or semantic segments, lifecycle states, and legend.",
     "useWhen": ["few categorical parts of a clear total matter"],
     "avoidWhen": ["precise comparison across many values matters"],
     "recipes": ["dashboard", "report"],
-    "importantProps": ["segments", "centerLabel", "title", "valueFormatter"],
+    "importantProps": [
+      "segments",
+      "centerLabel",
+      "title",
+      "valueFormatter",
+      "state",
+      "accessibleSummary"
+    ],
     "relatedComponents": ["BarChart", "ChartLegend"],
     "source": "packages/ui/src/charts.tsx",
     "displayName": "Donut Chart",
@@ -10301,6 +11204,11 @@
       "chart-3",
       "chart-4",
       "chart-5",
+      "chart-comparison",
+      "chart-threshold",
+      "chart-positive",
+      "chart-negative",
+      "chart-no-data",
       "surface",
       "border"
     ],
@@ -10332,6 +11240,20 @@
         "defaultValue": "—",
         "required": false,
         "description": "Configures value formatter for Donut Chart."
+      },
+      {
+        "name": "state",
+        "type": "StateKind",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures state for Donut Chart."
+      },
+      {
+        "name": "accessibleSummary",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures accessible summary for Donut Chart."
       }
     ],
     "example": "<DonutChart />",
@@ -10604,59 +11526,59 @@
     "api": [
       {
         "name": "value",
-        "type": "string",
+        "type": "string | number | boolean",
         "defaultValue": "—",
-        "required": true,
-        "description": "Opaque value encoded into the QR mark; payload meaning stays with the consumer."
+        "required": false,
+        "description": "Current controlled value."
       },
       {
         "name": "label",
         "type": "string",
-        "defaultValue": "QR code",
+        "defaultValue": "—",
         "required": false,
-        "description": "Human-readable resource label shown beside the mark and used as its accessible title."
+        "description": "Visible or accessible name for the control."
       },
       {
         "name": "description",
         "type": "string",
-        "defaultValue": "derived from label and value",
+        "defaultValue": "—",
         "required": false,
-        "description": "Accessible description for the encoded resource."
+        "description": "Supporting context announced with the primary content."
       },
       {
         "name": "size",
-        "type": "\"sm\" | \"md\" | \"lg\"",
-        "defaultValue": "md",
+        "type": "sm | md | lg",
+        "defaultValue": "\"md\"",
         "required": false,
-        "description": "Responsive mark size preset."
+        "description": "Configures size for Qr Code."
       },
       {
         "name": "displayValue",
-        "type": "boolean",
-        "defaultValue": "true",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Show the encoded value below the mark for human verification."
+        "description": "Configures display value for Qr Code."
       },
       {
         "name": "copyable",
-        "type": "boolean",
-        "defaultValue": "true",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Show the canonical copy-value action."
+        "description": "Configures copyable for Qr Code."
       },
       {
         "name": "printable",
-        "type": "boolean",
-        "defaultValue": "true",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Show the browser print action for the QR surface."
+        "description": "Configures printable for Qr Code."
       },
       {
         "name": "onCopy",
-        "type": "(copied: boolean) => void",
+        "type": "(value: unknown) => void",
         "defaultValue": "—",
         "required": false,
-        "description": "Optional notification after the copy attempt completes."
+        "description": "Callback fired when copy changes."
       }
     ],
     "example": "<QrCode label=\"Cage production entry\" value=\"aapmmobile://kandang/KDG11F378DFCFC/produksi\" />",
@@ -11880,29 +12802,29 @@
         "name": "children",
         "type": "ReactNode",
         "defaultValue": "—",
-        "required": true,
-        "description": "Ordered slide content rendered inside the native scroll rail."
+        "required": false,
+        "description": "Content rendered inside the contract."
       },
       {
         "name": "label",
         "type": "string",
-        "defaultValue": "Carousel",
+        "defaultValue": "—",
         "required": false,
-        "description": "Accessible name for the carousel region."
+        "description": "Visible or accessible name for the control."
       },
       {
         "name": "slideWidth",
-        "type": "number",
-        "defaultValue": "320",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Preferred slide width before the viewport cap is applied."
+        "description": "Configures slide width for Carousel."
       },
       {
         "name": "showIndicators",
-        "type": "boolean",
-        "defaultValue": "true",
+        "type": "unknown",
+        "defaultValue": "—",
         "required": false,
-        "description": "Whether position indicators are rendered below the rail."
+        "description": "Configures show indicators for Carousel."
       }
     ],
     "example": "<Carousel label=\"Featured guides\"><Card>...</Card></Carousel>",
@@ -11954,36 +12876,36 @@
         "name": "brand",
         "type": "ReactNode",
         "defaultValue": "—",
-        "required": true,
-        "description": "Brand or product mark rendered in the public top navigation."
+        "required": false,
+        "description": "Configures brand for Public Shell."
       },
       {
         "name": "navigation",
-        "type": "TopNavigationItem[]",
+        "type": "unknown",
         "defaultValue": "—",
-        "required": true,
-        "description": "Canonical top navigation items for the public route."
+        "required": false,
+        "description": "Configures navigation for Public Shell."
       },
       {
         "name": "actions",
         "type": "ReactNode",
         "defaultValue": "—",
         "required": false,
-        "description": "Optional trailing action group."
+        "description": "Recipe-owned actions such as view cart or checkout."
       },
       {
         "name": "footer",
         "type": "ReactNode",
         "defaultValue": "—",
         "required": false,
-        "description": "Optional route-owned footer composition."
+        "description": "Configures footer for Public Shell."
       },
       {
         "name": "children",
         "type": "ReactNode",
         "defaultValue": "—",
         "required": false,
-        "description": "Public route content rendered inside the shared app frame."
+        "description": "Content rendered inside the contract."
       }
     ],
     "example": "<PublicShell brand={<Brand />} navigation={items}>...</PublicShell>",
@@ -12033,29 +12955,1970 @@
     "api": [
       {
         "name": "title",
-        "type": "ReactNode",
+        "type": "string",
         "defaultValue": "—",
-        "required": true,
-        "description": "Heading for the chart surface."
-      },
-      {
-        "name": "chart",
-        "type": "ReactNode",
-        "defaultValue": "—",
-        "required": true,
-        "description": "Canonical chart or chart-compatible content."
+        "required": false,
+        "description": "Primary heading for the surface."
       },
       {
         "name": "description",
-        "type": "ReactNode",
+        "type": "string",
         "defaultValue": "—",
         "required": false,
-        "description": "Supporting context for the chart surface."
+        "description": "Supporting context announced with the primary content."
+      },
+      {
+        "name": "chart",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures chart for Chart Panel."
       }
     ],
     "example": "<ChartPanel title=\"Signal\" chart={<LineChart ... />} />",
     "alternativeTo": [],
     "composesWith": ["LineChart", "BarChart", "DonutChart", "Card"],
     "usedByPatterns": ["dashboard", "report", "marketing-home"]
+  },
+  "Kbd": {
+    "status": "implemented",
+    "category": "foundation",
+    "purpose": "Present a compact keyboard key or shortcut label using the shared control geometry.",
+    "useWhen": ["a shortcut or keyboard affordance needs a visible label"],
+    "avoidWhen": ["a primary action needs a full Button contract"],
+    "recipes": ["entity-list", "settings"],
+    "importantProps": ["children", "className"],
+    "relatedComponents": ["CommandMenu", "Tooltip"],
+    "source": "packages/ui/src/core.tsx",
+    "displayName": "Kbd",
+    "level": "primitive",
+    "maturity": "implemented",
+    "states": ["default", "focused by surrounding control", "high contrast"],
+    "accessibility": [
+      "Uses the native kbd element so assistive technology receives shortcut semantics.",
+      "Keeps the visible label supplementary to the control that owns the action."
+    ],
+    "responsive": [
+      "Keeps shortcut labels compact and allows the surrounding layout to wrap.",
+      "Uses shared caption typography and control spacing across density modes."
+    ],
+    "motion": [
+      "Has no required motion; surrounding interactive states use shared transition tokens.",
+      "Respects prefers-reduced-motion through the global component contract."
+    ],
+    "tokens": [
+      "surface-subtle",
+      "border-strong",
+      "radius-control",
+      "shadow-card",
+      "muted-foreground"
+    ],
+    "api": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Content rendered inside the contract."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Additional class hook for recipe-level layout composition."
+      }
+    ],
+    "example": "<Kbd>Ctrl K</Kbd>",
+    "alternativeTo": [],
+    "composesWith": ["CommandMenu", "Tooltip"],
+    "usedByPatterns": []
+  },
+  "Link": {
+    "status": "implemented",
+    "category": "foundation",
+    "purpose": "Provide a semantic, token-driven anchor with consistent focus and optional external-link behavior.",
+    "useWhen": [
+      "navigating to another route or document",
+      "an inline action is genuinely a link"
+    ],
+    "avoidWhen": [
+      "performing an in-place mutation",
+      "a Button or IconButton action is the correct contract"
+    ],
+    "recipes": ["entity-list", "content-detail", "catalog"],
+    "importantProps": ["href", "children", "external"],
+    "relatedComponents": ["Button", "Breadcrumb", "NavigationMenu"],
+    "source": "packages/ui/src/core.tsx",
+    "displayName": "Link",
+    "level": "primitive",
+    "maturity": "implemented",
+    "states": [
+      "default",
+      "hover",
+      "focus-visible",
+      "visited",
+      "disabled by consumer"
+    ],
+    "accessibility": [
+      "Retains native anchor semantics and a predictable keyboard focus target.",
+      "External links add a safe target relationship without hiding the destination from the accessible name."
+    ],
+    "responsive": [
+      "Wraps long labels without changing link semantics.",
+      "Uses the same control radius and focus geometry at every viewport."
+    ],
+    "motion": [
+      "Limits interaction feedback to shared color and decoration transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "primary",
+      "primary-hover",
+      "focus-ring",
+      "radius-control",
+      "font-ui"
+    ],
+    "api": [
+      {
+        "name": "href",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures href for Link."
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Content rendered inside the contract."
+      },
+      {
+        "name": "external",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures external for Link."
+      }
+    ],
+    "example": "<Link href=\"/components\">Browse components</Link>",
+    "alternativeTo": [],
+    "composesWith": ["Button", "Breadcrumb", "NavigationMenu"],
+    "usedByPatterns": []
+  },
+  "Container": {
+    "status": "implemented",
+    "category": "layout",
+    "purpose": "Constrain meaningful content to a canonical reading, form, application, data, or full rail.",
+    "useWhen": [
+      "a route needs a bounded content well",
+      "a form or detail surface should not stretch across the canvas"
+    ],
+    "avoidWhen": [
+      "a full-bleed background owns the width",
+      "the parent shell already supplies the required rail"
+    ],
+    "recipes": ["entity-list", "entity-form", "entity-detail", "dashboard"],
+    "importantProps": ["size", "measure", "as", "children"],
+    "relatedComponents": ["AppShell", "PageHeader", "Panel", "Stack"],
+    "source": "packages/ui/src/layout.tsx",
+    "displayName": "Container",
+    "level": "primitive",
+    "maturity": "implemented",
+    "states": [
+      "reading rail",
+      "form rail",
+      "application rail",
+      "data rail",
+      "full width"
+    ],
+    "accessibility": [
+      "Preserves the consumer-selected landmark element.",
+      "Does not add a competing heading or navigation landmark."
+    ],
+    "responsive": [
+      "Uses the shared rail tokens and remains fluid below the configured maximum.",
+      "Keeps shell gutters separate from content width."
+    ],
+    "motion": [
+      "Has no layout animation by default.",
+      "Respects prefers-reduced-motion when composed with animated content."
+    ],
+    "tokens": ["content-rail", "gutter", "surface"],
+    "api": [
+      {
+        "name": "size",
+        "type": "sm | md | lg",
+        "defaultValue": "\"md\"",
+        "required": false,
+        "description": "Configures size for Container."
+      },
+      {
+        "name": "measure",
+        "type": "\"compact\" | \"default\" | \"wide\" | \"fill\"",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures measure for Container."
+      },
+      {
+        "name": "as",
+        "type": "ElementType",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures as for Container."
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Content rendered inside the contract."
+      }
+    ],
+    "example": "<Container size=\"form\"><FormSection>...</FormSection></Container>",
+    "alternativeTo": [],
+    "composesWith": ["AppShell", "PageHeader", "Panel", "Stack"],
+    "usedByPatterns": []
+  },
+  "Stack": {
+    "status": "implemented",
+    "category": "layout",
+    "purpose": "Compose related content with shared spacing, alignment, direction, and wrapping rules.",
+    "useWhen": [
+      "a group needs tokenized one-dimensional layout",
+      "a local composition should share spacing without ad hoc margins"
+    ],
+    "avoidWhen": [
+      "two-dimensional placement needs a domain grid",
+      "the route requires a full shell or content rail"
+    ],
+    "recipes": ["entity-form", "entity-detail", "settings"],
+    "importantProps": ["direction", "gap", "align", "justify", "wrap"],
+    "relatedComponents": ["Container", "Section", "FormActions", "ButtonGroup"],
+    "source": "packages/ui/src/layout.tsx",
+    "displayName": "Stack",
+    "level": "primitive",
+    "maturity": "implemented",
+    "states": ["row", "column", "wrapped", "aligned", "distributed"],
+    "accessibility": [
+      "Adds no role by default so the consumer's native semantics remain intact.",
+      "Keeps focus order equal to DOM order."
+    ],
+    "responsive": [
+      "Can wrap row compositions and remains width-safe inside bounded rails.",
+      "Uses the same spacing scale across density modes."
+    ],
+    "motion": [
+      "Has no required motion; children own state transitions.",
+      "Respects prefers-reduced-motion through composed children."
+    ],
+    "tokens": ["ref-space", "surface"],
+    "api": [
+      {
+        "name": "direction",
+        "type": "\"up\" | \"down\" | \"flat\"",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures direction for Stack."
+      },
+      {
+        "name": "gap",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures gap for Stack."
+      },
+      {
+        "name": "align",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures align for Stack."
+      },
+      {
+        "name": "justify",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures justify for Stack."
+      },
+      {
+        "name": "wrap",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures wrap for Stack."
+      }
+    ],
+    "example": "<Stack direction=\"row\" gap=\"sm\" wrap>...</Stack>",
+    "alternativeTo": [],
+    "composesWith": ["Container", "Section", "FormActions", "ButtonGroup"],
+    "usedByPatterns": []
+  },
+  "SplitPane": {
+    "status": "implemented",
+    "category": "layout",
+    "purpose": "Provide a bounded two-pane workspace with pointer and keyboard resizing.",
+    "useWhen": [
+      "a master-detail or side-by-side workspace needs a resizable divider",
+      "both panes remain useful at the same time"
+    ],
+    "avoidWhen": [
+      "a static two-column layout is sufficient",
+      "a drawer or modal should own the secondary content"
+    ],
+    "recipes": ["master-detail", "entity-detail"],
+    "importantProps": [
+      "children",
+      "split",
+      "minStart",
+      "minEnd",
+      "orientation",
+      "minPaneMeasure"
+    ],
+    "relatedComponents": ["Container", "Panel", "ScrollArea", "DetailDrawer"],
+    "source": "packages/ui/src/layout.tsx",
+    "displayName": "Split Pane",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "default",
+      "dragging",
+      "focused separator",
+      "keyboard resizing",
+      "constrained"
+    ],
+    "accessibility": [
+      "The divider exposes separator semantics and its current percentage value.",
+      "Home, End, arrow keys, and Shift+arrow provide keyboard resizing with a visible focus ring."
+    ],
+    "responsive": [
+      "Clamps both panes to minimum percentages and supports vertical orientation.",
+      "Allows the consumer to switch to a stacked composition at a narrow breakpoint."
+    ],
+    "motion": [
+      "Divider feedback uses shared transitions only; resizing is direct manipulation.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "border",
+      "surface",
+      "surface-subtle",
+      "radius-panel",
+      "shadow-card",
+      "touch-target-min",
+      "focus-ring"
+    ],
+    "api": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Content rendered inside the contract."
+      },
+      {
+        "name": "split",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures split for Split Pane."
+      },
+      {
+        "name": "minStart",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures min start for Split Pane."
+      },
+      {
+        "name": "minEnd",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures min end for Split Pane."
+      },
+      {
+        "name": "orientation",
+        "type": "\"horizontal\" | \"vertical\"",
+        "defaultValue": "\"horizontal\"",
+        "required": false,
+        "description": "Configures orientation for Split Pane."
+      },
+      {
+        "name": "minPaneMeasure",
+        "type": "\"compact\" | \"default\" | \"wide\"",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures min pane measure for Split Pane."
+      }
+    ],
+    "example": "<SplitPane><Panel>List</Panel><Panel>Details</Panel></SplitPane>",
+    "alternativeTo": ["DetailDrawer"],
+    "composesWith": ["Container", "Panel", "ScrollArea", "DetailDrawer"],
+    "usedByPatterns": []
+  },
+  "SpeedDial": {
+    "status": "implemented",
+    "category": "action",
+    "purpose": "Reveal a bounded cluster of related quick actions from one compact trigger.",
+    "useWhen": [
+      "several secondary actions share one local context",
+      "a compact workspace benefits from a grouped action affordance"
+    ],
+    "avoidWhen": [
+      "one primary action should be visible",
+      "the action list needs a full menu with descriptions"
+    ],
+    "recipes": ["entity-list", "entity-detail"],
+    "importantProps": ["actions", "open", "placement", "triggerLabel"],
+    "relatedComponents": [
+      "IconButton",
+      "ButtonGroup",
+      "DropdownMenu",
+      "ActionBar"
+    ],
+    "source": "packages/ui/src/actions.tsx",
+    "displayName": "Speed Dial",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "closed",
+      "open",
+      "focused action",
+      "disabled action",
+      "keyboard navigation"
+    ],
+    "accessibility": [
+      "The trigger exposes expanded state and controls the action group.",
+      "Escape closes; Home, End, and arrow keys move among action buttons."
+    ],
+    "responsive": [
+      "Uses a placement contract and hides redundant labels when the cluster becomes space constrained.",
+      "Keeps each action on the shared touch-target geometry."
+    ],
+    "motion": [
+      "Uses the shared enter role for revealing the action group.",
+      "Disables the reveal animation under prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-overlay",
+      "border",
+      "shadow-popover",
+      "radius-control",
+      "z-sticky",
+      "motion-enter"
+    ],
+    "api": [
+      {
+        "name": "actions",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Recipe-owned actions such as view cart or checkout."
+      },
+      {
+        "name": "open",
+        "type": "boolean",
+        "defaultValue": "false",
+        "required": false,
+        "description": "Controlled visibility state."
+      },
+      {
+        "name": "placement",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures placement for Speed Dial."
+      },
+      {
+        "name": "triggerLabel",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures trigger label for Speed Dial."
+      }
+    ],
+    "example": "<SpeedDial actions={[{ id: \"add\", icon: \"add\", label: \"Add\", onSelect }]} />",
+    "alternativeTo": ["DropdownMenu"],
+    "composesWith": ["IconButton", "ButtonGroup", "DropdownMenu", "ActionBar"],
+    "usedByPatterns": []
+  },
+  "DragHandle": {
+    "status": "implemented",
+    "category": "action",
+    "purpose": "Expose a compact, keyboard-focusable affordance for consumer-owned reordering.",
+    "useWhen": [
+      "a sortable row or item needs a visible handle",
+      "the consumer owns the drag and drop state"
+    ],
+    "avoidWhen": [
+      "the whole row is draggable without an explicit handle",
+      "a menu or more-actions trigger is intended"
+    ],
+    "recipes": ["entity-list", "entity-form"],
+    "importantProps": ["label", "disabled", "onPointerDown"],
+    "relatedComponents": ["IconButton", "DataTable", "Stack"],
+    "source": "packages/ui/src/actions.tsx",
+    "displayName": "Drag Handle",
+    "level": "primitive",
+    "maturity": "implemented",
+    "states": ["default", "hover", "focused", "pressed", "disabled"],
+    "accessibility": [
+      "Uses the shared IconButton focus, label, and disabled semantics.",
+      "Adds a sortable role description without claiming ownership of the drag state."
+    ],
+    "responsive": [
+      "Retains the shared touch target in dense rows and narrow layouts.",
+      "Can be placed in a Stack without changing row semantics."
+    ],
+    "motion": [
+      "Uses shared button press feedback.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "control-height",
+      "touch-target-min",
+      "focus-ring",
+      "radius-control"
+    ],
+    "api": [
+      {
+        "name": "label",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Visible or accessible name for the control."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "defaultValue": "false",
+        "required": false,
+        "description": "Prevents interaction while preserving the disabled state."
+      },
+      {
+        "name": "onPointerDown",
+        "type": "(value: unknown) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Callback fired when pointer down changes."
+      }
+    ],
+    "example": "<DragHandle label=\"Reorder milestone\" />",
+    "alternativeTo": [],
+    "composesWith": ["IconButton", "DataTable", "Stack"],
+    "usedByPatterns": []
+  },
+  "BottomNavigation": {
+    "status": "implemented",
+    "category": "navigation",
+    "purpose": "Present a small set of primary mobile destinations with shared active and safe-area geometry.",
+    "useWhen": [
+      "a compact mobile route needs up to a few primary destinations"
+    ],
+    "avoidWhen": [
+      "a dense private workspace needs a persistent sidebar",
+      "there are too many destinations for a compact navigation"
+    ],
+    "recipes": ["ebook-reader", "catalog"],
+    "importantProps": ["items", "value", "onValueChange", "position"],
+    "relatedComponents": ["TopNavigation", "MobileSidebar", "NavigationRail"],
+    "source": "packages/ui/src/navigation.tsx",
+    "displayName": "Bottom Navigation",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "default",
+      "active destination",
+      "focused",
+      "disabled",
+      "fixed position"
+    ],
+    "accessibility": [
+      "Renders a navigation landmark with native links or buttons.",
+      "Marks the active destination with aria-current and preserves keyboard order."
+    ],
+    "responsive": [
+      "Includes safe-area padding and touch-target minimums for mobile surfaces.",
+      "Can remain static in a bounded specimen or become fixed for an application shell."
+    ],
+    "motion": [
+      "Active feedback uses shared surface transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-overlay",
+      "border",
+      "selected",
+      "touch-target-min",
+      "safe-area",
+      "z-sticky"
+    ],
+    "api": [
+      {
+        "name": "items",
+        "type": "Item[]",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Structured items rendered by the contract."
+      },
+      {
+        "name": "value",
+        "type": "string | number | boolean",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Current controlled value."
+      },
+      {
+        "name": "onValueChange",
+        "type": "(value) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Callback fired with the next canonical value."
+      },
+      {
+        "name": "position",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures position for Bottom Navigation."
+      }
+    ],
+    "example": "<BottomNavigation items={items} value=\"home\" />",
+    "alternativeTo": ["TopNavigation", "MobileSidebar"],
+    "composesWith": ["TopNavigation", "MobileSidebar", "NavigationRail"],
+    "usedByPatterns": []
+  },
+  "NavigationRail": {
+    "status": "implemented",
+    "category": "navigation",
+    "purpose": "Provide a vertical icon-led route or tool navigation surface with optional labels.",
+    "useWhen": [
+      "secondary destinations need a narrow persistent rail",
+      "tool navigation benefits from icons with an expandable label mode"
+    ],
+    "avoidWhen": [
+      "the route needs grouped enterprise navigation with full labels",
+      "a bottom navigation is more appropriate for the viewport"
+    ],
+    "recipes": ["entity-list", "dashboard"],
+    "importantProps": ["items", "value", "expanded", "onValueChange"],
+    "relatedComponents": [
+      "Sidebar",
+      "BottomNavigation",
+      "NavigationMenu",
+      "NavItem"
+    ],
+    "source": "packages/ui/src/navigation.tsx",
+    "displayName": "Navigation Rail",
+    "level": "component",
+    "maturity": "implemented",
+    "states": ["collapsed", "expanded", "active", "focused", "disabled"],
+    "accessibility": [
+      "Renders a labelled navigation landmark with native links or buttons.",
+      "Collapsed items retain accessible labels and expose visual tooltips through native titles."
+    ],
+    "responsive": [
+      "Supports collapsed icon-only and expanded label modes without changing destinations.",
+      "Keeps touch-target minimums and long labels clipped inside the rail."
+    ],
+    "motion": [
+      "Expansion is consumer-controlled; item feedback uses shared transitions.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "selected",
+      "radius-control",
+      "touch-target-min",
+      "content-rail"
+    ],
+    "api": [
+      {
+        "name": "items",
+        "type": "Item[]",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Structured items rendered by the contract."
+      },
+      {
+        "name": "value",
+        "type": "string | number | boolean",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Current controlled value."
+      },
+      {
+        "name": "expanded",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures expanded for Navigation Rail."
+      },
+      {
+        "name": "onValueChange",
+        "type": "(value) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Callback fired with the next canonical value."
+      }
+    ],
+    "example": "<NavigationRail expanded items={items} value=\"overview\" />",
+    "alternativeTo": ["Sidebar", "BottomNavigation"],
+    "composesWith": [
+      "Sidebar",
+      "BottomNavigation",
+      "NavigationMenu",
+      "NavItem"
+    ],
+    "usedByPatterns": []
+  },
+  "Transfer": {
+    "status": "implemented",
+    "category": "form",
+    "purpose": "Move bounded options between available and selected listbox regions.",
+    "useWhen": [
+      "a form needs explicit membership selection from a finite option set"
+    ],
+    "avoidWhen": [
+      "the option set is huge or remote",
+      "a single select or multi-select is clearer"
+    ],
+    "recipes": ["entity-form", "settings"],
+    "importantProps": ["options", "value", "onValueChange", "searchable"],
+    "relatedComponents": ["MultiSelect", "Combobox", "Button", "Input"],
+    "source": "packages/ui/src/forms.tsx",
+    "displayName": "Transfer",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "default",
+      "option selected",
+      "empty list",
+      "searching",
+      "disabled option"
+    ],
+    "accessibility": [
+      "Uses labelled listbox regions with multiselectable and option semantics.",
+      "Move controls expose disabled state when no option is selected and preserve a logical focus order."
+    ],
+    "responsive": [
+      "Stacks the two listboxes and action controls on narrow screens.",
+      "Each list remains a bounded scroll owner instead of expanding the page indefinitely."
+    ],
+    "motion": [
+      "Uses shared control transitions for selection feedback.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-raised",
+      "border",
+      "selected",
+      "selected-hover",
+      "radius-panel",
+      "focus-ring"
+    ],
+    "api": [
+      {
+        "name": "options",
+        "type": "Option[]",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Finite choices rendered by the control."
+      },
+      {
+        "name": "value",
+        "type": "string | number | boolean",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Current controlled value."
+      },
+      {
+        "name": "onValueChange",
+        "type": "(value) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Callback fired with the next canonical value."
+      },
+      {
+        "name": "searchable",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures searchable for Transfer."
+      }
+    ],
+    "example": "<Transfer options={options} value={selected} onValueChange={setSelected} />",
+    "alternativeTo": ["MultiSelect", "Combobox"],
+    "composesWith": ["MultiSelect", "Combobox", "Button", "Input"],
+    "usedByPatterns": []
+  },
+  "ColorPicker": {
+    "status": "implemented",
+    "category": "form",
+    "purpose": "Capture a color with the platform-native color affordance, readable value field, and optional presets.",
+    "useWhen": [
+      "a theme or content setting accepts a color value",
+      "a platform color picker is an intentional behavior"
+    ],
+    "avoidWhen": [
+      "the value is a semantic state that should use a theme token",
+      "a freeform text field is sufficient"
+    ],
+    "recipes": ["settings", "entity-form"],
+    "importantProps": [
+      "value",
+      "onValueChange",
+      "presets",
+      "disabled",
+      "measure"
+    ],
+    "relatedComponents": ["Input", "Select", "Typography"],
+    "source": "packages/ui/src/forms.tsx",
+    "displayName": "Color Picker",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "default",
+      "focused",
+      "preset selected",
+      "disabled",
+      "invalid text value"
+    ],
+    "accessibility": [
+      "Provides separate accessible names for the native swatch and text value.",
+      "Keeps presets keyboard focusable and announces the current value through the labelled input."
+    ],
+    "responsive": [
+      "Keeps the native swatch and value field in one flexible control row.",
+      "Preset swatches wrap without changing the color contract."
+    ],
+    "motion": [
+      "Uses shared focus transitions only.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "input-focus-border",
+      "control-height",
+      "radius-control",
+      "focus-ring"
+    ],
+    "api": [
+      {
+        "name": "value",
+        "type": "string | number | boolean",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Current controlled value."
+      },
+      {
+        "name": "onValueChange",
+        "type": "(value) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Callback fired with the next canonical value."
+      },
+      {
+        "name": "presets",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures presets for Color Picker."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "defaultValue": "false",
+        "required": false,
+        "description": "Prevents interaction while preserving the disabled state."
+      },
+      {
+        "name": "measure",
+        "type": "\"compact\" | \"default\" | \"wide\" | \"fill\"",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures measure for Color Picker."
+      }
+    ],
+    "example": "<ColorPicker label=\"Brand color\" value=\"#1f8a5b\" onValueChange={setColor} />",
+    "alternativeTo": [],
+    "composesWith": ["Input", "Select", "Typography"],
+    "usedByPatterns": []
+  },
+  "TagsInput": {
+    "status": "implemented",
+    "category": "form",
+    "purpose": "Collect a bounded or open set of normalized text tags with keyboard commit and removal.",
+    "useWhen": [
+      "a form accepts multiple short labels",
+      "values should remain visible as removable tokens"
+    ],
+    "avoidWhen": [
+      "the options are finite and known",
+      "a long rich-text editor is required"
+    ],
+    "recipes": ["entity-form", "settings", "catalog"],
+    "importantProps": [
+      "value",
+      "onValueChange",
+      "maxTags",
+      "placeholder",
+      "measure",
+      "disabled",
+      "readOnly",
+      "error"
+    ],
+    "relatedComponents": ["Input", "MultiSelect", "Badge"],
+    "source": "packages/ui/src/forms.tsx",
+    "displayName": "Tags Input",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "empty",
+      "editing",
+      "tag added",
+      "tag removed",
+      "maximum reached",
+      "disabled",
+      "read-only",
+      "invalid"
+    ],
+    "accessibility": [
+      "Uses a labelled native input and exposes each remove action with a unique accessible name.",
+      "Enter and comma commit values; Backspace removes the last token when the input is empty.",
+      "Disabled, read-only, invalid, and helper states remain associated with the input and are not communicated by color alone."
+    ],
+    "responsive": [
+      "Tokens wrap inside the field without forcing a minimum page width.",
+      "Retains shared control height and field focus treatment."
+    ],
+    "motion": [
+      "Uses shared focus and control transitions only.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "surface-subtle",
+      "border",
+      "radius-control",
+      "focus-ring"
+    ],
+    "api": [
+      {
+        "name": "value",
+        "type": "string | number | boolean",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Current controlled value."
+      },
+      {
+        "name": "onValueChange",
+        "type": "(value) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Callback fired with the next canonical value."
+      },
+      {
+        "name": "maxTags",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures max tags for Tags Input."
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures placeholder for Tags Input."
+      },
+      {
+        "name": "measure",
+        "type": "\"compact\" | \"default\" | \"wide\" | \"fill\"",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures measure for Tags Input."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "defaultValue": "false",
+        "required": false,
+        "description": "Prevents tag editing and removal while preserving the disabled state."
+      },
+      {
+        "name": "readOnly",
+        "type": "boolean",
+        "defaultValue": "false",
+        "required": false,
+        "description": "Preserves tag values while preventing mutation."
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Associates validation feedback with the tag input."
+      }
+    ],
+    "example": "<TagsInput label=\"Topics\" value={tags} onValueChange={setTags} />",
+    "alternativeTo": ["MultiSelect"],
+    "composesWith": ["Input", "MultiSelect", "Badge"],
+    "usedByPatterns": []
+  },
+  "TreeView": {
+    "status": "implemented",
+    "category": "navigation",
+    "purpose": "Navigate or select one item in a visible hierarchy with tree keyboard semantics.",
+    "useWhen": [
+      "navigation or inspection follows a nested hierarchy",
+      "single active context is clearer than bulk selection"
+    ],
+    "avoidWhen": [
+      "a form needs parent and descendant bulk selection",
+      "the hierarchy is flat enough for a list or select"
+    ],
+    "recipes": ["entity-list", "settings", "entity-detail"],
+    "importantProps": [
+      "items",
+      "selectedId",
+      "onSelectedIdChange",
+      "expandedIds"
+    ],
+    "relatedComponents": [
+      "HierarchyPicker",
+      "Sidebar",
+      "Collapsible",
+      "ScrollArea"
+    ],
+    "source": "packages/ui/src/hierarchy.tsx",
+    "displayName": "Tree View",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "collapsed branches",
+      "expanded branches",
+      "selected node",
+      "focused node",
+      "disabled node",
+      "empty"
+    ],
+    "accessibility": [
+      "Uses tree and treeitem semantics with level, position, size, expanded, and selected state.",
+      "Arrow, Home, End, Enter, and Space provide predictable tree navigation and selection."
+    ],
+    "responsive": [
+      "Keeps long hierarchies in a bounded scroll owner.",
+      "Labels wrap and rows retain touch-target geometry on narrow screens."
+    ],
+    "motion": [
+      "Uses shared transitions for selection and focus feedback.",
+      "Respects prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-raised",
+      "border",
+      "selected",
+      "focus-ring",
+      "touch-target-min",
+      "radius-control",
+      "muted-foreground"
+    ],
+    "api": [
+      {
+        "name": "items",
+        "type": "Item[]",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Structured items rendered by the contract."
+      },
+      {
+        "name": "selectedId",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures selected id for Tree View."
+      },
+      {
+        "name": "onSelectedIdChange",
+        "type": "(value: unknown) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Callback fired when selected id change changes."
+      },
+      {
+        "name": "expandedIds",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures expanded ids for Tree View."
+      }
+    ],
+    "example": "<TreeView items={items} selectedId=\"overview\" onSelectedIdChange={setSelectedId} />",
+    "alternativeTo": ["HierarchyPicker", "Sidebar"],
+    "composesWith": ["HierarchyPicker", "Sidebar", "Collapsible", "ScrollArea"],
+    "usedByPatterns": []
+  },
+  "FilePreview": {
+    "status": "implemented",
+    "category": "file",
+    "purpose": "Show one file's bounded preview, metadata, processing state, and optional actions.",
+    "useWhen": [
+      "a selected or uploaded file needs a compact inspection surface"
+    ],
+    "avoidWhen": [
+      "a full media gallery or document viewer owns the experience",
+      "storage or upload transport is being implemented"
+    ],
+    "recipes": ["entity-form", "content-detail", "catalog"],
+    "importantProps": [
+      "name",
+      "src",
+      "type",
+      "status",
+      "onPreview",
+      "onDownload"
+    ],
+    "relatedComponents": ["FileUpload", "FileItem", "MediaFrame", "IconButton"],
+    "source": "packages/ui/src/files.tsx",
+    "displayName": "File Preview",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "ready",
+      "processing",
+      "error",
+      "image preview",
+      "metadata only",
+      "actions available"
+    ],
+    "accessibility": [
+      "Uses an article landmark with a readable file name and labelled optional actions.",
+      "Image previews receive meaningful alt text; non-image files retain a semantic file icon and text metadata."
+    ],
+    "responsive": [
+      "Reflows metadata, status, and actions inside a bounded record surface.",
+      "Long file names stay readable through ellipsis without changing the accessible name."
+    ],
+    "motion": [
+      "Uses the shared card lift transition for interactive preview records.",
+      "Disables lift animation under prefers-reduced-motion."
+    ],
+    "tokens": [
+      "surface-raised",
+      "surface-subtle",
+      "border",
+      "shadow-card",
+      "radius-panel",
+      "focus-ring"
+    ],
+    "api": [
+      {
+        "name": "name",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures name for File Preview."
+      },
+      {
+        "name": "src",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures src for File Preview."
+      },
+      {
+        "name": "type",
+        "type": "\"single\" | \"multiple\"",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures type for File Preview."
+      },
+      {
+        "name": "status",
+        "type": "FileStatus",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures status for File Preview."
+      },
+      {
+        "name": "onPreview",
+        "type": "(value: unknown) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Callback fired when preview changes."
+      },
+      {
+        "name": "onDownload",
+        "type": "(value: unknown) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Callback fired when download changes."
+      }
+    ],
+    "example": "<FilePreview name=\"brief.pdf\" type=\"application/pdf\" onPreview={openPreview} />",
+    "alternativeTo": ["FileItem", "MediaFrame"],
+    "composesWith": ["FileUpload", "FileItem", "MediaFrame", "IconButton"],
+    "usedByPatterns": []
+  },
+  "EditorSurface": {
+    "status": "implemented",
+    "category": "form",
+    "purpose": "Provide a token-led editing frame for plain, Markdown, code, or JSON content while leaving parsing, history, and engine ownership to the consumer.",
+    "useWhen": [
+      "an advanced authoring flow needs a stable editor shell",
+      "a consumer-owned editor adapter must remain replaceable"
+    ],
+    "avoidWhen": [
+      "a short note only needs Textarea",
+      "the UI would need to own a rich document model or collaboration engine"
+    ],
+    "recipes": [],
+    "importantProps": [
+      "content",
+      "language",
+      "title",
+      "toolbar",
+      "status",
+      "footer"
+    ],
+    "relatedComponents": ["Textarea", "Toolbar", "Kbd"],
+    "source": "packages/ui/src/advanced.tsx",
+    "displayName": "Editor Surface",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "plain",
+      "markdown",
+      "code",
+      "json",
+      "focused",
+      "read-only",
+      "pending or unavailable when applicable"
+    ],
+    "accessibility": [
+      "Expose a labelled region and keep the slotted editor responsible for its native input or document semantics.",
+      "Keep language, status, and save or submit affordances available as text rather than relying on editor chrome alone."
+    ],
+    "responsive": [
+      "Keeps the editor content inside a bounded scroll or resize owner.",
+      "Lets tool and footer regions wrap without shrinking the editing control below readable geometry."
+    ],
+    "motion": [
+      "Uses shared surface transitions for focus and state changes.",
+      "Does not require animation for editing or content meaning."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "border",
+      "radius-panel",
+      "radius-control",
+      "shadow-card",
+      "focus-ring",
+      "muted-foreground"
+    ],
+    "api": [
+      {
+        "name": "content",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures content for Editor Surface."
+      },
+      {
+        "name": "language",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures language for Editor Surface."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Primary heading for the surface."
+      },
+      {
+        "name": "toolbar",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures toolbar for Editor Surface."
+      },
+      {
+        "name": "status",
+        "type": "FileStatus",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures status for Editor Surface."
+      },
+      {
+        "name": "footer",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures footer for Editor Surface."
+      }
+    ],
+    "example": "<EditorSurface language=\"markdown\" content={<Textarea label=\"Notes\" />} />",
+    "alternativeTo": [],
+    "composesWith": ["Textarea", "Toolbar", "Kbd"],
+    "usedByPatterns": []
+  },
+  "PropertyInspector": {
+    "status": "implemented",
+    "category": "layout",
+    "purpose": "Present grouped consumer-owned properties in keyboard-accessible disclosure sections beside a builder or detail surface.",
+    "useWhen": [
+      "a stage has contextual properties that should remain inspectable",
+      "property groups need a compact disclosure rail"
+    ],
+    "avoidWhen": [
+      "a complete form submission flow is needed",
+      "the inspector would own schema validation, persistence, or mutation"
+    ],
+    "recipes": ["master-detail", "entity-detail"],
+    "importantProps": ["sections", "title", "summary"],
+    "relatedComponents": [
+      "BuilderCanvas",
+      "Accordion",
+      "FormGrid",
+      "DetailDrawer"
+    ],
+    "source": "packages/ui/src/advanced.tsx",
+    "displayName": "Property Inspector",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "default",
+      "expanded sections",
+      "collapsed sections",
+      "focused",
+      "empty"
+    ],
+    "accessibility": [
+      "Uses native details and summary disclosure semantics with readable section names.",
+      "Keeps property controls and descriptions in the same reading order and preserves visible focus."
+    ],
+    "responsive": [
+      "Retains a bounded rail beside a builder on wide screens.",
+      "Stacks below the stage when the available width cannot support a readable inspector."
+    ],
+    "motion": [
+      "Uses shared transitions for disclosure feedback only.",
+      "Preserves section meaning when reduced motion is requested."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "border",
+      "selected",
+      "focus-ring",
+      "touch-target-min",
+      "radius-panel"
+    ],
+    "api": [
+      {
+        "name": "sections",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures sections for Property Inspector."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Primary heading for the surface."
+      },
+      {
+        "name": "summary",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Application-calculated order summary content."
+      }
+    ],
+    "example": "<PropertyInspector sections={[{ id: \"spacing\", title: \"Spacing\", content: <FormGrid /> }]} />",
+    "alternativeTo": [],
+    "composesWith": ["BuilderCanvas", "Accordion", "FormGrid", "DetailDrawer"],
+    "usedByPatterns": []
+  },
+  "BuilderCanvas": {
+    "status": "implemented",
+    "category": "layout",
+    "purpose": "Compose a bounded builder stage with optional toolbar, status, and property rail without owning a document model, drag/drop mutation, or serialization.",
+    "useWhen": [
+      "a consumer-owned builder needs a stable stage and inspector composition",
+      "canvas content must remain distinct from contextual properties"
+    ],
+    "avoidWhen": [
+      "a static form or page layout is enough",
+      "the library would need to own nodes, persistence, undo history, or collaboration"
+    ],
+    "recipes": ["master-detail", "entity-detail"],
+    "importantProps": [
+      "children",
+      "inspector",
+      "toolbar",
+      "status",
+      "emptyState"
+    ],
+    "relatedComponents": [
+      "PropertyInspector",
+      "SplitPane",
+      "Toolbar",
+      "DragHandle"
+    ],
+    "source": "packages/ui/src/advanced.tsx",
+    "displayName": "Builder Canvas",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "ready",
+      "empty",
+      "selected content",
+      "constrained",
+      "read-only",
+      "adapter unavailable"
+    ],
+    "accessibility": [
+      "Exposes a labelled builder region and keeps consumer controls in the normal tab order.",
+      "Does not require drag, hover, or canvas motion for task-critical actions."
+    ],
+    "responsive": [
+      "Keeps stage and inspector in bounded columns on desktop and tablet.",
+      "Stacks the inspector below the stage at compact widths without changing content ownership."
+    ],
+    "motion": [
+      "Uses shared surface transitions; direct manipulation remains direct.",
+      "Does not animate document meaning or selection without consumer direction."
+    ],
+    "tokens": [
+      "surface",
+      "surface-subtle",
+      "border",
+      "selected",
+      "focus-ring",
+      "radius-panel",
+      "shadow-card"
+    ],
+    "api": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Content rendered inside the contract."
+      },
+      {
+        "name": "inspector",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures inspector for Builder Canvas."
+      },
+      {
+        "name": "toolbar",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures toolbar for Builder Canvas."
+      },
+      {
+        "name": "status",
+        "type": "FileStatus",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures status for Builder Canvas."
+      },
+      {
+        "name": "emptyState",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Content shown when the cart has no line items."
+      }
+    ],
+    "example": "<BuilderCanvas inspector={<PropertyInspector sections={sections} />}>Preview</BuilderCanvas>",
+    "alternativeTo": ["SplitPane"],
+    "composesWith": ["PropertyInspector", "SplitPane", "Toolbar", "DragHandle"],
+    "usedByPatterns": []
+  },
+  "PromptComposer": {
+    "status": "implemented",
+    "category": "form",
+    "purpose": "Collect and submit a consumer-owned prompt with shared textarea, action, attachment, and status geometry.",
+    "useWhen": [
+      "a conversational surface needs one clear prompt submission boundary",
+      "attachments or local prompt actions need to sit beside the input"
+    ],
+    "avoidWhen": [
+      "the screen needs a normal form with multiple fields",
+      "the component would choose a provider, model, transport, or safety policy"
+    ],
+    "recipes": ["content-detail", "entity-detail"],
+    "importantProps": [
+      "value",
+      "onValueChange",
+      "onSubmit",
+      "toolbar",
+      "attachments",
+      "status"
+    ],
+    "relatedComponents": [
+      "Textarea",
+      "Button",
+      "CommandMenu",
+      "ConversationThread"
+    ],
+    "source": "packages/ui/src/advanced.tsx",
+    "displayName": "Prompt Composer",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "empty",
+      "draft",
+      "focused",
+      "disabled",
+      "submitting",
+      "status or error"
+    ],
+    "accessibility": [
+      "Uses the canonical labelled Textarea and native form submission semantics.",
+      "Keeps submit state, status, and attachment actions available to keyboard and assistive technology users."
+    ],
+    "responsive": [
+      "Wraps prompt tools and submit action while preserving the input label and readable width.",
+      "Retains touch-safe action geometry at compact widths."
+    ],
+    "motion": [
+      "Uses shared control transitions only.",
+      "Does not require streaming animation to communicate submission state."
+    ],
+    "tokens": [
+      "input-background",
+      "input-border",
+      "focus-ring",
+      "control-height",
+      "control-gap",
+      "surface-raised",
+      "border"
+    ],
+    "api": [
+      {
+        "name": "value",
+        "type": "string | number | boolean",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Current controlled value."
+      },
+      {
+        "name": "onValueChange",
+        "type": "(value) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Callback fired with the next canonical value."
+      },
+      {
+        "name": "onSubmit",
+        "type": "(value: unknown) => void",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Callback fired when submit changes."
+      },
+      {
+        "name": "toolbar",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures toolbar for Prompt Composer."
+      },
+      {
+        "name": "attachments",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures attachments for Prompt Composer."
+      },
+      {
+        "name": "status",
+        "type": "FileStatus",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures status for Prompt Composer."
+      }
+    ],
+    "example": "<PromptComposer onSubmit={(prompt) => send(prompt)} />",
+    "alternativeTo": [],
+    "composesWith": ["Textarea", "Button", "CommandMenu", "ConversationThread"],
+    "usedByPatterns": []
+  },
+  "ConversationThread": {
+    "status": "implemented",
+    "category": "data",
+    "purpose": "Render an ordered, status-aware message thread for consumer-owned conversations without owning persistence, streaming transport, or model policy.",
+    "useWhen": [
+      "messages need stable author, timestamp, role, and status anatomy",
+      "a response should be read together with optional actions or tool results"
+    ],
+    "avoidWhen": [
+      "an activity feed is sufficient",
+      "the library would need to manage conversation history or streaming transport"
+    ],
+    "recipes": ["content-detail", "entity-detail"],
+    "importantProps": ["messages", "emptyMessage", "aria-label"],
+    "relatedComponents": [
+      "PromptComposer",
+      "CitationList",
+      "ToolCallCard",
+      "Badge"
+    ],
+    "source": "packages/ui/src/advanced.tsx",
+    "displayName": "Conversation Thread",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "empty",
+      "user message",
+      "assistant message",
+      "system message",
+      "tool message",
+      "streaming",
+      "error"
+    ],
+    "accessibility": [
+      "Uses an ordered list and labelled message region so reading order remains explicit.",
+      "Exposes author, timestamp, role, and pending or error state as text in addition to icon treatment."
+    ],
+    "responsive": [
+      "Wraps message content inside a bounded scroll owner.",
+      "Allows message actions and metadata to wrap without changing message order."
+    ],
+    "motion": [
+      "Uses shared transitions for message surface feedback.",
+      "Does not require token streaming or animated typing to communicate content."
+    ],
+    "tokens": [
+      "surface",
+      "surface-raised",
+      "border",
+      "muted-foreground",
+      "radius-control",
+      "focus-ring"
+    ],
+    "api": [
+      {
+        "name": "messages",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures messages for Conversation Thread."
+      },
+      {
+        "name": "emptyMessage",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures empty message for Conversation Thread."
+      },
+      {
+        "name": "aria-label",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Accessible label relationship for the rendered element."
+      }
+    ],
+    "example": "<ConversationThread messages={messages} aria-label=\"Release conversation\" />",
+    "alternativeTo": ["ActivityFeed"],
+    "composesWith": ["PromptComposer", "CitationList", "ToolCallCard", "Badge"],
+    "usedByPatterns": []
+  },
+  "CitationList": {
+    "status": "implemented",
+    "category": "data",
+    "purpose": "Present consumer-supplied sources and excerpts in a readable ordered list without owning retrieval, ranking, or trust policy.",
+    "useWhen": [
+      "a response or review needs adjacent source references",
+      "source labels and excerpts must remain scannable"
+    ],
+    "avoidWhen": [
+      "a single ordinary hyperlink is enough",
+      "the UI would imply source trust or retrieval authority"
+    ],
+    "recipes": ["content-detail", "entity-detail"],
+    "importantProps": ["citations", "title", "emptyMessage", "aria-label"],
+    "relatedComponents": ["ConversationThread", "Link", "Tooltip"],
+    "source": "packages/ui/src/advanced.tsx",
+    "displayName": "Citation List",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "ready",
+      "empty",
+      "source with excerpt",
+      "source without link",
+      "unavailable when applicable"
+    ],
+    "accessibility": [
+      "Uses an ordered list with readable source labels and excerpts.",
+      "Does not use the citation number, color, or link presence as the only source meaning."
+    ],
+    "responsive": [
+      "Wraps long source labels and excerpts inside the content rail.",
+      "Retains ordered source relationships at compact widths."
+    ],
+    "motion": [
+      "Has no required motion; link feedback uses shared transitions.",
+      "Respects reduced motion through canonical link treatment."
+    ],
+    "tokens": [
+      "surface",
+      "border",
+      "muted-foreground",
+      "radius-control",
+      "focus-ring"
+    ],
+    "api": [
+      {
+        "name": "citations",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures citations for Citation List."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Primary heading for the surface."
+      },
+      {
+        "name": "emptyMessage",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures empty message for Citation List."
+      },
+      {
+        "name": "aria-label",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Accessible label relationship for the rendered element."
+      }
+    ],
+    "example": "<CitationList citations={[{ id: \"spec\", label: \"Q11 contract\", href: \"/docs/q11\" }]} />",
+    "alternativeTo": [],
+    "composesWith": ["ConversationThread", "Link", "Tooltip"],
+    "usedByPatterns": []
+  },
+  "ToolCallCard": {
+    "status": "implemented",
+    "category": "data",
+    "purpose": "Present consumer-supplied tool invocation input, output, status, and actions without executing or authorizing the tool.",
+    "useWhen": [
+      "a conversation or review needs explicit tool-call progress",
+      "input and output should remain traceable beside a response"
+    ],
+    "avoidWhen": [
+      "the system needs to execute a tool or decide authorization",
+      "a normal status chip is enough"
+    ],
+    "recipes": ["content-detail", "entity-detail"],
+    "importantProps": [
+      "name",
+      "status",
+      "summary",
+      "input",
+      "output",
+      "actions"
+    ],
+    "relatedComponents": [
+      "ConversationThread",
+      "StatusChip",
+      "Badge",
+      "Button"
+    ],
+    "source": "packages/ui/src/advanced.tsx",
+    "displayName": "Tool Call Card",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "pending",
+      "running",
+      "completed",
+      "failed",
+      "input only",
+      "output available"
+    ],
+    "accessibility": [
+      "Names the tool call and exposes status, input, and output as readable text.",
+      "Keeps retry, review, or dismissal actions explicit and consumer-owned."
+    ],
+    "responsive": [
+      "Wraps tool names, status, and action rows within bounded cards.",
+      "Allows long structured input or output to scroll without widening the route."
+    ],
+    "motion": [
+      "Uses shared state transitions for status feedback.",
+      "Does not require animated execution or progress to convey state."
+    ],
+    "tokens": [
+      "surface-raised",
+      "surface",
+      "border",
+      "muted-foreground",
+      "radius-panel",
+      "focus-ring"
+    ],
+    "api": [
+      {
+        "name": "name",
+        "type": "string",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures name for Tool Call Card."
+      },
+      {
+        "name": "status",
+        "type": "FileStatus",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures status for Tool Call Card."
+      },
+      {
+        "name": "summary",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Application-calculated order summary content."
+      },
+      {
+        "name": "input",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures input for Tool Call Card."
+      },
+      {
+        "name": "output",
+        "type": "unknown",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Configures output for Tool Call Card."
+      },
+      {
+        "name": "actions",
+        "type": "ReactNode",
+        "defaultValue": "—",
+        "required": false,
+        "description": "Recipe-owned actions such as view cart or checkout."
+      }
+    ],
+    "example": "<ToolCallCard name=\"Lookup release\" status=\"completed\" output={<pre />} />",
+    "alternativeTo": [],
+    "composesWith": ["ConversationThread", "StatusChip", "Badge", "Button"],
+    "usedByPatterns": []
+  },
+  "DiffViewer": {
+    "status": "implemented",
+    "category": "data",
+    "purpose": "Present consumer-supplied before/after comparison rows without computing diff meaning or owning audit policy.",
+    "useWhen": [
+      "a review or editor needs readable before/after comparison",
+      "the consumer already owns diff computation and version meaning"
+    ],
+    "avoidWhen": [
+      "the UI needs a full editor engine or merge workflow",
+      "a normal table or single value is enough"
+    ],
+    "recipes": ["content-detail", "entity-detail"],
+    "importantProps": ["lines", "mode", "title", "emptyMessage"],
+    "relatedComponents": [
+      "EditorSurface",
+      "RevisionDiff",
+      "Table",
+      "ScrollArea",
+      "StateView"
+    ],
+    "source": "packages/ui/src/advanced.tsx",
+    "displayName": "Diff Viewer",
+    "level": "component",
+    "maturity": "implemented",
+    "states": [
+      "ready",
+      "empty",
+      "loading by consumer",
+      "error by consumer",
+      "read-only"
+    ],
+    "accessibility": [
+      "Uses a semantic comparison table with row headers and before/after column headers.",
+      "Exposes added, removed, modified, and context meaning as text instead of color alone.",
+      "Keeps the comparison bounded and keyboard-scrollable at narrow widths."
+    ],
+    "responsive": [
+      "Supports inline and split presentations so consumers can choose a readable narrow layout.",
+      "Allows long values to wrap or scroll without widening the route."
+    ],
+    "motion": [
+      "Has no required motion; state transitions remain readable without animation.",
+      "Respects reduced motion through the shared token contract."
+    ],
+    "tokens": [
+      "surface",
+      "surface-subtle",
+      "border",
+      "selected",
+      "focus-ring",
+      "radius-panel",
+      "shadow-card"
+    ],
+    "api": [
+      {
+        "name": "lines",
+        "type": "DiffViewerLine[]",
+        "defaultValue": "—",
+        "required": true,
+        "description": "Consumer-supplied comparison rows."
+      },
+      {
+        "name": "mode",
+        "type": "\"inline\" | \"split\"",
+        "defaultValue": "\"split\"",
+        "required": false,
+        "description": "Chooses one-content or before/after presentation."
+      },
+      {
+        "name": "title",
+        "type": "ReactNode",
+        "defaultValue": "\"Version comparison\"",
+        "required": false,
+        "description": "Labels the comparison surface."
+      },
+      {
+        "name": "emptyMessage",
+        "type": "ReactNode",
+        "defaultValue": "\"No comparison rows.\"",
+        "required": false,
+        "description": "Message shown when the consumer supplies no rows."
+      }
+    ],
+    "example": "<DiffViewer lines={lines} mode=\"split\" />",
+    "alternativeTo": ["RevisionDiff"],
+    "composesWith": ["EditorSurface", "Table", "ScrollArea", "StateView"],
+    "usedByPatterns": []
   }
 }

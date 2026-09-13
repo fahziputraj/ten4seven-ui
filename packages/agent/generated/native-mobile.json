@@ -1,0 +1,565 @@
+{
+  "schemaVersion": "0.1",
+  "id": "native-mobile",
+  "architecture": {
+    "shared": [
+      "semantic intents, presentation states, interaction states, and ownership",
+      "theme profiles, brand profiles, density, typography, and motion roles",
+      "named layout measures and minimum useful surface intent",
+      "semantic icon names and meaning"
+    ],
+    "web": [
+      "@ten4seven/ui primitives and blocks render the shared contract with DOM/CSS",
+      "existing Web provider and route behavior remain the compatibility target"
+    ],
+    "native": [
+      "@ten4seven/native resolves shared tokens and emits renderer-neutral descriptors",
+      "a future Expo or React Native consumer maps descriptors to platform controls",
+      "the platform owns navigation, safe areas, gestures, and native accessibility mechanics"
+    ],
+    "exclusions": [
+      "no DOM, CSS, React DOM, SVG, or Web-only package imports",
+      "no native framework dependency or speculative native component library",
+      "no API client, authentication, persistence, offline queue, sync cursor, or conflict engine",
+      "no permissions, entitlements, business calculations, or Farm workflow authority"
+    ]
+  },
+  "tokenReferences": {
+    "brand": {
+      "primary": {
+        "layer": "semantic",
+        "path": "brand.primary"
+      },
+      "accent": {
+        "layer": "semantic",
+        "path": "brand.accent"
+      },
+      "highlight": {
+        "layer": "semantic",
+        "path": "brand.highlight"
+      },
+      "surface": {
+        "layer": "semantic",
+        "path": "brand.surface.deep"
+      },
+      "text": {
+        "layer": "semantic",
+        "path": "text.ink"
+      }
+    },
+    "colors": {
+      "canvas": {
+        "layer": "semantic",
+        "path": "semantic.color.canvas.background"
+      },
+      "surface": {
+        "layer": "semantic",
+        "path": "semantic.color.surface.default"
+      },
+      "surfaceRaised": {
+        "layer": "semantic",
+        "path": "semantic.color.surface.raised"
+      },
+      "scrim": {
+        "layer": "semantic",
+        "path": "semantic.color.scrim"
+      },
+      "textPrimary": {
+        "layer": "semantic",
+        "path": "semantic.color.text.primary"
+      },
+      "textMuted": {
+        "layer": "semantic",
+        "path": "semantic.color.text.muted"
+      },
+      "border": {
+        "layer": "semantic",
+        "path": "semantic.color.border.subtle"
+      },
+      "borderStrong": {
+        "layer": "semantic",
+        "path": "semantic.color.border.strong"
+      },
+      "focus": {
+        "layer": "semantic",
+        "path": "semantic.color.focus"
+      },
+      "actionPrimary": {
+        "layer": "semantic",
+        "path": "semantic.color.action.primary"
+      },
+      "actionPrimaryForeground": {
+        "layer": "semantic",
+        "path": "semantic.color.action.primaryForeground"
+      },
+      "accent": {
+        "layer": "semantic",
+        "path": "semantic.color.action.accent"
+      },
+      "actionSecondary": {
+        "layer": "semantic",
+        "path": "semantic.color.action.secondary"
+      },
+      "actionSecondaryForeground": {
+        "layer": "semantic",
+        "path": "semantic.color.action.secondaryForeground"
+      },
+      "actionQuiet": {
+        "layer": "semantic",
+        "path": "semantic.color.action.quiet"
+      },
+      "actionDanger": {
+        "layer": "semantic",
+        "path": "semantic.color.action.danger"
+      },
+      "actionDangerForeground": {
+        "layer": "semantic",
+        "path": "semantic.color.action.dangerForeground"
+      },
+      "statusSuccess": {
+        "layer": "semantic",
+        "path": "semantic.color.status.success"
+      },
+      "statusWarning": {
+        "layer": "semantic",
+        "path": "semantic.color.status.warning"
+      },
+      "statusDanger": {
+        "layer": "semantic",
+        "path": "semantic.color.status.danger"
+      },
+      "statusInfo": {
+        "layer": "semantic",
+        "path": "semantic.color.status.info"
+      }
+    },
+    "typography": {
+      "screenTitle": {
+        "layer": "semantic",
+        "path": "semantic.typography.heading-lg"
+      },
+      "sectionHeading": {
+        "layer": "semantic",
+        "path": "semantic.typography.heading-md"
+      },
+      "body": {
+        "layer": "semantic",
+        "path": "semantic.typography.body"
+      },
+      "label": {
+        "layer": "semantic",
+        "path": "semantic.typography.label"
+      },
+      "caption": {
+        "layer": "semantic",
+        "path": "semantic.typography.caption"
+      },
+      "button": {
+        "layer": "semantic",
+        "path": "semantic.typography.button"
+      },
+      "metric": {
+        "layer": "semantic",
+        "path": "semantic.typography.metric-lg"
+      }
+    },
+    "icons": {
+      "compact": {
+        "layer": "component",
+        "path": "component.geometry.icon.compact"
+      },
+      "control": {
+        "layer": "component",
+        "path": "component.geometry.icon.control"
+      },
+      "navigation": {
+        "layer": "component",
+        "path": "component.geometry.icon.navigation"
+      },
+      "status": {
+        "layer": "component",
+        "path": "component.geometry.icon.status"
+      },
+      "feature": {
+        "layer": "component",
+        "path": "component.geometry.icon.feature"
+      }
+    },
+    "marks": {
+      "choice": {
+        "layer": "component",
+        "path": "component.geometry.mark.choice"
+      },
+      "radio": {
+        "layer": "component",
+        "path": "component.geometry.mark.radio"
+      },
+      "dot": {
+        "layer": "component",
+        "path": "component.geometry.mark.dot"
+      },
+      "stroke": {
+        "layer": "component",
+        "path": "component.geometry.mark.stroke"
+      }
+    },
+    "layout": {
+      "compact": {
+        "layer": "layout",
+        "path": "layout.measure.compact"
+      },
+      "control": {
+        "layer": "layout",
+        "path": "layout.measure.control"
+      },
+      "content": {
+        "layer": "layout",
+        "path": "layout.measure.content"
+      },
+      "wide": {
+        "layer": "layout",
+        "path": "layout.measure.wide"
+      },
+      "reading": {
+        "layer": "layout",
+        "path": "layout.measure.reading"
+      },
+      "fluid": {
+        "layer": "layout",
+        "path": "layout.measure.fluid"
+      }
+    },
+    "spacing": {
+      "control": {
+        "layer": "component",
+        "path": "component.geometry.control.height"
+      },
+      "row": {
+        "layer": "component",
+        "path": "component.geometry.row.height"
+      },
+      "cardPadding": {
+        "layer": "component",
+        "path": "component.geometry.card.padding"
+      },
+      "sectionGap": {
+        "layer": "component",
+        "path": "component.geometry.section.gap"
+      },
+      "controlGap": {
+        "layer": "component",
+        "path": "component.geometry.control.gap"
+      },
+      "fieldGap": {
+        "layer": "component",
+        "path": "component.geometry.field.gap"
+      },
+      "touchTarget": {
+        "layer": "component",
+        "path": "component.interaction.touchTarget.minimum"
+      }
+    },
+    "radius": {
+      "control": {
+        "layer": "component",
+        "path": "component.radius.control"
+      },
+      "card": {
+        "layer": "component",
+        "path": "component.radius.card"
+      },
+      "panel": {
+        "layer": "component",
+        "path": "component.radius.panel"
+      }
+    },
+    "motion": {
+      "fast": {
+        "layer": "behavior",
+        "path": "behavior.motion.role.fast"
+      },
+      "interaction": {
+        "layer": "behavior",
+        "path": "behavior.motion.role.interaction"
+      },
+      "state": {
+        "layer": "behavior",
+        "path": "behavior.motion.role.state"
+      },
+      "enter": {
+        "layer": "behavior",
+        "path": "behavior.motion.role.enter"
+      },
+      "exit": {
+        "layer": "behavior",
+        "path": "behavior.motion.role.exit"
+      },
+      "reveal": {
+        "layer": "behavior",
+        "path": "behavior.motion.role.reveal"
+      },
+      "chart": {
+        "layer": "behavior",
+        "path": "behavior.motion.role.chart"
+      },
+      "loop": {
+        "layer": "behavior",
+        "path": "behavior.motion.role.loop"
+      }
+    },
+    "touchTarget": {
+      "layer": "component",
+      "path": "component.interaction.touchTarget.minimum"
+    }
+  },
+  "resolvedProjection": {
+    "sourceOfTruth": "packages/tokens/src/theme.ts",
+    "format": "typed-js",
+    "colors": "opaque-srgb-hex",
+    "dimensions": "number-px",
+    "durations": "number-ms",
+    "cssIndependent": true
+  },
+  "actionIntents": {
+    "primary": {
+      "colorRole": "actionPrimary",
+      "accessibilityRole": "button",
+      "interactionStates": [
+        "idle",
+        "focus",
+        "pressed",
+        "disabled",
+        "loading"
+      ]
+    },
+    "secondary": {
+      "colorRole": "actionSecondary",
+      "accessibilityRole": "button",
+      "interactionStates": [
+        "idle",
+        "focus",
+        "pressed",
+        "disabled"
+      ]
+    },
+    "quiet": {
+      "colorRole": "actionQuiet",
+      "accessibilityRole": "button",
+      "interactionStates": [
+        "idle",
+        "focus",
+        "pressed",
+        "disabled"
+      ]
+    },
+    "danger": {
+      "colorRole": "actionDanger",
+      "accessibilityRole": "button",
+      "interactionStates": [
+        "idle",
+        "focus",
+        "pressed",
+        "disabled",
+        "loading"
+      ]
+    }
+  },
+  "fieldStates": {
+    "default": {
+      "interactionState": "idle",
+      "announces": "none"
+    },
+    "focused": {
+      "interactionState": "focus",
+      "announces": "none"
+    },
+    "invalid": {
+      "interactionState": "invalid",
+      "announces": "invalid"
+    },
+    "disabled": {
+      "interactionState": "disabled",
+      "announces": "disabled"
+    },
+    "read-only": {
+      "interactionState": "idle",
+      "announces": "readonly"
+    },
+    "pending": {
+      "interactionState": "pending",
+      "announces": "busy"
+    }
+  },
+  "feedbackStates": {
+    "neutral": {
+      "tone": "neutral",
+      "icon": "info",
+      "accessibilityRole": "status"
+    },
+    "info": {
+      "tone": "info",
+      "icon": "info",
+      "accessibilityRole": "status"
+    },
+    "success": {
+      "tone": "success",
+      "icon": "check",
+      "accessibilityRole": "status"
+    },
+    "warning": {
+      "tone": "warning",
+      "icon": "warning",
+      "accessibilityRole": "status"
+    },
+    "danger": {
+      "tone": "danger",
+      "icon": "danger",
+      "accessibilityRole": "status"
+    }
+  },
+  "moduleLifecycle": [
+    "not-available",
+    "not-entitled",
+    "setup-required",
+    "provisioning",
+    "resuming",
+    "suspended",
+    "dependency-unavailable",
+    "permission-denied",
+    "out-of-scope",
+    "read-only",
+    "action-required"
+  ],
+  "syncStates": {
+    "local": {
+      "presentationState": "local",
+      "tone": "neutral",
+      "icon": "fileCheck",
+      "accessibilityRole": "status"
+    },
+    "pending": {
+      "presentationState": "pending",
+      "tone": "info",
+      "icon": "pending",
+      "accessibilityRole": "status"
+    },
+    "syncing": {
+      "presentationState": "syncing",
+      "tone": "info",
+      "icon": "refresh",
+      "accessibilityRole": "status"
+    },
+    "synced": {
+      "presentationState": "synced",
+      "tone": "success",
+      "icon": "check",
+      "accessibilityRole": "status"
+    },
+    "failed": {
+      "presentationState": "error",
+      "tone": "danger",
+      "icon": "danger",
+      "accessibilityRole": "status"
+    },
+    "conflicted": {
+      "presentationState": "conflicted",
+      "tone": "warning",
+      "icon": "warning",
+      "accessibilityRole": "status"
+    },
+    "requires-action": {
+      "presentationState": "action-required",
+      "tone": "warning",
+      "icon": "info",
+      "accessibilityRole": "status"
+    },
+    "stale": {
+      "presentationState": "stale",
+      "tone": "warning",
+      "icon": "clock",
+      "accessibilityRole": "status"
+    }
+  },
+  "iconSemantics": {
+    "farm": {
+      "meaning": "farm or flock context"
+    },
+    "egg": {
+      "meaning": "egg production or collection"
+    },
+    "chicken": {
+      "meaning": "flock or poultry context"
+    },
+    "inventory": {
+      "meaning": "stock and inventory context"
+    },
+    "table": {
+      "meaning": "tabular data or records"
+    },
+    "pending": {
+      "meaning": "work is waiting or in progress"
+    },
+    "refresh": {
+      "meaning": "retry or refresh action"
+    },
+    "check": {
+      "meaning": "complete, ready, or successful"
+    },
+    "danger": {
+      "meaning": "error or destructive condition"
+    },
+    "warning": {
+      "meaning": "attention or caution"
+    },
+    "info": {
+      "meaning": "additional context or neutral status"
+    },
+    "fileCheck": {
+      "meaning": "local draft or completed file state"
+    },
+    "settings": {
+      "meaning": "setup or configuration"
+    },
+    "clock": {
+      "meaning": "stale or time-related state"
+    }
+  },
+  "proofSurface": {
+    "components": [
+      "provider-theme",
+      "button-action",
+      "input-field",
+      "card-surface",
+      "status-feedback",
+      "farm-daily-operation",
+      "offline-sync"
+    ],
+    "appearances": [
+      "light",
+      "dark",
+      "system"
+    ],
+    "motionProfiles": [
+      "minimal",
+      "calm",
+      "balanced",
+      "lively"
+    ],
+    "densityProfiles": [
+      "comfortable",
+      "default",
+      "compact",
+      "dense"
+    ],
+    "accessibility": [
+      "touch targets resolve from component.interaction.touchTarget.minimum",
+      "native controls expose a platform screen-reader role, label, hint, and state",
+      "invalid, disabled, busy, and sync states are announced without relying on color alone",
+      "reduced motion disables choreography while preserving state changes and feedback"
+    ],
+    "ownership": [
+      "Ten4Seven owns semantic presentation vocabulary and token resolution",
+      "the native product owns API data, auth, permissions, persistence, sync, and business rules"
+    ]
+  }
+}

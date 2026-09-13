@@ -58,4 +58,39 @@ test.describe("canonical component accessibility hardening", () => {
     await row.press("Enter");
     await expect(page.locator(".t7-drawer-backdrop[open]")).toHaveCount(1);
   });
+
+  test("quiet canvas keeps table boundaries and row dividers visible without semantic hue", async ({
+    page,
+  }) => {
+    await page.goto("/theme-studio");
+    await page.getByRole("button", { name: /Quiet canvas/ }).click();
+
+    const table = page.locator(".t7-table-wrap").first();
+    const structure = await table.evaluate((element) => {
+      const row = element.querySelector("tbody tr");
+      const tableStyle = getComputedStyle(element);
+      const rowStyle = row ? getComputedStyle(row) : null;
+      return {
+        borderWidth: tableStyle.borderWidth,
+        borderStyle: tableStyle.borderStyle,
+        borderColor: tableStyle.borderColor,
+        rowBorderStyle: rowStyle?.borderBottomStyle,
+        rowBorderColor: rowStyle?.borderBottomColor,
+        tableToken: tableStyle
+          .getPropertyValue("--t7-table-border-hsl")
+          .trim(),
+        dividerAlpha: tableStyle
+          .getPropertyValue("--t7-table-divider-alpha")
+          .trim(),
+      };
+    });
+
+    expect(structure.borderWidth).toBe("1px");
+    expect(structure.borderStyle).toBe("solid");
+    expect(structure.borderColor).not.toContain("255, 255, 255");
+    expect(structure.rowBorderStyle).toBe("solid");
+    expect(structure.rowBorderColor).not.toContain("0, 0, 0, 0");
+    expect(structure.tableToken).toMatch(/^0 0% /);
+    expect(structure.dividerAlpha).toBe("0.82");
+  });
 });

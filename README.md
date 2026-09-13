@@ -1,97 +1,183 @@
-# ten4seven UI
+# Ten4Seven
 
-`ten4seven UI` is a reusable, AI-first UI system extracted from the supplied AAPM design-system material and generalized into a deterministic runtime.
+Ten4Seven is a universal design system for React Web and Expo/React Native:
+one design language, one typed contract plane, one token source, one canonical
+catalog, and platform-specific renderers. Components, Blocks, and Recipes cover
+public sites, commerce, authentication, dashboards, forms, operational/data
+workspaces, and mobile field interfaces.
 
-The repository currently contains:
+Web is the complete renderer. Native is a **partial renderer** with real
+foundations, forms, sheets, list/detail, feedback, and conversational surfaces.
+Check the declared support below before selecting a platform-specific feature.
 
-- Phase 0 forensic inventories under `research/00-inventory/`.
-- The AAPM-to-generic extraction map under `research/01-extraction/`.
-- Architecture decisions under `docs/adr/`.
-- A CSS-variable theme engine with appearance, palette, independent primary/accent sources, canvas, chart colorway, radius, density, and typography axes.
-- A native `t7Motion` contract with one global duration axis, semantic easing
-  roles, viewport-gated reveals, subtle pointer-origin feedback, and one
-  reduced-motion policy.
-- A semantic typography system with local Inter variable WOFF2, optical sizing, and a live Theme Studio specimen.
-- A React + Vite playground that proves the same axes across Button, Input, Card, DataTable, Modal, Sidebar item, and typography surfaces.
-- Three production-looking reference surfaces in the playground: Operations
-  Tracker (`enterprise/entity-list`), the bounded AAPM Operational Patterns
-  adoption fixture, and Ebook Store Catalog (`commerce/catalog`).
-- Deterministic refresh-safe reference URLs: `/theme-studio`,
-  `/operations-tracker`, `/operational-patterns`, and `/ebook-store`.
-- Production QA and Gate C evidence under `research/04-production/`.
-- A local semantic icon package with no runtime Iconify CDN.
-- An AI application kit under `docs/ai/`, `packages/ai/`, and `skills/ten4seven-ui/`.
+## Install and run
 
-## Run
+The repository is public. Package redistribution remains owner-controlled under
+the existing [license](packages/ui/LICENSE.md); private/UNLICENSED metadata
+prevents accidental registry publication. Public readiness means technical
+package, source, and documentation readiness for authorized consumers. It does
+not grant a new open-source license. The copyright owner must decide any
+broader license before redistribution or registry publication.
+
+Repository development requires Node >=22.12 and pnpm 11:
 
 ```bash
-pnpm install
-pnpm inventory
+pnpm install --frozen-lockfile
+pnpm contracts:generate
 pnpm dev
 ```
 
-## Private commercial package
-
-The canonical consumer artifact is the self-contained `@ten4seven/ui`
-package. It includes the React components, provider/theme runtime, tokens,
-semantic icons, motion runtime, Inter variable font, declarations, and CSS in
-one local tarball. It remains private and is not published to a registry.
+Authorized Web consumers install the self-contained artifact. It includes
+the token runtime, semantic icons, motion, fonts, CSS, and declarations;
+React and React DOM remain peers.
 
 ```bash
-pnpm package:release
-pnpm add ./artifacts/ten4seven-ui-1.0.0.tgz
+# In this repository
+pnpm package:build
+pnpm package:verify
+pnpm --filter @ten4seven/ui pack --pack-destination ../../artifacts
+
+# In a React application; use the path to your built artifact
+pnpm add ../ten4seven-ui/artifacts/ten4seven-ui-1.0.0.tgz
 ```
 
-The generated artifact and its licensing boundary are documented in
-[packages/ui/README.md](packages/ui/README.md),
-[packages/ui/LICENSE.md](packages/ui/LICENSE.md), and
-[packages/ui/THIRD_PARTY_NOTICES.md](packages/ui/THIRD_PARTY_NOTICES.md).
-React and React DOM remain peer dependencies so consuming applications keep
-one React runtime. For the standalone Next.js 16 / React 19 App Router proof,
-see [NEXTJS_APP_ROUTER_COMPATIBILITY.md](docs/integration/NEXTJS_APP_ROUTER_COMPATIBILITY.md).
-
-Provider forms supported by the proof package:
+## Web quickstart
 
 ```tsx
-<Ten4SevenProvider palette="emerald" radius="soft" density="default" typography="modern">
-  <App />
-</Ten4SevenProvider>
+import "@ten4seven/ui/styles.css";
+import { Button, Card, Ten4SevenProvider } from "@ten4seven/ui";
 
-<Ten4SevenProvider theme={{ palette: "blue", density: "compact" }}>
-  <App />
-</Ten4SevenProvider>
-
-<Ten4SevenProvider
-  theme={{
-    typography: {
-      preset: "modern",
-      ui: '"Brand Sans", sans-serif',
-    },
-  }}
->
-  <App />
-</Ten4SevenProvider>
+export function App() {
+  return (
+    <Ten4SevenProvider
+      theme="product"
+      preferences={{ appearance: "system", density: "default" }}
+    >
+      <Card>
+        <Button leadingIcon="check" onClick={() => console.log("Save intent")}>
+          Save changes
+        </Button>
+      </Card>
+    </Ten4SevenProvider>
+  );
+}
 ```
 
-## AI application
+For Next.js, import CSS in the server layout and put the provider in a small
+consumer-owned `"use client"` wrapper. The root UI entry is client-bound;
+no `@ten4seven/ui/server` path is advertised. See the verified
+[Next.js guide](docs/integration/NEXTJS_APP_ROUTER_COMPATIBILITY.md) and the
+[Web package guide](packages/ui/README.md).
 
-Start with [docs/ai/AI_QUICKSTART.md](docs/ai/AI_QUICKSTART.md). The catalogs are designed for retrieval without opening donor repositories. For a deterministic local lookup:
+## Expo / Native quickstart
+
+Build and pack the Native renderer, then install it in an existing Expo app:
 
 ```bash
-pnpm t7ui info
-pnpm t7ui find "inventory list"
-pnpm t7ui show DataTable
+# In this repository
+pnpm --filter @ten4seven/native build
+pnpm --filter @ten4seven/native verify
+pnpm --filter @ten4seven/native pack --pack-destination ../../artifacts
+
+# In an existing Expo application
+pnpm add ../ten4seven-ui/artifacts/ten4seven-native-0.1.0.tgz
+pnpm exec expo install react-native-safe-area-context
 ```
 
-Follow **theme first, component second, local override last**.
+```tsx
+import {
+  NativeButton,
+  NativeContainer,
+  NativeScreen,
+  NativeThemeProvider,
+} from "@ten4seven/native/renderer";
 
-Quality gates:
+export default function App() {
+  return (
+    <NativeThemeProvider profile="neutral-product" appearance="system">
+      <NativeScreen>
+        <NativeContainer>
+          <NativeButton onPress={() => console.log("Save intent")}>
+            Save changes
+          </NativeButton>
+        </NativeContainer>
+      </NativeScreen>
+    </NativeThemeProvider>
+  );
+}
+```
+
+Native consumes JS/TS theme values from the same typed source without parsing
+CSS. Use `@ten4seven/native` for adapters and `@ten4seven/native/renderer`
+for components. No consumer needs source-internal imports or workspace packages.
+The [Native guide](packages/native/README.md) covers safe areas, font scaling,
+reduced motion, adaptive components, and device capability boundaries.
+
+## Declared platform support
+
+| Surface              | Verified boundary                                                | Limitations                                                                      |
+| -------------------- | ---------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| React Web / Vite SPA | Package, types, build and browser canaries                       | Responsive desktop/mobile Web; React >=18.2 peer contract                        |
+| Next.js App Router   | Packed Next 16 / React 19 consumer                               | Client provider boundary; see the versioned fixture                              |
+| Expo / React Native  | Bundled package/types and Native Lab; Expo 57 / RN 0.86 consumer | Partial renderer; capability presentation is separate from device integration    |
+| Android              | Earlier bounded development-client emulator canary               | Physical-device, release-build and full accessibility coverage remain unverified |
+| iOS                  | Shared source/package/Expo contract                              | **Runtime-unverified**; no Apple simulator/device claim                          |
+
+Adaptive intent survives renderer changes: Select popup → sheet/list; Dialog →
+Native modal/sheet; DataTable and MasterDetail → list/detail; Tooltip → explicit
+press/help; file input → consumer document/image/camera source; Date/Time →
+platform picker integration. Applications own routing, permissions, networking,
+persistence, device providers, domain rules, and business truth.
+
+## Design language and discovery
+
+Token ownership is FOUNDATION → SEMANTIC → LAYOUT → COMPONENT → PRODUCT PROFILE
+→ SCOPE. Resolution is defaults → recipe → profile → theme override → scoped
+override → component state. CSS, Native values, and AI projections derive from
+that typed source. Size, density, measure, and layout remain separate axes.
+
+- [Tokens and ownership](docs/TOKENS.md), [theming/scopes](docs/THEMING.md),
+  and [theme recipes](docs/THEME_RECIPES.md).
+- Components are semantic primitives; Blocks compose reusable sections;
+  Recipes describe page structure; Product Profiles change presentation.
+  Browse `/components`, `/blocks`, `/recipes`, and `/component-lab` locally.
+- [AI quickstart](docs/ai/AI_QUICKSTART.md),
+  [new projects](docs/ai/NEW_PROJECT.md), and
+  [existing applications](docs/ai/APPLY_TO_EXISTING_WEB.md).
+- [Design Taste and Uniformity](skills/ten4seven-design-taste/SKILL.md) covers
+  visual judgment, hierarchy, proportion, density, and responsive composition;
+  [contribution and governance](docs/CONTRIBUTING.md) covers canonical-layer
+  changes and release boundaries.
+- Agents start with `generated/agent-index.json`, compact projections, and
+  selected shards. `pnpm t7ui find "searchable selection"` retrieves canonical
+  choices. `@ten4seven/agent` distributes those generated decisions.
+- Components carry keyboard/focus, selected/disabled/loading/invalid state,
+  accessible-name, reduced-motion and responsive obligations. Consumers supply
+  meaningful labels, logical content order, and domain validation.
+- Advanced editor, map, scheduling and other engines attach behind semantic
+  boundaries. Engine execution and installation remain consumer-owned.
+
+## Package responsibilities and verification
+
+Contracts own meaning; Tokens resolve values; Icons own semantic glyph mapping;
+UI renders DOM/CSS; Native renders React Native primitives; Agent distributes
+retrieval projections; AI provides the local catalog CLI. Contracts, Tokens and
+Icons are workspace source layers bundled into consumer artifacts. Blocks and
+Recipes reuse canonical primitives; product profiles do not fork them.
 
 ```bash
-pnpm format:check
 pnpm typecheck
 pnpm test
+pnpm test:public-ready
 pnpm build
+pnpm package:build
+pnpm package:verify
+pnpm --filter @ten4seven/native build
+pnpm --filter @ten4seven/native verify
 ```
 
-Donor folders under `D:\SA\ASSET` are read-only references. No donor source or brand asset is required at runtime by this repository.
+The [closure evidence](docs/aapm/T7-PUBLIC-READY-CLOSURE-001-EVIDENCE.md) records
+acceptance and limitations. Historical AAPM extraction and donor provenance
+remain under `research/` and `docs/aapm/`; no donor checkout or knowledge of
+that history is required to consume Ten4Seven. Third-party notices remain with
+the [Web artifact](packages/ui/THIRD_PARTY_NOTICES.md).

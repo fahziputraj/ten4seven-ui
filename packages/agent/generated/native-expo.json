@@ -1,0 +1,3605 @@
+{
+  "schemaVersion": "0.1",
+  "id": "native-expo-parity",
+  "sourceOfTruth": [
+    "packages/contracts/src/native-expo.ts",
+    "packages/contracts/src/native-mobile.ts",
+    "packages/tokens/src/theme.ts"
+  ],
+  "resolverOrder": [
+    "SYSTEM_DEFAULTS",
+    "BASE_RECIPE",
+    "PRODUCT_PROFILE",
+    "THEME_OVERRIDE",
+    "SCOPED_OVERRIDE",
+    "COMPONENT_STATE"
+  ],
+  "architecture": {
+    "shared": [
+      "packages/contracts",
+      "packages/tokens",
+      "semantic intent",
+      "states",
+      "accessibility",
+      "profile meaning"
+    ],
+    "web": "@ten4seven/ui resolves the same contract to DOM/CSS projections.",
+    "native": "@ten4seven/native resolves typed values and renders React Native primitives through a separate renderer.",
+    "invariant": "one semantic language, one token source, multiple renderers; Native never parses CSS"
+  },
+  "maturity": {
+    "before": "CONTRACT_ONLY",
+    "after": "PARTIAL_RENDERER",
+    "reason": "A real React Native renderer foundation and Expo Lab source exist; Android emulator/device and iOS runtime evidence are not available in this checkout environment."
+  },
+  "renderer": {
+    "package": "@ten4seven/native",
+    "runtime": "React Native / Expo",
+    "primitives": [
+      "View",
+      "Text",
+      "Pressable",
+      "TextInput",
+      "ScrollView",
+      "FlatList",
+      "Modal",
+      "Switch",
+      "ActivityIndicator"
+    ],
+    "safeArea": "react-native-safe-area-context",
+    "values": "resolved JS/TS theme snapshot; opaque sRGB colors, numeric dimensions, numeric durations",
+    "cssParsing": false,
+    "parallelThemeSource": false,
+    "fontScaling": "enabled by default",
+    "screenReader": "native accessibilityLabel/accessibilityRole/accessibilityState contract"
+  },
+  "profileCanaries": [
+    "neutral-product",
+    "aapm-core",
+    "aapm-farm",
+    "aapm-operations",
+    "aapm-erp",
+    "aapm-academy",
+    "aapm-public"
+  ],
+  "profileSource": [
+    "neutral-product",
+    "aapm-core",
+    "aapm-farm",
+    "aapm-operations",
+    "aapm-erp",
+    "aapm-academy",
+    "aapm-public"
+  ],
+  "tokenCoverage": [
+    "colors",
+    "foreground/background",
+    "surface",
+    "border",
+    "focus",
+    "selected",
+    "status",
+    "spacing",
+    "radius",
+    "typography",
+    "elevation",
+    "motion",
+    "density",
+    "measure/layout",
+    "chart palette",
+    "product profile values"
+  ],
+  "familyParity": {
+    "foundations": {
+      "web": "FULL",
+      "android": "PARTIAL",
+      "ios": "PARTIAL",
+      "evidence": "SOURCE + TYPECHECK",
+      "note": "Text, Surface, Badge, semantic icon, typography, and theme primitives render through the native package."
+    },
+    "layout": {
+      "web": "FULL",
+      "android": "PARTIAL",
+      "ios": "PARTIAL",
+      "evidence": "SOURCE + TYPECHECK",
+      "note": "Flexbox composition, ScrollView, safe-area provider, runtime dimensions, and measure roles are implemented; device QA is pending."
+    },
+    "actions": {
+      "web": "FULL",
+      "android": "PARTIAL",
+      "ios": "PARTIAL",
+      "evidence": "SOURCE + TYPECHECK",
+      "note": "Pressable actions use shared intent, minimum touch target, pressed state, and accessibility state."
+    },
+    "forms": {
+      "web": "FULL",
+      "android": "PARTIAL",
+      "ios": "PARTIAL",
+      "evidence": "SOURCE + TYPECHECK",
+      "note": "TextInput, password, checkbox, radio, switch, and selector sheet foundations are implemented; keyboard/device QA is pending."
+    },
+    "selection": {
+      "web": "FULL",
+      "android": "ALTERNATE_PATTERN",
+      "ios": "ALTERNATE_PATTERN",
+      "evidence": "SOURCE + TYPECHECK",
+      "note": "Select uses a native modal sheet/list strategy rather than a Web popup."
+    },
+    "dateTime": {
+      "web": "FULL",
+      "android": "ALTERNATE_PATTERN",
+      "ios": "ALTERNATE_PATTERN",
+      "evidence": "PROPOSED",
+      "note": "Native picker adapter boundary is defined; production picker integration is deferred to a capability adapter."
+    },
+    "files": {
+      "web": "FULL",
+      "android": "ALTERNATE_PATTERN",
+      "ios": "ALTERNATE_PATTERN",
+      "evidence": "PROPOSED",
+      "note": "Document/image/camera source presentation is defined; no upload or production picker is bundled."
+    },
+    "navigation": {
+      "web": "FULL",
+      "android": "ALTERNATE_PATTERN",
+      "ios": "ALTERNATE_PATTERN",
+      "evidence": "SOURCE + TYPECHECK",
+      "note": "Tabs, bottom navigation, back/up, and list/detail composition are renderer responsibilities."
+    },
+    "overlays": {
+      "web": "FULL",
+      "android": "ALTERNATE_PATTERN",
+      "ios": "ALTERNATE_PATTERN",
+      "evidence": "SOURCE + TYPECHECK",
+      "note": "Modal/sheet foundations handle explicit close and system-back callbacks; native QA is pending."
+    },
+    "feedback": {
+      "web": "FULL",
+      "android": "PARTIAL",
+      "ios": "PARTIAL",
+      "evidence": "SOURCE + TYPECHECK",
+      "note": "Banner, status, progress, and toast composition use semantic status and reduced-motion intent."
+    },
+    "data": {
+      "web": "FULL",
+      "android": "ALTERNATE_PATTERN",
+      "ios": "ALTERNATE_PATTERN",
+      "evidence": "SOURCE + TYPECHECK",
+      "note": "FlatList is the native collection path; DataTable maps to record list/detail rather than a squeezed table."
+    },
+    "charts": {
+      "web": "FULL",
+      "android": "PLANNED",
+      "ios": "PLANNED",
+      "evidence": "PROPOSED",
+      "note": "U08 chart semantics remain available; no chart engine is bundled in the native foundation."
+    },
+    "maps": {
+      "web": "FULL",
+      "android": "PLANNED",
+      "ios": "PLANNED",
+      "evidence": "PROPOSED",
+      "note": "U08 map semantics remain an engine boundary; no map engine is bundled."
+    },
+    "workflow": {
+      "web": "FULL",
+      "android": "ALTERNATE_PATTERN",
+      "ios": "ALTERNATE_PATTERN",
+      "evidence": "SOURCE + TYPECHECK",
+      "note": "Work queue, decision workspace, wizard, and Kanban list/selector strategies remain consumer compositions."
+    },
+    "aiPower": {
+      "web": "FULL",
+      "android": "ALTERNATE_PATTERN",
+      "ios": "ALTERNATE_PATTERN",
+      "evidence": "SOURCE + TYPECHECK",
+      "note": "U10 conversation, composer, citation, tool, approval, and command presentation is available through native primitives."
+    },
+    "profiles": {
+      "web": "FULL",
+      "android": "PARTIAL",
+      "ios": "PARTIAL",
+      "evidence": "SOURCE + TYPECHECK",
+      "note": "Neutral, Farm, Operations, ERP, and Academy profiles resolve through the shared theme runtime; device rendering remains unverified."
+    },
+    "deviceCapabilities": {
+      "web": "N/A",
+      "android": "PARTIAL",
+      "ios": "PARTIAL",
+      "evidence": "CONTRACT",
+      "note": "Capability state and adapter boundaries are modeled; platform API integration and device QA remain pending."
+    }
+  },
+  "adaptiveCanaries": {
+    "Select": {
+      "component": "Select",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "nativePresentation": "sheet/native picker/bounded native list",
+      "nativeStatus": "experimental",
+      "proof": "value, label, disabled, empty, selected state, long options, and accessible trigger"
+    },
+    "DataTable": {
+      "component": "DataTable",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "nativePresentation": "FlatList record list with detail/action path",
+      "nativeStatus": "experimental",
+      "proof": "record identity, primary fields, status, selection/action intent, and no squeezed table"
+    },
+    "MasterDetail": {
+      "component": "MasterDetail recipe",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "nativePresentation": "list → detail with direct-entry-safe back/up",
+      "nativeStatus": "experimental",
+      "proof": "list selection, detail context, direct entry, and return intent"
+    },
+    "Kanban": {
+      "component": "Operational Kanban recipe",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "nativePresentation": "lane selector/tabs → card list",
+      "nativeStatus": "planned",
+      "proof": "movement remains intent-only; five lanes are not squeezed into a phone viewport"
+    },
+    "TooltipPopover": {
+      "component": "Tooltip/Popover",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "nativePresentation": "contextual press/help surface",
+      "nativeStatus": "planned",
+      "proof": "important help remains available without hover"
+    },
+    "AIConversation": {
+      "component": "ConversationThread + PromptComposer",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "nativePresentation": "bounded message list + keyboard-safe composer",
+      "nativeStatus": "experimental",
+      "proof": "long content, scroll-to-latest intent, citations, tool status, approval, and composer actions"
+    },
+    "EditorBuilder": {
+      "component": "EditorSurface + BuilderCanvas",
+      "platform": "WEB",
+      "rendererStrategy": "NOT_APPLICABLE",
+      "nativePresentation": "preview/basic text/property detail alternate only",
+      "nativeStatus": "planned",
+      "proof": "honor U10 Web classification; no forced desktop editor/builder parity"
+    }
+  },
+  "deviceCapabilities": {
+    "safeArea": {
+      "id": "safeArea",
+      "classification": "NATIVE_ONLY",
+      "platform": "NATIVE",
+      "rendererStrategy": "NATIVE_RENDERER",
+      "executionMode": "EXPO_GO",
+      "primitive": "react-native-safe-area-context",
+      "states": [
+        "ready",
+        "unavailable"
+      ],
+      "presentation": "Inset-aware shell, sticky actions, sheets, toast, and full-screen surfaces.",
+      "ten4SevenOwns": [
+        "safe-area composition intent",
+        "inset-aware spacing"
+      ],
+      "consumerOwns": [
+        "route and surface selection"
+      ],
+      "accessibility": [
+        "Keep headings, content, and actions within the readable inset region."
+      ],
+      "noBusinessLogic": true
+    },
+    "virtualKeyboard": {
+      "id": "virtualKeyboard",
+      "classification": "NATIVE_ONLY",
+      "platform": "NATIVE",
+      "rendererStrategy": "NATIVE_RENDERER",
+      "executionMode": "EXPO_GO",
+      "primitive": "KeyboardAvoidingView / ScrollView / TextInput",
+      "states": [
+        "ready",
+        "active",
+        "unavailable"
+      ],
+      "presentation": "Focused fields and action rows remain reachable while the keyboard is visible.",
+      "ten4SevenOwns": [
+        "keyboard-safe composition",
+        "focus and dismissal intent"
+      ],
+      "consumerOwns": [
+        "validation",
+        "submission",
+        "persistence"
+      ],
+      "accessibility": [
+        "Keep the focused field labelled and the primary action reachable."
+      ],
+      "noBusinessLogic": true
+    },
+    "camera": {
+      "id": "camera",
+      "classification": "NATIVE_ONLY",
+      "platform": "NATIVE",
+      "rendererStrategy": "NATIVE_RENDERER",
+      "executionMode": "DEV_CLIENT_REQUIRED",
+      "primitive": "expo-camera adapter behind CameraCapture contract",
+      "states": [
+        "permission-required",
+        "denied",
+        "ready",
+        "active",
+        "success",
+        "error",
+        "canceled"
+      ],
+      "presentation": "Permission, launch, capture, retake, use-result, loading, and error states.",
+      "ten4SevenOwns": [
+        "capture surface presentation",
+        "state and action labels"
+      ],
+      "consumerOwns": [
+        "permission request",
+        "camera lifecycle",
+        "persistence",
+        "upload",
+        "validation"
+      ],
+      "accessibility": [
+        "Camera actions have labels and a non-camera path for important tasks."
+      ],
+      "noBusinessLogic": true
+    },
+    "qrScanner": {
+      "id": "qrScanner",
+      "classification": "NATIVE_ONLY",
+      "platform": "NATIVE",
+      "rendererStrategy": "NATIVE_RENDERER",
+      "executionMode": "DEV_CLIENT_REQUIRED",
+      "primitive": "expo-camera/scanner adapter behind ScannerSurface contract",
+      "states": [
+        "permission-required",
+        "denied",
+        "ready",
+        "active",
+        "detected",
+        "invalid",
+        "success",
+        "error",
+        "canceled"
+      ],
+      "presentation": "Generic scanner frame with permission, ready, scanning, detected, invalid, success, error, and cancel states.",
+      "ten4SevenOwns": [
+        "ScannerSurface state presentation",
+        "generic captured-value handoff"
+      ],
+      "consumerOwns": [
+        "payload interpretation",
+        "business validation",
+        "navigation",
+        "persistence"
+      ],
+      "accessibility": [
+        "Provide a labelled scan action and manual entry alternative."
+      ],
+      "noBusinessLogic": true
+    },
+    "documentPicker": {
+      "id": "documentPicker",
+      "classification": "ADAPTIVE",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "executionMode": "EXPO_GO",
+      "primitive": "expo-document-picker adapter behind FileUpload contract",
+      "states": [
+        "ready",
+        "loading",
+        "success",
+        "error",
+        "canceled"
+      ],
+      "presentation": "Document-source action or native document picker entry.",
+      "ten4SevenOwns": [
+        "source-choice presentation",
+        "selected-file state"
+      ],
+      "consumerOwns": [
+        "picker API",
+        "file persistence",
+        "upload",
+        "validation"
+      ],
+      "accessibility": [
+        "Document source actions expose labels, type, and result state."
+      ],
+      "noBusinessLogic": true
+    },
+    "photoLibrary": {
+      "id": "photoLibrary",
+      "classification": "ADAPTIVE",
+      "platform": "ADAPTIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "executionMode": "EXPO_GO",
+      "primitive": "expo-image-picker adapter behind FileUpload contract",
+      "states": [
+        "permission-required",
+        "denied",
+        "ready",
+        "success",
+        "error",
+        "canceled"
+      ],
+      "presentation": "Image-library source action with permission and selected-media state.",
+      "ten4SevenOwns": [
+        "source-choice presentation",
+        "selected-media state"
+      ],
+      "consumerOwns": [
+        "picker API",
+        "persistence",
+        "upload",
+        "business validation"
+      ],
+      "accessibility": [
+        "Image source and selected result expose accessible labels."
+      ],
+      "noBusinessLogic": true
+    },
+    "permissions": {
+      "id": "permissions",
+      "classification": "NATIVE_ONLY",
+      "platform": "BOTH",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "executionMode": "EXPO_GO",
+      "primitive": "platform permission API adapter",
+      "states": [
+        "permission-required",
+        "denied",
+        "ready",
+        "error"
+      ],
+      "presentation": "Why-needed, denied, settings, retry, and granted presentation.",
+      "ten4SevenOwns": [
+        "permission explanation",
+        "denied state",
+        "settings/retry action"
+      ],
+      "consumerOwns": [
+        "actual permission request",
+        "entitlement",
+        "effective access"
+      ],
+      "accessibility": [
+        "Explain the capability and make retry/settings actions reachable."
+      ],
+      "noBusinessLogic": true
+    },
+    "location": {
+      "id": "location",
+      "classification": "NATIVE_ONLY",
+      "platform": "NATIVE",
+      "rendererStrategy": "NATIVE_RENDERER",
+      "executionMode": "DEV_CLIENT_REQUIRED",
+      "primitive": "expo-location adapter behind location state contract",
+      "states": [
+        "permission-required",
+        "denied",
+        "ready",
+        "active",
+        "success",
+        "error",
+        "canceled"
+      ],
+      "presentation": "Unavailable, permission, locating, found, error, and cancel states.",
+      "ten4SevenOwns": [
+        "location status presentation",
+        "map/location state handoff"
+      ],
+      "consumerOwns": [
+        "GPS request",
+        "accuracy policy",
+        "business meaning",
+        "persistence"
+      ],
+      "accessibility": [
+        "Location state and retry action are announced as text."
+      ],
+      "noBusinessLogic": true
+    },
+    "haptics": {
+      "id": "haptics",
+      "classification": "UTILITY_OR_PROVIDER",
+      "platform": "NATIVE",
+      "rendererStrategy": "NATIVE_RENDERER",
+      "executionMode": "EXPO_GO",
+      "primitive": "expo-haptics adapter",
+      "states": [
+        "ready",
+        "unavailable"
+      ],
+      "presentation": "Optional selection, confirmation, warning, or impact feedback intent.",
+      "ten4SevenOwns": [
+        "bounded semantic haptic intent"
+      ],
+      "consumerOwns": [
+        "opt-in decision",
+        "platform availability"
+      ],
+      "accessibility": [
+        "Haptics never replace visual or accessible status feedback."
+      ],
+      "noBusinessLogic": true
+    },
+    "pushEntry": {
+      "id": "pushEntry",
+      "classification": "ADAPTIVE",
+      "platform": "NATIVE",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "executionMode": "DEV_CLIENT_REQUIRED",
+      "primitive": "notification entry adapter",
+      "states": [
+        "loading",
+        "ready",
+        "invalid",
+        "error",
+        "canceled"
+      ],
+      "presentation": "Destination loading, context restoration, expired target, and error state.",
+      "ten4SevenOwns": [
+        "entry/loading/error presentation"
+      ],
+      "consumerOwns": [
+        "registration",
+        "payload",
+        "route resolution",
+        "authorization"
+      ],
+      "accessibility": [
+        "Restored destination and invalid-target meaning are readable."
+      ],
+      "noBusinessLogic": true
+    },
+    "deepLink": {
+      "id": "deepLink",
+      "classification": "ADAPTIVE",
+      "platform": "BOTH",
+      "rendererStrategy": "ALTERNATE_PATTERN",
+      "executionMode": "EXPO_GO",
+      "primitive": "application deep-link adapter",
+      "states": [
+        "loading",
+        "ready",
+        "invalid",
+        "error"
+      ],
+      "presentation": "Direct-entry composition for detail, task, product, or notification context.",
+      "ten4SevenOwns": [
+        "direct-entry-safe composition",
+        "back/up presentation"
+      ],
+      "consumerOwns": [
+        "URL/payload parsing",
+        "authorization",
+        "route truth"
+      ],
+      "accessibility": [
+        "Direct entry has a meaningful title, context, and back/up action."
+      ],
+      "noBusinessLogic": true
+    },
+    "offline": {
+      "id": "offline",
+      "classification": "ADAPTIVE",
+      "platform": "BOTH",
+      "rendererStrategy": "SAME_INTENT",
+      "executionMode": "EXPO_GO",
+      "primitive": "consumer connectivity state",
+      "states": [
+        "online",
+        "offline",
+        "unavailable"
+      ],
+      "presentation": "Banner, status, row, work-context, and sticky-action connectivity state.",
+      "ten4SevenOwns": [
+        "semantic offline presentation"
+      ],
+      "consumerOwns": [
+        "connectivity truth",
+        "business data",
+        "persistence"
+      ],
+      "accessibility": [
+        "Connectivity meaning is text-readable and not color-only."
+      ],
+      "noBusinessLogic": true
+    },
+    "sync": {
+      "id": "sync",
+      "classification": "ADAPTIVE",
+      "platform": "BOTH",
+      "rendererStrategy": "SAME_INTENT",
+      "executionMode": "EXPO_GO",
+      "primitive": "consumer sync-state adapter",
+      "states": [
+        "pendingSync",
+        "syncing",
+        "synced",
+        "syncFailed",
+        "retry",
+        "error"
+      ],
+      "presentation": "Pending, syncing, synced, failed, retry, and conflict presentation.",
+      "ten4SevenOwns": [
+        "SyncStatus and retry presentation"
+      ],
+      "consumerOwns": [
+        "queue",
+        "cursor",
+        "conflict policy",
+        "retry execution"
+      ],
+      "accessibility": [
+        "Sync state is bounded status text with an explicit retry action."
+      ],
+      "noBusinessLogic": true
+    },
+    "networkRetry": {
+      "id": "networkRetry",
+      "classification": "UTILITY_OR_PROVIDER",
+      "platform": "BOTH",
+      "rendererStrategy": "SAME_INTENT",
+      "executionMode": "EXPO_GO",
+      "primitive": "consumer retry callback",
+      "states": [
+        "ready",
+        "loading",
+        "success",
+        "error",
+        "retry"
+      ],
+      "presentation": "Retry, waiting, failed, and queued action states.",
+      "ten4SevenOwns": [
+        "retry action and state presentation"
+      ],
+      "consumerOwns": [
+        "idempotency",
+        "backoff",
+        "network request"
+      ],
+      "accessibility": [
+        "Retry status and action are exposed without live-region spam."
+      ],
+      "noBusinessLogic": true
+    },
+    "secureStorage": {
+      "id": "secureStorage",
+      "classification": "NATIVE_ONLY",
+      "platform": "NATIVE",
+      "rendererStrategy": "NATIVE_RENDERER",
+      "executionMode": "DEV_CLIENT_REQUIRED",
+      "primitive": "application secure-storage adapter",
+      "states": [
+        "ready",
+        "unavailable",
+        "error"
+      ],
+      "presentation": "Presentation-only secure-value or unavailable-storage state.",
+      "ten4SevenOwns": [
+        "safe presentation boundary"
+      ],
+      "consumerOwns": [
+        "credential/token storage",
+        "encryption",
+        "lifecycle"
+      ],
+      "accessibility": [
+        "Do not reveal secret values in labels, logs, or fixtures."
+      ],
+      "noBusinessLogic": true
+    },
+    "backgroundTask": {
+      "id": "backgroundTask",
+      "classification": "NATIVE_ONLY",
+      "platform": "NATIVE",
+      "rendererStrategy": "NATIVE_RENDERER",
+      "executionMode": "DEV_CLIENT_REQUIRED",
+      "primitive": "application background-task adapter",
+      "states": [
+        "ready",
+        "unavailable",
+        "error"
+      ],
+      "presentation": "Capability and queued/background status only.",
+      "ten4SevenOwns": [
+        "status presentation"
+      ],
+      "consumerOwns": [
+        "scheduling",
+        "battery/network constraints",
+        "mutation"
+      ],
+      "accessibility": [
+        "Background status has an explicit readable state."
+      ],
+      "noBusinessLogic": true
+    },
+    "orientation": {
+      "id": "orientation",
+      "classification": "NATIVE_ONLY",
+      "platform": "NATIVE",
+      "rendererStrategy": "NATIVE_RENDERER",
+      "executionMode": "EXPO_GO",
+      "primitive": "runtime window dimensions",
+      "states": [
+        "ready",
+        "active",
+        "unavailable"
+      ],
+      "presentation": "Portrait, landscape, and available-space adaptive layout.",
+      "ten4SevenOwns": [
+        "recomposition and measure intent"
+      ],
+      "consumerOwns": [
+        "screen-specific routing policy"
+      ],
+      "accessibility": [
+        "Orientation changes preserve reading order and focus."
+      ],
+      "noBusinessLogic": true
+    },
+    "fontScale": {
+      "id": "fontScale",
+      "classification": "NATIVE_ONLY",
+      "platform": "NATIVE",
+      "rendererStrategy": "NATIVE_RENDERER",
+      "executionMode": "EXPO_GO",
+      "primitive": "platform font scaling",
+      "states": [
+        "ready",
+        "active",
+        "unavailable"
+      ],
+      "presentation": "Larger text without clipping, overlap, or fixed-height truncation.",
+      "ten4SevenOwns": [
+        "semantic typography roles",
+        "flexible layout"
+      ],
+      "consumerOwns": [
+        "content length and priority"
+      ],
+      "accessibility": [
+        "Do not globally disable user font scaling."
+      ],
+      "noBusinessLogic": true
+    }
+  },
+  "hapticIntents": [
+    "selection",
+    "confirmation",
+    "warning",
+    "impact"
+  ],
+  "offlineSync": {
+    "states": [
+      "online",
+      "offline",
+      "pendingSync",
+      "syncing",
+      "syncFailed",
+      "retryAvailable",
+      "stale",
+      "synced"
+    ],
+    "transitions": [
+      [
+        "offline",
+        "pendingSync"
+      ],
+      [
+        "pendingSync",
+        "syncing"
+      ],
+      [
+        "syncing",
+        "synced"
+      ],
+      [
+        "syncing",
+        "syncFailed"
+      ],
+      [
+        "syncFailed",
+        "retryAvailable"
+      ]
+    ],
+    "surfaces": [
+      "Banner",
+      "Status",
+      "record row",
+      "work context",
+      "sticky action region"
+    ],
+    "ownership": "presentation-only; consumer owns the sync engine and retry execution"
+  },
+  "nativeLab": {
+    "app": "apps/native-lab",
+    "role": "deterministic Native Component Lab, not a product application",
+    "executionMode": "EXPO_GO",
+    "families": [
+      "Foundations",
+      "Layout",
+      "Actions",
+      "Forms",
+      "Navigation",
+      "Overlays",
+      "Feedback",
+      "Data",
+      "Visualizations",
+      "Workflow",
+      "AI/Power",
+      "Device capabilities",
+      "Profiles"
+    ],
+    "qaControls": [
+      "profile",
+      "appearance",
+      "density",
+      "motion",
+      "family",
+      "capability fixture states"
+    ],
+    "fixtureData": "synthetic and domain-neutral; no API, auth backend, persistence, upload, or business mutation"
+  },
+  "ownership": {
+    "ten4Seven": [
+      "presentation",
+      "interaction grammar",
+      "device-capability UI contract",
+      "accessibility",
+      "tokens",
+      "adaptive layout"
+    ],
+    "application": [
+      "authentication",
+      "API",
+      "offline database",
+      "sync engine",
+      "conflict resolution",
+      "permission/business rules",
+      "push registration",
+      "deep-link routing truth",
+      "secure storage",
+      "background jobs",
+      "domain data"
+    ]
+  },
+  "rendererExtensions": {
+    "sharedProps": "semantic props and state contracts",
+    "nativeProps": "platform accessibility, safe-area, press, keyboard, and native-picker extensions",
+    "webProps": "DOM/focus/hover/portal extensions remain Web-only",
+    "compatibility": "preserve valid Web API; add renderer extension instead of deleting Web capability"
+  },
+  "nativeRendererComponentIds": [
+    "Typography",
+    "T7Icon",
+    "Badge",
+    "Surface",
+    "Stack",
+    "Container",
+    "Button",
+    "IconButton",
+    "Input",
+    "PasswordInput",
+    "Textarea",
+    "Checkbox",
+    "Radio",
+    "Switch",
+    "Select",
+    "SearchInput",
+    "Tabs",
+    "BottomNavigation",
+    "Dialog",
+    "AlertDialog",
+    "Drawer",
+    "Popover",
+    "ContextMenu",
+    "Banner",
+    "Toast",
+    "Progress",
+    "List",
+    "DescriptionList",
+    "DataTable",
+    "ConversationThread",
+    "PromptComposer",
+    "CitationList",
+    "ToolCallCard",
+    "ApprovalPanel",
+    "CommandMenu"
+  ],
+  "publicComponentExports": {
+    "Ten4SevenProvider": "NativeThemeProvider",
+    "Typography": "NativeText",
+    "T7Icon": "NativeIcon",
+    "Surface": "NativeSurface",
+    "Stack": "NativeStack",
+    "Container": "NativeContainer",
+    "Button": "NativeButton",
+    "IconButton": "NativeIconButton",
+    "Input": "NativeField",
+    "PasswordInput": "NativePasswordInput",
+    "Textarea": "NativeTextarea",
+    "Checkbox": "NativeCheckbox",
+    "Radio": "NativeRadio",
+    "Switch": "NativeSwitch",
+    "Select": "NativeSelect",
+    "Tabs": "NativeTabs",
+    "BottomNavigation": "NativeBottomNavigation",
+    "Dialog": "NativeDialog",
+    "AlertDialog": "NativeAlertDialog",
+    "Drawer": "NativeSheet",
+    "Popover": "NativeSheet",
+    "Progress": "NativeProgress",
+    "List": "NativeList",
+    "DataTable": "NativeMasterDetail",
+    "ConversationThread": "NativeConversation",
+    "PromptComposer": "NativePromptComposer",
+    "CitationList": "NativeCitationList",
+    "ToolCallCard": "NativeToolCallCard",
+    "ApprovalPanel": "NativeApprovalPanel"
+  },
+  "nativeAlternateComponentIds": [
+    "DatePicker",
+    "DateTimeInput",
+    "FileUpload",
+    "Calendar",
+    "Tooltip",
+    "LineChart",
+    "EditorSurface",
+    "BuilderCanvas"
+  ],
+  "dependencyPolicy": {
+    "noUniversalNativeUiLibrary": true,
+    "noBundledHeavyEngines": true,
+    "optionalAdapterExamples": [
+      "camera",
+      "scanner",
+      "location",
+      "charts",
+      "maps",
+      "date/time",
+      "editor",
+      "gesture"
+    ],
+    "adapterRule": "capability or engine is added only behind the shared contract after license, Expo compatibility, accessibility, and performance review"
+  },
+  "deferred": [
+    "Android/iOS device runtime QA where this Windows checkout has no attached emulator/device and no iOS simulator.",
+    "Expo custom development-client capability integration for camera, scanner, location, push, secure storage, and background tasks.",
+    "Production navigation/router, offline database, sync engine, conflict resolver, secure storage, authentication, push registration, and deep-link parsing.",
+    "Chart/map/editor/DnD engines and virtualization beyond the native foundation primitives.",
+    "VoiceOver/TalkBack runtime certification and physical-device font-scale/haptics verification."
+  ],
+  "derived": {
+    "componentMaturitySource": [
+      "packages/ai/catalog/components.json",
+      "packages/contracts/src/component-platform.ts",
+      "packages/contracts/src/native-expo.ts"
+    ],
+    "componentMaturity": {
+      "Ten4SevenProvider": {
+        "component": "Ten4SevenProvider",
+        "family": "foundation",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Typography": {
+        "component": "Typography",
+        "family": "foundation",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "T7Icon": {
+        "component": "T7Icon",
+        "family": "foundation",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "Button": {
+        "component": "Button",
+        "family": "action",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "SAME_INTENT",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "IconButton": {
+        "component": "IconButton",
+        "family": "action",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "SAME_INTENT",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "ButtonGroup": {
+        "component": "ButtonGroup",
+        "family": "action",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "SAME_INTENT",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "ToggleButton": {
+        "component": "ToggleButton",
+        "family": "action",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "SAME_INTENT",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "ToggleButtonGroup": {
+        "component": "ToggleButtonGroup",
+        "family": "action",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "SAME_INTENT",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "SplitButton": {
+        "component": "SplitButton",
+        "family": "action",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Input": {
+        "component": "Input",
+        "family": "form",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "SearchInput": {
+        "component": "SearchInput",
+        "family": "form",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "PasswordInput": {
+        "component": "PasswordInput",
+        "family": "form",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "Textarea": {
+        "component": "Textarea",
+        "family": "form",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "NumberInput": {
+        "component": "NumberInput",
+        "family": "form",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "CurrencyInput": {
+        "component": "CurrencyInput",
+        "family": "form",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "PercentInput": {
+        "component": "PercentInput",
+        "family": "form",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Select": {
+        "component": "Select",
+        "family": "form",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "NativeSelect": {
+        "component": "NativeSelect",
+        "family": "form",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Combobox": {
+        "component": "Combobox",
+        "family": "form",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "MultiSelect": {
+        "component": "MultiSelect",
+        "family": "form",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "HierarchyPicker": {
+        "component": "HierarchyPicker",
+        "family": "form",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Checkbox": {
+        "component": "Checkbox",
+        "family": "form",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "CheckboxGroup": {
+        "component": "CheckboxGroup",
+        "family": "form",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Radio": {
+        "component": "Radio",
+        "family": "form",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "RadioGroup": {
+        "component": "RadioGroup",
+        "family": "form",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Switch": {
+        "component": "Switch",
+        "family": "form",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "Slider": {
+        "component": "Slider",
+        "family": "form",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "RangeSlider": {
+        "component": "RangeSlider",
+        "family": "form",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "OtpInput": {
+        "component": "OtpInput",
+        "family": "form",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Field": {
+        "component": "Field",
+        "family": "form",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Label": {
+        "component": "Label",
+        "family": "form",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "FieldGroup": {
+        "component": "FieldGroup",
+        "family": "form",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "FormSection": {
+        "component": "FormSection",
+        "family": "form",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "FormGrid": {
+        "component": "FormGrid",
+        "family": "form",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "FormActions": {
+        "component": "FormActions",
+        "family": "form",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Calendar": {
+        "component": "Calendar",
+        "family": "date-time",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "ALTERNATE_PATTERN",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Cascader": {
+        "component": "Cascader",
+        "family": "form",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "DatePicker": {
+        "component": "DatePicker",
+        "family": "date-time",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "ALTERNATE_PATTERN",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "DateRangePicker": {
+        "component": "DateRangePicker",
+        "family": "date-time",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "TimeInput": {
+        "component": "TimeInput",
+        "family": "date-time",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "NativeTimeInput": {
+        "component": "NativeTimeInput",
+        "family": "date-time",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "TimePicker": {
+        "component": "TimePicker",
+        "family": "date-time",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "DateTimeInput": {
+        "component": "DateTimeInput",
+        "family": "date-time",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "ALTERNATE_PATTERN",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "FileUpload": {
+        "component": "FileUpload",
+        "family": "file",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "ALTERNATE_PATTERN",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "FileItem": {
+        "component": "FileItem",
+        "family": "file",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "FileList": {
+        "component": "FileList",
+        "family": "file",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "AppShell": {
+        "component": "AppShell",
+        "family": "pattern",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Sidebar": {
+        "component": "Sidebar",
+        "family": "navigation",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "SidebarGroup": {
+        "component": "SidebarGroup",
+        "family": "navigation",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "NavItem": {
+        "component": "NavItem",
+        "family": "navigation",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "NavigationMenu": {
+        "component": "NavigationMenu",
+        "family": "navigation",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "TopNavigation": {
+        "component": "TopNavigation",
+        "family": "navigation",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "MobileSidebar": {
+        "component": "MobileSidebar",
+        "family": "navigation",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Breadcrumb": {
+        "component": "Breadcrumb",
+        "family": "navigation",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "SectionNavigation": {
+        "component": "SectionNavigation",
+        "family": "navigation",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Tabs": {
+        "component": "Tabs",
+        "family": "navigation",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "SAME_INTENT",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "Accordion": {
+        "component": "Accordion",
+        "family": "navigation",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "SAME_INTENT",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Collapsible": {
+        "component": "Collapsible",
+        "family": "navigation",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "SAME_INTENT",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Stepper": {
+        "component": "Stepper",
+        "family": "navigation",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "SAME_INTENT",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "MilestoneTracker": {
+        "component": "MilestoneTracker",
+        "family": "data",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "CommandMenu": {
+        "component": "CommandMenu",
+        "family": "navigation",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "Pagination": {
+        "component": "Pagination",
+        "family": "navigation",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Card": {
+        "component": "Card",
+        "family": "surface",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "CardHeader": {
+        "component": "CardHeader",
+        "family": "surface",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "CardContent": {
+        "component": "CardContent",
+        "family": "surface",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "CardFooter": {
+        "component": "CardFooter",
+        "family": "surface",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Surface": {
+        "component": "Surface",
+        "family": "surface",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "Panel": {
+        "component": "Panel",
+        "family": "surface",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Section": {
+        "component": "Section",
+        "family": "layout",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Separator": {
+        "component": "Separator",
+        "family": "layout",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "ScrollArea": {
+        "component": "ScrollArea",
+        "family": "layout",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "PageHeader": {
+        "component": "PageHeader",
+        "family": "layout",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "SectionHeader": {
+        "component": "SectionHeader",
+        "family": "layout",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Toolbar": {
+        "component": "Toolbar",
+        "family": "layout",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "ActionBar": {
+        "component": "ActionBar",
+        "family": "layout",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Table": {
+        "component": "Table",
+        "family": "table",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "TableHeader": {
+        "component": "TableHeader",
+        "family": "table",
+        "platformClass": "WEB",
+        "webStatus": "implemented",
+        "nativeStatus": "not-applicable",
+        "nativeMaturity": "NONE",
+        "nativeRendererStrategy": "NOT_APPLICABLE",
+        "parityLevel": "NOT_APPLICABLE",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "TableBody": {
+        "component": "TableBody",
+        "family": "table",
+        "platformClass": "WEB",
+        "webStatus": "implemented",
+        "nativeStatus": "not-applicable",
+        "nativeMaturity": "NONE",
+        "nativeRendererStrategy": "NOT_APPLICABLE",
+        "parityLevel": "NOT_APPLICABLE",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "TableRow": {
+        "component": "TableRow",
+        "family": "table",
+        "platformClass": "WEB",
+        "webStatus": "implemented",
+        "nativeStatus": "not-applicable",
+        "nativeMaturity": "NONE",
+        "nativeRendererStrategy": "NOT_APPLICABLE",
+        "parityLevel": "NOT_APPLICABLE",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "TableHead": {
+        "component": "TableHead",
+        "family": "table",
+        "platformClass": "WEB",
+        "webStatus": "implemented",
+        "nativeStatus": "not-applicable",
+        "nativeMaturity": "NONE",
+        "nativeRendererStrategy": "NOT_APPLICABLE",
+        "parityLevel": "NOT_APPLICABLE",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "TableCell": {
+        "component": "TableCell",
+        "family": "table",
+        "platformClass": "WEB",
+        "webStatus": "implemented",
+        "nativeStatus": "not-applicable",
+        "nativeMaturity": "NONE",
+        "nativeRendererStrategy": "NOT_APPLICABLE",
+        "parityLevel": "NOT_APPLICABLE",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "DataTable": {
+        "component": "DataTable",
+        "family": "table",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "AdvancedDataGrid": {
+        "component": "AdvancedDataGrid",
+        "family": "table",
+        "platformClass": "WEB",
+        "webStatus": "implemented",
+        "nativeStatus": "not-applicable",
+        "nativeMaturity": "NONE",
+        "nativeRendererStrategy": "NOT_APPLICABLE",
+        "parityLevel": "NOT_APPLICABLE",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "DataTableColumnPicker": {
+        "component": "DataTableColumnPicker",
+        "family": "table",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Badge": {
+        "component": "Badge",
+        "family": "data",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "StatusChip": {
+        "component": "StatusChip",
+        "family": "data",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Avatar": {
+        "component": "Avatar",
+        "family": "data",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "AvatarGroup": {
+        "component": "AvatarGroup",
+        "family": "data",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "List": {
+        "component": "List",
+        "family": "data",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "KeyValueList": {
+        "component": "KeyValueList",
+        "family": "data",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "MetricCard": {
+        "component": "MetricCard",
+        "family": "data",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "KPICluster": {
+        "component": "KPICluster",
+        "family": "data",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "ActivityFeed": {
+        "component": "ActivityFeed",
+        "family": "data",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "RecordSummary": {
+        "component": "RecordSummary",
+        "family": "data",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "RevisionDiff": {
+        "component": "RevisionDiff",
+        "family": "data",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "ProductCard": {
+        "component": "ProductCard",
+        "family": "commerce",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "ProductGrid": {
+        "component": "ProductGrid",
+        "family": "commerce",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Price": {
+        "component": "Price",
+        "family": "commerce",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Rating": {
+        "component": "Rating",
+        "family": "commerce",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "ProductMeta": {
+        "component": "ProductMeta",
+        "family": "commerce",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "FilterToolbar": {
+        "component": "FilterToolbar",
+        "family": "filter",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "FilterChip": {
+        "component": "FilterChip",
+        "family": "filter",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "AppliedFilters": {
+        "component": "AppliedFilters",
+        "family": "filter",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "FilterDrawer": {
+        "component": "FilterDrawer",
+        "family": "filter",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "BulkActionBar": {
+        "component": "BulkActionBar",
+        "family": "filter",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Dialog": {
+        "component": "Dialog",
+        "family": "overlay",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "Modal": {
+        "component": "Modal",
+        "family": "overlay",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Drawer": {
+        "component": "Drawer",
+        "family": "overlay",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "DetailDrawer": {
+        "component": "DetailDrawer",
+        "family": "overlay",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "AlertDialog": {
+        "component": "AlertDialog",
+        "family": "overlay",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "Popover": {
+        "component": "Popover",
+        "family": "overlay",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "Tooltip": {
+        "component": "Tooltip",
+        "family": "overlay",
+        "platformClass": "WEB",
+        "webStatus": "implemented",
+        "nativeStatus": "not-applicable",
+        "nativeMaturity": "NONE",
+        "nativeRendererStrategy": "NOT_APPLICABLE",
+        "parityLevel": "NOT_APPLICABLE",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "DropdownMenu": {
+        "component": "DropdownMenu",
+        "family": "overlay",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "ActionMenu": {
+        "component": "ActionMenu",
+        "family": "overlay",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "ContextMenu": {
+        "component": "ContextMenu",
+        "family": "overlay",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "Alert": {
+        "component": "Alert",
+        "family": "feedback",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Banner": {
+        "component": "Banner",
+        "family": "feedback",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "Notification": {
+        "component": "Notification",
+        "family": "feedback",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "NotificationCenter": {
+        "component": "NotificationCenter",
+        "family": "feedback",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "ToastProvider": {
+        "component": "ToastProvider",
+        "family": "feedback",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Toaster": {
+        "component": "Toaster",
+        "family": "feedback",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Toast": {
+        "component": "Toast",
+        "family": "feedback",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "EmptyState": {
+        "component": "EmptyState",
+        "family": "feedback",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "StateView": {
+        "component": "StateView",
+        "family": "feedback",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "ModuleState": {
+        "component": "ModuleState",
+        "family": "feedback",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Skeleton": {
+        "component": "Skeleton",
+        "family": "feedback",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Spinner": {
+        "component": "Spinner",
+        "family": "feedback",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Progress": {
+        "component": "Progress",
+        "family": "feedback",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "CircularProgress": {
+        "component": "CircularProgress",
+        "family": "feedback",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "TrendIndicator": {
+        "component": "TrendIndicator",
+        "family": "chart",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Sparkline": {
+        "component": "Sparkline",
+        "family": "chart",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "LineChart": {
+        "component": "LineChart",
+        "family": "chart",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "ALTERNATE_PATTERN",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "BarChart": {
+        "component": "BarChart",
+        "family": "chart",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "DonutChart": {
+        "component": "DonutChart",
+        "family": "chart",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "AspectRatio": {
+        "component": "AspectRatio",
+        "family": "media",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "MediaFrame": {
+        "component": "MediaFrame",
+        "family": "media",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Image": {
+        "component": "Image",
+        "family": "media",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "QrCode": {
+        "component": "QrCode",
+        "family": "media",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "ApprovalPanel": {
+        "component": "ApprovalPanel",
+        "family": "pattern",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "ActionFooter": {
+        "component": "ActionFooter",
+        "family": "pattern",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "CardTitle": {
+        "component": "CardTitle",
+        "family": "surface",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "CardDescription": {
+        "component": "CardDescription",
+        "family": "surface",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "FieldDescription": {
+        "component": "FieldDescription",
+        "family": "form",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "FieldError": {
+        "component": "FieldError",
+        "family": "form",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "TabPanel": {
+        "component": "TabPanel",
+        "family": "navigation",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "SAME_INTENT",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "CommandPalette": {
+        "component": "CommandPalette",
+        "family": "navigation",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "DescriptionList": {
+        "component": "DescriptionList",
+        "family": "data",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "Timeline": {
+        "component": "Timeline",
+        "family": "data",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "ChartLegend": {
+        "component": "ChartLegend",
+        "family": "chart",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "QuantityControl": {
+        "component": "QuantityControl",
+        "family": "commerce",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "SAME_INTENT",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "CartTrigger": {
+        "component": "CartTrigger",
+        "family": "commerce",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "CartLineItem": {
+        "component": "CartLineItem",
+        "family": "commerce",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "CartPanel": {
+        "component": "CartPanel",
+        "family": "pattern",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "OrderSummary": {
+        "component": "OrderSummary",
+        "family": "pattern",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Carousel": {
+        "component": "Carousel",
+        "family": "navigation",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "PublicShell": {
+        "component": "PublicShell",
+        "family": "pattern",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "ChartPanel": {
+        "component": "ChartPanel",
+        "family": "chart",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Kbd": {
+        "component": "Kbd",
+        "family": "foundation",
+        "platformClass": "WEB",
+        "webStatus": "implemented",
+        "nativeStatus": "not-applicable",
+        "nativeMaturity": "NONE",
+        "nativeRendererStrategy": "NOT_APPLICABLE",
+        "parityLevel": "NOT_APPLICABLE",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Link": {
+        "component": "Link",
+        "family": "foundation",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Container": {
+        "component": "Container",
+        "family": "layout",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "Stack": {
+        "component": "Stack",
+        "family": "layout",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "SplitPane": {
+        "component": "SplitPane",
+        "family": "layout",
+        "platformClass": "WEB",
+        "webStatus": "implemented",
+        "nativeStatus": "not-applicable",
+        "nativeMaturity": "NONE",
+        "nativeRendererStrategy": "NOT_APPLICABLE",
+        "parityLevel": "NOT_APPLICABLE",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "SpeedDial": {
+        "component": "SpeedDial",
+        "family": "action",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "DragHandle": {
+        "component": "DragHandle",
+        "family": "action",
+        "platformClass": "WEB",
+        "webStatus": "implemented",
+        "nativeStatus": "not-applicable",
+        "nativeMaturity": "NONE",
+        "nativeRendererStrategy": "NOT_APPLICABLE",
+        "parityLevel": "NOT_APPLICABLE",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "BottomNavigation": {
+        "component": "BottomNavigation",
+        "family": "navigation",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "NavigationRail": {
+        "component": "NavigationRail",
+        "family": "navigation",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "Transfer": {
+        "component": "Transfer",
+        "family": "form",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "ColorPicker": {
+        "component": "ColorPicker",
+        "family": "form",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "TagsInput": {
+        "component": "TagsInput",
+        "family": "form",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "TreeView": {
+        "component": "TreeView",
+        "family": "navigation",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "ALTERNATE_PATTERN",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "FilePreview": {
+        "component": "FilePreview",
+        "family": "file",
+        "platformClass": "ADAPTIVE",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "CONTRACT_ONLY",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PLANNED",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "EditorSurface": {
+        "component": "EditorSurface",
+        "family": "form",
+        "platformClass": "WEB",
+        "webStatus": "implemented",
+        "nativeStatus": "not-applicable",
+        "nativeMaturity": "NONE",
+        "nativeRendererStrategy": "NOT_APPLICABLE",
+        "parityLevel": "NOT_APPLICABLE",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "PropertyInspector": {
+        "component": "PropertyInspector",
+        "family": "layout",
+        "platformClass": "WEB",
+        "webStatus": "implemented",
+        "nativeStatus": "not-applicable",
+        "nativeMaturity": "NONE",
+        "nativeRendererStrategy": "NOT_APPLICABLE",
+        "parityLevel": "NOT_APPLICABLE",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "BuilderCanvas": {
+        "component": "BuilderCanvas",
+        "family": "layout",
+        "platformClass": "WEB",
+        "webStatus": "implemented",
+        "nativeStatus": "not-applicable",
+        "nativeMaturity": "NONE",
+        "nativeRendererStrategy": "NOT_APPLICABLE",
+        "parityLevel": "NOT_APPLICABLE",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      },
+      "PromptComposer": {
+        "component": "PromptComposer",
+        "family": "form",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "ConversationThread": {
+        "component": "ConversationThread",
+        "family": "data",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "CitationList": {
+        "component": "CitationList",
+        "family": "data",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "ToolCallCard": {
+        "component": "ToolCallCard",
+        "family": "data",
+        "platformClass": "BOTH",
+        "webStatus": "implemented",
+        "nativeStatus": "planned",
+        "nativeMaturity": "PARTIAL_RENDERER",
+        "nativeRendererStrategy": "NATIVE_RENDERER",
+        "parityLevel": "PARTIAL",
+        "missingStates": [
+          "device-runtime-proof",
+          "platform-accessibility-certification"
+        ],
+        "deviceDependency": "runtime-device-or-emulator",
+        "accessibilityStatus": "contracted-source-not-runtime-certified",
+        "testStatus": "source-typecheck"
+      },
+      "DiffViewer": {
+        "component": "DiffViewer",
+        "family": "data",
+        "platformClass": "WEB",
+        "webStatus": "implemented",
+        "nativeStatus": "not-applicable",
+        "nativeMaturity": "NONE",
+        "nativeRendererStrategy": "NOT_APPLICABLE",
+        "parityLevel": "NOT_APPLICABLE",
+        "missingStates": [],
+        "deviceDependency": "none",
+        "accessibilityStatus": "contracted",
+        "testStatus": "contract-or-planned"
+      }
+    }
+  }
+}

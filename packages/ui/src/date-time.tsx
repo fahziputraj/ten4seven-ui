@@ -7,6 +7,7 @@ import {
   type HTMLAttributes,
   type InputHTMLAttributes,
   type KeyboardEvent,
+  type CSSProperties,
   type ReactNode,
 } from "react";
 
@@ -326,6 +327,7 @@ export function DatePicker({
   const inputId = id ?? generatedId;
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState(value ?? "");
+  const inputRef = useRef<HTMLInputElement>(null);
   const pickerRef = useRef<HTMLSpanElement>(null);
   const helpId = `${inputId}-hint`;
   const calendarId = `${inputId}-calendar`;
@@ -335,6 +337,19 @@ export function DatePicker({
     widthStrategy: "fixed",
   });
   useExclusiveFloatingLayer(open, () => setOpen(false));
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const dismissOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape" || event.defaultPrevented) return;
+      event.preventDefault();
+      event.stopPropagation();
+      setOpen(false);
+      inputRef.current?.focus();
+    };
+    document.addEventListener("keydown", dismissOnEscape);
+    return () => document.removeEventListener("keydown", dismissOnEscape);
+  }, [open]);
 
   useEffect(() => {
     if (!open) return undefined;
@@ -359,7 +374,11 @@ export function DatePicker({
         <input
           {...props}
           aria-controls={calendarId}
-          aria-describedby={error || hint ? helpId : props["aria-describedby"]}
+          aria-describedby={
+            [props["aria-describedby"], error || hint ? helpId : undefined]
+              .filter(Boolean)
+              .join(" ") || undefined
+          }
           aria-expanded={open}
           aria-haspopup="dialog"
           aria-invalid={error ? true : props["aria-invalid"]}
@@ -384,6 +403,7 @@ export function DatePicker({
           }}
           placeholder="YYYY-MM-DD"
           role="combobox"
+          ref={inputRef}
           value={value ?? draft}
         />
         <button
@@ -454,6 +474,8 @@ export interface DateRangePickerProps extends Omit<
 > {
   clearLabel?: string;
   disabled?: boolean;
+  error?: string;
+  hint?: string;
   label?: ReactNode;
   max?: DateValue;
   min?: DateValue;
@@ -465,6 +487,8 @@ export function DateRangePicker({
   className,
   clearLabel = "Clear range",
   disabled,
+  error,
+  hint,
   label,
   max,
   min,
@@ -473,20 +497,30 @@ export function DateRangePicker({
   ...props
 }: DateRangePickerProps) {
   const id = useId();
+  const labelId = `${id}-label`;
+  const helpId = `${id}-help`;
   const [open, setOpen] = useState(false);
   const pickerRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const start = toDate(value.start);
   const end = toDate(value.end);
   const display =
     value.start && value.end
       ? `${value.start} to ${value.end}`
       : (value.start ?? "Select dates");
+  const calendarLabel =
+    typeof label === "string" && label.trim()
+      ? `${label} calendar`
+      : "Date range calendar";
   const floating = useFloatingPosition(pickerRef, open, {
     preferredWidth: Number.parseFloat(overlayGeometry.datePicker),
     side: "bottom",
     widthStrategy: "fixed",
   });
-  useExclusiveFloatingLayer(open, () => setOpen(false));
+  useExclusiveFloatingLayer(open, () => {
+    setOpen(false);
+    triggerRef.current?.focus();
+  });
 
   useEffect(() => {
     if (!open) return undefined;
@@ -497,8 +531,18 @@ export function DateRangePicker({
       )
         setOpen(false);
     };
+    const dismissOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape" || event.defaultPrevented) return;
+      event.preventDefault();
+      setOpen(false);
+      triggerRef.current?.focus();
+    };
     document.addEventListener("pointerdown", dismiss);
-    return () => document.removeEventListener("pointerdown", dismiss);
+    document.addEventListener("keydown", dismissOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", dismiss);
+      document.removeEventListener("keydown", dismissOnEscape);
+    };
   }, [open]);
 
   function choose(next: DateValue) {
@@ -515,16 +559,29 @@ export function DateRangePicker({
   }
 
   return (
-    <div {...props} className={cx("t7-date-range-field", className)}>
-      {label ? <span className="t7-field-label">{label}</span> : null}
+    <div
+      {...props}
+      className={cx("t7-date-range-field", className)}
+      data-invalid={error || undefined}
+    >
+      {label ? (
+        <span className="t7-field-label" id={labelId}>
+          {label}
+        </span>
+      ) : null}
       <div className="t7-date-range-picker" ref={pickerRef}>
         <button
           aria-controls={`${id}-calendar`}
+          aria-describedby={error || hint ? helpId : undefined}
           aria-expanded={open}
           aria-haspopup="dialog"
-          className="t7-date-range-trigger"
+          aria-invalid={error ? true : undefined}
+          aria-label={!label ? "Select date range" : undefined}
+          aria-labelledby={label ? labelId : undefined}
+          className={cx("t7-date-range-trigger", error && "is-error")}
           disabled={disabled}
           onClick={() => setOpen((current) => !current)}
+          ref={triggerRef}
           type="button"
         >
           <T7Icon aria-hidden="true" name="calendar" size={16} />
@@ -537,6 +594,7 @@ export function DateRangePicker({
               data-floating-placement={floating.placement}
               id={`${id}-calendar`}
               ref={floating.setContentRef}
+              aria-label={calendarLabel}
               role="dialog"
               style={floating.style}
             >
@@ -562,6 +620,11 @@ export function DateRangePicker({
           </FloatingPortal>
         ) : null}
       </div>
+      {error || hint ? (
+        <span className={cx("t7-field-hint", error && "is-error")} id={helpId}>
+          {error ?? hint}
+        </span>
+      ) : null}
     </div>
   );
 }
@@ -696,8 +759,9 @@ export function TimePicker({
   const floating = useFloatingPosition(pickerRef, open, {
     preferredWidth: Number.parseFloat(overlayGeometry.timePicker),
     side: "bottom",
-    widthStrategy: "fixed",
+    widthStrategy: "content",
   });
+  const triggerWidth = pickerRef.current?.getBoundingClientRect().width;
   useExclusiveFloatingLayer(open, () => setOpen(false));
 
   useEffect(() => {
@@ -825,7 +889,14 @@ export function TimePicker({
               id={listboxId}
               ref={floating.setContentRef}
               role="listbox"
-              style={floating.style}
+              style={
+                {
+                  ...floating.style,
+                  "--t7-time-picker-trigger-width": triggerWidth
+                    ? `${triggerWidth}px`
+                    : "100vw",
+                } as CSSProperties
+              }
             >
               {options.length ? (
                 <div className="t7-time-picker-columns">

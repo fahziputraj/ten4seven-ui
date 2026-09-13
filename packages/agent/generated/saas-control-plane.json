@@ -1,0 +1,1190 @@
+{
+  "schemaVersion": "0.1",
+  "id": "saas-control-plane",
+  "displayName": "SaaS control-plane patterns",
+  "purpose": "Compose generic tenant, resource, capability, lifecycle, access, audit, import, and reconciliation presentation from canonical Ten4Seven components without moving platform authority into the UI system.",
+  "grammar": [
+    "context",
+    "capability",
+    "state",
+    "scope",
+    "progress",
+    "exception",
+    "trace",
+    "next action"
+  ],
+  "patterns": {
+    "tenant-selector": {
+      "id": "tenant-selector",
+      "displayName": "Tenant / organization selector",
+      "purpose": "Present a consumer-supplied organization context choice without deciding membership, entitlement, or navigation authority.",
+      "intentPhrases": [
+        "tenant selector",
+        "organization selector",
+        "switch organization",
+        "workspace selector",
+        "company context"
+      ],
+      "components": [
+        "Select",
+        "Badge"
+      ],
+      "optionalComponents": [
+        "Avatar",
+        "Combobox",
+        "FilterToolbar"
+      ],
+      "icons": [
+        "users",
+        "check",
+        "chevronDown",
+        "search"
+      ],
+      "consumerInputs": [
+        "opaque organization identifiers and labels",
+        "current organization identifier",
+        "available organization options",
+        "selection callback and persistence policy"
+      ],
+      "systemOwns": [
+        "canonical component composition",
+        "labels, keyboard behavior, focus, and responsive presentation",
+        "semantic state and status styling through shared tokens",
+        "invocation of consumer-provided action elements"
+      ],
+      "consumerOwns": [
+        "membership and entitlement meaning",
+        "which organizations are available to the principal",
+        "selection persistence and any data refresh",
+        "route changes or API commands after selection"
+      ],
+      "states": [
+        "empty",
+        "loading",
+        "error",
+        "disabled",
+        "read-only",
+        "action-required",
+        "ready"
+      ],
+      "responsive": {
+        "desktop": "Place the selector in the shell context slot or route header.",
+        "tablet": "Keep the selected organization visible while wrapping the option control.",
+        "mobile": "Use a full-width labelled select or consumer-owned drawer entry."
+      },
+      "accessibility": [
+        "Use one visible label and expose the selected organization as text.",
+        "Keep the native select or canonical popup keyboard reachable.",
+        "Announce loading, empty, and error context without relying on color."
+      ],
+      "tokens": [
+        "surface",
+        "surface-raised",
+        "surface-subtle",
+        "border",
+        "focus-ring",
+        "selected",
+        "control-height",
+        "touch-target-min",
+        "radius-card",
+        "motion"
+      ],
+      "aiGuidance": "Choose this pattern when a user needs to change the current organization context; use a consumer-owned callback for the resulting route or data change.",
+      "antiPatterns": [
+        "Filtering organizations with a local permission rule",
+        "Fetching or mutating membership inside the selector",
+        "Using a visual brand mark as the only organization name"
+      ],
+      "referenceView": "context"
+    },
+    "resource-selector": {
+      "id": "resource-selector",
+      "displayName": "Resource selector",
+      "purpose": "Present a flat or hierarchical resource choice such as a site, facility, workspace, or location while leaving scope meaning to the consumer.",
+      "intentPhrases": [
+        "resource selector",
+        "site selector",
+        "facility selector",
+        "farm site selector",
+        "resource scope selection",
+        "select resources"
+      ],
+      "components": [
+        "HierarchyPicker",
+        "Select"
+      ],
+      "optionalComponents": [
+        "Combobox",
+        "Badge",
+        "StatusChip"
+      ],
+      "icons": [
+        "warehouse",
+        "view",
+        "check",
+        "search"
+      ],
+      "consumerInputs": [
+        "opaque resource identifiers, labels, descriptions, and hierarchy",
+        "selected resource identifiers",
+        "disabled-node presentation supplied by the consumer",
+        "selection callback and scope persistence policy"
+      ],
+      "systemOwns": [
+        "canonical component composition",
+        "labels, keyboard behavior, focus, and responsive presentation",
+        "semantic state and status styling through shared tokens",
+        "invocation of consumer-provided action elements"
+      ],
+      "consumerOwns": [
+        "resource availability and scope meaning",
+        "which nodes are disabled and why",
+        "authorization, server-side validation, and persistence",
+        "what changes after a resource selection"
+      ],
+      "states": [
+        "empty",
+        "loading",
+        "error",
+        "disabled",
+        "read-only",
+        "action-required",
+        "ready"
+      ],
+      "moduleStates": [
+        "permission-denied",
+        "out-of-scope",
+        "read-only"
+      ],
+      "responsive": {
+        "desktop": "Keep a bounded hierarchy beside the selected context.",
+        "tablet": "Retain ancestry and selection while reducing supporting copy.",
+        "mobile": "Use a bounded tree or consumer-owned drawer; never expand page height without limit."
+      },
+      "accessibility": [
+        "Use tree semantics for nested resources and expose ancestry through labels.",
+        "Preserve Arrow, Home, End, Space, and Enter interaction from HierarchyPicker.",
+        "Keep partial, disabled, empty, and selected states available as text or semantics."
+      ],
+      "tokens": [
+        "surface",
+        "surface-raised",
+        "surface-subtle",
+        "border",
+        "focus-ring",
+        "selected",
+        "control-height",
+        "touch-target-min",
+        "radius-card",
+        "motion",
+        "indicator-radius"
+      ],
+      "aiGuidance": "Choose this pattern when the resource has ancestry or a scope boundary; use a flat Select or Combobox only when the choice is genuinely flat.",
+      "antiPatterns": [
+        "Naming the generic primitive after one business product",
+        "Hiding disabled resources without a consumer explanation",
+        "Conflating resource selection with authorization evaluation"
+      ],
+      "referenceView": "context"
+    },
+    "module-catalog": {
+      "id": "module-catalog",
+      "displayName": "Module / capability catalog",
+      "purpose": "Present a consumer-supplied catalog of capabilities, availability, current state, and next action in a consistent bounded collection.",
+      "intentPhrases": [
+        "module catalog",
+        "capability catalog",
+        "available modules",
+        "module registry presentation",
+        "feature catalog"
+      ],
+      "components": [
+        "Card",
+        "Badge",
+        "Button",
+        "ModuleState"
+      ],
+      "optionalComponents": [
+        "DataTable",
+        "StatusChip",
+        "RecordSummary"
+      ],
+      "icons": [
+        "components",
+        "settings",
+        "check",
+        "view"
+      ],
+      "consumerInputs": [
+        "module identifiers, labels, descriptions, and category",
+        "consumer-supplied module state and availability copy",
+        "action elements for setup, inspection, or support",
+        "current organization/resource context"
+      ],
+      "systemOwns": [
+        "canonical component composition",
+        "labels, keyboard behavior, focus, and responsive presentation",
+        "semantic state and status styling through shared tokens",
+        "invocation of consumer-provided action elements"
+      ],
+      "consumerOwns": [
+        "module registry data and ordering",
+        "availability, entitlement, and lifecycle state",
+        "action behavior, navigation, and persistence",
+        "whether a capability is relevant in the current context"
+      ],
+      "states": [
+        "empty",
+        "loading",
+        "error",
+        "disabled",
+        "read-only",
+        "action-required",
+        "ready"
+      ],
+      "moduleStates": [
+        "not-available",
+        "not-entitled",
+        "setup-required",
+        "provisioning",
+        "resuming",
+        "suspended",
+        "dependency-unavailable",
+        "read-only",
+        "action-required"
+      ],
+      "responsive": {
+        "desktop": "Use a compact card or table collection with state and next action aligned.",
+        "tablet": "Wrap cards and keep state/action visible before supporting descriptions.",
+        "mobile": "Stack modules with the state label and primary action in each card."
+      },
+      "accessibility": [
+        "Give the collection a named region and each module a visible heading.",
+        "Write availability and next action in text; color and icon are supplementary.",
+        "Keep setup, inspect, and support actions keyboard reachable in reading order."
+      ],
+      "tokens": [
+        "surface",
+        "surface-raised",
+        "surface-subtle",
+        "border",
+        "focus-ring",
+        "selected",
+        "control-height",
+        "touch-target-min",
+        "radius-card",
+        "motion",
+        "success",
+        "warning",
+        "danger",
+        "info"
+      ],
+      "aiGuidance": "Choose this pattern when users need to browse capabilities and understand which next action applies to each one.",
+      "antiPatterns": [
+        "Treating a catalog card as proof of entitlement",
+        "Showing every module as active because the fixture has no backend",
+        "Creating a product-specific module card primitive"
+      ],
+      "referenceView": "module-catalog"
+    },
+    "module-activation": {
+      "id": "module-activation",
+      "displayName": "Module activation / provisioning progress",
+      "purpose": "Present consumer-supplied lifecycle checkpoints and progress without triggering, retrying, or calculating provisioning work.",
+      "intentPhrases": [
+        "module activation",
+        "activation progress",
+        "provisioning progress",
+        "enable module",
+        "resume module"
+      ],
+      "components": [
+        "MilestoneTracker",
+        "Progress",
+        "ModuleState"
+      ],
+      "optionalComponents": [
+        "Button",
+        "StatusChip",
+        "ActivityFeed",
+        "Alert"
+      ],
+      "icons": [
+        "settings",
+        "pending",
+        "progress",
+        "refresh",
+        "blocked"
+      ],
+      "consumerInputs": [
+        "ordered lifecycle checkpoints and consumer-calculated percentages",
+        "current module state and freshness context",
+        "consumer-owned retry, support, or inspect actions",
+        "activity or evidence supplied by the platform"
+      ],
+      "systemOwns": [
+        "canonical component composition",
+        "labels, keyboard behavior, focus, and responsive presentation",
+        "semantic state and status styling through shared tokens",
+        "invocation of consumer-provided action elements"
+      ],
+      "consumerOwns": [
+        "lifecycle state transitions and provisioning authority",
+        "progress calculation, freshness, and retry policy",
+        "side effects, API commands, and polling",
+        "whether a failed dependency is recoverable"
+      ],
+      "states": [
+        "loading",
+        "error",
+        "disabled",
+        "read-only",
+        "action-required",
+        "ready"
+      ],
+      "moduleStates": [
+        "setup-required",
+        "provisioning",
+        "resuming",
+        "suspended",
+        "dependency-unavailable",
+        "action-required"
+      ],
+      "responsive": {
+        "desktop": "Keep checkpoints and current lifecycle context visible together.",
+        "tablet": "Stack supporting activity below the selected checkpoint detail.",
+        "mobile": "Use the bounded milestone sequence followed by current state and action."
+      },
+      "accessibility": [
+        "Expose each checkpoint as ordered keyboard-reachable milestone content.",
+        "Expose determinate progress with its label and numeric value.",
+        "Do not auto-advance or silently mutate a lifecycle state from the renderer."
+      ],
+      "tokens": [
+        "surface",
+        "surface-raised",
+        "surface-subtle",
+        "border",
+        "focus-ring",
+        "selected",
+        "control-height",
+        "touch-target-min",
+        "radius-card",
+        "motion",
+        "success",
+        "warning",
+        "danger",
+        "info",
+        "transition-standard"
+      ],
+      "aiGuidance": "Choose this pattern when platform or product code supplies lifecycle checkpoints and the user needs progress plus a safe next action.",
+      "antiPatterns": [
+        "Starting provisioning from a visual component mount",
+        "Inferring percentage from milestone labels",
+        "Using a spinner without a state, checkpoint, or recovery explanation"
+      ],
+      "referenceView": "activation"
+    },
+    "setup-checklist": {
+      "id": "setup-checklist",
+      "displayName": "Setup checklist",
+      "purpose": "Present ordered setup requirements and completion supplied by a consumer before a module or capability can be used.",
+      "intentPhrases": [
+        "setup checklist",
+        "setup requirements",
+        "requirements list",
+        "configure module",
+        "onboarding checklist"
+      ],
+      "components": [
+        "MilestoneTracker",
+        "Progress",
+        "StatusChip"
+      ],
+      "optionalComponents": [
+        "Button",
+        "Alert",
+        "ModuleState",
+        "ActivityFeed"
+      ],
+      "icons": [
+        "check",
+        "settings",
+        "pending",
+        "warning"
+      ],
+      "consumerInputs": [
+        "ordered requirements, completion state, and labels",
+        "completion percentage and current requirement",
+        "resolution copy and action elements",
+        "read-only or unavailable reason when applicable"
+      ],
+      "systemOwns": [
+        "canonical component composition",
+        "labels, keyboard behavior, focus, and responsive presentation",
+        "semantic state and status styling through shared tokens",
+        "invocation of consumer-provided action elements"
+      ],
+      "consumerOwns": [
+        "requirement truth, ordering, and completion evaluation",
+        "validation, persistence, and setup side effects",
+        "which action resolves a requirement",
+        "whether the checklist is applicable to the current context"
+      ],
+      "states": [
+        "empty",
+        "loading",
+        "error",
+        "disabled",
+        "read-only",
+        "action-required",
+        "ready"
+      ],
+      "moduleStates": [
+        "setup-required",
+        "action-required",
+        "read-only"
+      ],
+      "responsive": {
+        "desktop": "Keep the checklist beside the module summary or context.",
+        "tablet": "Stack requirement detail below the selected checklist stage.",
+        "mobile": "Use one ordered vertical sequence with each action adjacent to its requirement."
+      },
+      "accessibility": [
+        "Expose the ordered checklist and percentage as labelled progress semantics.",
+        "Keep incomplete requirements and their resolution action adjacent in DOM order.",
+        "Do not represent completion only through a check color or icon."
+      ],
+      "tokens": [
+        "surface",
+        "surface-raised",
+        "surface-subtle",
+        "border",
+        "focus-ring",
+        "selected",
+        "control-height",
+        "touch-target-min",
+        "radius-card",
+        "motion",
+        "success",
+        "warning",
+        "info"
+      ],
+      "aiGuidance": "Choose this pattern when a user needs to complete a bounded set of consumer-owned prerequisites.",
+      "antiPatterns": [
+        "Calculating readiness from checklist labels in Ten4Seven",
+        "Hiding incomplete requirements behind a decorative progress ring",
+        "Auto-submitting or auto-advancing setup steps"
+      ],
+      "referenceView": "module-catalog"
+    },
+    "module-state-presentation": {
+      "id": "module-state-presentation",
+      "displayName": "Module availability state",
+      "purpose": "Render normalized module availability, access, lifecycle, and action-required states supplied by a consumer.",
+      "intentPhrases": [
+        "module state",
+        "suspended module",
+        "unavailable module",
+        "dependency unavailable",
+        "module access state"
+      ],
+      "components": [
+        "ModuleState",
+        "StatusChip"
+      ],
+      "optionalComponents": [
+        "Button",
+        "Alert",
+        "KeyValueList"
+      ],
+      "icons": [
+        "info",
+        "lock",
+        "pending",
+        "settings",
+        "warning",
+        "blocked",
+        "view",
+        "refresh"
+      ],
+      "consumerInputs": [
+        "normalized module state identifier",
+        "applicability and authorization context",
+        "title, description, details, and action elements",
+        "freshness or lifecycle evidence when relevant"
+      ],
+      "systemOwns": [
+        "canonical component composition",
+        "labels, keyboard behavior, focus, and responsive presentation",
+        "semantic state and status styling through shared tokens",
+        "invocation of consumer-provided action elements",
+        "the normalized 11-state vocabulary and default semantic metadata",
+        "aria-labelledby and aria-describedby wiring for the state surface"
+      ],
+      "consumerOwns": [
+        "state applicability and mapping from platform lifecycle",
+        "permission, entitlement, tenant, and resource decisions",
+        "copy overrides, actions, and event handlers",
+        "lifecycle mutations and route behavior"
+      ],
+      "states": [
+        "empty",
+        "loading",
+        "error",
+        "disabled",
+        "read-only",
+        "action-required",
+        "ready"
+      ],
+      "moduleStates": [
+        "not-available",
+        "not-entitled",
+        "setup-required",
+        "provisioning",
+        "resuming",
+        "suspended",
+        "dependency-unavailable",
+        "permission-denied",
+        "out-of-scope",
+        "read-only",
+        "action-required"
+      ],
+      "responsive": {
+        "desktop": "Keep state copy and the next action in one bounded surface.",
+        "tablet": "Preserve the state title and action before secondary details.",
+        "mobile": "Stack state, explanation, details, and actions in document order."
+      },
+      "accessibility": [
+        "State the meaning in visible text and supplement it with semantic iconography.",
+        "Associate the state title and description with the semantic section.",
+        "Keep consumer-provided actions keyboard reachable and independently labelled."
+      ],
+      "tokens": [
+        "surface",
+        "surface-raised",
+        "surface-subtle",
+        "border",
+        "focus-ring",
+        "selected",
+        "control-height",
+        "touch-target-min",
+        "radius-card",
+        "motion",
+        "success",
+        "warning",
+        "danger",
+        "info"
+      ],
+      "aiGuidance": "Choose this pattern when a consumer has already determined a module state and Ten4Seven should present the explanation and next action.",
+      "antiPatterns": [
+        "Calling canAccess or evaluating entitlement in the renderer",
+        "Fetching tenant or resource context from ModuleState",
+        "Mutating provisioning, suspension, or permission state from a CTA"
+      ],
+      "referenceView": "activation"
+    },
+    "permission-scope": {
+      "id": "permission-scope",
+      "displayName": "Permission and resource-scope state",
+      "purpose": "Present consumer-supplied permission-denied, out-of-scope, and read-only explanations beside the relevant resource context.",
+      "intentPhrases": [
+        "permission denied",
+        "access denied",
+        "out of scope",
+        "permission scope",
+        "resource access state"
+      ],
+      "components": [
+        "ModuleState",
+        "HierarchyPicker",
+        "StatusChip"
+      ],
+      "optionalComponents": [
+        "Button",
+        "Alert",
+        "KeyValueList"
+      ],
+      "icons": [
+        "lock",
+        "blocked",
+        "view",
+        "info",
+        "users"
+      ],
+      "consumerInputs": [
+        "consumer-supplied permission or scope presentation state",
+        "resource hierarchy and selected/disabled nodes",
+        "reason, owner, support, or request-access actions",
+        "read-only capability details when available"
+      ],
+      "systemOwns": [
+        "canonical component composition",
+        "labels, keyboard behavior, focus, and responsive presentation",
+        "semantic state and status styling through shared tokens",
+        "invocation of consumer-provided action elements"
+      ],
+      "consumerOwns": [
+        "effective access and resource scope evaluation",
+        "why the principal is denied or limited",
+        "request, support, escalation, and navigation behavior",
+        "server-side enforcement and audit authority"
+      ],
+      "states": [
+        "empty",
+        "loading",
+        "error",
+        "disabled",
+        "read-only",
+        "action-required",
+        "ready"
+      ],
+      "moduleStates": [
+        "permission-denied",
+        "out-of-scope",
+        "read-only",
+        "not-entitled"
+      ],
+      "responsive": {
+        "desktop": "Keep scope context and the access explanation side by side.",
+        "tablet": "Stack resource context before the denial explanation and action.",
+        "mobile": "Use one vertical sequence with the reason before any request/support action."
+      },
+      "accessibility": [
+        "Write the denied or limited condition in text and do not rely on a lock icon alone.",
+        "Keep the resource hierarchy labelled and keyboard navigable.",
+        "Make request/support actions reachable without making the disabled business action focusable."
+      ],
+      "tokens": [
+        "surface",
+        "surface-raised",
+        "surface-subtle",
+        "border",
+        "focus-ring",
+        "selected",
+        "control-height",
+        "touch-target-min",
+        "radius-card",
+        "motion",
+        "danger",
+        "info",
+        "disabled-background",
+        "disabled-foreground"
+      ],
+      "aiGuidance": "Choose this pattern when the consumer needs to explain a supplied access or scope result without exposing an authorization rule in the UI system.",
+      "antiPatterns": [
+        "Treating a hidden option as a permission explanation",
+        "Putting authorization policy in a button disabled condition inside the pattern",
+        "Calling a generic hierarchy Farm-only"
+      ],
+      "referenceView": "access"
+    },
+    "permission-matrix": {
+      "id": "permission-matrix",
+      "displayName": "Role / capability matrix",
+      "purpose": "Present a readable consumer-owned comparison of roles and capability outcomes using canonical table semantics.",
+      "intentPhrases": [
+        "role permission matrix",
+        "permission matrix",
+        "role matrix",
+        "capability permissions",
+        "role access table"
+      ],
+      "components": [
+        "DataTable",
+        "StatusChip"
+      ],
+      "optionalComponents": [
+        "Select",
+        "FilterToolbar",
+        "ModuleState",
+        "Button"
+      ],
+      "icons": [
+        "users",
+        "lock",
+        "check",
+        "table",
+        "filter"
+      ],
+      "consumerInputs": [
+        "role labels and opaque identifiers",
+        "capability labels and consumer-evaluated outcomes",
+        "table ordering, filters, and any row actions",
+        "read-only or unavailable presentation state"
+      ],
+      "systemOwns": [
+        "canonical component composition",
+        "labels, keyboard behavior, focus, and responsive presentation",
+        "semantic state and status styling through shared tokens",
+        "invocation of consumer-provided action elements"
+      ],
+      "consumerOwns": [
+        "role, capability, and effective access semantics",
+        "policy evaluation and changes to membership",
+        "which cells are authoritative and when they are fresh",
+        "editing, persistence, and audit of role changes"
+      ],
+      "states": [
+        "empty",
+        "loading",
+        "error",
+        "disabled",
+        "read-only",
+        "action-required",
+        "ready"
+      ],
+      "responsive": {
+        "desktop": "Use a comparable table with stable role and capability columns.",
+        "tablet": "Keep the matrix in a bounded scroll owner and preserve row/column labels.",
+        "mobile": "Use the canonical stacked table projection only when comparison semantics remain clear."
+      },
+      "accessibility": [
+        "Give the table a caption and explicit column headers.",
+        "Write capability outcomes as text or labelled status chips, not color alone.",
+        "Preserve the table's bounded scroll or stacked semantics on narrow screens."
+      ],
+      "tokens": [
+        "surface",
+        "surface-raised",
+        "surface-subtle",
+        "border",
+        "focus-ring",
+        "selected",
+        "control-height",
+        "touch-target-min",
+        "radius-card",
+        "motion",
+        "table-header",
+        "table-cell",
+        "table-cell-padding",
+        "success",
+        "danger"
+      ],
+      "aiGuidance": "Choose this pattern for a read-oriented role/capability comparison; move editing into a consumer-owned form or bounded workflow.",
+      "antiPatterns": [
+        "Calculating effective access in a table cell renderer",
+        "Using a grid of unlabeled color dots as the permission contract",
+        "Forcing a wide matrix into unreadable cards without a declared projection"
+      ],
+      "referenceView": "access"
+    },
+    "activity-audit": {
+      "id": "activity-audit",
+      "displayName": "Activity / audit timeline",
+      "purpose": "Present consumer-supplied chronological activity and evidence-oriented audit events without claiming storage or immutability.",
+      "intentPhrases": [
+        "audit timeline",
+        "activity timeline",
+        "activity audit",
+        "audit stream",
+        "audit trail",
+        "activity history",
+        "who did what when"
+      ],
+      "components": [
+        "ActivityFeed",
+        "KeyValueList"
+      ],
+      "optionalComponents": [
+        "StatusChip",
+        "DataTable",
+        "FilterToolbar"
+      ],
+      "icons": [
+        "timeline",
+        "clock",
+        "users",
+        "check",
+        "warning"
+      ],
+      "consumerInputs": [
+        "ordered events with actor, action, object, and timestamp",
+        "source, evidence, result, and state-change details when available",
+        "empty/loading/error presentation state",
+        "consumer-owned filtering or detail actions"
+      ],
+      "systemOwns": [
+        "canonical component composition",
+        "labels, keyboard behavior, focus, and responsive presentation",
+        "semantic state and status styling through shared tokens",
+        "invocation of consumer-provided action elements"
+      ],
+      "consumerOwns": [
+        "event truth, ordering, freshness, and source",
+        "audit storage, immutability, retention, and export",
+        "actor identity and business interpretation",
+        "filters, pagination, and detail navigation"
+      ],
+      "states": [
+        "empty",
+        "loading",
+        "error",
+        "disabled",
+        "read-only",
+        "ready"
+      ],
+      "responsive": {
+        "desktop": "Keep the ordered trace beside current context when useful.",
+        "tablet": "Move trace below current work while preserving event order.",
+        "mobile": "Use one chronological column with actor, action, and timestamp together."
+      },
+      "accessibility": [
+        "Use ordered-list semantics and keep each timestamp and actor as text.",
+        "Do not communicate event results only through an icon or status color.",
+        "Keep filters and event detail actions keyboard reachable if supplied."
+      ],
+      "tokens": [
+        "surface",
+        "surface-raised",
+        "surface-subtle",
+        "border",
+        "focus-ring",
+        "selected",
+        "control-height",
+        "touch-target-min",
+        "radius-card",
+        "motion",
+        "muted-foreground",
+        "success",
+        "warning",
+        "danger"
+      ],
+      "aiGuidance": "Use this pattern when users need a readable history or evidence trace; do not infer immutable audit authority from a visual feed.",
+      "antiPatterns": [
+        "Treating activity and audit as identical product guarantees",
+        "Dropping actor, timestamp, object, or source context",
+        "Appending arbitrary prose instead of structured events"
+      ],
+      "referenceView": "trace"
+    },
+    "import-exception-review": {
+      "id": "import-exception-review",
+      "displayName": "Import progress and exception review",
+      "purpose": "Present consumer-owned import progress, row outcomes, and exception review actions using canonical files, progress, alert, and table contracts.",
+      "intentPhrases": [
+        "import progress",
+        "import exceptions",
+        "exception review",
+        "bulk import review",
+        "file import status"
+      ],
+      "components": [
+        "FileUpload",
+        "Progress",
+        "DataTable",
+        "Alert"
+      ],
+      "optionalComponents": [
+        "Button",
+        "StatusChip",
+        "ModuleState",
+        "DetailDrawer"
+      ],
+      "icons": [
+        "import",
+        "upload",
+        "warning",
+        "fileCheck",
+        "view"
+      ],
+      "consumerInputs": [
+        "consumer-owned file or import metadata",
+        "determinate or indeterminate progress value",
+        "row-level exception reason and suggested next action",
+        "retry, download, inspect, or discard action elements"
+      ],
+      "systemOwns": [
+        "canonical component composition",
+        "labels, keyboard behavior, focus, and responsive presentation",
+        "semantic state and status styling through shared tokens",
+        "invocation of consumer-provided action elements"
+      ],
+      "consumerOwns": [
+        "file parsing, validation, import authority, and persistence",
+        "progress calculation and job lifecycle",
+        "exception meaning, correction policy, and retry side effects",
+        "download/export content and access control"
+      ],
+      "states": [
+        "empty",
+        "loading",
+        "error",
+        "disabled",
+        "read-only",
+        "action-required",
+        "ready"
+      ],
+      "responsive": {
+        "desktop": "Keep import summary, progress, and exception rows in a bounded review grid.",
+        "tablet": "Stack exception detail below progress before secondary actions.",
+        "mobile": "Keep progress and the first recovery action before the scrollable exception table."
+      },
+      "accessibility": [
+        "Name the upload and progress controls and expose numeric progress when determinate.",
+        "Give the exception table a caption and plain-language reason column.",
+        "Keep row actions keyboard reachable and never imply success from color alone."
+      ],
+      "tokens": [
+        "surface",
+        "surface-raised",
+        "surface-subtle",
+        "border",
+        "focus-ring",
+        "selected",
+        "control-height",
+        "touch-target-min",
+        "radius-card",
+        "motion",
+        "success",
+        "warning",
+        "danger",
+        "table-header",
+        "table-cell"
+      ],
+      "aiGuidance": "Choose this pattern when an import has measurable progress and exceptions that require accountable review.",
+      "antiPatterns": [
+        "Uploading or parsing a file inside a presentational pattern",
+        "Hiding failed rows behind a success percentage",
+        "Making retry a side effect of rendering an exception row"
+      ],
+      "referenceView": "trace"
+    },
+    "mapping-reconciliation": {
+      "id": "mapping-reconciliation",
+      "displayName": "Mapping and reconciliation status",
+      "purpose": "Present consumer-supplied source/target mapping outcomes, matched and unmatched counts, and review state without calculating reconciliation.",
+      "intentPhrases": [
+        "mapping reconciliation",
+        "reconciliation status",
+        "mapping status",
+        "unmatched rows",
+        "source target mapping"
+      ],
+      "components": [
+        "DataTable",
+        "StatusChip",
+        "Progress"
+      ],
+      "optionalComponents": [
+        "RevisionDiff",
+        "Alert",
+        "Button",
+        "ModuleState"
+      ],
+      "icons": [
+        "transfer",
+        "check",
+        "warning",
+        "table",
+        "view"
+      ],
+      "consumerInputs": [
+        "source and target labels or identifiers",
+        "consumer-calculated match, mismatch, and unresolved outcomes",
+        "progress or completion values with their basis",
+        "review, correction, or evidence action elements"
+      ],
+      "systemOwns": [
+        "canonical component composition",
+        "labels, keyboard behavior, focus, and responsive presentation",
+        "semantic state and status styling through shared tokens",
+        "invocation of consumer-provided action elements"
+      ],
+      "consumerOwns": [
+        "mapping rules, matching logic, and reconciliation calculations",
+        "source/target data truth and freshness",
+        "correction, persistence, approval, and audit behavior",
+        "whether a mismatch is actionable or informational"
+      ],
+      "states": [
+        "empty",
+        "loading",
+        "error",
+        "disabled",
+        "read-only",
+        "action-required",
+        "ready"
+      ],
+      "responsive": {
+        "desktop": "Show summary progress beside the comparable mapping table.",
+        "tablet": "Keep the table bounded and move evidence or revision detail below it.",
+        "mobile": "Place outcome summary first, then use the canonical stacked or scroll table projection."
+      },
+      "accessibility": [
+        "Name source, target, outcome, and unresolved reasons in table headers and text.",
+        "Expose progress with a label and numeric value supplied by the consumer.",
+        "Keep review and evidence actions reachable without changing the displayed outcome."
+      ],
+      "tokens": [
+        "surface",
+        "surface-raised",
+        "surface-subtle",
+        "border",
+        "focus-ring",
+        "selected",
+        "control-height",
+        "touch-target-min",
+        "radius-card",
+        "motion",
+        "success",
+        "warning",
+        "danger",
+        "table-header",
+        "table-cell",
+        "transition-standard"
+      ],
+      "aiGuidance": "Choose this pattern when a consumer has already calculated source/target mapping and users need to review the resulting reconciliation status.",
+      "antiPatterns": [
+        "Summing or matching records inside a table component",
+        "Calling all unresolved rows errors without consumer severity",
+        "Persisting a correction from a visual status click"
+      ],
+      "referenceView": "trace"
+    }
+  },
+  "referenceViews": {
+    "context": [
+      "tenant-selector",
+      "resource-selector"
+    ],
+    "module-catalog": [
+      "module-catalog",
+      "setup-checklist"
+    ],
+    "activation": [
+      "module-activation",
+      "module-state-presentation"
+    ],
+    "access": [
+      "permission-scope",
+      "permission-matrix"
+    ],
+    "trace": [
+      "activity-audit",
+      "import-exception-review",
+      "mapping-reconciliation"
+    ]
+  },
+  "stateCoverage": [
+    "empty",
+    "loading",
+    "error",
+    "disabled",
+    "read-only",
+    "action-required",
+    "ready"
+  ],
+  "responsive": {
+    "desktop": "Use AppShell, route context, a bounded PageHeader, and grouped pattern content with decision-relevant context first.",
+    "tablet": "Collapse navigation, wrap context, reduce supporting copy, and preserve state, scope, progress, exception, and next-action semantics.",
+    "mobile": "Use the canonical drawer navigation and one vertical reading order; tables remain bounded scroll or an explicit stacked projection."
+  },
+  "accessibility": [
+    "Use one route-level heading and named navigation, context, pattern, table, and progress regions.",
+    "Keep consumer-supplied state, reason, actor, timestamp, scope, and next action in text.",
+    "Preserve canonical keyboard, focus, popup, drawer, table, and hierarchy behavior.",
+    "Do not auto-advance lifecycle, apply permission decisions, or silently persist a correction."
+  ],
+  "ownership": {
+    "system": [
+      "canonical composition contracts",
+      "semantic tokens, icons, accessibility, responsive behavior, and motion",
+      "presentation of consumer-supplied values and state identifiers"
+    ],
+    "consumer": [
+      "principal, tenant, organization, resource, module, role, and capability data",
+      "permission, entitlement, scope, lifecycle, import, mapping, and reconciliation decisions",
+      "fetching, mutation, persistence, handlers, routing, and audit storage"
+    ],
+    "platform": [
+      "principal context, effective access, tenant membership, module registry, provisioning authority, and audit semantics"
+    ]
+  },
+  "retrieval": {
+    "source": "packages/contracts/src/saas-control-plane.ts",
+    "reference": "/saas-control-plane",
+    "intentPhrases": {
+      "tenant-selector": [
+        "tenant selector",
+        "organization selector",
+        "switch organization",
+        "workspace selector",
+        "company context"
+      ],
+      "resource-selector": [
+        "resource selector",
+        "site selector",
+        "facility selector",
+        "farm site selector",
+        "resource scope selection",
+        "select resources"
+      ],
+      "module-catalog": [
+        "module catalog",
+        "capability catalog",
+        "available modules",
+        "module registry presentation",
+        "feature catalog"
+      ],
+      "module-activation": [
+        "module activation",
+        "activation progress",
+        "provisioning progress",
+        "enable module",
+        "resume module"
+      ],
+      "setup-checklist": [
+        "setup checklist",
+        "setup requirements",
+        "requirements list",
+        "configure module",
+        "onboarding checklist"
+      ],
+      "module-state-presentation": [
+        "module state",
+        "suspended module",
+        "unavailable module",
+        "dependency unavailable",
+        "module access state"
+      ],
+      "permission-scope": [
+        "permission denied",
+        "access denied",
+        "out of scope",
+        "permission scope",
+        "resource access state"
+      ],
+      "permission-matrix": [
+        "role permission matrix",
+        "permission matrix",
+        "role matrix",
+        "capability permissions",
+        "role access table"
+      ],
+      "activity-audit": [
+        "audit timeline",
+        "activity timeline",
+        "activity audit",
+        "audit stream",
+        "audit trail",
+        "activity history",
+        "who did what when"
+      ],
+      "import-exception-review": [
+        "import progress",
+        "import exceptions",
+        "exception review",
+        "bulk import review",
+        "file import status"
+      ],
+      "mapping-reconciliation": [
+        "mapping reconciliation",
+        "reconciliation status",
+        "mapping status",
+        "unmatched rows",
+        "source target mapping"
+      ]
+    }
+  }
+}

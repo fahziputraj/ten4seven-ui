@@ -3,11 +3,14 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { THEME_RECIPES } from "../packages/contracts/src/theme-recipe.ts";
+import { INTERACTION_FEEDBACK } from "../packages/contracts/src/foundation.ts";
 import {
   densityProfiles,
   buildThemeVariables,
   resolveTheme,
+  chartGeometry,
   iconGeometry,
+  markGeometry,
   kpiGeometry,
   layoutGeometry,
   motionDurationRange,
@@ -15,6 +18,8 @@ import {
   paletteProfiles,
   radiusProfiles,
   referenceSpace,
+  surfaceGeometry,
+  tableGeometry,
 } from "../packages/tokens/src/theme.ts";
 
 const repoRoot = resolve(fileURLToPath(new URL("..", import.meta.url)));
@@ -86,6 +91,10 @@ function dimension(value) {
     $type: "dimension",
     $value: parseUnitValue(value, ["px", "rem"], "dimension"),
   };
+}
+
+function number(value) {
+  return { $type: "number", $value: value };
 }
 
 function duration(value) {
@@ -204,6 +213,12 @@ export function buildDtcgTokenExport() {
             dimension(value),
           ]),
         ),
+        mark: Object.fromEntries(
+          Object.entries(markGeometry).map(([role, value]) => [
+            role,
+            dimension(value),
+          ]),
+        ),
         control: {
           height: dimension(densityProfiles.default.control),
           paddingInline: dimension(
@@ -218,6 +233,24 @@ export function buildDtcgTokenExport() {
           padding: dimension(densityProfiles.default.cardPadding),
           headerGap: dimension(densityProfiles.default.cardHeaderGap),
         },
+        surface: {
+          depth: {
+            gradientAngle: {
+              $type: "string",
+              $value: surfaceGeometry.depth.gradientAngle,
+            },
+            gradientStop: {
+              $type: "string",
+              $value: surfaceGeometry.depth.gradientStop,
+            },
+            shadowBlur: dimension(surfaceGeometry.depth.shadowBlur),
+            shadowOffsetY: dimension(surfaceGeometry.depth.shadowOffsetY),
+          },
+          hoverTranslateY: dimension(surfaceGeometry.hoverTranslateY),
+        },
+        table: {
+          dividerAlpha: number(tableGeometry.dividerAlpha),
+        },
         kpi: {
           padding: dimension(densityProfiles.default.cardPadding),
           gap: dimension(densityProfiles.default.controlGap),
@@ -227,6 +260,32 @@ export function buildDtcgTokenExport() {
           chartHeight: dimension(kpiGeometry.chartHeight),
           trendPaddingBlock: dimension(kpiGeometry.trendPaddingBlock),
           trendPaddingInline: dimension(kpiGeometry.trendPaddingInline),
+          decorative: {
+            size: dimension(kpiGeometry.decorative.size),
+            offsetTop: dimension(kpiGeometry.decorative.offsetTop),
+            offsetInline: dimension(kpiGeometry.decorative.offsetInline),
+            opacity: number(kpiGeometry.decorative.opacity),
+          },
+        },
+        chart: {
+          lineWidth: number(chartGeometry.lineWidth),
+          pointRadius: number(chartGeometry.pointRadius),
+          pointHoverScale: number(chartGeometry.pointHoverScale),
+          pointSettleScale: number(chartGeometry.pointSettleScale),
+          barRadius: number(chartGeometry.barRadius),
+          barHoverTranslateY: dimension(chartGeometry.barHoverTranslateY),
+          barHoverScaleY: number(chartGeometry.barHoverScaleY),
+          donutStrokeWidth: number(chartGeometry.donutStrokeWidth),
+          donutHoverStrokeWidth: number(chartGeometry.donutHoverStrokeWidth),
+          tooltipOffsetY: dimension(chartGeometry.tooltipOffsetY),
+        },
+        interaction: {
+          opacity: Object.fromEntries(
+            Object.entries(INTERACTION_FEEDBACK).map(([role, value]) => [
+              role,
+              number(value),
+            ]),
+          ),
         },
         overlay: {
           menu: {
@@ -247,6 +306,7 @@ export function buildDtcgTokenExport() {
             min: dimension(overlayGeometry.popover.min),
             max: dimension(overlayGeometry.popover.max),
           },
+          tooltipMin: dimension(overlayGeometry.tooltipMin),
           tooltipMax: dimension(overlayGeometry.tooltipMax),
           command: dimension(overlayGeometry.command),
           dialog: {
@@ -305,11 +365,11 @@ if (process.argv.includes("--stdout")) {
   process.stdout.write(renderDtcgTokenExport());
 } else {
   const output = renderDtcgTokenExport();
-  await Promise.all(
-    outputPaths.map(async (outputPath) => {
-      await mkdir(dirname(outputPath), { recursive: true });
-      await writeFile(outputPath, output, "utf8");
-    }),
-  );
+  // Keep generated writes ordered on Windows. Concurrent writes to several
+  // projections can intermittently surface as UNKNOWN from fs.promises.
+  for (const outputPath of outputPaths) {
+    await mkdir(dirname(outputPath), { recursive: true });
+    await writeFile(outputPath, output, "utf8");
+  }
   console.log(`Generated ${outputPaths.length} DTCG-compatible token exports.`);
 }

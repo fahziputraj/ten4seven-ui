@@ -1,4 +1,4 @@
-import { writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import prettier from "prettier";
@@ -14,6 +14,9 @@ import {
 
 const repoRoot = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const outputPath = resolve(repoRoot, "packages/tokens/src/theme-recipes.css");
+const baseThemeCssPath = resolve(repoRoot, "packages/tokens/src/theme.css");
+const baseGeneratedComment =
+  "/* Generated from packages/tokens/src/theme.ts. Do not edit the :root token block by hand. */";
 const modes = ["light", "dark"];
 const densities = ["comfortable", "default", "compact", "dense"];
 const densityVariables = [
@@ -131,13 +134,46 @@ export function renderThemeRecipeCss() {
   ].join("\n\n");
 }
 
+export function renderBaseThemeCss(source) {
+  const rootStart = source.indexOf(":root {");
+  const rootEnd = source.indexOf("\n}\n\n[data-theme-appearance", rootStart);
+
+  if (rootStart < 0 || rootEnd < rootStart) {
+    throw new Error(
+      "Unable to locate the generated :root token block in packages/tokens/src/theme.css",
+    );
+  }
+
+  const variables = buildThemeVariables(resolveTheme());
+  const root = declarationBlock(":root", {
+    "color-scheme": "light",
+    ...variables,
+  });
+
+  return [
+    source.slice(0, rootStart).replace(baseGeneratedComment, "").trimEnd(),
+    baseGeneratedComment,
+    root,
+    source.slice(rootEnd + 2),
+  ].join("\n");
+}
+
 async function formatThemeRecipeCss() {
   return prettier.format(renderThemeRecipeCss(), { parser: "css" });
+}
+
+async function formatBaseThemeCss() {
+  const source = await readFile(baseThemeCssPath, "utf8");
+  return prettier.format(renderBaseThemeCss(source), { parser: "css" });
 }
 
 if (process.argv.includes("--stdout")) {
   process.stdout.write(await formatThemeRecipeCss());
 } else {
+  // Keep the two generated writes ordered on Windows. Both files are derived
+  // from the same resolver, and concurrent handle creation can intermittently
+  // surface as UNKNOWN for the base theme file on a dirty local checkout.
   await writeFile(outputPath, await formatThemeRecipeCss(), "utf8");
-  console.log(`Generated ${outputPath}`);
+  await writeFile(baseThemeCssPath, await formatBaseThemeCss(), "utf8");
+  console.log(`Generated ${outputPath} and ${baseThemeCssPath}`);
 }

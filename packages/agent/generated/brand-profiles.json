@@ -1,6 +1,15 @@
 {
   "neutral-product": {
     "id": "neutral-product",
+    "adapter": "neutral",
+    "product": "neutral-product",
+    "surfaceProfile": "system-library",
+    "themeRecipe": "product",
+    "density": "default",
+    "brandRoles": null,
+    "asset": {
+      "kind": "consumer-owned"
+    },
     "media": {
       "prominence": "low",
       "treatment": "product",
@@ -24,8 +33,176 @@
       "level": "balanced"
     }
   },
+  "aapm-core": {
+    "id": "aapm-core",
+    "product": "aapm-core",
+    "surfaceProfile": "system-library",
+    "themeRecipe": "enterprise",
+    "density": "default",
+    "media": {
+      "prominence": "low",
+      "treatment": "product",
+      "overlay": "none"
+    },
+    "composition": {
+      "heroBias": "centered",
+      "whitespace": "balanced"
+    },
+    "typography": {
+      "displayCharacter": "neutral",
+      "emphasis": "restrained"
+    },
+    "brandMark": {
+      "prominence": "medium"
+    },
+    "surface": {
+      "mood": "institutional"
+    },
+    "actionEmphasis": {
+      "level": "balanced"
+    },
+    "adapter": "aapm-core",
+    "brandRoles": {
+      "primary": "brand.primary",
+      "accent": "brand.accent",
+      "highlight": "brand.highlight",
+      "surface": "brand.surface.deep",
+      "text": "text.ink"
+    },
+    "asset": {
+      "kind": "canonical",
+      "collection": "corporate"
+    }
+  },
+  "aapm-farm": {
+    "id": "aapm-farm",
+    "product": "farm-customer",
+    "surfaceProfile": "content",
+    "themeRecipe": "product",
+    "density": "comfortable",
+    "media": {
+      "prominence": "high",
+      "treatment": "documentary",
+      "overlay": "soft"
+    },
+    "composition": {
+      "heroBias": "editorial",
+      "whitespace": "generous"
+    },
+    "typography": {
+      "displayCharacter": "editorial",
+      "emphasis": "expressive"
+    },
+    "brandMark": {
+      "prominence": "high"
+    },
+    "surface": {
+      "mood": "soft"
+    },
+    "actionEmphasis": {
+      "level": "strong"
+    },
+    "adapter": "aapm-core",
+    "brandRoles": {
+      "primary": "brand.primary",
+      "accent": "brand.accent",
+      "highlight": "brand.highlight",
+      "surface": "brand.surface.deep",
+      "text": "text.ink"
+    },
+    "asset": {
+      "kind": "canonical",
+      "collection": "corporate"
+    }
+  },
+  "aapm-operations": {
+    "id": "aapm-operations",
+    "product": "operations",
+    "surfaceProfile": "operational",
+    "themeRecipe": "enterprise",
+    "density": "compact",
+    "media": {
+      "prominence": "low",
+      "treatment": "product",
+      "overlay": "none"
+    },
+    "composition": {
+      "heroBias": "centered",
+      "whitespace": "compact"
+    },
+    "typography": {
+      "displayCharacter": "technical",
+      "emphasis": "restrained"
+    },
+    "brandMark": {
+      "prominence": "medium"
+    },
+    "surface": {
+      "mood": "institutional"
+    },
+    "actionEmphasis": {
+      "level": "strong"
+    },
+    "adapter": "aapm-core",
+    "brandRoles": {
+      "primary": "brand.primary",
+      "accent": "brand.accent",
+      "highlight": "brand.highlight",
+      "surface": "brand.surface.deep",
+      "text": "text.ink"
+    },
+    "asset": {
+      "kind": "canonical",
+      "collection": "corporate"
+    }
+  },
+  "aapm-erp": {
+    "id": "aapm-erp",
+    "product": "erp",
+    "surfaceProfile": "data-dense",
+    "themeRecipe": "enterprise",
+    "density": "dense",
+    "media": {
+      "prominence": "none",
+      "treatment": "none",
+      "overlay": "none"
+    },
+    "composition": {
+      "heroBias": "minimal",
+      "whitespace": "compact"
+    },
+    "typography": {
+      "displayCharacter": "technical",
+      "emphasis": "restrained"
+    },
+    "brandMark": {
+      "prominence": "low"
+    },
+    "surface": {
+      "mood": "neutral"
+    },
+    "actionEmphasis": {
+      "level": "balanced"
+    },
+    "adapter": "aapm-core",
+    "brandRoles": {
+      "primary": "brand.primary",
+      "accent": "brand.accent",
+      "highlight": "brand.highlight",
+      "surface": "brand.surface.deep",
+      "text": "text.ink"
+    },
+    "asset": {
+      "kind": "canonical",
+      "collection": "corporate"
+    }
+  },
   "aapm-academy": {
     "id": "aapm-academy",
+    "product": "academy",
+    "surfaceProfile": "content",
+    "themeRecipe": "editorial",
+    "density": "comfortable",
     "media": {
       "prominence": "high",
       "treatment": "documentary",
@@ -43,10 +220,63 @@
       "prominence": "high"
     },
     "surface": {
-      "mood": "institutional"
+      "mood": "editorial"
     },
     "actionEmphasis": {
       "level": "strong"
+    },
+    "adapter": "aapm-core",
+    "brandRoles": {
+      "primary": "brand.primary",
+      "accent": "brand.accent",
+      "highlight": "brand.highlight",
+      "surface": "brand.surface.deep",
+      "text": "text.ink"
+    },
+    "asset": {
+      "kind": "canonical",
+      "collection": "academy"
+    }
+  },
+  "aapm-public": {
+    "id": "aapm-public",
+    "product": "public-corporate",
+    "surfaceProfile": "content",
+    "themeRecipe": "editorial",
+    "density": "comfortable",
+    "media": {
+      "prominence": "high",
+      "treatment": "editorial",
+      "overlay": "soft"
+    },
+    "composition": {
+      "heroBias": "editorial",
+      "whitespace": "generous"
+    },
+    "typography": {
+      "displayCharacter": "editorial",
+      "emphasis": "expressive"
+    },
+    "brandMark": {
+      "prominence": "high"
+    },
+    "surface": {
+      "mood": "editorial"
+    },
+    "actionEmphasis": {
+      "level": "strong"
+    },
+    "adapter": "aapm-core",
+    "brandRoles": {
+      "primary": "brand.primary",
+      "accent": "brand.accent",
+      "highlight": "brand.highlight",
+      "surface": "brand.surface.deep",
+      "text": "text.ink"
+    },
+    "asset": {
+      "kind": "canonical",
+      "collection": "corporate"
     }
   }
 }

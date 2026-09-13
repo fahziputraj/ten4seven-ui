@@ -18,12 +18,18 @@ export const DEFAULT_RUNTIME_PREFERENCES: ResolvedRuntimePreferences = {
   motion: "full",
 };
 
-const defaultComposition: ThemeComposition = {
+const baseComposition: ThemeComposition = {
   contentMax: "1440px",
   readingMeasure: "68ch",
   pageGutter: "clamp(24px, 3vw, 44px)",
   sectionGap: "clamp(24px, 3vw, 44px)",
 };
+
+function recipeComposition(
+  overrides: Partial<ThemeComposition> = {},
+): ThemeComposition {
+  return { ...baseComposition, ...overrides };
+}
 
 function recipeProfile(id: ThemeRecipeName, input: LegacyThemeConfigLike) {
   return { ...normalizeThemeProfile(input), id };
@@ -53,7 +59,7 @@ export const THEME_RECIPES: Readonly<Record<ThemeRecipeName, ThemeRecipe>> = {
       typography: "modern",
       elevation: "soft",
     }),
-    composition: defaultComposition,
+    composition: recipeComposition(),
   },
   product: {
     id: "product",
@@ -74,10 +80,7 @@ export const THEME_RECIPES: Readonly<Record<ThemeRecipeName, ThemeRecipe>> = {
       typography: "modern",
       elevation: "soft",
     }),
-    composition: {
-      ...defaultComposition,
-      contentMax: "1320px",
-    },
+    composition: recipeComposition({ contentMax: "1320px" }),
   },
   editorial: {
     id: "editorial",
@@ -98,12 +101,12 @@ export const THEME_RECIPES: Readonly<Record<ThemeRecipeName, ThemeRecipe>> = {
       typography: "editorial",
       elevation: "flat",
     }),
-    composition: {
+    composition: recipeComposition({
       contentMax: "1180px",
       readingMeasure: "70ch",
       pageGutter: "clamp(24px, 5vw, 72px)",
       sectionGap: "clamp(32px, 5vw, 72px)",
-    },
+    }),
   },
   commerce: {
     id: "commerce",
@@ -124,12 +127,12 @@ export const THEME_RECIPES: Readonly<Record<ThemeRecipeName, ThemeRecipe>> = {
       typography: "humanist",
       elevation: "soft",
     }),
-    composition: {
+    composition: recipeComposition({
       contentMax: "1360px",
       readingMeasure: "64ch",
       pageGutter: "clamp(20px, 3vw, 48px)",
       sectionGap: "clamp(28px, 4vw, 56px)",
-    },
+    }),
   },
 };
 

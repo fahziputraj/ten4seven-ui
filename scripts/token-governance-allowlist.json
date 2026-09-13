@@ -1,16 +1,205 @@
 {
-  "scope": "Canonical UI source only; token resolver and generated token CSS own raw reference values.",
+  "scope": "Active Web, Native, contract, playground, and consumer surfaces. Canonical resolver and generated projections own foundation literals; consumers may only use the bounded exceptions below.",
   "acceptedLiteralCategories": [
-    "1px borders and visually-hidden dimensions",
-    "intrinsic icon, media, chart, and pointer-origin geometry",
-    "transform offsets and browser-normalization mechanics",
-    "z-index 0 and 1 for local stacking inside a token-governed layer"
+    "1px borders, visually-hidden dimensions, and browser hairlines",
+    "intrinsic icon, media, chart, mark, and pointer-origin geometry",
+    "transform offsets, percentage geometry, and browser-normalization mechanics",
+    "runtime-derived viewport collision and bounded-measure calculations",
+    "component-internal anatomy that has no cross-component semantic role",
+    "semantic state alpha and token-backed inset depth composition",
+    "typed motion choreography endpoints whose timing comes from t7Motion",
+    "exact product/profile and external API brand-color boundaries",
+    "test fixtures that exercise color normalization or contract rejection"
+  ],
+  "exceptionRegistry": [
+    {
+      "id": "motion-choreography-endpoints",
+      "class": "MOTION_CHOREOGRAPHY",
+      "owner": "packages/ui/src/motion.ts",
+      "filePattern": "^packages/ui/src/motion\\.ts$",
+      "categoryPattern": "^T13 OPACITY$",
+      "propertyPattern": "^opacity$",
+      "valuePattern": ".*",
+      "reason": "Anime opacity/scale endpoints are mathematical choreography; role durations and reduced-motion behavior remain resolved by the canonical t7Motion contract."
+    },
+    {
+      "id": "overlay-runtime-measure",
+      "class": "RUNTIME_DERIVED",
+      "owner": "packages/ui/src/overlay.ts",
+      "filePattern": "^packages/ui/src/overlay\\.ts$",
+      "categoryPattern": "^T7 MIN / MAX SIZE$",
+      "propertyPattern": "^maxHeight$",
+      "valuePattern": ".*Math\\.max.*",
+      "reason": "Popup collision code derives the available viewport height at runtime; it does not define a reusable token value."
+    },
+    {
+      "id": "native-resolved-style-values",
+      "class": "RUNTIME_DERIVED",
+      "owner": "packages/native/src/renderer.tsx",
+      "filePattern": "^packages/native/src/renderer\\.tsx$",
+      "categoryPattern": "^T19 NATIVE STYLE CONSTANT$",
+      "propertyPattern": ".*",
+      "valuePattern": "(?:theme\\.|spacing\\.|radius\\.|marks\\.|resolvedSize|insets\\.|edges\\.|props\\.|StyleSheet\\.)",
+      "reason": "The renderer consumes concrete typed theme values or platform insets; the remaining numeric branches are renderer mechanics, not a parallel theme."
+    },
+    {
+      "id": "canonical-runtime-layout",
+      "class": "RUNTIME_DERIVED",
+      "owner": "packages/ui/src/styles.css",
+      "filePattern": "^packages/ui/src/styles\\.css$",
+      "categoryPattern": "^T(?:6 WIDTH / HEIGHT|7 MIN / MAX SIZE|17 LAYOUT MEASURE)$",
+      "propertyPattern": "^(?:width|height|min-width|max-width|min-height|max-height|inline-size|block-size)$",
+      "valuePattern": "(?:var\\(--t7-|calc\\(|min\\(|max\\(|clamp\\(|100%|100vw|100vh|ch|rem|em)",
+      "reason": "These are token-backed clamps, viewport constraints, or component-relative calculations; the raw part is an intrinsic boundary rather than an independent theme axis."
+    },
+    {
+      "id": "canonical-intrinsic-mark-geometry",
+      "class": "INTRINSIC_GEOMETRY",
+      "owner": "packages/ui/src/styles.css",
+      "filePattern": "^packages/ui/src/styles\\.css$",
+      "categoryPattern": "^(?:T6 WIDTH / HEIGHT|T7 MIN / MAX SIZE|T11 BORDER)$",
+      "propertyPattern": "^(?:width|height|min-width|min-height|border|border-width|border-top)$",
+      "valuePattern": "(?:1|2|3|6|7|8|9|12|14|16|17|18|20|22|24|26|27|28|30|32|34|36|42|44|48|56|76)px",
+      "reason": "Small fixed marks, SVG/chart strokes, indicator boxes, and control anatomy need local integer geometry and do not create a separate visual language."
+    },
+    {
+      "id": "canonical-component-anatomy-spacing",
+      "class": "COMPONENT_SEMANTIC",
+      "owner": "packages/ui/src/styles.css",
+      "filePattern": "^packages/ui/src/styles\\.css$",
+      "categoryPattern": "^(?:T3 PADDING|T4 MARGIN|T5 GAP)$",
+      "propertyPattern": "^(?:padding|padding-block|padding-inline|padding-top|padding-right|padding-bottom|padding-left|margin|margin-block|margin-inline|margin-top|margin-right|margin-bottom|margin-left|gap|row-gap|column-gap)$",
+      "valuePattern": ".*",
+      "reason": "Residual values are limited to canonical component anatomy after repeated foundation rhythm was migrated; they are not exposed as consumer theme knobs."
+    },
+    {
+      "id": "canonical-state-alpha",
+      "class": "SEMANTIC_STATE_ALPHA",
+      "owner": "packages/ui/src/styles.css",
+      "filePattern": "^packages/ui/src/styles\\.css$",
+      "categoryPattern": "^T13 OPACITY$",
+      "propertyPattern": "^opacity$",
+      "valuePattern": ".*",
+      "reason": "All repeated interaction alpha values are emitted by the shared feedback contract; this narrowly covers one remaining tab/animation state not represented by a generic component token."
+    },
+    {
+      "id": "canonical-inset-depth",
+      "class": "ELEVATION_COMPOSITION",
+      "owner": "packages/ui/src/styles.css",
+      "filePattern": "^packages/ui/src/styles\\.css$",
+      "categoryPattern": "^T12 ELEVATION / SHADOW$",
+      "propertyPattern": "^(?:box-shadow|text-shadow)$",
+      "valuePattern": "(?:var\\(--t7-|hsl\\(var)",
+      "reason": "Inset highlight/shade layers use semantic color references and compose with shared t7 shadow roles; the local offsets describe the component surface anatomy."
+    },
+    {
+      "id": "canonical-derived-radius-and-layer",
+      "class": "RUNTIME_DERIVED",
+      "owner": "packages/ui/src/styles.css",
+      "filePattern": "^packages/ui/src/styles\\.css$",
+      "categoryPattern": "^(?:T10 RADIUS|T15 Z-LAYER)$",
+      "propertyPattern": "^(?:border-radius|z-index)$",
+      "valuePattern": "(?:var\\(--t7-|calc\\()",
+      "reason": "These values derive directly from canonical radius or layer roles and do not introduce a second authority."
+    },
+    {
+      "id": "contract-test-fixture",
+      "class": "TEST_FIXTURE",
+      "owner": "tests and package contract tests",
+      "filePattern": "(?:^|/)(?:tests?|__tests__)/|\\.(?:test|spec)\\.",
+      "categoryPattern": "^T1 COLOR$",
+      "propertyPattern": ".*",
+      "valuePattern": ".*",
+      "reason": "Fixtures intentionally use concrete values to test normalization, rejection, and exact-color boundary behavior."
+    },
+    {
+      "id": "external-brand-boundary",
+      "class": "EXTERNAL_API_REQUIREMENT",
+      "owner": "consumer-tests/next-app-router-consumer/app/client-provider.tsx",
+      "filePattern": "^consumer-tests/next-app-router-consumer/app/client-provider\\.tsx$",
+      "categoryPattern": "^T1 COLOR$",
+      "propertyPattern": "^color-literal$",
+      "valuePattern": "exactColor",
+      "reason": "The consumer proof must preserve exact AAPM brand values at the product-profile/external API boundary."
+    },
+    {
+      "id": "theme-studio-resolved-color-projections",
+      "class": "RUNTIME_DERIVED",
+      "owner": "packages/tokens/src/theme.ts",
+      "filePattern": "^apps/playground/src/(?:App|token-foundations)\\.tsx$",
+      "categoryPattern": "^T1 COLOR$",
+      "propertyPattern": "^color-literal$",
+      "valuePattern": "^hsl\\($",
+      "reason": "Theme Studio and the token inspector serialize resolved HSL values from the canonical theme resolver for previews; they do not own a playground palette."
+    },
+    {
+      "id": "playground-semantic-color-aliases",
+      "class": "RUNTIME_DERIVED",
+      "owner": "packages/tokens/src/theme.ts",
+      "filePattern": "^apps/playground/src/app\\.css$",
+      "categoryPattern": "^T1 COLOR$",
+      "propertyPattern": ".*",
+      "valuePattern": "var\\(--(?:ebook-publishing-accent-hsl|studio-(?:role-color|recipe-color|aapm-profile-primary))\\b",
+      "reason": "These route and Theme Studio aliases only project canonical semantic/profile variables into local composition; they do not define independent color values."
+    },
+    {
+      "id": "playground-route-composition",
+      "class": "COMPOSITION_LOCAL",
+      "owner": "apps/playground/src/app.css",
+      "filePattern": "^apps/playground/src/app\\.css$",
+      "categoryPattern": "^T(?!1 COLOR$).+",
+      "propertyPattern": ".*",
+      "valuePattern": ".*",
+      "reason": "The playground stylesheet composes bounded route and harness surfaces. Its remaining geometry is consumer-owned composition and cannot create reusable theme axes without changing the visual contract."
+    },
+    {
+      "id": "consumer-proof-composition",
+      "class": "TEST_FIXTURE",
+      "owner": "consumer-tests/next-app-router-consumer/app/proof.css",
+      "filePattern": "^consumer-tests/next-app-router-consumer/app/proof\\.css$",
+      "categoryPattern": "^T(?!1 COLOR$).+",
+      "propertyPattern": ".*",
+      "valuePattern": ".*",
+      "reason": "The published-consumer proof stylesheet is a bounded fixture for package-boundary rendering; its local geometry is not a product theme authority."
+    },
+    {
+      "id": "canonical-bounded-surface-measures",
+      "class": "INTRINSIC_GEOMETRY",
+      "owner": "packages/ui/src/styles.css",
+      "filePattern": "^packages/ui/src/styles\\.css$",
+      "categoryPattern": "^T(?:6 WIDTH / HEIGHT|7 MIN / MAX SIZE)$",
+      "propertyPattern": "^(?:width|height|min-width|max-width|min-height|max-height)$",
+      "valuePattern": ".*(?:45%|260px|500px|28%|24%|140px|104px|240px|216px|460px|35%|700px|160px|820px|1280px)\\s*$",
+      "reason": "These explicit bounds and fractions are component-owned table, overlay, chart, hero, and responsive composition constraints. They preserve intrinsic content measures or intentional column proportions and are not reusable consumer theme axes."
+    },
+    {
+      "id": "canonical-micro-typography",
+      "class": "COMPONENT_SEMANTIC",
+      "owner": "packages/ui/src/styles.css",
+      "filePattern": "^packages/ui/src/styles\\.css$",
+      "categoryPattern": "^T9 TYPOGRAPHY$",
+      "propertyPattern": "^(?:font-size|letter-spacing)$",
+      "valuePattern": ".*(?:10px|0\\.08em|0\\.04em|0\\.01em)\\s*$",
+      "reason": "These values are fixed micro-label and tracking roles for canonical component anatomy. They are not exposed as route-local styling and do not define a second typography system."
+    },
+    {
+      "id": "canonical-indicator-stroke",
+      "class": "INTRINSIC_GEOMETRY",
+      "owner": "packages/ui/src/styles.css",
+      "filePattern": "^packages/ui/src/styles\\.css$",
+      "categoryPattern": "^T6 WIDTH / HEIGHT$",
+      "propertyPattern": "^height$",
+      "valuePattern": "^height: 4px$",
+      "reason": "The carousel indicator uses a four-pixel visual stroke as intrinsic mark geometry; its semantic state and color remain token-backed."
+    }
   ],
   "enforced": [
-    "No literal hex, rgb, rgba, oklch, color-mix, or numeric hsl colors in canonical component source",
-    "No palette-family names in component CSS",
-    "No ungoverned z-index values above local 0 and 1",
-    "No raw transition or animation duration in canonical component CSS",
-    "Core action and geometry variables remain present"
+    "No unresolved tokenizable findings remain outside the exception registry",
+    "No literal consumer colors or palette-family dependencies in canonical component source",
+    "No local custom-property theme systems in demo/reference consumers",
+    "Native source remains CSS-independent and consumes typed renderer projections",
+    "No duplicate global token authority exists outside the canonical resolver",
+    "No raw transition or animation duration bypasses the canonical motion contract",
+    "Core semantic action, geometry, feedback, and projection variables remain present"
   ]
 }

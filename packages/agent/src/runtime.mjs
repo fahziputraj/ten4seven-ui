@@ -7,6 +7,7 @@ export {
   inspectBrandExpression,
   inspectEntityDetail,
   inspectEntityList,
+  inspectPlatformNeutralContract,
   resolveBrandExpression,
   resolveEntityDetailIntent,
   resolveEntityListIntent,

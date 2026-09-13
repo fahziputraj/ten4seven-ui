@@ -13,6 +13,9 @@ export interface RecipeReference {
 export interface GeneratedIndex {
   readonly recipes: Readonly<Record<string, RecipeReference>>;
   readonly componentShardPattern: string;
+  readonly platformNeutral: {
+    readonly path: string;
+  };
 }
 
 export function resolveRecipeReference(
@@ -22,6 +25,9 @@ export function resolveRecipeReference(
 export function resolveComponentShardPath(
   index: GeneratedIndex,
   componentId: string,
+): string;
+export function resolvePlatformNeutralContractPath(
+  index: GeneratedIndex,
 ): string;
 export function loadContracts<T>(
   ids: readonly string[],

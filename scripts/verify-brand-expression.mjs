@@ -5,6 +5,7 @@ import path from "node:path";
 
 import {
   AUTHENTICATION_CONTRACT,
+  AUTH_BRAND_PROFILE_IDS,
   BRAND_PROFILE_IDS,
   BRAND_PROFILES,
 } from "../packages/contracts/src/index.ts";
@@ -25,16 +26,31 @@ import {
 const repoRoot = path.resolve(import.meta.dirname, "..");
 const read = (relativePath) =>
   fs.readFileSync(path.join(repoRoot, relativePath), "utf8");
+const normalizeLineEndings = (value) => value.replace(/\r\n/g, "\n");
 const readJson = (relativePath) => JSON.parse(read(relativePath));
 
-assert.deepEqual(BRAND_PROFILE_IDS, ["neutral-product", "aapm-academy"]);
+assert.deepEqual(AUTH_BRAND_PROFILE_IDS, ["neutral-product", "aapm-academy"]);
+assert.deepEqual(BRAND_PROFILE_IDS, [
+  "neutral-product",
+  "aapm-core",
+  "aapm-farm",
+  "aapm-operations",
+  "aapm-erp",
+  "aapm-academy",
+  "aapm-public",
+]);
 assert.deepEqual(Object.keys(BRAND_PROFILES).sort(), [
   "aapm-academy",
+  "aapm-core",
+  "aapm-erp",
+  "aapm-farm",
+  "aapm-operations",
+  "aapm-public",
   "neutral-product",
 ]);
 assert.deepEqual(
   AUTHENTICATION_CONTRACT.expression?.profiles,
-  BRAND_PROFILE_IDS,
+  AUTH_BRAND_PROFILE_IDS,
 );
 
 const compactAuth = readJson("generated/recipes/auth.json");
@@ -155,8 +171,8 @@ const projections = await buildProjections();
 for (const root of ["generated", "packages/agent/generated"])
   for (const [filename, value] of Object.entries(projections.outputs))
     assert.equal(
-      read(`${root}/${filename}`),
-      serializeProjection(filename, value),
+      normalizeLineEndings(read(`${root}/${filename}`)),
+      normalizeLineEndings(serializeProjection(filename, value)),
       `${root}/${filename}: generated output is stale; run pnpm contracts:generate`,
     );
 

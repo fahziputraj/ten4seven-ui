@@ -1,7 +1,10 @@
 {
   "dashboard": {
     "purpose": "Monitor a small, truthful set of operational signals and decide the next action.",
-    "profiles": ["enterprise", "dashboard"],
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
     "components": [
       "PageHeader",
       "KPICluster",
@@ -9,12 +12,19 @@
       "LineChart",
       "DataTable"
     ],
-    "optional": ["FilterToolbar", "BarChart", "ActionFooter"],
+    "optional": [
+      "FilterToolbar",
+      "BarChart",
+      "ActionFooter"
+    ],
     "displayName": "Dashboard"
   },
   "entity-list": {
     "purpose": "Browse and operate on comparable operational records such as customer, delivery, supply, finance, or service workstreams.",
-    "profiles": ["enterprise", "dashboard"],
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
     "components": [
       "AppShell",
       "Sidebar",
@@ -62,12 +72,17 @@
       "warning",
       "danger"
     ],
-    "references": ["Operations Tracker"],
+    "references": [
+      "Operations Tracker"
+    ],
     "displayName": "Entity List"
   },
   "entity-detail": {
     "purpose": "Read and act on one structured record without inventing a new data grammar.",
-    "profiles": ["enterprise", "dashboard"],
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
     "components": [
       "PageHeader",
       "RecordSummary",
@@ -75,12 +90,20 @@
       "ActivityFeed",
       "ActionFooter"
     ],
-    "optional": ["StatusChip", "Alert", "DataTable", "Modal"],
+    "optional": [
+      "StatusChip",
+      "Alert",
+      "DataTable",
+      "Modal"
+    ],
     "displayName": "Entity Detail"
   },
   "entity-form": {
     "purpose": "Create or edit one structured record through grouped, labelled ten4seven controls.",
-    "profiles": ["enterprise", "dashboard"],
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
     "components": [
       "PageHeader",
       "FormSection",
@@ -101,7 +124,10 @@
   },
   "master-detail": {
     "purpose": "Keep a record list visible while inspecting or updating one selected record.",
-    "profiles": ["enterprise", "dashboard"],
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
     "components": [
       "AppShell",
       "Sidebar",
@@ -110,12 +136,19 @@
       "DetailDrawer",
       "RecordSummary"
     ],
-    "optional": ["FilterToolbar", "Pagination", "KeyValueList"],
+    "optional": [
+      "FilterToolbar",
+      "Pagination",
+      "KeyValueList"
+    ],
     "displayName": "Master–Detail"
   },
   "approval-queue": {
     "purpose": "Review, approve, reject, and safely bulk-operate on pending records.",
-    "profiles": ["enterprise", "dashboard"],
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
     "components": [
       "PageHeader",
       "FilterToolbar",
@@ -124,13 +157,26 @@
       "ApprovalPanel",
       "Pagination"
     ],
-    "optional": ["Modal", "KPICluster", "AlertDialog"],
-    "icons": ["approve", "edit", "filter", "search", "export"],
+    "optional": [
+      "Modal",
+      "KPICluster",
+      "AlertDialog"
+    ],
+    "icons": [
+      "approve",
+      "edit",
+      "filter",
+      "search",
+      "export"
+    ],
     "displayName": "Approval Queue"
   },
   "settings": {
     "purpose": "Edit application, workspace, or personal preferences.",
-    "profiles": ["enterprise", "dashboard"],
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
     "components": [
       "PageHeader",
       "FormSection",
@@ -139,12 +185,19 @@
       "Select",
       "ActionFooter"
     ],
-    "optional": ["Sidebar", "Switch", "Alert"],
+    "optional": [
+      "Sidebar",
+      "Switch",
+      "Alert"
+    ],
     "displayName": "Settings"
   },
   "report": {
     "purpose": "Inspect a time-bounded result set and export a supported report.",
-    "profiles": ["enterprise", "dashboard"],
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
     "components": [
       "PageHeader",
       "FilterToolbar",
@@ -152,12 +205,20 @@
       "LineChart",
       "DataTable"
     ],
-    "optional": ["BarChart", "DonutChart", "DateRangePicker", "Pagination"],
+    "optional": [
+      "BarChart",
+      "DonutChart",
+      "DateRangePicker",
+      "Pagination"
+    ],
     "displayName": "Operational Report"
   },
   "catalog": {
     "purpose": "Browse visual products, courses, books, or media with content-first composition.",
-    "profiles": ["commerce", "content"],
+    "profiles": [
+      "commerce",
+      "content"
+    ],
     "components": [
       "PublicShell",
       "NavigationMenu",
@@ -169,7 +230,9 @@
     ],
     "shell": {
       "preferred": "PublicShell",
-      "alternatives": ["AppShell"],
+      "alternatives": [
+        "AppShell"
+      ],
       "selectionRule": "Use PublicShell for a public, content-first storefront; choose AppShell only when the catalog is inside a persistent authenticated workspace."
     },
     "optional": [
@@ -202,12 +265,16 @@
       "filter",
       "sort"
     ],
-    "references": ["Publishing Store"],
+    "references": [
+      "Publishing Store"
+    ],
     "displayName": "Catalog"
   },
   "product-detail": {
     "purpose": "Present one product with media, record context, price, and bounded purchase or save actions.",
-    "profiles": ["commerce"],
+    "profiles": [
+      "commerce"
+    ],
     "components": [
       "PageHeader",
       "MediaFrame",
@@ -215,13 +282,22 @@
       "Price",
       "ActionFooter"
     ],
-    "optional": ["Rating", "ProductMeta", "Badge", "Alert"],
-    "references": ["Publishing Store"],
+    "optional": [
+      "Rating",
+      "ProductMeta",
+      "Badge",
+      "Alert"
+    ],
+    "references": [
+      "Publishing Store"
+    ],
     "displayName": "Product Detail"
   },
   "checkout": {
     "purpose": "Collect the information needed to confirm an order without owning cart or payment business state.",
-    "profiles": ["commerce"],
+    "profiles": [
+      "commerce"
+    ],
     "components": [
       "PageHeader",
       "FormSection",
@@ -242,7 +318,9 @@
   },
   "content-list": {
     "purpose": "Browse articles, lessons, documents, or media without forcing table semantics.",
-    "profiles": ["content"],
+    "profiles": [
+      "content"
+    ],
     "components": [
       "PageHeader",
       "FilterToolbar",
@@ -250,33 +328,75 @@
       "Card",
       "Pagination"
     ],
-    "optional": ["Badge", "EmptyState", "SearchInput"],
+    "optional": [
+      "Badge",
+      "EmptyState",
+      "SearchInput"
+    ],
     "displayName": "Content List"
   },
   "content-detail": {
     "purpose": "Read one article, lesson, or document with clear metadata and bounded supporting actions.",
-    "profiles": ["content"],
-    "components": ["PageHeader", "RecordSummary", "MediaFrame", "Typography"],
-    "optional": ["Badge", "ActionFooter", "ActivityFeed"],
+    "profiles": [
+      "content"
+    ],
+    "components": [
+      "PageHeader",
+      "RecordSummary",
+      "MediaFrame",
+      "Typography"
+    ],
+    "optional": [
+      "Badge",
+      "ActionFooter",
+      "ActivityFeed"
+    ],
     "displayName": "Content Detail"
   },
   "ebook-reader": {
     "purpose": "Read an ebook while preserving progress and reader controls.",
-    "profiles": ["content", "commerce"],
-    "components": ["TopNavigation", "Progress", "Typography", "ActionBar"],
-    "optional": ["Modal", "Slider", "Tabs"],
+    "profiles": [
+      "content",
+      "commerce"
+    ],
+    "components": [
+      "TopNavigation",
+      "Progress",
+      "Typography",
+      "ActionBar"
+    ],
+    "optional": [
+      "Modal",
+      "Slider",
+      "Tabs"
+    ],
     "displayName": "Ebook Reader"
   },
   "auth": {
     "purpose": "Sign in, register, recover access, or verify identity.",
-    "profiles": ["enterprise", "commerce", "content"],
-    "components": ["Surface", "Input", "PasswordInput", "ActionFooter"],
-    "optional": ["OtpInput", "Alert", "Checkbox"],
+    "profiles": [
+      "enterprise",
+      "commerce",
+      "content"
+    ],
+    "components": [
+      "Surface",
+      "Input",
+      "PasswordInput",
+      "ActionFooter"
+    ],
+    "optional": [
+      "OtpInput",
+      "Alert",
+      "Checkbox"
+    ],
     "displayName": "Authentication"
   },
   "marketing-home": {
     "purpose": "Explain a product through reusable expressive sections and drive one primary acquisition action.",
-    "profiles": ["marketing"],
+    "profiles": [
+      "marketing"
+    ],
     "components": [
       "PublicShell",
       "NavigationMenu",
@@ -287,7 +407,11 @@
       "ProductCard",
       "ChartPanel"
     ],
-    "optional": ["LineChart", "BarChart", "Carousel"],
+    "optional": [
+      "LineChart",
+      "BarChart",
+      "Carousel"
+    ],
     "shell": {
       "preferred": "PublicShell",
       "selectionRule": "Use PublicShell for a public acquisition surface; keep block order and page-level actions in the recipe rather than rebuilding a shell locally."
@@ -307,7 +431,11 @@
       "public-footer"
     ],
     "blockRoles": {
-      "required": ["hero-split", "cta-contained", "public-footer"],
+      "required": [
+        "hero-split",
+        "cta-contained",
+        "public-footer"
+      ],
       "recommended": [
         "logo-cloud",
         "feature-showcase",
@@ -322,13 +450,22 @@
         "carousel"
       ]
     },
-    "references": ["Public Showcase"],
+    "references": [
+      "Public Showcase"
+    ],
     "displayName": "Marketing Home"
   },
   "cart": {
     "purpose": "Review selected products, adjust bounded quantities, and continue to checkout without owning commerce persistence.",
-    "profiles": ["commerce"],
-    "components": ["AppShell", "TopNavigation", "CartPanel", "OrderSummary"],
+    "profiles": [
+      "commerce"
+    ],
+    "components": [
+      "AppShell",
+      "TopNavigation",
+      "CartPanel",
+      "OrderSummary"
+    ],
     "optional": [
       "CartLineItem",
       "QuantityControl",
@@ -336,13 +473,23 @@
       "Button",
       "EmptyState"
     ],
-    "icons": ["cart", "checkout", "delete", "plus"],
+    "icons": [
+      "cart",
+      "checkout",
+      "delete",
+      "plus"
+    ],
     "displayName": "Cart",
-    "references": ["Publishing Store"]
+    "references": [
+      "Publishing Store"
+    ]
   },
   "control-tower": {
     "purpose": "Prioritize operational exceptions, accountable actions, current movement, and near-term sufficiency without turning the surface into a vanity KPI dashboard.",
-    "profiles": ["enterprise", "dashboard"],
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
     "components": [
       "AppShell",
       "Sidebar",
@@ -358,8 +505,17 @@
       "ActivityFeed",
       "DetailDrawer"
     ],
-    "icons": ["analytics", "warning", "clock", "delivery", "package", "view"],
-    "references": ["AAPM Operational Reference"],
+    "icons": [
+      "analytics",
+      "warning",
+      "clock",
+      "delivery",
+      "package",
+      "view"
+    ],
+    "references": [
+      "AAPM Operational Reference"
+    ],
     "displayName": "Control Tower",
     "operational": {
       "maturity": "mature",
@@ -417,7 +573,10 @@
   },
   "process-workspace": {
     "purpose": "Explain and advance one operational object's lifecycle through explicit stage, progress, health, owner, evidence, and next-action semantics.",
-    "profiles": ["enterprise", "dashboard"],
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
     "components": [
       "AppShell",
       "Sidebar",
@@ -427,9 +586,23 @@
       "KeyValueList",
       "ActivityFeed"
     ],
-    "optional": ["Alert", "StatusChip", "Button", "DetailDrawer"],
-    "icons": ["timeline", "clock", "users", "warning", "check"],
-    "references": ["AAPM Operational Reference", "Operations Tracker"],
+    "optional": [
+      "Alert",
+      "StatusChip",
+      "Button",
+      "DetailDrawer"
+    ],
+    "icons": [
+      "timeline",
+      "clock",
+      "users",
+      "warning",
+      "check"
+    ],
+    "references": [
+      "AAPM Operational Reference",
+      "Operations Tracker"
+    ],
     "displayName": "Process Workspace",
     "operational": {
       "maturity": "mature",
@@ -489,7 +662,10 @@
   },
   "operational-kanban": {
     "purpose": "Organize a portfolio of operational objects by work stage while preserving owner, age, next action, and exception visibility.",
-    "profiles": ["enterprise", "dashboard"],
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
     "components": [
       "AppShell",
       "Sidebar",
@@ -498,9 +674,22 @@
       "StatusChip",
       "Button"
     ],
-    "optional": ["Avatar", "Alert", "DetailDrawer", "FilterToolbar"],
-    "icons": ["table", "users", "clock", "warning", "view"],
-    "references": ["AAPM Operational Reference"],
+    "optional": [
+      "Avatar",
+      "Alert",
+      "DetailDrawer",
+      "FilterToolbar"
+    ],
+    "icons": [
+      "table",
+      "users",
+      "clock",
+      "warning",
+      "view"
+    ],
+    "references": [
+      "AAPM Operational Reference"
+    ],
     "displayName": "Operational Kanban",
     "operational": {
       "maturity": "mature",
@@ -548,13 +737,18 @@
         "Mouse-only drag behavior",
         "Using color alone for stage or exception state"
       ],
-      "relationships": ["Operational Kanban → Process Workspace"],
+      "relationships": [
+        "Operational Kanban → Process Workspace"
+      ],
       "referencePath": "/operational-patterns"
     }
   },
   "load-planning": {
     "purpose": "Compose vehicle capacity, allocation, remaining space, utilization, manifest, sequence, and readiness without owning business thresholds.",
-    "profiles": ["enterprise", "dashboard"],
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
     "components": [
       "AppShell",
       "Sidebar",
@@ -564,9 +758,21 @@
       "Progress",
       "Table"
     ],
-    "optional": ["StatusChip", "ActivityFeed", "Button"],
-    "icons": ["fleet", "package", "delivery", "timeline", "warning"],
-    "references": ["AAPM Operational Reference"],
+    "optional": [
+      "StatusChip",
+      "ActivityFeed",
+      "Button"
+    ],
+    "icons": [
+      "fleet",
+      "package",
+      "delivery",
+      "timeline",
+      "warning"
+    ],
+    "references": [
+      "AAPM Operational Reference"
+    ],
     "displayName": "Load Planning",
     "operational": {
       "maturity": "mature",
@@ -625,7 +831,10 @@
   },
   "receiving-console": {
     "purpose": "Represent arrival, unloading, QC, receipt, and inventory as distinct states with explicit quantity discrepancies and decisions.",
-    "profiles": ["enterprise", "dashboard"],
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
     "components": [
       "AppShell",
       "Sidebar",
@@ -643,8 +852,16 @@
       "Textarea",
       "ActionFooter"
     ],
-    "icons": ["warehouse", "stockIn", "package", "warning", "approve"],
-    "references": ["AAPM Operational Reference"],
+    "icons": [
+      "warehouse",
+      "stockIn",
+      "package",
+      "warning",
+      "approve"
+    ],
+    "references": [
+      "AAPM Operational Reference"
+    ],
     "displayName": "Receiving Console",
     "operational": {
       "maturity": "mature",
@@ -703,7 +920,10 @@
   },
   "route-planning": {
     "purpose": "Present ordered stops, capacity, current state, ETA, completion, and exceptions while keeping map visualization optional.",
-    "profiles": ["enterprise", "dashboard"],
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
     "components": [
       "AppShell",
       "Sidebar",
@@ -712,9 +932,21 @@
       "DataTable",
       "Progress"
     ],
-    "optional": ["StatusChip", "ActivityFeed", "Button"],
-    "icons": ["delivery", "timeline", "fleet", "clock", "warning"],
-    "references": ["AAPM Operational Reference"],
+    "optional": [
+      "StatusChip",
+      "ActivityFeed",
+      "Button"
+    ],
+    "icons": [
+      "delivery",
+      "timeline",
+      "fleet",
+      "clock",
+      "warning"
+    ],
+    "references": [
+      "AAPM Operational Reference"
+    ],
     "displayName": "Route Planning",
     "operational": {
       "maturity": "mature",
@@ -771,7 +1003,10 @@
   },
   "entity-360": {
     "purpose": "Compose one reusable business-partner workspace for customer, supplier, or farmer context without embedding domain scoring logic.",
-    "profiles": ["enterprise", "dashboard"],
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
     "components": [
       "AppShell",
       "Sidebar",
@@ -780,9 +1015,25 @@
       "KeyValueList",
       "ActivityFeed"
     ],
-    "optional": ["DataTable", "StatusChip", "DetailDrawer", "Button", "Avatar"],
-    "icons": ["users", "user", "timeline", "payment", "warning", "view"],
-    "references": ["AAPM Operational Reference", "Operations Tracker"],
+    "optional": [
+      "DataTable",
+      "StatusChip",
+      "DetailDrawer",
+      "Button",
+      "Avatar"
+    ],
+    "icons": [
+      "users",
+      "user",
+      "timeline",
+      "payment",
+      "warning",
+      "view"
+    ],
+    "references": [
+      "AAPM Operational Reference",
+      "Operations Tracker"
+    ],
     "displayName": "Entity 360",
     "operational": {
       "maturity": "mature",
@@ -842,7 +1093,10 @@
   },
   "decision-workspace": {
     "purpose": "Put object context, evidence, impact, explicit options, reason, authority, and the consequential action in one accountable decision flow.",
-    "profiles": ["enterprise", "dashboard"],
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
     "components": [
       "AppShell",
       "PageHeader",
@@ -853,9 +1107,21 @@
       "Textarea",
       "ActionFooter"
     ],
-    "optional": ["DetailDrawer", "StatusChip", "KeyValueList"],
-    "icons": ["approve", "warning", "danger", "check", "edit"],
-    "references": ["AAPM Operational Reference"],
+    "optional": [
+      "DetailDrawer",
+      "StatusChip",
+      "KeyValueList"
+    ],
+    "icons": [
+      "approve",
+      "warning",
+      "danger",
+      "check",
+      "edit"
+    ],
+    "references": [
+      "AAPM Operational Reference"
+    ],
     "displayName": "Decision Workspace",
     "operational": {
       "maturity": "mature",
@@ -914,7 +1180,10 @@
   },
   "readiness-review": {
     "purpose": "Explain a consumer-evaluated readiness result, factual blockers, resolution hints, freshness context, and next action without owning business rules.",
-    "profiles": ["enterprise", "dashboard"],
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
     "components": [
       "AppShell",
       "PageHeader",
@@ -923,9 +1192,22 @@
       "Alert",
       "KeyValueList"
     ],
-    "optional": ["Sidebar", "Button", "DetailDrawer", "ActivityFeed"],
-    "icons": ["check", "warning", "danger", "clock", "view"],
-    "references": ["AAPM Operational Reference"],
+    "optional": [
+      "Sidebar",
+      "Button",
+      "DetailDrawer",
+      "ActivityFeed"
+    ],
+    "icons": [
+      "check",
+      "warning",
+      "danger",
+      "clock",
+      "view"
+    ],
+    "references": [
+      "AAPM Operational Reference"
+    ],
     "displayName": "Readiness Review",
     "operational": {
       "maturity": "mature",
@@ -991,7 +1273,10 @@
   },
   "exception-queue": {
     "purpose": "Isolate work that requires attention and preserve its reason, severity, owner, age, and next action for fast operational triage.",
-    "profiles": ["enterprise", "dashboard"],
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
     "components": [
       "AppShell",
       "Sidebar",
@@ -1000,9 +1285,24 @@
       "DataTable",
       "DetailDrawer"
     ],
-    "optional": ["Alert", "StatusChip", "Button", "KPICluster"],
-    "icons": ["warning", "danger", "clock", "users", "filter", "view"],
-    "references": ["AAPM Operational Reference", "Operations Tracker"],
+    "optional": [
+      "Alert",
+      "StatusChip",
+      "Button",
+      "KPICluster"
+    ],
+    "icons": [
+      "warning",
+      "danger",
+      "clock",
+      "users",
+      "filter",
+      "view"
+    ],
+    "references": [
+      "AAPM Operational Reference",
+      "Operations Tracker"
+    ],
     "displayName": "Exception Queue",
     "operational": {
       "maturity": "mature",
@@ -1063,11 +1363,32 @@
   },
   "activity-audit": {
     "purpose": "Compose readable operational activity and evidence-oriented audit history from the same trace foundation without treating the concepts as identical.",
-    "profiles": ["enterprise", "dashboard"],
-    "components": ["AppShell", "PageHeader", "ActivityFeed", "KeyValueList"],
-    "optional": ["DataTable", "StatusChip", "FilterToolbar"],
-    "icons": ["timeline", "clock", "users", "check", "warning"],
-    "references": ["AAPM Operational Reference", "Operations Tracker"],
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
+    "components": [
+      "AppShell",
+      "PageHeader",
+      "ActivityFeed",
+      "KeyValueList"
+    ],
+    "optional": [
+      "DataTable",
+      "StatusChip",
+      "FilterToolbar"
+    ],
+    "icons": [
+      "timeline",
+      "clock",
+      "users",
+      "check",
+      "warning"
+    ],
+    "references": [
+      "AAPM Operational Reference",
+      "Operations Tracker"
+    ],
     "displayName": "Activity & Audit Stream",
     "operational": {
       "maturity": "mature",
@@ -1126,7 +1447,10 @@
   },
   "resource-forecast": {
     "purpose": "Communicate resource sufficiency through current quantity, consumption, days of cover, incoming supply, target context, and trend without implementing forecasting logic.",
-    "profiles": ["enterprise", "dashboard"],
+    "profiles": [
+      "enterprise",
+      "dashboard"
+    ],
     "components": [
       "AppShell",
       "PageHeader",
@@ -1135,9 +1459,21 @@
       "TrendIndicator",
       "Sparkline"
     ],
-    "optional": ["Alert", "KPICluster", "KeyValueList"],
-    "icons": ["package", "analytics", "clock", "delivery", "warning"],
-    "references": ["AAPM Operational Reference"],
+    "optional": [
+      "Alert",
+      "KPICluster",
+      "KeyValueList"
+    ],
+    "icons": [
+      "package",
+      "analytics",
+      "clock",
+      "delivery",
+      "warning"
+    ],
+    "references": [
+      "AAPM Operational Reference"
+    ],
     "displayName": "Resource Forecast",
     "operational": {
       "maturity": "mature",

@@ -15,7 +15,6 @@ import {
   CardTitle,
   DataTable,
   DetailDrawer,
-  IconButton,
   KeyValueList,
   KPICluster,
   MetricCard,
@@ -27,7 +26,6 @@ import {
   RecordSummary,
   RevisionDiff,
   SectionNavigation,
-  Sidebar,
   Sparkline,
   StatusChip,
   Table,
@@ -41,6 +39,8 @@ import {
   type DataTableColumn,
   type StatusTone,
 } from "@ten4seven/ui";
+
+import { PlaygroundSidebar, PlaygroundTopbar } from "./playground-chrome";
 
 type OperationalView =
   "tower" | "process" | "readiness" | "load-route" | "receiving" | "entity";
@@ -399,53 +399,6 @@ const readinessFixtures: ReadinessFixture[] = [
     tone: "warning",
   },
 ] as const;
-
-function ReferenceBrand() {
-  return (
-    <div className="reference-brand">
-      <span className="reference-brand-mark">
-        <T7Icon name="analytics" size={18} />
-      </span>
-      <div>
-        <Typography as="strong" typeRole="card-title">
-          ten4seven UI
-        </Typography>
-        <Typography as="span" typeRole="caption">
-          AAPM adoption fixture
-        </Typography>
-      </div>
-    </div>
-  );
-}
-
-function OperationalTopbar({
-  children,
-  context,
-  icon,
-}: {
-  children?: ReactNode;
-  context: string;
-  icon: IconName;
-}) {
-  return (
-    <div className="reference-topbar">
-      <div className="reference-topbar-context">
-        <span aria-hidden="true" className="reference-topbar-context-icon">
-          <T7Icon name={icon} size={17} />
-        </span>
-        <div>
-          <Typography typeRole="label">{context}</Typography>
-          <Typography typeRole="caption">
-            Deterministic reference data · not production ERP
-          </Typography>
-        </div>
-      </div>
-      <div className="reference-topbar-actions t7-header-actions">
-        {children}
-      </div>
-    </div>
-  );
-}
 
 function SectionHeading({
   badge,
@@ -1053,7 +1006,7 @@ function ReceivingConsole() {
                 ]}
               />
             </div>
-            <form onSubmit={submitDecision}>
+            <form data-t7-rail="form" onSubmit={submitDecision}>
               <RadioGroup
                 description="Only the selected outcome is recorded by this reference fixture."
                 legend="Disposition"
@@ -1506,51 +1459,51 @@ export function OperationalReference({
   const active =
     operationalViews.find((view) => view.key === activeView) ??
     operationalViews[0];
+  const navigatePath = onNavigatePath ?? (() => undefined);
 
   const sidebar = (
-    <Sidebar
-      activeKey={activeView}
-      brand={<ReferenceBrand />}
+    <PlaygroundSidebar
+      activePath="/operational-patterns"
+      localNavigation={[
+        {
+          key: "operational-patterns",
+          label: "Pattern library",
+          items: operationalViews.map((view) => ({
+            active: view.key === activeView,
+            icon: view.icon,
+            key: view.key,
+            label: view.label,
+            onSelect: () => setActiveView(view.key),
+          })),
+        },
+      ]}
       footer={
         <Typography typeRole="caption">
           Reference fixture · no live AAPM data
         </Typography>
       }
-      items={operationalViews.map((view) => ({
-        icon: view.icon,
-        key: view.key,
-        label: view.label,
-      }))}
       label="Operational pattern navigation"
-      onSelect={(key) => setActiveView(key as OperationalView)}
+      onNavigatePath={navigatePath}
     />
   );
 
   return (
     <AppShell
       className="reference-app-shell operations-app-shell operational-reference-shell"
+      data-shell-contract="reference-shell"
+      data-shell-variant="contextual"
       sidebar={sidebar}
+      stickyHeader
       topbar={
-        <OperationalTopbar
-          context={`AAPM fixture / ${active.label}`}
-          icon={active.icon}
-        >
-          {onNavigatePath ? (
-            <IconButton
-              className="reference-topbar-back"
-              icon="arrowLeft"
-              label="Back to Studio"
-              onClick={() => onNavigatePath("/theme-studio")}
-              size="md"
-            />
-          ) : null}
-          <IconButton
-            icon="settings"
-            label="Open operational reference settings"
-            onClick={onOpenSettings}
-            size="md"
-          />
-        </OperationalTopbar>
+        <PlaygroundTopbar
+          activeRoute="Operational Patterns"
+          backLabel="Back to Studio"
+          breadcrumbItems={[{ label: "Operational Patterns" }]}
+          onNavigatePath={navigatePath}
+          onOpenSettings={onOpenSettings}
+          settingsLabel="Open operational reference settings"
+          showBack={Boolean(onNavigatePath)}
+        />
       }
     >
       <div

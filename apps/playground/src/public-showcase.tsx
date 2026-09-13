@@ -1,32 +1,139 @@
-import { useEffect, useState } from "react";
-
-import { T7Icon } from "@ten4seven/icons";
 import {
-  BarChart,
-  Badge,
+  useEffect,
+  useRef,
+  useState,
+  type HTMLAttributes,
+  type ReactNode,
+} from "react";
+
+import { T7Icon, type IconName } from "@ten4seven/icons";
+import {
   Button,
   Carousel,
   ChartPanel,
   CtaBlock,
-  ContentShowcase,
-  FeatureShowcase,
   Hero,
-  IconButton,
   LineChart,
-  LogoCloud,
   MediaFrame,
-  ProductCard,
-  ProductShowcase,
-  PricingSection,
   PublicFooter,
   PublicShell,
-  Rating,
-  StatsSection,
-  Testimonials,
+  StatusChip,
   Typography,
-  useToast,
+  observeT7InView,
 } from "@ten4seven/ui";
 import { catalogCounts } from "./catalog-model";
+
+type SurfaceId =
+  "operations" | "farm" | "commerce" | "authentication" | "public";
+
+type StatusTone = "info" | "success" | "warning" | "neutral";
+
+const surfaceOptions: Array<{
+  description: string;
+  icon: IconName;
+  id: SurfaceId;
+  label: string;
+}> = [
+  {
+    description: "Decision work with density and accountability.",
+    icon: "warehouse",
+    id: "operations",
+    label: "Operations",
+  },
+  {
+    description: "Field context with room for the real world.",
+    icon: "farm",
+    id: "farm",
+    label: "Farm",
+  },
+  {
+    description: "A browse-first surface with a clear next step.",
+    icon: "cart",
+    id: "commerce",
+    label: "Commerce",
+  },
+  {
+    description: "Focused entry with no unnecessary ceremony.",
+    icon: "lock",
+    id: "authentication",
+    label: "Authentication",
+  },
+  {
+    description: "Editorial space that lets the proposition breathe.",
+    icon: "book",
+    id: "public",
+    label: "Public",
+  },
+];
+
+const systemSteps: Array<{
+  description: string;
+  icon: IconName;
+  label: string;
+}> = [
+  {
+    description: "Name the problem and the outcome before the pixels.",
+    icon: "approve",
+    label: "Intent",
+  },
+  {
+    description: "Turn the intent into a repeatable product path.",
+    icon: "file",
+    label: "Recipe",
+  },
+  {
+    description: "Assemble the primitives that carry the behavior.",
+    icon: "components",
+    label: "Components",
+  },
+  {
+    description: "Give hierarchy, state, and meaning one vocabulary.",
+    icon: "tokens",
+    label: "Semantic tokens",
+  },
+  {
+    description: "Tune the expression for the context and the audience.",
+    icon: "theme",
+    label: "Theme/profile",
+  },
+  {
+    description: "Ship a surface that feels made for its job.",
+    icon: "preview",
+    label: "Product surface",
+  },
+];
+
+const approvalRows: Array<{
+  item: string;
+  owner: string;
+  status: string;
+  tone: StatusTone;
+}> = [
+  {
+    item: "Field equipment purchase",
+    owner: "Avery Ross",
+    status: "In review",
+    tone: "info",
+  },
+  {
+    item: "Seed supplier contract",
+    owner: "Taylor Kim",
+    status: "Pending",
+    tone: "warning",
+  },
+  {
+    item: "Irrigation schedule change",
+    owner: "Morgan Lee",
+    status: "Approved",
+    tone: "success",
+  },
+  {
+    item: "New team member access",
+    owner: "Jordan Patel",
+    status: "Ready",
+    tone: "success",
+  },
+];
 
 function ShowcaseBrand() {
   return (
@@ -34,245 +141,545 @@ function ShowcaseBrand() {
       <span aria-hidden="true" className="public-showcase-brand-mark">
         <T7Icon name="components" size={17} />
       </span>
-      <span>
-        <strong>ten4seven UI</strong>
-        <small>Composable by default</small>
-      </span>
+      <Typography as="strong" typeRole="label">
+        ten4seven UI
+      </Typography>
     </a>
   );
 }
 
-function ShowcasePreview() {
+function ProductWindow({
+  children,
+  className = "",
+  title,
+}: {
+  children: ReactNode;
+  className?: string;
+  title: string;
+}) {
   return (
-    <MediaFrame
-      className="public-showcase-preview-frame"
-      label="A live product surface preview"
-      ratio={1.14}
+    <div
+      aria-hidden="true"
+      className={`public-showcase-product-window ${className}`.trim()}
     >
-      <div className="public-showcase-preview">
-        <div className="public-showcase-preview-topbar">
-          <span className="public-showcase-preview-logo">
-            <T7Icon name="components" size={13} />
-            Foundations
-          </span>
-          <span className="public-showcase-preview-search">
-            <T7Icon name="search" size={12} />
-            Search docs…
-          </span>
-          <span className="public-showcase-preview-dot" />
-        </div>
-        <div className="public-showcase-preview-body">
-          <aside>
-            <span className="is-selected">Tokens</span>
-            <span>Components</span>
-            <span>Patterns</span>
-            <span>Recipes</span>
-          </aside>
-          <div className="public-showcase-preview-content">
-            <div className="public-showcase-preview-heading">
-              <div>
-                <Typography typeRole="overline">Product overview</Typography>
-                <Typography as="h2" typeRole="heading-md">
-                  One shared language.
-                </Typography>
-              </div>
-              <T7Icon name="check" size={18} />
-            </div>
-            <div className="public-showcase-preview-metric-row">
-              <div>
-                <Typography typeRole="caption">Components</Typography>
-                <strong>{catalogCounts.canonicalComponents}</strong>
-              </div>
-              <div>
-                <Typography typeRole="caption">Themes</Typography>
-                <strong>11</strong>
-              </div>
-              <div>
-                <Typography typeRole="caption">System health</Typography>
-                <strong>Ready</strong>
-              </div>
-            </div>
-            <ChartPanel
-              className="public-showcase-preview-chart"
-              description="Product, web, docs, and learning in one view"
-              title="Connected surfaces"
-              chart={
-                <BarChart
-                  ariaLabel="Connected product surfaces chart"
-                  data={[
-                    { label: "App", value: 82 },
-                    { label: "Web", value: 64 },
-                    { label: "Docs", value: 48 },
-                    { label: "Labs", value: 36 },
-                  ]}
-                  height={112}
-                  summary="A comparative view of product, web, documentation, and learning surfaces."
-                />
-              }
+      <div className="public-showcase-window-chrome">
+        <span aria-hidden="true" className="public-showcase-window-dots">
+          <i />
+          <i />
+          <i />
+        </span>
+        <Typography typeRole="caption">{title}</Typography>
+        <T7Icon aria-hidden="true" name="more" size={14} />
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function WindowSidebar({ active, items }: { active: string; items: string[] }) {
+  return (
+    <aside className="public-showcase-window-sidebar">
+      <div className="public-showcase-window-product-mark">
+        <span aria-hidden="true">
+          <T7Icon name="components" size={13} />
+        </span>
+        <Typography typeRole="label">ten4seven</Typography>
+      </div>
+      <div className="public-showcase-window-sidebar-items">
+        {items.map((item) => (
+          <span
+            className={item === active ? "is-selected" : undefined}
+            key={item}
+          >
+            <T7Icon
+              aria-hidden="true"
+              name={item === active ? "check" : "chevronRight"}
+              size={11}
             />
+            {item}
+          </span>
+        ))}
+      </div>
+    </aside>
+  );
+}
+
+function WindowMetricRail({
+  items,
+}: {
+  items: Array<{ label: string; value: string }>;
+}) {
+  return (
+    <div className="public-showcase-window-metrics">
+      {items.map((item) => (
+        <div key={item.label}>
+          <Typography typeRole="caption">{item.label}</Typography>
+          <Typography as="strong" typeRole="label">
+            {item.value}
+          </Typography>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function MiniBars() {
+  return (
+    <div aria-hidden="true" className="public-showcase-mini-bars">
+      {[42, 68, 53, 81, 64, 90, 58, 74, 49, 86, 66, 78].map((height, index) => (
+        <span key={index} style={{ height: `${height}%` }} />
+      ))}
+    </div>
+  );
+}
+
+function ApprovalRows({ compact = false }: { compact?: boolean }) {
+  return (
+    <div className="public-showcase-approval-rows">
+      <div className="public-showcase-approval-row public-showcase-approval-row--header">
+        <span>Item</span>
+        <span>Owner</span>
+        <span>Status</span>
+      </div>
+      {approvalRows.slice(0, compact ? 3 : approvalRows.length).map((row) => (
+        <div className="public-showcase-approval-row" key={row.item}>
+          <span>{row.item}</span>
+          <span>{row.owner}</span>
+          <StatusChip tone={row.tone}>{row.status}</StatusChip>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function OperationsWindow({ compact = false }: { compact?: boolean }) {
+  return (
+    <ProductWindow
+      className={compact ? "public-showcase-product-window--compact" : ""}
+      title="Operations / Decision workspace"
+    >
+      <div className="public-showcase-window-layout">
+        <WindowSidebar
+          active="Approvals"
+          items={["Overview", "Approvals", "Workflow", "People", "Reports"]}
+        />
+        <div className="public-showcase-window-main">
+          <div className="public-showcase-window-heading">
+            <div>
+              <Typography as="h3" typeRole="heading-md">
+                Operational approvals
+              </Typography>
+              <Typography typeRole="caption">
+                Keep decisions moving with a clear next action.
+              </Typography>
+            </div>
+            <StatusChip icon="check" tone="success">
+              Ready to ship
+            </StatusChip>
+          </div>
+          <WindowMetricRail
+            items={[
+              { label: "Queue", value: "In motion" },
+              { label: "Next action", value: "Review" },
+              { label: "Surface", value: "Operations" },
+            ]}
+          />
+          <div className="public-showcase-window-signal-row">
+            <div className="public-showcase-window-signal">
+              <Typography typeRole="label">Approval activity</Typography>
+              <MiniBars />
+            </div>
+            <div className="public-showcase-window-next">
+              <Typography typeRole="caption">Next action</Typography>
+              <Typography as="strong" typeRole="heading-sm">
+                Review queue
+              </Typography>
+              <span>
+                <T7Icon aria-hidden="true" name="arrowRight" size={12} />4 items
+                need a decision
+              </span>
+            </div>
+          </div>
+          <ApprovalRows compact={compact} />
+        </div>
+      </div>
+    </ProductWindow>
+  );
+}
+
+function FarmWindow() {
+  return (
+    <ProductWindow
+      className="public-showcase-product-window--farm"
+      title="Farm / Field activity"
+    >
+      <div className="public-showcase-window-layout public-showcase-window-layout--farm">
+        <WindowSidebar
+          active="Field activity"
+          items={["Field activity", "Harvest", "Teams"]}
+        />
+        <div className="public-showcase-window-main">
+          <div className="public-showcase-window-heading">
+            <div>
+              <Typography as="h3" typeRole="heading-md">
+                Field activity
+              </Typography>
+              <Typography typeRole="caption">
+                A wider canvas for work in motion.
+              </Typography>
+            </div>
+            <StatusChip icon="success" tone="success">
+              Live
+            </StatusChip>
+          </div>
+          <div className="public-showcase-field-map">
+            <span className="public-showcase-field-map-grid" />
+            <span className="public-showcase-field-marker public-showcase-field-marker--one" />
+            <span className="public-showcase-field-marker public-showcase-field-marker--two" />
+            <span className="public-showcase-field-marker public-showcase-field-marker--three" />
+            <div>
+              <T7Icon aria-hidden="true" name="farm" size={15} />
+              <Typography typeRole="caption">North field</Typography>
+            </div>
+          </div>
+          <div className="public-showcase-window-list">
+            <span>
+              <T7Icon aria-hidden="true" name="check" size={12} />
+              Planting window
+            </span>
+            <span>
+              <T7Icon aria-hidden="true" name="timeline" size={12} />
+              Crew route
+            </span>
+            <span>
+              <T7Icon aria-hidden="true" name="warning" size={12} />
+              Weather note
+            </span>
           </div>
         </div>
       </div>
-    </MediaFrame>
+    </ProductWindow>
   );
 }
 
-function EditorialArt({ variant }: { variant: "signal" | "orbit" | "layers" }) {
-  const content = {
-    layers: {
-      icon: "components" as const,
-      label: "COMPOSITION",
-      title: "Blocks with a point of view",
-    },
-    orbit: {
-      icon: "timeline" as const,
-      label: "RECIPES",
-      title: "A path from contract to product",
-    },
-    signal: {
-      icon: "type" as const,
-      label: "TYPOGRAPHY",
-      title: "Hierarchy that breathes",
-    },
-  }[variant];
-
+function CommerceWindow() {
   return (
-    <MediaFrame
-      aria-label={`${content.label.toLowerCase()} surface preview`}
-      className={`public-surface-thumbnail public-surface-thumbnail--${variant}`}
-      ratio={1.45}
+    <ProductWindow
+      className="public-showcase-product-window--commerce"
+      title="Commerce / Product catalog"
     >
-      <div className="public-surface-thumbnail-inner">
-        <div className="public-surface-thumbnail-topline">
-          <Typography typeRole="overline">{content.label}</Typography>
-          <T7Icon aria-hidden="true" name={content.icon} size={19} />
+      <div className="public-showcase-commerce-main">
+        <div className="public-showcase-window-heading">
+          <div>
+            <Typography as="h3" typeRole="heading-md">
+              Product catalog
+            </Typography>
+            <Typography typeRole="caption">Browse with confidence.</Typography>
+          </div>
+          <T7Icon aria-hidden="true" name="cart" size={17} />
+        </div>
+        <div className="public-showcase-commerce-grid">
+          {(
+            [
+              ["Everyday backpack", "Available", "package" as IconName],
+              ["Canvas tote", "New", "item" as IconName],
+              ["Field cap", "Ready", "farm" as IconName],
+            ] satisfies Array<[string, string, IconName]>
+          ).map(([name, state, icon]) => (
+            <div key={name}>
+              <span aria-hidden="true" className="public-showcase-commerce-art">
+                <T7Icon name={icon} size={20} />
+              </span>
+              <Typography as="strong" typeRole="label">
+                {name}
+              </Typography>
+              <Typography typeRole="caption">{state}</Typography>
+            </div>
+          ))}
+        </div>
+        <span className="public-showcase-window-action">Add to cart</span>
+      </div>
+    </ProductWindow>
+  );
+}
+
+function AuthenticationWindow() {
+  return (
+    <ProductWindow
+      className="public-showcase-product-window--authentication"
+      title="Authentication / Focused entry"
+    >
+      <div className="public-showcase-auth-window">
+        <T7Icon aria-hidden="true" name="lock" size={18} />
+        <Typography as="h3" typeRole="heading-md">
+          Welcome back
+        </Typography>
+        <Typography typeRole="caption">
+          A focused entry point for the people behind the work.
+        </Typography>
+        <div className="public-showcase-auth-field">
+          <Typography typeRole="caption">Email</Typography>
+          <span>you@company.com</span>
+        </div>
+        <div className="public-showcase-auth-field">
+          <Typography typeRole="caption">Password</Typography>
+          <span>••••••••••</span>
+        </div>
+        <span className="public-showcase-window-action">Sign in</span>
+      </div>
+    </ProductWindow>
+  );
+}
+
+function PublicWindow() {
+  return (
+    <ProductWindow
+      className="public-showcase-product-window--public"
+      title="Public / Editorial surface"
+    >
+      <div className="public-showcase-public-window">
+        <div className="public-showcase-public-window-mark">
+          <T7Icon aria-hidden="true" name="components" size={18} />
         </div>
         <Typography as="h3" typeRole="heading-md">
-          {content.title}
+          A clear point of view.
         </Typography>
-        <div className="public-surface-thumbnail-pills">
-          <Badge tone="primary">Token-led</Badge>
-          <Badge>Responsive</Badge>
+        <Typography typeRole="body-sm">
+          Let the proposition lead. Let the system carry the details.
+        </Typography>
+        <div className="public-showcase-public-window-line" />
+        <div className="public-showcase-public-window-links">
+          <span>Explore</span>
+          <span>Stories</span>
+          <span>About</span>
+        </div>
+      </div>
+    </ProductWindow>
+  );
+}
+
+function HeroProductVisual() {
+  return (
+    <MediaFrame
+      className="public-showcase-hero-media-frame"
+      label="Layered Ten4Seven product surface"
+      ratio={1.08}
+    >
+      <div className="public-showcase-hero-stage">
+        <div className="public-showcase-hero-layer public-showcase-hero-layer--auth">
+          <AuthenticationWindow />
+        </div>
+        <div className="public-showcase-hero-layer public-showcase-hero-layer--commerce">
+          <CommerceWindow />
+        </div>
+        <div className="public-showcase-hero-layer public-showcase-hero-layer--main">
+          <OperationsWindow compact />
+        </div>
+        <div className="public-showcase-hero-stage-caption">
+          <span>Live product surface</span>
+          <span>
+            <T7Icon aria-hidden="true" name="check" size={13} />
+            Code native
+          </span>
         </div>
       </div>
     </MediaFrame>
   );
 }
 
-function ShowcaseProduct({
-  category,
-  onOpen,
-  title,
-  variant,
+function RevealSection({
+  children,
+  className = "",
+  ...props
+}: HTMLAttributes<HTMLElement>) {
+  const ref = useRef<HTMLElement>(null);
+  const [state, setState] = useState<"idle" | "armed" | "visible">("idle");
+
+  useEffect(() => {
+    setState("armed");
+    const element = ref.current;
+    if (!element) return undefined;
+    return observeT7InView(element, () => setState("visible"), {
+      rootMargin: "0px 0px -12% 0px",
+    });
+  }, []);
+
+  return (
+    <section
+      {...props}
+      className={`public-showcase-reveal ${className}`.trim()}
+      data-reveal-state={state}
+      data-motion-role="supporting"
+      ref={ref}
+    >
+      {children}
+    </section>
+  );
+}
+
+function SurfaceSelector({
+  activeSurface,
+  onChange,
 }: {
-  category: string;
-  onOpen: () => void;
-  title: string;
-  variant: "signal" | "orbit" | "layers";
+  activeSurface: SurfaceId;
+  onChange: (surface: SurfaceId) => void;
 }) {
   return (
-    <ProductCard
-      actions={
-        <Button
-          intent="quiet"
-          onClick={onOpen}
-          size="sm"
-          trailingIcon="arrowRight"
-        >
-          Read guide
-        </Button>
+    <div className="public-showcase-surface-selector">
+      <Typography typeRole="label">Choose a surface</Typography>
+      <div
+        aria-label="Product surfaces"
+        className="public-showcase-surface-options"
+        role="group"
+      >
+        {surfaceOptions.map((surface) => (
+          <Button
+            aria-pressed={activeSurface === surface.id}
+            className="public-showcase-surface-option"
+            intent={activeSurface === surface.id ? "primary" : "quiet"}
+            key={surface.id}
+            leadingIcon={surface.icon}
+            onClick={() => onChange(surface.id)}
+            size="sm"
+          >
+            {surface.label}
+          </Button>
+        ))}
+      </div>
+      <Typography typeRole="caption">
+        Typography, controls, semantic states, motion, and accessibility stay
+        shared. The composition changes with the job.
+      </Typography>
+    </div>
+  );
+}
+
+function SurfaceWindow({ surface }: { surface: SurfaceId }) {
+  switch (surface) {
+    case "farm":
+      return <FarmWindow />;
+    case "commerce":
+      return <CommerceWindow />;
+    case "authentication":
+      return <AuthenticationWindow />;
+    case "public":
+      return <PublicWindow />;
+    case "operations":
+    default:
+      return <OperationsWindow />;
+  }
+}
+
+function SurfaceStage({ surface }: { surface: SurfaceId }) {
+  const [entered, setEntered] = useState(false);
+
+  useEffect(() => {
+    setEntered(false);
+    const frame = window.requestAnimationFrame(() => setEntered(true));
+    return () => window.cancelAnimationFrame(frame);
+  }, [surface]);
+
+  const label = surfaceOptions.find((option) => option.id === surface)?.label;
+  return (
+    <div
+      aria-label={`${label} product surface visual`}
+      className="public-showcase-surface-stage"
+      data-motion-role="supporting"
+      data-surface-state={entered ? "entered" : "entering"}
+      role="img"
+    >
+      <div className="public-showcase-surface-stage-line">
+        <span>Shared grammar</span>
+        <span>{label}</span>
+      </div>
+      <SurfaceWindow surface={surface} />
+    </div>
+  );
+}
+
+function SystemPath() {
+  return (
+    <ol className="public-showcase-system-path">
+      {systemSteps.map((step, index) => (
+        <li className="public-showcase-system-step" key={step.label}>
+          <div className="public-showcase-system-step-index">
+            {String(index + 1).padStart(2, "0")}
+          </div>
+          <div className="public-showcase-system-step-icon">
+            <T7Icon aria-hidden="true" name={step.icon} size={21} />
+          </div>
+          <Typography as="h3" typeRole="heading-md">
+            {step.label}
+          </Typography>
+          <Typography as="p" typeRole="body-sm">
+            {step.description}
+          </Typography>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+function DarkSystemGraph() {
+  return (
+    <div aria-hidden="true" className="public-showcase-dark-graph">
+      <svg viewBox="0 0 620 220" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 180 C 120 175, 132 120, 228 135 S 340 98, 430 82 S 540 54, 610 18" />
+        <path d="M10 204 C 110 190, 155 175, 228 173 S 343 142, 430 128 S 548 94, 610 62" />
+        <path d="M112 168V58M306 116V28M500 68V4" />
+        <circle cx="10" cy="180" r="5" />
+        <circle cx="228" cy="135" r="5" />
+        <circle cx="430" cy="82" r="5" />
+        <circle cx="610" cy="18" r="5" />
+      </svg>
+    </div>
+  );
+}
+
+function PublicShowcaseProofChart() {
+  return (
+    <ChartPanel
+      className="public-showcase-proof-chart"
+      description="Illustrative coverage signal across three product contexts."
+      title="Signals stay readable"
+      chart={
+        <LineChart
+          ariaLabel="Coverage trend chart"
+          labels={["May", "Jun", "Jul", "Aug", "Sep", "Oct"]}
+          series={[
+            { id: "app", label: "App", values: [32, 44, 51, 63, 72, 82] },
+            { id: "public", label: "Public", values: [14, 24, 29, 38, 47, 58] },
+            { id: "docs", label: "Docs", values: [8, 12, 19, 25, 33, 45] },
+          ]}
+          summary="Illustrative coverage signals remain readable at a glance."
+        />
       }
-      details={<Rating label="Rated 4.9 out of 5" value={4.9} />}
-      eyebrow={category}
-      media={<EditorialArt variant={variant} />}
-      meta="Guide · 8 min read"
-      price={
-        <Typography typeRole="caption">Included in the reference</Typography>
-      }
-      title={title}
     />
   );
 }
 
-function ShowcaseSectionMap({ activeSection }: { activeSection: string }) {
-  const links = [
-    {
-      description: "Tokens, roles, and responsive foundations",
-      id: "showcase-features",
-      label: "Foundations",
-    },
-    {
-      description: "Guides and editorial notes for the system",
-      id: "showcase-content",
-      label: "Guides",
-    },
-    {
-      description: "Reusable blocks ready for composition",
-      id: "showcase-products",
-      label: "Blocks",
-    },
-    {
-      description: "Specific proof from teams using the language",
-      id: "showcase-testimonials",
-      label: "Stories",
-    },
-  ];
-
-  return (
-    <nav
-      aria-label="Public showcase sections"
-      className="public-showcase-section-map"
-    >
-      <div className="public-showcase-section-map-intro">
-        <Typography typeRole="overline">Navigate the system</Typography>
-        <Typography typeRole="body-sm">
-          Start with the foundation, then move through the reusable work.
-        </Typography>
-      </div>
-      <div className="public-showcase-section-map-links">
-        {links.map((link, index) => (
-          <a
-            aria-current={activeSection === link.id ? "location" : undefined}
-            className="public-showcase-section-map-link"
-            data-active={activeSection === link.id || undefined}
-            href={`#${link.id}`}
-            key={link.id}
-          >
-            <span className="public-showcase-section-map-index">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-            <span>
-              <strong>{link.label}</strong>
-              <small>{link.description}</small>
-            </span>
-            <T7Icon aria-hidden="true" name="arrowRight" size={15} />
-          </a>
-        ))}
-      </div>
-    </nav>
-  );
-}
-
 export function PublicShowcase({
-  onOpenSettings,
   onNavigatePath,
+  onOpenSettings,
 }: {
-  onOpenSettings?: () => void;
   onNavigatePath?: (path: string) => void;
+  onOpenSettings?: () => void;
 } = {}) {
-  const [notice, setNotice] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState("showcase-top");
-  const { toast } = useToast();
+  const [activeSurface, setActiveSurface] = useState<SurfaceId>("operations");
+
+  // The app shell still passes the shared settings callback to every route. The
+  // public flagship intentionally does not render that internal QA control.
+  void onOpenSettings;
 
   useEffect(() => {
     const sectionIds = [
       "showcase-top",
-      "showcase-stats",
-      "showcase-features",
       "showcase-content",
+      "showcase-features",
       "showcase-products",
-      "showcase-testimonials",
-      "showcase-plans",
+      "showcase-scale",
+      "showcase-workflow",
       "showcase-cta",
     ];
     const sections = sectionIds
@@ -292,11 +699,6 @@ export function PublicShowcase({
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
   }, []);
-
-  function notify(title: string, description: string) {
-    setNotice(title);
-    toast({ description, duration: 3200, title, tone: "success" });
-  }
 
   function scrollToSection(id: string) {
     const target = document.getElementById(id);
@@ -321,21 +723,14 @@ export function PublicShowcase({
   return (
     <PublicShell
       actions={
-        <>
-          <Button
-            leadingIcon="components"
-            onClick={() => navigateToPath("/components")}
-            size="sm"
-          >
-            View components
-          </Button>
-          <IconButton
-            icon="settings"
-            label="Open settings"
-            onClick={onOpenSettings}
-            size="md"
-          />
-        </>
+        <Button
+          className="public-showcase-nav-cta"
+          onClick={() => scrollToSection("showcase-features")}
+          size="sm"
+          trailingIcon="arrowRight"
+        >
+          Explore the system
+        </Button>
       }
       brand={<ShowcaseBrand />}
       className="public-showcase-shell"
@@ -345,26 +740,26 @@ export function PublicShowcase({
             <div className="public-showcase-footer-brand">
               <ShowcaseBrand />
               <Typography typeRole="caption">
-                A calm, token-led system for product and public interfaces.
+                Interfaces for what comes next.
               </Typography>
             </div>
           }
           groups={[
             {
               items: [
-                { href: "#showcase-features", label: "Foundations" },
-                { href: "#showcase-products", label: "Blocks" },
-                { href: "#showcase-plans", label: "Recipes" },
+                { href: "#showcase-content", label: "Surfaces" },
+                { href: "#showcase-features", label: "System story" },
+                { href: "#showcase-products", label: "Product proof" },
               ],
               label: "Explore",
             },
             {
               items: [
-                { href: "#showcase-stats", label: "System proof" },
-                { href: "#showcase-testimonials", label: "Stories" },
-                { href: "#showcase-cta", label: "Contact" },
+                { href: "#showcase-scale", label: "Scale" },
+                { href: "#showcase-workflow", label: "Workflow" },
+                { href: "#showcase-cta", label: "Start here" },
               ],
-              label: "Resources",
+              label: "Story",
             },
             {
               items: [
@@ -377,82 +772,46 @@ export function PublicShowcase({
           ]}
           id="showcase-footer"
           legal="© 2026 ten4seven UI"
-          social={
-            <Button
-              intent="quiet"
-              size="sm"
-              onClick={() =>
-                notify(
-                  "Feedback noted",
-                  "Social links stay outside this local proof.",
-                )
-              }
-            >
-              Share feedback
-            </Button>
-          }
         />
       }
       navigationMenu={[
         {
-          active: activeSection === "showcase-top",
-          href: "#showcase-top",
-          key: "overview",
-          label: "Overview",
-        },
-        {
-          children: [
-            { href: "#showcase-products", key: "blocks", label: "Blocks" },
-            { href: "#showcase-content", key: "guides", label: "Guides" },
-            { href: "/recipes", key: "recipes", label: "Recipes" },
-          ],
-          active: [
-            "showcase-content",
-            "showcase-plans",
-            "showcase-products",
-          ].includes(activeSection),
-          key: "explore",
-          label: "Explore",
-        },
-        {
-          children: [
-            {
-              href: "#showcase-features",
-              key: "foundations",
-              label: "Foundations",
-            },
-            { href: "#showcase-stats", key: "proof", label: "System proof" },
-            { href: "/components", key: "components", label: "Components" },
-          ],
-          active: ["showcase-stats", "showcase-features"].includes(
-            activeSection,
-          ),
+          active: activeSection === "showcase-features",
+          href: "#showcase-features",
           key: "system",
           label: "System",
         },
         {
-          active: activeSection === "showcase-testimonials",
-          href: "#showcase-testimonials",
-          key: "stories",
-          label: "Stories",
+          active: activeSection === "showcase-content",
+          href: "#showcase-content",
+          key: "surfaces",
+          label: "Surfaces",
+        },
+        {
+          active: activeSection === "showcase-products",
+          href: "#showcase-products",
+          key: "proof",
+          label: "Proof",
+        },
+        {
+          active: activeSection === "showcase-top",
+          href: "#showcase-top",
+          key: "showcase",
+          label: "Showcase",
         },
       ]}
     >
       <div className="public-showcase-page" id="showcase-top">
-        <div className="public-showcase-status" aria-live="polite">
-          {notice ? <span>{notice}</span> : null}
-        </div>
-
         <Hero
           className="public-showcase-hero"
-          description="A composable system for product surfaces, reference work, and public experiences—connected by the same tokens, contracts, and visual language."
-          eyebrow="TEN4SEVEN UI / COMPOSITION SYSTEM"
-          media={<ShowcasePreview />}
+          description="One system that turns intent into reusable product UI. Design, build, and ship with consistency—from idea to production."
+          media={<HeroProductVisual />}
           primaryAction={
             <Button
               className="public-showcase-hero-primary"
               onClick={() => scrollToSection("showcase-features")}
               size="lg"
+              trailingIcon="arrowRight"
             >
               Explore the system
             </Button>
@@ -461,367 +820,271 @@ export function PublicShowcase({
             <Button
               className="public-showcase-hero-secondary"
               intent="quiet"
-              onClick={() => scrollToSection("showcase-products")}
+              onClick={() => scrollToSection("showcase-content")}
               size="lg"
+              trailingIcon="arrowRight"
             >
-              Browse blocks
+              See the system in action
             </Button>
           }
-          title={<>Build consistent interfaces, faster.</>}
-          trust={
+          title={
             <>
-              <span>
-                <T7Icon name="check" size={14} /> Semantic by default
-              </span>
-              <span>
-                <T7Icon name="check" size={14} /> Theme-aware
-              </span>
-              <span>
-                <T7Icon name="check" size={14} /> Built for reuse
+              Build better
+              <br />
+              <span className="public-showcase-hero-accent">
+                product surfaces.
               </span>
             </>
           }
           variant="product-preview"
         />
 
-        <ShowcaseSectionMap activeSection={activeSection} />
-
-        <LogoCloud
-          className="public-showcase-logo-cloud"
-          id="showcase-proof"
-          items={[
-            {
-              mark: <T7Icon name="warehouse" size={17} />,
-              name: "Product teams",
-            },
-            { mark: <T7Icon name="book" size={17} />, name: "Content teams" },
-            {
-              mark: <T7Icon name="analytics" size={17} />,
-              name: "Platform teams",
-            },
-            {
-              mark: <T7Icon name="components" size={17} />,
-              name: "Design systems",
-            },
-            { mark: <T7Icon name="tokens" size={17} />, name: "Public teams" },
-          ]}
-          label="A shared language for teams"
-        />
-
-        <StatsSection
-          className="public-showcase-stats"
-          description="Counts are local catalog proof, not product performance claims."
-          id="showcase-stats"
-          items={[
-            {
-              detail: "canonical contracts",
-              id: "contracts",
-              label: "Components",
-              value: String(catalogCounts.canonicalComponents),
-            },
-            {
-              detail: "reusable page recipes",
-              id: "recipes",
-              label: "Recipes",
-              value: String(catalogCounts.recipes),
-            },
-            {
-              detail: "semantic names",
-              id: "icons",
-              label: "Icons",
-              value: String(catalogCounts.icons),
-            },
-            {
-              detail: "separate expressive blocks",
-              id: "blocks",
-              label: "Blocks",
-              value: String(catalogCounts.blocks),
-            },
-          ]}
-          title="A system that scales by composition"
-        />
-
-        <FeatureShowcase
-          className="public-showcase-features"
-          description="The public layer adds section-level composition without changing the contracts that make dense product work predictable."
-          id="showcase-features"
-          items={[
-            {
-              description:
-                "Semantic roles keep hierarchy calm across headers, fields, data, actions, and public copy.",
-              icon: "type",
-              id: "typography",
-              title: "Typography with a job",
-            },
-            {
-              description:
-                "Blocks combine existing surfaces, media frames, controls, and motion tokens instead of inventing variants.",
-              icon: "components",
-              id: "composition",
-              title: "Composition over decoration",
-            },
-            {
-              description:
-                "Responsive behavior is part of the contract: stacks, rails, and carousels change geometry intentionally.",
-              icon: "sidebar",
-              id: "responsive",
-              title: "Responsive by design",
-            },
-          ]}
-          leadMedia={
-            <ChartPanel
-              className="public-showcase-feature-chart"
-              description="Five tokenized series · reduced-motion safe"
-              title="Signals remain readable"
-              chart={
-                <LineChart
-                  ariaLabel="Coverage trend chart"
-                  labels={["May", "Jun", "Jul", "Aug", "Sep", "Oct"]}
-                  series={[
-                    {
-                      id: "app",
-                      label: "App",
-                      values: [32, 44, 51, 63, 72, 82],
-                    },
-                    {
-                      id: "public",
-                      label: "Public",
-                      values: [14, 24, 29, 38, 47, 58],
-                    },
-                    {
-                      id: "docs",
-                      label: "Docs",
-                      values: [8, 12, 19, 25, 33, 45],
-                    },
-                  ]}
-                  summary="Coverage signals across app, public, and docs remain readable at a glance."
-                />
-              }
-            />
-          }
-          title="Foundations that stay useful"
-        />
-
-        <ContentShowcase
-          className="public-showcase-content"
-          description="A content-led section uses the same card, media, type, and action contracts without becoming an operational list."
+        <RevealSection
+          className="public-showcase-surfaces"
           id="showcase-content"
-          items={[
-            {
-              action: (
-                <Button
-                  intent="quiet"
-                  onClick={() => navigateToPath("/theme-studio")}
-                  size="sm"
-                  trailingIcon="arrowRight"
-                >
-                  Read the guide
-                </Button>
-              ),
-              description:
-                "How semantic roles keep a product readable when every surface has a different density.",
-              id: "content-typography",
-              media: <EditorialArt variant="signal" />,
-              meta: "Guide · Foundations",
-              title: "Designing hierarchy that breathes",
-            },
-            {
-              action: (
-                <Button
-                  intent="quiet"
-                  onClick={() => navigateToPath("/recipes")}
-                  size="sm"
-                  trailingIcon="arrowRight"
-                >
-                  Read the guide
-                </Button>
-              ),
-              description:
-                "A practical map from primitive behavior to complete, responsive application recipes.",
-              id: "content-composition",
-              media: <EditorialArt variant="orbit" />,
-              meta: "Field note · Composition",
-              title: "The contract is the product",
-            },
-            {
-              action: (
-                <Button
-                  intent="quiet"
-                  onClick={() => navigateToPath("/components")}
-                  size="sm"
-                  trailingIcon="arrowRight"
-                >
-                  Read the guide
-                </Button>
-              ),
-              description:
-                "Why restrained surfaces, local media, and explicit state make an AI-built interface trustworthy.",
-              id: "content-trust",
-              media: <EditorialArt variant="layers" />,
-              meta: "Essay · Practice",
-              title: "Polish without a second system",
-            },
-          ]}
-          title="Made for reading as well as operating"
-        />
+        >
+          <header className="public-showcase-section-heading">
+            <Typography as="h2" typeRole="display-lg">
+              One system. Many surfaces.
+            </Typography>
+            <Typography as="p" typeRole="body-lg">
+              Same system grammar. Different product expression.
+            </Typography>
+          </header>
+          <div className="public-showcase-surfaces-layout">
+            <SurfaceSelector
+              activeSurface={activeSurface}
+              onChange={setActiveSurface}
+            />
+            <SurfaceStage key={activeSurface} surface={activeSurface} />
+          </div>
+        </RevealSection>
 
-        <ProductShowcase
-          className="public-showcase-products"
-          actions={
+        <RevealSection
+          className="public-showcase-system-story"
+          id="showcase-features"
+        >
+          <header className="public-showcase-section-heading public-showcase-section-heading--split">
+            <div>
+              <Typography as="h2" typeRole="display-lg">
+                From intent to product.
+              </Typography>
+              <Typography as="p" typeRole="body-lg">
+                A connected path from an idea to a real-world experience—built
+                on a shared system, not separate solutions.
+              </Typography>
+            </div>
+            <Typography typeRole="caption">
+              The system carries the decisions forward.
+            </Typography>
+          </header>
+          <SystemPath />
+        </RevealSection>
+
+        <RevealSection className="public-showcase-proof" id="showcase-products">
+          <header className="public-showcase-section-heading public-showcase-section-heading--split">
+            <div>
+              <Typography as="h2" typeRole="display-lg">
+                Selected product proof.
+              </Typography>
+              <Typography as="p" typeRole="body-lg">
+                Real surfaces. A shared foundation. Read the behavior in
+                context.
+              </Typography>
+            </div>
             <Button
+              className="public-showcase-inline-action"
               intent="quiet"
               onClick={() => navigateToPath("/recipes")}
               size="sm"
               trailingIcon="arrowRight"
             >
-              View all guides
+              Explore all recipes
             </Button>
-          }
-          description="Product cards remain content-focused; the carousel owns sequencing, controls, and overflow."
-          id="showcase-products"
-          title="Browse the composition library"
+          </header>
+          <div className="public-showcase-proof-layout">
+            <div className="public-showcase-proof-carousel">
+              <Carousel aria-label="Selected product proofs" slideWidth={800}>
+                <div className="public-showcase-proof-slide">
+                  <OperationsWindow />
+                </div>
+                <div className="public-showcase-proof-slide">
+                  <AuthenticationWindow />
+                </div>
+                <div className="public-showcase-proof-slide">
+                  <CommerceWindow />
+                </div>
+              </Carousel>
+            </div>
+            <aside className="public-showcase-proof-aside">
+              <PublicShowcaseProofChart />
+              <div className="public-showcase-proof-note">
+                <T7Icon aria-hidden="true" name="check" size={16} />
+                <Typography as="p" typeRole="body-sm">
+                  The proof is in the relationship: the same states and controls
+                  can support an operational queue, a focused entry point, or a
+                  browse-first catalog.
+                </Typography>
+              </div>
+            </aside>
+          </div>
+        </RevealSection>
+
+        <RevealSection className="public-showcase-dark" id="showcase-scale">
+          <div className="public-showcase-dark-intro">
+            <div>
+              <Typography as="h2" typeRole="display-lg">
+                Built for systems that have to scale.
+              </Typography>
+              <Typography as="p" typeRole="body-lg">
+                Shared contracts carry decisions from intent to shipped product.
+              </Typography>
+            </div>
+            <DarkSystemGraph />
+          </div>
+          <div className="public-showcase-capabilities">
+            <article>
+              <span aria-hidden="true" />
+              <Typography as="h3" typeRole="heading-lg">
+                Semantic by default.
+              </Typography>
+              <Typography as="p" typeRole="body-sm">
+                A shared language for people and machines across every surface.
+              </Typography>
+            </article>
+            <article>
+              <span aria-hidden="true" />
+              <Typography as="h3" typeRole="heading-lg">
+                Responsive by composition.
+              </Typography>
+              <Typography as="p" typeRole="body-sm">
+                Adaptable building blocks that change geometry with the context.
+              </Typography>
+            </article>
+            <article>
+              <span aria-hidden="true" />
+              <Typography as="h3" typeRole="heading-lg">
+                Accessible at every state.
+              </Typography>
+              <Typography as="p" typeRole="body-sm">
+                Inclusive by design, from the first interaction to the final
+                detail.
+              </Typography>
+            </article>
+          </div>
+          <div className="public-showcase-dark-stats">
+            <div>
+              <Typography as="strong" data-numeric typeRole="metric-lg">
+                {catalogCounts.canonicalComponents}
+              </Typography>
+              <Typography typeRole="caption">
+                implemented component contracts
+              </Typography>
+            </div>
+            <div>
+              <Typography as="strong" data-numeric typeRole="metric-lg">
+                {catalogCounts.recipes}
+              </Typography>
+              <Typography typeRole="caption">retrievable recipes</Typography>
+            </div>
+            <div>
+              <Typography as="strong" data-numeric typeRole="metric-lg">
+                {catalogCounts.blocks}
+              </Typography>
+              <Typography typeRole="caption">expressive blocks</Typography>
+            </div>
+          </div>
+        </RevealSection>
+
+        <RevealSection
+          className="public-showcase-workflow"
+          id="showcase-workflow"
         >
-          <Carousel aria-label="Featured ten4seven guides" slideWidth={280}>
-            <ShowcaseProduct
-              category="Foundations"
-              onOpen={() => navigateToPath("/theme-studio")}
-              title="Tokens that explain themselves"
-              variant="signal"
-            />
-            <ShowcaseProduct
-              category="Patterns"
-              onOpen={() => navigateToPath("/recipes")}
-              title="Recipes for real product work"
-              variant="orbit"
-            />
-            <ShowcaseProduct
-              category="Blocks"
-              onOpen={() => navigateToPath("/blocks")}
-              title="Public sections with restraint"
-              variant="layers"
-            />
-          </Carousel>
-        </ProductShowcase>
-
-        <Testimonials
-          className="public-showcase-testimonials"
-          description="Proof is useful when it stays specific and readable."
-          id="showcase-testimonials"
-          items={[
-            {
-              avatar: "MP",
-              company: "Product engineering",
-              id: "maya",
-              name: "Maya Patel",
-              quote:
-                "The same contracts let our inventory workbench and public catalog feel related without making them look the same.",
-              role: "Design systems lead",
-            },
-            {
-              avatar: "AR",
-              company: "Platform team",
-              id: "andre",
-              name: "Andre Reyes",
-              quote:
-                "The value is in the decisions an agent can retrieve: hierarchy, composition, state, and the boundary between them.",
-              role: "Staff engineer",
-            },
-          ]}
-          title="Built for teams that care about the details"
-        />
-
-        <PricingSection
-          className="public-showcase-pricing"
-          description="A presentation-only comparison block. Entitlements and billing remain product-owned."
-          id="showcase-plans"
-          plans={[
-            {
-              action: (
-                <Button
-                  intent="secondary"
-                  onClick={() => navigateToPath("/theme-studio")}
-                  size="sm"
-                >
-                  Start with the system
-                </Button>
-              ),
-              description: "For a focused team proving one product surface.",
-              features: ["Canonical components", "Theme axes", "AI contracts"],
-              id: "starter",
-              name: "Starter",
-              price: "Free",
-            },
-            {
-              action: (
-                <Button onClick={() => navigateToPath("/recipes")} size="sm">
-                  Compose with a team
-                </Button>
-              ),
-              description:
-                "For teams shipping across product and public surfaces.",
-              features: [
-                "Everything in Starter",
-                "Reusable blocks",
-                "Reference recipes",
-              ],
-              id: "team",
-              name: "Team",
-              price: "$19 / member",
-              recommended: true,
-            },
-            {
-              action: (
-                <Button
-                  intent="secondary"
-                  onClick={() =>
-                    notify(
-                      "Enterprise selected",
-                      "No sales workflow is created in this fixture.",
-                    )
-                  }
-                  size="sm"
-                >
-                  Talk to the team
-                </Button>
-              ),
-              description:
-                "For organizations standardizing multiple product lines.",
-              features: [
-                "Everything in Team",
-                "Governance guidance",
-                "Migration support",
-              ],
-              id: "enterprise",
-              name: "Enterprise",
-              price: "Custom",
-            },
-          ]}
-          title="A clear place for every stage"
-        />
+          <header className="public-showcase-section-heading">
+            <Typography as="h2" typeRole="display-lg">
+              Make the path obvious.
+            </Typography>
+            <Typography as="p" typeRole="body-lg">
+              Show how a real intent becomes a product surface without losing
+              the decisions in between.
+            </Typography>
+          </header>
+          <div className="public-showcase-workflow-track">
+            <article className="public-showcase-workflow-intent">
+              <span className="public-showcase-workflow-number">01</span>
+              <T7Icon aria-hidden="true" name="approve" size={24} />
+              <Typography as="h3" typeRole="heading-lg">
+                Review and approve operational work.
+              </Typography>
+              <Typography as="p" typeRole="body-sm">
+                A decision needs context, accountable states, and one clear next
+                action.
+              </Typography>
+            </article>
+            <div aria-hidden="true" className="public-showcase-workflow-arrow">
+              <T7Icon name="arrowRight" size={20} />
+            </div>
+            <article className="public-showcase-workflow-recipe">
+              <span className="public-showcase-workflow-number">02</span>
+              <Typography typeRole="overline">Recipe composition</Typography>
+              <Typography as="h3" typeRole="heading-lg">
+                Decision Workspace
+              </Typography>
+              <ul>
+                <li>
+                  <T7Icon aria-hidden="true" name="components" size={14} />
+                  Approval panel
+                </li>
+                <li>
+                  <T7Icon aria-hidden="true" name="chart" size={14} />
+                  Signal and trend
+                </li>
+                <li>
+                  <T7Icon aria-hidden="true" name="check" size={14} />
+                  Explicit state
+                </li>
+              </ul>
+            </article>
+            <div aria-hidden="true" className="public-showcase-workflow-arrow">
+              <T7Icon name="arrowRight" size={20} />
+            </div>
+            <div
+              aria-label="Finished operational decision workspace visual"
+              className="public-showcase-workflow-surface"
+              role="img"
+            >
+              <span className="public-showcase-workflow-number">03</span>
+              <OperationsWindow compact />
+            </div>
+          </div>
+        </RevealSection>
 
         <CtaBlock
-          className="public-showcase-cta"
           actions={
             <>
               <Button
-                onClick={() => scrollToSection("showcase-products")}
+                className="public-showcase-cta-primary"
+                onClick={() => scrollToSection("showcase-content")}
                 size="lg"
+                trailingIcon="arrowRight"
               >
-                Browse the blocks
+                Explore the system
               </Button>
               <Button
-                intent="secondary"
-                onClick={() => navigateToPath("/components")}
+                className="public-showcase-cta-secondary"
+                intent="quiet"
+                onClick={() => navigateToPath("/recipes")}
                 size="lg"
               >
-                Read documentation
+                View recipes
               </Button>
             </>
           }
-          description="Start with a complete recipe, then let the system carry the details through every breakpoint and theme."
+          className="public-showcase-cta"
+          description="Start with a complete recipe. Let the system carry the details through every breakpoint and theme."
           id="showcase-cta"
-          title="Ready to build a surface that holds together?"
-          tone="inverse"
+          title="Make the next surface feel inevitable."
+          tone="subtle"
         />
       </div>
     </PublicShell>

@@ -570,6 +570,7 @@ export function QrCode({
 }: QrCodeProps) {
   const titleId = useId();
   const descriptionId = useId();
+  const svgDescriptionId = useId();
   const [copyStatus, setCopyStatus] = useState<
     "idle" | "copied" | "unavailable"
   >("idle");
@@ -641,18 +642,21 @@ export function QrCode({
           {label}
         </Typography>
         {displayValue ? <code>{value}</code> : null}
+        <span className="t7-visually-hidden" id={descriptionId}>
+          {resolvedDescription}
+        </span>
       </figcaption>
       {encoded.result ? (
         <svg
           aria-labelledby={titleId}
-          aria-describedby={descriptionId}
+          aria-describedby={svgDescriptionId}
           className="t7-qr-code-mark"
           role="img"
           shapeRendering="crispEdges"
           viewBox={`0 0 ${encoded.result.matrix.length + 8} ${encoded.result.matrix.length + 8}`}
         >
           <title id={titleId}>{label}</title>
-          <desc id={descriptionId}>{resolvedDescription}</desc>
+          <desc id={svgDescriptionId}>{resolvedDescription}</desc>
           <rect
             className="t7-qr-code-background"
             height={encoded.result.matrix.length + 8}

@@ -13,8 +13,15 @@ import {
 import {
   getThemeRecipe,
   isThemeRecipeName,
+  resetThemeStudioAxis,
+  resetThemeStudioOverrides,
   resolveRuntimePreferences,
+  resolveThemeStudioConfig,
+  themeProfileToLegacyConfig,
   themeRecipeToLegacyConfig,
+  type ThemeStudioAxis,
+  type ThemeStudioConfig,
+  type ThemeStudioResolution,
   type ResolvedRuntimePreferences,
   type RuntimePreferences,
   type ThemeComposition,
@@ -24,6 +31,7 @@ import {
 import {
   buildThemeVariables,
   resolveAppearance,
+  resolveThemeConfigLayers,
   resolveTheme,
   type Appearance,
   type CanvasName,
@@ -45,13 +53,20 @@ import {
 export interface ThemeOverrides {
   /** Existing advanced axes remain available without inventing a second theme model. */
   config?: Partial<ThemeConfig>;
-  /** Direct semantic custom-property overrides for a bounded brand exception. */
+  /**
+   * @deprecated Web-only compatibility escape hatch. Prefer `config` and the
+   * typed semantic axes; native projections do not read CSS custom properties.
+   */
   variables?: Readonly<Record<`--t7-${string}`, string | number>>;
 }
 
 export interface Ten4SevenProviderProps extends PropsWithChildren<ThemeConfig> {
   /** A curated v2 recipe or the established advanced ThemeConfig object. */
   theme?: ThemeConfig | ThemeRecipeName;
+  /** Optional versioned dynamic Theme Studio state. */
+  themeStudio?: ThemeStudioConfig;
+  /** Controlled update boundary for dynamic Theme Studio state. */
+  onThemeStudioChange?: (next: ThemeStudioConfig) => void;
   /** Per-user choices applied after the authored recipe. */
   preferences?: RuntimePreferences;
   /** Deliberate advanced exception after recipe selection and before persistence. */
@@ -68,7 +83,9 @@ interface ThemeContextValue {
   expression: string;
   composition?: ThemeComposition;
   preferences: ResolvedRuntimePreferences;
+  themeStudio?: ThemeStudioResolution;
   setTheme: (next: Partial<ThemeConfig>) => void;
+  resetThemeAxis: (axis: ThemeStudioAxis) => void;
   resetTheme: () => void;
 }
 
@@ -118,6 +135,7 @@ function resolvedThemeToConfig(theme: ResolvedTheme): ThemeConfig {
     primary: theme.primarySource,
     accent: theme.accentSource,
     canvas: theme.canvas,
+    surfaceTreatment: theme.surfaceTreatment,
     chartPalette: theme.chartPalette,
     radius: theme.radius,
     radiusValue: theme.radiusValue,
@@ -141,6 +159,7 @@ export function Ten4SevenProvider({
   primary,
   accent,
   canvas = "balanced",
+  surfaceTreatment = "outlined",
   chartPalette = "spectrum",
   radius = "soft",
   radiusValue,
@@ -149,6 +168,8 @@ export function Ten4SevenProvider({
   typography = "modern",
   elevation = "soft",
   theme: themeInput,
+  themeStudio: themeStudioInput,
+  onThemeStudioChange,
   preferences,
   overrides: advancedOverrides,
   persistenceKey,
@@ -156,11 +177,19 @@ export function Ten4SevenProvider({
   style,
   children,
 }: Ten4SevenProviderProps) {
-  const recipeName = isThemeRecipeName(themeInput) ? themeInput : undefined;
+  const themeStudio = themeStudioInput
+    ? resolveThemeStudioConfig(themeStudioInput)
+    : undefined;
+  const recipeName =
+    themeStudio?.effectiveRecipe ??
+    (isThemeRecipeName(themeInput) ? themeInput : undefined);
   const recipe = getThemeRecipe(recipeName);
   const recipeConfig = recipe ? themeRecipeToLegacyConfig(recipe) : undefined;
   const themeConfig =
     themeInput && typeof themeInput === "object" ? themeInput : undefined;
+  const studioConfig = themeStudio
+    ? themeProfileToLegacyConfig(themeStudio.profile)
+    : undefined;
   // Keep the server render and the first client render deterministic. The
   // system media query is resolved in the effect below after hydration.
   const [systemAppearance, setSystemAppearance] =
@@ -177,28 +206,44 @@ export function Ten4SevenProvider({
   );
 
   const mergedConfig = useMemo<ThemeConfig>(() => {
-    const baseConfig: ThemeConfig = {
-      appearance: recipeConfig?.appearance ?? appearance,
-      palette: recipeConfig?.palette ?? palette,
-      primary: recipeConfig?.primary ?? primary,
-      accent: recipeConfig?.accent ?? accent,
-      canvas: recipeConfig?.canvas ?? canvas,
-      chartPalette: recipeConfig?.chartPalette ?? chartPalette,
-      radius: recipeConfig?.radius ?? radius,
-      radiusValue: recipeConfig?.radiusValue ?? radiusValue,
-      density: recipeConfig?.density ?? density,
-      motionDuration: recipeConfig?.motionDuration ?? motionDuration,
-      typography: recipeConfig?.typography ?? typography,
-      elevation: recipeConfig?.elevation ?? elevation,
-    };
-    const next = {
-      ...baseConfig,
-      ...themeConfig,
-      ...advancedOverrides?.config,
-      ...persistedOverrides,
-    };
+    const next = resolveThemeConfigLayers({
+      SYSTEM_DEFAULTS: {
+        appearance,
+        palette,
+        primary,
+        accent,
+        canvas,
+        surfaceTreatment,
+        chartPalette,
+        radius,
+        radiusValue,
+        density,
+        motionDuration,
+        typography,
+        elevation,
+      },
+      BASE_RECIPE: recipeConfig,
+      PRODUCT_PROFILE: themeStudio ? studioConfig : undefined,
+      THEME_OVERRIDE: themeStudio ? undefined : themeConfig,
+      SCOPED_OVERRIDE: {
+        ...advancedOverrides?.config,
+        ...(themeStudio ? {} : persistedOverrides),
+      },
+    });
     if (preferences?.appearance !== undefined)
       next.appearance = preferences.appearance;
+    else if (
+      themeStudio &&
+      !Object.prototype.hasOwnProperty.call(
+        themeStudio.config.runtime,
+        "appearance",
+      ) &&
+      !Object.prototype.hasOwnProperty.call(
+        themeStudio.config.overrides,
+        "appearance",
+      )
+    )
+      next.appearance = "system";
     if (preferences?.density !== undefined) next.density = preferences.density;
     return next;
   }, [
@@ -216,8 +261,11 @@ export function Ten4SevenProvider({
     radius,
     radiusValue,
     persistedOverrides,
+    studioConfig,
+    themeStudio,
     themeConfig,
     recipeConfig,
+    surfaceTreatment,
     typography,
   ]);
   const requestedAppearance = resolveAppearanceSetting(mergedConfig.appearance);
@@ -238,6 +286,10 @@ export function Ten4SevenProvider({
   );
 
   useEffect(() => {
+    if (themeStudio) {
+      hydratedPersistenceKey.current = "";
+      return;
+    }
     if (!persistenceKey) {
       hydratedPersistenceKey.current = "";
       return;
@@ -262,7 +314,7 @@ export function Ten4SevenProvider({
     } catch {
       // Storage can be unavailable in privacy-restricted browser contexts.
     }
-  }, [persistedOverrides, persistenceKey]);
+  }, [persistedOverrides, persistenceKey, themeStudio]);
 
   useEffect(() => {
     if (requestedAppearance !== "system") return undefined;
@@ -283,6 +335,7 @@ export function Ten4SevenProvider({
       primary: mergedConfig.primary,
       accent: mergedConfig.accent,
       canvas: mergedConfig.canvas,
+      surfaceTreatment: mergedConfig.surfaceTreatment,
       chartPalette: mergedConfig.chartPalette,
       radius: mergedConfig.radius,
       radiusValue: mergedConfig.radiusValue,
@@ -298,12 +351,22 @@ export function Ten4SevenProvider({
       buildThemeVariables(theme, {
         contrast: runtimePreferences.contrast,
         motion: runtimePreferences.motion,
-        motionProfile: recipe?.profile.motion.profile,
+        motionProfile:
+          themeStudio?.profile.motion.profile ??
+          mergedConfig.motionProfile ??
+          recipe?.profile.motion.profile,
         recipe: recipe?.id,
         expression: recipe?.expression,
-        composition: recipe?.composition,
+        composition: themeStudio?.composition ?? recipe?.composition,
       }),
-    [recipe, runtimePreferences.contrast, runtimePreferences.motion, theme],
+    [
+      mergedConfig.motionProfile,
+      recipe,
+      runtimePreferences.contrast,
+      runtimePreferences.motion,
+      themeStudio,
+      theme,
+    ],
   );
   const rootStyle = { ...variables, ...style } as CSSProperties;
   const semanticOverrides = resolveSemanticVariables(
@@ -316,18 +379,41 @@ export function Ten4SevenProvider({
       theme,
       recipe: recipe?.id,
       expression: recipe?.expression ?? "neutral",
-      composition: recipe?.composition,
+      composition: themeStudio?.composition ?? recipe?.composition,
       preferences: runtimePreferences,
-      setTheme: (next) =>
-        setPersistedOverrides((current) => ({ ...current, ...next })),
-      resetTheme: () => setPersistedOverrides({}),
+      themeStudio,
+      setTheme: (next) => {
+        if (themeStudioInput) {
+          onThemeStudioChange?.({
+            ...themeStudioInput,
+            overrides: { ...themeStudioInput.overrides, ...next },
+          });
+          return;
+        }
+        setPersistedOverrides((current) => ({ ...current, ...next }));
+      },
+      resetThemeAxis: (axis) => {
+        if (themeStudioInput) {
+          onThemeStudioChange?.(resetThemeStudioAxis(themeStudioInput, axis));
+        }
+      },
+      resetTheme: () => {
+        if (themeStudioInput) {
+          onThemeStudioChange?.(resetThemeStudioOverrides(themeStudioInput));
+          return;
+        }
+        setPersistedOverrides({});
+      },
     }),
     [
+      onThemeStudioChange,
       recipe?.composition,
       recipe?.expression,
       recipe?.id,
       requestedAppearance,
       runtimePreferences,
+      themeStudio,
+      themeStudioInput,
       theme,
     ],
   );
@@ -373,6 +459,8 @@ export function Ten4SevenProvider({
         data-t7-contrast={runtimePreferences.contrast}
         data-t7-motion-preference={runtimePreferences.motion}
         data-t7-expression={recipe?.expression ?? "neutral"}
+        data-t7-theme-studio-profile={themeStudio?.productProfile}
+        data-t7-theme-studio-schema={themeStudio?.config.schemaVersion}
         style={{ ...rootStyle, ...semanticOverrides } as CSSProperties}
       >
         {children}
@@ -416,12 +504,15 @@ export function ThemeScope({
   const themeOverrides =
     themeInput && typeof themeInput === "object" ? themeInput : undefined;
   const scopedConfig = useMemo(
-    () => ({
-      ...resolvedThemeToConfig(parent.theme),
-      ...recipeConfig,
-      ...themeOverrides,
-      ...advancedOverrides?.config,
-    }),
+    () =>
+      resolveThemeConfigLayers({
+        SYSTEM_DEFAULTS: resolvedThemeToConfig(parent.theme),
+        BASE_RECIPE: recipeConfig,
+        SCOPED_OVERRIDE: {
+          ...themeOverrides,
+          ...advancedOverrides?.config,
+        },
+      }),
     [advancedOverrides?.config, parent.theme, recipeConfig, themeOverrides],
   );
   const resolvedPreferences = resolveRuntimePreferences({
@@ -460,8 +551,9 @@ export function ThemeScope({
       buildThemeVariables(theme, {
         contrast: resolvedPreferences.contrast,
         motion: resolvedPreferences.motion,
-        motionProfile: (recipe ?? getThemeRecipe(parent.recipe))?.profile.motion
-          .profile,
+        motionProfile:
+          parent.themeStudio?.profile.motion.profile ??
+          (recipe ?? getThemeRecipe(parent.recipe))?.profile.motion.profile,
         recipe: recipe?.id ?? parent.recipe,
         expression: recipe?.expression,
         composition: recipe?.composition ?? parent.composition,
@@ -469,6 +561,7 @@ export function ThemeScope({
     [
       parent.composition,
       parent.recipe,
+      parent.themeStudio,
       recipe,
       resolvedPreferences.contrast,
       resolvedPreferences.motion,
@@ -485,13 +578,17 @@ export function ThemeScope({
       preferences: resolvedPreferences,
       setTheme: parent.setTheme,
       resetTheme: parent.resetTheme,
+      resetThemeAxis: parent.resetThemeAxis,
+      themeStudio: parent.themeStudio,
     }),
     [
       parent.composition,
       parent.expression,
       parent.recipe,
       parent.resetTheme,
+      parent.resetThemeAxis,
       parent.setTheme,
+      parent.themeStudio,
       recipe?.composition,
       recipe?.expression,
       recipe?.id,

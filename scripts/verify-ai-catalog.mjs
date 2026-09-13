@@ -15,6 +15,15 @@ const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const recipes = readJson("packages/ai/catalog/recipes.json");
 const generatedRecipes = readJson("generated/recipes.compact.json");
 const components = readJson("packages/ai/catalog/components.json");
+const generatedComponents = readJson("generated/components.compact.json");
+const inputContracts = readJson("generated/input-contracts.json");
+const navigationOverlayFeedback = readJson(
+  "generated/navigation-overlay-feedback.json",
+);
+const dataCollections = readJson("generated/data-collections.json");
+const componentContractPlane = readJson(
+  "generated/component-contract-plane.json",
+);
 const blocks = readJson("packages/ai/catalog/blocks.json");
 const icons = readJson("packages/ai/catalog/icons.json");
 const iconSource = read("packages/icons/src/index.tsx");
@@ -121,6 +130,7 @@ const requiredComponents = [
   "NativeTimeInput",
   "Card",
   "DataTable",
+  "List",
   "AdvancedDataGrid",
   "Table",
   "TableHeader",
@@ -225,6 +235,195 @@ for (const name of requiredIcons)
   assert.ok(icons[name], `missing icon catalog entry: ${name}`);
 
 for (const [name, component] of Object.entries(components)) {
+  const compact = generatedComponents[name];
+  const platform = componentContractPlane.matrix[name];
+  const input = inputContracts.components[name];
+  const navigation = navigationOverlayFeedback.components[name];
+  const dataCollection = dataCollections.components[name];
+  assert.ok(compact, `${name}: AI compact component projection missing`);
+  assert.ok(platform, `${name}: AI platform matrix entry missing`);
+  if (input) {
+    assert.deepEqual(
+      compact.inputContractRef,
+      { path: "input-contracts.json", id: input.canonicalComponent },
+      `${name}: AI compact input contract reference missing or stale`,
+    );
+    for (const field of [
+      "canonicalComponent",
+      "displayName",
+      "family",
+      "classification",
+      "status",
+      "intent",
+      "measure",
+      "tokenRoles",
+      "states",
+      "accessibility",
+      "useWhen",
+      "avoidWhen",
+      "dataBoundary",
+      "asyncStates",
+      "virtualization",
+      "platform",
+      "rendererStrategy",
+      "nativeStatus",
+      "webStatus",
+      "webPresentation",
+      "nativePresentation",
+      "platformSemanticIntent",
+      "platformInteractionModel",
+      "platformCriticalStates",
+      "platformAccessibilityObligations",
+    ])
+      assert.ok(
+        input[field] !== undefined,
+        `${name}: AI input contract field ${field} missing`,
+      );
+    assert.equal(
+      input.platform,
+      platform.platform,
+      `${name}: AI input platform drifted from component platform`,
+    );
+    assert.equal(
+      input.rendererStrategy,
+      platform.rendererStrategy,
+      `${name}: AI input renderer strategy drifted from component platform`,
+    );
+  } else {
+    assert.equal(
+      compact.inputContractRef,
+      undefined,
+      `${name}: non-input component must not receive an input contract reference`,
+    );
+  }
+  if (navigation) {
+    assert.equal(
+      component.status,
+      "implemented",
+      `${name}: U06 metadata must attach only to implemented catalog entries`,
+    );
+    assert.deepEqual(
+      compact.navigationOverlayFeedbackRef,
+      {
+        path: "navigation-overlay-feedback.json",
+        id: navigation.canonicalComponent,
+      },
+      `${name}: AI compact U06 reference missing or stale`,
+    );
+    for (const field of [
+      "canonicalComponent",
+      "family",
+      "intent",
+      "interactionModel",
+      "states",
+      "accessibility",
+      "tokenRoles",
+      "layoutIntents",
+      "motionRoles",
+      "dismissModel",
+      "focusModel",
+      "persistence",
+      "urgency",
+      "platform",
+      "rendererStrategy",
+      "nativePresentation",
+    ])
+      assert.ok(
+        navigation[field] !== undefined,
+        `${name}: U06 projection field ${field} missing`,
+      );
+    assert.equal(
+      navigation.platform,
+      platform.platform,
+      `${name}: AI U06 platform metadata drifted`,
+    );
+    assert.equal(
+      navigation.rendererStrategy,
+      platform.rendererStrategy,
+      `${name}: AI U06 renderer strategy drifted`,
+    );
+  } else {
+    assert.equal(
+      compact.navigationOverlayFeedbackRef,
+      undefined,
+      `${name}: non-U06 component must not receive a navigation/overlay/feedback reference`,
+    );
+  }
+  if (dataCollection) {
+    assert.equal(
+      component.status,
+      "implemented",
+      `${name}: U07 metadata must attach only to implemented catalog entries`,
+    );
+    assert.deepEqual(
+      compact.dataCollectionRef,
+      { path: "data-collections.json", id: dataCollection.canonicalComponent },
+      `${name}: AI compact U07 reference missing or stale`,
+    );
+    for (const field of [
+      "canonicalComponent",
+      "family",
+      "intent",
+      "states",
+      "accessibility",
+      "useWhen",
+      "avoidWhen",
+      "selection",
+      "sorting",
+      "paging",
+      "responsivePatterns",
+      "virtualization",
+      "rowCountSuitability",
+      "platform",
+      "rendererStrategy",
+      "native",
+    ])
+      assert.ok(
+        dataCollection[field] !== undefined,
+        `${name}: U07 projection field ${field} missing`,
+      );
+    assert.equal(
+      dataCollection.platform,
+      platform.platform,
+      `${name}: AI U07 platform metadata drifted`,
+    );
+    assert.equal(
+      dataCollection.rendererStrategy,
+      platform.rendererStrategy,
+      `${name}: AI U07 renderer strategy drifted`,
+    );
+  } else {
+    assert.equal(
+      compact.dataCollectionRef,
+      undefined,
+      `${name}: non-U07 component must not receive a data collection reference`,
+    );
+  }
+  assert.equal(
+    compact.platform,
+    platform.platform,
+    `${name}: AI compact platform metadata drifted`,
+  );
+  assert.equal(
+    compact.nativeStatus,
+    platform.native.status,
+    `${name}: AI compact Native status drifted`,
+  );
+  assert.equal(
+    compact.interactionModel,
+    platform.interactionModel,
+    `${name}: AI compact interaction model drifted`,
+  );
+  assert.ok(
+    Array.isArray(compact.inputModalities),
+    `${name}: AI compact input modalities missing`,
+  );
+  if (platform.platform === "ADAPTIVE")
+    assert.equal(
+      compact.adaptivePattern,
+      platform.adaptiveBehavior.pattern,
+      `${name}: AI compact adaptive pattern drifted`,
+    );
   assert.ok(statuses.has(component.status), `${name}: invalid status`);
   assert.ok(component.category, `${name}: category missing`);
   assert.ok(
@@ -310,6 +509,65 @@ for (const [name, component] of Object.entries(components)) {
     );
 }
 
+assert.deepEqual(
+  inputContracts.taxonomy.families,
+  ["FORM", "SELECTION", "DATE_TIME", "FILES"],
+  "input contract taxonomy must remain a four-family projection",
+);
+for (const [name, navigation] of Object.entries(
+  navigationOverlayFeedback.components,
+)) {
+  assert.equal(
+    components[name]?.status,
+    "implemented",
+    `${name}: U06 catalog entry must remain implemented`,
+  );
+  assert.ok(navigation.intent, `${name}: U06 intent missing`);
+  assert.ok(
+    navigation.accessibility.length > 0,
+    `${name}: U06 accessibility missing`,
+  );
+}
+assert.equal(
+  components.Modal.aliasOf,
+  "Dialog",
+  "Modal must remain a compatibility alias of Dialog",
+);
+for (const [name, gap] of Object.entries(inputContracts.gapDecisions)) {
+  assert.notEqual(
+    gap.status,
+    "implemented",
+    `${name}: deferred or rejected input intent cannot be an implemented AI API`,
+  );
+  assert.ok(gap.reason, `${name}: AI gap rationale missing`);
+  assert.ok(gap.aiGuidance, `${name}: AI gap guidance missing`);
+}
+assert.equal(
+  inputContracts.components.Select.selectionMode,
+  "single",
+  "AI selection taxonomy must distinguish Select single choice",
+);
+assert.equal(
+  inputContracts.components.MultiSelect.selectionMode,
+  "multiple",
+  "AI selection taxonomy must distinguish MultiSelect",
+);
+assert.equal(
+  inputContracts.components.Cascader.selectionMode,
+  "hierarchical-path",
+  "AI selection taxonomy must distinguish Cascader path selection",
+);
+assert.equal(
+  inputContracts.components.HierarchyPicker.selectionMode,
+  "hierarchical-nodes",
+  "AI selection taxonomy must distinguish HierarchyPicker node selection",
+);
+assert.equal(
+  inputContracts.deviceSources.ImagePicker.webAlternativeComponent,
+  "FileUpload",
+  "AI device-source mapping must retain the Web FileUpload alternative",
+);
+
 for (const [name, block] of Object.entries(blocks)) {
   assert.ok(block.displayName, `${name}: block displayName missing`);
   assert.ok(
@@ -355,7 +613,9 @@ for (const [name, block] of Object.entries(blocks)) {
   assert.ok(exists(block.source), `${name}: block source does not exist`);
   assert.match(
     read(block.source),
-    new RegExp(`\\b${escapeRegExp(blockSymbols[name] ?? name)}\\b`),
+    new RegExp(
+      `\\b${escapeRegExp(block.sourceSymbol ?? blockSymbols[name] ?? name)}\\b`,
+    ),
     `${name}: block source does not expose its source symbol`,
   );
   assert.ok(block.example, `${name}: block example missing`);
@@ -520,8 +780,7 @@ assert.deepEqual(
   registryNames,
   "icon catalog and local registry must stay exactly synchronized",
 );
-const allowedIconifyProviders =
-  /^(?:solar|ic|reicon|iconmind|ant-design|gravity-ui|si|ph|icon-park-twotone|fluent-emoji-high-contrast|fluent-emoji-flat|noto):/;
+const allowedIconifyProviders = /^(?:curated|solar):/;
 for (const [name, icon] of Object.entries(icons)) {
   assert.match(
     icon.provider,

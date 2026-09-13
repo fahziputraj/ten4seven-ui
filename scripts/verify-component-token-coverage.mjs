@@ -21,11 +21,32 @@ for (const row of result.rows)
       assert.equal(covered, true, `${row.component}: ${area} coverage missing`);
 
 assert.equal(
+  result.inventoryMetrics.tokenizableUnresolved,
+  0,
+  "repository-wide style inventory still contains unresolved tokenizable findings",
+);
+assert.equal(
+  result.inventoryMetrics.demoLocalThemeSystems,
+  0,
+  "demo/reference surfaces contain a local theme system",
+);
+assert.equal(
+  result.inventoryMetrics.nativeParallelThemeSystems,
+  0,
+  "native surfaces contain a parallel custom-property theme system",
+);
+assert.equal(
+  result.inventoryMetrics.duplicateGlobalTokenAuthorities,
+  0,
+  "duplicate global token authorities were detected",
+);
+
+assert.equal(
   fs.readFileSync(reportPath, "utf8"),
   renderComponentTokenCoverage(),
   "component token coverage report is stale; run pnpm tokens:coverage",
 );
 
 console.log(
-  `Component token coverage verified: ${result.rows.length} high-impact selector families; ${result.rawPx} raw-pixel occurrences tracked as explicit migration debt.`,
+  `Component token coverage verified: ${result.rows.length} high-impact selector families; ${result.rawPx} raw-pixel occurrences tracked as explicit migration debt; ${result.inventoryMetrics.tokenizableUnresolved} unresolved tokenizable findings.`,
 );

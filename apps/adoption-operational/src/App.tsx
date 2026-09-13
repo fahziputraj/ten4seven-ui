@@ -233,7 +233,11 @@ function ReceiptForm({
       />
       <Card className="adoption-form-card">
         <CardContent>
-          <form aria-label="Create receipt form" onSubmit={handleSubmit}>
+          <form
+            aria-label="Create receipt form"
+            data-t7-rail="form"
+            onSubmit={handleSubmit}
+          >
             <FormGrid>
               <Input
                 aria-label="Supplier"

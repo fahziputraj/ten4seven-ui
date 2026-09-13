@@ -1,16 +1,64 @@
+import {
+  INTERACTION_FEEDBACK,
+  MEASURE_CONTRACT,
+  MEASURE_NAMES,
+  resolveTokenLayers,
+  type MeasureName,
+} from "../../contracts/src/foundation.ts";
 import { resolveMotionRoles } from "../../contracts/src/theme-profile.ts";
 import { exactColor, isExactColorSource } from "../../contracts/src/types.ts";
 import type {
   ExactColorSource,
   MotionProfileName,
+  SurfaceTreatment,
   ThemeColorSource,
 } from "../../contracts/src/types.ts";
+import type {
+  NativeColorRole,
+  NativeFontWeight,
+  NativeResolvedMeasure,
+  NativeResolvedThemeVariant,
+  NativeTypographyIntent,
+} from "../../contracts/src/native-mobile.ts";
 
 export { exactColor, isExactColorSource } from "../../contracts/src/types.ts";
 export type {
   ExactColorSource,
+  SurfaceTreatment,
   ThemeColorSource,
 } from "../../contracts/src/types.ts";
+
+/** Convert resolved HSL channels to the hex format required by color inputs. */
+export function hslToHex(value: string): string {
+  const match = value.match(/(-?[\d.]+)\s+([\d.]+)%\s+([\d.]+)%/);
+  if (!match)
+    throw new Error(`Expected resolved HSL channels, received: ${value}`);
+
+  const hue = ((Number(match[1]) % 360) + 360) % 360;
+  const saturation = Math.max(0, Math.min(100, Number(match[2]))) / 100;
+  const lightness = Math.max(0, Math.min(100, Number(match[3]))) / 100;
+  const chroma = (1 - Math.abs(2 * lightness - 1)) * saturation;
+  const normalizedHue = hue / 60;
+  const second = chroma * (1 - Math.abs((normalizedHue % 2) - 1));
+  const matchValue = lightness - chroma / 2;
+  const [red, green, blue] =
+    normalizedHue < 1
+      ? [chroma, second, 0]
+      : normalizedHue < 2
+        ? [second, chroma, 0]
+        : normalizedHue < 3
+          ? [0, chroma, second]
+          : normalizedHue < 4
+            ? [0, second, chroma]
+            : normalizedHue < 5
+              ? [second, 0, chroma]
+              : [chroma, 0, second];
+  const toHex = (channel: number) =>
+    Math.round((channel + matchValue) * 255)
+      .toString(16)
+      .padStart(2, "0");
+  return `#${toHex(red)}${toHex(green)}${toHex(blue)}`;
+}
 
 export type Appearance = "light" | "dark" | "system";
 export type PaletteName =
@@ -75,6 +123,8 @@ export interface ThemeConfig {
   accent?: ThemeColorSource;
   /** Neutral canvas treatment shared by every surface. */
   canvas?: CanvasName;
+  /** Authored container-chrome treatment; forms retain their own affordance. */
+  surfaceTreatment?: SurfaceTreatment;
   /** Chart colorway while retaining the five-slot chart contract. */
   chartPalette?: ChartPaletteName;
   radius?: RadiusName;
@@ -83,6 +133,8 @@ export interface ThemeConfig {
   density?: DensityName;
   /** Authored choreography anchor in seconds; interaction roles use a bounded multiplier. */
   motionDuration?: number;
+  /** Optional authored motion role profile retained by the provider bridge. */
+  motionProfile?: MotionProfileName;
   typography?: TypographySetting;
   elevation?: ElevationName;
 }
@@ -99,6 +151,7 @@ export interface ResolvedTheme {
   /** Canonical accent source, including a normalized exact sRGB color. */
   accentSource: ThemeColorSource;
   canvas: CanvasName;
+  surfaceTreatment: SurfaceTreatment;
   chartPalette: ChartPaletteName;
   radius: RadiusName;
   radiusValue?: number;
@@ -127,6 +180,40 @@ export interface ThemeVariableOptions {
     pageGutter: string;
     sectionGap: string;
   };
+}
+
+export type ThemeResolutionLayers =
+  import("../../contracts/src/foundation.ts").TokenLayerValues<ThemeConfig>;
+
+/**
+ * Build one normalized config from the contract-plane order. The resolver is
+ * shallow by design: each top-level theme axis is one semantic value, while
+ * component state remains a renderer-level semantic overlay.
+ */
+export function resolveThemeConfigLayers(
+  layers: ThemeResolutionLayers = {},
+): ThemeConfig {
+  const defaults: ThemeConfig = {
+    appearance: defaultTheme.appearance,
+    palette: defaultTheme.palette,
+    primary: defaultTheme.primarySource,
+    accent: defaultTheme.accentSource,
+    canvas: defaultTheme.canvas,
+    surfaceTreatment: defaultTheme.surfaceTreatment,
+    chartPalette: defaultTheme.chartPalette,
+    radius: defaultTheme.radius,
+    radiusValue: defaultTheme.radiusValue,
+    density: defaultTheme.density,
+    motionDuration: defaultTheme.motionDuration,
+    motionProfile: "balanced",
+    typography: defaultTheme.typography,
+    elevation: defaultTheme.elevation,
+  };
+
+  return resolveTokenLayers({
+    ...layers,
+    SYSTEM_DEFAULTS: { ...defaults, ...layers.SYSTEM_DEFAULTS },
+  }) as ThemeConfig;
 }
 
 type PaletteProfile = {
@@ -268,6 +355,35 @@ function exactInteractionColor(value: string, distance: number) {
   );
 }
 
+function resolveFocusColor(
+  primary: string,
+  surface: string,
+  appearance: ResolvedTheme["appearance"],
+) {
+  const { hue, lightness, saturation } = parseHslChannels(primary);
+  const candidates =
+    appearance === "dark"
+      ? [
+          formatHslChannels(
+            hue,
+            saturation,
+            Math.max(62, Math.min(78, lightness + 32)),
+          ),
+          formatHslChannels(hue, saturation, 82),
+        ]
+      : [
+          primary,
+          formatHslChannels(hue, saturation, Math.max(12, lightness - 18)),
+          formatHslChannels(hue, saturation, Math.max(8, lightness - 28)),
+        ];
+
+  return (
+    candidates.find(
+      (candidate) => contrastRatioForHsl(candidate, surface) >= 3,
+    ) ?? formatHslChannels(hue, saturation, appearance === "dark" ? 92 : 8)
+  );
+}
+
 function exactColorProfile(source: ExactColorSource): PaletteProfile {
   const primary = exactHexToHsl(exactColor(source.value).value);
   const primaryHover = exactInteractionColor(primary, 6);
@@ -404,6 +520,7 @@ export const defaultTheme: ResolvedTheme = {
   accent: "emerald",
   accentSource: "emerald",
   canvas: "balanced",
+  surfaceTreatment: "outlined",
   chartPalette: "spectrum",
   radius: "soft",
   density: "default",
@@ -769,17 +886,29 @@ export const densityProfiles: Record<DensityName, DensityProfile> = {
 
 /** Stable raw/reference spacing values. Components consume semantic geometry. */
 export const referenceSpace = Object.freeze({
+  micro: "2px",
+  fine: "3px",
   0: "0px",
   1: "4px",
+  compact: "5px",
+  tight: "6px",
   2: "8px",
+  quiet: "9px",
   3: "12px",
+  inline: "11px",
   4: "16px",
   5: "20px",
   6: "24px",
+  snug: "14px",
+  hero: "28px",
   8: "32px",
   10: "40px",
   12: "48px",
+  relaxed: "18px",
 });
+
+/** Fixed accessibility floor shared by Web and future native renderers. */
+const minimumTouchTargetPx = 44;
 
 /** Bounded layout roles; recipe-authored application/reading rails still win. */
 export const layoutGeometry = Object.freeze({
@@ -796,6 +925,25 @@ export const layoutGeometry = Object.freeze({
   focusClearance: referenceSpace[1],
 });
 
+/**
+ * Project the typed measure contract into Web custom properties. The contract
+ * owns the bounds; this helper only chooses the Web representation.
+ */
+function buildMeasureVariables(): Record<string, string> {
+  return Object.fromEntries(
+    MEASURE_NAMES.flatMap((name) => {
+      const measure = MEASURE_CONTRACT[name];
+      return [
+        [
+          `--t7-measure-${name}`,
+          measure.maximumPx === null ? "100%" : `${measure.maximumPx}px`,
+        ],
+        [`--t7-measure-${name}-min`, `${measure.minimumPx}px`],
+      ];
+    }),
+  );
+}
+
 /** Optical roles retain the existing icon family, with no second icon runtime. */
 export const iconGeometry = Object.freeze({
   compact: "14px",
@@ -803,6 +951,38 @@ export const iconGeometry = Object.freeze({
   navigation: "18px",
   status: "13px",
   feature: "24px",
+});
+
+/** Native control marks share the same canonical geometry source as Web marks. */
+export const markGeometry = Object.freeze({
+  choice: "22px",
+  radio: "22px",
+  dot: "10px",
+  stroke: "2px",
+});
+
+/**
+ * Shared contained-surface geometry. Cards, buttons, and data surfaces use
+ * the same depth direction so elevation reads as one system rather than a
+ * collection of route-specific effects.
+ */
+export const surfaceGeometry = Object.freeze({
+  depth: Object.freeze({
+    gradientAngle: "145deg",
+    gradientStop: "58%",
+    shadowBlur: "26px",
+    shadowOffsetY: "12px",
+  }),
+  hoverTranslateY: "-1px",
+});
+
+/**
+ * Table structure stays visible on every canvas treatment. Quiet surfaces
+ * remove ambient container chrome, but comparison rows still need a neutral
+ * divider so the data can be scanned without relying on semantic colour.
+ */
+export const tableGeometry = Object.freeze({
+  dividerAlpha: 0.82,
 });
 
 /**
@@ -816,6 +996,42 @@ export const kpiGeometry = Object.freeze({
   iconSize: "22px",
   trendPaddingBlock: "3px",
   trendPaddingInline: referenceSpace[2],
+  decorative: Object.freeze({
+    size: "132px",
+    offsetTop: "-21px",
+    offsetInline: "-21px",
+    opacity: 0.09,
+  }),
+  depth: Object.freeze({
+    gradientAngle: surfaceGeometry.depth.gradientAngle,
+    gradientStop: surfaceGeometry.depth.gradientStop,
+    shadowBlur: surfaceGeometry.depth.shadowBlur,
+    shadowOffsetY: surfaceGeometry.depth.shadowOffsetY,
+  }),
+});
+
+/**
+ * Shared chart geometry keeps line, bar, donut, and sparkline primitives on
+ * one visual contract. Colour and depth intensity remain resolved by the
+ * active theme; these values describe the stable shape of the marks.
+ */
+export const chartGeometry = Object.freeze({
+  lineWidth: 2.5,
+  pointRadius: 3.5,
+  pointHoverScale: 1.65,
+  pointSettleScale: 1.06,
+  barRadius: 5,
+  barHoverTranslateY: "3px",
+  barHoverScaleY: 1.035,
+  donutStrokeWidth: 14,
+  donutHoverStrokeWidth: 16,
+  tooltipOffsetY: "12px",
+  depth: Object.freeze({
+    gradientAngle: kpiGeometry.depth.gradientAngle,
+    gradientStop: kpiGeometry.depth.gradientStop,
+    shadowBlur: "6px",
+    shadowOffsetY: "3px",
+  }),
 });
 
 /**
@@ -842,6 +1058,7 @@ export interface OverlayGeometry {
     min: string;
     max: string;
   };
+  tooltipMin: string;
   tooltipMax: string;
   command: string;
   dialog: {
@@ -861,6 +1078,7 @@ export const overlayGeometry: OverlayGeometry = Object.freeze({
   timePicker: "360px",
   colorPicker: "304px",
   popover: Object.freeze({ min: "220px", max: "360px" }),
+  tooltipMin: "128px",
   tooltipMax: "260px",
   command: "640px",
   dialog: Object.freeze({ sm: "400px", md: "520px", lg: "720px" }),
@@ -1119,6 +1337,10 @@ type NeutralProfile = {
   borderContrast: string;
   borderStrong: string;
   muted: string;
+  /** Neutral ink used by elevation shadows, independent of the brand hue. */
+  shadow: string;
+  /** Neutral ink used by viewport scrims, independent of the brand hue. */
+  scrim: string;
 };
 
 const lightNeutral: NeutralProfile = {
@@ -1136,6 +1358,8 @@ const lightNeutral: NeutralProfile = {
   borderContrast: "0 0% 80%",
   borderStrong: "0 0% 72%",
   muted: "0 0% 94%",
+  shadow: "0 0% 12%",
+  scrim: "0 0% 12%",
 };
 
 const darkNeutral: NeutralProfile = {
@@ -1151,6 +1375,8 @@ const darkNeutral: NeutralProfile = {
   borderContrast: "0 0% 30%",
   borderStrong: "0 0% 35%",
   muted: "0 0% 21%",
+  shadow: "0 0% 0%",
+  scrim: "0 0% 0%",
 };
 
 /** Neutral canvas families keep the palette independent from surface contrast. */
@@ -1173,6 +1399,8 @@ export const canvasProfiles: Record<
       borderContrast: "0 0% 77%",
       borderStrong: "0 0% 66%",
       muted: "0 0% 95%",
+      shadow: "0 0% 12%",
+      scrim: "0 0% 12%",
     },
     dark: darkNeutral,
   },
@@ -1190,6 +1418,8 @@ export const canvasProfiles: Record<
       borderContrast: "0 0% 74%",
       borderStrong: "0 0% 62%",
       muted: "0 0% 92%",
+      shadow: "0 0% 12%",
+      scrim: "0 0% 12%",
     },
     dark: {
       background: "0 0% 8%",
@@ -1204,6 +1434,8 @@ export const canvasProfiles: Record<
       borderContrast: "0 0% 30%",
       borderStrong: "0 0% 36%",
       muted: "0 0% 21%",
+      shadow: "0 0% 0%",
+      scrim: "0 0% 0%",
     },
   },
 };
@@ -1253,7 +1485,10 @@ function resolveColorProfile(
 }
 
 export function resolveTheme(config: ThemeConfig = {}): ResolvedTheme {
-  const typographySetting = config.typography;
+  const resolvedConfig = resolveThemeConfigLayers({
+    THEME_OVERRIDE: config,
+  });
+  const typographySetting = resolvedConfig.typography;
   const typographyOverrides =
     typographySetting !== null && typeof typographySetting === "object"
       ? typographySetting
@@ -1266,56 +1501,64 @@ export function resolveTheme(config: ThemeConfig = {}): ResolvedTheme {
   );
   const typographyProfile = typographyProfiles[resolvedTypographyName];
   const palette = resolveProfileName(
-    config.palette,
+    resolvedConfig.palette,
     paletteProfiles,
     defaultTheme.palette,
   );
-  const primarySource = resolveColorSource(config.primary, palette);
-  const accentSource = resolveColorSource(config.accent, palette);
+  const primarySource = resolveColorSource(resolvedConfig.primary, palette);
+  const accentSource = resolveColorSource(resolvedConfig.accent, palette);
   const primary = isExactColorSource(primarySource) ? palette : primarySource;
   const accent = isExactColorSource(accentSource) ? palette : accentSource;
   const canvas = resolveProfileName(
-    config.canvas,
+    resolvedConfig.canvas,
     canvasProfiles,
     defaultTheme.canvas,
   );
+  const surfaceTreatment = resolveProfileName(
+    resolvedConfig.surfaceTreatment,
+    { quiet: true, "low-contrast": true, outlined: true },
+    defaultTheme.surfaceTreatment,
+  );
   const chartPalette = resolveProfileName(
-    config.chartPalette,
+    resolvedConfig.chartPalette,
     { spectrum: true, four: true, monochrome: true },
     defaultTheme.chartPalette,
   );
   const radius = resolveProfileName(
-    config.radius,
+    resolvedConfig.radius,
     radiusProfiles,
     defaultTheme.radius,
   );
   const density = resolveProfileName(
-    config.density,
+    resolvedConfig.density,
     densityProfiles,
     defaultTheme.density,
   );
   const elevation = resolveProfileName(
-    config.elevation,
+    resolvedConfig.elevation,
     { flat: true, soft: true, standard: true },
     defaultTheme.elevation,
   );
   const radiusValue =
-    typeof config.radiusValue !== "number" ||
-    !Number.isFinite(config.radiusValue)
+    typeof resolvedConfig.radiusValue !== "number" ||
+    !Number.isFinite(resolvedConfig.radiusValue)
       ? undefined
-      : normalizeRadiusValue(config.radiusValue);
+      : normalizeRadiusValue(resolvedConfig.radiusValue);
   const motionDuration = normalizeMotionDuration(
-    config.motionDuration ?? defaultTheme.motionDuration,
+    resolvedConfig.motionDuration ?? defaultTheme.motionDuration,
   );
 
   return {
-    appearance: resolveAppearance(config.appearance ?? defaultTheme.appearance),
+    appearance: resolveAppearance(
+      resolvedConfig.appearance ?? defaultTheme.appearance,
+    ),
     palette,
     primary,
     primarySource,
     accent,
     accentSource,
     canvas,
+    surfaceTreatment,
     chartPalette,
     radius,
     ...(radiusValue === undefined ? {} : { radiusValue }),
@@ -1334,10 +1577,48 @@ export function resolveTheme(config: ThemeConfig = {}): ResolvedTheme {
   };
 }
 
-export function buildThemeVariables(
+interface ResolvedThemeColorTokens {
+  readonly primaryPalette: PaletteProfile;
+  readonly accentPalette: PaletteProfile;
+  readonly neutrals: NeutralProfile;
+  readonly chartColors: readonly string[];
+  readonly chartSurfaceColors: readonly string[];
+  readonly semantic: {
+    readonly success: string;
+    readonly successForeground: string;
+    readonly warning: string;
+    readonly danger: string;
+    readonly dangerText: string;
+    readonly info: string;
+  };
+  readonly surfaceEmphasis: {
+    readonly inverse: string;
+    readonly inverseForeground: string;
+    readonly inverseMutedForeground: string;
+    readonly inverseBorder: string;
+    readonly softAlpha: string;
+    readonly softBorderAlpha: string;
+    readonly solid: string;
+    readonly solidSuccess: string;
+    readonly solidWarning: string;
+    readonly solidDanger: string;
+    readonly solidInfo: string;
+  };
+  readonly highContrast: boolean;
+  readonly borderHsl: string;
+  readonly borderStrongHsl: string;
+  readonly borderSubtleHsl: string;
+  readonly surfaceHsl: string;
+  readonly focusHsl: string;
+  readonly formBorderHsl: string;
+  readonly tableBorderHsl: string;
+}
+
+/** Resolve semantic roles once so every renderer consumes the same values. */
+function resolveThemeColorTokens(
   theme: ResolvedTheme,
-  options: ThemeVariableOptions = {},
-): Record<string, string> {
+  options: ThemeVariableOptions,
+): ResolvedThemeColorTokens {
   const primaryPalette = resolveColorProfile(
     theme.primarySource,
     theme.primary,
@@ -1358,58 +1639,7 @@ export function buildThemeVariables(
         : categoricalChartColors
   ).map((value) => colorToChartMark(value, theme.appearance));
   const chartSurfaceColors = chartColors.map(colorToSolidSurface);
-  const radius =
-    theme.radiusValue === undefined
-      ? radiusProfiles[theme.radius]
-      : buildRadiusProfile(theme.radiusValue);
-  const density = densityProfiles[theme.density];
-  // Clearance tiers protect the most expressive corners without inflating
-  // normal density. These tiers are exercised by the rendered stress matrix.
-  const cardClearance =
-    parseFloat(radius.card) > 24
-      ? referenceSpace[5]
-      : parseFloat(radius.card) > 18
-        ? referenceSpace[4]
-        : referenceSpace[3];
-  const panelClearance =
-    parseFloat(radius.panel) > 24 ? referenceSpace[4] : referenceSpace[3];
-  const fieldClearance =
-    parseFloat(radius.control) > 14 ? referenceSpace[3] : referenceSpace[2];
-  const typography = typographyProfiles[theme.typography];
-  const typographyFamilies = theme.typographyFamilies ?? {
-    ui: typography.ui,
-    display: typography.display,
-    mono: typography.mono,
-  };
-  const shadow =
-    theme.elevation === "flat"
-      ? "none"
-      : theme.elevation === "standard"
-        ? "0 12px 32px -24px hsl(222 30% 12% / .42)"
-        : "0 1px 2px hsl(222 30% 12% / .08), 0 16px 36px -26px hsl(var(--t7-primary-hsl) / .38)";
-  const reducedMotion = options.motion === "reduced";
-  const motionMilliseconds = Math.round(theme.motionDuration * 1000);
-  const motionDurationValue = reducedMotion
-    ? "0.01ms"
-    : `${theme.motionDuration}s`;
-  const motionRoles = resolveMotionRoles(
-    options.motionProfile,
-    theme.motionDuration,
-  );
-  const milliseconds = (seconds: number) =>
-    reducedMotion ? "0.01ms" : `${Math.round(seconds * 1000)}ms`;
-  const motionInstant = milliseconds(motionRoles.fast);
-  const motionFast = milliseconds(motionRoles.interaction);
-  const motionStandard = milliseconds(motionRoles.state);
-  const motionOverlay = milliseconds(motionRoles.enter);
-  const motionExit = milliseconds(motionRoles.exit);
-  const motionReveal = milliseconds(motionRoles.reveal);
-  const motionChart = milliseconds(motionRoles.chart);
-  const motionLoop = milliseconds(motionRoles.loop);
-  const motionEaseStandard = "cubic-bezier(.2, 0, 0, 1)";
-  const motionEaseEnter = "cubic-bezier(.16, 1, .3, 1)";
-  const motionEaseExit = "cubic-bezier(.4, 0, 1, 1)";
-
+  const highContrast = options.contrast === "more";
   const semantic = {
     success: "128 42% 30%",
     successForeground:
@@ -1433,6 +1663,181 @@ export function buildThemeVariables(
     solidDanger: colorToSolidSurface(semantic.danger),
     solidInfo: colorToSolidSurface(semantic.info),
   };
+  const borderHsl =
+    theme.surfaceTreatment === "quiet"
+      ? highContrast
+        ? neutrals.borderContrast
+        : neutrals.surface
+      : theme.surfaceTreatment === "low-contrast"
+        ? highContrast
+          ? neutrals.borderContrast
+          : neutrals.border
+        : highContrast
+          ? neutrals.borderContrast
+          : neutrals.border;
+  const borderStrongHsl =
+    theme.surfaceTreatment === "quiet"
+      ? highContrast
+        ? neutrals.borderStrong
+        : neutrals.border
+      : theme.surfaceTreatment === "low-contrast"
+        ? highContrast
+          ? neutrals.borderStrong
+          : neutrals.border
+        : neutrals.borderStrong;
+  const borderSubtleHsl = highContrast
+    ? neutrals.border
+    : neutrals.surfaceMuted;
+  const surfaceHsl =
+    theme.surfaceTreatment === "quiet"
+      ? highContrast
+        ? neutrals.surfaceMuted
+        : neutrals.surfaceSubtle
+      : neutrals.surface;
+  const focusHsl = resolveFocusColor(
+    primaryPalette.primary,
+    neutrals.surface,
+    theme.appearance,
+  );
+  const formBorderHsl =
+    theme.surfaceTreatment === "outlined"
+      ? neutrals.borderStrong
+      : highContrast
+        ? neutrals.borderStrong
+        : neutrals.border;
+  const tableBorderHsl = highContrast
+    ? neutrals.borderContrast
+    : theme.surfaceTreatment === "quiet"
+      ? neutrals.border
+      : borderHsl;
+
+  return {
+    primaryPalette,
+    accentPalette,
+    neutrals,
+    chartColors,
+    chartSurfaceColors,
+    semantic,
+    surfaceEmphasis,
+    highContrast,
+    borderHsl,
+    borderStrongHsl,
+    borderSubtleHsl,
+    surfaceHsl,
+    focusHsl,
+    formBorderHsl,
+    tableBorderHsl,
+  };
+}
+
+export function buildThemeVariables(
+  theme: ResolvedTheme,
+  options: ThemeVariableOptions = {},
+): Record<string, string> {
+  const {
+    primaryPalette,
+    accentPalette,
+    neutrals,
+    chartColors,
+    chartSurfaceColors,
+    semantic,
+    surfaceEmphasis,
+    highContrast,
+    borderHsl,
+    borderStrongHsl,
+    borderSubtleHsl,
+    surfaceHsl,
+    focusHsl,
+    formBorderHsl,
+    tableBorderHsl,
+  } = resolveThemeColorTokens(theme, options);
+  const radius =
+    theme.radiusValue === undefined
+      ? radiusProfiles[theme.radius]
+      : buildRadiusProfile(theme.radiusValue);
+  const density = densityProfiles[theme.density];
+  // Clearance tiers protect the most expressive corners without inflating
+  // normal density. These tiers are exercised by the rendered stress matrix.
+  const cardClearance =
+    parseFloat(radius.card) > 24
+      ? referenceSpace[5]
+      : parseFloat(radius.card) > 18
+        ? referenceSpace[4]
+        : referenceSpace[3];
+  const panelClearance =
+    parseFloat(radius.panel) > 24 ? referenceSpace[4] : referenceSpace[3];
+  const fieldClearance =
+    parseFloat(radius.control) > 14 ? referenceSpace[3] : referenceSpace[2];
+  const typography = typographyProfiles[theme.typography];
+  const typographyFamilies = theme.typographyFamilies ?? {
+    ui: typography.ui,
+    display: typography.display,
+    mono: typography.mono,
+  };
+  // Card depth stays achromatic; semantic hue belongs to explicit emphasis.
+  const shadow =
+    theme.elevation === "flat"
+      ? "none"
+      : theme.elevation === "standard"
+        ? `0 12px 32px -24px hsl(${neutrals.shadow} / .42)`
+        : `0 1px 2px hsl(${neutrals.shadow} / .08), 0 16px 36px -26px hsl(${neutrals.shadow} / .24)`;
+  const reducedMotion = options.motion === "reduced";
+  const motionMilliseconds = Math.round(theme.motionDuration * 1000);
+  const motionDurationValue = reducedMotion
+    ? "0.01ms"
+    : `${theme.motionDuration}s`;
+  const motionRoles = resolveMotionRoles(
+    options.motionProfile,
+    theme.motionDuration,
+  );
+  const milliseconds = (seconds: number) =>
+    reducedMotion ? "0.01ms" : `${Math.round(seconds * 1000)}ms`;
+  const motionInstant = milliseconds(motionRoles.fast);
+  const motionFast = milliseconds(motionRoles.interaction);
+  const motionStandard = milliseconds(motionRoles.state);
+  const motionOverlay = milliseconds(motionRoles.enter);
+  const motionExit = milliseconds(motionRoles.exit);
+  const motionReveal = milliseconds(motionRoles.reveal);
+  const motionChart = milliseconds(motionRoles.chart);
+  const motionLoop = milliseconds(motionRoles.loop);
+  const motionEaseStandard = "cubic-bezier(.2, 0, 0, 1)";
+  const motionEaseEnter = "cubic-bezier(.16, 1, .3, 1)";
+  const motionEaseChart = "cubic-bezier(.22, .74, .24, 1)";
+  const motionEaseExit = "cubic-bezier(.4, 0, 1, 1)";
+
+  const kpiDepth =
+    theme.elevation === "flat"
+      ? {
+          borderAlpha: "1",
+          highlightAlpha: "0",
+          shadeAlpha: "0",
+          shadowAlpha: "0",
+        }
+      : theme.elevation === "standard"
+        ? {
+            borderAlpha: "0.7",
+            highlightAlpha: "0.36",
+            shadeAlpha: "0.18",
+            shadowAlpha: "0.3",
+          }
+        : {
+            borderAlpha: "0.56",
+            highlightAlpha: "0.3",
+            shadeAlpha: "0.14",
+            shadowAlpha: "0.24",
+          };
+  const surfaceDepth = {
+    ...kpiDepth,
+    hoverTranslateY:
+      theme.elevation === "flat" ? "0px" : surfaceGeometry.hoverTranslateY,
+  };
+  const chartGradientStartAlpha = String(
+    1 - Number(kpiDepth.highlightAlpha) * 0.55,
+  );
+  const chartGradientEndAlpha = String(1 - Number(kpiDepth.shadeAlpha) * 0.65);
+  const chartDepthShadowAlpha = (Number(kpiDepth.shadowAlpha) * 0.72).toFixed(
+    4,
+  );
 
   const typographyVariables = Object.entries(typography.roles).reduce<
     Record<string, string>
@@ -1444,14 +1849,14 @@ export function buildThemeVariables(
     variables[`--t7-type-${role}-family`] = `var(--t7-font-${spec.family})`;
     return variables;
   }, {});
-  const highContrast = options.contrast === "more";
+  const focusRingAlpha = highContrast ? "1" : "0.72";
+  const focusGlowAlpha = highContrast ? "0.3" : "0.18";
   const composition = options.composition ?? {
     contentMax: "1440px",
     readingMeasure: "68ch",
     pageGutter: "clamp(24px, 3vw, 44px)",
     sectionGap: "clamp(24px, 3vw, 44px)",
   };
-
   return {
     "--t7-theme-recipe": options.recipe ?? "custom",
     "--t7-expression": options.expression ?? "neutral",
@@ -1473,6 +1878,7 @@ export function buildThemeVariables(
       ? theme.accentSource.value
       : theme.accentSource,
     "--t7-canvas-mode": theme.canvas,
+    "--t7-surface-treatment": theme.surfaceTreatment,
     "--t7-chart-palette": theme.chartPalette,
     "--t7-chart-palette-count":
       theme.chartPalette === "four"
@@ -1510,13 +1916,13 @@ export function buildThemeVariables(
     "--t7-surface-emphasis-solid-chart-foreground-hsl": solidSurfaceForeground,
     "--t7-background-hsl": neutrals.background,
     "--t7-color-bg-canvas-hsl": neutrals.background,
-    "--t7-surface-hsl": neutrals.surface,
-    "--t7-color-bg-surface-hsl": neutrals.surface,
+    "--t7-surface-hsl": surfaceHsl,
+    "--t7-color-bg-surface-hsl": surfaceHsl,
     "--t7-surface-subtle-hsl": neutrals.surfaceSubtle,
     "--t7-surface-muted-hsl": neutrals.surfaceMuted,
     "--t7-surface-raised-hsl": neutrals.surfaceRaised,
     "--t7-surface-overlay-hsl": neutrals.surfaceRaised,
-    "--t7-surface-emphasis-plain-hsl": neutrals.surface,
+    "--t7-surface-emphasis-plain-hsl": surfaceHsl,
     "--t7-surface-emphasis-soft-hsl": neutrals.surfaceSubtle,
     "--t7-surface-emphasis-soft-alpha": surfaceEmphasis.softAlpha,
     "--t7-surface-emphasis-soft-border-alpha": surfaceEmphasis.softBorderAlpha,
@@ -1556,23 +1962,25 @@ export function buildThemeVariables(
     "--t7-color-text-muted-hsl": highContrast
       ? neutrals.mutedForegroundStrong
       : neutrals.mutedForeground,
-    "--t7-border-hsl": highContrast ? neutrals.borderContrast : neutrals.border,
-    "--t7-border-strong-hsl": neutrals.borderStrong,
-    "--t7-border-subtle-hsl": highContrast
-      ? neutrals.border
-      : neutrals.surfaceMuted,
+    "--t7-border-hsl": borderHsl,
+    "--t7-border-strong-hsl": borderStrongHsl,
+    "--t7-border-subtle-hsl": borderSubtleHsl,
+    "--t7-table-border-hsl": tableBorderHsl,
+    "--t7-table-divider-alpha": `${tableGeometry.dividerAlpha}`,
     "--t7-muted-hsl": neutrals.muted,
-    "--t7-focus-hsl":
-      theme.appearance === "dark" ? "216 70% 72%" : "216 72% 38%",
-    "--t7-focus-width": highContrast ? "3px" : "2px",
+    "--t7-focus-hsl": focusHsl,
+    "--t7-focus-width": highContrast ? "3px" : "1px",
     "--t7-focus-offset": "2px",
+    "--t7-focus-ring-alpha": focusRingAlpha,
+    "--t7-focus-glow-alpha": focusGlowAlpha,
     "--t7-focus-halo":
       "0 0 0 var(--t7-focus-offset) hsl(var(--t7-surface-hsl))",
     "--t7-focus-ring":
-      "var(--t7-focus-halo), 0 0 0 calc(var(--t7-focus-offset) + var(--t7-focus-width)) hsl(var(--t7-focus-hsl))",
+      "var(--t7-focus-halo), 0 0 0 calc(var(--t7-focus-offset) + var(--t7-focus-width)) hsl(var(--t7-focus-hsl) / var(--t7-focus-ring-alpha)), 0 0 10px hsl(var(--t7-focus-hsl) / var(--t7-focus-glow-alpha))",
     "--t7-focus-ring-inset":
-      "inset 0 0 0 var(--t7-focus-width) hsl(var(--t7-focus-hsl))",
-    "--t7-shadow-selection": "inset 3px 0 0 hsl(var(--t7-selected-hsl))",
+      "inset 0 0 0 var(--t7-focus-width) hsl(var(--t7-focus-hsl) / var(--t7-focus-ring-alpha)), inset 0 0 8px hsl(var(--t7-focus-hsl) / var(--t7-focus-glow-alpha))",
+    "--t7-shadow-selection":
+      "inset 0 0 0 1px hsl(var(--t7-selected-hsl) / 0.24)",
     "--t7-shadow-state-boundary":
       "inset 0 0 0 1px hsl(var(--t7-state-boundary-hsl, var(--t7-primary-hsl)) / 0.18)",
     "--t7-selected-hsl": primaryPalette.primary,
@@ -1581,10 +1989,12 @@ export function buildThemeVariables(
     "--t7-interactive-border-hsl": primaryPalette.primary,
     "--t7-input-background-hsl": neutrals.surface,
     "--t7-field-background-hsl": neutrals.surface,
-    "--t7-input-border-hsl": neutrals.borderStrong,
-    "--t7-field-border-hsl": neutrals.borderStrong,
+    "--t7-input-border-hsl": formBorderHsl,
+    "--t7-field-border-hsl": formBorderHsl,
     "--t7-input-hover-border-hsl": primaryPalette.primary,
-    "--t7-input-focus-border-hsl": "var(--t7-focus-hsl)",
+    // Focus is carried by the semantic ring/glow. Keep the field edge
+    // neutral so focused controls do not grow a second accent border.
+    "--t7-input-focus-border-hsl": "var(--t7-field-border-hsl)",
     "--t7-field-foreground-hsl": neutrals.foreground,
     "--t7-disabled-background-hsl": neutrals.muted,
     "--t7-disabled-foreground-hsl": neutrals.mutedForegroundStrong,
@@ -1664,6 +2074,47 @@ export function buildThemeVariables(
     )}px`,
     "--t7-kpi-trend-padding-block": kpiGeometry.trendPaddingBlock,
     "--t7-kpi-trend-padding-inline": kpiGeometry.trendPaddingInline,
+    "--t7-kpi-decorative-size": kpiGeometry.decorative.size,
+    "--t7-kpi-decorative-offset-top": kpiGeometry.decorative.offsetTop,
+    "--t7-kpi-decorative-offset-inline": kpiGeometry.decorative.offsetInline,
+    "--t7-kpi-decorative-opacity": `${kpiGeometry.decorative.opacity}`,
+    "--t7-kpi-depth-gradient-angle": kpiGeometry.depth.gradientAngle,
+    "--t7-kpi-depth-gradient-stop": kpiGeometry.depth.gradientStop,
+    "--t7-kpi-depth-shadow-blur": kpiGeometry.depth.shadowBlur,
+    "--t7-kpi-depth-shadow-offset-y": kpiGeometry.depth.shadowOffsetY,
+    "--t7-kpi-depth-border-alpha": kpiDepth.borderAlpha,
+    "--t7-kpi-depth-highlight-alpha": kpiDepth.highlightAlpha,
+    "--t7-kpi-depth-shade-alpha": kpiDepth.shadeAlpha,
+    "--t7-kpi-depth-shadow-alpha": kpiDepth.shadowAlpha,
+    "--t7-surface-depth-gradient-angle": surfaceGeometry.depth.gradientAngle,
+    "--t7-surface-depth-gradient-stop": surfaceGeometry.depth.gradientStop,
+    "--t7-surface-depth-shadow-blur": surfaceGeometry.depth.shadowBlur,
+    "--t7-surface-depth-shadow-offset-y": surfaceGeometry.depth.shadowOffsetY,
+    "--t7-surface-depth-border-alpha": surfaceDepth.borderAlpha,
+    "--t7-surface-depth-highlight-alpha": surfaceDepth.highlightAlpha,
+    "--t7-surface-depth-shade-alpha": surfaceDepth.shadeAlpha,
+    "--t7-surface-depth-shadow-alpha": surfaceDepth.shadowAlpha,
+    "--t7-surface-hover-translate-y": surfaceDepth.hoverTranslateY,
+    "--t7-chart-line-width": `${chartGeometry.lineWidth}`,
+    "--t7-chart-point-radius": `${chartGeometry.pointRadius}`,
+    "--t7-chart-point-hover-scale": `${chartGeometry.pointHoverScale}`,
+    "--t7-chart-point-settle-scale": `${chartGeometry.pointSettleScale}`,
+    "--t7-chart-bar-radius": `${chartGeometry.barRadius}`,
+    "--t7-chart-bar-hover-translate-y": chartGeometry.barHoverTranslateY,
+    "--t7-chart-bar-hover-scale-y": `${chartGeometry.barHoverScaleY}`,
+    "--t7-chart-donut-stroke-width": `${chartGeometry.donutStrokeWidth}`,
+    "--t7-chart-donut-hover-stroke-width": `${chartGeometry.donutHoverStrokeWidth}`,
+    "--t7-chart-tooltip-offset-y": chartGeometry.tooltipOffsetY,
+    "--t7-chart-depth-gradient-angle": chartGeometry.depth.gradientAngle,
+    "--t7-chart-depth-gradient-stop": chartGeometry.depth.gradientStop,
+    "--t7-chart-depth-shadow-blur": chartGeometry.depth.shadowBlur,
+    "--t7-chart-depth-shadow-offset-y": chartGeometry.depth.shadowOffsetY,
+    "--t7-chart-depth-border-alpha": kpiDepth.borderAlpha,
+    "--t7-chart-depth-highlight-alpha": kpiDepth.highlightAlpha,
+    "--t7-chart-depth-shade-alpha": kpiDepth.shadeAlpha,
+    "--t7-chart-depth-shadow-alpha": chartDepthShadowAlpha,
+    "--t7-chart-gradient-start-alpha": chartGradientStartAlpha,
+    "--t7-chart-gradient-end-alpha": chartGradientEndAlpha,
     "--t7-section-gap": density.sectionGap,
     "--t7-control-gap": density.controlGap,
     "--t7-control-padding-inline": density.controlPaddingInline,
@@ -1701,6 +2152,12 @@ export function buildThemeVariables(
         value,
       ]),
     ),
+    ...Object.fromEntries(
+      Object.entries(markGeometry).map(([role, value]) => [
+        `--t7-mark-${role}`,
+        value,
+      ]),
+    ),
     "--t7-overlay-menu-sm": overlayGeometry.menu.sm,
     "--t7-overlay-menu-md": overlayGeometry.menu.md,
     "--t7-overlay-menu-lg": overlayGeometry.menu.lg,
@@ -1713,17 +2170,19 @@ export function buildThemeVariables(
     "--t7-overlay-color": overlayGeometry.colorPicker,
     "--t7-overlay-popover-min": overlayGeometry.popover.min,
     "--t7-overlay-popover-max": overlayGeometry.popover.max,
+    "--t7-overlay-tooltip-min": overlayGeometry.tooltipMin,
     "--t7-overlay-tooltip-max": overlayGeometry.tooltipMax,
     "--t7-overlay-command": overlayGeometry.command,
     "--t7-overlay-dialog-sm": overlayGeometry.dialog.sm,
     "--t7-overlay-dialog-md": overlayGeometry.dialog.md,
     "--t7-overlay-dialog-lg": overlayGeometry.dialog.lg,
     "--t7-overlay-drawer-max": overlayGeometry.drawerMax,
-    "--t7-touch-target-min": "44px",
+    "--t7-touch-target-min": `${minimumTouchTargetPx}px`,
     "--t7-bottom-navigation-height": "64px",
     "--t7-content-max": composition.contentMax,
     "--t7-sidebar-width": layoutGeometry.sidebarWidth,
     "--t7-aside-width": layoutGeometry.asideWidth,
+    ...buildMeasureVariables(),
     "--t7-grid-gap": density.sectionGap,
     "--t7-safe-area-top": "env(safe-area-inset-top, 0px)",
     "--t7-safe-area-right": "env(safe-area-inset-right, 0px)",
@@ -1763,19 +2222,21 @@ export function buildThemeVariables(
         ? "none"
         : "0 5px 12px -9px hsl(var(--t7-primary-hsl) / .8)",
     "--t7-shadow-surface":
-      theme.elevation === "flat" ? "none" : "0 1px 2px hsl(222 30% 12% / .08)",
+      theme.elevation === "flat"
+        ? "none"
+        : `0 1px 2px hsl(${neutrals.shadow} / .08)`,
     "--t7-shadow-raised":
       theme.elevation === "flat"
         ? "none"
-        : "0 10px 28px -20px hsl(222 30% 12% / .34)",
+        : `0 10px 28px -20px hsl(${neutrals.shadow} / .34)`,
     "--t7-shadow-popover":
       theme.elevation === "flat"
         ? "none"
-        : "0 18px 44px -24px hsl(222 30% 12% / .48)",
+        : `0 18px 44px -24px hsl(${neutrals.shadow} / .48)`,
     "--t7-shadow-modal":
       theme.elevation === "flat"
         ? "none"
-        : "0 28px 80px -30px hsl(222 30% 8% / .56)",
+        : `0 28px 80px -30px hsl(${neutrals.shadow} / .56)`,
     "--t7-motion-duration": motionDurationValue,
     "--t7-duration-instant": motionInstant,
     "--t7-duration-fast": motionFast,
@@ -1791,6 +2252,7 @@ export function buildThemeVariables(
     "--t7-duration-loop": motionLoop,
     "--t7-ease-standard": motionEaseStandard,
     "--t7-ease-enter": motionEaseEnter,
+    "--t7-ease-chart": motionEaseChart,
     "--t7-ease-exit": motionEaseExit,
     "--t7-motion-interactive":
       "var(--t7-duration-instant) var(--t7-ease-standard)",
@@ -1818,7 +2280,22 @@ export function buildThemeVariables(
     "--t7-z-command": "100",
     "--t7-doc-sticky-offset":
       "calc(var(--t7-header-height) + var(--t7-ref-space-2))",
-    "--t7-scrim-hsl": "222 30% 12%",
+    "--t7-scrim-hsl": neutrals.scrim,
+    "--t7-opacity-pressed": `${INTERACTION_FEEDBACK.pressedOpacity}`,
+    "--t7-opacity-disabled": `${INTERACTION_FEEDBACK.disabledOpacity}`,
+    "--t7-opacity-scrim": `${INTERACTION_FEEDBACK.scrimOpacity}`,
+    "--t7-opacity-interactive": `${INTERACTION_FEEDBACK.interactiveOpacity}`,
+    "--t7-opacity-hover": `${INTERACTION_FEEDBACK.hoverOpacity}`,
+    "--t7-opacity-active": `${INTERACTION_FEEDBACK.activeOpacity}`,
+    "--t7-opacity-disabled-control": `${INTERACTION_FEEDBACK.disabledControlOpacity}`,
+    "--t7-opacity-choice-disabled": `${INTERACTION_FEEDBACK.choiceDisabledOpacity}`,
+    "--t7-opacity-option-disabled": `${INTERACTION_FEEDBACK.optionDisabledOpacity}`,
+    "--t7-opacity-checkbox-disabled": `${INTERACTION_FEEDBACK.checkboxDisabledOpacity}`,
+    "--t7-opacity-disabled-subtle": `${INTERACTION_FEEDBACK.disabledSubtleOpacity}`,
+    "--t7-opacity-chart-grid": `${INTERACTION_FEEDBACK.chartGridOpacity}`,
+    "--t7-opacity-chart-track": `${INTERACTION_FEEDBACK.chartTrackOpacity}`,
+    "--t7-opacity-chart-bar": `${INTERACTION_FEEDBACK.chartBarOpacity}`,
+    "--t7-opacity-detail-enter": `${INTERACTION_FEEDBACK.detailEnterOpacity}`,
     ...Object.fromEntries(
       Object.entries(referenceSpace).map(([step, value]) => [
         `--t7-ref-space-${step}`,
@@ -1826,6 +2303,274 @@ export function buildThemeVariables(
       ]),
     ),
     ...typographyVariables,
+  };
+}
+
+export type NativeThemeProjectionOptions = Pick<
+  ThemeVariableOptions,
+  "contrast" | "motion" | "motionProfile"
+>;
+
+const nativeTypographyRoles: Readonly<
+  Record<NativeTypographyIntent, TypographyRole>
+> = {
+  screenTitle: "heading-lg",
+  sectionHeading: "heading-md",
+  body: "body",
+  label: "label",
+  caption: "caption",
+  button: "button",
+  metric: "metric-lg",
+};
+
+function resolveNativePixels(value: string, token: string): number {
+  const match = /^(\-?\d+(?:\.\d+)?)px$/.exec(value.trim());
+  if (!match)
+    throw new Error(
+      `${token} must resolve to a concrete px value, received ${value}`,
+    );
+  const result = Number(match[1]);
+  if (!Number.isFinite(result)) throw new Error(`${token} is not finite`);
+  return result;
+}
+
+function resolveNativeTracking(
+  value: string,
+  fontSize: number,
+  token: string,
+): number {
+  const normalized = value.trim();
+  if (normalized === "0") return 0;
+  if (normalized.endsWith("px")) return resolveNativePixels(normalized, token);
+  if (normalized.endsWith("em")) {
+    const amount = Number(normalized.slice(0, -2));
+    if (Number.isFinite(amount)) return amount * fontSize;
+  }
+  throw new Error(`${token} must resolve to px or em, received ${value}`);
+}
+
+function resolveNativeWeight(value: string, token: string): NativeFontWeight {
+  const weight = Number(value);
+  if (!Number.isFinite(weight)) throw new Error(`${token} is not numeric`);
+  if (weight <= 450) return "400";
+  if (weight <= 575) return "500";
+  if (weight <= 625) return "600";
+  return "700";
+}
+
+/**
+ * Project the same resolved semantic roles into renderer-neutral JS data.
+ * This is deliberately separate from the Web CSS projection: Native receives
+ * concrete colors, dimensions, and durations without parsing CSS variables.
+ */
+export function buildNativeThemeSnapshot(
+  theme: ResolvedTheme,
+  options: NativeThemeProjectionOptions = {},
+): NativeResolvedThemeVariant {
+  const colorTokens = resolveThemeColorTokens(theme, options);
+  const nativeHsl: Record<NativeColorRole, string> = {
+    canvas: colorTokens.neutrals.background,
+    surface: colorTokens.surfaceHsl,
+    surfaceRaised: colorTokens.neutrals.surfaceRaised,
+    scrim: colorTokens.neutrals.scrim,
+    textPrimary: colorTokens.neutrals.foreground,
+    textMuted:
+      options.contrast === "more"
+        ? colorTokens.neutrals.mutedForegroundStrong
+        : colorTokens.neutrals.mutedForeground,
+    border: colorTokens.borderSubtleHsl,
+    borderStrong: colorTokens.borderStrongHsl,
+    focus: colorTokens.focusHsl,
+    actionPrimary: colorTokens.primaryPalette.primary,
+    actionPrimaryForeground: colorTokens.primaryPalette.primaryForeground,
+    accent: colorTokens.accentPalette.accent,
+    actionSecondary: colorTokens.neutrals.surface,
+    actionSecondaryForeground: colorTokens.neutrals.foreground,
+    actionQuiet:
+      options.contrast === "more"
+        ? colorTokens.neutrals.mutedForegroundStrong
+        : colorTokens.neutrals.mutedForeground,
+    actionDanger: colorTokens.semantic.danger,
+    actionDangerForeground: solidSurfaceForeground,
+    statusSuccess: colorTokens.semantic.success,
+    statusWarning: colorTokens.semantic.warning,
+    statusDanger: colorTokens.semantic.danger,
+    statusInfo: colorTokens.semantic.info,
+  };
+  const colors = Object.fromEntries(
+    Object.entries(nativeHsl).map(([role, value]) => [role, hslToHex(value)]),
+  ) as NativeResolvedThemeVariant["colors"];
+
+  const typographyProfile = typographyProfiles[theme.typography];
+  const typography = Object.fromEntries(
+    Object.entries(nativeTypographyRoles).map(([intent, role]) => {
+      const token = typographyProfile.roles[role];
+      const fontSize = resolveNativePixels(
+        token.size,
+        `semantic.typography.${role}.size`,
+      );
+      return [
+        intent,
+        {
+          fontSize,
+          lineHeight: resolveNativePixels(
+            token.lineHeight,
+            `semantic.typography.${role}.lineHeight`,
+          ),
+          fontWeight: resolveNativeWeight(
+            token.weight,
+            `semantic.typography.${role}.weight`,
+          ),
+          letterSpacingPx: resolveNativeTracking(
+            token.tracking,
+            fontSize,
+            `semantic.typography.${role}.tracking`,
+          ),
+          familyRole: token.family,
+        },
+      ];
+    }),
+  ) as NativeResolvedThemeVariant["typography"];
+
+  const icons = Object.fromEntries(
+    Object.entries(iconGeometry).map(([role, value]) => [
+      role,
+      resolveNativePixels(value, `component.geometry.icon.${role}`),
+    ]),
+  ) as NativeResolvedThemeVariant["icons"];
+  const marks = Object.fromEntries(
+    Object.entries(markGeometry).map(([role, value]) => [
+      role,
+      resolveNativePixels(value, `component.geometry.mark.${role}`),
+    ]),
+  ) as NativeResolvedThemeVariant["marks"];
+
+  const density = densityProfiles[theme.density];
+  const spacing = {
+    control: resolveNativePixels(
+      density.control,
+      "component.geometry.control.height",
+    ),
+    row: resolveNativePixels(density.row, "component.geometry.row.height"),
+    cardPadding: resolveNativePixels(
+      density.cardPadding,
+      "component.geometry.card.padding",
+    ),
+    sectionGap: resolveNativePixels(
+      density.sectionGap,
+      "component.geometry.section.gap",
+    ),
+    controlGap: resolveNativePixels(
+      density.controlGap,
+      "component.geometry.control.gap",
+    ),
+    fieldGap: resolveNativePixels(
+      density.fieldGap,
+      "component.geometry.field.gap",
+    ),
+    touchTarget: minimumTouchTargetPx,
+  } as NativeResolvedThemeVariant["spacing"];
+
+  const radiusSource =
+    theme.radiusValue === undefined
+      ? radiusProfiles[theme.radius]
+      : buildRadiusProfile(theme.radiusValue);
+  const radius = {
+    control: resolveNativePixels(
+      radiusSource.control,
+      "component.radius.control",
+    ),
+    card: resolveNativePixels(radiusSource.card, "component.radius.card"),
+    panel: resolveNativePixels(radiusSource.panel, "component.radius.panel"),
+  } as NativeResolvedThemeVariant["radius"];
+
+  const elevationLevel = (
+    kind: "surface" | "raised" | "modal",
+  ): NativeResolvedThemeVariant["elevation"]["surface"] => {
+    if (theme.elevation === "flat") {
+      return {
+        androidElevation: 0,
+        shadowOffsetY: 0,
+        shadowRadius: 0,
+        shadowOpacity: 0,
+      };
+    }
+    if (kind === "modal") {
+      return {
+        androidElevation: theme.elevation === "standard" ? 12 : 8,
+        shadowOffsetY: theme.elevation === "standard" ? 28 : 18,
+        shadowRadius: theme.elevation === "standard" ? 40 : 28,
+        shadowOpacity: theme.elevation === "standard" ? 0.56 : 0.48,
+      };
+    }
+    if (kind === "raised") {
+      return {
+        androidElevation: theme.elevation === "standard" ? 7 : 4,
+        shadowOffsetY: theme.elevation === "standard" ? 10 : 6,
+        shadowRadius: theme.elevation === "standard" ? 28 : 20,
+        shadowOpacity: theme.elevation === "standard" ? 0.34 : 0.24,
+      };
+    }
+    return {
+      androidElevation: theme.elevation === "standard" ? 3 : 1,
+      shadowOffsetY: theme.elevation === "standard" ? 1 : 1,
+      shadowRadius: theme.elevation === "standard" ? 2 : 2,
+      shadowOpacity: theme.elevation === "standard" ? 0.12 : 0.08,
+    };
+  };
+
+  const motionRoles = resolveMotionRoles(
+    options.motionProfile,
+    theme.motionDuration,
+  );
+  const rolesMs = Object.fromEntries(
+    Object.entries(motionRoles).map(([role, seconds]) => [
+      role,
+      options.motion === "reduced" ? 0.01 : Math.round(seconds * 1000),
+    ]),
+  ) as NativeResolvedThemeVariant["motion"]["rolesMs"];
+
+  const measures = Object.fromEntries(
+    MEASURE_NAMES.map((name) => {
+      const measure = MEASURE_CONTRACT[name];
+      return [
+        name,
+        {
+          minimumPx: measure.minimumPx,
+          preferredPx: measure.preferredPx,
+          maximumPx: measure.maximumPx,
+          fluid: measure.mode === "fluid",
+        },
+      ];
+    }),
+  ) as Record<MeasureName, NativeResolvedMeasure>;
+
+  return {
+    appearance: theme.appearance,
+    colors,
+    feedback: INTERACTION_FEEDBACK,
+    typography,
+    icons,
+    marks,
+    layout: { measures },
+    spacing,
+    radius,
+    elevation: {
+      preset: theme.elevation,
+      surface: elevationLevel("surface"),
+      raised: elevationLevel("raised"),
+      modal: elevationLevel("modal"),
+    },
+    chart: {
+      palette: theme.chartPalette,
+      colors: colorTokens.chartColors.map((value) => hslToHex(value)),
+    },
+    motion: {
+      enabled: options.motion !== "reduced",
+      rolesMs,
+    },
+    touchTarget: minimumTouchTargetPx,
+    density: theme.density,
   };
 }
 
@@ -1840,18 +2585,16 @@ export function buildDtcgThemeSnapshot(
   options: ThemeVariableOptions = {},
 ) {
   const theme = resolveTheme(config);
-  const variables = buildThemeVariables(theme, options);
+  const colorTokens = resolveThemeColorTokens(theme, options);
   const action = {
-    primary: dtcgColor(variables["--t7-action-primary-hsl"]),
-    primaryHover: dtcgColor(variables["--t7-action-primary-hover-hsl"]),
-    primaryPressed: dtcgColor(variables["--t7-action-primary-pressed-hsl"]),
-    primaryForeground: dtcgColor(
-      variables["--t7-action-primary-foreground-hsl"],
-    ),
-    accent: dtcgColor(variables["--t7-accent-hsl"]),
-    accentHover: dtcgColor(variables["--t7-accent-hover-hsl"]),
-    accentPressed: dtcgColor(variables["--t7-accent-pressed-hsl"]),
-    accentForeground: dtcgColor(variables["--t7-accent-foreground-hsl"]),
+    primary: dtcgColor(colorTokens.primaryPalette.primary),
+    primaryHover: dtcgColor(colorTokens.primaryPalette.primaryHover),
+    primaryPressed: dtcgColor(colorTokens.primaryPalette.primaryActive),
+    primaryForeground: dtcgColor(colorTokens.primaryPalette.primaryForeground),
+    accent: dtcgColor(colorTokens.accentPalette.accent),
+    accentHover: dtcgColor(colorTokens.accentPalette.primaryHover),
+    accentPressed: dtcgColor(colorTokens.accentPalette.primaryActive),
+    accentForeground: dtcgColor(colorTokens.accentPalette.accentForeground),
   };
 
   return {
@@ -1869,17 +2612,17 @@ export function buildDtcgThemeSnapshot(
     semantic: {
       color: {
         action,
-        focus: dtcgColor(variables["--t7-focus-hsl"]),
+        focus: dtcgColor(colorTokens.focusHsl),
         status: {
-          success: dtcgColor(variables["--t7-success-hsl"]),
-          warning: dtcgColor(variables["--t7-warning-hsl"]),
-          danger: dtcgColor(variables["--t7-danger-hsl"]),
-          info: dtcgColor(variables["--t7-info-hsl"]),
+          success: dtcgColor(colorTokens.semantic.success),
+          warning: dtcgColor(colorTokens.semantic.warning),
+          danger: dtcgColor(colorTokens.semantic.danger),
+          info: dtcgColor(colorTokens.semantic.info),
         },
         chart: Object.fromEntries(
           [1, 2, 3, 4, 5].map((index) => [
             index,
-            dtcgColor(variables[`--t7-chart-${index}-hsl`]),
+            dtcgColor(colorTokens.chartColors[index - 1]),
           ]),
         ),
       },

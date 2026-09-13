@@ -9,12 +9,15 @@ import {
   AppShell,
   Alert,
   AlertDialog,
+  Banner,
   AppliedFilters,
   ApprovalPanel,
   AspectRatio,
   AvatarGroup,
   BarChart,
   Badge,
+  BuilderCanvas,
+  BottomNavigation,
   Breadcrumb,
   Button,
   ButtonGroup,
@@ -29,24 +32,34 @@ import {
   ChartLegend,
   Checkbox,
   CheckboxGroup,
+  Cascader,
+  CitationList,
   CircularProgress,
+  ColorPicker,
   Collapsible,
   Combobox,
   CommandMenu,
   ContextMenu,
+  Container,
+  ConversationThread,
   DataTable,
+  DataTableColumnPicker,
   DatePicker,
   DateRangePicker,
   DateTimeInput,
   DetailDrawer,
+  Dialog,
+  DragHandle,
   DonutChart,
   Drawer,
   DropdownMenu,
   EmptyState,
+  EditorSurface,
   Field,
   FieldGroup,
   FileItem,
   FileList,
+  FilePreview,
   FileUpload,
   FilterDrawer,
   FilterToolbar,
@@ -57,19 +70,24 @@ import {
   Image,
   HierarchyPicker,
   Input,
+  Kbd,
   KeyValueList,
   KPICluster,
   LineChart,
   MediaFrame,
   MetricCard,
+  ModuleState,
   MilestoneTracker,
   Modal,
   MobileSidebar,
   MultiSelect,
+  NavigationRail,
   NavigationMenu,
   NativeTimeInput,
   NativeSelect,
   NumberInput,
+  Notification,
+  NotificationCenter,
   OtpInput,
   OrderSummary,
   PageHeader,
@@ -81,6 +99,8 @@ import {
   ProductMeta,
   ProductGrid,
   Progress,
+  PropertyInspector,
+  PromptComposer,
   QrCode,
   QuantityControl,
   Radio,
@@ -94,11 +114,15 @@ import {
   SectionNavigation,
   Select,
   Separator,
+  SpeedDial,
   Sidebar,
   Slider,
   Skeleton,
+  Sparkline,
   Spinner,
   SplitButton,
+  SplitPane,
+  Stack,
   StateView,
   StatusChip,
   Stepper,
@@ -111,19 +135,28 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  TagsInput,
   Textarea,
   TimePicker,
   TimeInput,
+  ToolCallCard,
   Toast,
   Toaster,
   ToggleButton,
   ToggleButtonGroup,
+  Transfer,
+  TreeView,
   ToastProvider,
   Toolbar,
   Tooltip,
   TrendIndicator,
   Typography,
+  Link,
+  List,
+  useTen4SevenTheme,
 } from "@ten4seven/ui";
+
+import { getFixtureColorPresets } from "./fixture-theme";
 
 import {
   categoryLabels,
@@ -443,6 +476,8 @@ export function ComponentPreview({
 }: {
   component: ComponentContract;
 }) {
+  const { theme } = useTen4SevenTheme();
+  const colorPresets = getFixtureColorPresets(theme);
   const [modalOpen, setModalOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
@@ -450,11 +485,27 @@ export function ComponentPreview({
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [page, setPage] = useState(1);
+  const [tableVisibility, setTableVisibility] = useState<
+    Record<string, boolean>
+  >({
+    item: true,
+    status: true,
+  });
+  const [listSelection, setListSelection] = useState<string[]>(["record-1"]);
   const [toggle, setToggle] = useState("grid");
   const [checked, setChecked] = useState(true);
   const [switchOn, setSwitchOn] = useState(true);
   const [team, setTeam] = useState("maya");
   const [tags, setTags] = useState<string[]>(["design"]);
+  const [cascaderValue, setCascaderValue] = useState<string[]>([
+    "operations",
+    "delivery",
+  ]);
+  const [color, setColor] = useState(() => colorPresets[0]);
+  const [transferValues, setTransferValues] = useState(["quality"]);
+  const [treeSelection, setTreeSelection] = useState<string | undefined>(
+    "inventory",
+  );
   const [date, setDate] = useState<string | undefined>("2026-08-26");
   const [time, setTime] = useState("09:30");
   const [range, setRange] = useState<{ start?: string; end?: string }>({
@@ -511,6 +562,24 @@ export function ComponentPreview({
       </div>,
     );
   }
+  if (component.displayName === "Kbd")
+    return frame(
+      <div className="catalog-preview-shortcut">
+        <Kbd>Ctrl</Kbd>
+        <span aria-hidden="true">+</span>
+        <Kbd>K</Kbd>
+        <Typography typeRole="caption">Open command menu</Typography>
+      </div>,
+    );
+  if (component.displayName === "Link")
+    return frame(
+      <div className="catalog-preview-link-stack">
+        <Link href="#component-preview">Open component detail</Link>
+        <Link external href="https://ten4seven.local">
+          External documentation
+        </Link>
+      </div>,
+    );
   if (component.displayName === "T7 Icon") {
     return frame(
       <div className="catalog-preview-icon-row">
@@ -599,6 +668,43 @@ export function ComponentPreview({
         />,
       );
     }
+    if (component.displayName === "Speed Dial")
+      return frame(
+        <SpeedDial
+          actions={[
+            {
+              icon: "add",
+              id: "create",
+              label: "Create",
+              onSelect: () => undefined,
+            },
+            {
+              icon: "view",
+              id: "inspect",
+              label: "Inspect",
+              onSelect: () => undefined,
+            },
+            {
+              icon: "download",
+              id: "export",
+              label: "Export",
+              onSelect: () => undefined,
+            },
+          ]}
+          defaultOpen
+          placement="top"
+        />,
+      );
+    if (component.displayName === "Drag Handle")
+      return frame(
+        <div className="catalog-preview-draggable-row">
+          <DragHandle label="Reorder inventory row" />
+          <div>
+            <Typography typeRole="label">Inventory row</Typography>
+            <Typography typeRole="caption">Consumer-owned reorder</Typography>
+          </div>
+        </div>,
+      );
     return frame(
       <div className="catalog-preview-actions">
         <Button leadingIcon="add">Create item</Button>
@@ -611,6 +717,33 @@ export function ComponentPreview({
   }
 
   if (component.category === "form") {
+    if (component.displayName === "Editor Surface")
+      return frame(
+        <EditorSurface
+          content={
+            <Textarea
+              defaultValue="Release notes stay in a consumer-owned editor adapter."
+              label="Draft content"
+              rows={4}
+            />
+          }
+          footer={<Button size="sm">Save draft</Button>}
+          language="markdown"
+          status="Draft · no persistence in the fixture"
+          title="Release notes"
+          toolbar={<Kbd>⌘ S</Kbd>}
+        />,
+      );
+    if (component.displayName === "Prompt Composer")
+      return frame(
+        <PromptComposer
+          attachments={<Badge>2 sources</Badge>}
+          defaultValue="Summarize the open review blockers."
+          onSubmit={() => undefined}
+          status="Consumer-owned transport boundary"
+          toolbar={<Kbd>Enter</Kbd>}
+        />,
+      );
     if (
       [
         "Input",
@@ -698,6 +831,33 @@ export function ComponentPreview({
           value={team}
         />,
       );
+    if (component.displayName === "Cascader")
+      return frame(
+        <Cascader
+          hint="Choose a path; the final option is committed."
+          label="Workspace path"
+          onValueChange={setCascaderValue}
+          options={[
+            {
+              children: [
+                { label: "Design review", value: "design" },
+                { label: "Delivery", value: "delivery" },
+              ],
+              label: "Operations",
+              value: "operations",
+            },
+            {
+              children: [
+                { label: "Editorial", value: "editorial" },
+                { label: "Commerce", value: "commerce" },
+              ],
+              label: "Product",
+              value: "product",
+            },
+          ]}
+          value={cascaderValue}
+        />,
+      );
     if (component.displayName === "Multi Select")
       return frame(
         <MultiSelect
@@ -709,6 +869,40 @@ export function ComponentPreview({
             { label: "Engineering", value: "engineering" },
           ]}
           values={tags}
+        />,
+      );
+    if (component.displayName === "Transfer")
+      return frame(
+        <Transfer
+          label="Review partners"
+          onValueChange={setTransferValues}
+          options={[
+            { label: "Design", value: "design" },
+            { label: "Quality", value: "quality" },
+            { label: "Operations", value: "operations" },
+            { label: "Finance", value: "finance" },
+          ]}
+          searchable
+          value={transferValues}
+        />,
+      );
+    if (component.displayName === "Color Picker")
+      return frame(
+        <ColorPicker
+          hint="Use a theme token for semantic UI state; use this for authored expression."
+          label="Expression color"
+          onValueChange={setColor}
+          presets={colorPresets}
+          value={color}
+        />,
+      );
+    if (component.displayName === "Tags Input")
+      return frame(
+        <TagsInput
+          hint="Press Enter or comma to commit."
+          label="Topics"
+          onValueChange={setTags}
+          value={tags}
         />,
       );
     if (component.displayName === "Hierarchy Picker")
@@ -895,6 +1089,7 @@ export function ComponentPreview({
             </Button>
           }
           description="Group related fields before submitting."
+          data-t7-rail="form"
           title="Profile details"
         >
           <FormGrid>
@@ -921,6 +1116,113 @@ export function ComponentPreview({
   }
 
   if (component.category === "layout") {
+    if (component.displayName === "Builder Canvas")
+      return frame(
+        <BuilderCanvas
+          inspector={
+            <PropertyInspector
+              sections={[
+                {
+                  content: <Input label="Label" defaultValue="Review card" />,
+                  description: "Consumer-owned field",
+                  id: "content",
+                  title: "Content",
+                },
+                {
+                  content: (
+                    <Select label="Density" defaultValue="default">
+                      <option value="default">Default</option>
+                    </Select>
+                  ),
+                  defaultOpen: false,
+                  id: "layout",
+                  title: "Layout",
+                },
+              ]}
+              summary="Selected block"
+            />
+          }
+          status="Selection and persistence remain consumer-owned"
+          title="Release builder"
+          toolbar={
+            <Button intent="secondary" size="sm">
+              Preview
+            </Button>
+          }
+        >
+          <Card>
+            <CardHeader>
+              <CardTitle>Review card</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Typography typeRole="body-sm">
+                Stage content stays separate from its property rail.
+              </Typography>
+            </CardContent>
+          </Card>
+        </BuilderCanvas>,
+      );
+    if (component.displayName === "Property Inspector")
+      return frame(
+        <PropertyInspector
+          sections={[
+            {
+              content: <Input label="Title" defaultValue="Release review" />,
+              id: "content",
+              title: "Content",
+            },
+            {
+              content: (
+                <Switch checked label="Visible" onChange={() => undefined} />
+              ),
+              defaultOpen: false,
+              id: "visibility",
+              title: "Visibility",
+            },
+          ]}
+          summary="Properties for the selected stage"
+        />,
+      );
+    if (component.displayName === "Container")
+      return frame(
+        <Container size="form">
+          <Stack gap="sm">
+            <Typography typeRole="label">Bounded content well</Typography>
+            <Typography typeRole="body-sm">
+              Form fields stay readable instead of stretching across the shell.
+            </Typography>
+          </Stack>
+        </Container>,
+      );
+    if (component.displayName === "Stack")
+      return frame(
+        <Stack direction="row" gap="sm" wrap>
+          <Button size="sm">Primary</Button>
+          <Button intent="secondary" size="sm">
+            Secondary
+          </Button>
+          <Button intent="quiet" size="sm">
+            Quiet
+          </Button>
+        </Stack>,
+      );
+    if (component.displayName === "Split Pane")
+      return frame(
+        <SplitPane
+          minEnd={32}
+          minStart={32}
+          separatorLabel="Resize list and detail panes"
+        >
+          <div className="catalog-preview-pane-copy">
+            <Typography typeRole="label">Record list</Typography>
+            <Typography typeRole="caption">8 active records</Typography>
+          </div>
+          <div className="catalog-preview-pane-copy">
+            <Typography typeRole="label">Record detail</Typography>
+            <Typography typeRole="caption">Selected item context</Typography>
+          </div>
+        </SplitPane>,
+      );
     if (component.displayName === "Scroll Area")
       return frame(
         <>
@@ -992,6 +1294,37 @@ export function ComponentPreview({
   }
 
   if (component.category === "navigation") {
+    if (component.displayName === "Bottom Navigation")
+      return frame(
+        <BottomNavigation
+          items={[
+            {
+              active: true,
+              icon: "dashboard",
+              key: "overview",
+              label: "Overview",
+            },
+            { icon: "inventory", key: "inventory", label: "Inventory" },
+            { icon: "settings", key: "settings", label: "Settings" },
+          ]}
+          position="static"
+        />,
+      );
+    if (component.displayName === "Navigation Rail")
+      return frame(
+        <NavigationRail
+          items={[
+            {
+              active: true,
+              icon: "dashboard",
+              key: "overview",
+              label: "Overview",
+            },
+            { icon: "inventory", key: "inventory", label: "Inventory" },
+            { icon: "chart", key: "reports", label: "Reports" },
+          ]}
+        />,
+      );
     if (component.displayName === "Mobile Sidebar") {
       return frame(
         <>
@@ -1164,6 +1497,33 @@ export function ComponentPreview({
           ]}
         />,
       );
+    if (component.displayName === "Tree View")
+      return frame(
+        <TreeView
+          description="One active context; expansion stays local to the tree."
+          items={[
+            {
+              children: [
+                { id: "inventory", label: "Inventory" },
+                { id: "shipments", label: "Shipments" },
+              ],
+              id: "operations",
+              label: "Operations",
+            },
+            {
+              children: [
+                { id: "quality", label: "Quality review" },
+                { id: "exceptions", label: "Exceptions" },
+              ],
+              id: "governance",
+              label: "Governance",
+            },
+          ]}
+          label="Workspace tree"
+          onSelectedIdChange={setTreeSelection}
+          selectedId={treeSelection}
+        />,
+      );
     if (
       component.displayName === "Command Menu" ||
       component.displayName === "Command Palette"
@@ -1206,9 +1566,67 @@ export function ComponentPreview({
   }
 
   if (component.category === "data" || component.category === "table") {
+    if (component.displayName === "Conversation Thread")
+      return frame(
+        <ConversationThread
+          aria-label="Release conversation"
+          messages={[
+            {
+              author: "Maya Chen",
+              content: "The review note is ready for a final check.",
+              id: "user-note",
+              role: "user",
+              status: "complete",
+              timestamp: "09:42",
+            },
+            {
+              author: "Assistant surface",
+              content:
+                "Two blockers remain. I attached the source references below.",
+              id: "assistant-summary",
+              role: "assistant",
+              status: "streaming",
+              timestamp: "Now",
+            },
+          ]}
+        />,
+      );
+    if (component.displayName === "Citation List")
+      return frame(
+        <CitationList
+          citations={[
+            {
+              excerpt:
+                "The bounded surface keeps source context adjacent to the response.",
+              href: "#component-preview",
+              id: "contract",
+              label: "Advanced surface contract",
+              source: "Ten4Seven UI · local proof",
+            },
+            {
+              excerpt:
+                "Consumer-owned policy remains outside the presentation layer.",
+              id: "boundary",
+              label: "Ownership boundary",
+              source: "Q11 evidence",
+            },
+          ]}
+        />,
+      );
+    if (component.displayName === "Tool Call Card")
+      return frame(
+        <ToolCallCard
+          input={<code>{'{"record":"release-42"}'}</code>}
+          name="Lookup release"
+          output={<code>2 blockers · ready for review</code>}
+          status="completed"
+          summary="Consumer-owned execution result"
+        />,
+      );
     if (component.displayName === "Milestone Tracker")
       return frame(
         <MilestoneTracker
+          detailMode="drawer"
           items={[
             {
               description: "Signals are captured and ready for review.",
@@ -1289,14 +1707,56 @@ export function ComponentPreview({
           ]}
         />,
       );
+    if (component.displayName === "List")
+      return frame(
+        <List
+          aria-label="Operational records"
+          items={[
+            {
+              detail: "Receiving dock 04 · 09:42",
+              id: "record-1",
+              name: "Inbound shipment",
+              status: "Ready",
+            },
+            {
+              detail: "North Dock · A-14-03",
+              id: "record-2",
+              name: "Stock count",
+              status: "Review",
+            },
+            {
+              detail: "Needs review today",
+              id: "record-3",
+              name: "Reorder threshold",
+              status: "Attention",
+            },
+          ]}
+          onSelectionChange={setListSelection}
+          renderItem={(row) => (
+            <div className="catalog-preview-list-row">
+              <div>
+                <Typography as="strong" typeRole="label">
+                  {row.name}
+                </Typography>
+                <Typography typeRole="caption">{row.detail}</Typography>
+              </div>
+              <StatusChip tone={row.status === "Ready" ? "success" : "warning"}>
+                {row.status}
+              </StatusChip>
+            </div>
+          )}
+          rowKey={(row) => row.id}
+          rowLabel={(row) => row.name}
+          selectedRowKeys={listSelection}
+          selectionMode="multiple"
+        />,
+      );
     if (component.displayName === "Advanced Data Grid")
       return frame(<AdvancedDataGridPreview />);
-    if (
-      component.displayName === "Data Table" ||
-      component.displayName === "Data Table Column Picker"
-    )
+    if (component.displayName === "Data Table")
       return frame(
         <DataTable
+          caption="Inventory records"
           columns={[
             { key: "item", header: "Item" },
             { key: "status", header: "Status" },
@@ -1306,7 +1766,35 @@ export function ComponentPreview({
             { id: "wh-1048", item: "Arabica coffee", status: "Low stock" },
           ]}
           rowKey={(row) => row.id}
+          responsive="stacked"
         />,
+      );
+    if (component.displayName === "Data Table Column Picker")
+      return frame(
+        <>
+          <DataTableColumnPicker
+            columns={[
+              { key: "item", header: "Item", required: true },
+              { key: "status", header: "Status" },
+            ]}
+            onVisibilityChange={setTableVisibility}
+            visibility={tableVisibility}
+          />
+          <DataTable
+            caption="Inventory records"
+            columnVisibility={tableVisibility}
+            columns={[
+              { key: "item", header: "Item", required: true },
+              { key: "status", header: "Status" },
+            ]}
+            responsive="stacked"
+            rows={[
+              { id: "wh-1042", item: "Organic oat milk", status: "Healthy" },
+              { id: "wh-1048", item: "Arabica coffee", status: "Low stock" },
+            ]}
+            rowKey={(row) => row.id}
+          />
+        </>,
       );
     if (
       [
@@ -1520,6 +2008,24 @@ export function ComponentPreview({
   }
 
   if (component.category === "overlay") {
+    if (component.displayName === "Dialog")
+      return frame(
+        <>
+          <Button intent="secondary" onClick={() => setModalOpen(true)}>
+            Open dialog
+          </Button>
+          <Dialog
+            description="A live canonical adaptive dialog preview."
+            onClose={() => setModalOpen(false)}
+            open={modalOpen}
+            title="Dialog preview"
+          >
+            <Typography typeRole="body-sm">
+              Focus returns to the invoking control when the dialog closes.
+            </Typography>
+          </Dialog>
+        </>,
+      );
     if (component.displayName === "Modal")
       return frame(
         <>
@@ -1688,6 +2194,56 @@ export function ComponentPreview({
           tone="warning"
         />,
       );
+    if (component.displayName === "Banner")
+      return frame(
+        <Banner
+          action={<Button size="sm">Reconnect</Button>}
+          description="Updates will resume when the connection is available."
+          title="Working offline"
+          tone="warning"
+        />,
+      );
+    if (component.displayName === "Notification")
+      return frame(
+        <Notification
+          notification={{
+            description: "The export is ready for review.",
+            id: "preview-notification",
+            read: false,
+            timestamp: "2 min ago",
+            title: "Export complete",
+            tone: "success",
+          }}
+          onMarkRead={() => undefined}
+          onSelect={() => undefined}
+        />,
+      );
+    if (component.displayName === "Notification Center")
+      return frame(
+        <NotificationCenter
+          items={[
+            {
+              description: "The export is ready for review.",
+              id: "preview-notification-center-1",
+              read: false,
+              timestamp: "2 min ago",
+              title: "Export complete",
+              tone: "success",
+            },
+            {
+              description: "One approval is waiting for your decision.",
+              id: "preview-notification-center-2",
+              read: true,
+              timestamp: "Yesterday",
+              title: "Approval requested",
+              tone: "warning",
+            },
+          ]}
+          onMarkAllRead={() => undefined}
+          onMarkRead={() => undefined}
+          onSelect={() => undefined}
+        />,
+      );
     if (component.displayName === "Empty State")
       return frame(
         <EmptyState
@@ -1703,6 +2259,15 @@ export function ComponentPreview({
           description="The requested view is unavailable right now."
           state="error"
           title="Could not load records"
+        />,
+      );
+    if (component.displayName === "Module State")
+      return frame(
+        <ModuleState
+          action={<Button>Start setup</Button>}
+          description="The consumer supplies this explanation and owns the setup transition."
+          state="setup-required"
+          title="Workspace setup required"
         />,
       );
     if (component.displayName === "Progress")
@@ -1768,6 +2333,16 @@ export function ComponentPreview({
   }
 
   if (component.category === "file") {
+    if (component.displayName === "File Preview")
+      return frame(
+        <FilePreview
+          name="review-brief.pdf"
+          onDownload={() => undefined}
+          onPreview={() => undefined}
+          size={184000}
+          type="application/pdf"
+        />,
+      );
     if (component.displayName === "File Upload")
       return frame(
         <FileUpload
@@ -1812,10 +2387,7 @@ export function ComponentPreview({
           ]}
         />,
       );
-    if (
-      component.displayName === "Line Chart" ||
-      component.displayName === "Sparkline"
-    )
+    if (component.displayName === "Line Chart")
       return frame(
         <LineChart
           labels={["Mon", "Tue", "Wed", "Thu", "Fri"]}
@@ -1824,6 +2396,14 @@ export function ComponentPreview({
           ]}
           title="Weekly coverage"
           valueFormatter={(value) => `${Math.round(value)}%`}
+        />,
+      );
+    if (component.displayName === "Sparkline")
+      return frame(
+        <Sparkline
+          accessibleSummary="Coverage rose from 42% to 74% across the review window."
+          label="Coverage trend"
+          values={[42, 56, 51, 68, 74]}
         />,
       );
     if (component.displayName === "Bar Chart")

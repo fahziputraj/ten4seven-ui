@@ -8,6 +8,7 @@ import type {
   EntityListIntentInput,
   EntityListResolution,
   EntityListScaffold,
+  PlatformNeutralInspection,
 } from "./index.ts";
 import type { RecipeContract } from "@ten4seven/contracts";
 
@@ -32,5 +33,6 @@ export function composeBrandExpression(
   input?: BrandExpressionInput,
 ): BrandExpressionScaffold;
 export function inspectBrandExpression(): RecipeContract;
+export function inspectPlatformNeutralContract(): PlatformNeutralInspection;
 
 export type { RetrievalTelemetry } from "./index.ts";

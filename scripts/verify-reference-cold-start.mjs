@@ -19,6 +19,7 @@ const allowedReads = [
   "generated/components.compact.json",
   "generated/aliases.json",
   "generated/ownership-rules.json",
+  "generated/erp-density.json",
   "packages/ai/catalog/blocks.json",
   "packages/ai/catalog/icons.json",
 ];
@@ -42,6 +43,7 @@ const recipes = readJson("generated/recipes.compact.json");
 const components = readJson("generated/components.compact.json");
 const blocks = readJson("packages/ai/catalog/blocks.json");
 const icons = readJson("packages/ai/catalog/icons.json");
+const erpDensity = readJson("generated/erp-density.json");
 const migrationContract = read(
   "docs/ai/APPLY_TO_EXISTING_WEB.md",
 ).toLowerCase();
@@ -52,6 +54,9 @@ const routeContract = `${read("AGENTS.md")}\n${read("llms.txt")}`.toLowerCase();
 for (const route of [
   "/theme-studio",
   "/component-lab",
+  "/saas-control-plane",
+  "/farm-reference",
+  "/erp-reference",
   "/tokens",
   "/components",
   "/components/patterns",
@@ -271,6 +276,33 @@ for (const task of tasks) {
   }
 }
 
+const erpPattern = erpDensity.patterns.collection;
+assert.ok(erpPattern, "ERP density collection pattern missing");
+for (const componentName of [
+  ...erpPattern.components,
+  ...erpPattern.optionalComponents,
+])
+  assert.equal(
+    components[componentName]?.status,
+    "implemented",
+    `ERP density collection: ${componentName} is not implemented`,
+  );
+const erpCliOutput = execFileSync(
+  process.execPath,
+  [cliPath, "find", "ERP dense table"],
+  { cwd: repoRoot, encoding: "utf8" },
+);
+assert.match(erpCliOutput, /ERP density pattern: ERP collection \(collection\)/);
+assert.match(erpCliOutput, /Contract: generated\/erp-density\.json/);
+for (const componentName of erpPattern.components)
+  assert.match(
+    erpCliOutput,
+    new RegExp(componentName),
+    `ERP density collection: CLI omits ${componentName}`,
+  );
+assert.match(erpCliOutput, /Responsive: desktop=table/);
+assert.match(erpCliOutput, /Unsupported bounded needs:/);
+
 for (const requiredPhrase of [
   "business logic",
   "routing",
@@ -296,5 +328,5 @@ for (const requiredPhrase of [
   );
 
 console.log(
-  `Cold-start references verified: ${tasks.length} tasks, ${allowedReads.length} contract/catalog reads, 0 donor reads.`,
+  `Cold-start references verified: ${tasks.length} recipe tasks plus ERP density retrieval, ${allowedReads.length} contract/catalog reads, 0 donor reads.`,
 );

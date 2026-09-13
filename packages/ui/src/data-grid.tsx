@@ -337,7 +337,8 @@ export function AdvancedDataGrid<Row>({
       ref={rootRef}
     >
       <div className="t7-advanced-data-grid-scroll">
-        <table aria-label={caption} className="t7-advanced-data-grid-table">
+        <table className="t7-advanced-data-grid-table">
+          <caption className="t7-visually-hidden">{caption}</caption>
           <thead>
             <tr>
               {selectable ? (
@@ -372,6 +373,7 @@ export function AdvancedDataGrid<Row>({
                 >
                   {column.sortable && onSort ? (
                     <button
+                      aria-label={`Sort by ${column.header}`}
                       className="t7-table-sort-button"
                       onClick={() => onSort(column.key)}
                       type="button"
@@ -409,6 +411,7 @@ export function AdvancedDataGrid<Row>({
             {loading ? (
               <tr>
                 <td
+                  aria-live="polite"
                   className="t7-advanced-data-grid-state"
                   colSpan={columnCount}
                 >
@@ -419,8 +422,10 @@ export function AdvancedDataGrid<Row>({
             ) : error ? (
               <tr>
                 <td
+                  aria-live="assertive"
                   className="t7-advanced-data-grid-state is-error"
                   colSpan={columnCount}
+                  role="alert"
                 >
                   {error}
                 </td>
@@ -428,6 +433,7 @@ export function AdvancedDataGrid<Row>({
             ) : rows.length === 0 ? (
               <tr>
                 <td
+                  aria-live="polite"
                   className="t7-advanced-data-grid-state"
                   colSpan={columnCount}
                 >

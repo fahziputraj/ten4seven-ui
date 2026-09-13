@@ -96,6 +96,7 @@ export type BlockContract = {
   contentSlots: string[];
   displayName: string;
   example: string;
+  family?: string;
   motion: string[];
   optionalComponents: string[];
   performance: string[];
@@ -104,6 +105,7 @@ export type BlockContract = {
   requiredComponents: string[];
   responsive: string[];
   source: string;
+  sourceSymbol?: string;
   useWhen: string[];
   variants: string[];
 };
@@ -229,6 +231,11 @@ export function iconPath(name: string) {
 
 export const catalogCounts = {
   blocks: Object.keys(blockCatalog).length,
+  blockFamilies: new Set(
+    Object.values(blockCatalog)
+      .map((block) => block.family)
+      .filter(Boolean),
+  ).size,
   canonicalComponents: canonicalComponentEntries.length,
   components: Object.keys(componentCatalog).length,
   icons: IconNames.length,

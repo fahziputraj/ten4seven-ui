@@ -301,7 +301,7 @@ test("long select values stay inside their Theme Studio fields", async ({
     radiusGeometry.controlRight + 0.5,
   );
   expect(controlGridGeometry.columns).toBe(2);
-  expect(profileGeometry).toHaveLength(10);
+  expect(profileGeometry).toHaveLength(11);
   const densityProfile = profileGeometry.find(
     (field) => field.label === "Density",
   );
@@ -339,12 +339,12 @@ test("corrupt persisted global controls fall back to a safe theme", async ({
   await expect(
     page.getByRole("heading", { name: "Theme Studio" }),
   ).toBeVisible();
-  await expect(provider).toHaveAttribute("data-palette", "emerald");
-  await expect(provider).toHaveAttribute("data-primary", "emerald");
-  await expect(provider).toHaveAttribute("data-accent", "emerald");
+  await expect(provider).toHaveAttribute("data-palette", "blue");
+  await expect(provider).toHaveAttribute("data-primary", "indigo");
+  await expect(provider).toHaveAttribute("data-accent", "cyan");
   await expect(provider).toHaveAttribute("data-canvas", "balanced");
   await expect(provider).toHaveAttribute("data-radius", "soft");
-  await expect(provider).toHaveAttribute("data-motion-duration", "1.5");
+  await expect(provider).toHaveAttribute("data-motion-duration", "1.25");
   await expect(provider).not.toHaveAttribute("data-radius-value");
 });
 
@@ -590,7 +590,7 @@ test("light application canvases stay white and structural surfaces stay achroma
   }
 });
 
-test("Theme Studio explains semantic color roles and keeps focus independent of accent", async ({
+test("Theme Studio explains semantic color roles and keeps focus tied to action, not accent", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1186, height: 698 });
@@ -601,18 +601,15 @@ test("Theme Studio explains semantic color roles and keeps focus independent of 
   await expect(roleMap).toContainText("Main action");
   await expect(roleMap).toContainText("Buttons · links · selected");
   await expect(roleMap).toContainText("Accent color");
-  await expect(roleMap).toContainText("Supporting emphasis · expression");
+  await expect(roleMap).toContainText("Supporting emphasis");
   await expect(roleMap).toContainText("Chart");
-  await expect(roleMap).toContainText("Data series · opted-in solid surfaces");
+  await expect(roleMap).toContainText("Data series and colorways");
 
   await chooseSelect(page, "Accent color", "amber");
   const provider = page.locator(".t7-provider");
   await expect(provider).toHaveAttribute("data-accent", "amber");
-  await expect(provider).toHaveCSS("--t7-focus-hsl", "216 72% 38%");
-  await expect(provider).toHaveCSS(
-    "--t7-input-focus-border-hsl",
-    "216 72% 38%",
-  );
+  await expect(provider).toHaveCSS("--t7-focus-hsl", "232 70% 48%");
+  await expect(provider).toHaveCSS("--t7-input-focus-border-hsl", "0 0% 72%");
   await expect(
     page
       .getByTestId("studio-live-preview")
@@ -663,7 +660,7 @@ test("Global Controls expose an immediate canonical preview", async ({
     "Live. Ready to preview",
   );
   await expect(preview.locator('[data-live-value="primary"]')).toHaveText(
-    /emerald · preset · primary role/,
+    /indigo · preset · primary role/,
   );
 
   const previewAction = preview.getByRole("button", {
@@ -797,23 +794,26 @@ test("operations milestone tracker reveals selected detail", async ({
   ).toBeLessThanOrEqual(1);
 });
 
-test("public showcase section map and route CTAs are navigable", async ({
+test("public showcase navigation and route CTAs are navigable", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/public-showcase");
 
   await expect(
-    page.getByRole("navigation", { name: "Public showcase sections" }),
+    page.getByRole("menubar", { name: "Navigation menu" }),
   ).toBeVisible();
   await expect(
-    page.getByRole("link", { name: /Foundations Tokens, roles/ }),
+    page.getByRole("menuitem", { name: "System", exact: true }),
   ).toHaveAttribute("href", "#showcase-features");
 
-  await page.getByRole("button", { name: "Explore the system" }).click();
+  await page
+    .locator(".t7-navigation-menu-trailing")
+    .getByRole("button", { name: "Explore the system", exact: true })
+    .click();
   await expect(page).toHaveURL(/\/public-showcase#showcase-features$/);
 
-  await page.getByRole("button", { name: "View components" }).click();
+  await page.getByRole("link", { name: "Components", exact: true }).click();
   await expect(page).toHaveURL(/\/components$/);
 });
 
@@ -890,7 +890,7 @@ test("shared motion tokens drive smooth scroll and chart reveals", async ({
     motion.chartVisibility.every((visibility) => visibility === "true"),
   ).toBe(true);
   expect(motion.scrollBehavior).toBe("smooth");
-  expect(motion.standardDuration).toBe("220ms");
+  expect(motion.standardDuration).toBe("180ms");
   expect(motion.animatedNodes).toEqual(
     expect.arrayContaining([
       expect.objectContaining({
@@ -992,7 +992,7 @@ test("canonical actions use cursor-origin feedback and static cards retain neutr
   }));
   expect(cardFeedback.borderColor).not.toBe("");
   expect(cardFeedback.boxShadow).not.toBe("");
-  expect(cardFeedback.transform).toBe("none");
+  expect(cardFeedback.transform).toMatch(/^matrix/);
   await expect(card).not.toHaveAttribute("data-interactive", "true");
 });
 

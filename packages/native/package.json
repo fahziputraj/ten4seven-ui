@@ -1,0 +1,46 @@
+{
+  "name": "@ten4seven/native",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./renderer": {
+      "types": "./dist/renderer.d.ts",
+      "import": "./dist/renderer.js",
+      "default": "./dist/renderer.js"
+    }
+  },
+  "peerDependencies": {
+    "react": ">=19.1.0",
+    "react-native": ">=0.81.0",
+    "react-native-safe-area-context": ">=5.6.0"
+  },
+  "devDependencies": {
+    "@ten4seven/contracts": "workspace:*",
+    "@ten4seven/tokens": "workspace:*",
+    "@types/react": "^19.2.14",
+    "esbuild": "^0.28.2",
+    "react": "19.2.8",
+    "react-native": "0.81.5",
+    "react-native-safe-area-context": "5.6.2",
+    "rollup": "^4.62.5",
+    "rollup-plugin-dts": "^6.2.1",
+    "typescript": "^5.9.3"
+  },
+  "scripts": {
+    "build": "node ./scripts/build-package.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "verify": "node ./scripts/verify-package.mjs"
+  }
+}

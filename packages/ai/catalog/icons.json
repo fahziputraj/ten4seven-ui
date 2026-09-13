@@ -386,7 +386,7 @@
     "useWhen": ["communication", "message"]
   },
   "revenue": {
-    "provider": "ic:twotone-monetization-on",
+    "provider": "solar:dollar-minimalistic-bold-duotone",
     "useWhen": ["revenue", "monetization", "money"]
   },
   "medicine": {
@@ -394,55 +394,91 @@
     "useWhen": ["medicine", "medication", "pharmacy"]
   },
   "pills": {
-    "provider": "reicon:pills-duotone",
+    "provider": "solar:pills-bold-duotone",
     "useWhen": ["pills", "medication", "health"]
   },
   "cashOnDelivery": {
-    "provider": "iconmind:cash-on-delivery-duotone-regular",
+    "provider": "solar:hand-money-bold-duotone",
     "useWhen": ["cash on delivery", "delivery payment", "payment collection"]
   },
   "wallet": {
-    "provider": "ant-design:wallet-twotone",
+    "provider": "solar:wallet-money-bold-duotone",
     "useWhen": ["wallet", "cash", "finance"]
   },
   "triangleRight": {
-    "provider": "gravity-ui:triangle-right-fill",
+    "provider": "solar:alt-arrow-right-bold-duotone",
     "useWhen": ["next", "move right", "forward control"]
   },
   "triangleLeft": {
-    "provider": "gravity-ui:triangle-left-fill",
+    "provider": "solar:alt-arrow-left-bold-duotone",
     "useWhen": ["previous", "move left", "back control"]
   },
   "triangleUp": {
-    "provider": "gravity-ui:triangle-up-fill",
+    "provider": "solar:alt-arrow-up-bold-duotone",
     "useWhen": ["move up", "increase", "expand"]
   },
   "triangleDown": {
-    "provider": "gravity-ui:triangle-down-fill",
+    "provider": "solar:alt-arrow-down-bold-duotone",
     "useWhen": ["move down", "decrease", "collapse"]
   },
   "barn": {
-    "provider": "si:barn-duotone",
+    "provider": "solar:buildings-3-bold-duotone",
     "useWhen": ["barn", "farm building", "housing"]
   },
   "eggCrack": {
-    "provider": "ph:egg-crack-duotone",
+    "provider": "curated:egg-crack-bold-duotone",
     "useWhen": ["cracked egg", "egg loss", "hatch failure"]
   },
   "eggPair": {
-    "provider": "icon-park-twotone:egg-one",
+    "provider": "curated:egg-pair-bold-duotone",
     "useWhen": ["egg pair", "egg count", "flock output"]
   },
   "egg": {
-    "provider": "ic:twotone-egg",
+    "provider": "curated:egg-bold-duotone",
     "useWhen": ["egg", "egg production", "layer farm"]
   },
   "chicken": {
-    "provider": "fluent-emoji-high-contrast:chicken",
+    "provider": "curated:aapm-chicken-bold-duotone",
     "useWhen": ["chicken", "flock", "layer bird"]
   },
   "chick": {
-    "provider": "fluent-emoji-high-contrast:baby-chick",
+    "provider": "curated:aapm-chick-bold-duotone",
     "useWhen": ["chick", "pullet", "young bird"]
+  },
+  "graph": {
+    "provider": "solar:graph-bold-duotone",
+    "useWhen": ["graph", "trend", "analytics line"]
+  },
+  "graphMemory": {
+    "provider": "solar:graph-bold-duotone",
+    "useWhen": ["graph memory", "historical graph", "memory trend"]
+  },
+  "marginalRoi": {
+    "provider": "solar:chart-square-bold-duotone",
+    "useWhen": ["marginal ROI", "incremental return", "return on investment"]
+  },
+  "hvac": {
+    "provider": "solar:wind-bold-duotone",
+    "useWhen": ["HVAC", "climate control", "ventilation"]
+  },
+  "waterRate": {
+    "provider": "solar:waterdrop-bold-duotone",
+    "useWhen": ["water rate", "water consumption", "flow rate"]
+  },
+  "mortality": {
+    "provider": "solar:danger-circle-bold-duotone",
+    "useWhen": ["mortality", "hazard", "critical loss"]
+  },
+  "breakEven": {
+    "provider": "solar:scale-bold-duotone",
+    "useWhen": ["break-even", "financial threshold", "cost recovery"]
+  },
+  "equalRatio": {
+    "provider": "solar:round-sort-horizontal-bold-duotone",
+    "useWhen": ["equal ratio", "ratio", "proportion"]
+  },
+  "weight": {
+    "provider": "solar:scale-bold-duotone",
+    "useWhen": ["weight", "mass", "weighing"]
   }
 }

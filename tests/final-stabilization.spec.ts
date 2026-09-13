@@ -285,7 +285,6 @@ test("shared Theme Settings stays available across every product shell", async (
     ["/component-lab", "Open settings"],
     ["/operations-tracker", "Open operations settings"],
     ["/ebook-store", "Open settings"],
-    ["/public-showcase", "Open settings"],
   ] as const;
 
   for (const [path, triggerName] of routes) {
@@ -302,6 +301,11 @@ test("shared Theme Settings stays available across every product shell", async (
       .click();
     await expect(sheet).toBeHidden();
   }
+
+  await page.goto("/public-showcase");
+  await expect(
+    page.getByRole("button", { name: "Open settings", exact: true }),
+  ).toHaveCount(0);
 });
 
 test("Theme Settings changes the shared provider live and can open the workbench", async ({

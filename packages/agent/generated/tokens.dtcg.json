@@ -79,6 +79,69 @@
           "value": 48,
           "unit": "px"
         }
+      },
+      "micro": {
+        "$type": "dimension",
+        "$value": {
+          "value": 2,
+          "unit": "px"
+        }
+      },
+      "fine": {
+        "$type": "dimension",
+        "$value": {
+          "value": 3,
+          "unit": "px"
+        }
+      },
+      "compact": {
+        "$type": "dimension",
+        "$value": {
+          "value": 5,
+          "unit": "px"
+        }
+      },
+      "tight": {
+        "$type": "dimension",
+        "$value": {
+          "value": 6,
+          "unit": "px"
+        }
+      },
+      "quiet": {
+        "$type": "dimension",
+        "$value": {
+          "value": 9,
+          "unit": "px"
+        }
+      },
+      "inline": {
+        "$type": "dimension",
+        "$value": {
+          "value": 11,
+          "unit": "px"
+        }
+      },
+      "snug": {
+        "$type": "dimension",
+        "$value": {
+          "value": 14,
+          "unit": "px"
+        }
+      },
+      "hero": {
+        "$type": "dimension",
+        "$value": {
+          "value": 28,
+          "unit": "px"
+        }
+      },
+      "relaxed": {
+        "$type": "dimension",
+        "$value": {
+          "value": 18,
+          "unit": "px"
+        }
       }
     },
     "radius": {
@@ -1077,15 +1140,15 @@
           "$value": {
             "colorSpace": "srgb",
             "components": [
-              0.1064,
-              0.32528,
-              0.6536
+              0.1218,
+              0.4582,
+              0.278787
             ],
             "alpha": 1
           },
           "$extensions": {
             "org.ten4seven": {
-              "compatibilityHsl": "216 72% 38%"
+              "compatibilityHsl": "148 58% 29%"
             }
           }
         },
@@ -1295,6 +1358,36 @@
           }
         }
       },
+      "mark": {
+        "choice": {
+          "$type": "dimension",
+          "$value": {
+            "value": 22,
+            "unit": "px"
+          }
+        },
+        "radio": {
+          "$type": "dimension",
+          "$value": {
+            "value": 22,
+            "unit": "px"
+          }
+        },
+        "dot": {
+          "$type": "dimension",
+          "$value": {
+            "value": 10,
+            "unit": "px"
+          }
+        },
+        "stroke": {
+          "$type": "dimension",
+          "$value": {
+            "value": 2,
+            "unit": "px"
+          }
+        }
+      },
       "control": {
         "height": {
           "$type": "dimension",
@@ -1341,6 +1434,45 @@
             "value": 16,
             "unit": "px"
           }
+        }
+      },
+      "surface": {
+        "depth": {
+          "gradientAngle": {
+            "$type": "string",
+            "$value": "145deg"
+          },
+          "gradientStop": {
+            "$type": "string",
+            "$value": "58%"
+          },
+          "shadowBlur": {
+            "$type": "dimension",
+            "$value": {
+              "value": 26,
+              "unit": "px"
+            }
+          },
+          "shadowOffsetY": {
+            "$type": "dimension",
+            "$value": {
+              "value": 12,
+              "unit": "px"
+            }
+          }
+        },
+        "hoverTranslateY": {
+          "$type": "dimension",
+          "$value": {
+            "value": -1,
+            "unit": "px"
+          }
+        }
+      },
+      "table": {
+        "dividerAlpha": {
+          "$type": "number",
+          "$value": 0.82
         }
       },
       "kpi": {
@@ -1398,6 +1530,145 @@
           "$value": {
             "value": 8,
             "unit": "px"
+          }
+        },
+        "decorative": {
+          "size": {
+            "$type": "dimension",
+            "$value": {
+              "value": 132,
+              "unit": "px"
+            }
+          },
+          "offsetTop": {
+            "$type": "dimension",
+            "$value": {
+              "value": -21,
+              "unit": "px"
+            }
+          },
+          "offsetInline": {
+            "$type": "dimension",
+            "$value": {
+              "value": -21,
+              "unit": "px"
+            }
+          },
+          "opacity": {
+            "$type": "number",
+            "$value": 0.09
+          }
+        }
+      },
+      "chart": {
+        "lineWidth": {
+          "$type": "number",
+          "$value": 2.5
+        },
+        "pointRadius": {
+          "$type": "number",
+          "$value": 3.5
+        },
+        "pointHoverScale": {
+          "$type": "number",
+          "$value": 1.65
+        },
+        "pointSettleScale": {
+          "$type": "number",
+          "$value": 1.06
+        },
+        "barRadius": {
+          "$type": "number",
+          "$value": 5
+        },
+        "barHoverTranslateY": {
+          "$type": "dimension",
+          "$value": {
+            "value": 3,
+            "unit": "px"
+          }
+        },
+        "barHoverScaleY": {
+          "$type": "number",
+          "$value": 1.035
+        },
+        "donutStrokeWidth": {
+          "$type": "number",
+          "$value": 14
+        },
+        "donutHoverStrokeWidth": {
+          "$type": "number",
+          "$value": 16
+        },
+        "tooltipOffsetY": {
+          "$type": "dimension",
+          "$value": {
+            "value": 12,
+            "unit": "px"
+          }
+        }
+      },
+      "interaction": {
+        "opacity": {
+          "pressedOpacity": {
+            "$type": "number",
+            "$value": 0.72
+          },
+          "disabledOpacity": {
+            "$type": "number",
+            "$value": 0.5
+          },
+          "scrimOpacity": {
+            "$type": "number",
+            "$value": 0.42
+          },
+          "interactiveOpacity": {
+            "$type": "number",
+            "$value": 0.72
+          },
+          "hoverOpacity": {
+            "$type": "number",
+            "$value": 0.64
+          },
+          "activeOpacity": {
+            "$type": "number",
+            "$value": 0.82
+          },
+          "disabledControlOpacity": {
+            "$type": "number",
+            "$value": 0.48
+          },
+          "choiceDisabledOpacity": {
+            "$type": "number",
+            "$value": 0.52
+          },
+          "optionDisabledOpacity": {
+            "$type": "number",
+            "$value": 0.46
+          },
+          "checkboxDisabledOpacity": {
+            "$type": "number",
+            "$value": 0.55
+          },
+          "disabledSubtleOpacity": {
+            "$type": "number",
+            "$value": 0.34
+          },
+          "chartGridOpacity": {
+            "$type": "number",
+            "$value": 0.82
+          },
+          "chartTrackOpacity": {
+            "$type": "number",
+            "$value": 0.68
+          },
+          "chartBarOpacity": {
+            "$type": "number",
+            "$value": 0.1
+          },
+          "detailEnterOpacity": {
+            "$type": "number",
+            "$value": 0.35
           }
         }
       },
@@ -1490,6 +1761,13 @@
               "value": 360,
               "unit": "px"
             }
+          }
+        },
+        "tooltipMin": {
+          "$type": "dimension",
+          "$value": {
+            "value": 128,
+            "unit": "px"
           }
         },
         "tooltipMax": {

@@ -5,6 +5,7 @@ import {
   useRef,
   useState,
   type HTMLAttributes,
+  type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode,
 } from "react";
 
@@ -335,6 +336,8 @@ export function Accordion({
     <div {...props} className={cx("t7-accordion", className)}>
       {items.map((item) => {
         const open = openItems.includes(item.id);
+        const triggerId = `${id}-trigger-${item.id}`;
+        const panelId = `${id}-panel-${item.id}`;
         return (
           <section
             className="t7-accordion-item"
@@ -343,9 +346,10 @@ export function Accordion({
           >
             <h3>
               <button
-                aria-controls={`${id}-panel-${item.id}`}
+                aria-controls={panelId}
                 aria-expanded={open}
                 disabled={item.disabled}
+                id={triggerId}
                 onClick={() => {
                   if (open) change(openItems.filter((key) => key !== item.id));
                   else change(multiple ? [...openItems, item.id] : [item.id]);
@@ -357,7 +361,9 @@ export function Accordion({
               </button>
             </h3>
             {open ? (
-              <div id={`${id}-panel-${item.id}`}>{item.content}</div>
+              <div aria-labelledby={triggerId} id={panelId} role="region">
+                {item.content}
+              </div>
             ) : null}
           </section>
         );
@@ -372,6 +378,7 @@ export interface CollapsibleProps extends Omit<
 > {
   children: ReactNode;
   defaultOpen?: boolean;
+  disabled?: boolean;
   onOpenChange?: (open: boolean) => void;
   open?: boolean;
   title: ReactNode;
@@ -381,6 +388,7 @@ export function Collapsible({
   children,
   className,
   defaultOpen = false,
+  disabled = false,
   onOpenChange,
   open,
   title,
@@ -388,8 +396,10 @@ export function Collapsible({
 }: CollapsibleProps) {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
   const isOpen = open ?? uncontrolledOpen;
+  const triggerId = useId();
   const panelId = useId();
   const setOpen = (next: boolean) => {
+    if (disabled) return;
     if (open === undefined) setUncontrolledOpen(next);
     onOpenChange?.(next);
   };
@@ -398,17 +408,24 @@ export function Collapsible({
       {...props}
       className={cx("t7-collapsible", className)}
       data-open={isOpen || undefined}
+      data-disabled={disabled || undefined}
     >
       <button
         aria-controls={panelId}
         aria-expanded={isOpen}
+        disabled={disabled}
+        id={triggerId}
         onClick={() => setOpen(!isOpen)}
         type="button"
       >
         <span>{title}</span>
         <T7Icon aria-hidden="true" name="chevronDown" size={17} />
       </button>
-      {isOpen ? <div id={panelId}>{children}</div> : null}
+      {isOpen ? (
+        <div aria-labelledby={triggerId} id={panelId} role="region">
+          {children}
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -529,12 +546,16 @@ export interface NavigationMenuItem {
 
 function NavigationMenuBranch({
   item,
+  onRootKeyDown,
   onOpenChange,
   open,
+  rootTabIndex,
 }: {
   item: NavigationMenuItem;
+  onRootKeyDown: (event: ReactKeyboardEvent<HTMLElement>) => void;
   onOpenChange: (key: string | null) => void;
   open: boolean;
+  rootTabIndex: number;
 }) {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuId = useId();
@@ -544,6 +565,32 @@ function NavigationMenuBranch({
     widthStrategy: "min-trigger",
   });
   const children = item.children ?? [];
+
+  function handlePanelKeyDown(event: ReactKeyboardEvent<HTMLElement>) {
+    const panel = floating.contentRef.current;
+    const menuItems = panel
+      ? Array.from(panel.querySelectorAll<HTMLElement>('[role="menuitem"]'))
+      : [];
+    const currentIndex = menuItems.indexOf(event.currentTarget);
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      const offset = event.key === "ArrowDown" ? 1 : -1;
+      menuItems[
+        (currentIndex + offset + menuItems.length) % menuItems.length
+      ]?.focus();
+      return;
+    }
+    if (event.key === "Home" || event.key === "End") {
+      event.preventDefault();
+      menuItems[event.key === "Home" ? 0 : menuItems.length - 1]?.focus();
+      return;
+    }
+    if (event.key === "Escape" || event.key === "ArrowLeft") {
+      event.preventDefault();
+      onOpenChange(null);
+      window.requestAnimationFrame(() => triggerRef.current?.focus());
+    }
+  }
 
   useEffect(() => {
     if (!open) return undefined;
@@ -564,6 +611,7 @@ function NavigationMenuBranch({
         aria-current={item.active ? "page" : undefined}
         className="t7-navigation-menu-trigger"
         data-active={item.active || undefined}
+        data-t7-navigation-root-item="true"
         onClick={() => onOpenChange(open ? null : item.key)}
         onKeyDown={(event) => {
           if (event.key === "Escape") {
@@ -577,10 +625,13 @@ function NavigationMenuBranch({
           ) {
             event.preventDefault();
             onOpenChange(item.key);
+            return;
           }
+          onRootKeyDown(event);
         }}
         ref={triggerRef}
         role="menuitem"
+        tabIndex={rootTabIndex}
         type="button"
       >
         {item.icon ? (
@@ -611,6 +662,7 @@ function NavigationMenuBranch({
                     child.onSelect?.();
                     onOpenChange(null);
                   }}
+                  onKeyDown={handlePanelKeyDown}
                   role="menuitem"
                 >
                   {child.icon ? (
@@ -627,6 +679,7 @@ function NavigationMenuBranch({
                     child.onSelect?.();
                     onOpenChange(null);
                   }}
+                  onKeyDown={handlePanelKeyDown}
                   role="menuitem"
                   type="button"
                 >
@@ -648,6 +701,28 @@ function NavigationMenuList({ items }: { items: NavigationMenuItem[] }) {
   const [openKey, setOpenKey] = useState<string | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   useExclusiveFloatingLayer(Boolean(openKey), () => setOpenKey(null));
+
+  function handleRootKeyDown(event: ReactKeyboardEvent<HTMLElement>) {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+    const rootItems = rootRef.current
+      ? Array.from(
+          rootRef.current.querySelectorAll<HTMLElement>(
+            "[data-t7-navigation-root-item]",
+          ),
+        )
+      : [];
+    const currentIndex = rootItems.indexOf(event.currentTarget);
+    if (currentIndex < 0 || !rootItems.length) return;
+    event.preventDefault();
+    const offset = event.key === "ArrowRight" ? 1 : -1;
+    const nextIndex =
+      event.key === "Home"
+        ? 0
+        : event.key === "End"
+          ? rootItems.length - 1
+          : (currentIndex + offset + rootItems.length) % rootItems.length;
+    rootItems[nextIndex]?.focus();
+  }
 
   useEffect(() => {
     if (!openKey) return undefined;
@@ -674,13 +749,15 @@ function NavigationMenuList({ items }: { items: NavigationMenuItem[] }) {
   return (
     <div className="t7-navigation-menu-items" ref={rootRef}>
       <ul aria-label="Navigation menu" role="menubar">
-        {items.map((item) =>
+        {items.map((item, index) =>
           item.children?.length ? (
             <NavigationMenuBranch
               item={item}
               key={item.key}
+              onRootKeyDown={handleRootKeyDown}
               onOpenChange={setOpenKey}
               open={openKey === item.key}
+              rootTabIndex={index === 0 ? 0 : -1}
             />
           ) : (
             <li className="t7-navigation-menu-item" key={item.key} role="none">
@@ -689,9 +766,12 @@ function NavigationMenuList({ items }: { items: NavigationMenuItem[] }) {
                   aria-current={item.active ? "page" : undefined}
                   className="t7-navigation-menu-link"
                   data-active={item.active || undefined}
+                  data-t7-navigation-root-item="true"
                   href={item.href}
                   onClick={() => item.onSelect?.()}
+                  onKeyDown={handleRootKeyDown}
                   role="menuitem"
+                  tabIndex={index === 0 ? 0 : -1}
                 >
                   {item.icon ? (
                     <T7Icon aria-hidden="true" name={item.icon} size={16} />
@@ -703,8 +783,11 @@ function NavigationMenuList({ items }: { items: NavigationMenuItem[] }) {
                   aria-current={item.active ? "page" : undefined}
                   className="t7-navigation-menu-link"
                   data-active={item.active || undefined}
+                  data-t7-navigation-root-item="true"
                   onClick={() => item.onSelect?.()}
+                  onKeyDown={handleRootKeyDown}
                   role="menuitem"
+                  tabIndex={index === 0 ? 0 : -1}
                   type="button"
                 >
                   {item.icon ? (
@@ -851,6 +934,162 @@ export function TopNavigation({
   );
 }
 
+export interface BottomNavigationItem {
+  active?: boolean;
+  disabled?: boolean;
+  href?: string;
+  icon: IconName;
+  key: string;
+  label: string;
+  onSelect?: () => void;
+}
+
+export interface BottomNavigationProps extends Omit<
+  HTMLAttributes<HTMLElement>,
+  "children" | "onChange"
+> {
+  items: BottomNavigationItem[];
+  label?: string;
+  onValueChange?: (key: string) => void;
+  position?: "fixed" | "static";
+  value?: string;
+}
+
+/** A compact mobile-first navigation landmark for a small set of destinations. */
+export function BottomNavigation({
+  className,
+  items,
+  label = "Bottom navigation",
+  onValueChange,
+  position = "static",
+  value,
+  ...props
+}: BottomNavigationProps) {
+  return (
+    <nav
+      {...props}
+      aria-label={label}
+      className={cx("t7-bottom-navigation", className)}
+      data-position={position}
+    >
+      {items.map((item) => {
+        const active = value ? value === item.key : item.active;
+        const handleSelect = () => {
+          onValueChange?.(item.key);
+          item.onSelect?.();
+        };
+        return item.href ? (
+          <a
+            aria-current={active ? "page" : undefined}
+            className="t7-bottom-navigation-item"
+            data-active={active || undefined}
+            href={item.href}
+            key={item.key}
+            onClick={handleSelect}
+          >
+            <T7Icon aria-hidden="true" name={item.icon} size={20} />
+            <span>{item.label}</span>
+          </a>
+        ) : (
+          <button
+            aria-current={active ? "page" : undefined}
+            className="t7-bottom-navigation-item"
+            data-active={active || undefined}
+            disabled={item.disabled}
+            key={item.key}
+            onClick={handleSelect}
+            type="button"
+          >
+            <T7Icon aria-hidden="true" name={item.icon} size={20} />
+            <span>{item.label}</span>
+          </button>
+        );
+      })}
+    </nav>
+  );
+}
+
+export interface NavigationRailItem {
+  active?: boolean;
+  disabled?: boolean;
+  href?: string;
+  icon: IconName;
+  key: string;
+  label: string;
+  onSelect?: () => void;
+}
+
+export interface NavigationRailProps extends Omit<
+  HTMLAttributes<HTMLElement>,
+  "children" | "onChange"
+> {
+  expanded?: boolean;
+  items: NavigationRailItem[];
+  label?: string;
+  onValueChange?: (key: string) => void;
+  value?: string;
+}
+
+/** A vertical icon-led navigation surface for secondary or tool-level routes. */
+export function NavigationRail({
+  className,
+  expanded = false,
+  items,
+  label = "Navigation rail",
+  onValueChange,
+  value,
+  ...props
+}: NavigationRailProps) {
+  return (
+    <nav
+      {...props}
+      aria-label={label}
+      className={cx("t7-navigation-rail", className)}
+      data-expanded={expanded || undefined}
+    >
+      {items.map((item) => {
+        const active = value ? value === item.key : item.active;
+        const handleSelect = () => {
+          onValueChange?.(item.key);
+          item.onSelect?.();
+        };
+        const content = (
+          <>
+            <T7Icon aria-hidden="true" name={item.icon} size={20} />
+            <span>{item.label}</span>
+          </>
+        );
+        return item.href ? (
+          <a
+            aria-current={active ? "page" : undefined}
+            className="t7-navigation-rail-item"
+            data-active={active || undefined}
+            href={item.href}
+            key={item.key}
+            onClick={handleSelect}
+            title={expanded ? undefined : item.label}
+          >
+            {content}
+          </a>
+        ) : (
+          <button
+            aria-current={active ? "page" : undefined}
+            className="t7-navigation-rail-item"
+            data-active={active || undefined}
+            disabled={item.disabled}
+            key={item.key}
+            onClick={handleSelect}
+            title={expanded ? undefined : item.label}
+            type="button"
+          >
+            {content}
+          </button>
+        );
+      })}
+    </nav>
+  );
+}
+
 export interface MobileSidebarProps {
   id?: string;
   children: ReactNode;
@@ -916,6 +1155,7 @@ export function CommandMenu({
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const wasOpenRef = useRef(false);
   const listboxId = useId();
   const isOpen = open ?? uncontrolledOpen;
   const filtered = useMemo(() => {
@@ -941,6 +1181,14 @@ export function CommandMenu({
     onOpenChange?.(next);
   };
 
+  useEffect(() => {
+    if (isOpen && !wasOpenRef.current) {
+      setQuery("");
+      setActiveIndex(0);
+    }
+    wasOpenRef.current = isOpen;
+  }, [isOpen]);
+
   function moveActive(direction: 1 | -1) {
     if (!filtered.length) return;
     setActiveIndex(
@@ -964,7 +1212,7 @@ export function CommandMenu({
     };
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [shortcut]);
+  }, [onOpenChange, open, shortcut]);
 
   return (
     <Modal
@@ -1016,35 +1264,47 @@ export function CommandMenu({
           role="listbox"
         >
           {filtered.length === 0 ? <p>{emptyMessage}</p> : null}
-          {filtered.map((command, index) => (
-            <button
-              aria-selected={index === resolvedActiveIndex}
-              data-active={index === resolvedActiveIndex || undefined}
-              id={`${listboxId}-${command.id}`}
-              key={command.id}
-              onClick={() => {
-                command.onSelect();
-                setOpen(false);
-              }}
-              onMouseEnter={() => setActiveIndex(index)}
-              role="option"
-              tabIndex={-1}
-              type="button"
-            >
-              {command.icon ? (
-                <T7Icon aria-hidden="true" name={command.icon} size={17} />
-              ) : (
-                <span />
-              )}
-              <span>
-                <strong>{command.label}</strong>
-                {command.description ? (
-                  <small>{command.description}</small>
+          {filtered.map((command, index) => {
+            const groupStart =
+              command.group && command.group !== filtered[index - 1]?.group;
+            return (
+              <div key={command.id}>
+                {groupStart ? (
+                  <div aria-hidden="true" className="t7-command-group-label">
+                    {command.group}
+                  </div>
                 ) : null}
-              </span>
-              {command.shortcut ? <kbd>{command.shortcut}</kbd> : null}
-            </button>
-          ))}
+                <button
+                  aria-posinset={index + 1}
+                  aria-selected={index === resolvedActiveIndex}
+                  aria-setsize={filtered.length}
+                  data-active={index === resolvedActiveIndex || undefined}
+                  id={`${listboxId}-${command.id}`}
+                  onClick={() => {
+                    command.onSelect();
+                    setOpen(false);
+                  }}
+                  onMouseEnter={() => setActiveIndex(index)}
+                  role="option"
+                  tabIndex={-1}
+                  type="button"
+                >
+                  {command.icon ? (
+                    <T7Icon aria-hidden="true" name={command.icon} size={17} />
+                  ) : (
+                    <span />
+                  )}
+                  <span>
+                    <strong>{command.label}</strong>
+                    {command.description ? (
+                      <small>{command.description}</small>
+                    ) : null}
+                  </span>
+                  {command.shortcut ? <kbd>{command.shortcut}</kbd> : null}
+                </button>
+              </div>
+            );
+          })}
         </div>
       </div>
     </Modal>

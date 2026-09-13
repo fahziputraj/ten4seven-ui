@@ -1,0 +1,21 @@
+{
+  "expo": {
+    "name": "Ten4Seven Native Component Lab",
+    "slug": "ten4seven-native-lab",
+    "version": "0.1.0",
+    "orientation": "default",
+    "scheme": "ten4seven-lab",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ten4seven.nativelab"
+    },
+    "android": {
+      "package": "com.ten4seven.nativelab"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single"
+    }
+  }
+}

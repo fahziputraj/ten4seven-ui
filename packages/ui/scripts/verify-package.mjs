@@ -168,6 +168,13 @@ const requiredExports = [
   "IconifyCuratedIconNames",
   "paletteProfiles",
   "t7Motion",
+  "COMPOSITION_CONTRACT",
+  "COMPOSITION_BLOCKS",
+  "COMPOSITION_RECIPES",
+  "PRODUCT_PROFILE_CAPABILITIES",
+  "NATIVE_COMPOSITION_CANARY",
+  "resolveProductComposition",
+  "projectCompositionToNative",
 ];
 
 for (const exportName of requiredExports) {
@@ -207,12 +214,14 @@ if (
 
 if (
   typeof esm.IconifyCuratedIconCount !== "number" ||
-  esm.IconifyCuratedIconCount < 18 ||
+  esm.IconifyCuratedIconCount !== 23 ||
   !Array.isArray(esm.IconifyCuratedIconNames) ||
   esm.IconifyCuratedIconNames.length !== esm.IconifyCuratedIconCount ||
   esm.IconifyCuratedIconNames.length !== cjs.IconifyCuratedIconNames.length
 ) {
-  throw new Error("the bundled curated Iconify domain library is incomplete");
+  throw new Error(
+    "the bundled 23-alias curated Iconify farm and operations library is incomplete",
+  );
 }
 
 console.log(

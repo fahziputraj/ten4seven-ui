@@ -6,6 +6,7 @@ import {
   useState,
   type CSSProperties,
   type HTMLAttributes,
+  type KeyboardEvent,
   type ReactNode,
   type TableHTMLAttributes,
   type TdHTMLAttributes,
@@ -21,6 +22,7 @@ import {
   CardContent,
   CardFooter,
   Checkbox,
+  DetailDrawer,
   Typography,
   type BadgeProps,
   type DataTableColumn,
@@ -326,6 +328,7 @@ export function ActivityFeed({
 export const Timeline = ActivityFeed;
 
 export type MilestoneStatus = "complete" | "current" | "upcoming" | "blocked";
+export type MilestoneDetailMode = "inline" | "drawer";
 
 export interface MilestoneItem {
   description?: ReactNode;
@@ -343,6 +346,7 @@ export interface MilestoneTrackerProps extends Omit<
   "children" | "onChange"
 > {
   defaultSelectedId?: string;
+  detailMode?: MilestoneDetailMode;
   items: MilestoneItem[];
   label?: string;
   onSelectedIdChange?: (id: string) => void;
@@ -373,10 +377,51 @@ function milestoneStateLabel(status: MilestoneStatus) {
   }
 }
 
+function MilestoneDetail({
+  className,
+  id,
+  item,
+}: {
+  className?: string;
+  id?: string;
+  item: MilestoneItem;
+}) {
+  return (
+    <section
+      aria-live="polite"
+      aria-label={`${String(item.label)} milestone details`}
+      className={cx("t7-milestone-detail", className)}
+      data-state={milestoneStatus(item)}
+      id={id}
+    >
+      <div className="t7-milestone-detail-heading">
+        <div>
+          <Typography typeRole="caption">Selected workflow stage</Typography>
+          <Typography as="h3" typeRole="heading-sm">
+            {item.label}
+          </Typography>
+          {item.description ? (
+            <Typography as="p" typeRole="body-sm">
+              {item.description}
+            </Typography>
+          ) : null}
+        </div>
+        <Typography as="strong" typeRole="metric-md">
+          {milestonePercentage(item.percentage)}%
+        </Typography>
+      </div>
+      {item.details ? (
+        <div className="t7-milestone-detail-content">{item.details}</div>
+      ) : null}
+    </section>
+  );
+}
+
 /** Show a bounded operational workflow with selectable stages and contextual detail. */
 export function MilestoneTracker({
   className,
   defaultSelectedId,
+  detailMode = "inline",
   items,
   label = "Milestone progress",
   onSelectedIdChange,
@@ -395,15 +440,51 @@ export function MilestoneTracker({
     items.find((item) => item.id === activeId) ?? initialItem;
   const detailId = `${trackerId}-details`;
   const trackerRef = useRef<HTMLElement | null>(null);
+  const milestoneButtonRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const detailTriggerRef = useRef<HTMLButtonElement | null>(null);
   const [trackerVisible, setTrackerVisible] = useState(false);
+  const [detailDrawerOpen, setDetailDrawerOpen] = useState(false);
   const trackerStyle = {
     ...style,
     "--t7-milestone-count": items.length,
   } as CSSProperties;
 
-  const selectItem = (id: string) => {
+  const selectItem = (id: string, trigger?: HTMLButtonElement) => {
     if (selectedId === undefined) setUncontrolledSelectedId(id);
     onSelectedIdChange?.(id);
+    if (detailMode === "drawer") {
+      detailTriggerRef.current = trigger ?? detailTriggerRef.current;
+      setDetailDrawerOpen(true);
+    }
+  };
+
+  const closeDetailDrawer = () => {
+    setDetailDrawerOpen(false);
+    window.requestAnimationFrame(() =>
+      detailTriggerRef.current?.focus({ preventScroll: true }),
+    );
+  };
+
+  const handleMilestoneKeyDown = (
+    event: KeyboardEvent<HTMLButtonElement>,
+    index: number,
+  ) => {
+    if (!items.length) return;
+    let nextIndex = index;
+    if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+      nextIndex = Math.min(index + 1, items.length - 1);
+    } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+      nextIndex = Math.max(index - 1, 0);
+    } else if (event.key === "Home") {
+      nextIndex = 0;
+    } else if (event.key === "End") {
+      nextIndex = items.length - 1;
+    } else {
+      return;
+    }
+
+    event.preventDefault();
+    milestoneButtonRefs.current[nextIndex]?.focus();
   };
 
   useEffect(() => {
@@ -428,6 +509,7 @@ export function MilestoneTracker({
       {...props}
       aria-label={label}
       className={cx("t7-milestone-tracker", className)}
+      data-detail-mode={detailMode}
       ref={trackerRef}
       style={trackerStyle}
     >
@@ -457,17 +539,31 @@ export function MilestoneTracker({
                   aria-current={isSelected ? "step" : undefined}
                   aria-pressed={isSelected}
                   className="t7-milestone-button"
-                  onClick={() => selectItem(item.id)}
+                  onClick={(event) => selectItem(item.id, event.currentTarget)}
+                  onKeyDown={(event) => handleMilestoneKeyDown(event, index)}
+                  ref={(element) => {
+                    milestoneButtonRefs.current[index] = element;
+                  }}
                   type="button"
                 >
-                  <span
-                    aria-hidden="true"
-                    className="t7-milestone-stage-header"
-                  >
-                    <span className="t7-milestone-step-number">
-                      {String(index + 1).padStart(2, "0")}
+                  <span className="t7-milestone-stage-header">
+                    <span>
+                      <span
+                        aria-hidden="true"
+                        className="t7-milestone-step-number"
+                      >
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span className="t7-milestone-state">{stateLabel}</span>
                     </span>
-                    <span className="t7-milestone-state">{stateLabel}</span>
+                    {detailMode === "drawer" ? (
+                      <span
+                        aria-hidden="true"
+                        className="t7-milestone-detail-cue"
+                      >
+                        <T7Icon name="chevronRight" size={14} />
+                      </span>
+                    ) : null}
                   </span>
                   <span className="t7-milestone-copy">
                     <span className="t7-milestone-label-row">
@@ -511,38 +607,53 @@ export function MilestoneTracker({
           })}
         </ol>
       </div>
-      {selectedItem ? (
-        <section
-          aria-live="polite"
-          aria-label={`${String(selectedItem.label)} milestone details`}
-          className="t7-milestone-detail"
-          data-state={milestoneStatus(selectedItem)}
+      {items.length === 0 ? (
+        <div aria-live="polite" className="t7-milestone-empty" role="status">
+          <Typography as="strong" typeRole="label">
+            No milestones available
+          </Typography>
+          <Typography as="p" typeRole="body-sm">
+            The consumer has not supplied an ordered progress path yet.
+          </Typography>
+        </div>
+      ) : null}
+      {detailMode === "inline" && selectedItem ? (
+        <MilestoneDetail id={detailId} item={selectedItem} />
+      ) : null}
+      {detailMode === "drawer" && selectedItem ? (
+        <DetailDrawer
           id={detailId}
+          onClose={closeDetailDrawer}
+          open={detailDrawerOpen}
+          side="right"
+          title={selectedItem.label}
+          description={selectedItem.description}
         >
-          <div className="t7-milestone-detail-heading">
-            <div>
+          <div
+            aria-label={`${String(selectedItem.label)} milestone details`}
+            className="t7-milestone-drawer-detail"
+            data-state={milestoneStatus(selectedItem)}
+            aria-live="polite"
+          >
+            <div className="t7-milestone-drawer-summary">
               <Typography typeRole="caption">
-                Selected workflow stage
+                {milestoneStateLabel(milestoneStatus(selectedItem))}
               </Typography>
-              <Typography as="h3" typeRole="heading-sm">
-                {selectedItem.label}
+              <Typography as="strong" typeRole="metric-md">
+                {milestonePercentage(selectedItem.percentage)}%
               </Typography>
-              {selectedItem.description ? (
-                <Typography as="p" typeRole="body-sm">
-                  {selectedItem.description}
-                </Typography>
-              ) : null}
             </div>
-            <Typography as="strong" typeRole="metric-md">
-              {milestonePercentage(selectedItem.percentage)}%
-            </Typography>
+            {selectedItem.details ? (
+              <div className="t7-milestone-detail-content">
+                {selectedItem.details}
+              </div>
+            ) : (
+              <Typography typeRole="body-sm">
+                No additional detail is available for this stage.
+              </Typography>
+            )}
           </div>
-          {selectedItem.details ? (
-            <div className="t7-milestone-detail-content">
-              {selectedItem.details}
-            </div>
-          ) : null}
-        </section>
+        </DetailDrawer>
       ) : null}
     </nav>
   );
@@ -921,7 +1032,12 @@ export function DataTableColumnPicker<Row>({
     [columns],
   );
   return (
-    <div {...props} className={cx("t7-column-picker", className)}>
+    <div
+      {...props}
+      aria-label={props["aria-label"] ?? "Table columns"}
+      className={cx("t7-column-picker", className)}
+      role="group"
+    >
       <span>Columns</span>
       <div>
         {entries.map((column) => (

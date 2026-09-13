@@ -11,7 +11,7 @@ import {
   type IconName,
   type IconifyIconName,
 } from "@ten4seven/icons";
-import { buildThemeVariables } from "@ten4seven/tokens";
+import { buildThemeVariables, hslToHex } from "@ten4seven/tokens";
 import {
   AnnouncementBar,
   Button,
@@ -35,28 +35,37 @@ import {
   ProductCard,
   ProductShowcase,
   PublicFooter,
+  PageHeader,
+  Q12BlockComposition,
+  SectionNavigation,
   StatsSection,
   Testimonials,
   Typography,
+  type Q12BlockFamily,
   useToast,
   useTen4SevenTheme,
 } from "@ten4seven/ui";
 import { ComponentProofs } from "./component-proofs";
 import { ContentSafetyProof } from "./content-safety-proof";
 import { ComponentPreview } from "./component-preview-fixtures";
+import { LibraryPageHeader } from "./library-page-header";
+import { CompositionShowcase } from "./composition-showcase";
 import {
   blockCatalog,
   blockPath,
   catalogCounts,
   categoryLabels,
   componentCatalog,
-  componentFamilyAnchor,
+  componentFamilyPath,
   componentFamilyDefinitions,
   componentPath,
   componentsInCategory,
   iconCatalog,
   recipeCatalog,
   recipePath,
+  slugify,
+  type BlockContract,
+  type ComponentContract,
 } from "./catalog-model";
 
 const iconGroups: Array<{ label: string; names: IconName[] }> = [
@@ -200,54 +209,29 @@ const iconGroups: Array<{ label: string; names: IconName[] }> = [
   },
 ];
 
-function LibraryIntro({
-  count,
-  description,
-  icon,
-  title,
-}: {
-  count: string;
-  description: string;
-  icon: IconName;
-  title: string;
-}) {
-  return (
-    <section className="library-intro">
-      <span className="library-intro-icon">
-        <T7Icon name={icon} size={22} />
-      </span>
-      <div>
-        <Typography as="h1" typeRole="display-lg">
-          {title}
-        </Typography>
-        <Typography as="p" typeRole="body">
-          {description}
-        </Typography>
-      </div>
-      <Typography className="library-intro-count" typeRole="caption">
-        {count}
-      </Typography>
-    </section>
-  );
-}
-
 export { TokensExplorer } from "./token-foundations";
 
 function CatalogLink({
+  ariaCurrent,
   children,
   className,
   href,
+  id,
   onNavigatePath,
 }: {
+  ariaCurrent?: "page" | "location";
   children: ReactNode;
   className?: string;
   href: string;
+  id?: string;
   onNavigatePath: (path: string) => void;
 }) {
   return (
     <a
+      aria-current={ariaCurrent}
       className={className}
       href={href}
+      id={id}
       onClick={(event) => {
         if (
           event.defaultPrevented ||
@@ -358,15 +342,17 @@ function CatalogListRow({
 }
 
 function CatalogSearchResults({
+  onClear,
   query,
   onNavigatePath,
 }: {
+  onClear: () => void;
   onNavigatePath: (path: string) => void;
   query: string;
 }) {
   const normalizedQuery = query.trim().toLowerCase();
-  const entries = Object.entries(componentCatalog)
-    .filter(([name, component]) =>
+  const matchingEntries = Object.entries(componentCatalog).filter(
+    ([name, component]) =>
       [
         name,
         component.displayName ?? "",
@@ -379,8 +365,8 @@ function CatalogSearchResults({
         .join(" ")
         .toLowerCase()
         .includes(normalizedQuery),
-    )
-    .slice(0, 12);
+  );
+  const entries = matchingEntries.slice(0, 12);
 
   return (
     <section
@@ -393,30 +379,545 @@ function CatalogSearchResults({
             Search results
           </Typography>
           <Typography typeRole="caption">
-            {entries.length} matching catalog result
-            {entries.length === 1 ? "" : "s"}
+            {matchingEntries.length} matching catalog result
+            {matchingEntries.length === 1 ? "" : "s"}
           </Typography>
         </div>
       </div>
-      <div className="catalog-list">
-        {entries.map(([name, component]) => (
-          <CatalogListRow
-            description={
-              component.aliasOf
-                ? `Alias of ${component.aliasOf}`
-                : component.purpose
-            }
-            href={componentPath(name)}
-            key={name}
-            onNavigatePath={onNavigatePath}
-            trailing={
-              <span className="catalog-list-row-category">
-                {categoryLabels[component.category] ?? component.category}
-              </span>
-            }
+      {entries.length ? (
+        <div className="catalog-list">
+          {entries.map(([name, component]) => (
+            <CatalogListRow
+              description={
+                component.aliasOf
+                  ? `Alias of ${component.aliasOf}`
+                  : component.purpose
+              }
+              href={componentPath(name)}
+              key={name}
+              onNavigatePath={onNavigatePath}
+              trailing={
+                <span className="catalog-list-row-category">
+                  {categoryLabels[component.category] ?? component.category}
+                </span>
+              }
+            >
+              {component.displayName ?? name}
+            </CatalogListRow>
+          ))}
+        </div>
+      ) : (
+        <EmptyState
+          action={
+            <Button intent="quiet" onClick={onClear} size="sm">
+              Clear search
+            </Button>
+          }
+          description="Try a contract name, family, or interaction concern."
+          icon="search"
+          title="No matching components"
+        />
+      )}
+    </section>
+  );
+}
+
+const componentFamilyDescriptions: Record<string, string> = {
+  foundation:
+    "Theme, typography, icon, and provider contracts shared by every screen.",
+  action: "Intent-bearing actions and compact controls for committing work.",
+  form: "Inputs and selection controls for collecting clear, valid values.",
+  navigation:
+    "Wayfinding, disclosure, and command surfaces for moving through an app.",
+  layout:
+    "Structural primitives that define page, panel, and responsive composition.",
+  surface:
+    "Cards, panels, separators, and containers that establish hierarchy.",
+  data: "Metrics, status, lists, and visual signals for readable information.",
+  table:
+    "Dense tabular records with selection, sorting, and responsive overflow.",
+  filter:
+    "Applied filters, filter drawers, and bulk operations around collections.",
+  overlay: "Focused modal, drawer, popover, menu, and tooltip layers.",
+  feedback:
+    "Status, progress, loading, and recovery feedback with live semantics.",
+  "date-time": "Calendar, range, time, and date-time entry with stable values.",
+  file: "Client-side file selection, upload affordances, and file records.",
+  chart: "Token-led charts and compact trend visualizations.",
+  media: "Responsive media frames, thumbnails, and content-safe imagery.",
+  commerce:
+    "Catalog, cart, pricing, and order composition without a second primitive set.",
+  pattern: "Reusable application flows composed from the contracts above.",
+};
+
+type ComponentShowroomMode =
+  "comparison" | "gallery" | "grouped" | "sequence" | "stack";
+
+type ComponentShowroomGroup = {
+  description: string;
+  entries: Array<[string, ComponentContract]>;
+  label: string;
+};
+
+const componentShowroomModes: Record<string, ComponentShowroomMode> = {
+  action: "comparison",
+  chart: "gallery",
+  data: "gallery",
+  feedback: "gallery",
+  form: "grouped",
+  overlay: "sequence",
+  table: "comparison",
+};
+
+const componentShowroomGroupDefinitions: Record<
+  string,
+  Array<{ description: string; label: string; names: string[] }>
+> = {
+  action: [
+    {
+      description:
+        "Commit work, express intent, and expose compact action states.",
+      label: "Action controls",
+      names: [
+        "Button",
+        "Icon Button",
+        "Button Group",
+        "Toggle Button",
+        "Toggle Button Group",
+        "Split Button",
+        "Speed Dial",
+        "Drag Handle",
+      ],
+    },
+  ],
+  chart: [
+    {
+      description: "Compact signals for trends, comparisons, and composition.",
+      label: "Chart signals",
+      names: ["Trend Indicator", "Sparkline", "Chart Legend"],
+    },
+    {
+      description: "Full chart surfaces for visualizing a question or measure.",
+      label: "Chart surfaces",
+      names: ["Line Chart", "Bar Chart", "Donut Chart", "Chart Panel"],
+    },
+  ],
+  data: [
+    {
+      description:
+        "Metrics, records, people, and status signals for product work.",
+      label: "Signals and records",
+      names: [
+        "Milestone Tracker",
+        "Badge",
+        "Status Chip",
+        "Key Value List",
+        "Metric Card",
+        "KPI Cluster",
+        "Activity Feed",
+        "Record Summary",
+        "Revision Diff",
+        "Conversation Thread",
+        "Citation List",
+        "Tool Call Card",
+      ],
+    },
+    {
+      description: "People and ownership context for collaborative surfaces.",
+      label: "People and ownership",
+      names: ["Avatar", "Avatar Group"],
+    },
+  ],
+  feedback: [
+    {
+      description: "Explain status, recovery, and empty or unavailable states.",
+      label: "Status and recovery",
+      names: ["Alert", "Empty State", "State View", "Module State"],
+    },
+    {
+      description: "Show progress without taking attention away from the task.",
+      label: "Progress and loading",
+      names: ["Skeleton", "Spinner", "Progress", "Circular Progress"],
+    },
+    {
+      description:
+        "Deliver transient feedback through one shared notification model.",
+      label: "Notifications",
+      names: ["Toast Provider", "Toaster", "Toast"],
+    },
+  ],
+  form: [
+    {
+      description:
+        "Collect text, credentials, and free-form values with clear labels.",
+      label: "Text entry",
+      names: [
+        "Input",
+        "Search Input",
+        "Password Input",
+        "Textarea",
+        "Editor Surface",
+        "Prompt Composer",
+        "Field",
+        "Label",
+        "Field Description",
+        "Field Error",
+      ],
+    },
+    {
+      description:
+        "Capture quantities and constrained numeric values without ambiguity.",
+      label: "Numeric entry",
+      names: [
+        "Number Input",
+        "Currency Input",
+        "Percent Input",
+        "Slider",
+        "Range Slider",
+        "Otp Input",
+      ],
+    },
+    {
+      description:
+        "Choose one or more values while preserving keyboard and state semantics.",
+      label: "Choice and selection",
+      names: [
+        "Select",
+        "Native Select",
+        "Combobox",
+        "Multi Select",
+        "Hierarchy Picker",
+        "Transfer",
+        "Color Picker",
+        "Tags Input",
+        "Checkbox",
+        "Checkbox Group",
+        "Radio",
+        "Radio Group",
+        "Switch",
+      ],
+    },
+    {
+      description:
+        "Compose fields into repeatable form structure and action rows.",
+      label: "Form composition",
+      names: ["Field Group", "Form Section", "Form Grid", "Form Actions"],
+    },
+  ],
+  navigation: [
+    {
+      description: "Move through product surfaces and keep context visible.",
+      label: "Wayfinding",
+      names: [
+        "Sidebar",
+        "Sidebar Group",
+        "Nav Item",
+        "Navigation Menu",
+        "Top Navigation",
+        "Mobile Sidebar",
+        "Breadcrumb",
+        "Section Navigation",
+        "Bottom Navigation",
+        "Navigation Rail",
+      ],
+    },
+    {
+      description: "Reveal hierarchy, command, and step-by-step progress.",
+      label: "Disclosure and command",
+      names: [
+        "Tabs",
+        "Accordion",
+        "Collapsible",
+        "Stepper",
+        "Command Menu",
+        "Pagination",
+        "Tab Panel",
+        "Carousel",
+        "Tree View",
+      ],
+    },
+  ],
+  layout: [
+    {
+      description:
+        "Constrain and compose route content with predictable rails.",
+      label: "Content and workspace layout",
+      names: [
+        "Container",
+        "Stack",
+        "Split Pane",
+        "Scroll Area",
+        "Separator",
+        "Section",
+        "Section Header",
+        "Toolbar",
+        "Action Bar",
+        "Page Header",
+        "Builder Canvas",
+        "Property Inspector",
+      ],
+    },
+  ],
+  file: [
+    {
+      description:
+        "Keep file selection, preview, and metadata in one contract family.",
+      label: "File surfaces",
+      names: ["File Upload", "File Item", "File List", "File Preview"],
+    },
+  ],
+  overlay: [
+    {
+      description: "Anchor lightweight context to the action that opened it.",
+      label: "Anchored context",
+      names: ["Popover", "Tooltip", "Dropdown Menu", "Context Menu"],
+    },
+    {
+      description:
+        "Give focused tasks and record inspection a viewport-safe surface.",
+      label: "Focused surfaces",
+      names: ["Modal", "Drawer", "Detail Drawer", "Alert Dialog"],
+    },
+  ],
+  table: [
+    {
+      description:
+        "Readable table anatomy for comparison and lightweight records.",
+      label: "Table foundations",
+      names: [
+        "Table",
+        "Table Header",
+        "Table Body",
+        "Table Row",
+        "Table Head",
+        "Table Cell",
+      ],
+    },
+    {
+      description:
+        "Data-heavy workflows with selection, sorting, and column control.",
+      label: "Data workflows",
+      names: ["Data Table", "Advanced Data Grid", "Data Table Column Picker"],
+    },
+  ],
+};
+
+function groupComponentEntries(
+  category: string,
+  entries: Array<[string, ComponentContract]>,
+): ComponentShowroomGroup[] {
+  const definitions = componentShowroomGroupDefinitions[category];
+  if (!definitions) {
+    const family = componentFamilyDefinitions.find(
+      (item) => item.category === category,
+    );
+    return [
+      {
+        description:
+          componentFamilyDescriptions[category] ??
+          "Canonical contracts in this family.",
+        entries,
+        label: family?.label ?? category,
+      },
+    ];
+  }
+
+  const entryByName = new Map(
+    entries.map(([name, component]) => [
+      component.displayName ?? name,
+      [name, component] as [string, ComponentContract],
+    ]),
+  );
+  const claimed = new Set<string>();
+  const groups: ComponentShowroomGroup[] = definitions.flatMap((definition) => {
+    const groupedEntries = definition.names.flatMap((name) => {
+      const entry = entryByName.get(name);
+      if (!entry) return [];
+      claimed.add(entry[0]);
+      return [entry];
+    });
+    return groupedEntries.length
+      ? [
+          {
+            description: definition.description,
+            entries: groupedEntries,
+            label: definition.label,
+          },
+        ]
+      : [];
+  });
+  const remainder = entries.filter(([name]) => !claimed.has(name));
+  if (remainder.length) {
+    groups.push({
+      description: "Additional contracts in this family.",
+      entries: remainder,
+      label: "More contracts",
+    });
+  }
+  return groups;
+}
+
+function ComponentShowroom({
+  category,
+  entries,
+  onNavigatePath,
+}: {
+  category: string;
+  entries: Array<[string, ComponentContract]>;
+  onNavigatePath: (path: string) => void;
+}) {
+  const definition = componentFamilyDefinitions.find(
+    (item) => item.category === category,
+  );
+  const groups = groupComponentEntries(category, entries);
+  const mode = componentShowroomModes[category] ?? "stack";
+
+  return (
+    <section
+      aria-label={`${definition?.label ?? category} component showroom`}
+      className={`component-showroom component-showroom-${mode}`}
+    >
+      <div className="component-showroom-heading">
+        <div>
+          <Typography as="h2" typeRole="heading-lg">
+            Compare the family
+          </Typography>
+          <Typography typeRole="body-sm">
+            Live specimens first. Open a contract only when you need the full
+            API, accessibility notes, or implementation detail.
+          </Typography>
+        </div>
+        <span className="component-showroom-count">
+          {entries.length} canonical{" "}
+          {entries.length === 1 ? "contract" : "contracts"}
+        </span>
+      </div>
+
+      {groups.length > 1 ? (
+        <nav
+          aria-label={`${definition?.label ?? category} showroom sections`}
+          className="component-showroom-group-nav"
+        >
+          {groups.map((group) => (
+            <a
+              href={`#showroom-group-${slugify(group.label)}`}
+              key={group.label}
+            >
+              <span>{group.label}</span>
+              <small>{group.entries.length}</small>
+            </a>
+          ))}
+        </nav>
+      ) : null}
+
+      <div className="component-showroom-groups">
+        {groups.map((group) => (
+          <section
+            aria-labelledby={`showroom-group-${slugify(group.label)}-title`}
+            className="component-showroom-group"
+            id={`showroom-group-${slugify(group.label)}`}
+            key={group.label}
           >
-            {component.displayName ?? name}
-          </CatalogListRow>
+            <div className="component-showroom-group-heading">
+              <div>
+                <Typography
+                  as="h2"
+                  id={`showroom-group-${slugify(group.label)}-title`}
+                  typeRole="heading-md"
+                >
+                  {group.label}
+                </Typography>
+                <Typography typeRole="body-sm">{group.description}</Typography>
+              </div>
+              <span className="component-showroom-group-count">
+                {group.entries.length}
+              </span>
+            </div>
+
+            <div className="component-showroom-specimens">
+              {group.entries.map(([name, component], index) => {
+                const displayName = component.displayName ?? name;
+                const states = (component.states ?? [])
+                  .filter((state) => !state.endsWith("when applicable"))
+                  .slice(0, 5);
+                return (
+                  <article
+                    className="component-showroom-specimen"
+                    data-component-contract={name}
+                    id={`showroom-${slugify(name)}`}
+                    key={name}
+                  >
+                    <div className="component-showroom-specimen-copy">
+                      <div className="component-showroom-specimen-meta">
+                        <span className="component-showroom-index">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <span className="component-showroom-status">
+                          {component.status}
+                        </span>
+                      </div>
+                      <Typography as="h3" typeRole="heading-md">
+                        {displayName}
+                      </Typography>
+                      <Typography typeRole="body-sm">
+                        {component.purpose}
+                      </Typography>
+                      {states.length ? (
+                        <div
+                          aria-label={`${displayName} supported states`}
+                          className="component-showroom-states"
+                        >
+                          {states.map((state) => (
+                            <span key={state}>{state}</span>
+                          ))}
+                        </div>
+                      ) : null}
+                      <CatalogLink
+                        className="component-showroom-detail-link"
+                        href={componentPath(name)}
+                        onNavigatePath={onNavigatePath}
+                      >
+                        Open API &amp; detail
+                        <T7Icon
+                          aria-hidden="true"
+                          name="chevronRight"
+                          size={14}
+                        />
+                      </CatalogLink>
+                    </div>
+                    <div className="component-showroom-specimen-preview">
+                      <ComponentPreview component={component} />
+                    </div>
+                    <details className="component-showroom-guidance">
+                      <summary>Usage and accessibility</summary>
+                      <div className="component-showroom-guidance-grid">
+                        <div>
+                          <Typography typeRole="overline">Use when</Typography>
+                          <ul>
+                            {component.useWhen.slice(0, 2).map((item) => (
+                              <li key={item}>{item}</li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div>
+                          <Typography typeRole="overline">
+                            Accessibility
+                          </Typography>
+                          <ul>
+                            {(component.accessibility ?? [])
+                              .slice(0, 2)
+                              .map((item) => (
+                                <li key={item}>{item}</li>
+                              ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </details>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
         ))}
       </div>
     </section>
@@ -429,100 +930,16 @@ export function ComponentsExplorer({
   onNavigatePath: (path: string) => void;
 }) {
   const [query, setQuery] = useState("");
-  const [activeFamily, setActiveFamily] = useState("foundation");
-  const catalogDocumentRef = useRef<HTMLDivElement>(null);
-  const commonComponents = [
-    "Button",
-    "Input",
-    "Select",
-    "Card",
-    "Modal",
-    "DataTable",
-  ];
-
-  useEffect(() => {
-    const root = catalogDocumentRef.current;
-    if (!root || typeof IntersectionObserver === "undefined") return;
-    const sections = Array.from(
-      root.querySelectorAll<HTMLElement>("[data-catalog-family]"),
-    );
-    const updateActiveFamily = () => {
-      const visible = sections
-        .filter((section) => section.getBoundingClientRect().top <= 148)
-        .at(-1);
-      if (visible?.dataset.catalogFamily)
-        setActiveFamily(visible.dataset.catalogFamily);
-    };
-    const observer = new IntersectionObserver(updateActiveFamily, {
-      rootMargin: "-96px 0px -62% 0px",
-      threshold: [0, 1],
-    });
-    sections.forEach((section) => observer.observe(section));
-    window.addEventListener("scroll", updateActiveFamily, { passive: true });
-    updateActiveFamily();
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("scroll", updateActiveFamily);
-    };
-  }, []);
-
-  const familyDescriptions: Record<string, string> = {
-    foundation:
-      "Theme, typography, icon, and provider contracts shared by every screen.",
-    action: "Intent-bearing actions and compact controls for committing work.",
-    form: "Inputs and selection controls for collecting clear, valid values.",
-    navigation:
-      "Wayfinding, disclosure, and command surfaces for moving through an app.",
-    layout:
-      "Structural primitives that define page, panel, and responsive composition.",
-    surface:
-      "Cards, panels, separators, and containers that establish hierarchy.",
-    data: "Metrics, status, lists, and visual signals for readable information.",
-    table:
-      "Dense tabular records with selection, sorting, and responsive overflow.",
-    filter:
-      "Applied filters, filter drawers, and bulk operations around collections.",
-    overlay: "Focused modal, drawer, popover, menu, and tooltip layers.",
-    feedback:
-      "Status, progress, loading, and recovery feedback with live semantics.",
-    "date-time":
-      "Calendar, range, time, and date-time entry with stable values.",
-    file: "Client-side file selection, upload affordances, and file records.",
-    chart: "Token-led charts and compact trend visualizations.",
-    media: "Responsive media frames, thumbnails, and content-safe imagery.",
-    commerce:
-      "Catalog, cart, pricing, and order composition without a second primitive set.",
-    pattern: "Reusable application flows composed from the contracts above.",
-  };
 
   return (
     <div className="library-page">
-      <LibraryIntro
+      <LibraryPageHeader
         count={`${catalogCounts.canonicalComponents} canonical · ${catalogCounts.components} catalog contracts`}
-        description="A compact index of the canonical ten4seven UI library. Choose a family or search for one contract to open its documentation."
+        description="A visual entry point for comparing canonical components by family. Browse the specimen first; open detail only when the full contract is needed."
         icon="components"
+        overline="Library · canonical contracts"
         title="Components"
       />
-
-      <div
-        className="library-overview-stats"
-        aria-label="Component catalog counts"
-      >
-        <div>
-          <strong>{catalogCounts.canonicalComponents}</strong>
-          <span>canonical implementations</span>
-        </div>
-        <div>
-          <strong>{componentFamilyDefinitions.length}</strong>
-          <span>component families</span>
-        </div>
-        <div>
-          <strong>
-            {catalogCounts.components - catalogCounts.canonicalComponents}
-          </strong>
-          <span>documented aliases</span>
-        </div>
-      </div>
 
       <Input
         aria-label="Search canonical components"
@@ -535,219 +952,144 @@ export function ComponentsExplorer({
       />
 
       {query.trim() ? (
-        <CatalogSearchResults onNavigatePath={onNavigatePath} query={query} />
+        <CatalogSearchResults
+          onClear={() => setQuery("")}
+          onNavigatePath={onNavigatePath}
+          query={query}
+        />
       ) : (
         <>
-          <section className="library-section">
-            <div className="library-section-heading">
-              <div>
-                <Typography as="h2" typeRole="heading-lg">
-                  Common components
-                </Typography>
-                <Typography typeRole="body-sm">
-                  Frequently reached contracts for everyday product work.
-                </Typography>
-              </div>
-            </div>
-            <div className="catalog-list catalog-list-compact">
-              {commonComponents.map((name) => (
-                <CatalogListRow
-                  description={componentCatalog[name].purpose}
-                  href={componentPath(name)}
-                  key={name}
-                  onNavigatePath={onNavigatePath}
-                >
-                  {componentCatalog[name].displayName ?? name}
-                </CatalogListRow>
-              ))}
-            </div>
-          </section>
-
-          <section className="library-section">
-            <div className="library-section-heading">
-              <div>
-                <Typography as="h2" typeRole="heading-lg">
-                  Browse by family
-                </Typography>
-                <Typography typeRole="body-sm">
-                  Use the page anchors for a quick scan; every contract remains
-                  in this document.
-                </Typography>
-              </div>
-            </div>
-            <div className="catalog-family-list">
-              {componentFamilyDefinitions.map((family) => (
-                <CatalogLink
-                  className="catalog-family-row"
-                  href={`/components${componentFamilyAnchor(family.category)}`}
-                  key={family.category}
-                  onNavigatePath={onNavigatePath}
-                >
-                  <span className="catalog-family-icon">
-                    <T7Icon name={family.icon} size={18} />
-                  </span>
-                  <span>
-                    <strong>{family.label}</strong>
-                    <small>
-                      {componentsInCategory(family.category).length} canonical
-                      contracts
-                    </small>
-                  </span>
-                  <T7Icon aria-hidden="true" name="chevronRight" size={15} />
-                </CatalogLink>
-              ))}
-            </div>
-          </section>
-
-          <section className="library-section">
-            <div className="library-section-heading">
-              <div>
-                <Typography as="h2" typeRole="heading-lg">
-                  Choose by responsibility
-                </Typography>
-                <Typography typeRole="body-sm">
-                  Start with the layer that matches the job, then compose the
-                  canonical contracts into a product screen.
-                </Typography>
-              </div>
-            </div>
-            <div className="catalog-layer-list">
-              {[
-                {
-                  detail:
-                    "Theme, typography, and icon behavior shared everywhere.",
-                  href: `/components${componentFamilyAnchor("foundation")}`,
-                  icon: "tokens" as const,
-                  label: "Foundations",
-                },
-                {
-                  detail:
-                    "Actions, forms, navigation, and layout building blocks.",
-                  href: `/components${componentFamilyAnchor("action")}`,
-                  icon: "components" as const,
-                  label: "Primitives",
-                },
-                {
-                  detail:
-                    "Tables, overlays, feedback, files, and data display.",
-                  href: `/components${componentFamilyAnchor("table")}`,
-                  icon: "table" as const,
-                  label: "Composed components",
-                },
-                {
-                  detail:
-                    "Reusable flows for inventory, commerce, and other domains.",
-                  href: `/components${componentFamilyAnchor("pattern")}`,
-                  icon: "dashboard" as const,
-                  label: "Patterns",
-                },
-              ].map((layer) => (
-                <CatalogLink
-                  className="catalog-layer-row"
-                  href={layer.href}
-                  key={layer.label}
-                  onNavigatePath={onNavigatePath}
-                >
-                  <span className="catalog-family-icon">
-                    <T7Icon aria-hidden="true" name={layer.icon} size={18} />
-                  </span>
-                  <span>
-                    <strong>{layer.label}</strong>
-                    <small>{layer.detail}</small>
-                  </span>
-                  <T7Icon aria-hidden="true" name="chevronRight" size={15} />
-                </CatalogLink>
-              ))}
-            </div>
-          </section>
-
           <section
-            aria-label="Canonical component catalog"
-            className="catalog-family-document"
-            ref={catalogDocumentRef}
+            aria-labelledby="component-family-browser-title"
+            className="library-section component-family-browser"
           >
             <div className="library-section-heading">
               <div>
-                <Typography as="h2" typeRole="heading-lg">
-                  Canonical component catalog
+                <Typography
+                  as="h2"
+                  id="component-family-browser-title"
+                  typeRole="heading-lg"
+                >
+                  Families
                 </Typography>
                 <Typography typeRole="body-sm">
-                  One naturally scrolling document for implementation lookup;
-                  open a row only when its full contract is needed.
+                  Choose one family to compare its live components, variants,
+                  states, and guidance together.
                 </Typography>
               </div>
-              <span className="studio-section-count">
+              <span className="component-showroom-count">
+                {componentFamilyDefinitions.length} families ·{" "}
                 {catalogCounts.canonicalComponents} contracts
               </span>
             </div>
             <nav
-              aria-label="Component family anchors"
-              className="catalog-family-anchors"
+              aria-label="Component families"
+              className="catalog-family-anchors component-family-chooser"
             >
-              {componentFamilyDefinitions.map((family) => (
-                <a
-                  aria-current={
-                    activeFamily === family.category ? "location" : undefined
-                  }
-                  className={
-                    activeFamily === family.category ? "is-active" : undefined
-                  }
-                  href={componentFamilyAnchor(family.category)}
-                  key={family.category}
-                >
-                  {family.label}
-                </a>
-              ))}
+              {componentFamilyDefinitions.map((family) => {
+                const entries = componentsInCategory(family.category);
+                const highlights = entries
+                  .slice(0, 3)
+                  .map(([name, component]) => component.displayName ?? name)
+                  .join(" · ");
+                return (
+                  <CatalogLink
+                    className="component-family-chooser-link"
+                    href={componentFamilyPath(family.category)}
+                    id={`component-family-${family.category}`}
+                    key={family.category}
+                    onNavigatePath={onNavigatePath}
+                  >
+                    <span className="catalog-family-icon">
+                      <T7Icon aria-hidden="true" name={family.icon} size={18} />
+                    </span>
+                    <span className="component-family-chooser-copy">
+                      <strong>{family.label}</strong>
+                      <small>
+                        {componentFamilyDescriptions[family.category]}
+                      </small>
+                      <small
+                        aria-label={`${family.label} indexed component examples`}
+                        className="component-family-chooser-components"
+                      >
+                        {highlights}
+                      </small>
+                    </span>
+                    <span className="component-family-chooser-count">
+                      {entries.length}
+                    </span>
+                    <T7Icon aria-hidden="true" name="chevronRight" size={15} />
+                  </CatalogLink>
+                );
+              })}
             </nav>
-            <div className="catalog-family-document-list">
+          </section>
+          <details className="component-index-details">
+            <summary>
+              <span>View all indexed contracts</span>
+              <span className="component-index-summary-count">
+                {catalogCounts.canonicalComponents}
+              </span>
+            </summary>
+            <div className="component-index-groups">
               {componentFamilyDefinitions.map((family) => {
                 const entries = componentsInCategory(family.category);
                 return (
                   <section
-                    aria-labelledby={`component-family-${family.category}-title`}
-                    className="catalog-family-document-section"
-                    data-catalog-family={family.category}
-                    id={`component-family-${family.category}`}
+                    aria-labelledby={`component-index-${family.category}-title`}
+                    className="component-index-group"
                     key={family.category}
                   >
-                    <div className="catalog-family-document-heading">
-                      <div>
-                        <Typography
-                          as="h3"
-                          id={`component-family-${family.category}-title`}
-                          typeRole="heading-md"
-                        >
-                          {family.label}
-                        </Typography>
-                        <Typography typeRole="body-sm">
-                          {familyDescriptions[family.category]}
-                        </Typography>
-                      </div>
-                      <span className="catalog-family-document-count">
-                        {entries.length} canonical
-                      </span>
+                    <div className="component-index-group-heading">
+                      <Typography
+                        as="h3"
+                        id={`component-index-${family.category}-title`}
+                        typeRole="label"
+                      >
+                        {family.label}
+                      </Typography>
+                      <span>{entries.length}</span>
                     </div>
-                    <div className="catalog-list catalog-family-document-rows">
+                    <div className="component-index-links">
                       {entries.map(([name, component]) => (
-                        <CatalogListRow
-                          description={component.purpose}
+                        <CatalogLink
                           href={componentPath(name)}
                           key={name}
                           onNavigatePath={onNavigatePath}
-                          trailing={
-                            <span className="catalog-list-row-api">
-                              {component.importantProps.slice(0, 2).join(" · ")}
-                            </span>
-                          }
                         >
                           {component.displayName ?? name}
-                        </CatalogListRow>
+                        </CatalogLink>
                       ))}
                     </div>
                   </section>
                 );
               })}
             </div>
+          </details>
+          <section
+            aria-label="Library roles"
+            className="component-library-role-note"
+          >
+            <span className="component-library-role-note-icon">
+              <T7Icon aria-hidden="true" name="components" size={18} />
+            </span>
+            <div>
+              <Typography as="strong" typeRole="label">
+                Need edge-case proof?
+              </Typography>
+              <Typography typeRole="body-sm">
+                Components is for discovery and comparison. Use Component Lab
+                for responsive stress, unusual states, and implementation QA.
+              </Typography>
+            </div>
+            <CatalogLink
+              className="component-showroom-secondary-link"
+              href="/component-lab"
+              onNavigatePath={onNavigatePath}
+            >
+              Open Component Lab
+              <T7Icon aria-hidden="true" name="chevronRight" size={14} />
+            </CatalogLink>
           </section>
         </>
       )}
@@ -769,42 +1111,36 @@ export function ComponentFamilyExplorer({
 
   return (
     <div className="library-page">
-      <LibraryIntro
+      <LibraryPageHeader
         count={`${entries.length} canonical contracts`}
-        description={`Canonical ${definition?.label.toLowerCase() ?? category} components. Aliases remain available through search and detail documentation.`}
+        description={`Compare the ${definition?.label.toLowerCase() ?? category} family in one visual showroom. Canonical contracts stay separate underneath.`}
         icon={definition?.icon ?? "components"}
+        overline={`Components · ${definition?.label ?? category}`}
         title={definition?.label ?? category}
-      />
-      <section className="library-section">
-        <div className="library-section-heading">
-          <div>
-            <Typography as="h2" typeRole="heading-lg">
-              Available contracts
-            </Typography>
-            <Typography typeRole="body-sm">
-              Open one component to inspect its purpose, live preview, API,
-              accessibility, tokens, and related contracts.
-            </Typography>
-          </div>
-        </div>
-        <div className="catalog-list">
-          {entries.map(([name, component]) => (
-            <CatalogListRow
-              description={component.purpose}
-              href={componentPath(name)}
-              key={name}
+        actions={
+          <div className="component-family-header-actions">
+            <CatalogLink
+              className="component-showroom-secondary-link"
+              href="/components"
               onNavigatePath={onNavigatePath}
-              trailing={
-                <span className="catalog-list-row-api">
-                  {component.importantProps.slice(0, 2).join(" · ")}
-                </span>
-              }
             >
-              {component.displayName ?? name}
-            </CatalogListRow>
-          ))}
-        </div>
-      </section>
+              All families
+            </CatalogLink>
+            <CatalogLink
+              className="component-showroom-secondary-link"
+              href="/component-lab"
+              onNavigatePath={onNavigatePath}
+            >
+              Open Component Lab
+            </CatalogLink>
+          </div>
+        }
+      />
+      <ComponentShowroom
+        category={category}
+        entries={entries}
+        onNavigatePath={onNavigatePath}
+      />
     </div>
   );
 }
@@ -830,6 +1166,11 @@ export function ComponentDetailExplorer({
   const composesWith = (component.composesWith ?? []).filter(
     (relatedName) => componentCatalog[relatedName],
   );
+  const maturityLabel = component.aliasOf
+    ? `Compatibility alias · ${component.aliasOf}`
+    : component.maturity && component.maturity !== component.status
+      ? `${component.status} · ${component.maturity}`
+      : component.status;
   const apiRows =
     component.api ??
     component.importantProps.map((prop) => ({
@@ -842,14 +1183,11 @@ export function ComponentDetailExplorer({
 
   return (
     <div className="library-page component-detail-page">
-      <LibraryIntro
-        count={
-          component.aliasOf
-            ? `Alias of ${component.aliasOf}`
-            : (categoryLabels[component.category] ?? component.category)
-        }
+      <LibraryPageHeader
+        count={maturityLabel}
         description={component.purpose}
         icon={family?.icon ?? "components"}
+        overline={`Components · ${categoryLabels[component.category] ?? component.category}`}
         title={component.displayName ?? name}
       />
       <div className="catalog-detail-layout">
@@ -1122,14 +1460,88 @@ export function ComponentLabExplorer() {
   const contentStress =
     new URLSearchParams(window.location.search).get("stress") === "content";
   return (
-    <div className="library-page component-lab-page">
-      <LibraryIntro
-        count="QA workbench"
-        description="Explore canonical components in a calm, interactive workspace."
-        icon="components"
+    <div
+      className="library-page component-lab-page"
+      data-lab-mode="interactive"
+    >
+      <PageHeader
+        className="component-lab-page-header"
+        description="Inspect canonical states, composition, and responsive behavior."
+        meta={
+          <span className="component-lab-page-meta">
+            Local proof · no product state
+          </span>
+        }
+        overline={
+          <span className="component-lab-page-overline">
+            <span aria-hidden="true" className="component-lab-page-icon">
+              <T7Icon name="components" size={16} />
+            </span>
+            Component workbench · local proof
+          </span>
+        }
         title="Component Lab"
       />
-      {contentStress ? <ContentSafetyProof /> : <ComponentProofs />}
+      {contentStress ? (
+        <ContentSafetyProof />
+      ) : (
+        <>
+          <div
+            aria-label="Component Lab mode"
+            className="component-lab-context-bar"
+          >
+            <div className="component-lab-context-main">
+              <span aria-hidden="true" className="component-lab-context-icon">
+                <T7Icon name="components" size={17} />
+              </span>
+              <div>
+                <Typography as="p" typeRole="overline">
+                  Component patterns
+                </Typography>
+                <strong>Shared behavior in context.</strong>
+                <small>
+                  State, behavior, accessibility, and responsive checks.
+                </small>
+              </div>
+            </div>
+            <div
+              className="component-lab-context-signals"
+              aria-label="Lab signals"
+            >
+              <span>10 sections</span>
+              <span>client-side</span>
+              <span>local proof</span>
+            </div>
+          </div>
+          <SectionNavigation
+            className="component-lab-section-navigation"
+            items={[
+              { id: "component-lab-forms-feedback", label: "Forms" },
+              {
+                id: "component-lab-core-layout-actions",
+                label: "Core",
+              },
+              { id: "component-lab-data-signals", label: "Data" },
+              { id: "component-lab-overlays", label: "Overlays" },
+              { id: "component-lab-surfaces", label: "Surfaces" },
+              { id: "component-lab-charts", label: "Charts" },
+              { id: "component-lab-navigation", label: "Flow" },
+              { id: "component-lab-workflow", label: "Workflow" },
+              {
+                id: "component-lab-editors-builders-ai",
+                label: "Advanced",
+              },
+              {
+                id: "component-lab-u10-advanced-interactions",
+                label: "U10 canary",
+              },
+            ]}
+            label="Component Lab sections"
+            sticky
+          />
+          <ComponentProofs />
+        </>
+      )}
     </div>
   );
 }
@@ -1161,36 +1573,6 @@ function IconCopyButton({ name }: { name: IconName }) {
       <Typography typeRole="label">{name}</Typography>
     </button>
   );
-}
-
-function hslToHex(value: string, fallback: string) {
-  const match = value.match(/(-?[\d.]+)\s+([\d.]+)%\s+([\d.]+)%/);
-  if (!match) return fallback;
-
-  const hue = ((Number(match[1]) % 360) + 360) % 360;
-  const saturation = Math.max(0, Math.min(100, Number(match[2]))) / 100;
-  const lightness = Math.max(0, Math.min(100, Number(match[3]))) / 100;
-  const chroma = (1 - Math.abs(2 * lightness - 1)) * saturation;
-  const normalizedHue = hue / 60;
-  const second = chroma * (1 - Math.abs((normalizedHue % 2) - 1));
-  const matchValue = lightness - chroma / 2;
-  const [red, green, blue] =
-    normalizedHue < 1
-      ? [chroma, second, 0]
-      : normalizedHue < 2
-        ? [second, chroma, 0]
-        : normalizedHue < 3
-          ? [0, chroma, second]
-          : normalizedHue < 4
-            ? [0, second, chroma]
-            : normalizedHue < 5
-              ? [second, 0, chroma]
-              : [chroma, 0, second];
-  const toHex = (channel: number) =>
-    Math.round((channel + matchValue) * 255)
-      .toString(16)
-      .padStart(2, "0");
-  return `#${toHex(red)}${toHex(green)}${toHex(blue)}`;
 }
 
 function IconifyCopyButton({
@@ -1265,14 +1647,8 @@ export function IconsExplorer() {
     );
   });
   const themeVariables = buildThemeVariables(theme);
-  const defaultPrimaryHex = hslToHex(
-    themeVariables["--t7-primary-hsl"],
-    "#17663f",
-  );
-  const defaultAccentHex = hslToHex(
-    themeVariables["--t7-accent-hsl"],
-    "#8bbf27",
-  );
+  const defaultPrimaryHex = hslToHex(themeVariables["--t7-primary-hsl"]);
+  const defaultAccentHex = hslToHex(themeVariables["--t7-accent-hsl"]);
   const filteredIconifyNames = useMemo(() => {
     return IconifyBoldDuotoneIconNames.filter((name) => {
       return (
@@ -1299,10 +1675,11 @@ export function IconsExplorer() {
 
   return (
     <div className="library-page">
-      <LibraryIntro
+      <LibraryPageHeader
         count={`${IconifyBoldDuotoneIconCount.toLocaleString()} Solar Bold Duotone icons`}
         description="A focused local Iconify family with one cohesive filled-and-layered visual language. No CDN request is needed at runtime."
         icon="components"
+        overline="Library · semantic assets"
         title="Icons"
       />
       <Input
@@ -1314,7 +1691,11 @@ export function IconsExplorer() {
         placeholder="warehouse, export, cart…"
         value={semanticQuery}
       />
-      <div className="catalog-filter-tabs" aria-label="Icon categories">
+      <div
+        aria-label="Icon categories"
+        className="catalog-filter-tabs"
+        role="group"
+      >
         {["All", ...iconGroups.map((group) => group.label)].map((label) => (
           <button
             aria-pressed={activeGroup === label}
@@ -1412,16 +1793,25 @@ export function IconsExplorer() {
             </Typography>
           </div>
         </div>
-        <div className="library-icon-grid compact-icon-grid">
-          {shownNames.map((name) => (
-            <IconCopyButton key={name} name={name} />
-          ))}
-        </div>
+        {shownNames.length ? (
+          <div className="library-icon-grid compact-icon-grid">
+            {shownNames.map((name) => (
+              <IconCopyButton key={name} name={name} />
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            description="Try a semantic intent, domain, or action."
+            icon="search"
+            title="No semantic icons match"
+          />
+        )}
       </section>
       <section
         className="library-section iconify-curated-section"
         data-iconify-count={IconifyCuratedIconCount}
         data-iconify-family="ten4seven-curated"
+        data-iconify-style="solar-bold-duotone"
       >
         <div className="library-section-heading">
           <div>
@@ -1429,17 +1819,17 @@ export function IconsExplorer() {
               Curated farm &amp; operations
             </Typography>
             <Typography typeRole="body-sm">
-              A small, governed Iconify extension for farm nouns, money, and
-              directional controls. Every glyph is bundled locally, normalized
-              to the 24px canvas, and rendered with theme-aware paints.
+              Governed farm and operations aliases with the same Solar Bold
+              Duotone language as the main library. Bodies stay local, fit the
+              shared 24px canvas, and use theme-aware primary and accent paints.
             </Typography>
           </div>
-          <Typography className="icon-registry-proof" typeRole="caption">
-            {IconifyCuratedIconCount} curated glyphs
-          </Typography>
+          <span className="iconify-family-count">
+            Solar Bold Duotone · {IconifyCuratedIconCount} aliases
+          </span>
         </div>
         <div
-          aria-label="Curated farm and operations icons"
+          aria-label="Solar curated farm and operations icons"
           className="library-icon-grid iconify-icon-grid"
         >
           {IconifyCuratedIconNames.map((name) => (
@@ -1498,9 +1888,11 @@ export function IconsExplorer() {
             ))}
           </div>
         ) : (
-          <Typography typeRole="body-sm">
-            No Solar Bold Duotone icons match “{iconifyQuery}”.
-          </Typography>
+          <EmptyState
+            description="Try a shorter name or browse the full bundled family."
+            icon="search"
+            title="No Solar icons match"
+          />
         )}
         {remainingIconifyCount > 0 ? (
           <div className="iconify-load-more">
@@ -1527,14 +1919,72 @@ export function RecipesExplorer({
 }: {
   onNavigatePath: (path: string) => void;
 }) {
+  const [query, setQuery] = useState("");
+  const [activeProfile, setActiveProfile] = useState("All");
+  const profiles = [
+    "All",
+    ...new Set(
+      Object.values(recipeCatalog).flatMap((recipe) => recipe.profiles),
+    ),
+  ];
+  const normalizedQuery = query.trim().toLowerCase();
+  const entries = Object.entries(recipeCatalog).filter(([name, recipe]) => {
+    const profileMatches =
+      activeProfile === "All" || recipe.profiles.includes(activeProfile);
+    const queryMatches =
+      !normalizedQuery ||
+      [
+        name,
+        recipe.displayName ?? "",
+        recipe.purpose,
+        ...recipe.profiles,
+        ...recipe.components,
+        ...(recipe.references ?? []),
+      ]
+        .join(" ")
+        .toLowerCase()
+        .includes(normalizedQuery);
+    return profileMatches && queryMatches;
+  });
+
   return (
     <div className="library-page">
-      <LibraryIntro
+      <LibraryPageHeader
         count={`${Object.keys(recipeCatalog).length} composition recipes`}
         description="Recipes describe composition anatomy so agents choose known structures before inventing local UI."
         icon="table"
+        overline="Library · composition recipes"
         title="Recipes"
       />
+      <CompositionShowcase mode="recipes" />
+      <Input
+        aria-label="Search recipes"
+        className="library-search"
+        label="Search recipes"
+        leadingIcon="search"
+        onChange={(event) => setQuery(event.target.value)}
+        placeholder="Entity list, catalog, approval…"
+        value={query}
+      />
+      <div
+        aria-label="Recipe profiles"
+        className="catalog-filter-tabs"
+        role="group"
+      >
+        {profiles.map((profile) => (
+          <button
+            aria-pressed={activeProfile === profile}
+            className="catalog-filter-tab"
+            key={profile}
+            onClick={() => setActiveProfile(profile)}
+            type="button"
+          >
+            {profile === "All"
+              ? profile
+              : profile.charAt(0).toUpperCase() + profile.slice(1)}
+          </button>
+        ))}
+      </div>
       <section className="library-section">
         <div className="library-section-heading">
           <div>
@@ -1542,28 +1992,49 @@ export function RecipesExplorer({
               Recipe index
             </Typography>
             <Typography typeRole="body-sm">
-              Open a recipe to inspect its flow and jump directly to the
-              component contracts it names.
+              {entries.length} of {Object.keys(recipeCatalog).length} recipes ·
+              open one to inspect its flow and jump directly to the component
+              contracts it names.
             </Typography>
           </div>
         </div>
-        <div className="catalog-list">
-          {Object.entries(recipeCatalog).map(([name, recipe]) => (
-            <CatalogListRow
-              description={recipe.purpose}
-              href={recipePath(name)}
-              key={name}
-              onNavigatePath={onNavigatePath}
-              trailing={
-                <span className="catalog-list-row-category">
-                  {recipe.profiles.join(" · ")}
-                </span>
-              }
-            >
-              {recipe.displayName ?? name}
-            </CatalogListRow>
-          ))}
-        </div>
+        {entries.length ? (
+          <div className="catalog-list">
+            {entries.map(([name, recipe]) => (
+              <CatalogListRow
+                description={recipe.purpose}
+                href={recipePath(name)}
+                key={name}
+                onNavigatePath={onNavigatePath}
+                trailing={
+                  <span className="catalog-list-row-category">
+                    {recipe.profiles.join(" · ")}
+                  </span>
+                }
+              >
+                {recipe.displayName ?? name}
+              </CatalogListRow>
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            action={
+              <Button
+                intent="quiet"
+                onClick={() => {
+                  setActiveProfile("All");
+                  setQuery("");
+                }}
+                size="sm"
+              >
+                Clear filters
+              </Button>
+            }
+            description="Try another recipe name, profile, or composition concern."
+            icon="search"
+            title="No matching recipes"
+          />
+        )}
       </section>
     </div>
   );
@@ -1590,10 +2061,11 @@ export function RecipeDetailExplorer({
   const operational = recipe.operational;
   return (
     <div className="library-page recipe-detail-page">
-      <LibraryIntro
+      <LibraryPageHeader
         count={recipe.profiles.join(" · ")}
         description={recipe.purpose}
         icon="table"
+        overline="Recipes · composition contract"
         title={recipe.displayName ?? name}
       />
       <div className="catalog-detail-layout">
@@ -1931,6 +2403,161 @@ function BlockCatalogMedia({ variant = "signal" }: { variant?: string }) {
   );
 }
 
+function Q12PreviewCard({
+  detail,
+  label,
+  title,
+}: {
+  detail: string;
+  label: string;
+  title: string;
+}) {
+  return (
+    <Card className="q12-preview-card">
+      <CardContent>
+        <Typography typeRole="overline">{label}</Typography>
+        <Typography as="h3" typeRole="heading-md">
+          {title}
+        </Typography>
+        <Typography typeRole="caption">{detail}</Typography>
+      </CardContent>
+    </Card>
+  );
+}
+
+function Q12BlockPreview({ block }: { block: BlockContract }) {
+  const family = (block.family ?? "Public / marketing") as Q12BlockFamily;
+  const previewClass = `q12-block-preview-body q12-block-preview-body--${slugify(family)}`;
+  let body: ReactNode;
+
+  switch (family) {
+    case "Admin / application":
+      body = (
+        <div className="q12-preview-metrics">
+          {[
+            ["Ready", "92%", "within target"],
+            ["Review", "18", "open items"],
+            ["Next", "03", "actions due"],
+          ].map(([label, value, detail]) => (
+            <Q12PreviewCard
+              detail={detail}
+              key={label}
+              label={label}
+              title={value}
+            />
+          ))}
+        </div>
+      );
+      break;
+    case "Commerce":
+      body = (
+        <div className="q12-preview-commerce-grid">
+          <Q12PreviewCard
+            detail="Clear anatomy keeps selection and price visible."
+            label="Product"
+            title="Considered offer"
+          />
+          <Q12PreviewCard
+            detail="Summary remains adjacent to the next action."
+            label="Summary"
+            title="Ready to continue"
+          />
+        </div>
+      );
+      break;
+    case "Workflow / productivity":
+      body = (
+        <>
+          <div className="q12-preview-flow">
+            {["Context", "Review", "Next action"].map((step, index) => (
+              <div className="q12-preview-flow-step" key={step}>
+                <span aria-hidden="true">{index + 1}</span>
+                <Typography typeRole="label">{step}</Typography>
+              </div>
+            ))}
+          </div>
+          <Button size="sm">Continue review</Button>
+        </>
+      );
+      break;
+    case "Data management":
+      body = (
+        <div className="q12-preview-data-grid">
+          <ChartPanel
+            description="Bounded signal preview"
+            title="Data quality"
+            chart={
+              <LineChart
+                ariaLabel="Q12 data block preview"
+                labels={["A", "B", "C", "D"]}
+                series={[
+                  { id: "quality", label: "Quality", values: [34, 42, 38, 51] },
+                ]}
+              />
+            }
+          />
+          <Q12PreviewCard
+            detail="Column, filter, and row contracts stay discoverable."
+            label="View"
+            title="Readable data"
+          />
+        </div>
+      );
+      break;
+    case "AI / conversation":
+      body = (
+        <div className="q12-preview-conversation">
+          <Q12PreviewCard
+            detail="Prompt context remains visible before generation."
+            label="Prompt"
+            title="What should happen next?"
+          />
+          <Q12PreviewCard
+            detail="Sources and handoff stay attached to the answer."
+            label="Response"
+            title="Grounded and reviewable"
+          />
+        </div>
+      );
+      break;
+    case "Public / marketing":
+    default:
+      body = (
+        <div className="q12-preview-public-grid">
+          <Q12PreviewCard
+            detail="One proposition, one supporting proof surface."
+            label="Lead"
+            title="A clear starting point"
+          />
+          <div className="q12-preview-public-action">
+            <Button size="sm">Explore composition</Button>
+            <Typography typeRole="caption">
+              {block.variants.slice(0, 2).join(" · ")}
+            </Typography>
+          </div>
+        </div>
+      );
+      break;
+  }
+
+  return (
+    <Q12BlockComposition
+      className={previewClass}
+      description={block.purpose}
+      eyebrow={family}
+      family={family}
+      title={block.displayName}
+    >
+      <div className="q12-block-preview-content">
+        {body}
+        <Typography className="q12-preview-variants" typeRole="caption">
+          Variants · {block.variants.join(" · ")}
+        </Typography>
+      </div>
+    </Q12BlockComposition>
+  );
+}
+
 function BlockPreview({ slug }: { slug: string }) {
   switch (slug) {
     case "hero-split":
@@ -2149,6 +2776,9 @@ function BlockPreview({ slug }: { slug: string }) {
         />
       );
     default:
+      if (blockCatalog[slug]?.family) {
+        return <Q12BlockPreview block={blockCatalog[slug]} />;
+      }
       return (
         <Card>
           <CardContent>
@@ -2166,8 +2796,17 @@ export function BlocksExplorer({
 }: {
   onNavigatePath: (path: string) => void;
 }) {
+  const [activeFamily, setActiveFamily] = useState("All");
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
+  const families = [
+    "All",
+    ...new Set(
+      Object.values(blockCatalog)
+        .map((block) => block.family)
+        .filter((family): family is string => Boolean(family)),
+    ),
+  ];
   const categories = [
     "All",
     ...new Set(Object.values(blockCatalog).map((block) => block.category)),
@@ -2176,41 +2815,55 @@ export function BlocksExplorer({
   const entries = Object.entries(blockCatalog).filter(([slug, block]) => {
     const categoryMatches =
       activeCategory === "All" || block.category === activeCategory;
+    const familyMatches =
+      activeFamily === "All" || block.family === activeFamily;
     const queryMatches =
       !normalizedQuery ||
-      [slug, block.displayName, block.category, block.purpose, ...block.useWhen]
+      [
+        slug,
+        block.displayName,
+        block.category,
+        block.family ?? "",
+        block.purpose,
+        ...block.useWhen,
+      ]
         .join(" ")
         .toLowerCase()
         .includes(normalizedQuery);
-    return categoryMatches && queryMatches;
+    return familyMatches && categoryMatches && queryMatches;
   });
 
   return (
     <div className="library-page blocks-explorer-page">
-      <LibraryIntro
-        count={`${catalogCounts.blocks} expressive block families`}
+      <LibraryPageHeader
+        count={`${catalogCounts.blocks} expressive blocks · ${catalogCounts.blockFamilies} families`}
         description="Reusable page-level compositions for public, content, commerce, and product surfaces. Blocks compose canonical contracts; they do not replace them."
         icon="components"
+        overline="Library · expressive composition"
         title="Blocks"
       />
 
-      <div className="block-layer-rail" aria-label="Composition hierarchy">
+      <nav aria-label="Composition hierarchy" className="block-layer-rail">
         {[
-          "Foundations",
-          "Primitives",
-          "Components",
-          "Patterns",
-          "Blocks",
-          "Recipes",
+          { href: "/tokens", label: "Foundations" },
+          { href: "/components/actions", label: "Primitives" },
+          { href: "/components", label: "Components" },
+          { href: "/components/patterns", label: "Patterns" },
+          { href: "/blocks", label: "Blocks" },
+          { href: "/recipes", label: "Recipes" },
         ].map((layer) => (
-          <span
-            className={layer === "Blocks" ? "is-active" : undefined}
-            key={layer}
+          <CatalogLink
+            ariaCurrent={layer.label === "Blocks" ? "page" : undefined}
+            className={layer.label === "Blocks" ? "is-active" : undefined}
+            href={layer.href}
+            key={layer.label}
+            onNavigatePath={onNavigatePath}
           >
-            {layer}
-          </span>
+            {layer.label}
+          </CatalogLink>
         ))}
-      </div>
+      </nav>
+      <CompositionShowcase mode="blocks" />
 
       <Input
         aria-label="Search expressive blocks"
@@ -2221,7 +2874,28 @@ export function BlocksExplorer({
         placeholder="Hero, testimonials, carousel…"
         value={query}
       />
-      <div aria-label="Block categories" className="catalog-filter-tabs">
+      <div
+        aria-label="Block families"
+        className="catalog-filter-tabs block-family-filter-tabs"
+        role="group"
+      >
+        {families.map((family) => (
+          <button
+            aria-pressed={activeFamily === family}
+            className="catalog-filter-tab"
+            key={family}
+            onClick={() => setActiveFamily(family)}
+            type="button"
+          >
+            {family}
+          </button>
+        ))}
+      </div>
+      <div
+        aria-label="Block categories"
+        className="catalog-filter-tabs"
+        role="group"
+      >
         {categories.map((category) => (
           <button
             aria-pressed={activeCategory === category}
@@ -2240,7 +2914,11 @@ export function BlocksExplorer({
           <article className="block-catalog-card" key={slug}>
             <div className="block-catalog-card-heading">
               <div>
-                <Typography typeRole="overline">{block.category}</Typography>
+                <Typography typeRole="overline">
+                  {block.family
+                    ? `${block.family} · ${block.category}`
+                    : block.category}
+                </Typography>
                 <Typography as="h2" typeRole="heading-md">
                   {block.displayName}
                 </Typography>
@@ -2292,10 +2970,11 @@ export function BlockDetailExplorer({
 
   return (
     <div className="library-page block-detail-page">
-      <LibraryIntro
-        count={`${block.category} · ${block.variants.length} variants`}
+      <LibraryPageHeader
+        count={`${block.family ? `${block.family} · ` : ""}${block.category} · ${block.variants.length} variants`}
         description={block.purpose}
         icon="components"
+        overline="Blocks · composition contract"
         title={block.displayName}
       />
       <div className="catalog-detail-layout">

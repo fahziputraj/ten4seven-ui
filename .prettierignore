@@ -4,3 +4,10 @@
 **/pnpm-lock.yaml
 research/**/evidence/*.json
 test-results/
+.playwright-cli/
+.playwright-mcp/
+playwright-report/
+**/.expo/
+**/android/.gradle/
+**/android/build/
+**/android/app/build/

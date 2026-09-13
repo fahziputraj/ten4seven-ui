@@ -19,11 +19,11 @@ for (const viewport of expressiveViewports) {
     await expect(
       page.getByRole("heading", {
         level: 1,
-        name: "Build consistent interfaces, faster.",
+        name: "Build better product surfaces.",
       }),
     ).toBeVisible();
     await expect(
-      page.getByRole("heading", { name: "A clear place for every stage" }),
+      page.getByRole("heading", { name: "Selected product proof." }),
     ).toBeVisible();
     await expect(page.locator(".t7-public-footer")).toBeVisible();
 
@@ -53,14 +53,22 @@ test("blocks catalog exposes live previews and detail contracts", async ({
   await expect(
     page.getByRole("heading", { level: 1, name: "Blocks" }),
   ).toBeVisible();
-  await expect(page.locator(".block-catalog-card")).toHaveCount(12);
+  await expect(page.locator(".block-catalog-card")).toHaveCount(60);
   await expect(
     page.getByRole("heading", { name: "Hero", exact: true }),
   ).toBeVisible();
   await expect(
+    page.getByRole("heading", { name: "KPI Dashboard", exact: true }).first(),
+  ).toBeVisible();
+  await expect(
     page.getByRole("heading", { name: "Public Footer", exact: true }),
   ).toBeVisible();
-  await expect(page.locator(".block-catalog-preview")).toHaveCount(12);
+  await expect(page.locator(".block-catalog-preview")).toHaveCount(60);
+
+  await page
+    .getByRole("button", { name: "Admin / application", exact: true })
+    .click();
+  await expect(page.locator(".block-catalog-card")).toHaveCount(10);
 
   await page.goto("/blocks/hero-split");
   await expect(
@@ -71,6 +79,12 @@ test("blocks catalog exposes live previews and detail contracts", async ({
   ).toBeVisible();
   await expect(page.getByText("Required contracts")).toBeVisible();
   await expect(page.getByText("Responsive").last()).toBeVisible();
+
+  await page.goto("/blocks/kpi-dashboard");
+  await expect(
+    page.getByRole("heading", { level: 1, name: "KPI Dashboard" }),
+  ).toBeVisible();
+  await expect(page.getByText("Layer boundary")).toBeVisible();
 });
 
 test("public showcase carousel and chart affordances remain interactive", async ({
@@ -91,8 +105,33 @@ test("public showcase carousel and chart affordances remain interactive", async 
   await viewport.press("ArrowRight");
   await expect(indicators.nth(2)).toHaveAttribute("aria-pressed", "true");
 
-  await page.locator('[aria-label^="App,"]').first().hover();
-  await expect(
-    page.locator(".public-showcase-feature-chart .t7-chart-tooltip"),
-  ).toBeVisible();
+  const chartPoint = page.locator('[aria-label^="App,"]').first();
+  await chartPoint.scrollIntoViewIfNeeded();
+  await chartPoint.hover();
+  // Keep the proof keyboard-verifiable as well: the canonical chart point
+  // exposes the same tooltip from focus when a portal placement is not
+  // stable under a pointer move across the composed proof layout.
+  await chartPoint.focus();
+  const chartTooltip = page.locator(".t7-chart-tooltip");
+  await expect(chartTooltip).toBeVisible();
+
+  // Chart tooltips deliberately render through FloatingPortal so they can
+  // escape clipped chart/card ancestors; verify the portal tooltip remains
+  // anchored to the highlighted point instead of requiring DOM ancestry.
+  const pointBox = await chartPoint.boundingBox();
+  const tooltipBox = await chartTooltip.boundingBox();
+  expect(pointBox).not.toBeNull();
+  expect(tooltipBox).not.toBeNull();
+  expect(
+    Math.abs(
+      tooltipBox!.x +
+        tooltipBox!.width / 2 -
+        (pointBox!.x + pointBox!.width / 2),
+    ),
+  ).toBeLessThanOrEqual(4);
+  const tooltipAbovePoint =
+    pointBox!.y - (tooltipBox!.y + tooltipBox!.height) >= 4;
+  const tooltipBelowPoint =
+    tooltipBox!.y - (pointBox!.y + pointBox!.height) >= 4;
+  expect(tooltipAbovePoint || tooltipBelowPoint).toBeTruthy();
 });

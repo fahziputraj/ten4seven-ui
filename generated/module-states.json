@@ -1,0 +1,269 @@
+{
+  "schemaVersion": "0.1",
+  "id": "module-state-presentation",
+  "states": {
+    "not-available": {
+      "id": "not-available",
+      "label": "Not available",
+      "tone": "neutral",
+      "icon": "info",
+      "defaultTitle": "This module is not available",
+      "defaultDescription": "The consumer should explain the product or environment condition that keeps this module unavailable.",
+      "emphasis": "quiet",
+      "allowsPrimaryAction": false,
+      "allowsSecondaryAction": true,
+      "allowsRetry": false,
+      "consumerProvides": [
+        "applicability",
+        "authorization",
+        "entitlement",
+        "tenant-or-resource-context",
+        "lifecycle-transition"
+      ]
+    },
+    "not-entitled": {
+      "id": "not-entitled",
+      "label": "Not entitled",
+      "tone": "neutral",
+      "icon": "lock",
+      "defaultTitle": "This module is not included",
+      "defaultDescription": "The consumer supplies the entitlement message and any product-owned next step.",
+      "emphasis": "quiet",
+      "allowsPrimaryAction": true,
+      "allowsSecondaryAction": true,
+      "allowsRetry": false,
+      "consumerProvides": [
+        "applicability",
+        "authorization",
+        "entitlement",
+        "tenant-or-resource-context",
+        "lifecycle-transition"
+      ]
+    },
+    "setup-required": {
+      "id": "setup-required",
+      "label": "Setup required",
+      "tone": "warning",
+      "icon": "settings",
+      "defaultTitle": "Finish setup to continue",
+      "defaultDescription": "The consumer provides the setup guidance and owns the setup transition.",
+      "emphasis": "attention",
+      "allowsPrimaryAction": true,
+      "allowsSecondaryAction": true,
+      "allowsRetry": false,
+      "consumerProvides": [
+        "applicability",
+        "authorization",
+        "entitlement",
+        "tenant-or-resource-context",
+        "lifecycle-transition"
+      ]
+    },
+    "provisioning": {
+      "id": "provisioning",
+      "label": "Provisioning",
+      "tone": "info",
+      "icon": "pending",
+      "defaultTitle": "This module is being provisioned",
+      "defaultDescription": "Show the consumer-supplied progress or expected next check without inventing lifecycle data.",
+      "emphasis": "quiet",
+      "allowsPrimaryAction": false,
+      "allowsSecondaryAction": true,
+      "allowsRetry": false,
+      "consumerProvides": [
+        "applicability",
+        "authorization",
+        "entitlement",
+        "tenant-or-resource-context",
+        "lifecycle-transition"
+      ]
+    },
+    "resuming": {
+      "id": "resuming",
+      "label": "Resuming",
+      "tone": "info",
+      "icon": "pending",
+      "defaultTitle": "This module is resuming",
+      "defaultDescription": "The consumer owns the lifecycle status and decides whether a refresh action is useful.",
+      "emphasis": "quiet",
+      "allowsPrimaryAction": false,
+      "allowsSecondaryAction": true,
+      "allowsRetry": false,
+      "consumerProvides": [
+        "applicability",
+        "authorization",
+        "entitlement",
+        "tenant-or-resource-context",
+        "lifecycle-transition"
+      ]
+    },
+    "suspended": {
+      "id": "suspended",
+      "label": "Suspended",
+      "tone": "warning",
+      "icon": "blocked",
+      "defaultTitle": "This module is suspended",
+      "defaultDescription": "The consumer explains the suspension state and owns the resume request, if available.",
+      "emphasis": "attention",
+      "allowsPrimaryAction": true,
+      "allowsSecondaryAction": true,
+      "allowsRetry": false,
+      "consumerProvides": [
+        "applicability",
+        "authorization",
+        "entitlement",
+        "tenant-or-resource-context",
+        "lifecycle-transition"
+      ]
+    },
+    "dependency-unavailable": {
+      "id": "dependency-unavailable",
+      "label": "Dependency unavailable",
+      "tone": "danger",
+      "icon": "info",
+      "defaultTitle": "A required dependency is unavailable",
+      "defaultDescription": "The consumer supplies dependency context and decides whether retry or fallback is safe.",
+      "emphasis": "attention",
+      "allowsPrimaryAction": true,
+      "allowsSecondaryAction": true,
+      "allowsRetry": true,
+      "consumerProvides": [
+        "applicability",
+        "authorization",
+        "entitlement",
+        "tenant-or-resource-context",
+        "lifecycle-transition"
+      ]
+    },
+    "permission-denied": {
+      "id": "permission-denied",
+      "label": "Permission denied",
+      "tone": "danger",
+      "icon": "lock",
+      "defaultTitle": "You do not have access to this module",
+      "defaultDescription": "The consumer supplies effective-access meaning and any escalation or return action.",
+      "emphasis": "attention",
+      "allowsPrimaryAction": false,
+      "allowsSecondaryAction": true,
+      "allowsRetry": false,
+      "consumerProvides": [
+        "applicability",
+        "authorization",
+        "entitlement",
+        "tenant-or-resource-context",
+        "lifecycle-transition"
+      ]
+    },
+    "out-of-scope": {
+      "id": "out-of-scope",
+      "label": "Out of scope",
+      "tone": "neutral",
+      "icon": "view",
+      "defaultTitle": "This resource is out of scope",
+      "defaultDescription": "The consumer supplies the resource boundary and owns navigation back to an allowed scope.",
+      "emphasis": "quiet",
+      "allowsPrimaryAction": true,
+      "allowsSecondaryAction": true,
+      "allowsRetry": false,
+      "consumerProvides": [
+        "applicability",
+        "authorization",
+        "entitlement",
+        "tenant-or-resource-context",
+        "lifecycle-transition"
+      ]
+    },
+    "read-only": {
+      "id": "read-only",
+      "label": "Read-only",
+      "tone": "info",
+      "icon": "lock",
+      "defaultTitle": "Read-only view",
+      "defaultDescription": "The consumer decides which actions are unavailable and supplies the read-only explanation.",
+      "emphasis": "quiet",
+      "allowsPrimaryAction": false,
+      "allowsSecondaryAction": true,
+      "allowsRetry": false,
+      "consumerProvides": [
+        "applicability",
+        "authorization",
+        "entitlement",
+        "tenant-or-resource-context",
+        "lifecycle-transition"
+      ]
+    },
+    "action-required": {
+      "id": "action-required",
+      "label": "Action required",
+      "tone": "warning",
+      "icon": "warning",
+      "defaultTitle": "Action is required",
+      "defaultDescription": "The consumer supplies the required action, its applicability, and its handler.",
+      "emphasis": "attention",
+      "allowsPrimaryAction": true,
+      "allowsSecondaryAction": true,
+      "allowsRetry": false,
+      "consumerProvides": [
+        "applicability",
+        "authorization",
+        "entitlement",
+        "tenant-or-resource-context",
+        "lifecycle-transition"
+      ]
+    }
+  },
+  "ownership": {
+    "system": [
+      "responsive-presentation",
+      "accessibility",
+      "semantic-tokens",
+      "icon-vocabulary",
+      "interaction-contract"
+    ],
+    "consumer": [
+      "business-data",
+      "permissions",
+      "entitlements",
+      "persistence",
+      "routing",
+      "handlers",
+      "tenant-context"
+    ],
+    "platform": [
+      "principal-context",
+      "effective-access"
+    ],
+    "businessModule": [
+      "module-lifecycle",
+      "audit-authority",
+      "workflow-authority"
+    ]
+  },
+  "consumerInput": [
+    "state",
+    "title",
+    "description",
+    "details",
+    "primary action",
+    "secondary action"
+  ],
+  "forbiddenInRenderer": [
+    "entitlement evaluation",
+    "permission evaluation",
+    "tenant or resource fetching",
+    "lifecycle mutation",
+    "route navigation decision",
+    "business-data calculation"
+  ],
+  "accessibility": [
+    "Expose the state label and explanation in the document order.",
+    "Keep consumer-provided actions keyboard reachable with canonical target geometry.",
+    "Do not use color alone to communicate a module state.",
+    "Allow the consumer to control live-region behavior for asynchronous transitions."
+  ],
+  "responsive": {
+    "desktop": "content-sized state surface with actions aligned to the copy",
+    "tablet": "copy and actions wrap without reducing touch targets",
+    "mobile": "copy and actions stack in primary-first order"
+  }
+}

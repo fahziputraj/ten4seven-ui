@@ -14,6 +14,7 @@ import {
 import {
   loadContracts,
   resolveComponentShardPath,
+  resolvePlatformNeutralContractPath,
   resolveRecipeReference,
   resolveRequiredContracts,
 } from "./retrieval.mjs";
@@ -113,6 +114,28 @@ function loadRecipeForInspection(recipeId) {
   const index = readJson("index.json", telemetry, "index");
   const reference = resolveRecipeReference(index, recipeId);
   return readJson(reference.path, telemetry, "recipe");
+}
+
+export function inspectPlatformNeutralContract() {
+  const telemetry = createTelemetry();
+  const index = readJson("index.json", telemetry, "index");
+  const relativePath = resolvePlatformNeutralContractPath(index);
+  const contract = readJson(relativePath, telemetry, "supporting");
+  return {
+    contract,
+    source: `generated/${relativePath}`,
+    contextReads: telemetry.files.map(({ path }) => path),
+    retrieval: {
+      indexBytes: telemetry.indexBytes,
+      recipeBytes: telemetry.recipeBytes,
+      componentContractBytes: telemetry.componentContractBytes,
+      supportingBytes: telemetry.supportingBytes,
+      totalActualBytes: telemetry.totalActualBytes,
+      fullCatalogFallbacks: telemetry.fullCatalogFallbacks,
+      files: telemetry.files,
+      componentIds: telemetry.componentIds,
+    },
+  };
 }
 
 /**

@@ -8,17 +8,22 @@ import {
   type FieldsetHTMLAttributes,
   type HTMLAttributes,
   type InputHTMLAttributes,
+  type KeyboardEvent as ReactKeyboardEvent,
   type LabelHTMLAttributes,
   type ReactElement,
   type ReactNode,
   type SelectHTMLAttributes,
   type TextareaHTMLAttributes,
+  type CSSProperties,
 } from "react";
 
 import { T7Icon, type IconName } from "@ten4seven/icons";
+import type { MeasureIntent } from "@ten4seven/contracts";
 import { overlayGeometry } from "@ten4seven/tokens";
 
+import { IconButton } from "./actions";
 import {
+  Button,
   Input,
   type CheckboxProps,
   type InputProps,
@@ -222,16 +227,24 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
   error?: string;
   hint?: string;
   label?: string;
+  measure?: MeasureIntent;
 }
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
-  function Textarea({ className, error, hint, id, label, ...props }, ref) {
+  function Textarea(
+    { className, error, hint, id, label, measure, ...props },
+    ref,
+  ) {
     const generatedId = useId();
     const textareaId = id ?? generatedId;
     const helpId = `${textareaId}-hint`;
     const describedBy = error || hint ? helpId : props["aria-describedby"];
     return (
-      <label className="t7-field" htmlFor={textareaId}>
+      <label
+        className="t7-field"
+        data-t7-measure={measure}
+        htmlFor={textareaId}
+      >
         {label ? <span className="t7-field-label">{label}</span> : null}
         <textarea
           {...props}
@@ -286,10 +299,17 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
     const inputId = id ?? generatedId;
     const helpId = `${inputId}-hint`;
     const [visible, setVisible] = useState(false);
-    const describedBy = error || hint ? helpId : props["aria-describedby"];
+    const describedBy =
+      [props["aria-describedby"], error || hint ? helpId : undefined]
+        .filter(Boolean)
+        .join(" ") || undefined;
     return (
-      <label className="t7-field" htmlFor={inputId}>
-        {label ? <span className="t7-field-label">{label}</span> : null}
+      <div className="t7-field">
+        {label ? (
+          <label className="t7-field-label" htmlFor={inputId}>
+            {label}
+          </label>
+        ) : null}
         <span className={cx("t7-input-wrap", error && "is-error")}>
           <input
             {...props}
@@ -325,7 +345,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
             {error ?? hint}
           </span>
         ) : null}
-      </label>
+      </div>
     );
   },
 );
@@ -504,6 +524,16 @@ export function RangeSlider({
   step = 1,
   ...props
 }: RangeSliderProps) {
+  const rangeSize = Math.max(max - min, 1);
+  const minPercent = Math.min(
+    100,
+    Math.max(0, ((minValue - min) / rangeSize) * 100),
+  );
+  const maxPercent = Math.min(
+    100,
+    Math.max(0, ((maxValue - min) / rangeSize) * 100),
+  );
+
   return (
     <div {...props} className={cx("t7-range-slider", className)}>
       <div className="t7-field-label">
@@ -512,10 +542,21 @@ export function RangeSlider({
           {minValue}–{maxValue}
         </span>
       </div>
-      <div>
+      <div
+        className="t7-range-slider-control"
+        style={
+          {
+            "--t7-range-mid": `${(minPercent + maxPercent) / 2}%`,
+            "--t7-range-span": `${Math.max(maxPercent - minPercent, 0)}%`,
+            "--t7-range-start": `${minPercent}%`,
+          } as CSSProperties
+        }
+      >
+        <span aria-hidden="true" className="t7-range-slider-track" />
+        <span aria-hidden="true" className="t7-range-slider-selection" />
         <input
           aria-label={`${label} minimum`}
-          className="t7-range-slider-input"
+          className="t7-range-slider-input t7-range-slider-input-min"
           max={maxValue}
           min={min}
           onChange={(event) =>
@@ -530,7 +571,7 @@ export function RangeSlider({
         />
         <input
           aria-label={`${label} maximum`}
-          className="t7-range-slider-input"
+          className="t7-range-slider-input t7-range-slider-input-max"
           max={max}
           min={minValue}
           onChange={(event) =>
@@ -561,6 +602,7 @@ export interface ComboboxProps extends Omit<
 > {
   emptyMessage?: string;
   label?: string;
+  measure?: MeasureIntent;
   loading?: boolean;
   onInputValueChange?: (value: string) => void;
   onValueChange: (value: string) => void;
@@ -573,6 +615,7 @@ export function Combobox({
   emptyMessage = "No options found.",
   id,
   label,
+  measure,
   loading = false,
   onClick,
   onInputValueChange,
@@ -643,7 +686,7 @@ export function Combobox({
   }
 
   return (
-    <label className="t7-field" htmlFor={inputId}>
+    <label className="t7-field" data-t7-measure={measure} htmlFor={inputId}>
       {label ? <span className="t7-field-label">{label}</span> : null}
       <span className="t7-combobox">
         <input
@@ -764,11 +807,339 @@ export function Combobox({
   );
 }
 
+export interface CascaderOption {
+  children?: CascaderOption[];
+  disabled?: boolean;
+  label: string;
+  value: string;
+}
+
+export interface CascaderProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "onChange"
+> {
+  disabled?: boolean;
+  error?: string;
+  hint?: string;
+  label?: string;
+  measure?: MeasureIntent;
+  onValueChange: (value: string[]) => void;
+  options: CascaderOption[];
+  placeholder?: string;
+  value?: string[];
+}
+
+function getCascaderLevels(
+  options: CascaderOption[],
+  activePath: string[],
+): CascaderOption[][] {
+  const levels = [options];
+  let current = options;
+  for (const value of activePath) {
+    const option = current.find((candidate) => candidate.value === value);
+    if (!option?.children?.length) break;
+    current = option.children;
+    levels.push(current);
+  }
+  return levels;
+}
+
+function getCascaderPathLabels(
+  options: CascaderOption[],
+  path: string[],
+): string[] {
+  const labels: string[] = [];
+  let current = options;
+  for (const value of path) {
+    const option = current.find((candidate) => candidate.value === value);
+    if (!option) break;
+    labels.push(option.label);
+    current = option.children ?? [];
+  }
+  return labels;
+}
+
+/** Select a path through nested options with menu keyboard semantics. */
+export function Cascader({
+  className,
+  disabled = false,
+  error,
+  hint,
+  label = "Select path",
+  measure,
+  onValueChange,
+  options,
+  placeholder = "Select an option",
+  value = [],
+  ...props
+}: CascaderProps) {
+  const id = useId();
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const itemRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const [open, setOpen] = useState(false);
+  const [activePath, setActivePath] = useState<string[]>(value.slice(0, -1));
+  const labelId = `${id}-label`;
+  const helpId = `${id}-help`;
+  const panelId = `${id}-panel`;
+  const levels = getCascaderLevels(options, activePath);
+  const selectedLabels = getCascaderPathLabels(options, value);
+  const displayValue = selectedLabels.length
+    ? selectedLabels.join(" / ")
+    : placeholder;
+  const floating = useFloatingPosition(triggerRef, open, {
+    preferredWidth: Number.parseFloat(overlayGeometry.combobox),
+    side: "bottom",
+    widthStrategy: "min-trigger",
+  });
+
+  useExclusiveFloatingLayer(open, () => {
+    setOpen(false);
+    triggerRef.current?.focus();
+  });
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const dismiss = (event: PointerEvent) => {
+      if (
+        !triggerRef.current?.contains(event.target as Node) &&
+        !floating.contentRef.current?.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+    const dismissOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape" || event.defaultPrevented) return;
+      event.preventDefault();
+      setOpen(false);
+      triggerRef.current?.focus();
+    };
+    document.addEventListener("pointerdown", dismiss);
+    document.addEventListener("keydown", dismissOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", dismiss);
+      document.removeEventListener("keydown", dismissOnEscape);
+    };
+  }, [floating.contentRef, open]);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const level = Math.min(activePath.length, levels.length - 1);
+    const currentValue = value[level] ?? activePath[level];
+    const index = Math.max(
+      0,
+      currentValue
+        ? (levels[level]?.findIndex(
+            (option) => option.value === currentValue,
+          ) ?? -1)
+        : (levels[level]?.findIndex((option) => !option.disabled) ?? 0),
+    );
+    const frame = window.requestAnimationFrame(() => {
+      itemRefs.current[`${level}-${index}`]?.focus();
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [activePath, levels, open]);
+
+  function focusItem(level: number, index: number) {
+    window.requestAnimationFrame(() => {
+      itemRefs.current[`${level}-${index}`]?.focus();
+    });
+  }
+
+  function findEnabledIndex(
+    items: CascaderOption[],
+    start: number,
+    direction: 1 | -1,
+  ) {
+    if (!items.length) return -1;
+    let index = start;
+    for (let count = 0; count < items.length; count += 1) {
+      index = (index + direction + items.length) % items.length;
+      if (!items[index]?.disabled) return index;
+    }
+    return -1;
+  }
+
+  function choose(option: CascaderOption, level: number) {
+    if (option.disabled) return;
+    const nextPath = [...activePath.slice(0, level), option.value];
+    if (option.children?.length) {
+      setActivePath(nextPath);
+      return;
+    }
+    onValueChange(nextPath);
+    setOpen(false);
+    triggerRef.current?.focus();
+  }
+
+  function onOptionKeyDown(
+    event: ReactKeyboardEvent<HTMLButtonElement>,
+    option: CascaderOption,
+    level: number,
+    index: number,
+  ) {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setOpen(false);
+      triggerRef.current?.focus();
+      return;
+    }
+    const items = levels[level] ?? [];
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      const next = findEnabledIndex(
+        items,
+        index,
+        event.key === "ArrowDown" ? 1 : -1,
+      );
+      if (next >= 0) focusItem(level, next);
+      return;
+    }
+    if (event.key === "Home" || event.key === "End") {
+      event.preventDefault();
+      let next = -1;
+      if (event.key === "Home") {
+        next = items.findIndex((item) => !item.disabled);
+      } else {
+        items.forEach((item, itemIndex) => {
+          if (!item.disabled) next = itemIndex;
+        });
+      }
+      if (next >= 0) focusItem(level, next);
+      return;
+    }
+    if (event.key === "ArrowLeft" && level > 0) {
+      event.preventDefault();
+      const parentValue = activePath[level - 1];
+      const parentIndex =
+        levels[level - 1]?.findIndex(
+          (candidate) => candidate.value === parentValue,
+        ) ?? -1;
+      setActivePath(activePath.slice(0, level - 1));
+      if (parentIndex >= 0) focusItem(level - 1, parentIndex);
+      return;
+    }
+    if (
+      (event.key === "ArrowRight" && option.children?.length) ||
+      event.key === "Enter" ||
+      event.key === " "
+    ) {
+      event.preventDefault();
+      choose(option, level);
+    }
+  }
+
+  return (
+    <div
+      {...props}
+      className={cx("t7-cascader-field", className)}
+      data-disabled={disabled || undefined}
+      data-invalid={error || undefined}
+      data-t7-measure={measure}
+    >
+      {label ? (
+        <span className="t7-field-label" id={labelId}>
+          {label}
+        </span>
+      ) : null}
+      <button
+        aria-controls={panelId}
+        aria-describedby={error || hint ? helpId : undefined}
+        aria-expanded={open}
+        aria-haspopup="dialog"
+        aria-invalid={error ? true : undefined}
+        aria-labelledby={label ? labelId : undefined}
+        className={cx("t7-cascader-trigger", error && "is-error")}
+        disabled={disabled}
+        onClick={() => {
+          setActivePath(value.slice(0, -1));
+          setOpen((current) => !current);
+        }}
+        ref={triggerRef}
+        type="button"
+      >
+        <span>{displayValue}</span>
+        <T7Icon aria-hidden="true" name="chevronDown" size={16} />
+      </button>
+      {open ? (
+        <FloatingPortal anchorRef={triggerRef}>
+          <div
+            aria-label={`${label} options`}
+            className="t7-cascader-popover t7-floating-content"
+            data-floating-placement={floating.placement}
+            id={panelId}
+            ref={floating.setContentRef}
+            role="dialog"
+            style={floating.style}
+          >
+            <div className="t7-cascader-menus">
+              {levels.map((levelOptions, level) => (
+                <div
+                  aria-label={`${label}, level ${level + 1}`}
+                  className="t7-cascader-menu"
+                  key={level}
+                  role="menu"
+                >
+                  {levelOptions.map((option, index) => {
+                    const active = activePath[level] === option.value;
+                    const hasChildren = Boolean(option.children?.length);
+                    return (
+                      <button
+                        aria-disabled={option.disabled || undefined}
+                        aria-expanded={hasChildren ? active : undefined}
+                        aria-haspopup={hasChildren ? "menu" : undefined}
+                        aria-current={
+                          !hasChildren && value[level] === option.value
+                            ? "true"
+                            : undefined
+                        }
+                        className="t7-cascader-option"
+                        data-active={active || undefined}
+                        disabled={option.disabled}
+                        id={`${panelId}-${level}-${index}`}
+                        key={option.value}
+                        onClick={() => choose(option, level)}
+                        onKeyDown={(event) =>
+                          onOptionKeyDown(event, option, level, index)
+                        }
+                        ref={(element) => {
+                          itemRefs.current[`${level}-${index}`] = element;
+                        }}
+                        role="menuitem"
+                        tabIndex={-1}
+                        type="button"
+                      >
+                        <span>{option.label}</span>
+                        {hasChildren ? (
+                          <T7Icon
+                            aria-hidden="true"
+                            name="chevronRight"
+                            size={15}
+                          />
+                        ) : null}
+                      </button>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
+          </div>
+        </FloatingPortal>
+      ) : null}
+      {error || hint ? (
+        <span className={cx("t7-field-hint", error && "is-error")} id={helpId}>
+          {error ?? hint}
+        </span>
+      ) : null}
+    </div>
+  );
+}
+
 export interface MultiSelectProps extends HTMLAttributes<HTMLDivElement> {
   error?: string;
   emptyMessage?: string;
   hint?: string;
   label?: string;
+  measure?: MeasureIntent;
   loading?: boolean;
   onValueChange: (values: string[]) => void;
   options: ComboboxOption[];
@@ -783,6 +1154,7 @@ export function MultiSelect({
   hint,
   label,
   loading = false,
+  measure,
   onValueChange,
   options,
   placeholder = "Select options",
@@ -796,6 +1168,7 @@ export function MultiSelect({
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
   const selectedOptions = options.filter((option) =>
     values.includes(option.value),
   );
@@ -806,8 +1179,19 @@ export function MultiSelect({
   });
   function closeListbox() {
     setOpen(false);
+    setActiveIndex(-1);
   }
   useExclusiveFloatingLayer(open, closeListbox);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const firstEnabled = options.findIndex((option) => !option.disabled);
+    setActiveIndex(firstEnabled);
+    const frame = window.requestAnimationFrame(() => {
+      floating.contentRef.current?.focus();
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [floating.contentRef, open, options]);
 
   useEffect(() => {
     if (!open) return undefined;
@@ -841,11 +1225,53 @@ export function MultiSelect({
     );
   }
 
+  function onListboxKeyDown(event: ReactKeyboardEvent<HTMLDivElement>) {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeListbox();
+      triggerRef.current?.focus();
+      return;
+    }
+    if (!options.length) return;
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      let next = activeIndex;
+      for (let count = 0; count < options.length; count += 1) {
+        next =
+          (next + (event.key === "ArrowDown" ? 1 : -1) + options.length) %
+          options.length;
+        if (!options[next]?.disabled) {
+          setActiveIndex(next);
+          return;
+        }
+      }
+      return;
+    }
+    if (event.key === "Home" || event.key === "End") {
+      event.preventDefault();
+      const next =
+        event.key === "Home"
+          ? options.findIndex((option) => !option.disabled)
+          : options.reduce(
+              (last, option, index) => (option.disabled ? last : index),
+              -1,
+            );
+      if (next >= 0) setActiveIndex(next);
+      return;
+    }
+    if ((event.key === "Enter" || event.key === " ") && activeIndex >= 0) {
+      event.preventDefault();
+      const option = options[activeIndex];
+      if (option) toggleValue(option);
+    }
+  }
+
   return (
     <div
       {...props}
       ref={rootRef}
       className={cx("t7-multiselect-field", className)}
+      data-t7-measure={measure}
       onBlur={(event) => {
         onBlur?.(event);
         window.setTimeout(() => {
@@ -894,23 +1320,28 @@ export function MultiSelect({
             className="t7-multiselect-list t7-floating-content"
             data-floating-placement={floating.placement}
             id={`${id}-listbox`}
+            onKeyDown={onListboxKeyDown}
             ref={floating.setContentRef}
             role="listbox"
             style={floating.style}
+            tabIndex={0}
           >
             {loading ? <span>{"Loading options…"}</span> : null}
             {!loading && options.length === 0 ? (
               <span>{emptyMessage}</span>
             ) : null}
             {!loading
-              ? options.map((option) => (
+              ? options.map((option, index) => (
                   <button
                     aria-selected={values.includes(option.value)}
+                    data-active={activeIndex === index || undefined}
                     data-selected={values.includes(option.value) || undefined}
                     disabled={option.disabled}
+                    id={`${id}-option-${index}`}
                     key={option.value}
                     onClick={() => toggleValue(option)}
                     role="option"
+                    tabIndex={-1}
                     type="button"
                   >
                     <span className="t7-option-copy">
@@ -930,6 +1361,469 @@ export function MultiSelect({
       ) : null}
       {error || hint ? (
         <span className={cx("t7-field-hint", error && "is-error")}>
+          {error ?? hint}
+        </span>
+      ) : null}
+    </div>
+  );
+}
+
+export interface TransferProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "onChange"
+> {
+  availableLabel?: string;
+  label?: string;
+  onValueChange: (values: string[]) => void;
+  options: ComboboxOption[];
+  searchable?: boolean;
+  selectedLabel?: string;
+  value: string[];
+}
+
+/** Move bounded options between two accessible listbox regions. */
+export function Transfer({
+  availableLabel = "Available",
+  className,
+  label = "Transfer options",
+  onValueChange,
+  options,
+  searchable = false,
+  selectedLabel = "Selected",
+  value,
+  ...props
+}: TransferProps) {
+  const [availableSelection, setAvailableSelection] = useState<string[]>([]);
+  const [selectedSelection, setSelectedSelection] = useState<string[]>([]);
+  const [query, setQuery] = useState("");
+  const normalizedQuery = query.trim().toLowerCase();
+  const selectedSet = new Set(value);
+  const availableOptions = options.filter(
+    (option) =>
+      !selectedSet.has(option.value) &&
+      (!normalizedQuery ||
+        option.label.toLowerCase().includes(normalizedQuery)),
+  );
+  const selectedOptions = value
+    .map((selectedValue) =>
+      options.find((option) => option.value === selectedValue),
+    )
+    .filter((option): option is ComboboxOption => Boolean(option));
+
+  function toggleSelection(
+    current: string[],
+    next: string,
+    setSelection: (values: string[]) => void,
+  ) {
+    setSelection(
+      current.includes(next)
+        ? current.filter((value) => value !== next)
+        : [...current, next],
+    );
+  }
+
+  function moveToSelected(values: string[]) {
+    const moved = new Set(values);
+    onValueChange([
+      ...value,
+      ...options
+        .filter(
+          (option) => moved.has(option.value) && !selectedSet.has(option.value),
+        )
+        .map((option) => option.value),
+    ]);
+    setAvailableSelection([]);
+  }
+
+  function moveToAvailable(values: string[]) {
+    const moved = new Set(values);
+    onValueChange(value.filter((selectedValue) => !moved.has(selectedValue)));
+    setSelectedSelection([]);
+  }
+
+  return (
+    <div {...props} aria-label={label} className={cx("t7-transfer", className)}>
+      <div className="t7-transfer-header">
+        <span className="t7-field-label">{label}</span>
+        {searchable ? (
+          <Input
+            aria-label={`Filter ${label}`}
+            className="t7-transfer-search"
+            leadingIcon="search"
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Filter options"
+            value={query}
+          />
+        ) : null}
+      </div>
+      <div className="t7-transfer-layout">
+        <TransferList
+          label={availableLabel}
+          onToggle={(next) =>
+            toggleSelection(availableSelection, next, setAvailableSelection)
+          }
+          options={availableOptions}
+          selected={availableSelection}
+        />
+        <div aria-label="Transfer actions" className="t7-transfer-actions">
+          <Button
+            disabled={!availableSelection.length}
+            leadingIcon="arrowRight"
+            onClick={() => moveToSelected(availableSelection)}
+            size="sm"
+          >
+            Add
+          </Button>
+          <Button
+            disabled={!selectedSelection.length}
+            intent="secondary"
+            leadingIcon="arrowLeft"
+            onClick={() => moveToAvailable(selectedSelection)}
+            size="sm"
+          >
+            Remove
+          </Button>
+        </div>
+        <TransferList
+          label={selectedLabel}
+          onToggle={(next) =>
+            toggleSelection(selectedSelection, next, setSelectedSelection)
+          }
+          options={selectedOptions}
+          selected={selectedSelection}
+        />
+      </div>
+    </div>
+  );
+}
+
+function TransferList({
+  label,
+  onToggle,
+  options,
+  selected,
+}: {
+  label: string;
+  onToggle: (value: string) => void;
+  options: ComboboxOption[];
+  selected: string[];
+}) {
+  const listboxId = useId();
+  const [activeIndex, setActiveIndex] = useState(
+    options.findIndex((option) => !option.disabled),
+  );
+
+  useEffect(() => {
+    setActiveIndex((current) => {
+      if (
+        current >= 0 &&
+        current < options.length &&
+        !options[current]?.disabled
+      )
+        return current;
+      return options.findIndex((option) => !option.disabled);
+    });
+  }, [options]);
+
+  function onListboxKeyDown(event: ReactKeyboardEvent<HTMLDivElement>) {
+    if (!options.length) return;
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      let next = activeIndex;
+      for (let count = 0; count < options.length; count += 1) {
+        next =
+          (next + (event.key === "ArrowDown" ? 1 : -1) + options.length) %
+          options.length;
+        if (!options[next]?.disabled) {
+          setActiveIndex(next);
+          return;
+        }
+      }
+      return;
+    }
+    if (event.key === "Home" || event.key === "End") {
+      event.preventDefault();
+      const next =
+        event.key === "Home"
+          ? options.findIndex((option) => !option.disabled)
+          : options.reduce(
+              (last, option, index) => (option.disabled ? last : index),
+              -1,
+            );
+      if (next >= 0) setActiveIndex(next);
+      return;
+    }
+    if (
+      (event.key === "Enter" || event.key === " ") &&
+      activeIndex >= 0 &&
+      options[activeIndex]
+    ) {
+      event.preventDefault();
+      onToggle(options[activeIndex].value);
+    }
+  }
+
+  return (
+    <div className="t7-transfer-list-wrap">
+      <div className="t7-transfer-list-heading">
+        <span>{label}</span>
+        <small>{options.length}</small>
+      </div>
+      <div
+        aria-activedescendant={
+          activeIndex >= 0 ? `${listboxId}-option-${activeIndex}` : undefined
+        }
+        aria-label={label}
+        aria-multiselectable="true"
+        className="t7-transfer-list"
+        onKeyDown={onListboxKeyDown}
+        role="listbox"
+        tabIndex={0}
+      >
+        {options.length ? (
+          options.map((option, index) => (
+            <button
+              aria-disabled={option.disabled || undefined}
+              aria-selected={selected.includes(option.value)}
+              data-active={activeIndex === index || undefined}
+              className="t7-transfer-option"
+              data-selected={selected.includes(option.value) || undefined}
+              disabled={option.disabled}
+              id={`${listboxId}-option-${index}`}
+              key={option.value}
+              onClick={() => onToggle(option.value)}
+              role="option"
+              tabIndex={-1}
+              type="button"
+            >
+              <span>{option.label}</span>
+              {option.description ? <small>{option.description}</small> : null}
+            </button>
+          ))
+        ) : (
+          <span className="t7-transfer-empty">No options</span>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export interface ColorPickerProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "onChange"
+> {
+  disabled?: boolean;
+  hint?: string;
+  label?: string;
+  measure?: MeasureIntent;
+  onValueChange: (value: string) => void;
+  presets?: string[];
+  value: string;
+}
+
+/** A native color control with a text value and optional token-friendly presets. */
+export function ColorPicker({
+  className,
+  disabled = false,
+  hint,
+  label = "Color",
+  measure,
+  onValueChange,
+  presets = [],
+  value,
+  ...props
+}: ColorPickerProps) {
+  const id = useId();
+  const hintId = `${id}-hint`;
+  return (
+    <div
+      {...props}
+      className={cx("t7-color-picker", className)}
+      data-t7-measure={measure}
+    >
+      <label className="t7-field-label" htmlFor={`${id}-text`}>
+        {label}
+      </label>
+      <div className="t7-color-picker-control">
+        <input
+          aria-label={`${label} swatch`}
+          className="t7-color-picker-native"
+          disabled={disabled}
+          onChange={(event) => onValueChange(event.target.value)}
+          type="color"
+          value={value}
+        />
+        <Input
+          aria-describedby={hint ? hintId : undefined}
+          aria-label={label}
+          disabled={disabled}
+          id={`${id}-text`}
+          onChange={(event) => onValueChange(event.target.value)}
+          value={value}
+        />
+      </div>
+      {presets.length ? (
+        <div
+          aria-label={`${label} presets`}
+          className="t7-color-picker-presets"
+        >
+          {presets.map((preset) => (
+            <button
+              aria-label={`Use ${preset}`}
+              className="t7-color-picker-preset"
+              data-active={
+                preset.toLowerCase() === value.toLowerCase() || undefined
+              }
+              disabled={disabled}
+              key={preset}
+              onClick={() => onValueChange(preset)}
+              style={{ "--t7-color-picker-preset": preset } as CSSProperties}
+              type="button"
+            />
+          ))}
+        </div>
+      ) : null}
+      {hint ? (
+        <span className="t7-field-hint" id={hintId}>
+          {hint}
+        </span>
+      ) : null}
+    </div>
+  );
+}
+
+export interface TagsInputProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "onChange"
+> {
+  allowDuplicates?: boolean;
+  disabled?: boolean;
+  error?: string;
+  hint?: string;
+  label?: string;
+  measure?: MeasureIntent;
+  maxTags?: number;
+  onInputValueChange?: (value: string) => void;
+  onValueChange: (values: string[]) => void;
+  placeholder?: string;
+  readOnly?: boolean;
+  value: string[];
+}
+
+/** Tokenized multi-value entry with Enter/comma commit and keyboard removal. */
+export function TagsInput({
+  allowDuplicates = false,
+  className,
+  disabled = false,
+  error,
+  hint,
+  label = "Tags",
+  maxTags,
+  measure,
+  onInputValueChange,
+  onValueChange,
+  placeholder = "Add a tag",
+  readOnly = false,
+  value,
+  ...props
+}: TagsInputProps) {
+  const id = useId();
+  const helpId = `${id}-hint`;
+  const [inputValue, setInputValue] = useState("");
+
+  function updateInput(next: string) {
+    setInputValue(next);
+    onInputValueChange?.(next);
+  }
+
+  function commit(rawValue = inputValue) {
+    const next = rawValue.trim();
+    if (
+      disabled ||
+      readOnly ||
+      !next ||
+      (maxTags !== undefined && value.length >= maxTags)
+    )
+      return;
+    if (
+      !allowDuplicates &&
+      value.some((item) => item.toLowerCase() === next.toLowerCase())
+    ) {
+      updateInput("");
+      return;
+    }
+    onValueChange([...value, next]);
+    updateInput("");
+  }
+
+  return (
+    <div
+      {...props}
+      className={cx("t7-tags-input-field", className)}
+      data-invalid={error || undefined}
+      data-disabled={disabled || undefined}
+      data-t7-measure={measure}
+    >
+      <label className="t7-field-label" htmlFor={id}>
+        {label}
+      </label>
+      <div
+        className="t7-tags-input"
+        data-disabled={disabled || props["aria-disabled"] || undefined}
+      >
+        {value.map((tag) => (
+          <span className="t7-tag" key={`${tag}-${value.indexOf(tag)}`}>
+            <span>{tag}</span>
+            <IconButton
+              aria-label={`Remove ${tag}`}
+              className="t7-tag-remove"
+              icon="close"
+              label={`Remove ${tag}`}
+              onClick={() =>
+                onValueChange(
+                  value.filter(
+                    (item, index) =>
+                      item !== tag || index !== value.indexOf(tag),
+                  ),
+                )
+              }
+              disabled={disabled || readOnly}
+              size="sm"
+            />
+          </span>
+        ))}
+        <input
+          aria-label={label}
+          aria-describedby={error || hint ? helpId : undefined}
+          aria-invalid={error ? true : undefined}
+          className="t7-tags-input-control"
+          disabled={disabled}
+          id={id}
+          onChange={(event) => updateInput(event.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" || event.key === ",") {
+              event.preventDefault();
+              commit();
+            } else if (
+              event.key === "Backspace" &&
+              !inputValue &&
+              value.length &&
+              !disabled &&
+              !readOnly
+            ) {
+              onValueChange(value.slice(0, -1));
+            }
+          }}
+          onBlur={() => {
+            if (!disabled && !readOnly) commit();
+          }}
+          placeholder={value.length ? undefined : placeholder}
+          readOnly={readOnly}
+          value={inputValue}
+        />
+      </div>
+      {error || hint ? (
+        <span className={cx("t7-field-hint", error && "is-error")} id={helpId}>
           {error ?? hint}
         </span>
       ) : null}

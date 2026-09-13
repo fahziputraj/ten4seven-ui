@@ -89,6 +89,7 @@ const selected = {
   analytics: "chart-square-bold-duotone",
   kpi: "chart-2-bold-duotone",
   progress: "chart-square-bold-duotone",
+  graph: "graph-bold-duotone",
   trendUp: "graph-up-bold-duotone",
   trendDown: "graph-down-bold-duotone",
   timeline: "history-bold-duotone",

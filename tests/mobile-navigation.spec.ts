@@ -157,10 +157,16 @@ test("short mobile modal keeps header visible and body scrolling within safe are
 }) => {
   await page.setViewportSize({ width: 390, height: 600 });
   await page.goto("/tokens");
-  const trigger = page.getByRole("button", {
-    name: "Open ten4seven reference QA controls",
+  await page
+    .getByRole("button", { name: "Open design system navigation" })
+    .click();
+  const navigation = page.getByRole("dialog", {
+    name: "Design system navigation",
   });
-  await trigger.click();
+  const referenceQaButton = navigation.getByRole("button", {
+    name: "Open reference QA",
+  });
+  await referenceQaButton.click();
   const dialog = page.getByRole("dialog", {
     name: "Reference QA",
     exact: true,
@@ -204,5 +210,5 @@ test("short mobile modal keeps header visible and body scrolling within safe are
   ).toBeTruthy();
   await page.keyboard.press("Escape");
   await expect(dialog).not.toBeVisible();
-  await expect(trigger).toBeFocused();
+  await expect(referenceQaButton).toBeFocused();
 });

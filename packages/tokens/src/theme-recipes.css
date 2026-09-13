@@ -15,6 +15,7 @@
   --t7-accent-source-kind: palette;
   --t7-accent-source: cyan;
   --t7-canvas-mode: balanced;
+  --t7-surface-treatment: outlined;
   --t7-chart-palette: spectrum;
   --t7-chart-palette-count: 5;
   --t7-primary-hsl: 232 70% 48%;
@@ -83,18 +84,25 @@
   --t7-border-hsl: 0 0% 86%;
   --t7-border-strong-hsl: 0 0% 72%;
   --t7-border-subtle-hsl: 0 0% 94%;
+  --t7-table-border-hsl: 0 0% 86%;
+  --t7-table-divider-alpha: 0.82;
   --t7-muted-hsl: 0 0% 94%;
-  --t7-focus-hsl: 216 72% 38%;
-  --t7-focus-width: 2px;
+  --t7-focus-hsl: 232 70% 48%;
+  --t7-focus-width: 1px;
   --t7-focus-offset: 2px;
+  --t7-focus-ring-alpha: 0.72;
+  --t7-focus-glow-alpha: 0.18;
   --t7-focus-halo: 0 0 0 var(--t7-focus-offset) hsl(var(--t7-surface-hsl));
   --t7-focus-ring:
     var(--t7-focus-halo),
     0 0 0 calc(var(--t7-focus-offset) + var(--t7-focus-width))
-      hsl(var(--t7-focus-hsl));
-  --t7-focus-ring-inset: inset 0 0 0 var(--t7-focus-width)
-    hsl(var(--t7-focus-hsl));
-  --t7-shadow-selection: inset 3px 0 0 hsl(var(--t7-selected-hsl));
+      hsl(var(--t7-focus-hsl) / var(--t7-focus-ring-alpha)),
+    0 0 10px hsl(var(--t7-focus-hsl) / var(--t7-focus-glow-alpha));
+  --t7-focus-ring-inset:
+    inset 0 0 0 var(--t7-focus-width)
+      hsl(var(--t7-focus-hsl) / var(--t7-focus-ring-alpha)),
+    inset 0 0 8px hsl(var(--t7-focus-hsl) / var(--t7-focus-glow-alpha));
+  --t7-shadow-selection: inset 0 0 0 1px hsl(var(--t7-selected-hsl) / 0.24);
   --t7-shadow-state-boundary: inset 0 0 0 1px
     hsl(var(--t7-state-boundary-hsl, var(--t7-primary-hsl)) / 0.18);
   --t7-selected-hsl: 232 70% 48%;
@@ -106,7 +114,7 @@
   --t7-input-border-hsl: 0 0% 72%;
   --t7-field-border-hsl: 0 0% 72%;
   --t7-input-hover-border-hsl: 232 70% 48%;
-  --t7-input-focus-border-hsl: var(--t7-focus-hsl);
+  --t7-input-focus-border-hsl: var(--t7-field-border-hsl);
   --t7-field-foreground-hsl: 0 0% 12%;
   --t7-disabled-background-hsl: 0 0% 94%;
   --t7-disabled-foreground-hsl: 0 0% 35%;
@@ -169,6 +177,47 @@
   --t7-kpi-chart-height: 52px;
   --t7-kpi-trend-padding-block: 3px;
   --t7-kpi-trend-padding-inline: 8px;
+  --t7-kpi-decorative-size: 132px;
+  --t7-kpi-decorative-offset-top: -21px;
+  --t7-kpi-decorative-offset-inline: -21px;
+  --t7-kpi-decorative-opacity: 0.09;
+  --t7-kpi-depth-gradient-angle: 145deg;
+  --t7-kpi-depth-gradient-stop: 58%;
+  --t7-kpi-depth-shadow-blur: 26px;
+  --t7-kpi-depth-shadow-offset-y: 12px;
+  --t7-kpi-depth-border-alpha: 0.56;
+  --t7-kpi-depth-highlight-alpha: 0.3;
+  --t7-kpi-depth-shade-alpha: 0.14;
+  --t7-kpi-depth-shadow-alpha: 0.24;
+  --t7-surface-depth-gradient-angle: 145deg;
+  --t7-surface-depth-gradient-stop: 58%;
+  --t7-surface-depth-shadow-blur: 26px;
+  --t7-surface-depth-shadow-offset-y: 12px;
+  --t7-surface-depth-border-alpha: 0.56;
+  --t7-surface-depth-highlight-alpha: 0.3;
+  --t7-surface-depth-shade-alpha: 0.14;
+  --t7-surface-depth-shadow-alpha: 0.24;
+  --t7-surface-hover-translate-y: -1px;
+  --t7-chart-line-width: 2.5;
+  --t7-chart-point-radius: 3.5;
+  --t7-chart-point-hover-scale: 1.65;
+  --t7-chart-point-settle-scale: 1.06;
+  --t7-chart-bar-radius: 5;
+  --t7-chart-bar-hover-translate-y: 3px;
+  --t7-chart-bar-hover-scale-y: 1.035;
+  --t7-chart-donut-stroke-width: 14;
+  --t7-chart-donut-hover-stroke-width: 16;
+  --t7-chart-tooltip-offset-y: 12px;
+  --t7-chart-depth-gradient-angle: 145deg;
+  --t7-chart-depth-gradient-stop: 58%;
+  --t7-chart-depth-shadow-blur: 6px;
+  --t7-chart-depth-shadow-offset-y: 3px;
+  --t7-chart-depth-border-alpha: 0.56;
+  --t7-chart-depth-highlight-alpha: 0.3;
+  --t7-chart-depth-shade-alpha: 0.14;
+  --t7-chart-depth-shadow-alpha: 0.1728;
+  --t7-chart-gradient-start-alpha: 0.835;
+  --t7-chart-gradient-end-alpha: 0.909;
   --t7-section-gap: 20px;
   --t7-control-gap: 10px;
   --t7-control-padding-inline: 15px;
@@ -202,6 +251,10 @@
   --t7-icon-navigation: 18px;
   --t7-icon-status: 13px;
   --t7-icon-feature: 24px;
+  --t7-mark-choice: 22px;
+  --t7-mark-radio: 22px;
+  --t7-mark-dot: 10px;
+  --t7-mark-stroke: 2px;
   --t7-overlay-menu-sm: 200px;
   --t7-overlay-menu-md: 240px;
   --t7-overlay-menu-lg: 280px;
@@ -214,6 +267,7 @@
   --t7-overlay-color: 304px;
   --t7-overlay-popover-min: 220px;
   --t7-overlay-popover-max: 360px;
+  --t7-overlay-tooltip-min: 128px;
   --t7-overlay-tooltip-max: 260px;
   --t7-overlay-command: 640px;
   --t7-overlay-dialog-sm: 400px;
@@ -225,6 +279,18 @@
   --t7-content-max: 1440px;
   --t7-sidebar-width: 232px;
   --t7-aside-width: 320px;
+  --t7-measure-compact: 256px;
+  --t7-measure-compact-min: 172px;
+  --t7-measure-control: 480px;
+  --t7-measure-control-min: 224px;
+  --t7-measure-content: 1200px;
+  --t7-measure-content-min: 320px;
+  --t7-measure-wide: 1440px;
+  --t7-measure-wide-min: 480px;
+  --t7-measure-reading: 880px;
+  --t7-measure-reading-min: 280px;
+  --t7-measure-fluid: 100%;
+  --t7-measure-fluid-min: 0px;
   --t7-grid-gap: 20px;
   --t7-safe-area-top: env(safe-area-inset-top, 0px);
   --t7-safe-area-right: env(safe-area-inset-right, 0px);
@@ -261,13 +327,12 @@
   --t7-heading-tracking: -0.03em;
   --t7-body-tracking: 0;
   --t7-shadow-card:
-    0 1px 2px hsl(222 30% 12% / 0.08),
-    0 16px 36px -26px hsl(var(--t7-primary-hsl) / 0.38);
+    0 1px 2px hsl(0 0% 12% / 0.08), 0 16px 36px -26px hsl(0 0% 12% / 0.24);
   --t7-shadow-button: 0 5px 12px -9px hsl(var(--t7-primary-hsl) / 0.8);
-  --t7-shadow-surface: 0 1px 2px hsl(222 30% 12% / 0.08);
-  --t7-shadow-raised: 0 10px 28px -20px hsl(222 30% 12% / 0.34);
-  --t7-shadow-popover: 0 18px 44px -24px hsl(222 30% 12% / 0.48);
-  --t7-shadow-modal: 0 28px 80px -30px hsl(222 30% 8% / 0.56);
+  --t7-shadow-surface: 0 1px 2px hsl(0 0% 12% / 0.08);
+  --t7-shadow-raised: 0 10px 28px -20px hsl(0 0% 12% / 0.34);
+  --t7-shadow-popover: 0 18px 44px -24px hsl(0 0% 12% / 0.48);
+  --t7-shadow-modal: 0 28px 80px -30px hsl(0 0% 12% / 0.56);
   --t7-motion-duration: 1.25s;
   --t7-duration-instant: 100ms;
   --t7-duration-fast: 130ms;
@@ -283,6 +348,7 @@
   --t7-duration-loop: 2000ms;
   --t7-ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --t7-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --t7-ease-chart: cubic-bezier(0.22, 0.74, 0.24, 1);
   --t7-ease-exit: cubic-bezier(0.4, 0, 1, 1);
   --t7-motion-interactive: var(--t7-duration-instant) var(--t7-ease-standard);
   --t7-motion-state: var(--t7-duration-standard) var(--t7-ease-standard);
@@ -307,7 +373,22 @@
   --t7-z-toast: 90;
   --t7-z-command: 100;
   --t7-doc-sticky-offset: calc(var(--t7-header-height) + var(--t7-ref-space-2));
-  --t7-scrim-hsl: 222 30% 12%;
+  --t7-scrim-hsl: 0 0% 12%;
+  --t7-opacity-pressed: 0.72;
+  --t7-opacity-disabled: 0.5;
+  --t7-opacity-scrim: 0.42;
+  --t7-opacity-interactive: 0.72;
+  --t7-opacity-hover: 0.64;
+  --t7-opacity-active: 0.82;
+  --t7-opacity-disabled-control: 0.48;
+  --t7-opacity-choice-disabled: 0.52;
+  --t7-opacity-option-disabled: 0.46;
+  --t7-opacity-checkbox-disabled: 0.55;
+  --t7-opacity-disabled-subtle: 0.34;
+  --t7-opacity-chart-grid: 0.82;
+  --t7-opacity-chart-track: 0.68;
+  --t7-opacity-chart-bar: 0.1;
+  --t7-opacity-detail-enter: 0.35;
   --t7-ref-space-0: 0px;
   --t7-ref-space-1: 4px;
   --t7-ref-space-2: 8px;
@@ -318,6 +399,15 @@
   --t7-ref-space-8: 32px;
   --t7-ref-space-10: 40px;
   --t7-ref-space-12: 48px;
+  --t7-ref-space-micro: 2px;
+  --t7-ref-space-fine: 3px;
+  --t7-ref-space-compact: 5px;
+  --t7-ref-space-tight: 6px;
+  --t7-ref-space-quiet: 9px;
+  --t7-ref-space-inline: 11px;
+  --t7-ref-space-snug: 14px;
+  --t7-ref-space-hero: 28px;
+  --t7-ref-space-relaxed: 18px;
   --t7-type-display-xl-size: clamp(38px, 5vw, 56px);
   --t7-type-display-xl-line-height: clamp(42px, 5.4vw, 60px);
   --t7-type-display-xl-weight: 600;
@@ -443,6 +533,7 @@
   --t7-accent-source-kind: palette;
   --t7-accent-source: cyan;
   --t7-canvas-mode: balanced;
+  --t7-surface-treatment: outlined;
   --t7-chart-palette: spectrum;
   --t7-chart-palette-count: 5;
   --t7-primary-hsl: 232 70% 48%;
@@ -511,18 +602,25 @@
   --t7-border-hsl: 0 0% 24%;
   --t7-border-strong-hsl: 0 0% 35%;
   --t7-border-subtle-hsl: 0 0% 20%;
+  --t7-table-border-hsl: 0 0% 24%;
+  --t7-table-divider-alpha: 0.82;
   --t7-muted-hsl: 0 0% 21%;
-  --t7-focus-hsl: 216 70% 72%;
-  --t7-focus-width: 2px;
+  --t7-focus-hsl: 232 70% 78%;
+  --t7-focus-width: 1px;
   --t7-focus-offset: 2px;
+  --t7-focus-ring-alpha: 0.72;
+  --t7-focus-glow-alpha: 0.18;
   --t7-focus-halo: 0 0 0 var(--t7-focus-offset) hsl(var(--t7-surface-hsl));
   --t7-focus-ring:
     var(--t7-focus-halo),
     0 0 0 calc(var(--t7-focus-offset) + var(--t7-focus-width))
-      hsl(var(--t7-focus-hsl));
-  --t7-focus-ring-inset: inset 0 0 0 var(--t7-focus-width)
-    hsl(var(--t7-focus-hsl));
-  --t7-shadow-selection: inset 3px 0 0 hsl(var(--t7-selected-hsl));
+      hsl(var(--t7-focus-hsl) / var(--t7-focus-ring-alpha)),
+    0 0 10px hsl(var(--t7-focus-hsl) / var(--t7-focus-glow-alpha));
+  --t7-focus-ring-inset:
+    inset 0 0 0 var(--t7-focus-width)
+      hsl(var(--t7-focus-hsl) / var(--t7-focus-ring-alpha)),
+    inset 0 0 8px hsl(var(--t7-focus-hsl) / var(--t7-focus-glow-alpha));
+  --t7-shadow-selection: inset 0 0 0 1px hsl(var(--t7-selected-hsl) / 0.24);
   --t7-shadow-state-boundary: inset 0 0 0 1px
     hsl(var(--t7-state-boundary-hsl, var(--t7-primary-hsl)) / 0.18);
   --t7-selected-hsl: 232 70% 48%;
@@ -534,7 +632,7 @@
   --t7-input-border-hsl: 0 0% 35%;
   --t7-field-border-hsl: 0 0% 35%;
   --t7-input-hover-border-hsl: 232 70% 48%;
-  --t7-input-focus-border-hsl: var(--t7-focus-hsl);
+  --t7-input-focus-border-hsl: var(--t7-field-border-hsl);
   --t7-field-foreground-hsl: 0 0% 96%;
   --t7-disabled-background-hsl: 0 0% 21%;
   --t7-disabled-foreground-hsl: 0 0% 76%;
@@ -597,6 +695,47 @@
   --t7-kpi-chart-height: 52px;
   --t7-kpi-trend-padding-block: 3px;
   --t7-kpi-trend-padding-inline: 8px;
+  --t7-kpi-decorative-size: 132px;
+  --t7-kpi-decorative-offset-top: -21px;
+  --t7-kpi-decorative-offset-inline: -21px;
+  --t7-kpi-decorative-opacity: 0.09;
+  --t7-kpi-depth-gradient-angle: 145deg;
+  --t7-kpi-depth-gradient-stop: 58%;
+  --t7-kpi-depth-shadow-blur: 26px;
+  --t7-kpi-depth-shadow-offset-y: 12px;
+  --t7-kpi-depth-border-alpha: 0.56;
+  --t7-kpi-depth-highlight-alpha: 0.3;
+  --t7-kpi-depth-shade-alpha: 0.14;
+  --t7-kpi-depth-shadow-alpha: 0.24;
+  --t7-surface-depth-gradient-angle: 145deg;
+  --t7-surface-depth-gradient-stop: 58%;
+  --t7-surface-depth-shadow-blur: 26px;
+  --t7-surface-depth-shadow-offset-y: 12px;
+  --t7-surface-depth-border-alpha: 0.56;
+  --t7-surface-depth-highlight-alpha: 0.3;
+  --t7-surface-depth-shade-alpha: 0.14;
+  --t7-surface-depth-shadow-alpha: 0.24;
+  --t7-surface-hover-translate-y: -1px;
+  --t7-chart-line-width: 2.5;
+  --t7-chart-point-radius: 3.5;
+  --t7-chart-point-hover-scale: 1.65;
+  --t7-chart-point-settle-scale: 1.06;
+  --t7-chart-bar-radius: 5;
+  --t7-chart-bar-hover-translate-y: 3px;
+  --t7-chart-bar-hover-scale-y: 1.035;
+  --t7-chart-donut-stroke-width: 14;
+  --t7-chart-donut-hover-stroke-width: 16;
+  --t7-chart-tooltip-offset-y: 12px;
+  --t7-chart-depth-gradient-angle: 145deg;
+  --t7-chart-depth-gradient-stop: 58%;
+  --t7-chart-depth-shadow-blur: 6px;
+  --t7-chart-depth-shadow-offset-y: 3px;
+  --t7-chart-depth-border-alpha: 0.56;
+  --t7-chart-depth-highlight-alpha: 0.3;
+  --t7-chart-depth-shade-alpha: 0.14;
+  --t7-chart-depth-shadow-alpha: 0.1728;
+  --t7-chart-gradient-start-alpha: 0.835;
+  --t7-chart-gradient-end-alpha: 0.909;
   --t7-section-gap: 20px;
   --t7-control-gap: 10px;
   --t7-control-padding-inline: 15px;
@@ -630,6 +769,10 @@
   --t7-icon-navigation: 18px;
   --t7-icon-status: 13px;
   --t7-icon-feature: 24px;
+  --t7-mark-choice: 22px;
+  --t7-mark-radio: 22px;
+  --t7-mark-dot: 10px;
+  --t7-mark-stroke: 2px;
   --t7-overlay-menu-sm: 200px;
   --t7-overlay-menu-md: 240px;
   --t7-overlay-menu-lg: 280px;
@@ -642,6 +785,7 @@
   --t7-overlay-color: 304px;
   --t7-overlay-popover-min: 220px;
   --t7-overlay-popover-max: 360px;
+  --t7-overlay-tooltip-min: 128px;
   --t7-overlay-tooltip-max: 260px;
   --t7-overlay-command: 640px;
   --t7-overlay-dialog-sm: 400px;
@@ -653,6 +797,18 @@
   --t7-content-max: 1440px;
   --t7-sidebar-width: 232px;
   --t7-aside-width: 320px;
+  --t7-measure-compact: 256px;
+  --t7-measure-compact-min: 172px;
+  --t7-measure-control: 480px;
+  --t7-measure-control-min: 224px;
+  --t7-measure-content: 1200px;
+  --t7-measure-content-min: 320px;
+  --t7-measure-wide: 1440px;
+  --t7-measure-wide-min: 480px;
+  --t7-measure-reading: 880px;
+  --t7-measure-reading-min: 280px;
+  --t7-measure-fluid: 100%;
+  --t7-measure-fluid-min: 0px;
   --t7-grid-gap: 20px;
   --t7-safe-area-top: env(safe-area-inset-top, 0px);
   --t7-safe-area-right: env(safe-area-inset-right, 0px);
@@ -689,13 +845,12 @@
   --t7-heading-tracking: -0.03em;
   --t7-body-tracking: 0;
   --t7-shadow-card:
-    0 1px 2px hsl(222 30% 12% / 0.08),
-    0 16px 36px -26px hsl(var(--t7-primary-hsl) / 0.38);
+    0 1px 2px hsl(0 0% 0% / 0.08), 0 16px 36px -26px hsl(0 0% 0% / 0.24);
   --t7-shadow-button: 0 5px 12px -9px hsl(var(--t7-primary-hsl) / 0.8);
-  --t7-shadow-surface: 0 1px 2px hsl(222 30% 12% / 0.08);
-  --t7-shadow-raised: 0 10px 28px -20px hsl(222 30% 12% / 0.34);
-  --t7-shadow-popover: 0 18px 44px -24px hsl(222 30% 12% / 0.48);
-  --t7-shadow-modal: 0 28px 80px -30px hsl(222 30% 8% / 0.56);
+  --t7-shadow-surface: 0 1px 2px hsl(0 0% 0% / 0.08);
+  --t7-shadow-raised: 0 10px 28px -20px hsl(0 0% 0% / 0.34);
+  --t7-shadow-popover: 0 18px 44px -24px hsl(0 0% 0% / 0.48);
+  --t7-shadow-modal: 0 28px 80px -30px hsl(0 0% 0% / 0.56);
   --t7-motion-duration: 1.25s;
   --t7-duration-instant: 100ms;
   --t7-duration-fast: 130ms;
@@ -711,6 +866,7 @@
   --t7-duration-loop: 2000ms;
   --t7-ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --t7-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --t7-ease-chart: cubic-bezier(0.22, 0.74, 0.24, 1);
   --t7-ease-exit: cubic-bezier(0.4, 0, 1, 1);
   --t7-motion-interactive: var(--t7-duration-instant) var(--t7-ease-standard);
   --t7-motion-state: var(--t7-duration-standard) var(--t7-ease-standard);
@@ -735,7 +891,22 @@
   --t7-z-toast: 90;
   --t7-z-command: 100;
   --t7-doc-sticky-offset: calc(var(--t7-header-height) + var(--t7-ref-space-2));
-  --t7-scrim-hsl: 222 30% 12%;
+  --t7-scrim-hsl: 0 0% 0%;
+  --t7-opacity-pressed: 0.72;
+  --t7-opacity-disabled: 0.5;
+  --t7-opacity-scrim: 0.42;
+  --t7-opacity-interactive: 0.72;
+  --t7-opacity-hover: 0.64;
+  --t7-opacity-active: 0.82;
+  --t7-opacity-disabled-control: 0.48;
+  --t7-opacity-choice-disabled: 0.52;
+  --t7-opacity-option-disabled: 0.46;
+  --t7-opacity-checkbox-disabled: 0.55;
+  --t7-opacity-disabled-subtle: 0.34;
+  --t7-opacity-chart-grid: 0.82;
+  --t7-opacity-chart-track: 0.68;
+  --t7-opacity-chart-bar: 0.1;
+  --t7-opacity-detail-enter: 0.35;
   --t7-ref-space-0: 0px;
   --t7-ref-space-1: 4px;
   --t7-ref-space-2: 8px;
@@ -746,6 +917,15 @@
   --t7-ref-space-8: 32px;
   --t7-ref-space-10: 40px;
   --t7-ref-space-12: 48px;
+  --t7-ref-space-micro: 2px;
+  --t7-ref-space-fine: 3px;
+  --t7-ref-space-compact: 5px;
+  --t7-ref-space-tight: 6px;
+  --t7-ref-space-quiet: 9px;
+  --t7-ref-space-inline: 11px;
+  --t7-ref-space-snug: 14px;
+  --t7-ref-space-hero: 28px;
+  --t7-ref-space-relaxed: 18px;
   --t7-type-display-xl-size: clamp(38px, 5vw, 56px);
   --t7-type-display-xl-line-height: clamp(42px, 5.4vw, 60px);
   --t7-type-display-xl-weight: 600;
@@ -871,6 +1051,7 @@
   --t7-accent-source-kind: palette;
   --t7-accent-source: cyan;
   --t7-canvas-mode: balanced;
+  --t7-surface-treatment: outlined;
   --t7-chart-palette: spectrum;
   --t7-chart-palette-count: 5;
   --t7-primary-hsl: 232 70% 48%;
@@ -939,18 +1120,25 @@
   --t7-border-hsl: 0 0% 86%;
   --t7-border-strong-hsl: 0 0% 72%;
   --t7-border-subtle-hsl: 0 0% 94%;
+  --t7-table-border-hsl: 0 0% 86%;
+  --t7-table-divider-alpha: 0.82;
   --t7-muted-hsl: 0 0% 94%;
-  --t7-focus-hsl: 216 72% 38%;
-  --t7-focus-width: 2px;
+  --t7-focus-hsl: 232 70% 48%;
+  --t7-focus-width: 1px;
   --t7-focus-offset: 2px;
+  --t7-focus-ring-alpha: 0.72;
+  --t7-focus-glow-alpha: 0.18;
   --t7-focus-halo: 0 0 0 var(--t7-focus-offset) hsl(var(--t7-surface-hsl));
   --t7-focus-ring:
     var(--t7-focus-halo),
     0 0 0 calc(var(--t7-focus-offset) + var(--t7-focus-width))
-      hsl(var(--t7-focus-hsl));
-  --t7-focus-ring-inset: inset 0 0 0 var(--t7-focus-width)
-    hsl(var(--t7-focus-hsl));
-  --t7-shadow-selection: inset 3px 0 0 hsl(var(--t7-selected-hsl));
+      hsl(var(--t7-focus-hsl) / var(--t7-focus-ring-alpha)),
+    0 0 10px hsl(var(--t7-focus-hsl) / var(--t7-focus-glow-alpha));
+  --t7-focus-ring-inset:
+    inset 0 0 0 var(--t7-focus-width)
+      hsl(var(--t7-focus-hsl) / var(--t7-focus-ring-alpha)),
+    inset 0 0 8px hsl(var(--t7-focus-hsl) / var(--t7-focus-glow-alpha));
+  --t7-shadow-selection: inset 0 0 0 1px hsl(var(--t7-selected-hsl) / 0.24);
   --t7-shadow-state-boundary: inset 0 0 0 1px
     hsl(var(--t7-state-boundary-hsl, var(--t7-primary-hsl)) / 0.18);
   --t7-selected-hsl: 232 70% 48%;
@@ -962,7 +1150,7 @@
   --t7-input-border-hsl: 0 0% 72%;
   --t7-field-border-hsl: 0 0% 72%;
   --t7-input-hover-border-hsl: 232 70% 48%;
-  --t7-input-focus-border-hsl: var(--t7-focus-hsl);
+  --t7-input-focus-border-hsl: var(--t7-field-border-hsl);
   --t7-field-foreground-hsl: 0 0% 12%;
   --t7-disabled-background-hsl: 0 0% 94%;
   --t7-disabled-foreground-hsl: 0 0% 35%;
@@ -1025,6 +1213,47 @@
   --t7-kpi-chart-height: 52px;
   --t7-kpi-trend-padding-block: 3px;
   --t7-kpi-trend-padding-inline: 8px;
+  --t7-kpi-decorative-size: 132px;
+  --t7-kpi-decorative-offset-top: -21px;
+  --t7-kpi-decorative-offset-inline: -21px;
+  --t7-kpi-decorative-opacity: 0.09;
+  --t7-kpi-depth-gradient-angle: 145deg;
+  --t7-kpi-depth-gradient-stop: 58%;
+  --t7-kpi-depth-shadow-blur: 26px;
+  --t7-kpi-depth-shadow-offset-y: 12px;
+  --t7-kpi-depth-border-alpha: 0.56;
+  --t7-kpi-depth-highlight-alpha: 0.3;
+  --t7-kpi-depth-shade-alpha: 0.14;
+  --t7-kpi-depth-shadow-alpha: 0.24;
+  --t7-surface-depth-gradient-angle: 145deg;
+  --t7-surface-depth-gradient-stop: 58%;
+  --t7-surface-depth-shadow-blur: 26px;
+  --t7-surface-depth-shadow-offset-y: 12px;
+  --t7-surface-depth-border-alpha: 0.56;
+  --t7-surface-depth-highlight-alpha: 0.3;
+  --t7-surface-depth-shade-alpha: 0.14;
+  --t7-surface-depth-shadow-alpha: 0.24;
+  --t7-surface-hover-translate-y: -1px;
+  --t7-chart-line-width: 2.5;
+  --t7-chart-point-radius: 3.5;
+  --t7-chart-point-hover-scale: 1.65;
+  --t7-chart-point-settle-scale: 1.06;
+  --t7-chart-bar-radius: 5;
+  --t7-chart-bar-hover-translate-y: 3px;
+  --t7-chart-bar-hover-scale-y: 1.035;
+  --t7-chart-donut-stroke-width: 14;
+  --t7-chart-donut-hover-stroke-width: 16;
+  --t7-chart-tooltip-offset-y: 12px;
+  --t7-chart-depth-gradient-angle: 145deg;
+  --t7-chart-depth-gradient-stop: 58%;
+  --t7-chart-depth-shadow-blur: 6px;
+  --t7-chart-depth-shadow-offset-y: 3px;
+  --t7-chart-depth-border-alpha: 0.56;
+  --t7-chart-depth-highlight-alpha: 0.3;
+  --t7-chart-depth-shade-alpha: 0.14;
+  --t7-chart-depth-shadow-alpha: 0.1728;
+  --t7-chart-gradient-start-alpha: 0.835;
+  --t7-chart-gradient-end-alpha: 0.909;
   --t7-section-gap: 20px;
   --t7-control-gap: 10px;
   --t7-control-padding-inline: 15px;
@@ -1058,6 +1287,10 @@
   --t7-icon-navigation: 18px;
   --t7-icon-status: 13px;
   --t7-icon-feature: 24px;
+  --t7-mark-choice: 22px;
+  --t7-mark-radio: 22px;
+  --t7-mark-dot: 10px;
+  --t7-mark-stroke: 2px;
   --t7-overlay-menu-sm: 200px;
   --t7-overlay-menu-md: 240px;
   --t7-overlay-menu-lg: 280px;
@@ -1070,6 +1303,7 @@
   --t7-overlay-color: 304px;
   --t7-overlay-popover-min: 220px;
   --t7-overlay-popover-max: 360px;
+  --t7-overlay-tooltip-min: 128px;
   --t7-overlay-tooltip-max: 260px;
   --t7-overlay-command: 640px;
   --t7-overlay-dialog-sm: 400px;
@@ -1081,6 +1315,18 @@
   --t7-content-max: 1320px;
   --t7-sidebar-width: 232px;
   --t7-aside-width: 320px;
+  --t7-measure-compact: 256px;
+  --t7-measure-compact-min: 172px;
+  --t7-measure-control: 480px;
+  --t7-measure-control-min: 224px;
+  --t7-measure-content: 1200px;
+  --t7-measure-content-min: 320px;
+  --t7-measure-wide: 1440px;
+  --t7-measure-wide-min: 480px;
+  --t7-measure-reading: 880px;
+  --t7-measure-reading-min: 280px;
+  --t7-measure-fluid: 100%;
+  --t7-measure-fluid-min: 0px;
   --t7-grid-gap: 20px;
   --t7-safe-area-top: env(safe-area-inset-top, 0px);
   --t7-safe-area-right: env(safe-area-inset-right, 0px);
@@ -1117,13 +1363,12 @@
   --t7-heading-tracking: -0.03em;
   --t7-body-tracking: 0;
   --t7-shadow-card:
-    0 1px 2px hsl(222 30% 12% / 0.08),
-    0 16px 36px -26px hsl(var(--t7-primary-hsl) / 0.38);
+    0 1px 2px hsl(0 0% 12% / 0.08), 0 16px 36px -26px hsl(0 0% 12% / 0.24);
   --t7-shadow-button: 0 5px 12px -9px hsl(var(--t7-primary-hsl) / 0.8);
-  --t7-shadow-surface: 0 1px 2px hsl(222 30% 12% / 0.08);
-  --t7-shadow-raised: 0 10px 28px -20px hsl(222 30% 12% / 0.34);
-  --t7-shadow-popover: 0 18px 44px -24px hsl(222 30% 12% / 0.48);
-  --t7-shadow-modal: 0 28px 80px -30px hsl(222 30% 8% / 0.56);
+  --t7-shadow-surface: 0 1px 2px hsl(0 0% 12% / 0.08);
+  --t7-shadow-raised: 0 10px 28px -20px hsl(0 0% 12% / 0.34);
+  --t7-shadow-popover: 0 18px 44px -24px hsl(0 0% 12% / 0.48);
+  --t7-shadow-modal: 0 28px 80px -30px hsl(0 0% 12% / 0.56);
   --t7-motion-duration: 1.25s;
   --t7-duration-instant: 100ms;
   --t7-duration-fast: 130ms;
@@ -1139,6 +1384,7 @@
   --t7-duration-loop: 2000ms;
   --t7-ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --t7-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --t7-ease-chart: cubic-bezier(0.22, 0.74, 0.24, 1);
   --t7-ease-exit: cubic-bezier(0.4, 0, 1, 1);
   --t7-motion-interactive: var(--t7-duration-instant) var(--t7-ease-standard);
   --t7-motion-state: var(--t7-duration-standard) var(--t7-ease-standard);
@@ -1163,7 +1409,22 @@
   --t7-z-toast: 90;
   --t7-z-command: 100;
   --t7-doc-sticky-offset: calc(var(--t7-header-height) + var(--t7-ref-space-2));
-  --t7-scrim-hsl: 222 30% 12%;
+  --t7-scrim-hsl: 0 0% 12%;
+  --t7-opacity-pressed: 0.72;
+  --t7-opacity-disabled: 0.5;
+  --t7-opacity-scrim: 0.42;
+  --t7-opacity-interactive: 0.72;
+  --t7-opacity-hover: 0.64;
+  --t7-opacity-active: 0.82;
+  --t7-opacity-disabled-control: 0.48;
+  --t7-opacity-choice-disabled: 0.52;
+  --t7-opacity-option-disabled: 0.46;
+  --t7-opacity-checkbox-disabled: 0.55;
+  --t7-opacity-disabled-subtle: 0.34;
+  --t7-opacity-chart-grid: 0.82;
+  --t7-opacity-chart-track: 0.68;
+  --t7-opacity-chart-bar: 0.1;
+  --t7-opacity-detail-enter: 0.35;
   --t7-ref-space-0: 0px;
   --t7-ref-space-1: 4px;
   --t7-ref-space-2: 8px;
@@ -1174,6 +1435,15 @@
   --t7-ref-space-8: 32px;
   --t7-ref-space-10: 40px;
   --t7-ref-space-12: 48px;
+  --t7-ref-space-micro: 2px;
+  --t7-ref-space-fine: 3px;
+  --t7-ref-space-compact: 5px;
+  --t7-ref-space-tight: 6px;
+  --t7-ref-space-quiet: 9px;
+  --t7-ref-space-inline: 11px;
+  --t7-ref-space-snug: 14px;
+  --t7-ref-space-hero: 28px;
+  --t7-ref-space-relaxed: 18px;
   --t7-type-display-xl-size: clamp(38px, 5vw, 56px);
   --t7-type-display-xl-line-height: clamp(42px, 5.4vw, 60px);
   --t7-type-display-xl-weight: 600;
@@ -1299,6 +1569,7 @@
   --t7-accent-source-kind: palette;
   --t7-accent-source: cyan;
   --t7-canvas-mode: balanced;
+  --t7-surface-treatment: outlined;
   --t7-chart-palette: spectrum;
   --t7-chart-palette-count: 5;
   --t7-primary-hsl: 232 70% 48%;
@@ -1367,18 +1638,25 @@
   --t7-border-hsl: 0 0% 24%;
   --t7-border-strong-hsl: 0 0% 35%;
   --t7-border-subtle-hsl: 0 0% 20%;
+  --t7-table-border-hsl: 0 0% 24%;
+  --t7-table-divider-alpha: 0.82;
   --t7-muted-hsl: 0 0% 21%;
-  --t7-focus-hsl: 216 70% 72%;
-  --t7-focus-width: 2px;
+  --t7-focus-hsl: 232 70% 78%;
+  --t7-focus-width: 1px;
   --t7-focus-offset: 2px;
+  --t7-focus-ring-alpha: 0.72;
+  --t7-focus-glow-alpha: 0.18;
   --t7-focus-halo: 0 0 0 var(--t7-focus-offset) hsl(var(--t7-surface-hsl));
   --t7-focus-ring:
     var(--t7-focus-halo),
     0 0 0 calc(var(--t7-focus-offset) + var(--t7-focus-width))
-      hsl(var(--t7-focus-hsl));
-  --t7-focus-ring-inset: inset 0 0 0 var(--t7-focus-width)
-    hsl(var(--t7-focus-hsl));
-  --t7-shadow-selection: inset 3px 0 0 hsl(var(--t7-selected-hsl));
+      hsl(var(--t7-focus-hsl) / var(--t7-focus-ring-alpha)),
+    0 0 10px hsl(var(--t7-focus-hsl) / var(--t7-focus-glow-alpha));
+  --t7-focus-ring-inset:
+    inset 0 0 0 var(--t7-focus-width)
+      hsl(var(--t7-focus-hsl) / var(--t7-focus-ring-alpha)),
+    inset 0 0 8px hsl(var(--t7-focus-hsl) / var(--t7-focus-glow-alpha));
+  --t7-shadow-selection: inset 0 0 0 1px hsl(var(--t7-selected-hsl) / 0.24);
   --t7-shadow-state-boundary: inset 0 0 0 1px
     hsl(var(--t7-state-boundary-hsl, var(--t7-primary-hsl)) / 0.18);
   --t7-selected-hsl: 232 70% 48%;
@@ -1390,7 +1668,7 @@
   --t7-input-border-hsl: 0 0% 35%;
   --t7-field-border-hsl: 0 0% 35%;
   --t7-input-hover-border-hsl: 232 70% 48%;
-  --t7-input-focus-border-hsl: var(--t7-focus-hsl);
+  --t7-input-focus-border-hsl: var(--t7-field-border-hsl);
   --t7-field-foreground-hsl: 0 0% 96%;
   --t7-disabled-background-hsl: 0 0% 21%;
   --t7-disabled-foreground-hsl: 0 0% 76%;
@@ -1453,6 +1731,47 @@
   --t7-kpi-chart-height: 52px;
   --t7-kpi-trend-padding-block: 3px;
   --t7-kpi-trend-padding-inline: 8px;
+  --t7-kpi-decorative-size: 132px;
+  --t7-kpi-decorative-offset-top: -21px;
+  --t7-kpi-decorative-offset-inline: -21px;
+  --t7-kpi-decorative-opacity: 0.09;
+  --t7-kpi-depth-gradient-angle: 145deg;
+  --t7-kpi-depth-gradient-stop: 58%;
+  --t7-kpi-depth-shadow-blur: 26px;
+  --t7-kpi-depth-shadow-offset-y: 12px;
+  --t7-kpi-depth-border-alpha: 0.56;
+  --t7-kpi-depth-highlight-alpha: 0.3;
+  --t7-kpi-depth-shade-alpha: 0.14;
+  --t7-kpi-depth-shadow-alpha: 0.24;
+  --t7-surface-depth-gradient-angle: 145deg;
+  --t7-surface-depth-gradient-stop: 58%;
+  --t7-surface-depth-shadow-blur: 26px;
+  --t7-surface-depth-shadow-offset-y: 12px;
+  --t7-surface-depth-border-alpha: 0.56;
+  --t7-surface-depth-highlight-alpha: 0.3;
+  --t7-surface-depth-shade-alpha: 0.14;
+  --t7-surface-depth-shadow-alpha: 0.24;
+  --t7-surface-hover-translate-y: -1px;
+  --t7-chart-line-width: 2.5;
+  --t7-chart-point-radius: 3.5;
+  --t7-chart-point-hover-scale: 1.65;
+  --t7-chart-point-settle-scale: 1.06;
+  --t7-chart-bar-radius: 5;
+  --t7-chart-bar-hover-translate-y: 3px;
+  --t7-chart-bar-hover-scale-y: 1.035;
+  --t7-chart-donut-stroke-width: 14;
+  --t7-chart-donut-hover-stroke-width: 16;
+  --t7-chart-tooltip-offset-y: 12px;
+  --t7-chart-depth-gradient-angle: 145deg;
+  --t7-chart-depth-gradient-stop: 58%;
+  --t7-chart-depth-shadow-blur: 6px;
+  --t7-chart-depth-shadow-offset-y: 3px;
+  --t7-chart-depth-border-alpha: 0.56;
+  --t7-chart-depth-highlight-alpha: 0.3;
+  --t7-chart-depth-shade-alpha: 0.14;
+  --t7-chart-depth-shadow-alpha: 0.1728;
+  --t7-chart-gradient-start-alpha: 0.835;
+  --t7-chart-gradient-end-alpha: 0.909;
   --t7-section-gap: 20px;
   --t7-control-gap: 10px;
   --t7-control-padding-inline: 15px;
@@ -1486,6 +1805,10 @@
   --t7-icon-navigation: 18px;
   --t7-icon-status: 13px;
   --t7-icon-feature: 24px;
+  --t7-mark-choice: 22px;
+  --t7-mark-radio: 22px;
+  --t7-mark-dot: 10px;
+  --t7-mark-stroke: 2px;
   --t7-overlay-menu-sm: 200px;
   --t7-overlay-menu-md: 240px;
   --t7-overlay-menu-lg: 280px;
@@ -1498,6 +1821,7 @@
   --t7-overlay-color: 304px;
   --t7-overlay-popover-min: 220px;
   --t7-overlay-popover-max: 360px;
+  --t7-overlay-tooltip-min: 128px;
   --t7-overlay-tooltip-max: 260px;
   --t7-overlay-command: 640px;
   --t7-overlay-dialog-sm: 400px;
@@ -1509,6 +1833,18 @@
   --t7-content-max: 1320px;
   --t7-sidebar-width: 232px;
   --t7-aside-width: 320px;
+  --t7-measure-compact: 256px;
+  --t7-measure-compact-min: 172px;
+  --t7-measure-control: 480px;
+  --t7-measure-control-min: 224px;
+  --t7-measure-content: 1200px;
+  --t7-measure-content-min: 320px;
+  --t7-measure-wide: 1440px;
+  --t7-measure-wide-min: 480px;
+  --t7-measure-reading: 880px;
+  --t7-measure-reading-min: 280px;
+  --t7-measure-fluid: 100%;
+  --t7-measure-fluid-min: 0px;
   --t7-grid-gap: 20px;
   --t7-safe-area-top: env(safe-area-inset-top, 0px);
   --t7-safe-area-right: env(safe-area-inset-right, 0px);
@@ -1545,13 +1881,12 @@
   --t7-heading-tracking: -0.03em;
   --t7-body-tracking: 0;
   --t7-shadow-card:
-    0 1px 2px hsl(222 30% 12% / 0.08),
-    0 16px 36px -26px hsl(var(--t7-primary-hsl) / 0.38);
+    0 1px 2px hsl(0 0% 0% / 0.08), 0 16px 36px -26px hsl(0 0% 0% / 0.24);
   --t7-shadow-button: 0 5px 12px -9px hsl(var(--t7-primary-hsl) / 0.8);
-  --t7-shadow-surface: 0 1px 2px hsl(222 30% 12% / 0.08);
-  --t7-shadow-raised: 0 10px 28px -20px hsl(222 30% 12% / 0.34);
-  --t7-shadow-popover: 0 18px 44px -24px hsl(222 30% 12% / 0.48);
-  --t7-shadow-modal: 0 28px 80px -30px hsl(222 30% 8% / 0.56);
+  --t7-shadow-surface: 0 1px 2px hsl(0 0% 0% / 0.08);
+  --t7-shadow-raised: 0 10px 28px -20px hsl(0 0% 0% / 0.34);
+  --t7-shadow-popover: 0 18px 44px -24px hsl(0 0% 0% / 0.48);
+  --t7-shadow-modal: 0 28px 80px -30px hsl(0 0% 0% / 0.56);
   --t7-motion-duration: 1.25s;
   --t7-duration-instant: 100ms;
   --t7-duration-fast: 130ms;
@@ -1567,6 +1902,7 @@
   --t7-duration-loop: 2000ms;
   --t7-ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --t7-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --t7-ease-chart: cubic-bezier(0.22, 0.74, 0.24, 1);
   --t7-ease-exit: cubic-bezier(0.4, 0, 1, 1);
   --t7-motion-interactive: var(--t7-duration-instant) var(--t7-ease-standard);
   --t7-motion-state: var(--t7-duration-standard) var(--t7-ease-standard);
@@ -1591,7 +1927,22 @@
   --t7-z-toast: 90;
   --t7-z-command: 100;
   --t7-doc-sticky-offset: calc(var(--t7-header-height) + var(--t7-ref-space-2));
-  --t7-scrim-hsl: 222 30% 12%;
+  --t7-scrim-hsl: 0 0% 0%;
+  --t7-opacity-pressed: 0.72;
+  --t7-opacity-disabled: 0.5;
+  --t7-opacity-scrim: 0.42;
+  --t7-opacity-interactive: 0.72;
+  --t7-opacity-hover: 0.64;
+  --t7-opacity-active: 0.82;
+  --t7-opacity-disabled-control: 0.48;
+  --t7-opacity-choice-disabled: 0.52;
+  --t7-opacity-option-disabled: 0.46;
+  --t7-opacity-checkbox-disabled: 0.55;
+  --t7-opacity-disabled-subtle: 0.34;
+  --t7-opacity-chart-grid: 0.82;
+  --t7-opacity-chart-track: 0.68;
+  --t7-opacity-chart-bar: 0.1;
+  --t7-opacity-detail-enter: 0.35;
   --t7-ref-space-0: 0px;
   --t7-ref-space-1: 4px;
   --t7-ref-space-2: 8px;
@@ -1602,6 +1953,15 @@
   --t7-ref-space-8: 32px;
   --t7-ref-space-10: 40px;
   --t7-ref-space-12: 48px;
+  --t7-ref-space-micro: 2px;
+  --t7-ref-space-fine: 3px;
+  --t7-ref-space-compact: 5px;
+  --t7-ref-space-tight: 6px;
+  --t7-ref-space-quiet: 9px;
+  --t7-ref-space-inline: 11px;
+  --t7-ref-space-snug: 14px;
+  --t7-ref-space-hero: 28px;
+  --t7-ref-space-relaxed: 18px;
   --t7-type-display-xl-size: clamp(38px, 5vw, 56px);
   --t7-type-display-xl-line-height: clamp(42px, 5.4vw, 60px);
   --t7-type-display-xl-weight: 600;
@@ -1727,6 +2087,7 @@
   --t7-accent-source-kind: palette;
   --t7-accent-source: amber;
   --t7-canvas-mode: paper;
+  --t7-surface-treatment: outlined;
   --t7-chart-palette: four;
   --t7-chart-palette-count: 4;
   --t7-primary-hsl: 215 25% 35%;
@@ -1795,18 +2156,25 @@
   --t7-border-hsl: 0 0% 87%;
   --t7-border-strong-hsl: 0 0% 66%;
   --t7-border-subtle-hsl: 0 0% 95%;
+  --t7-table-border-hsl: 0 0% 87%;
+  --t7-table-divider-alpha: 0.82;
   --t7-muted-hsl: 0 0% 95%;
-  --t7-focus-hsl: 216 72% 38%;
-  --t7-focus-width: 2px;
+  --t7-focus-hsl: 215 25% 35%;
+  --t7-focus-width: 1px;
   --t7-focus-offset: 2px;
+  --t7-focus-ring-alpha: 0.72;
+  --t7-focus-glow-alpha: 0.18;
   --t7-focus-halo: 0 0 0 var(--t7-focus-offset) hsl(var(--t7-surface-hsl));
   --t7-focus-ring:
     var(--t7-focus-halo),
     0 0 0 calc(var(--t7-focus-offset) + var(--t7-focus-width))
-      hsl(var(--t7-focus-hsl));
-  --t7-focus-ring-inset: inset 0 0 0 var(--t7-focus-width)
-    hsl(var(--t7-focus-hsl));
-  --t7-shadow-selection: inset 3px 0 0 hsl(var(--t7-selected-hsl));
+      hsl(var(--t7-focus-hsl) / var(--t7-focus-ring-alpha)),
+    0 0 10px hsl(var(--t7-focus-hsl) / var(--t7-focus-glow-alpha));
+  --t7-focus-ring-inset:
+    inset 0 0 0 var(--t7-focus-width)
+      hsl(var(--t7-focus-hsl) / var(--t7-focus-ring-alpha)),
+    inset 0 0 8px hsl(var(--t7-focus-hsl) / var(--t7-focus-glow-alpha));
+  --t7-shadow-selection: inset 0 0 0 1px hsl(var(--t7-selected-hsl) / 0.24);
   --t7-shadow-state-boundary: inset 0 0 0 1px
     hsl(var(--t7-state-boundary-hsl, var(--t7-primary-hsl)) / 0.18);
   --t7-selected-hsl: 215 25% 35%;
@@ -1818,7 +2186,7 @@
   --t7-input-border-hsl: 0 0% 66%;
   --t7-field-border-hsl: 0 0% 66%;
   --t7-input-hover-border-hsl: 215 25% 35%;
-  --t7-input-focus-border-hsl: var(--t7-focus-hsl);
+  --t7-input-focus-border-hsl: var(--t7-field-border-hsl);
   --t7-field-foreground-hsl: 0 0% 11%;
   --t7-disabled-background-hsl: 0 0% 95%;
   --t7-disabled-foreground-hsl: 0 0% 35%;
@@ -1881,6 +2249,47 @@
   --t7-kpi-chart-height: 56px;
   --t7-kpi-trend-padding-block: 3px;
   --t7-kpi-trend-padding-inline: 8px;
+  --t7-kpi-decorative-size: 132px;
+  --t7-kpi-decorative-offset-top: -21px;
+  --t7-kpi-decorative-offset-inline: -21px;
+  --t7-kpi-decorative-opacity: 0.09;
+  --t7-kpi-depth-gradient-angle: 145deg;
+  --t7-kpi-depth-gradient-stop: 58%;
+  --t7-kpi-depth-shadow-blur: 26px;
+  --t7-kpi-depth-shadow-offset-y: 12px;
+  --t7-kpi-depth-border-alpha: 1;
+  --t7-kpi-depth-highlight-alpha: 0;
+  --t7-kpi-depth-shade-alpha: 0;
+  --t7-kpi-depth-shadow-alpha: 0;
+  --t7-surface-depth-gradient-angle: 145deg;
+  --t7-surface-depth-gradient-stop: 58%;
+  --t7-surface-depth-shadow-blur: 26px;
+  --t7-surface-depth-shadow-offset-y: 12px;
+  --t7-surface-depth-border-alpha: 1;
+  --t7-surface-depth-highlight-alpha: 0;
+  --t7-surface-depth-shade-alpha: 0;
+  --t7-surface-depth-shadow-alpha: 0;
+  --t7-surface-hover-translate-y: 0px;
+  --t7-chart-line-width: 2.5;
+  --t7-chart-point-radius: 3.5;
+  --t7-chart-point-hover-scale: 1.65;
+  --t7-chart-point-settle-scale: 1.06;
+  --t7-chart-bar-radius: 5;
+  --t7-chart-bar-hover-translate-y: 3px;
+  --t7-chart-bar-hover-scale-y: 1.035;
+  --t7-chart-donut-stroke-width: 14;
+  --t7-chart-donut-hover-stroke-width: 16;
+  --t7-chart-tooltip-offset-y: 12px;
+  --t7-chart-depth-gradient-angle: 145deg;
+  --t7-chart-depth-gradient-stop: 58%;
+  --t7-chart-depth-shadow-blur: 6px;
+  --t7-chart-depth-shadow-offset-y: 3px;
+  --t7-chart-depth-border-alpha: 1;
+  --t7-chart-depth-highlight-alpha: 0;
+  --t7-chart-depth-shade-alpha: 0;
+  --t7-chart-depth-shadow-alpha: 0;
+  --t7-chart-gradient-start-alpha: 1;
+  --t7-chart-gradient-end-alpha: 1;
   --t7-section-gap: 24px;
   --t7-control-gap: 12px;
   --t7-control-padding-inline: 17px;
@@ -1914,6 +2323,10 @@
   --t7-icon-navigation: 18px;
   --t7-icon-status: 13px;
   --t7-icon-feature: 24px;
+  --t7-mark-choice: 22px;
+  --t7-mark-radio: 22px;
+  --t7-mark-dot: 10px;
+  --t7-mark-stroke: 2px;
   --t7-overlay-menu-sm: 200px;
   --t7-overlay-menu-md: 240px;
   --t7-overlay-menu-lg: 280px;
@@ -1926,6 +2339,7 @@
   --t7-overlay-color: 304px;
   --t7-overlay-popover-min: 220px;
   --t7-overlay-popover-max: 360px;
+  --t7-overlay-tooltip-min: 128px;
   --t7-overlay-tooltip-max: 260px;
   --t7-overlay-command: 640px;
   --t7-overlay-dialog-sm: 400px;
@@ -1937,6 +2351,18 @@
   --t7-content-max: 1180px;
   --t7-sidebar-width: 232px;
   --t7-aside-width: 320px;
+  --t7-measure-compact: 256px;
+  --t7-measure-compact-min: 172px;
+  --t7-measure-control: 480px;
+  --t7-measure-control-min: 224px;
+  --t7-measure-content: 1200px;
+  --t7-measure-content-min: 320px;
+  --t7-measure-wide: 1440px;
+  --t7-measure-wide-min: 480px;
+  --t7-measure-reading: 880px;
+  --t7-measure-reading-min: 280px;
+  --t7-measure-fluid: 100%;
+  --t7-measure-fluid-min: 0px;
   --t7-grid-gap: 24px;
   --t7-safe-area-top: env(safe-area-inset-top, 0px);
   --t7-safe-area-right: env(safe-area-inset-right, 0px);
@@ -1993,6 +2419,7 @@
   --t7-duration-loop: 2400ms;
   --t7-ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --t7-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --t7-ease-chart: cubic-bezier(0.22, 0.74, 0.24, 1);
   --t7-ease-exit: cubic-bezier(0.4, 0, 1, 1);
   --t7-motion-interactive: var(--t7-duration-instant) var(--t7-ease-standard);
   --t7-motion-state: var(--t7-duration-standard) var(--t7-ease-standard);
@@ -2017,7 +2444,22 @@
   --t7-z-toast: 90;
   --t7-z-command: 100;
   --t7-doc-sticky-offset: calc(var(--t7-header-height) + var(--t7-ref-space-2));
-  --t7-scrim-hsl: 222 30% 12%;
+  --t7-scrim-hsl: 0 0% 12%;
+  --t7-opacity-pressed: 0.72;
+  --t7-opacity-disabled: 0.5;
+  --t7-opacity-scrim: 0.42;
+  --t7-opacity-interactive: 0.72;
+  --t7-opacity-hover: 0.64;
+  --t7-opacity-active: 0.82;
+  --t7-opacity-disabled-control: 0.48;
+  --t7-opacity-choice-disabled: 0.52;
+  --t7-opacity-option-disabled: 0.46;
+  --t7-opacity-checkbox-disabled: 0.55;
+  --t7-opacity-disabled-subtle: 0.34;
+  --t7-opacity-chart-grid: 0.82;
+  --t7-opacity-chart-track: 0.68;
+  --t7-opacity-chart-bar: 0.1;
+  --t7-opacity-detail-enter: 0.35;
   --t7-ref-space-0: 0px;
   --t7-ref-space-1: 4px;
   --t7-ref-space-2: 8px;
@@ -2028,6 +2470,15 @@
   --t7-ref-space-8: 32px;
   --t7-ref-space-10: 40px;
   --t7-ref-space-12: 48px;
+  --t7-ref-space-micro: 2px;
+  --t7-ref-space-fine: 3px;
+  --t7-ref-space-compact: 5px;
+  --t7-ref-space-tight: 6px;
+  --t7-ref-space-quiet: 9px;
+  --t7-ref-space-inline: 11px;
+  --t7-ref-space-snug: 14px;
+  --t7-ref-space-hero: 28px;
+  --t7-ref-space-relaxed: 18px;
   --t7-type-display-xl-size: clamp(38px, 5vw, 56px);
   --t7-type-display-xl-line-height: clamp(42px, 5.4vw, 60px);
   --t7-type-display-xl-weight: 600;
@@ -2153,6 +2604,7 @@
   --t7-accent-source-kind: palette;
   --t7-accent-source: amber;
   --t7-canvas-mode: paper;
+  --t7-surface-treatment: outlined;
   --t7-chart-palette: four;
   --t7-chart-palette-count: 4;
   --t7-primary-hsl: 215 25% 35%;
@@ -2221,18 +2673,25 @@
   --t7-border-hsl: 0 0% 24%;
   --t7-border-strong-hsl: 0 0% 35%;
   --t7-border-subtle-hsl: 0 0% 20%;
+  --t7-table-border-hsl: 0 0% 24%;
+  --t7-table-divider-alpha: 0.82;
   --t7-muted-hsl: 0 0% 21%;
-  --t7-focus-hsl: 216 70% 72%;
-  --t7-focus-width: 2px;
+  --t7-focus-hsl: 215 25% 67%;
+  --t7-focus-width: 1px;
   --t7-focus-offset: 2px;
+  --t7-focus-ring-alpha: 0.72;
+  --t7-focus-glow-alpha: 0.18;
   --t7-focus-halo: 0 0 0 var(--t7-focus-offset) hsl(var(--t7-surface-hsl));
   --t7-focus-ring:
     var(--t7-focus-halo),
     0 0 0 calc(var(--t7-focus-offset) + var(--t7-focus-width))
-      hsl(var(--t7-focus-hsl));
-  --t7-focus-ring-inset: inset 0 0 0 var(--t7-focus-width)
-    hsl(var(--t7-focus-hsl));
-  --t7-shadow-selection: inset 3px 0 0 hsl(var(--t7-selected-hsl));
+      hsl(var(--t7-focus-hsl) / var(--t7-focus-ring-alpha)),
+    0 0 10px hsl(var(--t7-focus-hsl) / var(--t7-focus-glow-alpha));
+  --t7-focus-ring-inset:
+    inset 0 0 0 var(--t7-focus-width)
+      hsl(var(--t7-focus-hsl) / var(--t7-focus-ring-alpha)),
+    inset 0 0 8px hsl(var(--t7-focus-hsl) / var(--t7-focus-glow-alpha));
+  --t7-shadow-selection: inset 0 0 0 1px hsl(var(--t7-selected-hsl) / 0.24);
   --t7-shadow-state-boundary: inset 0 0 0 1px
     hsl(var(--t7-state-boundary-hsl, var(--t7-primary-hsl)) / 0.18);
   --t7-selected-hsl: 215 25% 35%;
@@ -2244,7 +2703,7 @@
   --t7-input-border-hsl: 0 0% 35%;
   --t7-field-border-hsl: 0 0% 35%;
   --t7-input-hover-border-hsl: 215 25% 35%;
-  --t7-input-focus-border-hsl: var(--t7-focus-hsl);
+  --t7-input-focus-border-hsl: var(--t7-field-border-hsl);
   --t7-field-foreground-hsl: 0 0% 96%;
   --t7-disabled-background-hsl: 0 0% 21%;
   --t7-disabled-foreground-hsl: 0 0% 76%;
@@ -2307,6 +2766,47 @@
   --t7-kpi-chart-height: 56px;
   --t7-kpi-trend-padding-block: 3px;
   --t7-kpi-trend-padding-inline: 8px;
+  --t7-kpi-decorative-size: 132px;
+  --t7-kpi-decorative-offset-top: -21px;
+  --t7-kpi-decorative-offset-inline: -21px;
+  --t7-kpi-decorative-opacity: 0.09;
+  --t7-kpi-depth-gradient-angle: 145deg;
+  --t7-kpi-depth-gradient-stop: 58%;
+  --t7-kpi-depth-shadow-blur: 26px;
+  --t7-kpi-depth-shadow-offset-y: 12px;
+  --t7-kpi-depth-border-alpha: 1;
+  --t7-kpi-depth-highlight-alpha: 0;
+  --t7-kpi-depth-shade-alpha: 0;
+  --t7-kpi-depth-shadow-alpha: 0;
+  --t7-surface-depth-gradient-angle: 145deg;
+  --t7-surface-depth-gradient-stop: 58%;
+  --t7-surface-depth-shadow-blur: 26px;
+  --t7-surface-depth-shadow-offset-y: 12px;
+  --t7-surface-depth-border-alpha: 1;
+  --t7-surface-depth-highlight-alpha: 0;
+  --t7-surface-depth-shade-alpha: 0;
+  --t7-surface-depth-shadow-alpha: 0;
+  --t7-surface-hover-translate-y: 0px;
+  --t7-chart-line-width: 2.5;
+  --t7-chart-point-radius: 3.5;
+  --t7-chart-point-hover-scale: 1.65;
+  --t7-chart-point-settle-scale: 1.06;
+  --t7-chart-bar-radius: 5;
+  --t7-chart-bar-hover-translate-y: 3px;
+  --t7-chart-bar-hover-scale-y: 1.035;
+  --t7-chart-donut-stroke-width: 14;
+  --t7-chart-donut-hover-stroke-width: 16;
+  --t7-chart-tooltip-offset-y: 12px;
+  --t7-chart-depth-gradient-angle: 145deg;
+  --t7-chart-depth-gradient-stop: 58%;
+  --t7-chart-depth-shadow-blur: 6px;
+  --t7-chart-depth-shadow-offset-y: 3px;
+  --t7-chart-depth-border-alpha: 1;
+  --t7-chart-depth-highlight-alpha: 0;
+  --t7-chart-depth-shade-alpha: 0;
+  --t7-chart-depth-shadow-alpha: 0;
+  --t7-chart-gradient-start-alpha: 1;
+  --t7-chart-gradient-end-alpha: 1;
   --t7-section-gap: 24px;
   --t7-control-gap: 12px;
   --t7-control-padding-inline: 17px;
@@ -2340,6 +2840,10 @@
   --t7-icon-navigation: 18px;
   --t7-icon-status: 13px;
   --t7-icon-feature: 24px;
+  --t7-mark-choice: 22px;
+  --t7-mark-radio: 22px;
+  --t7-mark-dot: 10px;
+  --t7-mark-stroke: 2px;
   --t7-overlay-menu-sm: 200px;
   --t7-overlay-menu-md: 240px;
   --t7-overlay-menu-lg: 280px;
@@ -2352,6 +2856,7 @@
   --t7-overlay-color: 304px;
   --t7-overlay-popover-min: 220px;
   --t7-overlay-popover-max: 360px;
+  --t7-overlay-tooltip-min: 128px;
   --t7-overlay-tooltip-max: 260px;
   --t7-overlay-command: 640px;
   --t7-overlay-dialog-sm: 400px;
@@ -2363,6 +2868,18 @@
   --t7-content-max: 1180px;
   --t7-sidebar-width: 232px;
   --t7-aside-width: 320px;
+  --t7-measure-compact: 256px;
+  --t7-measure-compact-min: 172px;
+  --t7-measure-control: 480px;
+  --t7-measure-control-min: 224px;
+  --t7-measure-content: 1200px;
+  --t7-measure-content-min: 320px;
+  --t7-measure-wide: 1440px;
+  --t7-measure-wide-min: 480px;
+  --t7-measure-reading: 880px;
+  --t7-measure-reading-min: 280px;
+  --t7-measure-fluid: 100%;
+  --t7-measure-fluid-min: 0px;
   --t7-grid-gap: 24px;
   --t7-safe-area-top: env(safe-area-inset-top, 0px);
   --t7-safe-area-right: env(safe-area-inset-right, 0px);
@@ -2419,6 +2936,7 @@
   --t7-duration-loop: 2400ms;
   --t7-ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --t7-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --t7-ease-chart: cubic-bezier(0.22, 0.74, 0.24, 1);
   --t7-ease-exit: cubic-bezier(0.4, 0, 1, 1);
   --t7-motion-interactive: var(--t7-duration-instant) var(--t7-ease-standard);
   --t7-motion-state: var(--t7-duration-standard) var(--t7-ease-standard);
@@ -2443,7 +2961,22 @@
   --t7-z-toast: 90;
   --t7-z-command: 100;
   --t7-doc-sticky-offset: calc(var(--t7-header-height) + var(--t7-ref-space-2));
-  --t7-scrim-hsl: 222 30% 12%;
+  --t7-scrim-hsl: 0 0% 0%;
+  --t7-opacity-pressed: 0.72;
+  --t7-opacity-disabled: 0.5;
+  --t7-opacity-scrim: 0.42;
+  --t7-opacity-interactive: 0.72;
+  --t7-opacity-hover: 0.64;
+  --t7-opacity-active: 0.82;
+  --t7-opacity-disabled-control: 0.48;
+  --t7-opacity-choice-disabled: 0.52;
+  --t7-opacity-option-disabled: 0.46;
+  --t7-opacity-checkbox-disabled: 0.55;
+  --t7-opacity-disabled-subtle: 0.34;
+  --t7-opacity-chart-grid: 0.82;
+  --t7-opacity-chart-track: 0.68;
+  --t7-opacity-chart-bar: 0.1;
+  --t7-opacity-detail-enter: 0.35;
   --t7-ref-space-0: 0px;
   --t7-ref-space-1: 4px;
   --t7-ref-space-2: 8px;
@@ -2454,6 +2987,15 @@
   --t7-ref-space-8: 32px;
   --t7-ref-space-10: 40px;
   --t7-ref-space-12: 48px;
+  --t7-ref-space-micro: 2px;
+  --t7-ref-space-fine: 3px;
+  --t7-ref-space-compact: 5px;
+  --t7-ref-space-tight: 6px;
+  --t7-ref-space-quiet: 9px;
+  --t7-ref-space-inline: 11px;
+  --t7-ref-space-snug: 14px;
+  --t7-ref-space-hero: 28px;
+  --t7-ref-space-relaxed: 18px;
   --t7-type-display-xl-size: clamp(38px, 5vw, 56px);
   --t7-type-display-xl-line-height: clamp(42px, 5.4vw, 60px);
   --t7-type-display-xl-weight: 600;
@@ -2579,6 +3121,7 @@
   --t7-accent-source-kind: palette;
   --t7-accent-source: orange;
   --t7-canvas-mode: paper;
+  --t7-surface-treatment: outlined;
   --t7-chart-palette: spectrum;
   --t7-chart-palette-count: 5;
   --t7-primary-hsl: 148 58% 29%;
@@ -2647,18 +3190,25 @@
   --t7-border-hsl: 0 0% 87%;
   --t7-border-strong-hsl: 0 0% 66%;
   --t7-border-subtle-hsl: 0 0% 95%;
+  --t7-table-border-hsl: 0 0% 87%;
+  --t7-table-divider-alpha: 0.82;
   --t7-muted-hsl: 0 0% 95%;
-  --t7-focus-hsl: 216 72% 38%;
-  --t7-focus-width: 2px;
+  --t7-focus-hsl: 148 58% 29%;
+  --t7-focus-width: 1px;
   --t7-focus-offset: 2px;
+  --t7-focus-ring-alpha: 0.72;
+  --t7-focus-glow-alpha: 0.18;
   --t7-focus-halo: 0 0 0 var(--t7-focus-offset) hsl(var(--t7-surface-hsl));
   --t7-focus-ring:
     var(--t7-focus-halo),
     0 0 0 calc(var(--t7-focus-offset) + var(--t7-focus-width))
-      hsl(var(--t7-focus-hsl));
-  --t7-focus-ring-inset: inset 0 0 0 var(--t7-focus-width)
-    hsl(var(--t7-focus-hsl));
-  --t7-shadow-selection: inset 3px 0 0 hsl(var(--t7-selected-hsl));
+      hsl(var(--t7-focus-hsl) / var(--t7-focus-ring-alpha)),
+    0 0 10px hsl(var(--t7-focus-hsl) / var(--t7-focus-glow-alpha));
+  --t7-focus-ring-inset:
+    inset 0 0 0 var(--t7-focus-width)
+      hsl(var(--t7-focus-hsl) / var(--t7-focus-ring-alpha)),
+    inset 0 0 8px hsl(var(--t7-focus-hsl) / var(--t7-focus-glow-alpha));
+  --t7-shadow-selection: inset 0 0 0 1px hsl(var(--t7-selected-hsl) / 0.24);
   --t7-shadow-state-boundary: inset 0 0 0 1px
     hsl(var(--t7-state-boundary-hsl, var(--t7-primary-hsl)) / 0.18);
   --t7-selected-hsl: 148 58% 29%;
@@ -2670,7 +3220,7 @@
   --t7-input-border-hsl: 0 0% 66%;
   --t7-field-border-hsl: 0 0% 66%;
   --t7-input-hover-border-hsl: 148 58% 29%;
-  --t7-input-focus-border-hsl: var(--t7-focus-hsl);
+  --t7-input-focus-border-hsl: var(--t7-field-border-hsl);
   --t7-field-foreground-hsl: 0 0% 11%;
   --t7-disabled-background-hsl: 0 0% 95%;
   --t7-disabled-foreground-hsl: 0 0% 35%;
@@ -2733,6 +3283,47 @@
   --t7-kpi-chart-height: 52px;
   --t7-kpi-trend-padding-block: 3px;
   --t7-kpi-trend-padding-inline: 8px;
+  --t7-kpi-decorative-size: 132px;
+  --t7-kpi-decorative-offset-top: -21px;
+  --t7-kpi-decorative-offset-inline: -21px;
+  --t7-kpi-decorative-opacity: 0.09;
+  --t7-kpi-depth-gradient-angle: 145deg;
+  --t7-kpi-depth-gradient-stop: 58%;
+  --t7-kpi-depth-shadow-blur: 26px;
+  --t7-kpi-depth-shadow-offset-y: 12px;
+  --t7-kpi-depth-border-alpha: 0.56;
+  --t7-kpi-depth-highlight-alpha: 0.3;
+  --t7-kpi-depth-shade-alpha: 0.14;
+  --t7-kpi-depth-shadow-alpha: 0.24;
+  --t7-surface-depth-gradient-angle: 145deg;
+  --t7-surface-depth-gradient-stop: 58%;
+  --t7-surface-depth-shadow-blur: 26px;
+  --t7-surface-depth-shadow-offset-y: 12px;
+  --t7-surface-depth-border-alpha: 0.56;
+  --t7-surface-depth-highlight-alpha: 0.3;
+  --t7-surface-depth-shade-alpha: 0.14;
+  --t7-surface-depth-shadow-alpha: 0.24;
+  --t7-surface-hover-translate-y: -1px;
+  --t7-chart-line-width: 2.5;
+  --t7-chart-point-radius: 3.5;
+  --t7-chart-point-hover-scale: 1.65;
+  --t7-chart-point-settle-scale: 1.06;
+  --t7-chart-bar-radius: 5;
+  --t7-chart-bar-hover-translate-y: 3px;
+  --t7-chart-bar-hover-scale-y: 1.035;
+  --t7-chart-donut-stroke-width: 14;
+  --t7-chart-donut-hover-stroke-width: 16;
+  --t7-chart-tooltip-offset-y: 12px;
+  --t7-chart-depth-gradient-angle: 145deg;
+  --t7-chart-depth-gradient-stop: 58%;
+  --t7-chart-depth-shadow-blur: 6px;
+  --t7-chart-depth-shadow-offset-y: 3px;
+  --t7-chart-depth-border-alpha: 0.56;
+  --t7-chart-depth-highlight-alpha: 0.3;
+  --t7-chart-depth-shade-alpha: 0.14;
+  --t7-chart-depth-shadow-alpha: 0.1728;
+  --t7-chart-gradient-start-alpha: 0.835;
+  --t7-chart-gradient-end-alpha: 0.909;
   --t7-section-gap: 20px;
   --t7-control-gap: 10px;
   --t7-control-padding-inline: 15px;
@@ -2766,6 +3357,10 @@
   --t7-icon-navigation: 18px;
   --t7-icon-status: 13px;
   --t7-icon-feature: 24px;
+  --t7-mark-choice: 22px;
+  --t7-mark-radio: 22px;
+  --t7-mark-dot: 10px;
+  --t7-mark-stroke: 2px;
   --t7-overlay-menu-sm: 200px;
   --t7-overlay-menu-md: 240px;
   --t7-overlay-menu-lg: 280px;
@@ -2778,6 +3373,7 @@
   --t7-overlay-color: 304px;
   --t7-overlay-popover-min: 220px;
   --t7-overlay-popover-max: 360px;
+  --t7-overlay-tooltip-min: 128px;
   --t7-overlay-tooltip-max: 260px;
   --t7-overlay-command: 640px;
   --t7-overlay-dialog-sm: 400px;
@@ -2789,6 +3385,18 @@
   --t7-content-max: 1360px;
   --t7-sidebar-width: 232px;
   --t7-aside-width: 320px;
+  --t7-measure-compact: 256px;
+  --t7-measure-compact-min: 172px;
+  --t7-measure-control: 480px;
+  --t7-measure-control-min: 224px;
+  --t7-measure-content: 1200px;
+  --t7-measure-content-min: 320px;
+  --t7-measure-wide: 1440px;
+  --t7-measure-wide-min: 480px;
+  --t7-measure-reading: 880px;
+  --t7-measure-reading-min: 280px;
+  --t7-measure-fluid: 100%;
+  --t7-measure-fluid-min: 0px;
   --t7-grid-gap: 20px;
   --t7-safe-area-top: env(safe-area-inset-top, 0px);
   --t7-safe-area-right: env(safe-area-inset-right, 0px);
@@ -2823,13 +3431,12 @@
   --t7-heading-tracking: -0.025em;
   --t7-body-tracking: 0.005em;
   --t7-shadow-card:
-    0 1px 2px hsl(222 30% 12% / 0.08),
-    0 16px 36px -26px hsl(var(--t7-primary-hsl) / 0.38);
+    0 1px 2px hsl(0 0% 12% / 0.08), 0 16px 36px -26px hsl(0 0% 12% / 0.24);
   --t7-shadow-button: 0 5px 12px -9px hsl(var(--t7-primary-hsl) / 0.8);
-  --t7-shadow-surface: 0 1px 2px hsl(222 30% 12% / 0.08);
-  --t7-shadow-raised: 0 10px 28px -20px hsl(222 30% 12% / 0.34);
-  --t7-shadow-popover: 0 18px 44px -24px hsl(222 30% 12% / 0.48);
-  --t7-shadow-modal: 0 28px 80px -30px hsl(222 30% 8% / 0.56);
+  --t7-shadow-surface: 0 1px 2px hsl(0 0% 12% / 0.08);
+  --t7-shadow-raised: 0 10px 28px -20px hsl(0 0% 12% / 0.34);
+  --t7-shadow-popover: 0 18px 44px -24px hsl(0 0% 12% / 0.48);
+  --t7-shadow-modal: 0 28px 80px -30px hsl(0 0% 12% / 0.56);
   --t7-motion-duration: 1.25s;
   --t7-duration-instant: 100ms;
   --t7-duration-fast: 130ms;
@@ -2845,6 +3452,7 @@
   --t7-duration-loop: 2000ms;
   --t7-ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --t7-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --t7-ease-chart: cubic-bezier(0.22, 0.74, 0.24, 1);
   --t7-ease-exit: cubic-bezier(0.4, 0, 1, 1);
   --t7-motion-interactive: var(--t7-duration-instant) var(--t7-ease-standard);
   --t7-motion-state: var(--t7-duration-standard) var(--t7-ease-standard);
@@ -2869,7 +3477,22 @@
   --t7-z-toast: 90;
   --t7-z-command: 100;
   --t7-doc-sticky-offset: calc(var(--t7-header-height) + var(--t7-ref-space-2));
-  --t7-scrim-hsl: 222 30% 12%;
+  --t7-scrim-hsl: 0 0% 12%;
+  --t7-opacity-pressed: 0.72;
+  --t7-opacity-disabled: 0.5;
+  --t7-opacity-scrim: 0.42;
+  --t7-opacity-interactive: 0.72;
+  --t7-opacity-hover: 0.64;
+  --t7-opacity-active: 0.82;
+  --t7-opacity-disabled-control: 0.48;
+  --t7-opacity-choice-disabled: 0.52;
+  --t7-opacity-option-disabled: 0.46;
+  --t7-opacity-checkbox-disabled: 0.55;
+  --t7-opacity-disabled-subtle: 0.34;
+  --t7-opacity-chart-grid: 0.82;
+  --t7-opacity-chart-track: 0.68;
+  --t7-opacity-chart-bar: 0.1;
+  --t7-opacity-detail-enter: 0.35;
   --t7-ref-space-0: 0px;
   --t7-ref-space-1: 4px;
   --t7-ref-space-2: 8px;
@@ -2880,6 +3503,15 @@
   --t7-ref-space-8: 32px;
   --t7-ref-space-10: 40px;
   --t7-ref-space-12: 48px;
+  --t7-ref-space-micro: 2px;
+  --t7-ref-space-fine: 3px;
+  --t7-ref-space-compact: 5px;
+  --t7-ref-space-tight: 6px;
+  --t7-ref-space-quiet: 9px;
+  --t7-ref-space-inline: 11px;
+  --t7-ref-space-snug: 14px;
+  --t7-ref-space-hero: 28px;
+  --t7-ref-space-relaxed: 18px;
   --t7-type-display-xl-size: clamp(38px, 5vw, 56px);
   --t7-type-display-xl-line-height: clamp(42px, 5.4vw, 60px);
   --t7-type-display-xl-weight: 600;
@@ -3005,6 +3637,7 @@
   --t7-accent-source-kind: palette;
   --t7-accent-source: orange;
   --t7-canvas-mode: paper;
+  --t7-surface-treatment: outlined;
   --t7-chart-palette: spectrum;
   --t7-chart-palette-count: 5;
   --t7-primary-hsl: 148 58% 29%;
@@ -3073,18 +3706,25 @@
   --t7-border-hsl: 0 0% 24%;
   --t7-border-strong-hsl: 0 0% 35%;
   --t7-border-subtle-hsl: 0 0% 20%;
+  --t7-table-border-hsl: 0 0% 24%;
+  --t7-table-divider-alpha: 0.82;
   --t7-muted-hsl: 0 0% 21%;
-  --t7-focus-hsl: 216 70% 72%;
-  --t7-focus-width: 2px;
+  --t7-focus-hsl: 148 58% 62%;
+  --t7-focus-width: 1px;
   --t7-focus-offset: 2px;
+  --t7-focus-ring-alpha: 0.72;
+  --t7-focus-glow-alpha: 0.18;
   --t7-focus-halo: 0 0 0 var(--t7-focus-offset) hsl(var(--t7-surface-hsl));
   --t7-focus-ring:
     var(--t7-focus-halo),
     0 0 0 calc(var(--t7-focus-offset) + var(--t7-focus-width))
-      hsl(var(--t7-focus-hsl));
-  --t7-focus-ring-inset: inset 0 0 0 var(--t7-focus-width)
-    hsl(var(--t7-focus-hsl));
-  --t7-shadow-selection: inset 3px 0 0 hsl(var(--t7-selected-hsl));
+      hsl(var(--t7-focus-hsl) / var(--t7-focus-ring-alpha)),
+    0 0 10px hsl(var(--t7-focus-hsl) / var(--t7-focus-glow-alpha));
+  --t7-focus-ring-inset:
+    inset 0 0 0 var(--t7-focus-width)
+      hsl(var(--t7-focus-hsl) / var(--t7-focus-ring-alpha)),
+    inset 0 0 8px hsl(var(--t7-focus-hsl) / var(--t7-focus-glow-alpha));
+  --t7-shadow-selection: inset 0 0 0 1px hsl(var(--t7-selected-hsl) / 0.24);
   --t7-shadow-state-boundary: inset 0 0 0 1px
     hsl(var(--t7-state-boundary-hsl, var(--t7-primary-hsl)) / 0.18);
   --t7-selected-hsl: 148 58% 29%;
@@ -3096,7 +3736,7 @@
   --t7-input-border-hsl: 0 0% 35%;
   --t7-field-border-hsl: 0 0% 35%;
   --t7-input-hover-border-hsl: 148 58% 29%;
-  --t7-input-focus-border-hsl: var(--t7-focus-hsl);
+  --t7-input-focus-border-hsl: var(--t7-field-border-hsl);
   --t7-field-foreground-hsl: 0 0% 96%;
   --t7-disabled-background-hsl: 0 0% 21%;
   --t7-disabled-foreground-hsl: 0 0% 76%;
@@ -3159,6 +3799,47 @@
   --t7-kpi-chart-height: 52px;
   --t7-kpi-trend-padding-block: 3px;
   --t7-kpi-trend-padding-inline: 8px;
+  --t7-kpi-decorative-size: 132px;
+  --t7-kpi-decorative-offset-top: -21px;
+  --t7-kpi-decorative-offset-inline: -21px;
+  --t7-kpi-decorative-opacity: 0.09;
+  --t7-kpi-depth-gradient-angle: 145deg;
+  --t7-kpi-depth-gradient-stop: 58%;
+  --t7-kpi-depth-shadow-blur: 26px;
+  --t7-kpi-depth-shadow-offset-y: 12px;
+  --t7-kpi-depth-border-alpha: 0.56;
+  --t7-kpi-depth-highlight-alpha: 0.3;
+  --t7-kpi-depth-shade-alpha: 0.14;
+  --t7-kpi-depth-shadow-alpha: 0.24;
+  --t7-surface-depth-gradient-angle: 145deg;
+  --t7-surface-depth-gradient-stop: 58%;
+  --t7-surface-depth-shadow-blur: 26px;
+  --t7-surface-depth-shadow-offset-y: 12px;
+  --t7-surface-depth-border-alpha: 0.56;
+  --t7-surface-depth-highlight-alpha: 0.3;
+  --t7-surface-depth-shade-alpha: 0.14;
+  --t7-surface-depth-shadow-alpha: 0.24;
+  --t7-surface-hover-translate-y: -1px;
+  --t7-chart-line-width: 2.5;
+  --t7-chart-point-radius: 3.5;
+  --t7-chart-point-hover-scale: 1.65;
+  --t7-chart-point-settle-scale: 1.06;
+  --t7-chart-bar-radius: 5;
+  --t7-chart-bar-hover-translate-y: 3px;
+  --t7-chart-bar-hover-scale-y: 1.035;
+  --t7-chart-donut-stroke-width: 14;
+  --t7-chart-donut-hover-stroke-width: 16;
+  --t7-chart-tooltip-offset-y: 12px;
+  --t7-chart-depth-gradient-angle: 145deg;
+  --t7-chart-depth-gradient-stop: 58%;
+  --t7-chart-depth-shadow-blur: 6px;
+  --t7-chart-depth-shadow-offset-y: 3px;
+  --t7-chart-depth-border-alpha: 0.56;
+  --t7-chart-depth-highlight-alpha: 0.3;
+  --t7-chart-depth-shade-alpha: 0.14;
+  --t7-chart-depth-shadow-alpha: 0.1728;
+  --t7-chart-gradient-start-alpha: 0.835;
+  --t7-chart-gradient-end-alpha: 0.909;
   --t7-section-gap: 20px;
   --t7-control-gap: 10px;
   --t7-control-padding-inline: 15px;
@@ -3192,6 +3873,10 @@
   --t7-icon-navigation: 18px;
   --t7-icon-status: 13px;
   --t7-icon-feature: 24px;
+  --t7-mark-choice: 22px;
+  --t7-mark-radio: 22px;
+  --t7-mark-dot: 10px;
+  --t7-mark-stroke: 2px;
   --t7-overlay-menu-sm: 200px;
   --t7-overlay-menu-md: 240px;
   --t7-overlay-menu-lg: 280px;
@@ -3204,6 +3889,7 @@
   --t7-overlay-color: 304px;
   --t7-overlay-popover-min: 220px;
   --t7-overlay-popover-max: 360px;
+  --t7-overlay-tooltip-min: 128px;
   --t7-overlay-tooltip-max: 260px;
   --t7-overlay-command: 640px;
   --t7-overlay-dialog-sm: 400px;
@@ -3215,6 +3901,18 @@
   --t7-content-max: 1360px;
   --t7-sidebar-width: 232px;
   --t7-aside-width: 320px;
+  --t7-measure-compact: 256px;
+  --t7-measure-compact-min: 172px;
+  --t7-measure-control: 480px;
+  --t7-measure-control-min: 224px;
+  --t7-measure-content: 1200px;
+  --t7-measure-content-min: 320px;
+  --t7-measure-wide: 1440px;
+  --t7-measure-wide-min: 480px;
+  --t7-measure-reading: 880px;
+  --t7-measure-reading-min: 280px;
+  --t7-measure-fluid: 100%;
+  --t7-measure-fluid-min: 0px;
   --t7-grid-gap: 20px;
   --t7-safe-area-top: env(safe-area-inset-top, 0px);
   --t7-safe-area-right: env(safe-area-inset-right, 0px);
@@ -3249,13 +3947,12 @@
   --t7-heading-tracking: -0.025em;
   --t7-body-tracking: 0.005em;
   --t7-shadow-card:
-    0 1px 2px hsl(222 30% 12% / 0.08),
-    0 16px 36px -26px hsl(var(--t7-primary-hsl) / 0.38);
+    0 1px 2px hsl(0 0% 0% / 0.08), 0 16px 36px -26px hsl(0 0% 0% / 0.24);
   --t7-shadow-button: 0 5px 12px -9px hsl(var(--t7-primary-hsl) / 0.8);
-  --t7-shadow-surface: 0 1px 2px hsl(222 30% 12% / 0.08);
-  --t7-shadow-raised: 0 10px 28px -20px hsl(222 30% 12% / 0.34);
-  --t7-shadow-popover: 0 18px 44px -24px hsl(222 30% 12% / 0.48);
-  --t7-shadow-modal: 0 28px 80px -30px hsl(222 30% 8% / 0.56);
+  --t7-shadow-surface: 0 1px 2px hsl(0 0% 0% / 0.08);
+  --t7-shadow-raised: 0 10px 28px -20px hsl(0 0% 0% / 0.34);
+  --t7-shadow-popover: 0 18px 44px -24px hsl(0 0% 0% / 0.48);
+  --t7-shadow-modal: 0 28px 80px -30px hsl(0 0% 0% / 0.56);
   --t7-motion-duration: 1.25s;
   --t7-duration-instant: 100ms;
   --t7-duration-fast: 130ms;
@@ -3271,6 +3968,7 @@
   --t7-duration-loop: 2000ms;
   --t7-ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --t7-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --t7-ease-chart: cubic-bezier(0.22, 0.74, 0.24, 1);
   --t7-ease-exit: cubic-bezier(0.4, 0, 1, 1);
   --t7-motion-interactive: var(--t7-duration-instant) var(--t7-ease-standard);
   --t7-motion-state: var(--t7-duration-standard) var(--t7-ease-standard);
@@ -3295,7 +3993,22 @@
   --t7-z-toast: 90;
   --t7-z-command: 100;
   --t7-doc-sticky-offset: calc(var(--t7-header-height) + var(--t7-ref-space-2));
-  --t7-scrim-hsl: 222 30% 12%;
+  --t7-scrim-hsl: 0 0% 0%;
+  --t7-opacity-pressed: 0.72;
+  --t7-opacity-disabled: 0.5;
+  --t7-opacity-scrim: 0.42;
+  --t7-opacity-interactive: 0.72;
+  --t7-opacity-hover: 0.64;
+  --t7-opacity-active: 0.82;
+  --t7-opacity-disabled-control: 0.48;
+  --t7-opacity-choice-disabled: 0.52;
+  --t7-opacity-option-disabled: 0.46;
+  --t7-opacity-checkbox-disabled: 0.55;
+  --t7-opacity-disabled-subtle: 0.34;
+  --t7-opacity-chart-grid: 0.82;
+  --t7-opacity-chart-track: 0.68;
+  --t7-opacity-chart-bar: 0.1;
+  --t7-opacity-detail-enter: 0.35;
   --t7-ref-space-0: 0px;
   --t7-ref-space-1: 4px;
   --t7-ref-space-2: 8px;
@@ -3306,6 +4019,15 @@
   --t7-ref-space-8: 32px;
   --t7-ref-space-10: 40px;
   --t7-ref-space-12: 48px;
+  --t7-ref-space-micro: 2px;
+  --t7-ref-space-fine: 3px;
+  --t7-ref-space-compact: 5px;
+  --t7-ref-space-tight: 6px;
+  --t7-ref-space-quiet: 9px;
+  --t7-ref-space-inline: 11px;
+  --t7-ref-space-snug: 14px;
+  --t7-ref-space-hero: 28px;
+  --t7-ref-space-relaxed: 18px;
   --t7-type-display-xl-size: clamp(38px, 5vw, 56px);
   --t7-type-display-xl-line-height: clamp(42px, 5.4vw, 60px);
   --t7-type-display-xl-weight: 600;

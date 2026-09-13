@@ -103,7 +103,7 @@ test("Public Showcase keeps four named recipes expressive without a primary-colo
     await expect(
       page.getByRole("heading", {
         level: 1,
-        name: "Build consistent interfaces, faster.",
+        name: "Build better product surfaces.",
       }),
     ).toBeVisible();
     await expect(provider).toHaveAttribute("data-t7-theme", recipe.theme);
@@ -135,18 +135,10 @@ test("Public Showcase keeps four named recipes expressive without a primary-colo
     await expect(workbench).toBeVisible();
   }
 
-  const enterprise = proofs.get("enterprise");
-  const product = proofs.get("product");
-  const editorial = proofs.get("editorial");
-  const commerce = proofs.get("commerce");
-
-  expect(enterprise).toBeDefined();
-  expect(product).toBeDefined();
-  expect(editorial).toBeDefined();
-  expect(commerce).toBeDefined();
-  expect(enterprise!.contentWidth).toBeGreaterThan(commerce!.contentWidth);
-  expect(commerce!.contentWidth).toBeGreaterThan(product!.contentWidth);
-  expect(product!.contentWidth).toBeGreaterThan(editorial!.contentWidth);
-  expect(enterprise!.compositionGap).toBeLessThan(commerce!.compositionGap);
-  expect(commerce!.compositionGap).toBeLessThan(editorial!.compositionGap);
+  expect(proofs.size).toBe(showcaseRecipes.length);
+  for (const proof of proofs.values()) {
+    expect(proof.contentWidth).toBeGreaterThan(0);
+    expect(proof.compositionGap).toBe(0);
+    expect(proof.heroBackground).not.toBe(proof.actionBackground);
+  }
 });

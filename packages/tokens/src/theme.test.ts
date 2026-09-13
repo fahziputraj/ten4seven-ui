@@ -1,17 +1,193 @@
+import { readFileSync } from "node:fs";
+
 import { describe, expect, it } from "vitest";
 
 import {
+  MEASURE_CONTRACT,
+  MEASURE_NAMES,
+  TOKEN_OWNERSHIP_CONTRACT,
+  TOKEN_RESOLUTION_ORDER,
+  resolveMeasureIntent,
+  resolveMeasureLayers,
+  resolveTokenLayers,
+} from "../../contracts/src/foundation.ts";
+import {
+  buildNativeThemeSnapshot,
   buildRadiusProfile,
   buildThemeVariables,
+  chartGeometry,
   exactColor,
+  hslToHex,
   iconGeometry,
   kpiGeometry,
   layoutGeometry,
+  markGeometry,
   overlayGeometry,
+  referenceSpace,
+  resolveThemeConfigLayers,
   resolveTheme,
+  surfaceGeometry,
+  tableGeometry,
 } from "./theme";
 
 describe("theme engine", () => {
+  it("resolves every authored layer in the canonical order", () => {
+    expect(TOKEN_RESOLUTION_ORDER).toEqual([
+      "SYSTEM_DEFAULTS",
+      "BASE_RECIPE",
+      "PRODUCT_PROFILE",
+      "THEME_OVERRIDE",
+      "SCOPED_OVERRIDE",
+      "COMPONENT_STATE",
+    ]);
+    expect(TOKEN_OWNERSHIP_CONTRACT.resolutionOrder).toEqual(
+      TOKEN_RESOLUTION_ORDER,
+    );
+
+    const resolved = resolveTokenLayers<{ value: string }>({
+      SYSTEM_DEFAULTS: { value: "defaults" },
+      BASE_RECIPE: { value: "recipe" },
+      PRODUCT_PROFILE: { value: "profile" },
+      THEME_OVERRIDE: { value: "override" },
+      SCOPED_OVERRIDE: { value: "scope" },
+      COMPONENT_STATE: { value: "state" },
+    });
+    expect(resolved.value).toBe("state");
+
+    expect(resolveThemeConfigLayers().palette).toBe("emerald");
+    expect(
+      resolveThemeConfigLayers({
+        BASE_RECIPE: { palette: "blue" },
+        PRODUCT_PROFILE: { palette: "indigo" },
+        THEME_OVERRIDE: { palette: "violet" },
+        SCOPED_OVERRIDE: { palette: "rose" },
+        COMPONENT_STATE: { palette: "amber" },
+      }).palette,
+    ).toBe("amber");
+
+    expect(resolveMeasureLayers()).toBe("control");
+    expect(
+      resolveMeasureLayers({
+        SYSTEM_DEFAULTS: { measure: "compact" },
+        BASE_RECIPE: { measure: "content" },
+        PRODUCT_PROFILE: { measure: "wide" },
+        THEME_OVERRIDE: { measure: "reading" },
+        SCOPED_OVERRIDE: { measure: "control" },
+        COMPONENT_STATE: { measure: "fluid" },
+      }),
+    ).toBe("fluid");
+    expect(resolveMeasureIntent("default")).toBe("control");
+    expect(resolveMeasureIntent("fill")).toBe("fluid");
+  });
+
+  it("projects the same light, dark, contrast, and reduced-motion roles to native data", () => {
+    for (const appearance of ["light", "dark"] as const) {
+      for (const motion of ["full", "reduced"] as const) {
+        const theme = resolveTheme({
+          appearance,
+          density: "compact",
+          primary: "indigo",
+          radius: "rounded",
+        });
+        const options = {
+          contrast: "more" as const,
+          motion,
+          motionProfile: "calm" as const,
+        };
+        const css = buildThemeVariables(theme, options);
+        const native = buildNativeThemeSnapshot(theme, options);
+
+        expect(native.colors.actionPrimary).toBe(
+          hslToHex(css["--t7-action-primary-hsl"]),
+        );
+        expect(native.colors.surface).toBe(hslToHex(css["--t7-surface-hsl"]));
+        expect(native.colors.scrim).toBe(hslToHex(css["--t7-scrim-hsl"]));
+        expect(native.feedback.disabledOpacity).toBe(
+          Number(css["--t7-opacity-disabled"]),
+        );
+        expect(native.feedback.pressedOpacity).toBe(
+          Number(css["--t7-opacity-pressed"]),
+        );
+        expect(native.feedback.scrimOpacity).toBe(
+          Number(css["--t7-opacity-scrim"]),
+        );
+        expect(native.colors.borderStrong).toBe(
+          hslToHex(css["--t7-border-strong-hsl"]),
+        );
+        expect(native.colors.statusDanger).toBe(
+          hslToHex(css["--t7-danger-hsl"]),
+        );
+        expect(native.spacing.control).toBe(
+          Number.parseFloat(css["--t7-control-height"]),
+        );
+        expect(native.spacing.cardPadding).toBe(
+          Number.parseFloat(css["--t7-card-padding"]),
+        );
+        expect(native.radius.card).toBe(
+          Number.parseFloat(css["--t7-radius-card"]),
+        );
+        expect(native.touchTarget).toBe(
+          Number.parseFloat(css["--t7-touch-target-min"]),
+        );
+        expect(native.icons.navigation).toBe(
+          Number.parseFloat(css["--t7-icon-navigation"]),
+        );
+        expect(native.marks.choice).toBe(
+          Number.parseFloat(css["--t7-mark-choice"]),
+        );
+        expect(native.motion.enabled).toBe(motion === "full");
+        expect(native.motion.rolesMs.chart).toBe(
+          Number.parseFloat(css["--t7-duration-chart"]),
+        );
+        for (const name of MEASURE_NAMES) {
+          const entry = MEASURE_CONTRACT[name];
+          const nativeMeasure = native.layout.measures[name];
+          expect(nativeMeasure.minimumPx).toBe(entry.minimumPx);
+          expect(nativeMeasure.preferredPx).toBe(entry.preferredPx);
+          expect(nativeMeasure.maximumPx).toBe(entry.maximumPx);
+          expect(nativeMeasure.fluid).toBe(entry.mode === "fluid");
+          expect(css[`--t7-measure-${name}-min`]).toBe(`${entry.minimumPx}px`);
+          expect(css[`--t7-measure-${name}`]).toBe(
+            entry.maximumPx === null ? "100%" : `${entry.maximumPx}px`,
+          );
+        }
+      }
+    }
+  });
+
+  it("keeps the base Web token block derived from the typed resolver", () => {
+    const css = readFileSync(new URL("./theme.css", import.meta.url), "utf8");
+    const rootStart = css.indexOf(":root {");
+    const rootEnd = css.indexOf("\n}\n\n[data-theme-appearance", rootStart);
+    const root = css.slice(rootStart, rootEnd);
+    const normalize = (value: string) =>
+      value
+        .replace(/\s+/g, " ")
+        .replace(/\b0\.(\d+)/g, ".$1")
+        .trim();
+    const projected = Object.fromEntries(
+      [...root.matchAll(/^\s*(--t7-[\w-]+):\s*([\s\S]*?);$/gm)].map(
+        ([, name, value]) => [name, normalize(value)],
+      ),
+    );
+    const variables = buildThemeVariables(resolveTheme());
+
+    expect(css).toContain(
+      "Generated from packages/tokens/src/theme.ts. Do not edit the :root token block by hand.",
+    );
+    expect(Object.keys(projected)).toEqual(Object.keys(variables));
+    for (const [name, value] of Object.entries(variables))
+      expect(projected[name]).toBe(normalize(value));
+  });
+
+  it("converts resolved color channels once for all token-aware color inputs", () => {
+    expect(hslToHex("148 58% 29%")).toBe("#1f7547");
+    expect(hslToHex("78 82% 45%")).toBe("#98d115");
+    expect(() => hslToHex("var(--t7-primary-hsl)")).toThrow(
+      /Expected resolved HSL channels/,
+    );
+  });
+
   it("reuses semantic spatial roles and protects expressive shape at compact density", () => {
     const standard = buildThemeVariables(
       resolveTheme({ density: "default", radius: "soft" }),
@@ -31,6 +207,56 @@ describe("theme engine", () => {
     expect(standard["--t7-kpi-icon-container"]).toBe(kpiGeometry.iconContainer);
     expect(standard["--t7-kpi-icon-size"]).toBe(kpiGeometry.iconSize);
     expect(standard["--t7-kpi-chart-height"]).toBe(kpiGeometry.chartHeight);
+    expect(standard["--t7-kpi-decorative-size"]).toBe(
+      kpiGeometry.decorative.size,
+    );
+    expect(standard["--t7-kpi-decorative-offset-top"]).toBe(
+      kpiGeometry.decorative.offsetTop,
+    );
+    expect(standard["--t7-kpi-decorative-offset-inline"]).toBe(
+      kpiGeometry.decorative.offsetInline,
+    );
+    expect(standard["--t7-kpi-decorative-opacity"]).toBe(
+      `${kpiGeometry.decorative.opacity}`,
+    );
+    expect(standard["--t7-kpi-depth-gradient-angle"]).toBe(
+      kpiGeometry.depth.gradientAngle,
+    );
+    expect(standard["--t7-kpi-depth-shadow-alpha"]).toBe("0.24");
+    expect(standard["--t7-surface-depth-gradient-angle"]).toBe(
+      surfaceGeometry.depth.gradientAngle,
+    );
+    expect(standard["--t7-surface-depth-gradient-stop"]).toBe(
+      surfaceGeometry.depth.gradientStop,
+    );
+    expect(standard["--t7-surface-depth-shadow-blur"]).toBe(
+      surfaceGeometry.depth.shadowBlur,
+    );
+    expect(standard["--t7-surface-depth-shadow-offset-y"]).toBe(
+      surfaceGeometry.depth.shadowOffsetY,
+    );
+    expect(standard["--t7-surface-hover-translate-y"]).toBe(
+      surfaceGeometry.hoverTranslateY,
+    );
+    expect(standard["--t7-chart-line-width"]).toBe(
+      `${chartGeometry.lineWidth}`,
+    );
+    expect(standard["--t7-chart-point-radius"]).toBe(
+      `${chartGeometry.pointRadius}`,
+    );
+    expect(standard["--t7-chart-point-settle-scale"]).toBe(
+      `${chartGeometry.pointSettleScale}`,
+    );
+    expect(standard["--t7-chart-tooltip-offset-y"]).toBe(
+      chartGeometry.tooltipOffsetY,
+    );
+    expect(standard["--t7-chart-bar-hover-scale-y"]).toBe(
+      `${chartGeometry.barHoverScaleY}`,
+    );
+    expect(standard["--t7-chart-depth-gradient-stop"]).toBe(
+      chartGeometry.depth.gradientStop,
+    );
+    expect(standard["--t7-chart-depth-shadow-alpha"]).toBe("0.1728");
     expect(compact["--t7-kpi-padding"]).toBe("16px");
     expect(compact["--t7-kpi-icon-container"]).toBe("22px");
     expect(compact["--t7-kpi-icon-size"]).toBe("20px");
@@ -41,6 +267,33 @@ describe("theme engine", () => {
     expect(exact["--t7-field-corner-clearance"]).toBe("12px");
     expect(exact["--t7-type-body-size"]).toBe(standard["--t7-type-body-size"]);
   });
+
+  it("projects shared reference spacing, icon, and mark geometry to Web and native", () => {
+    const variables = buildThemeVariables(resolveTheme());
+    const native = buildNativeThemeSnapshot(resolveTheme());
+
+    for (const role of [
+      "micro",
+      "fine",
+      "compact",
+      "tight",
+      "quiet",
+      "inline",
+      "snug",
+      "relaxed",
+    ] as const)
+      expect(variables[`--t7-ref-space-${role}`]).toBe(referenceSpace[role]);
+
+    expect(variables["--t7-icon-navigation"]).toBe(iconGeometry.navigation);
+    expect(variables["--t7-mark-choice"]).toBe(markGeometry.choice);
+    expect(variables["--t7-mark-stroke"]).toBe(markGeometry.stroke);
+    expect(native.icons.navigation).toBe(
+      Number.parseFloat(iconGeometry.navigation),
+    );
+    expect(native.marks.choice).toBe(Number.parseFloat(markGeometry.choice));
+    expect(native.marks.stroke).toBe(Number.parseFloat(markGeometry.stroke));
+  });
+
   it("maps every global axis to semantic variables", () => {
     const theme = resolveTheme({
       appearance: "dark",
@@ -66,6 +319,7 @@ describe("theme engine", () => {
     expect(variables["--t7-font-ui"]).toContain("IBM Plex Mono");
     expect(theme.motionDuration).toBe(1.5);
     expect(variables["--t7-motion-duration"]).toBe("1.5s");
+    expect(variables["--t7-ease-chart"]).toBe("cubic-bezier(.22, .74, .24, 1)");
     expect(variables["--t7-duration-fast"]).toBe("160ms");
     expect(variables["--t7-duration-standard"]).toBe("220ms");
     expect(variables["--t7-duration-slow"]).toBe("1500ms");
@@ -105,12 +359,15 @@ describe("theme engine", () => {
     expect(variables["--t7-type-button-weight"]).toBe("550");
     expect(variables["--t7-type-table-header-weight"]).toBe("550");
     expect(variables["--t7-font-optical-sizing"]).toBe("auto");
-    expect(variables["--t7-focus-hsl"]).toBe("216 72% 38%");
+    expect(variables["--t7-focus-hsl"]).toBe("148 58% 29%");
+    expect(variables["--t7-focus-width"]).toBe("1px");
+    expect(variables["--t7-focus-ring-alpha"]).toBe("0.72");
+    expect(variables["--t7-focus-glow-alpha"]).toBe("0.18");
     expect(variables["--t7-input-focus-border-hsl"]).toBe(
-      "var(--t7-focus-hsl)",
+      "var(--t7-field-border-hsl)",
     );
     expect(variables["--t7-focus-ring"]).toBe(
-      "var(--t7-focus-halo), 0 0 0 calc(var(--t7-focus-offset) + var(--t7-focus-width)) hsl(var(--t7-focus-hsl))",
+      "var(--t7-focus-halo), 0 0 0 calc(var(--t7-focus-offset) + var(--t7-focus-width)) hsl(var(--t7-focus-hsl) / var(--t7-focus-ring-alpha)), 0 0 10px hsl(var(--t7-focus-hsl) / var(--t7-focus-glow-alpha))",
     );
     expect(variables["--t7-muted-foreground-strong-hsl"]).toBe("0 0% 35%");
     expect(variables["--t7-scrollbar-size"]).toBe("4px");
@@ -185,7 +442,7 @@ describe("theme engine", () => {
     expect(theme.accent).toBe("amber");
     expect(variables["--t7-primary-hsl"]).toBe("148 58% 29%");
     expect(variables["--t7-accent-hsl"]).toBe("48 92% 49%");
-    expect(variables["--t7-focus-hsl"]).toBe("216 72% 38%");
+    expect(variables["--t7-focus-hsl"]).toBe("148 58% 29%");
     expect(variables["--t7-chart-1-hsl"]).toBe("148 58% 29%");
     expect(variables["--t7-chart-2-hsl"]).toBe("193 74% 36%");
   });
@@ -229,7 +486,7 @@ describe("theme engine", () => {
     expect(variables["--t7-selected-foreground-hsl"]).toBe(
       variables["--t7-primary-foreground-hsl"],
     );
-    expect(variables["--t7-focus-hsl"]).toBe(namedBaseline["--t7-focus-hsl"]);
+    expect(variables["--t7-focus-hsl"]).toBe(variables["--t7-primary-hsl"]);
     for (const role of ["success", "warning", "danger", "info"])
       expect(variables[`--t7-${role}-hsl`]).toBe(
         namedBaseline[`--t7-${role}-hsl`],
@@ -359,6 +616,33 @@ describe("theme engine", () => {
     }
   });
 
+  it("uses tonal surfaces to separate quiet regions without hard borders", () => {
+    for (const appearance of ["light", "dark"] as const) {
+      const quiet = buildThemeVariables(
+        resolveTheme({ appearance, surfaceTreatment: "quiet" }),
+      );
+      const outlined = buildThemeVariables(
+        resolveTheme({ appearance, surfaceTreatment: "outlined" }),
+      );
+
+      expect(quiet["--t7-surface-hsl"]).toBe(
+        appearance === "dark" ? "0 0% 16%" : "0 0% 97%",
+      );
+      expect(quiet["--t7-border-hsl"]).toBe(
+        appearance === "dark" ? "0 0% 12%" : "0 0% 100%",
+      );
+      expect(quiet["--t7-field-background-hsl"]).toBe(
+        appearance === "dark" ? "0 0% 12%" : "0 0% 100%",
+      );
+      expect(quiet["--t7-field-border-hsl"]).toBe(
+        appearance === "dark" ? "0 0% 24%" : "0 0% 86%",
+      );
+      expect(outlined["--t7-surface-hsl"]).toBe(
+        appearance === "dark" ? "0 0% 12%" : "0 0% 100%",
+      );
+    }
+  });
+
   it("normalizes motion duration to the shared range and quarter-second step", () => {
     expect(resolveTheme().motionDuration).toBe(1.5);
     expect(resolveTheme({ motionDuration: 0.12 }).motionDuration).toBe(0.25);
@@ -482,6 +766,21 @@ describe("theme engine", () => {
     );
   });
 
+  it("keeps table structure neutral and visible on a quiet canvas", () => {
+    const quiet = buildThemeVariables(
+      resolveTheme({ appearance: "light", surfaceTreatment: "quiet" }),
+    );
+
+    expect(quiet["--t7-border-hsl"]).not.toBe(quiet["--t7-surface-hsl"]);
+    expect(quiet["--t7-table-border-hsl"]).toBe(
+      quiet["--t7-border-strong-hsl"],
+    );
+    expect(quiet["--t7-table-border-hsl"]).not.toBe(quiet["--t7-border-hsl"]);
+    expect(quiet["--t7-table-divider-alpha"]).toBe(
+      `${tableGeometry.dividerAlpha}`,
+    );
+  });
+
   it("keeps overlay geometry component-owned across density and appearance", () => {
     const lightVariables = buildThemeVariables(
       resolveTheme({ appearance: "light", density: "comfortable" }),
@@ -493,6 +792,7 @@ describe("theme engine", () => {
     expect(overlayGeometry.datePicker).toBe("336px");
     expect(overlayGeometry.dateRangePicker).toBe("672px");
     expect(overlayGeometry.timePicker).toBe("360px");
+    expect(overlayGeometry.tooltipMin).toBe("128px");
     for (const name of [
       "--t7-overlay-menu-sm",
       "--t7-overlay-menu-md",
@@ -503,6 +803,7 @@ describe("theme engine", () => {
       "--t7-overlay-date",
       "--t7-overlay-date-range",
       "--t7-overlay-time",
+      "--t7-overlay-tooltip-min",
       "--t7-overlay-command",
       "--t7-overlay-dialog-sm",
       "--t7-overlay-dialog-md",

@@ -90,6 +90,81 @@ test.describe("Universal Design System v2 Theme Studio", () => {
     await expect(provider).toHaveAttribute("data-t7-mode", "dark");
   });
 
+  test("Theme Studio focus treatment uses a subtle primary glow", async ({
+    page,
+  }) => {
+    await page.goto("/theme-studio");
+
+    const focusInput = page.locator(".studio-live-preview-focus-input");
+    await expect(focusInput).toBeVisible();
+
+    const focusStyle = await focusInput.evaluate((element) => {
+      const style = getComputedStyle(element);
+      const provider = document.querySelector<HTMLElement>(".t7-provider");
+      const providerStyle = provider ? getComputedStyle(provider) : null;
+      return {
+        boxShadow: style.boxShadow,
+        focusWidth: providerStyle?.getPropertyValue("--t7-focus-width").trim(),
+        ringAlpha: providerStyle
+          ?.getPropertyValue("--t7-focus-ring-alpha")
+          .trim(),
+        glowAlpha: providerStyle
+          ?.getPropertyValue("--t7-focus-glow-alpha")
+          .trim(),
+      };
+    });
+
+    expect(focusStyle.focusWidth).toBe("1px");
+    expect(focusStyle.ringAlpha).toBe("0.72");
+    expect(focusStyle.glowAlpha).toBe("0.18");
+    expect(focusStyle.boxShadow).toContain("10px");
+
+    const fieldBorderTokens = await focusInput.evaluate((element) => {
+      const provider = document.querySelector<HTMLElement>(".t7-provider");
+      const providerStyle = provider ? getComputedStyle(provider) : null;
+      return {
+        focusBorder: providerStyle
+          ?.getPropertyValue("--t7-input-focus-border-hsl")
+          .trim(),
+        fieldBorder: providerStyle
+          ?.getPropertyValue("--t7-field-border-hsl")
+          .trim(),
+      };
+    });
+    expect(fieldBorderTokens.focusBorder).toBe(fieldBorderTokens.fieldBorder);
+  });
+
+  test("Theme Studio selected runtime options use a quiet fill without an accent rail", async ({
+    page,
+  }) => {
+    await clearPersistedPlaygroundTheme(page);
+    await page.goto("/theme-studio");
+
+    const appearance = page.getByRole("group", {
+      name: "Appearance",
+      exact: true,
+    });
+    const light = appearance.getByRole("button", {
+      name: "Light",
+      exact: true,
+    });
+    await light.click();
+    await expect(light).toHaveAttribute("aria-pressed", "true");
+
+    const selectedStyle = await light.evaluate((element) => {
+      const style = getComputedStyle(element);
+      return {
+        backgroundColor: style.backgroundColor,
+        borderInlineStartColor: style.borderInlineStartColor,
+        boxShadow: style.boxShadow,
+      };
+    });
+
+    expect(selectedStyle.boxShadow).toBe("none");
+    expect(selectedStyle.borderInlineStartColor).toBe("rgba(0, 0, 0, 0)");
+    expect(selectedStyle.backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
+  });
+
   test("named recipes retain independent runtime preferences and inverse scopes", async ({
     page,
   }) => {

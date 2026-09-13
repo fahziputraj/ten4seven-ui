@@ -26,6 +26,8 @@ export interface FloatingPositionOptions {
   minWidth?: boolean;
   offset?: number;
   padding?: number;
+  /** Recalculate when a stable anchor element moves without resizing. */
+  positionKey?: number | string | null;
   side?: FloatingSide;
 }
 
@@ -45,6 +47,7 @@ export function useFloatingPosition(
     minWidth = false,
     offset = 6,
     padding = 8,
+    positionKey,
     preferredWidth,
     side = "bottom",
     widthStrategy,
@@ -67,10 +70,13 @@ export function useFloatingPosition(
     if (!anchor) return;
     const content = contentRef.current;
     const anchorRect = anchor.getBoundingClientRect();
-    const contentRect = content?.getBoundingClientRect();
+    // Use layout dimensions for positioning. A floating surface may be entering
+    // with a scale transform, but that visual transform must not move its
+    // logical center away from the highlighted anchor.
+    const measuredWidth = content?.offsetWidth ?? 0;
+    const measuredHeight = content?.offsetHeight ?? 0;
     const viewportWidth = document.documentElement.clientWidth;
     const viewportHeight = document.documentElement.clientHeight;
-    const measuredWidth = contentRect?.width ?? 0;
     const availableWidth = Math.max(0, viewportWidth - padding * 2);
     const strategy = widthStrategy ?? (minWidth ? "min-trigger" : "content");
     const intrinsicWidth = measuredWidth || preferredWidth || 240;
@@ -85,7 +91,7 @@ export function useFloatingPosition(
               ? availableWidth
               : intrinsicWidth;
     const safeWidth = Math.max(0, Math.min(width, availableWidth));
-    const height = contentRect?.height || 160;
+    const height = measuredHeight || 160;
     let nextSide = side;
     let left = anchorRect.left;
     let top = anchorRect.bottom + offset;
@@ -205,7 +211,7 @@ export function useFloatingPosition(
       document.removeEventListener("scroll", scheduleUpdate, true);
       resizeObserver?.disconnect();
     };
-  }, [anchorRef, contentVersion, open, side, updatePosition]);
+  }, [anchorRef, contentVersion, open, positionKey, side, updatePosition]);
 
   return { contentRef, placement, setContentRef, style };
 }
@@ -375,8 +381,10 @@ export function useNativeDialog(
   open: boolean,
   onClose: () => void,
   initialFocus?: RefObject<HTMLElement | null>,
+  dismissOnEscape = true,
 ) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const returnFocusRef = useRef<HTMLElement | null>(null);
 
   // The visual viewport shrinks when a mobile keyboard opens; dvh alone does
   // not reflect that in every browser. Keep the native top layer in that space.
@@ -410,6 +418,9 @@ export function useNativeDialog(
     if (!dialog) return;
 
     if (open && !dialog.open) {
+      const activeElement = document.activeElement;
+      returnFocusRef.current =
+        activeElement instanceof HTMLElement ? activeElement : null;
       dialog.showModal();
       const frame = requestAnimationFrame(() =>
         initialFocus?.current?.focus({ preventScroll: true }),
@@ -417,7 +428,17 @@ export function useNativeDialog(
       return () => cancelAnimationFrame(frame);
     }
 
-    if (!open && dialog.open) dialog.close();
+    if (!open && dialog.open) {
+      dialog.close();
+      const frame = requestAnimationFrame(() => {
+        const returnFocus = returnFocusRef.current;
+        if (returnFocus?.isConnected) {
+          returnFocus.focus({ preventScroll: true });
+        }
+        returnFocusRef.current = null;
+      });
+      return () => cancelAnimationFrame(frame);
+    }
   }, [initialFocus, open]);
 
   useEffect(() => {
@@ -426,7 +447,7 @@ export function useNativeDialog(
 
     const handleCancel = (event: Event) => {
       event.preventDefault();
-      onClose();
+      if (dismissOnEscape) onClose();
     };
     // Native modality makes the page inert, but browsers may send Tab from an
     // edge control into browser chrome. Cycle explicitly within the top dialog.
@@ -442,6 +463,7 @@ export function useNativeDialog(
           node.tabIndex >= 0 &&
           !node.matches(":disabled") &&
           !node.closest("[inert]") &&
+          node.closest("dialog") === dialog &&
           node.getClientRects().length > 0 &&
           getComputedStyle(node).visibility !== "hidden",
       );
@@ -468,7 +490,7 @@ export function useNativeDialog(
       dialog.removeEventListener("cancel", handleCancel);
       dialog.removeEventListener("keydown", handleTab);
     };
-  }, [onClose]);
+  }, [dismissOnEscape, onClose]);
 
   useEffect(() => {
     if (!open || typeof document === "undefined") return undefined;

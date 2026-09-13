@@ -1,5 +1,12 @@
 import { expect, test } from "@playwright/test";
 
+import {
+  adoptionProofNavigationLabels,
+  adoptionProofRoutePaths,
+  playgroundNavigationGroups,
+  playgroundRoutePaths,
+} from "../apps/playground/src/playground-routes";
+
 type NavigationRoute = {
   accessibleLabel?: string;
   label: string;
@@ -8,47 +15,23 @@ type NavigationRoute = {
 
 const navigationGroups: Array<{
   label: string;
+  maturity: string;
   routes: NavigationRoute[];
-}> = [
-  {
-    label: "Studio",
-    routes: [
-      { label: "Theme Studio", path: "/theme-studio" },
-      { label: "Component Lab", path: "/component-lab" },
-    ],
-  },
-  {
-    label: "Library",
-    routes: [
-      { label: "Tokens", path: "/tokens" },
-      { label: "Components", path: "/components" },
-      { label: "Blocks", path: "/blocks" },
-      { label: "Icons", path: "/icons" },
-      { label: "Recipes", path: "/recipes" },
-    ],
-  },
-  {
-    label: "References",
-    routes: [
-      { label: "Operations Tracker", path: "/operations-tracker" },
-      { label: "Operational Patterns", path: "/operational-patterns" },
-      { label: "Publishing Store", path: "/ebook-store" },
-      { label: "Public Showcase", path: "/public-showcase" },
-    ],
-  },
-  {
-    label: "Adoption Proofs",
-    routes: [
-      { label: "Farm Synthetic", path: "/farm-synthetic-proof" },
-      { label: "Auth · Neutral", path: "/brand-proof/auth-neutral" },
-      {
-        accessibleLabel: "Auth · AAPM Academy",
-        label: "Auth · Academy",
-        path: "/brand-proof/auth-aapm-academy",
-      },
-    ],
-  },
-];
+}> = playgroundNavigationGroups.map((group) => ({
+  label: group.label,
+  maturity: group.maturity,
+  routes: [
+    ...group.routes.map((route) => ({
+      label: route,
+      path: playgroundRoutePaths[route],
+    })),
+    ...(group.adoptionProofRoutes ?? []).map((route) => ({
+      accessibleLabel: route,
+      label: adoptionProofNavigationLabels[route],
+      path: adoptionProofRoutePaths[route],
+    })),
+  ],
+}));
 
 const escapeRegExp = (value: string) =>
   value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -67,6 +50,10 @@ test("exposes every canonical top-level destination directly", async ({
   for (const group of navigationGroups) {
     const groupNode = navigation.getByRole("group", { name: group.label });
     await expect(groupNode).toBeVisible();
+    await expect(groupNode).toHaveAttribute(
+      "data-surface-maturity",
+      group.maturity,
+    );
     for (const route of group.routes) {
       await expect(
         groupNode.getByRole("button", {
@@ -84,6 +71,13 @@ test("exposes every canonical top-level destination directly", async ({
       ).toHaveText(route.label);
     }
   }
+
+  await expect(
+    navigation.getByRole("group", { name: "References", exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    navigation.getByRole("group", { name: "Adoption Proofs", exact: true }),
+  ).toHaveCount(0);
 
   await expect(
     navigation.getByRole("button", { name: "Library", exact: true }),
@@ -227,6 +221,10 @@ test("mobile navigation keeps all groups reachable without horizontal overflow",
     for (const group of navigationGroups) {
       const groupNode = drawer.getByRole("group", { name: group.label });
       await expect(groupNode).toBeVisible();
+      await expect(groupNode).toHaveAttribute(
+        "data-surface-maturity",
+        group.maturity,
+      );
       for (const route of group.routes) {
         await expect(
           groupNode.getByRole("button", {

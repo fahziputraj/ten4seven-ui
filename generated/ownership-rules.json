@@ -13,19 +13,38 @@
       "forbiddenPatterns": [
         "local basic Button/Input/Card/Table/Select primitive",
         "parallel theme provider",
-        "raw external icon import"
+        "raw external icon import",
+        "business data, permissions, entitlements, persistence, routing, or handlers in generic primitives"
       ],
       "note": "The system owns interaction contracts, semantic tokens, icon names, and recipe decisions."
+    },
+    {
+      "scope": "platform-neutral-contracts",
+      "owner": "ten4seven",
+      "canonicalPaths": [
+        "packages/contracts/src/platform-neutral.ts",
+        "generated/platform-neutral.json"
+      ],
+      "forbiddenPatterns": [
+        "DOM props or React event types",
+        "CSS selectors or browser APIs",
+        "native framework implementation details",
+        "business-domain calculations or authority"
+      ],
+      "note": "Platform-neutral vocabulary is a shared semantic boundary; renderers and consumers own implementation and business behavior."
     },
     {
       "scope": "domain-behavior",
       "owner": "consumer",
       "canonicalPaths": [
         "consumer-owned API clients",
+        "consumer-owned business data and calculations",
         "consumer-owned permissions",
-        "consumer-owned persistence and handlers"
+        "consumer-owned entitlements",
+        "consumer-owned persistence and handlers",
+        "consumer-owned routing and navigation state"
       ],
-      "note": "Consumers own domain data and behavior while composing canonical contracts."
+      "note": "Consumers own domain data, permissions, entitlements, persistence, routing, and handlers while composing canonical contracts."
     },
     {
       "scope": "legacy-catalog-adapter",
